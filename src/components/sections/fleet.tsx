@@ -17,6 +17,13 @@ export function Fleet() {
       price: "30 EUR",
       image: "/src/assets/bmw-3-clean.png",
       category: "Sedan"
+    },
+    {
+      id: "2",
+      name: "Chrysler Town & Country",
+      price: "30 EUR",
+      image: "/src/assets/chrysler-town-country-clean.png",
+      category: "Minivan"
     }
   ];
 
