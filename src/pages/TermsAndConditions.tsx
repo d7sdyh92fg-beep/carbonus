@@ -166,32 +166,6 @@ const TermsAndConditions = () => {
                     </p>
                   </div>
 
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <Shield className="w-6 h-6 text-primary" />
-                      <h2 className="text-2xl font-bold text-foreground">Draudimas ir garantija</h2>
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      Visi automobiliai apdrausti KASKO ir OCTA draudimu. Nuomininko atsakomybės riba:
-                    </p>
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="bg-muted/50 p-4 rounded-lg text-center">
-                        <h4 className="font-semibold text-foreground mb-2">Ekonominė</h4>
-                        <p className="text-2xl font-bold text-primary mb-1">800€</p>
-                        <p className="text-sm text-muted-foreground">išpirkos suma</p>
-                      </div>
-                      <div className="bg-muted/50 p-4 rounded-lg text-center">
-                        <h4 className="font-semibold text-foreground mb-2">Premium</h4>
-                        <p className="text-2xl font-bold text-primary mb-1">1500€</p>
-                        <p className="text-sm text-muted-foreground">išpirkos suma</p>
-                      </div>
-                      <div className="bg-muted/50 p-4 rounded-lg text-center">
-                        <h4 className="font-semibold text-foreground mb-2">Luxury</h4>
-                        <p className="text-2xl font-bold text-primary mb-1">3000€</p>
-                        <p className="text-sm text-muted-foreground">išpirkos suma</p>
-                      </div>
-                    </div>
-                  </div>
 
                   <div>
                     <div className="flex items-center gap-3 mb-4">
