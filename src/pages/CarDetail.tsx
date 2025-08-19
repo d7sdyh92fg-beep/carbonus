@@ -141,15 +141,15 @@ const CarDetail = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm">
-            <a href="/" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer lowercase">
+            <a href="/" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase">
               pradžia
             </a>
             <span className="text-muted-foreground">/</span>
-            <a href="/automobiliai" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer lowercase">
+            <a href="/automobiliai" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase">
               automobiliai
             </a>
             <span className="text-muted-foreground">/</span>
-            <span className="text-primary font-medium lowercase">{car.name.toLowerCase()}</span>
+            <span className="text-primary font-medium uppercase">{car.name}</span>
           </div>
         </div>
       </section>
