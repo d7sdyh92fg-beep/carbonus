@@ -67,10 +67,10 @@ export function Fleet() {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
           <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-2">
-            THE CARS
+            AUTOMOBILIAI
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Our Impressive Fleet
+            Mūsų įspūdingas parkas
           </h2>
         </div>
 
@@ -101,14 +101,14 @@ export function Fleet() {
                   
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-muted-foreground">Starting at</p>
+                      <p className="text-sm text-muted-foreground">Nuo</p>
                       <p className="text-xl font-bold text-primary">{car.price}</p>
                     </div>
                     <Button 
                       variant="outline" 
                       className="hover:bg-primary hover:text-primary-foreground transition-all duration-200"
                     >
-                      View
+                      Žiūrėti
                     </Button>
                   </div>
                 </div>

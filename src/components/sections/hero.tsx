@@ -11,7 +11,7 @@ export function Hero({ carImage }: HeroProps) {
         {/* Left Content */}
         <div className="space-y-8 animate-fade-in relative z-10">
           <div className="space-y-6">
-            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight">
+            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
               Jūsų kelionė,
               <br />
               <span className="text-primary">Jūsų automobilis,</span>
