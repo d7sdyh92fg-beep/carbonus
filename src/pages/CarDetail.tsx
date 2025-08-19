@@ -138,7 +138,7 @@ const CarDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation logo="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" />
+      <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Simple Breadcrumb Section */}
       <section className="pt-24 pb-6 bg-background">
