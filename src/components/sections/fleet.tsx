@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import carMustang from "@/assets/car-mustang.jpg";
-import carAudi from "@/assets/car-audi.jpg";
-import carBmw from "@/assets/car-bmw.jpg";
-import carMercedes from "@/assets/car-mercedes.jpg";
-import carToyota from "@/assets/car-toyota.jpg";
-import carTesla from "@/assets/car-tesla.jpg";
 
 interface Car {
   id: string;
@@ -19,45 +13,10 @@ export function Fleet() {
   const cars: Car[] = [
     {
       id: "1",
-      name: "Ford - Mustang Convertible",
-      price: "$59/day",
-      image: carMustang,
-      category: "Sports"
-    },
-    {
-      id: "2", 
-      name: "Audi A4 Sedan",
-      price: "$49/day",
-      image: carAudi,
+      name: "BMW 3 2017 metų",
+      price: "30 EUR",
+      image: "/src/assets/bmw-3-2017.png",
       category: "Sedan"
-    },
-    {
-      id: "3",
-      name: "BMW X5 SUV", 
-      price: "$79/day",
-      image: carBmw,
-      category: "SUV"
-    },
-    {
-      id: "4",
-      name: "Mercedes-Benz - C-Class Coupe",
-      price: "$69/day", 
-      image: carMercedes,
-      category: "Coupe"
-    },
-    {
-      id: "5",
-      name: "Toyota - Camry Hybrid",
-      price: "$39/day",
-      image: carToyota, 
-      category: "Hybrid"
-    },
-    {
-      id: "6",
-      name: "Tesla - Model 3",
-      price: "$99/day",
-      image: carTesla,
-      category: "Electric"
     }
   ];
 
@@ -101,7 +60,7 @@ export function Fleet() {
                   
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-muted-foreground">Nuo</p>
+                      <p className="text-sm text-muted-foreground">Kaina nuo</p>
                       <p className="text-xl font-bold text-primary">{car.price}</p>
                     </div>
                     <Button 
