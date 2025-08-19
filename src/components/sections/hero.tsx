@@ -21,11 +21,11 @@ export function Hero({ carImage }: HeroProps) {
   };
 
   return (
-    <section className="relative min-h-screen pt-8 md:pt-16 flex items-center overflow-hidden md:bg-gradient-to-br md:from-gray-50 md:to-white">
+    <section className="relative min-h-screen pt-4 md:pt-16 flex items-center overflow-hidden md:bg-gradient-to-br md:from-gray-50 md:to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
         {/* Left Content */}
-        <div className="space-y-4 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-0 md:pt-0">
-          <div className="space-y-4 md:space-y-6">
+        <div className="space-y-3 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-0 md:pt-0">
+          <div className="space-y-3 md:space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
               Jūsų kelionė,
               <br />
