@@ -57,22 +57,6 @@ export function Features() {
           })}
         </div>
 
-        {/* Image Section */}
-        <div className="mt-20 animate-fade-in">
-          <div className="relative rounded-3xl overflow-hidden">
-            <img
-              src={carInterior}
-              alt="Car Interior"
-              className="w-full h-96 object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary-light/60 flex items-center justify-center">
-              <div className="text-center text-primary-foreground">
-                <h3 className="text-3xl font-bold mb-4">Experience Luxury</h3>
-                <p className="text-lg opacity-90">Premium interiors and cutting-edge technology</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

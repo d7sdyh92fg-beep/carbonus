@@ -2,7 +2,7 @@ import { Navigation } from "@/components/ui/navigation";
 import { Hero } from "@/components/sections/hero";
 import { Fleet } from "@/components/sections/fleet";
 import { Features } from "@/components/sections/features";
-import { Testimonials } from "@/components/sections/testimonials";
+
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { CTA } from "@/components/sections/cta";
 import { Footer } from "@/components/sections/footer";
@@ -14,7 +14,7 @@ const Index = () => {
       <Hero carImage="/src/assets/car-green-hero.png" />
       <Fleet />
       <Features />
-      <Testimonials />
+      
       <HowItWorks />
       <CTA />
       <Footer />
