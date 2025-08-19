@@ -7,7 +7,7 @@ interface HeroProps {
 export function Hero({ carImage }: HeroProps) {
   return (
     <section className="relative min-h-screen pt-16 flex items-center overflow-hidden bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* Left Content */}
         <div className="space-y-8 animate-fade-in relative z-10">
           <div className="space-y-6">
@@ -62,7 +62,7 @@ export function Hero({ carImage }: HeroProps) {
       </div>
 
       {/* Background CARBONUS Text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div 
           className="text-[12rem] lg:text-[20rem] font-bold select-none whitespace-nowrap text-green-600/20"
           style={{
