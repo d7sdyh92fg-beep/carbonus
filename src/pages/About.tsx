@@ -181,7 +181,7 @@ const About = () => {
                 className="w-full h-full object-cover object-center"
               />
               {/* Dark overlay for mobile text readability */}
-              <div className="absolute inset-0 bg-black/50 md:bg-transparent"></div>
+              <div className="absolute inset-0 bg-black/50 md:bg-black/30"></div>
             </div>
             
             {/* Content - Centered on Mobile, Left Side on Desktop */}
