@@ -12,6 +12,9 @@ export function Footer() {
     } else if (link === "Pradžia") {
       navigate('/');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (link === "Apie mus") {
+      navigate('/apie-mus');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // For other links, scroll to sections or handle as needed
       console.log(`Navigate to: ${link}`);
