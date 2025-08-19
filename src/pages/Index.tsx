@@ -9,7 +9,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation logo="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" />
-      <Hero carImage="/lovable-uploads/70c1b8d2-2c07-425e-b9b7-36067768f565.png" />
+      <Hero carImage="/src/assets/car-green.png" />
       <Fleet />
       <Features />
       <Testimonials />
