@@ -38,6 +38,10 @@ export function Hero({ carImage }: HeroProps) {
 
         {/* Right Content - Car Image */}
         <div className="relative animate-slide-up -ml-12">
+          {/* Green aura around car */}
+          <div className="absolute inset-0 rounded-full bg-green-500/5 blur-3xl scale-110"></div>
+          <div className="absolute inset-0 rounded-full bg-green-400/3 blur-2xl scale-125"></div>
+          
           {/* Car Types Badge */}
           <div className="absolute top-8 right-8 bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg z-20">
             <div className="text-center">
@@ -51,7 +55,7 @@ export function Hero({ carImage }: HeroProps) {
           </div>
 
           {/* Main Car Image */}
-          <div className="relative">
+          <div className="relative z-10">
             <img
               src="/src/assets/green-audi-front.png"
               alt="Premium Green Audi"
@@ -61,17 +65,6 @@ export function Hero({ carImage }: HeroProps) {
         </div>
       </div>
 
-      {/* Background CARBONUS Text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-        <div 
-          className="text-[8rem] lg:text-[12rem] font-bold select-none whitespace-nowrap text-white/10"
-          style={{
-            textShadow: '0 0 20px rgba(34, 197, 94, 0.15), 0 0 40px rgba(34, 197, 94, 0.1), 0 0 60px rgba(34, 197, 94, 0.05)'
-          }}
-        >
-          CARBONUS
-        </div>
-      </div>
 
       {/* Background Elements */}
       <div className="absolute inset-0 -z-20 overflow-hidden">
