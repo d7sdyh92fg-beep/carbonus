@@ -65,7 +65,7 @@ const Cars = () => {
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-12 bg-gradient-to-br from-gray-50 to-white">
+      <section className="pt-32 md:pt-40 pb-12 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Automobilių nuoma
