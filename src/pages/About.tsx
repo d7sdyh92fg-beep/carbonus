@@ -176,7 +176,7 @@ const About = () => {
             {/* Car Image - Right Side */}
             <div className="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/5">
               <img
-                src="/lovable-uploads/12ed3116-e98d-49d4-b5ab-305e8550f33e.png"
+                src="/src/assets/car-green-hero.png"
                 alt="Premium car"
                 className="w-full h-full object-cover object-center"
               />
@@ -191,7 +191,7 @@ const About = () => {
                 
                 <Button 
                   size="lg" 
-                  className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
+                  className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
                   onClick={() => window.location.href = '/automobiliai'}
                 >
                   Rezervuoti dabar
