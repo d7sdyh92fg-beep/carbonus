@@ -26,8 +26,7 @@ export function Footer() {
                   className="bg-background/10 border-background/20 text-background placeholder:text-background/60 focus:border-background"
                 />
                 <Button 
-                  variant="outline" 
-                  className="text-background border-background hover:bg-background hover:text-foreground whitespace-nowrap"
+                  className="bg-black text-white hover:bg-gray-800 border-0 whitespace-nowrap"
                 >
                   Subscribe
                 </Button>

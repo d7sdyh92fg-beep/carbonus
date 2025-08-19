@@ -29,7 +29,7 @@ export function CTA() {
               
               <Button 
                 size="lg" 
-                className="bg-white hover:bg-gray-100 text-black font-semibold px-8 py-3 rounded-full transition-all duration-300"
+                className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
               >
                 Book Now
               </Button>
