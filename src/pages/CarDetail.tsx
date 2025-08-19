@@ -12,6 +12,7 @@ interface CarDetail {
   name: string;
   price: string;
   image: string;
+  images?: string[];
   category: string;
   passengers: number;
   fuel: string;
@@ -33,7 +34,11 @@ const CarDetail = () => {
       id: "1",
       name: "BMW 3 series",
       price: "30 EUR",
-      image: "/src/assets/bmw-3-clean.png",
+      image: "/lovable-uploads/6d952bf9-02ce-401a-844d-53602e6bd46a.png",
+      images: [
+        "/lovable-uploads/6d952bf9-02ce-401a-844d-53602e6bd46a.png",
+        "/lovable-uploads/1fde8ef6-efa7-46c4-956a-06ec5e88edb9.png"
+      ],
       category: "Sedan",
       passengers: 5,
       fuel: "Benzinas",
@@ -144,12 +149,28 @@ const CarDetail = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Car Image */}
-            <div className="bg-gray-50 rounded-2xl p-8 text-center">
-              <img
-                src={car.image}
-                alt={car.name}
-                className="w-full max-w-2xl mx-auto object-contain"
-              />
+            <div className="bg-gray-50 rounded-2xl p-8">
+              {car.images && car.images.length > 1 ? (
+                <div className="grid grid-cols-1 gap-4">
+                  {car.images.map((image, index) => (
+                    <div key={index} className="text-center">
+                      <img
+                        src={image}
+                        alt={`${car.name} - ${index + 1}`}
+                        className="w-full max-w-2xl mx-auto object-contain rounded-lg"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center">
+                  <img
+                    src={car.image}
+                    alt={car.name}
+                    className="w-full max-w-2xl mx-auto object-contain"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Car Information */}
