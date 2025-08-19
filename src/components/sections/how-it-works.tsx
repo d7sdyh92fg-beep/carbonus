@@ -1,4 +1,4 @@
-import { Hand, CalendarCheck, Circle, Car } from "lucide-react";
+import { Hand, CalendarCheck, CircleDot, Car } from "lucide-react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 const steps = [
@@ -21,7 +21,7 @@ const steps = [
   {
     id: 3,
     title: "Vairuoti",
-    icon: Circle,
+    icon: CircleDot,
     description: "Pasiimkite automobilį ir kelkitės į kelią",
     side: "right",
     hoverSide: "left",
