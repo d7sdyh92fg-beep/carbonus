@@ -1,33 +1,9 @@
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
-  const sponsors = [
-    "logoipsum",
-    "logoipsum", 
-    "logoipsum",
-    "Logoipsum",
-    "Logoipsum",
-    "Logoipsum"
-  ];
 
   return (
     <footer className="bg-foreground text-background">
-      {/* Sponsors Section */}
-      <div className="border-b border-background/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {sponsors.map((sponsor, index) => (
-              <div
-                key={index}
-                className="text-center opacity-60 hover:opacity-100 transition-opacity duration-200"
-              >
-                <span className="text-lg font-medium">{sponsor}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -38,9 +14,9 @@ export function Footer() {
               Experience the ultimate freedom of choice with premium car rentals. 
               Your journey, your car, your way.
             </p>
-            <Button variant="outline" className="text-background border-background hover:bg-background hover:text-foreground">
-              Get Started
-            </Button>
+            <p className="text-background/60 text-sm">
+              Subscribe to newsletter
+            </p>
           </div>
 
           {/* Quick Links */}
@@ -64,7 +40,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Support</h4>
             <ul className="space-y-2">
-              {["Help Center", "Safety", "Terms", "Privacy", "Sitemap"].map((link) => (
+              {["Terms", "Privacy"].map((link) => (
                 <li key={link}>
                   <a
                     href="#"
