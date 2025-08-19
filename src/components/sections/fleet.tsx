@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 interface Car {
   id: string;
@@ -10,6 +11,7 @@ interface Car {
 }
 
 export function Fleet() {
+  const navigate = useNavigate();
   const cars: Car[] = [
     {
       id: "1",
@@ -73,6 +75,7 @@ export function Fleet() {
                     <Button 
                       variant="outline" 
                       className="hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                      onClick={() => navigate('/automobiliai')}
                     >
                       Žiūrėti
                     </Button>
