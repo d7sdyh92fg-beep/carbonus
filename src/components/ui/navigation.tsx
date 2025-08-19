@@ -48,7 +48,7 @@ export function Navigation({ logo }: NavigationProps) {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="hero">Kontaktai</Button>
+            <Button variant="hero" onClick={() => window.location.href = '/kontaktai'}>Kontaktai</Button>
           </div>
 
           {/* Mobile menu button */}
@@ -78,7 +78,7 @@ export function Navigation({ logo }: NavigationProps) {
                 </a>
               ))}
               <div className="pt-4 border-t mt-4">
-                <Button variant="hero" className="w-full">
+                <Button variant="hero" className="w-full" onClick={() => window.location.href = '/kontaktai'}>
                   Kontaktai
                 </Button>
               </div>
