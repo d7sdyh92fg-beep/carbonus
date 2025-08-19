@@ -11,7 +11,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation logo="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" />
-      <Hero carImage="/src/assets/car-green-hero.png" />
+      <Hero carImage="/src/assets/audi-rs5-flipped.png" />
       <Fleet />
       <Features />
       
