@@ -136,35 +136,20 @@ const CarDetail = () => {
     <div className="min-h-screen bg-background">
       <Navigation logo="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" />
       
-      {/* Hero Section with Car Image */}
-      <section className="pt-24 pb-12 bg-gradient-to-br from-gray-900 to-gray-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Simple Breadcrumb Section */}
+      <section className="pt-24 pb-6 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm mb-6">
-            <a href="/" className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
-              PRADŽIA
+          <div className="flex items-center gap-2 text-sm">
+            <a href="/" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer lowercase">
+              pradžia
             </a>
-            <span className="opacity-70">/</span>
-            <a href="/automobiliai" className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
-              AUTOMOBILIAI
+            <span className="text-muted-foreground">/</span>
+            <a href="/automobiliai" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer lowercase">
+              automobiliai
             </a>
-            <span className="opacity-70">/</span>
-            <span>AUTOMOBILIO DETALĖS</span>
-          </div>
-          
-          <div className="flex items-center gap-4 mb-8">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={() => navigate("/automobiliai")}
-              className="text-white hover:bg-white/20"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <h1 className="text-4xl lg:text-5xl font-bold">
-              Automobilio detalės
-            </h1>
+            <span className="text-muted-foreground">/</span>
+            <span className="text-primary font-medium lowercase">{car.name.toLowerCase()}</span>
           </div>
         </div>
       </section>
