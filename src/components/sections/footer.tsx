@@ -10,9 +10,9 @@ export function Footer() {
   return (
     <footer className="bg-background text-foreground py-16 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-4 gap-16">
+        <div className="grid lg:grid-cols-3 gap-16">
           {/* Newsletter Section */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-1">
             <h3 className="text-3xl font-bold text-foreground mb-2">
               Don't Miss
             </h3>
@@ -34,18 +34,6 @@ export function Footer() {
                 Submit
               </Button>
             </div>
-          </div>
-
-          {/* The Cars */}
-          <div>
-            <h4 className="font-semibold text-foreground mb-6">The Cars</h4>
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Cars
-                </a>
-              </li>
-            </ul>
           </div>
 
           {/* Quick Link */}
@@ -70,6 +58,18 @@ export function Footer() {
               <li>
                 <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   FAQ
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* The Cars */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-6">The Cars</h4>
+            <ul className="space-y-3">
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Cars
                 </a>
               </li>
             </ul>
