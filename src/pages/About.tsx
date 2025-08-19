@@ -176,8 +176,8 @@ const About = () => {
             {/* Car Image - Right Side */}
             <div className="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/5">
               <img
-                src="/src/assets/car-green-hero.png"
-                alt="Premium car"
+                src="/lovable-uploads/d3b98744-2940-4908-82ac-d9936a34e2d5.png"
+                alt="Premium car with dramatic lighting"
                 className="w-full h-full object-cover object-center"
               />
             </div>
