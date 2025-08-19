@@ -8,8 +8,10 @@ export function Footer() {
   const handleLinkClick = (link: string) => {
     if (link === "Automobiliai") {
       navigate('/automobiliai');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (link === "Pradžia") {
       navigate('/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // For other links, scroll to sections or handle as needed
       console.log(`Navigate to: ${link}`);
