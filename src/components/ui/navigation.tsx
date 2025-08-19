@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "./button";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 interface NavigationProps {
   logo?: string;
@@ -48,9 +48,6 @@ export function Navigation({ logo }: NavigationProps) {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <Search className="h-5 w-5" />
-            </Button>
             <Button variant="hero">Kontaktai</Button>
           </div>
 
