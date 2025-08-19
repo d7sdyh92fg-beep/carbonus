@@ -170,20 +170,17 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#2D5F3F' }}>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary to-primary/80">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
             Pradėkite savo kelionę šiandien
           </h2>
-          <p className="text-xl text-white/90 mb-8 leading-relaxed">
-            Atraskite mūsų automobilių parką ir rezervuokite savo tobulą automobilį jau dabar. Mes pasiruošę padėti jums sukurti nepamirštamą kelionę.
+          <p className="text-xl text-primary-foreground/90 mb-8 leading-relaxed">
+            Atraskite mūsų automobilių parką ir rezervuokite savo tobulą automobilį 
+            jau dabar. Mes pasiruošę padėti jums sukurti nepamirštamą kelionę.
           </p>
-          <div className="flex justify-center">
-            <Button 
-              size="lg" 
-              className="bg-white text-black hover:bg-gray-100 px-8"
-              onClick={() => window.location.href = '/automobiliai'}
-            >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" variant="secondary" onClick={() => window.location.href = '/automobiliai'}>
               Peržiūrėti automobilius
             </Button>
           </div>
