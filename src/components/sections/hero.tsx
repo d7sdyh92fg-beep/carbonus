@@ -1,10 +1,24 @@
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface HeroProps {
   carImage?: string;
 }
 
 export function Hero({ carImage }: HeroProps) {
+  const navigate = useNavigate();
+
+  const handleNavigateToCars = () => {
+    navigate('/automobiliai');
+    // Small delay to ensure navigation completes before scrolling
+    setTimeout(() => {
+      window.scrollTo({
+        top: 300, // Same scroll amount as CTA button
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+
   return (
     <section className="relative min-h-screen pt-16 flex items-center overflow-hidden bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
@@ -30,6 +44,7 @@ export function Hero({ carImage }: HeroProps) {
               variant="hero"
               size="lg" 
               className="animate-scale-in"
+              onClick={handleNavigateToCars}
             >
               Pradėti
             </Button>
@@ -43,17 +58,6 @@ export function Hero({ carImage }: HeroProps) {
           <div className="absolute inset-0 rounded-full bg-green-400/10 blur-2xl scale-125"></div>
           <div className="absolute inset-0 rounded-full bg-green-600/7 blur-xl scale-150"></div>
           
-          {/* Car Types Badge */}
-          <div className="absolute top-8 right-8 bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg z-20">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-black">50+</div>
-              <div className="text-sm text-gray-600 leading-tight">
-                Automobilių tipų
-                <br />
-                pasirinkimas
-              </div>
-            </div>
-          </div>
 
           {/* Main Car Image */}
           <div className="relative z-10">
