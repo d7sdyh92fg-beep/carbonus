@@ -173,8 +173,8 @@ const About = () => {
       <section className="py-10 md:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="relative bg-black md:bg-black rounded-3xl overflow-hidden min-h-[300px] md:min-h-[400px] flex items-center">
-            {/* Car Image - Full Background on Mobile, Right Side on Desktop */}
-            <div className="absolute inset-0 md:right-0 md:top-0 md:bottom-0 md:w-1/2 lg:w-2/5">
+            {/* Car Image - Full Background on Mobile, Left Side on Desktop */}
+            <div className="absolute inset-0 md:left-0 md:top-0 md:bottom-0 md:w-1/2 lg:w-3/5">
               <img
                 src="/lovable-uploads/d3b98744-2940-4908-82ac-d9936a34e2d5.png"
                 alt="Premium car with dramatic lighting"
@@ -184,9 +184,9 @@ const About = () => {
               <div className="absolute inset-0 bg-black/50 md:bg-transparent"></div>
             </div>
             
-            {/* Content - Centered on Mobile, Left Side on Desktop */}
-            <div className="relative z-10 w-full flex justify-center md:justify-start">
-              <div className="w-full md:w-3/4 lg:w-3/5 p-6 md:p-8 lg:p-12 text-white text-center md:text-left">
+            {/* Content - Centered on Mobile, Right Side on Desktop */}
+            <div className="relative z-10 w-full flex justify-center md:justify-end">
+              <div className="w-full md:w-1/2 lg:w-2/5 p-6 md:p-8 lg:p-12 text-white text-center md:text-left">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold mb-6 leading-tight">
                   Rezervuokite savo svajonių automobilį šiandien ir pajuskite geriausią kelionės patirtį
                 </h2>
