@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,6 +6,33 @@ import { Badge } from "@/components/ui/badge";
 import { Car, Calendar, CreditCard, Shield, Clock, AlertTriangle, FileText, Users } from "lucide-react";
 
 const TermsAndConditions = () => {
+  useEffect(() => {
+    // Set page title and meta tags
+    document.title = "Nuomos sąlygos - Carbonus | Automobilių nuomos taisyklės";
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Carbonus automobilių nuomos sąlygos - rezervacija, apmokėjimas, draudimas, reikalavimai nuomininkui. Visos taisyklės ir sąlygos aiškiai aprašytos.');
+    }
+    
+    // Update canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://carbonus.lt/nuomos-salygos');
+    }
+    
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Nuomos sąlygos - Carbonus');
+    }
+    
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', 'https://carbonus.lt/nuomos-salygos');
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />

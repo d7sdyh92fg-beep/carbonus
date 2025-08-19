@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,33 @@ import carInterior from "@/assets/car-interior.jpg";
 import fleetCars from "@/assets/fleet-cars.jpg";
 
 const About = () => {
+  useEffect(() => {
+    // Set page title and meta tags
+    document.title = "Apie mus - Carbonus | Moderni automobilių nuomos įmonė Lietuvoje";
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Carbonus - moderni automobilių nuomos įmonė, įkurta 2024 metais. Siūlome aukščiausios kokybės automobilius ir išskirtinį aptarnavimą Lietuvoje.');
+    }
+    
+    // Update canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://carbonus.lt/apie-mus');
+    }
+    
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Apie mus - Carbonus');
+    }
+    
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', 'https://carbonus.lt/apie-mus');
+    }
+  }, []);
   const stats = [
     { number: "2024", label: "Įkūrimo metai", icon: Calendar },
     { number: "200+", label: "Automobilių", icon: Car },

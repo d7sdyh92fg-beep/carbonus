@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,6 +19,33 @@ import {
 } from "lucide-react";
 
 const Contact = () => {
+  useEffect(() => {
+    // Set page title and meta tags
+    document.title = "Kontaktai - Carbonus | Susisiekite dėl automobilių nuomos +370 698 18 781";
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Susisiekite su Carbonus dėl automobilių nuomos. Tel: +370 698 18 781, El. paštas: info@carbonus.lt. Biuras Druskininkuose. Darbo laikas 8-17h.');
+    }
+    
+    // Update canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://carbonus.lt/kontaktai');
+    }
+    
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Kontaktai - Carbonus');
+    }
+    
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', 'https://carbonus.lt/kontaktai');
+    }
+  }, []);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission

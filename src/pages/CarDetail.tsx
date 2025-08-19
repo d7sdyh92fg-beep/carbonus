@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,35 @@ const CarDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    // Set page title and meta tags dynamically based on car
+    const carName = carDetails[id || ""]?.name || "Automobilis";
+    document.title = `${carName} - Carbonus | Premium automobilio nuoma nuo 30€/dieną`;
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', `${carName} nuomai Carbonus automobilių parke. Premium klasės automobilis su visais patogumais. Rezervuokite online ir užsisakykite šiandien.`);
+    }
+    
+    // Update canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', `https://carbonus.lt/automobiliai/${id}`);
+    }
+    
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', `${carName} - Carbonus`);
+    }
+    
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', `https://carbonus.lt/automobiliai/${id}`);
+    }
+  }, [id]);
 
   const carDetails: { [key: string]: CarDetail } = {
     "1": {

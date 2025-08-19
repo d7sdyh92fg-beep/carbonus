@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,6 +6,33 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, Mail, Phone, MapPin, Calendar } from "lucide-react";
 
 const PrivacyPolicy = () => {
+  useEffect(() => {
+    // Set page title and meta tags
+    document.title = "Privatumo politika - Carbonus | Asmens duomenų apsauga";
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Carbonus privatumo politika - kaip renkame, tvarkome ir saugome jūsų asmens duomenis pagal BDAR reikalavimus. Skaidrumas ir duomenų apsauga.');
+    }
+    
+    // Update canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://carbonus.lt/privatumo-politika');
+    }
+    
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Privatumo politika - Carbonus');
+    }
+    
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', 'https://carbonus.lt/privatumo-politika');
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />

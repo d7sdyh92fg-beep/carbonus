@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,10 +17,37 @@ import {
   ChevronDown,
   ChevronUp
 } from "lucide-react";
-import { useState } from "react";
 
 const FAQ = () => {
   const [openItems, setOpenItems] = useState<number[]>([]);
+
+  useEffect(() => {
+    // Set page title and meta tags
+    document.title = "DUK - Dažnai užduodami klausimai | Carbonus automobilių nuoma";
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Atsakymai į dažniausius klausimus apie automobilių nuomą Carbonus. Rezervacijos, dokumentai, draudimas, apmokėjimas ir kiti svarbūs klausimai.');
+    }
+    
+    // Update canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://carbonus.lt/duk');
+    }
+    
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'DUK - Dažnai užduodami klausimai - Carbonus');
+    }
+    
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', 'https://carbonus.lt/duk');
+    }
+  }, []);
 
   const toggleItem = (index: number) => {
     setOpenItems(prev => 
