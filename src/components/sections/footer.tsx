@@ -26,7 +26,7 @@ export function Footer() {
             <img 
               src="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" 
               alt="Carbonus Logo" 
-              className="h-24 mb-6"
+              className="h-36 mb-6"
             />
             <p className="text-muted-foreground mb-6 max-w-md">
               Patirkite aukščiausią pasirinkimo laisvę su aukščiausios klasės automobilių nuoma. 
