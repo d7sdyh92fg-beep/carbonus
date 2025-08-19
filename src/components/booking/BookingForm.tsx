@@ -168,7 +168,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           <div className="text-sm text-amber-700 space-y-1">
             <p>• Prieš rezervuojant ir apmokant automobilį, reikės sumokėti ir užstatą (€300)</p>
             <p>• Užstatas grąžinamas po automobilio grąžinimo</p>
-            <p>• Atšaukimai galimi tik el. paštu: <strong>info@autorentas.lt</strong></p>
+            <p>• Atšaukimai galimi tik el. paštu: <strong>info@carbonus.lt</strong></p>
             <p>• Atšaukti galima ne vėliau kaip likus 3 dienoms iki paėmimo datos</p>
             <p>• Vėliau atšaukus, vienos dienos nuomos mokestis negrąžinamas kaip kompensacija</p>
           </div>
@@ -261,7 +261,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
         <div className="mt-4 text-xs text-muted-foreground space-y-1">
           <p>* Rezervacija bus patvirtinta po to, kai susisieksime su jumis dėl mokėjimo ir automobilio perdavimo detalių.</p>
-          <p>* Atšaukimams kreipkitės: <strong>info@autorentas.lt</strong></p>
+          <p>* Atšaukimams kreipkitės: <strong>info@carbonus.lt</strong></p>
         </div>
       </CardContent>
     </Card>
