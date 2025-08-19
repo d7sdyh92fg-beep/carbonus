@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import greenAudiFront from "@/assets/green-audi-front.png";
+import greenAudiFront from "@/assets/green-audi-front-carbonus.png";
 
 interface HeroProps {
   carImage?: string;
