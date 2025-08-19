@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import bmw3Clean from "@/assets/bmw-3-clean.png";
+import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 
 interface Car {
   id: string;
@@ -17,14 +19,14 @@ export function Fleet() {
       id: "1",
       name: "BMW 3 series",
       price: "30 EUR",
-      image: "/src/assets/bmw-3-clean.png",
+      image: bmw3Clean,
       category: "Sedan"
     },
     {
       id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
-      image: "/src/assets/chrysler-town-country-side.png",
+      image: chryslerTownCountrySide,
       category: "Minivan"
     }
   ];

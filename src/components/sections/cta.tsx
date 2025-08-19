@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import carMustang from "@/assets/car-mustang.jpg";
 
 export function CTA() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export function CTA() {
           {/* Car Image - Left Side */}
           <div className="absolute left-0 top-0 bottom-0 w-1/2 lg:w-3/5">
             <img
-              src="/src/assets/car-mustang.jpg"
+              src={carMustang}
               alt="Red sports car"
               className="w-full h-full object-cover object-center"
             />

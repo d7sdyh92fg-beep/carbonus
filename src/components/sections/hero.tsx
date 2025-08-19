@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import greenAudiFront from "@/assets/green-audi-front.png";
 
 interface HeroProps {
   carImage?: string;
@@ -62,7 +63,7 @@ export function Hero({ carImage }: HeroProps) {
           {/* Main Car Image */}
           <div className="relative z-10">
             <img
-              src="/src/assets/green-audi-front.png"
+              src={greenAudiFront}
               alt="Premium Green Audi"
               className="w-full max-w-3xl mx-auto object-contain scale-110"
             />
