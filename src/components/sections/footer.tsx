@@ -1,7 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 export function Footer() {
+  const navigate = useNavigate();
+
+  const handleLinkClick = (link: string) => {
+    if (link === "Automobiliai") {
+      navigate('/automobiliai');
+    } else if (link === "Pradžia") {
+      navigate('/');
+    } else {
+      // For other links, scroll to sections or handle as needed
+      console.log(`Navigate to: ${link}`);
+    }
+  };
 
   return (
     <footer className="bg-foreground text-background">
@@ -10,7 +23,11 @@ export function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <h3 className="text-2xl font-bold mb-4">CARBONUS.</h3>
+            <img 
+              src="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" 
+              alt="Carbonus Logo" 
+              className="h-8 mb-4"
+            />
             <p className="text-background/80 mb-6 max-w-md">
               Patirkite aukščiausią pasirinkimo laisvę su aukščiausios klasės automobilių nuoma. 
               Jūsų kelionė, jūsų automobilis, jūsų būdas.
@@ -36,16 +53,16 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Greitos nuorodos</h4>
+            <h4 className="font-semibold mb-4 text-primary">Nuorodos</h4>
             <ul className="space-y-2">
               {["Pradžia", "Automobiliai", "Apie mus", "Kontaktai", "DUK"].map((link) => (
                 <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase()}`}
-                    className="text-background/80 hover:text-background transition-colors duration-200"
+                  <button
+                    onClick={() => handleLinkClick(link)}
+                    className="text-background/80 hover:text-primary transition-colors duration-200 text-left"
                   >
                     {link}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -53,16 +70,16 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold mb-4">Pagalba</h4>
+            <h4 className="font-semibold mb-4 text-primary">Pagalba</h4>
             <ul className="space-y-2">
               {["Sąlygos", "Privatumas"].map((link) => (
                 <li key={link}>
-                  <a
-                    href="#"
-                    className="text-background/80 hover:text-background transition-colors duration-200"
+                  <button
+                    onClick={() => console.log(`Navigate to: ${link}`)}
+                    className="text-background/80 hover:text-primary transition-colors duration-200 text-left"
                   >
                     {link}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
