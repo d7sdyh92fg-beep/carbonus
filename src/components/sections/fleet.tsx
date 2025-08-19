@@ -15,7 +15,7 @@ export function Fleet() {
       id: "1",
       name: "BMW 3 2017 metų",
       price: "30 EUR",
-      image: "/lovable-uploads/2f65caa0-2965-4077-a0fe-20723b64baa6.png",
+      image: "/src/assets/bmw-3-clean.png",
       category: "Sedan"
     }
   ];
