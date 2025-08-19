@@ -167,9 +167,9 @@ const PrivacyPolicy = () => {
                       susisiekite su mumis:
                     </p>
                     <div className="space-y-2 text-muted-foreground">
-                      <p>El. paštas: privatumas@carbonus.lt</p>
-                      <p>Telefonas: +370 600 12345</p>
-                      <p>Adresas: Gedimino pr. 1, Vilnius, Lietuva</p>
+                      <p>El. paštas: info@carbonus.lt</p>
+                      <p>Telefonas: +370 698 18 781</p>
+                      <p>Adresas: Druskininkai, Lietuva</p>
                     </div>
                   </div>
 

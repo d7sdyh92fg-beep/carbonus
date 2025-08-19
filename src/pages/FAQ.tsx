@@ -36,7 +36,7 @@ const FAQ = () => {
       questions: [
         {
           question: "Kaip rezervuoti automobilį?",
-          answer: "Automobilį galite rezervuoti trimis būdais: mūsų internetinėje svetainėje, paskambinę telefonu +370 600 12345 arba atvykę į bet kurį mūsų biurą. Online rezervacija veikia 24/7."
+          answer: "Automobilį galite rezervuoti trimis būdais: mūsų internetinėje svetainėje, paskambinę telefonu +370 698 18 781 arba atvykę į bet kurį mūsų biurą. Online rezervacija veikia 24/7."
         },
         {
           question: "Ar galiu atšaukti rezervaciją?",
@@ -106,7 +106,7 @@ const FAQ = () => {
         },
         {
           question: "Ką daryti avarijų atveju?",
-          answer: "Nedelsiant skambinkite mums telefonu +370 600 99999 (24/7) ir policijai 112. Nepaliekite įvykio vietos, kol neatvyks policija ir mūsų atstovas."
+          answer: "Nedelsiant skambinkite mums telefonu +370 698 18 781 (24/7) ir policijai 112. Nepaliekite įvykio vietos, kol neatvyks policija ir mūsų atstovas."
         },
         {
           question: "Kas dengta draudimo?",
@@ -262,7 +262,7 @@ const FAQ = () => {
             <Card className="p-6 text-center">
               <Phone className="w-8 h-8 text-primary mx-auto mb-3" />
               <h3 className="font-semibold text-foreground mb-2">Telefonu</h3>
-              <p className="text-muted-foreground text-sm mb-3">+370 600 12345</p>
+              <p className="text-muted-foreground text-sm mb-3">+370 698 18 781</p>
               <p className="text-xs text-muted-foreground">24/7 klientų aptarnavimas</p>
             </Card>
             
@@ -276,7 +276,7 @@ const FAQ = () => {
             <Card className="p-6 text-center">
               <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
               <h3 className="font-semibold text-foreground mb-2">Skubūs atvejai</h3>
-              <p className="text-muted-foreground text-sm mb-3">+370 600 99999</p>
+              <p className="text-muted-foreground text-sm mb-3">+370 698 18 781</p>
               <p className="text-xs text-muted-foreground">Avarijų linija 24/7</p>
             </Card>
           </div>

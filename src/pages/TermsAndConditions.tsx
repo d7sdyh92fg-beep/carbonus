@@ -215,8 +215,8 @@ const TermsAndConditions = () => {
                     </p>
                     <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
                       <div className="space-y-2 text-muted-foreground">
-                        <p><strong>Telefonas:</strong> +370 600 12345 (24/7)</p>
-                        <p><strong>El. paštas:</strong> avarios@carbonus.lt</p>
+                        <p><strong>Telefonas:</strong> +370 698 18 781 (24/7)</p>
+                        <p><strong>El. paštas:</strong> info@carbonus.lt</p>
                       </div>
                     </div>
                   </div>
@@ -238,7 +238,7 @@ const TermsAndConditions = () => {
                   <div className="text-sm text-muted-foreground pt-6 border-t border-border">
                     <p>Sąlygos paskutinį kartą atnaujintos: 2024 m. sausio 15 d.</p>
                     <p className="mt-2">
-                      Klausimų atveju susisiekite: <strong>info@carbonus.lt</strong> arba <strong>+370 600 12345</strong>
+                      Klausimų atveju susisiekite: <strong>info@carbonus.lt</strong> arba <strong>+370 698 18 781</strong>
                     </p>
                   </div>
                 </div>

@@ -28,19 +28,19 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Telefonas",
-      details: ["+370 600 12345", "+370 600 54321"],
+      details: ["+370 698 18 781"],
       description: "24/7 klientų aptarnavimas"
     },
     {
       icon: Mail,
       title: "El. paštas",
-      details: ["info@carbonus.lt", "rezervacijos@carbonus.lt"],
+      details: ["info@carbonus.lt"],
       description: "Atsakysime per 2 valandas"
     },
     {
       icon: MapPin,
       title: "Adresas",
-      details: ["Gedimino pr. 1", "LT-01103 Vilnius"],
+      details: ["Druskininkai"],
       description: "Centrinė būstinė"
     },
     {
@@ -53,22 +53,10 @@ const Contact = () => {
 
   const locations = [
     {
-      city: "Vilnius",
-      address: "Gedimino pr. 1",
-      phone: "+370 600 12345",
+      city: "Druskininkai",
+      address: "Druskininkai",
+      phone: "+370 698 18 781",
       hours: "Pr-Pk: 8:00-20:00, Š-S: 9:00-18:00"
-    },
-    {
-      city: "Kaunas",
-      address: "Laisvės al. 15",
-      phone: "+370 600 23456",
-      hours: "Pr-Pk: 8:00-19:00, Š-S: 9:00-17:00"
-    },
-    {
-      city: "Klaipėda",
-      address: "Tiltų g. 10",
-      phone: "+370 600 34567",
-      hours: "Pr-Pk: 8:00-19:00, Š-S: 9:00-17:00"
     }
   ];
 
@@ -196,7 +184,7 @@ const Contact = () => {
                       <Input 
                         id="phone" 
                         type="tel"
-                        placeholder="+370 600 12345"
+                        placeholder="+370 698 18 781"
                         className="mt-1"
                       />
                     </div>
@@ -273,10 +261,10 @@ const Contact = () => {
                   <p className="text-red-700 mb-4">
                     Avarijų, gedimų ar kitų skubių situacijų atveju:
                   </p>
-                  <div className="space-y-2">
-                    <p className="font-bold text-red-800 text-lg">
-                      📞 +370 600 99999
-                    </p>
+                    <div className="space-y-2">
+                      <p className="font-bold text-red-800 text-lg">
+                        📞 +370 698 18 781
+                      </p>
                     <p className="text-red-700 text-sm">
                       Veikia 24/7 • Atsakysime per 5 minutes
                     </p>
