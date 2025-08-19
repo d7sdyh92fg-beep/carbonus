@@ -4,8 +4,9 @@ import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle } from "lucide-react";
+import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import BookingCalendar from "@/components/booking/BookingCalendar";
+import { useState } from "react";
 
 interface CarDetail {
   id: string;
@@ -28,6 +29,7 @@ interface CarDetail {
 const CarDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const carDetails: { [key: string]: CarDetail } = {
     "1": {
@@ -98,6 +100,25 @@ const CarDetail = () => {
 
   const car = carDetails[id || ""];
 
+  const nextImage = () => {
+    if (car.images && car.images.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % car.images.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (car.images && car.images.length > 1) {
+      setCurrentImageIndex((prev) => (prev - 1 + car.images.length) % car.images.length);
+    }
+  };
+
+  const getCurrentImage = () => {
+    if (car.images && car.images.length > 0) {
+      return car.images[currentImageIndex];
+    }
+    return car.image;
+  };
+
   if (!car) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -148,28 +169,49 @@ const CarDetail = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Car Image */}
-            <div className="bg-gray-50 rounded-2xl p-8">
-              {car.images && car.images.length > 1 ? (
-                <div className="grid grid-cols-1 gap-4">
-                  {car.images.map((image, index) => (
-                    <div key={index} className="text-center">
-                      <img
-                        src={image}
-                        alt={`${car.name} - ${index + 1}`}
-                        className="w-full max-w-2xl mx-auto object-contain rounded-lg"
+            {/* Car Image Carousel */}
+            <div className="bg-gray-50 rounded-2xl p-8 relative">
+              <div className="text-center">
+                <img
+                  src={getCurrentImage()}
+                  alt={`${car.name} - ${currentImageIndex + 1}`}
+                  className="w-full max-w-2xl mx-auto object-contain rounded-lg"
+                />
+              </div>
+              
+              {/* Navigation arrows - only show if multiple images */}
+              {car.images && car.images.length > 1 && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
+                    onClick={prevImage}
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
+                    onClick={nextImage}
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                  
+                  {/* Image indicators */}
+                  <div className="flex justify-center gap-2 mt-4">
+                    {car.images.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          index === currentImageIndex ? 'bg-primary' : 'bg-gray-300'
+                        }`}
                       />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center">
-                  <img
-                    src={car.image}
-                    alt={car.name}
-                    className="w-full max-w-2xl mx-auto object-contain"
-                  />
-                </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
 
