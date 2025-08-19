@@ -70,7 +70,7 @@ export function Fleet() {
             AUTOMOBILIAI
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Mūsų įspūdingas parkas
+            Automobilių nuoma
           </h2>
         </div>
 
