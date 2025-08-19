@@ -268,17 +268,6 @@ const CarDetail = () => {
             </div>
           </div>
 
-          {/* Booking Calendar */}
-          <div className="mt-20" id="booking-section">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-foreground mb-4">Užsakyti automobilį</h3>
-              <p className="text-lg text-muted-foreground">
-                Pasirinkite datas ir pamatykite tikslią kainą
-              </p>
-            </div>
-            <BookingCalendar carId={car.id} carName={car.name} />
-          </div>
-
           {/* Features and Specifications */}
           <div className="grid lg:grid-cols-2 gap-12 mt-20">
             {/* Features */}
@@ -311,6 +300,19 @@ const CarDetail = () => {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* Booking Calendar */}
+      <section className="py-20 bg-gray-50" id="booking-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-foreground mb-4">Užsakyti automobilį</h3>
+            <p className="text-lg text-muted-foreground">
+              Pasirinkite datas ir pamatykite tikslią kainą
+            </p>
+          </div>
+          <BookingCalendar carId={car.id} carName={car.name} />
         </div>
       </section>
 
