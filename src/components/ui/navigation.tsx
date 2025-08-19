@@ -23,7 +23,7 @@ export function Navigation({ logo }: NavigationProps) {
           {/* Logo */}
           <div className="flex-shrink-0">
             {logo ? (
-              <img src={logo} alt="Carbonus" className="h-22 w-auto" />
+              <img src={logo} alt="Carbonus" className="h-20 w-auto" />
             ) : (
               <span className="text-2xl font-bold text-primary">CARBONUS.</span>
             )}
