@@ -170,19 +170,34 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary to-primary/80">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
-            Pradėkite savo kelionę šiandien
-          </h2>
-          <p className="text-xl text-primary-foreground/90 mb-8 leading-relaxed">
-            Atraskite mūsų automobilių parką ir rezervuokite savo tobulą automobilį 
-            jau dabar. Mes pasiruošę padėti jums sukurti nepamirštamą kelionę.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" onClick={() => window.location.href = '/automobiliai'}>
-              Peržiūrėti automobilius
-            </Button>
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative bg-black rounded-3xl overflow-hidden min-h-[400px] flex items-center">
+            {/* Car Image - Right Side */}
+            <div className="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/5">
+              <img
+                src="/lovable-uploads/12ed3116-e98d-49d4-b5ab-305e8550f33e.png"
+                alt="Premium car"
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+            
+            {/* Content - Left Side */}
+            <div className="relative z-10 w-full">
+              <div className="w-3/4 lg:w-3/5 p-8 lg:p-12 text-white">
+                <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight">
+                  Rezervuokite savo svajonių automobilį šiandien ir pajuskite geriausią kelionės patirtį
+                </h2>
+                
+                <Button 
+                  size="lg" 
+                  className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
+                  onClick={() => window.location.href = '/automobiliai'}
+                >
+                  Rezervuoti dabar
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
