@@ -21,12 +21,12 @@ export function Hero({ carImage }: HeroProps) {
   };
 
   return (
-    <section className="relative min-h-screen pt-16 flex items-center overflow-hidden bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+    <section className="relative min-h-screen pt-20 md:pt-16 flex items-center overflow-hidden bg-gradient-to-br from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
         {/* Left Content */}
-        <div className="space-y-8 animate-fade-in relative z-10">
+        <div className="space-y-6 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left">
           <div className="space-y-6">
-            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
               Jūsų kelionė,
               <br />
               <span className="text-primary">Jūsų automobilis,</span>
@@ -34,13 +34,13 @@ export function Hero({ carImage }: HeroProps) {
               Jūsų būdas
             </h1>
             
-            <p className="text-lg lg:text-xl text-gray-600 max-w-lg leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
               Patirkite aukščiausią pasirinkimo laisvę su CARBONUS - pritaikykite savo nuotykį 
               rinkdamiesi iš mūsų aukščiausios klasės automobilių parko.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <Button 
               variant="hero"
               size="lg" 
@@ -53,7 +53,7 @@ export function Hero({ carImage }: HeroProps) {
         </div>
 
         {/* Right Content - Car Image */}
-        <div className="relative animate-slide-up -ml-12">
+        <div className="relative animate-slide-up -ml-0 lg:-ml-12 mt-8 lg:mt-0">
           {/* Green glow around car */}
           <div className="absolute inset-0 rounded-full bg-green-500/13 blur-3xl scale-110"></div>
           <div className="absolute inset-0 rounded-full bg-green-400/10 blur-2xl scale-125"></div>
@@ -65,7 +65,7 @@ export function Hero({ carImage }: HeroProps) {
             <img
               src={greenAudiFront}
               alt="Premium Green Audi"
-              className="w-full max-w-3xl mx-auto object-contain scale-110"
+              className="w-full max-w-sm sm:max-w-md lg:max-w-3xl mx-auto object-contain scale-110"
             />
           </div>
         </div>

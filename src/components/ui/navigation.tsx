@@ -24,7 +24,7 @@ export function Navigation({ logo }: NavigationProps) {
           <div className="flex-shrink-0">
             <a href="/" className="block">
               {logo ? (
-                <img src={logo} alt="Carbonus" className="h-16 w-auto" />
+                <img src={logo} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
               ) : (
                 <span className="text-2xl font-bold text-primary">CARBONUS.</span>
               )}
