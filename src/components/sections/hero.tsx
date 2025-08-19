@@ -39,9 +39,9 @@ export function Hero({ carImage }: HeroProps) {
         {/* Right Content - Car Image */}
         <div className="relative animate-slide-up -ml-12">
           {/* Green glow around car */}
-          <div className="absolute inset-0 rounded-full bg-green-500/20 blur-3xl scale-110"></div>
-          <div className="absolute inset-0 rounded-full bg-green-400/15 blur-2xl scale-125"></div>
-          <div className="absolute inset-0 rounded-full bg-green-600/10 blur-xl scale-150"></div>
+          <div className="absolute inset-0 rounded-full bg-green-500/8 blur-3xl scale-110"></div>
+          <div className="absolute inset-0 rounded-full bg-green-400/6 blur-2xl scale-125"></div>
+          <div className="absolute inset-0 rounded-full bg-green-600/4 blur-xl scale-150"></div>
           
           {/* Car Types Badge */}
           <div className="absolute top-8 right-8 bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg z-20">
