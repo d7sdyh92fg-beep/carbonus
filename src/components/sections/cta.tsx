@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export function CTA() {
   return (
@@ -28,14 +27,12 @@ export function CTA() {
                 Užsisakykite automobilį bet kur esate ir kelkitės su mumis!
               </p>
               
-              <Link to="/automobiliai">
-                <Button 
-                  size="lg" 
-                  className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
-                >
-                  Užsakyti dabar
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
+              >
+                Užsakyti dabar
+              </Button>
             </div>
           </div>
         </div>
