@@ -13,7 +13,7 @@ export function Fleet() {
   const cars: Car[] = [
     {
       id: "1",
-      name: "BMW 3 2017 metų",
+      name: "BMW 3 series",
       price: "30 EUR",
       image: "/src/assets/bmw-3-clean.png",
       category: "Sedan"
