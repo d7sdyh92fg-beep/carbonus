@@ -9,10 +9,10 @@ import fleetCars from "@/assets/fleet-cars.jpg";
 
 const About = () => {
   const stats = [
-    { number: "10+", label: "Metų patirtis", icon: Calendar },
-    { number: "500+", label: "Automobilių", icon: Car },
-    { number: "15000+", label: "Klientų", icon: Users },
-    { number: "99%", label: "Pasitenkinimas", icon: Star }
+    { number: "2024", label: "Įkūrimo metai", icon: Calendar },
+    { number: "200+", label: "Automobilių", icon: Car },
+    { number: "1000+", label: "Klientų", icon: Users },
+    { number: "98%", label: "Pasitenkinimas", icon: Star }
   ];
 
   const values = [
@@ -38,28 +38,6 @@ const About = () => {
     }
   ];
 
-  const milestones = [
-    {
-      year: "2014",
-      title: "Įmonės įkūrimas",
-      description: "Pradėjome veiklą su 15 automobilių ir didele vizija transformuoti automobilių nuomos rinką Lietuvoje."
-    },
-    {
-      year: "2017",
-      title: "Plėtra",
-      description: "Pasiekėme 100 automobilių ženklą ir atidarėme antrą biurą Kaune."
-    },
-    {
-      year: "2020",
-      title: "Digitalizacija",
-      description: "Paleidome online platformą, leidžiančią klientams rezervuoti automobilius 24/7."
-    },
-    {
-      year: "2023",
-      title: "Premium klasė",
-      description: "Pridėjome premium ir elektrinių automobilių kategoriją, tapdami rinkos lyderiais."
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,12 +52,12 @@ const About = () => {
                 MŪSŲ ISTORIJA
               </Badge>
               <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-                Lyderiaujame automobilių nuomos srityje
+                Naujas žingsnis automobilių nuomos srityje
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Per daugiau nei 10 metų padedame klientams rasti tobulus automobilius 
-                jų kelionėms. Mūsų misija - suteikti ne tik transporto priemonę, 
-                bet ir nepamirštamą vairavimo patirtį.
+                Carbonus - tai moderni automobilių nuomos įmonė, sukurta atsižvelgiant į šiuolaikinius 
+                klientų poreikius. Mūsų tikslas - suteikti jums ne tik kokybišką transportą, 
+                bet ir išskirtinę aptarnavimo patirtį, naudojant naujausias technologijas ir inovacijas.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" variant="default">
@@ -97,8 +75,8 @@ const About = () => {
                 className="rounded-2xl shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-2xl shadow-lg">
-                <div className="text-3xl font-bold">10+</div>
-                <div className="text-sm opacity-90">Metų patirtis</div>
+                <div className="text-3xl font-bold">2024</div>
+                <div className="text-sm opacity-90">Įkūrimo metai</div>
               </div>
             </div>
           </div>
@@ -140,8 +118,8 @@ const About = () => {
               Kodėl pasirinkti Carbonus?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Mūsų vertybės formuoja kiekvieną sprendimą ir užtikrina, 
-              kad jūsų patirtis būtų išskirtinė.
+              Nors esame nauji rinkoje, mūsų komandą sudaro patyrę specialistai, 
+              kurie formuoja kiekvieną sprendimą atsižvelgdami į modernų požiūrį ir klientų poreikius.
             </p>
           </div>
           
@@ -168,87 +146,103 @@ const About = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
+      {/* Innovation Section */}
       <section className="py-20 bg-muted/50 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">
-              MŪSŲ KELIAS
+              INOVACIJOS
             </Badge>
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Augimo istorija
+              Šiuolaikinės technologijos jūsų paslaugoms
             </h2>
             <p className="text-xl text-muted-foreground">
-              Pažvelkite į mūsų kelią nuo mažos šeimos įmonės iki rinkos lyderio.
+              Naudojame naujausias technologijas, kad jūsų patirtis būtų kuo patogesnė ir efektyvesnė.
             </p>
           </div>
 
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-border"></div>
-            
-            <div className="space-y-12">
-              {milestones.map((milestone, index) => (
-                <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                  {/* Timeline dot */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background z-10"></div>
-                  
-                  {/* Content */}
-                  <div className={`w-5/12 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
-                    <Card className="p-6 shadow-lg">
-                      <CardContent className="p-0">
-                        <div className="text-2xl font-bold text-primary mb-2">
-                          {milestone.year}
-                        </div>
-                        <h3 className="text-xl font-bold text-foreground mb-3">
-                          {milestone.title}
-                        </h3>
-                        <p className="text-muted-foreground">
-                          {milestone.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="p-6 shadow-lg">
+              <CardContent className="p-0">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-6">
+                  <Car className="w-8 h-8" />
                 </div>
-              ))}
-            </div>
+                <h3 className="text-xl font-bold text-foreground mb-4">
+                  Online rezervacija
+                </h3>
+                <p className="text-muted-foreground">
+                  Rezervuokite automobilį 24/7 per mūsų modernią internetinę platformą 
+                  vos per kelias paspaudimus.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="p-6 shadow-lg">
+              <CardContent className="p-0">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-6">
+                  <Shield className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-4">
+                  Kontaktinis atsiėmimas
+                </h3>
+                <p className="text-muted-foreground">
+                  Automobilį galite atsiimti be fizinio kontakto - 
+                  viskas valdoma per mobiliąją aplikaciją.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="p-6 shadow-lg">
+              <CardContent className="p-0">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-6">
+                  <Clock className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-4">
+                  Real-time sekimas
+                </h3>
+                <p className="text-muted-foreground">
+                  Stebėkite savo užsakymo statusą realiu laiku - 
+                  nuo rezervacijos iki automobilio grąžinimo.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Vision Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <Badge variant="outline" className="mb-4">
-                MŪSŲ KOMANDA
+                MŪSŲ VIZIJA
               </Badge>
               <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-                Profesionalų komanda jūsų paslaugoms
+                Ateities automobilių nuoma šiandien
               </h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Mūsų komandą sudaro patyrę automobilių industrijos specialistai, 
-                kurie kasdien dirba tam, kad jūsų patirtis būtų nepriekaištinga. 
-                Kiekvienas narys yra atsidavęs savo darbui ir pasiryžęs viršyti lūkesčius.
+                Mes tikime, kad automobilių nuoma turėtų būti paprasta, skaidri ir maloni. 
+                Todėl kuriame paslaugą, kurioje technologijos tarnauja žmogui, 
+                o ne atvirkščiai.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
-                    <Users className="w-6 h-6" />
+                    <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">50+ darbuotojų</div>
-                    <div className="text-muted-foreground">Profesionalų komanda</div>
+                    <div className="font-semibold text-foreground">Ekologiški sprendimai</div>
+                    <div className="text-muted-foreground">Investuojame į elektrinius ir hibridinius automobilius</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
-                    <MapPin className="w-6 h-6" />
+                    <Award className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">5 miestai</div>
-                    <div className="text-muted-foreground">Veikla visoje Lietuvoje</div>
+                    <div className="font-semibold text-foreground">Aukščiausia kokybė</div>
+                    <div className="text-muted-foreground">Kiekvienas automobilis atitinka aukščiausius standartus</div>
                   </div>
                 </div>
               </div>
