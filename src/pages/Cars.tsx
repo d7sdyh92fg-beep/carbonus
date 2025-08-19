@@ -49,54 +49,6 @@ const Cars = () => {
       transmission: "Automatinė",
       rating: 4.6,
       features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
-    },
-    {
-      id: "3",
-      name: "BMW X5",
-      price: "45 EUR",
-      image: "/src/assets/car-bmw.jpg",
-      category: "SUV",
-      passengers: 5,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.9,
-      features: ["4WD", "Oda", "Premium garso sistema"]
-    },
-    {
-      id: "4",
-      name: "Audi A4",
-      price: "35 EUR",
-      image: "/src/assets/car-audi.jpg",
-      category: "Sedan",
-      passengers: 5,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.7,
-      features: ["LED žibintai", "Sportinio stiliaus", "Išplėstinis saugumas"]
-    },
-    {
-      id: "5",
-      name: "Tesla Model 3",
-      price: "50 EUR",
-      image: "/src/assets/car-tesla.jpg",
-      category: "Electric",
-      passengers: 5,
-      fuel: "Elektrinis",
-      transmission: "Automatinė",
-      rating: 4.9,
-      features: ["Zero emisijų", "Autopilot", "Greitas krovimas"]
-    },
-    {
-      id: "6",
-      name: "Ford Mustang",
-      price: "60 EUR",
-      image: "/src/assets/car-mustang.jpg",
-      category: "Sports",
-      passengers: 4,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.8,
-      features: ["Kabrioletas", "Sportinis variklis", "Premium interjeras"]
     }
   ];
 
