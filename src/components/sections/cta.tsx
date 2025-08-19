@@ -12,6 +12,8 @@ export function CTA() {
               alt="Red sports car"
               className="w-full h-full object-cover object-center"
             />
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black/40"></div>
           </div>
           
           {/* Content - Right Side */}
