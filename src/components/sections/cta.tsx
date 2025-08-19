@@ -1,6 +1,20 @@
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export function CTA() {
+  const navigate = useNavigate();
+
+  const handleNavigateToCars = () => {
+    navigate('/automobiliai');
+    // Small delay to ensure navigation completes before scrolling
+    setTimeout(() => {
+      window.scrollTo({
+        top: 600, // Scroll past the hero section to show cars
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
@@ -30,6 +44,7 @@ export function CTA() {
               <Button 
                 size="lg" 
                 className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
+                onClick={handleNavigateToCars}
               >
                 Užsakyti dabar
               </Button>
