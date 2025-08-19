@@ -14,7 +14,7 @@ export function Hero({ carImage }: HeroProps) {
             <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight">
               Your Journey,
               <br />
-              <span className="text-green-600">Your Car,</span>
+              <span className="text-primary">Your Car,</span>
               <br />
               Your Way
             </h1>
@@ -27,8 +27,9 @@ export function Hero({ carImage }: HeroProps) {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
+              variant="hero"
               size="lg" 
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 animate-scale-in"
+              className="animate-scale-in"
             >
               Get Started
             </Button>
@@ -61,16 +62,16 @@ export function Hero({ carImage }: HeroProps) {
       </div>
 
       {/* Background CARBONUS Text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="text-[20rem] font-bold text-green-600/10 select-none whitespace-nowrap">
+      <div className="absolute left-8 top-1/2 transform -translate-y-1/2 pointer-events-none z-0">
+        <div className="text-[12rem] lg:text-[16rem] font-bold text-primary/8 select-none whitespace-nowrap">
           CARBONUS
         </div>
       </div>
 
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
       </div>
     </section>
   );
