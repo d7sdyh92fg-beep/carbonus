@@ -322,7 +322,7 @@ const Contact = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {locations.map((location, index) => (
               <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="p-8">
+                <CardContent className="p-8 text-center">
                   <div className="flex items-center gap-3 mb-4">
                     <MapPin className="w-6 h-6 text-primary" />
                     <h3 className="text-2xl font-bold text-foreground">
