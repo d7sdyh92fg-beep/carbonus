@@ -15,8 +15,11 @@ export function Footer() {
     } else if (link === "Apie mus") {
       navigate('/apie-mus');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "Privatumas") {
+    } else if (link === "Privatumo politika") {
       navigate('/privatumo-politika');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (link === "Nuomos sąlygos") {
+      navigate('/nuomos-salygos');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // For other links, scroll to sections or handle as needed
@@ -80,7 +83,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-primary">Pagalba</h4>
             <ul className="space-y-2">
-              {["Sąlygos", "Privatumas"].map((link) => (
+              {["Nuomos sąlygos", "Privatumo politika"].map((link) => (
                 <li key={link}>
                   <button
                     onClick={() => handleLinkClick(link)}
