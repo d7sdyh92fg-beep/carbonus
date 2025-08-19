@@ -53,22 +53,10 @@ const Contact = () => {
 
   const locations = [
     {
-      city: "Vilnius",
-      address: "Gedimino pr. 1",
+      city: "Druskininkai",
+      address: "Vilniaus al. 22",
       phone: "+370 600 12345",
       hours: "Pr-Pk: 8:00-20:00, Š-S: 9:00-18:00"
-    },
-    {
-      city: "Kaunas",
-      address: "Laisvės al. 15",
-      phone: "+370 600 23456",
-      hours: "Pr-Pk: 8:00-19:00, Š-S: 9:00-17:00"
-    },
-    {
-      city: "Klaipėda",
-      address: "Tiltų g. 10",
-      phone: "+370 600 34567",
-      hours: "Pr-Pk: 8:00-19:00, Š-S: 9:00-17:00"
     }
   ];
 
@@ -299,12 +287,13 @@ const Contact = () => {
               Aplankyti mus galite
             </h2>
             <p className="text-xl text-muted-foreground">
-              Turime biurus didžiausiuose Lietuvos miestuose
+              Mūsų biuras Druskininkuose
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {locations.map((location, index) => (
+          <div className="flex justify-center">
+            <div className="max-w-md">
+              {locations.map((location, index) => (
               <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-4">
@@ -332,7 +321,8 @@ const Contact = () => {
                   </Button>
                 </CardContent>
               </Card>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
