@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle } from "lucide-react";
+import BookingCalendar from "@/components/booking/BookingCalendar";
 
 interface CarDetail {
   id: string;
@@ -170,20 +171,17 @@ const CarDetail = () => {
                 
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-sm text-muted-foreground">Pradedant nuo</span>
-                  <span className="text-4xl font-bold text-primary">{car.price}</span>
-                  <span className="text-lg text-muted-foreground">/dieną</span>
+                  <span className="text-4xl font-bold text-primary">30-50€</span>
+                  <span className="text-lg text-muted-foreground">per dieną</span>
                 </div>
 
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
                   {car.description}
                 </p>
 
-                <Button 
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3"
-                >
-                  Užsakyti dabar
-                </Button>
+                <div className="text-sm text-muted-foreground mb-4">
+                  * Galutinė kaina priklauso nuo nuomos trukmės
+                </div>
               </div>
 
               {/* Quick Specs */}
@@ -205,6 +203,17 @@ const CarDetail = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Booking Calendar */}
+          <div className="mt-20">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl font-bold text-foreground mb-4">Užsakyti automobilį</h3>
+              <p className="text-lg text-muted-foreground">
+                Pasirinkite datas ir pamatykite tikslią kainą
+              </p>
+            </div>
+            <BookingCalendar carId={car.id} carName={car.name} />
           </div>
 
           {/* Features and Specifications */}
