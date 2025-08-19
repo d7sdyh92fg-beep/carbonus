@@ -8,7 +8,7 @@ export function CTA() {
           {/* Car Image - Left Side */}
           <div className="absolute left-0 top-0 bottom-0 w-1/2 lg:w-3/5">
             <img
-              src="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png"
+              src="/src/assets/car-mustang.jpg"
               alt="Red sports car"
               className="w-full h-full object-cover object-center"
             />

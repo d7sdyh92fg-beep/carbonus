@@ -15,14 +15,14 @@ export function Fleet() {
       id: "1",
       name: "BMW 3 series",
       price: "30 EUR",
-      image: "/lovable-uploads/6d952bf9-02ce-401a-844d-53602e6bd46a.png",
+      image: "/src/assets/bmw-3-clean.png",
       category: "Sedan"
     },
     {
       id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
-      image: "/lovable-uploads/70c1b8d2-2c07-425e-b9b7-36067768f565.png",
+      image: "/src/assets/chrysler-town-country-side.png",
       category: "Minivan"
     }
   ];
