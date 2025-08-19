@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ interface Car {
 }
 
 const Cars = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -172,8 +174,9 @@ const Cars = () => {
                       </div>
                       <Button 
                         className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                        onClick={() => navigate(`/automobiliai/${car.id}`)}
                       >
-                        Užsakyti
+                        Žiūrėti
                       </Button>
                     </div>
                   </div>
