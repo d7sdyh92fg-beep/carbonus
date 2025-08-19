@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Instagram, Facebook, Youtube, Twitter } from "lucide-react";
 
 interface HeroProps {
   carImage?: string;
@@ -15,7 +14,7 @@ export function Hero({ carImage }: HeroProps) {
             <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight">
               Your Journey,
               <br />
-              Your Car,
+              <span className="text-green-600">Your Car,</span>
               <br />
               Your Way
             </h1>
@@ -29,28 +28,15 @@ export function Hero({ carImage }: HeroProps) {
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
               size="lg" 
-              className="bg-red-500 hover:bg-red-600 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 animate-scale-in"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 animate-scale-in"
             >
               Get Started
             </Button>
           </div>
-
-          {/* Social Media Icons */}
-          <div className="flex space-x-4 pt-8">
-            {[Instagram, Facebook, Youtube, Twitter].map((Icon, index) => (
-              <a
-                key={index}
-                href="#"
-                className="w-10 h-10 rounded-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 flex items-center justify-center"
-              >
-                <Icon className="w-5 h-5" />
-              </a>
-            ))}
-          </div>
         </div>
 
         {/* Right Content - Car Image */}
-        <div className="relative animate-slide-up">
+        <div className="relative animate-slide-up -ml-12">
           {/* Car Types Badge */}
           <div className="absolute top-8 right-8 bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg z-20">
             <div className="text-center">
@@ -74,9 +60,16 @@ export function Hero({ carImage }: HeroProps) {
         </div>
       </div>
 
+      {/* Background CARBONUS Text */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="text-[20rem] font-bold text-green-600/10 select-none whitespace-nowrap">
+          CARBONUS
+        </div>
+      </div>
+
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
       </div>
     </section>
