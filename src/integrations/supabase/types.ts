@@ -14,7 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      customers: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          phone: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          phone: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string
+        }
+        Relationships: []
+      }
+      reservations: {
+        Row: {
+          cancellation_deadline: string | null
+          car_id: string
+          car_name: string
+          created_at: string
+          customer_id: string
+          daily_rate: number
+          deposit_amount: number
+          end_date: string
+          id: string
+          rental_days: number
+          start_date: string
+          status: string
+          stripe_payment_intent_id: string | null
+          total_amount: number
+          total_rental_cost: number
+          updated_at: string
+        }
+        Insert: {
+          cancellation_deadline?: string | null
+          car_id: string
+          car_name: string
+          created_at?: string
+          customer_id: string
+          daily_rate: number
+          deposit_amount?: number
+          end_date: string
+          id?: string
+          rental_days: number
+          start_date: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          total_amount: number
+          total_rental_cost: number
+          updated_at?: string
+        }
+        Update: {
+          cancellation_deadline?: string | null
+          car_id?: string
+          car_name?: string
+          created_at?: string
+          customer_id?: string
+          daily_rate?: number
+          deposit_amount?: number
+          end_date?: string
+          id?: string
+          rental_days?: number
+          start_date?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          total_amount?: number
+          total_rental_cost?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
