@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Footer() {
 
@@ -14,9 +15,24 @@ export function Footer() {
               Experience the ultimate freedom of choice with premium car rentals. 
               Your journey, your car, your way.
             </p>
-            <p className="text-background/60 text-sm">
-              Subscribe to newsletter
-            </p>
+            <div className="mt-4 max-w-sm">
+              <p className="text-background/60 text-sm mb-3">
+                Subscribe to newsletter
+              </p>
+              <div className="flex gap-2">
+                <Input 
+                  type="email" 
+                  placeholder="Enter your email"
+                  className="bg-background/10 border-background/20 text-background placeholder:text-background/60 focus:border-background"
+                />
+                <Button 
+                  variant="outline" 
+                  className="text-background border-background hover:bg-background hover:text-foreground whitespace-nowrap"
+                >
+                  Subscribe
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}
