@@ -47,12 +47,8 @@ const TermsAndConditions = () => {
                       <Car className="w-6 h-6 text-primary" />
                       <h2 className="text-2xl font-bold text-foreground">Automobilių parkas</h2>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      Carbonus siūlo naujausių modelių ir techniškai tvarkingų automobilių nuomą. 
-                      Mūsų automobiliai skirstomi į klases: ekonominę, kompaktinę, vidutinę, standartinę, premium ir luxury.
-                    </p>
                     <p className="text-muted-foreground leading-relaxed">
-                      Užtikriname, kad jums bus išnuomotas tos pačios arba aukštesnės klasės automobilis nei užsakytas.
+                      Carbonus siūlo naujausių modelių ir techniškai tvarkingų automobilių nuomą.
                     </p>
                   </div>
 

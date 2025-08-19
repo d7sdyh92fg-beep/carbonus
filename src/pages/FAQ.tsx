@@ -263,14 +263,14 @@ const FAQ = () => {
               <Phone className="w-8 h-8 text-primary mx-auto mb-3" />
               <h3 className="font-semibold text-foreground mb-2">Telefonu</h3>
               <p className="text-muted-foreground text-sm mb-3">+370 698 18 781</p>
-              <p className="text-xs text-muted-foreground">24/7 klientų aptarnavimas</p>
+              <p className="text-xs text-muted-foreground">8:00-17:00 klientų aptarnavimas</p>
             </Card>
             
             <Card className="p-6 text-center">
               <Users className="w-8 h-8 text-primary mx-auto mb-3" />
               <h3 className="font-semibold text-foreground mb-2">El. paštu</h3>
               <p className="text-muted-foreground text-sm mb-3">info@carbonus.lt</p>
-              <p className="text-xs text-muted-foreground">Atsakysime per 2 val.</p>
+              <p className="text-xs text-muted-foreground">24/7 atsakysime per 2 val.</p>
             </Card>
             
             <Card className="p-6 text-center">

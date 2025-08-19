@@ -29,13 +29,13 @@ const Contact = () => {
       icon: Phone,
       title: "Telefonas",
       details: ["+370 698 18 781"],
-      description: "24/7 klientų aptarnavimas"
+      description: "8:00-17:00 klientų aptarnavimas"
     },
     {
       icon: Mail,
       title: "El. paštas",
       details: ["info@carbonus.lt"],
-      description: "Atsakysime per 2 valandas"
+      description: "24/7 atsakysime per 2 valandas"
     },
     {
       icon: MapPin,
