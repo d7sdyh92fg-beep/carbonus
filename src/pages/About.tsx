@@ -170,28 +170,30 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-10 md:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="relative bg-black rounded-3xl overflow-hidden min-h-[300px] md:min-h-[400px] flex items-center">
-            {/* Car Image - Right Side */}
-            <div className="absolute right-0 top-0 bottom-0 w-full md:w-1/2 lg:w-2/5 opacity-30 md:opacity-100">
+          <div className="relative rounded-3xl overflow-hidden min-h-[300px] md:min-h-[400px] flex items-center">
+            {/* Car Image - Full Background on Mobile, Right Side on Desktop */}
+            <div className="absolute inset-0 md:right-0 md:top-0 md:bottom-0 md:w-1/2 lg:w-2/5">
               <img
                 src="/lovable-uploads/d3b98744-2940-4908-82ac-d9936a34e2d5.png"
                 alt="Premium car with dramatic lighting"
                 className="w-full h-full object-cover object-center"
               />
+              {/* Dark overlay for mobile text readability */}
+              <div className="absolute inset-0 bg-black/50 md:bg-transparent"></div>
             </div>
             
-            {/* Content - Left Side */}
-            <div className="relative z-10 w-full">
-              <div className="w-full md:w-3/4 lg:w-3/5 p-6 md:p-8 lg:p-12 text-white">
+            {/* Content - Centered on Mobile, Left Side on Desktop */}
+            <div className="relative z-10 w-full flex justify-center md:justify-start">
+              <div className="w-full md:w-3/4 lg:w-3/5 p-6 md:p-8 lg:p-12 text-white text-center md:text-left">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold mb-6 leading-tight">
                   Rezervuokite savo svajonių automobilį šiandien ir pajuskite geriausią kelionės patirtį
                 </h2>
                 
                 <Button 
                   size="lg" 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-4 rounded-full transition-all duration-300"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 md:px-8 py-4 rounded-full transition-all duration-300"
                   onClick={() => window.location.href = '/automobiliai'}
                 >
                   Rezervuoti dabar

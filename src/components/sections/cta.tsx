@@ -17,11 +17,11 @@ export function CTA() {
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8">
+    <section className="py-10 md:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="relative bg-gradient-to-br from-primary to-primary/80 rounded-3xl overflow-hidden min-h-[300px] flex items-center">
+        <div className="relative bg-gradient-to-br from-primary to-primary/80 rounded-3xl overflow-hidden min-h-[300px] md:min-h-[300px] flex items-center">
           {/* Car Image - Left Side */}
-          <div className="absolute left-0 top-0 bottom-0 w-1/2 lg:w-3/5">
+          <div className="absolute left-0 top-0 bottom-0 w-full md:w-1/2 lg:w-3/5 opacity-20 md:opacity-100">
             <img
               src={carMustang}
               alt="Red sports car"
@@ -31,20 +31,20 @@ export function CTA() {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           
-          {/* Content - Right Side */}
-          <div className="relative z-10 w-full flex justify-end">
-            <div className="w-1/2 lg:w-2/5 p-8 lg:p-12 text-white">
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-4">
+          {/* Content - Mobile: Center, Desktop: Right Side */}
+          <div className="relative z-10 w-full flex justify-center md:justify-end">
+            <div className="w-full md:w-1/2 lg:w-2/5 p-6 md:p-8 lg:p-12 text-white text-center md:text-left">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4">
                 Pasiruošę kelionei?
               </h2>
               
-              <p className="text-base lg:text-lg mb-8 leading-relaxed">
+              <p className="text-sm md:text-base lg:text-lg mb-6 md:mb-8 leading-relaxed">
                 Užsisakykite automobilį bet kur esate ir kelkitės su mumis!
               </p>
               
               <Button 
                 size="lg" 
-                className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
+                className="bg-black hover:bg-gray-800 text-white font-semibold px-6 md:px-8 py-3 rounded-full transition-all duration-300"
                 onClick={handleNavigateToCars}
               >
                 Užsakyti dabar
