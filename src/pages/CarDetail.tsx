@@ -70,7 +70,11 @@ const CarDetail = () => {
       id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
-      image: "/src/assets/chrysler-town-country-side.png",
+      image: "/lovable-uploads/e88041de-a960-4e68-b67d-538898a45d3d.png",
+      images: [
+        "/lovable-uploads/e88041de-a960-4e68-b67d-538898a45d3d.png",
+        "/lovable-uploads/c867ce9f-5f60-4429-b4c0-5bfc4060a988.png"
+      ],
       category: "Minivan",
       passengers: 7,
       fuel: "Benzinas",
