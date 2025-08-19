@@ -75,7 +75,7 @@ export function Fleet() {
                     <Button 
                       variant="outline" 
                       className="hover:bg-primary hover:text-primary-foreground transition-all duration-200"
-                      onClick={() => navigate('/automobiliai')}
+                      onClick={() => navigate(`/automobiliai/${car.id}`)}
                     >
                       Žiūrėti
                     </Button>
