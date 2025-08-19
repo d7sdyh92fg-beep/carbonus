@@ -17,7 +17,7 @@ export const CookieBanner = () => {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-background/95 backdrop-blur-sm border-t border-border">
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-4">
       <Card className="max-w-4xl mx-auto shadow-lg">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
