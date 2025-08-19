@@ -15,6 +15,9 @@ export function Footer() {
     } else if (link === "Apie mus") {
       navigate('/apie-mus');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (link === "Privatumas") {
+      navigate('/privatumo-politika');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // For other links, scroll to sections or handle as needed
       console.log(`Navigate to: ${link}`);
@@ -80,7 +83,7 @@ export function Footer() {
               {["Sąlygos", "Privatumas"].map((link) => (
                 <li key={link}>
                   <button
-                    onClick={() => console.log(`Navigate to: ${link}`)}
+                    onClick={() => handleLinkClick(link)}
                     className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left"
                   >
                     {link}
