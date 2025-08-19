@@ -47,8 +47,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
     const days = getDaysCount();
     if (days <= 3) return "1-3 dienos";
     if (days <= 7) return "3-7 dienos";
-    if (days <= 14) return "7-14 dienų";
-    return "14+ dienų";
+    return "7+ dienų";
   };
 
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
@@ -121,7 +120,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
                 <span className="font-semibold">€{carId === "2" ? "50" : "40"}/dieną</span>
               </div>
               <div className="flex justify-between items-center p-2 rounded border">
-                <span className="text-sm">7-14 dienų</span>
+                <span className="text-sm">7+ dienų</span>
                 <span className="font-semibold">€{carId === "2" ? "40" : "30"}/dieną</span>
               </div>
             </div>
