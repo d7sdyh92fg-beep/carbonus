@@ -68,11 +68,12 @@ export function HowItWorks() {
               return (
                 <div
                   key={step.id}
-                  className="relative flex items-center justify-center"
+                  className="relative flex items-center justify-center animate-fade-in"
+                  style={{ animationDelay: `${index * 300}ms`, animationFillMode: 'both' }}
                 >
                   {/* Step content - positioned based on side */}
                   {step.side === "left" && (
-                    <div className="absolute right-1/2 pr-12 text-right">
+                    <div className="absolute right-1/2 pr-12 text-right animate-fade-in" style={{ animationDelay: `${index * 300 + 150}ms`, animationFillMode: 'both' }}>
                       <h3 className="text-2xl font-bold text-foreground">
                         {step.title}
                       </h3>
@@ -82,7 +83,7 @@ export function HowItWorks() {
                   {/* Step button with hover */}
                   <HoverCard openDelay={200} closeDelay={100}>
                     <HoverCardTrigger asChild>
-                      <button className="relative z-10 w-20 h-20 bg-background border-2 border-border rounded-3xl flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 shadow-lg">
+                      <button className="relative z-10 w-20 h-20 bg-background border-2 border-border rounded-3xl flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 shadow-lg animate-scale-in" style={{ animationDelay: `${index * 300 + 100}ms`, animationFillMode: 'both' }}>
                         <IconComponent className="w-7 h-7" />
                       </button>
                     </HoverCardTrigger>
@@ -102,7 +103,7 @@ export function HowItWorks() {
 
                   {/* Step content - positioned based on side */}
                   {step.side === "right" && (
-                    <div className="absolute left-1/2 pl-12 text-left">
+                    <div className="absolute left-1/2 pl-12 text-left animate-fade-in" style={{ animationDelay: `${index * 300 + 150}ms`, animationFillMode: 'both' }}>
                       <h3 className="text-2xl font-bold text-foreground">
                         {step.title}
                       </h3>
@@ -110,7 +111,7 @@ export function HowItWorks() {
                   )}
 
                   {/* Dot on line */}
-                  <div className="absolute left-1/2 top-1/2 w-3 h-3 bg-muted-foreground rounded-full transform -translate-x-1/2 -translate-y-1/2 z-0"></div>
+                  <div className="absolute left-1/2 top-1/2 w-3 h-3 bg-muted-foreground rounded-full transform -translate-x-1/2 -translate-y-1/2 z-0 animate-scale-in" style={{ animationDelay: `${index * 300 + 200}ms`, animationFillMode: 'both' }}></div>
                 </div>
               );
             })}
