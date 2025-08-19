@@ -58,11 +58,7 @@ const Cars = () => {
 
   const categories = ["all", "Sedan", "SUV", "Minivan", "Electric", "Sports"];
 
-  const filteredCars = cars.filter(car => {
-    const matchesCategory = selectedCategory === "all" || car.category === selectedCategory;
-    const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredCars = cars;
 
   return (
     <div className="min-h-screen bg-background">
@@ -80,37 +76,9 @@ const Cars = () => {
         </div>
       </section>
 
-      {/* Filters Section */}
-      <section className="py-8 bg-background border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="flex-1">
-              <Input
-                placeholder="Ieškoti automobilio..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="max-w-sm"
-              />
-            </div>
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Kategorija" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Visi automobiliai</SelectItem>
-                {categories.slice(1).map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </section>
 
       {/* Cars Grid */}
-      <section className="py-20 bg-secondary/30">
+      <section className="pt-16 pb-20 bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCars.map((car) => (
