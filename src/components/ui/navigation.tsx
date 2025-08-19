@@ -10,7 +10,7 @@ export function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: "Pradžia", href: "#" },
+    { name: "Pradžia", href: "/" },
     { name: "Automobiliai", href: "/automobiliai" },
     { name: "DUK", href: "#faq" },
     { name: "Apie mus", href: "#about" },
@@ -22,11 +22,13 @@ export function Navigation({ logo }: NavigationProps) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            {logo ? (
-              <img src={logo} alt="Carbonus" className="h-20 w-auto" />
-            ) : (
-              <span className="text-2xl font-bold text-primary">CARBONUS.</span>
-            )}
+            <a href="/" className="block">
+              {logo ? (
+                <img src={logo} alt="Carbonus" className="h-20 w-auto" />
+              ) : (
+                <span className="text-2xl font-bold text-primary">CARBONUS.</span>
+              )}
+            </a>
           </div>
 
           {/* Desktop Navigation */}

@@ -142,9 +142,13 @@ const CarDetail = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm mb-6">
-            <span className="opacity-70">PRADŽIA</span>
+            <a href="/" className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+              PRADŽIA
+            </a>
             <span className="opacity-70">/</span>
-            <span className="opacity-70">AUTOMOBILIAI</span>
+            <a href="/automobiliai" className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+              AUTOMOBILIAI
+            </a>
             <span className="opacity-70">/</span>
             <span>AUTOMOBILIO DETALĖS</span>
           </div>
