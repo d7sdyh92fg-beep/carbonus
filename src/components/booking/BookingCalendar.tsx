@@ -214,10 +214,22 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
                 </div>
               </div>
 
-              <div className="border-t pt-4">
-                <div className="flex justify-between items-center text-lg">
-                  <span className="font-semibold">Bendra suma:</span>
-                  <span className="text-2xl font-bold text-primary">€{getTotalPrice()}</span>
+              <div className="border-t pt-4 space-y-3">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Nuomos kaina:</span>
+                    <span className="font-semibold">€{getTotalPrice()}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Užstatas:</span>
+                    <span className="font-semibold">€300</span>
+                  </div>
+                </div>
+                <div className="border-t pt-2">
+                  <div className="flex justify-between items-center text-lg">
+                    <span className="font-semibold">Bendra suma:</span>
+                    <span className="text-2xl font-bold text-primary">€{getTotalPrice() + 300}</span>
+                  </div>
                 </div>
               </div>
 
@@ -226,8 +238,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 size="lg"
               >
-                Užsakyti už €{getTotalPrice()}
+                Užsakyti už €{getTotalPrice() + 300}
               </Button>
+              
+              <div className="text-xs text-muted-foreground text-center">
+                <p>Kaina įskaičiuotas €300 užstatas, kuris grąžinamas po automobilio grąžinimo</p>
+              </div>
             </>
           )}
 
