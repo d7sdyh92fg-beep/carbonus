@@ -22,7 +22,7 @@ export function Fleet() {
       id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
-      image: "/src/assets/chrysler-town-country-clean.png",
+      image: "/src/assets/chrysler-town-country-side.png",
       category: "Minivan"
     }
   ];
