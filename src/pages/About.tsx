@@ -60,11 +60,8 @@ const About = () => {
                 bet ir išskirtinę aptarnavimo patirtį, naudojant naujausias technologijas ir inovacijas.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" variant="default">
+                <Button size="lg" variant="default" onClick={() => window.location.href = '/automobiliai'}>
                   Peržiūrėti automobilius
-                </Button>
-                <Button size="lg" variant="outline">
-                  Susisiekti su mumis
                 </Button>
               </div>
             </div>
@@ -83,29 +80,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-muted/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => {
-              const IconComponent = stat.icon;
-              return (
-                <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary text-primary-foreground rounded-2xl mb-4">
-                    <IconComponent className="w-8 h-8" />
-                  </div>
-                  <div className="text-4xl font-bold text-foreground mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-muted-foreground">
-                    {stat.label}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* Values Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
@@ -146,72 +120,9 @@ const About = () => {
         </div>
       </section>
 
-      {/* Innovation Section */}
-      <section className="py-20 bg-muted/50 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4">
-              INOVACIJOS
-            </Badge>
-            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Šiuolaikinės technologijos jūsų paslaugoms
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Naudojame naujausias technologijas, kad jūsų patirtis būtų kuo patogesnė ir efektyvesnė.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="p-6 shadow-lg">
-              <CardContent className="p-0">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-6">
-                  <Car className="w-8 h-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Online rezervacija
-                </h3>
-                <p className="text-muted-foreground">
-                  Rezervuokite automobilį 24/7 per mūsų modernią internetinę platformą 
-                  vos per kelias paspaudimus.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6 shadow-lg">
-              <CardContent className="p-0">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-6">
-                  <Shield className="w-8 h-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Kontaktinis atsiėmimas
-                </h3>
-                <p className="text-muted-foreground">
-                  Automobilį galite atsiimti be fizinio kontakto - 
-                  viskas valdoma per mobiliąją aplikaciją.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6 shadow-lg">
-              <CardContent className="p-0">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-6">
-                  <Clock className="w-8 h-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Real-time sekimas
-                </h3>
-                <p className="text-muted-foreground">
-                  Stebėkite savo užsakymo statusą realiu laiku - 
-                  nuo rezervacijos iki automobilio grąžinimo.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
 
       {/* Vision Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-muted/50 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -269,11 +180,8 @@ const About = () => {
             jau dabar. Mes pasiruošę padėti jums sukurti nepamirštamą kelionę.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary">
+            <Button size="lg" variant="secondary" onClick={() => window.location.href = '/automobiliai'}>
               Peržiūrėti automobilius
-            </Button>
-            <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-              Susisiekti su mumis
             </Button>
           </div>
         </div>
