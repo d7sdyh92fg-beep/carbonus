@@ -7,28 +7,28 @@ const steps = [
     title: "Select",
     icon: Hand,
     description: "Choose your desired car from our fleet",
-    side: "left",
+    side: "right",
   },
   {
     id: 2,
     title: "Book",
     icon: CalendarCheck,
     description: "Reserve your car through our website",
-    side: "right",
+    side: "left",
   },
   {
     id: 3,
     title: "Drive",
     icon: Circle,
     description: "Pick up your car and hit the road",
-    side: "left",
+    side: "right",
   },
   {
     id: 4,
     title: "Return",
     icon: Car,
     description: "Bring the car back at the end of your rental period",
-    side: "right",
+    side: "left",
   },
 ];
 
