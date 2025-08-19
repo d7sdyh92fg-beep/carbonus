@@ -41,7 +41,8 @@ export function Fleet() {
         </div>
 
         {/* Cars Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex justify-center">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl">
           {cars.map((car, index) => (
             <Card
               key={car.id}
@@ -80,7 +81,8 @@ export function Fleet() {
                 </div>
               </CardContent>
             </Card>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
