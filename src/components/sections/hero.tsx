@@ -21,7 +21,7 @@ export function Hero({ carImage }: HeroProps) {
   };
 
   return (
-    <section className="relative min-h-screen pt-16 md:pt-16 flex items-center overflow-hidden">
+    <section className="relative min-h-screen pt-16 md:pt-16 flex items-center overflow-hidden bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
         {/* Left Content */}
         <div className="space-y-6 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-4 md:pt-0">
