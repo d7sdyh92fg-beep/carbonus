@@ -1,30 +1,34 @@
-import { MousePointer, Calendar, CircleDot, Car } from "lucide-react";
+import { Hand, CalendarCheck, Circle, Car } from "lucide-react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 const steps = [
   {
     id: 1,
     title: "Select",
-    icon: MousePointer,
+    icon: Hand,
     description: "Choose your desired car from our fleet",
+    side: "left",
   },
   {
     id: 2,
     title: "Book",
-    icon: Calendar,
+    icon: CalendarCheck,
     description: "Reserve your car through our website",
+    side: "right",
   },
   {
     id: 3,
     title: "Drive",
-    icon: CircleDot,
+    icon: Circle,
     description: "Pick up your car and hit the road",
+    side: "left",
   },
   {
     id: 4,
     title: "Return",
     icon: Car,
     description: "Bring the car back at the end of your rental period",
+    side: "right",
   },
 ];
 
@@ -43,51 +47,45 @@ export function HowItWorks() {
         </div>
 
         {/* Steps */}
-        <div className="relative max-w-md mx-auto">
+        <div className="relative max-w-sm mx-auto">
           {/* Dotted line */}
           <div 
-            className="absolute left-1/2 top-0 bottom-0 w-0.5 transform -translate-x-1/2 opacity-30"
+            className="absolute left-1/2 top-12 bottom-12 w-px transform -translate-x-1/2"
             style={{
-              backgroundImage: 'radial-gradient(circle, hsl(var(--border)) 1px, transparent 1px)',
-              backgroundSize: '1px 8px',
-              backgroundRepeat: 'repeat-y'
+              backgroundImage: 'repeating-linear-gradient(to bottom, hsl(var(--muted-foreground)) 0px, hsl(var(--muted-foreground)) 4px, transparent 4px, transparent 12px)',
             }}
           ></div>
 
           {/* Step items */}
-          <div className="relative space-y-12">
+          <div className="relative space-y-16">
             {steps.map((step, index) => {
               const IconComponent = step.icon;
-              const isEven = index % 2 === 1;
               
               return (
                 <div
                   key={step.id}
-                  className={`flex items-center ${
-                    isEven ? "flex-row-reverse" : "flex-row"
-                  } gap-8`}
+                  className="relative flex items-center justify-center"
                 >
-                  {/* Step content */}
-                  <div className={`flex-1 ${isEven ? "text-right" : "text-left"}`}>
-                    <h3 className="text-2xl font-bold text-foreground mb-2">
-                      {step.title}
-                    </h3>
-                  </div>
+                  {/* Step content - positioned based on side */}
+                  {step.side === "left" && (
+                    <div className="absolute right-1/2 pr-12 text-right">
+                      <h3 className="text-2xl font-bold text-foreground">
+                        {step.title}
+                      </h3>
+                    </div>
+                  )}
 
                   {/* Step button with hover */}
                   <HoverCard openDelay={200} closeDelay={100}>
                     <HoverCardTrigger asChild>
-                      <button className="relative z-10 w-20 h-20 bg-background border-2 border-border rounded-3xl flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 group shadow-lg">
-                        <IconComponent className="w-8 h-8" />
-                        
-                        {/* Dot indicator */}
-                        <div className="absolute -left-1 top-1/2 w-2 h-2 bg-border rounded-full transform -translate-y-1/2 group-hover:bg-primary transition-colors duration-300"></div>
+                      <button className="relative z-10 w-20 h-20 bg-background border-2 border-border rounded-3xl flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 shadow-lg">
+                        <IconComponent className="w-7 h-7" />
                       </button>
                     </HoverCardTrigger>
                     <HoverCardContent 
-                      side={isEven ? "left" : "right"} 
+                      side={step.side === "left" ? "left" : "right"} 
                       className="w-64 p-4"
-                      sideOffset={10}
+                      sideOffset={15}
                     >
                       <div className="space-y-2">
                         <h4 className="font-semibold text-foreground">{step.title}</h4>
@@ -98,8 +96,17 @@ export function HowItWorks() {
                     </HoverCardContent>
                   </HoverCard>
 
-                  {/* Empty space for alignment */}
-                  <div className="flex-1"></div>
+                  {/* Step content - positioned based on side */}
+                  {step.side === "right" && (
+                    <div className="absolute left-1/2 pl-12 text-left">
+                      <h3 className="text-2xl font-bold text-foreground">
+                        {step.title}
+                      </h3>
+                    </div>
+                  )}
+
+                  {/* Dot on line */}
+                  <div className="absolute left-1/2 top-1/2 w-3 h-3 bg-muted-foreground rounded-full transform -translate-x-1/2 -translate-y-1/2 z-0"></div>
                 </div>
               );
             })}
