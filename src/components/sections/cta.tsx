@@ -17,41 +17,36 @@ export function CTA() {
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="relative bg-black rounded-3xl overflow-hidden min-h-[400px] flex items-center">
-          {/* Car Image - Right Side */}
-          <div className="absolute right-0 top-0 bottom-0 w-1/2 lg:w-3/5">
+      <div className="max-w-6xl mx-auto">
+        <div className="relative bg-gradient-to-br from-primary to-primary/80 rounded-3xl overflow-hidden min-h-[300px] flex items-center">
+          {/* Car Image - Left Side */}
+          <div className="absolute left-0 top-0 bottom-0 w-1/2 lg:w-3/5">
             <img
               src="/src/assets/car-mustang.jpg"
-              alt="Premium sports car"
-              className="w-full h-full object-cover object-center opacity-90"
+              alt="Red sports car"
+              className="w-full h-full object-cover object-center"
             />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent"></div>
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black/40"></div>
           </div>
           
-          {/* Content - Left Side */}
-          <div className="relative z-10 w-full flex justify-start">
-            <div className="w-full lg:w-3/5 p-8 lg:p-16 text-white">
-              <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
-                Rezervuokite savo
-                <br />
-                <span className="text-primary">svajonių automobilį</span>
-                <br />
-                šiandien
+          {/* Content - Right Side */}
+          <div className="relative z-10 w-full flex justify-end">
+            <div className="w-1/2 lg:w-2/5 p-8 lg:p-12 text-white">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-4">
+                Pasiruošę kelionei?
               </h2>
               
-              <p className="text-lg lg:text-xl mb-8 leading-relaxed text-gray-300 max-w-lg">
-                Patirti geriausią kelionės patirtį su mūsų premium automobilių parku. 
-                Pradėkite savo nepamirštamą kelionę jau šiandien.
+              <p className="text-base lg:text-lg mb-8 leading-relaxed">
+                Užsisakykite automobilį bet kur esate ir kelkitės su mumis!
               </p>
               
               <Button 
                 size="lg" 
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold px-10 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
                 onClick={handleNavigateToCars}
               >
-                Rezervuoti dabar
+                Užsakyti dabar
               </Button>
             </div>
           </div>
