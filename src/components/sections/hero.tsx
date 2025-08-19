@@ -58,7 +58,7 @@ export function Hero({ carImage }: HeroProps) {
           {/* Main Car Image */}
           <div className="relative z-10">
             <img
-              src="/src/assets/green-audi-front.png"
+              src="/lovable-uploads/2f65caa0-2965-4077-a0fe-20723b64baa6.png"
               alt="Premium Green Audi"
               className="w-full max-w-3xl mx-auto object-contain scale-110"
             />
