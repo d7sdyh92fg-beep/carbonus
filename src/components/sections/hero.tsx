@@ -66,9 +66,9 @@ export function Hero({ carImage }: HeroProps) {
         <div 
           className="text-[12rem] lg:text-[20rem] font-bold select-none whitespace-nowrap"
           style={{
-            color: 'transparent',
-            WebkitTextStroke: '1px hsla(var(--primary), 0.15)',
-            textShadow: '0 0 30px hsla(var(--primary), 0.2), 0 0 60px hsla(var(--primary), 0.1)'
+            color: 'hsla(var(--primary), 0.08)',
+            WebkitTextStroke: '2px hsla(var(--primary), 0.3)',
+            textShadow: '0 0 50px hsla(var(--primary), 0.4), 0 0 100px hsla(var(--primary), 0.2), 0 0 150px hsla(var(--primary), 0.1)'
           }}
         >
           CARBONUS
