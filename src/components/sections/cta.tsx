@@ -9,7 +9,7 @@ export function CTA() {
     // Small delay to ensure navigation completes before scrolling
     setTimeout(() => {
       window.scrollTo({
-        top: 600, // Scroll past the hero section to show cars
+        top: 300, // Reduced scroll to better show cars section
         behavior: 'smooth'
       });
     }, 100);
