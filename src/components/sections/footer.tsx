@@ -70,18 +70,10 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-background/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-background/20 mt-12 pt-8">
           <p className="text-background/60 text-sm">
             © 2024 Carbonus. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-background/60 hover:text-background text-sm transition-colors duration-200">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-background/60 hover:text-background text-sm transition-colors duration-200">
-              Terms of Service
-            </a>
-          </div>
         </div>
       </div>
     </footer>
