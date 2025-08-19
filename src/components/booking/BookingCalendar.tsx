@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, Calculator, Clock } from "lucide-react";
 import { addDays, differenceInDays, format } from "date-fns";
 import { lt } from "date-fns/locale";
+import { supabase } from "@/integrations/supabase/client";
+import BookingForm from "./BookingForm";
 
 interface BookingCalendarProps {
   carId: string;
@@ -17,6 +19,42 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
     from: Date | undefined;
     to: Date | undefined;
   }>({ from: undefined, to: undefined });
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [showBookingForm, setShowBookingForm] = useState(false);
+
+  // Fetch booked dates on component mount
+  useEffect(() => {
+    fetchBookedDates();
+  }, [carId]);
+
+  const fetchBookedDates = async () => {
+    try {
+      const { data: reservations, error } = await supabase
+        .from("reservations")
+        .select("start_date, end_date")
+        .eq("car_id", carId)
+        .in("status", ["confirmed", "pending"]);
+
+      if (error) {
+        console.error("Error fetching booked dates:", error);
+        return;
+      }
+
+      const dates: Date[] = [];
+      reservations?.forEach((reservation) => {
+        const start = new Date(reservation.start_date);
+        const end = new Date(reservation.end_date);
+        
+        for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+          dates.push(new Date(date));
+        }
+      });
+
+      setBookedDates(dates);
+    } catch (error) {
+      console.error("Error fetching booked dates:", error);
+    }
+  };
 
   const calculatePrice = (days: number, isSecondVehicle: boolean): number => {
     if (days <= 3) {
@@ -56,12 +94,43 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
     }
   };
 
+  const isDateBooked = (date: Date) => {
+    return bookedDates.some(bookedDate => 
+      bookedDate.toDateString() === date.toDateString()
+    );
+  };
+
   const handleBooking = () => {
     if (selectedRange.from && selectedRange.to) {
-      // Here you would typically integrate with your booking system
-      alert(`Užsakymas sukurtas ${carName} nuo ${format(selectedRange.from, "yyyy-MM-dd")} iki ${format(selectedRange.to, "yyyy-MM-dd")}. Bendra suma: €${getTotalPrice()}`);
+      setShowBookingForm(true);
     }
   };
+
+  const handleBookingSuccess = () => {
+    setShowBookingForm(false);
+    setSelectedRange({ from: undefined, to: undefined });
+    fetchBookedDates(); // Refresh booked dates
+  };
+
+  const handleCancelBooking = () => {
+    setShowBookingForm(false);
+  };
+
+  if (showBookingForm && selectedRange.from && selectedRange.to) {
+    return (
+      <BookingForm
+        carId={carId}
+        carName={carName}
+        startDate={selectedRange.from}
+        endDate={selectedRange.to}
+        totalAmount={getTotalPrice()}
+        rentalDays={getDaysCount()}
+        dailyRate={calculatePrice(getDaysCount(), carId === "2")}
+        onBookingSuccess={handleBookingSuccess}
+        onCancel={handleCancelBooking}
+      />
+    );
+  }
 
   return (
     <div className="grid lg:grid-cols-2 gap-8">
@@ -78,7 +147,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
             mode="range"
             selected={selectedRange}
             onSelect={handleSelect}
-            disabled={(date) => date < new Date()}
+            disabled={(date) => date < new Date() || isDateBooked(date)}
             className="rounded-md border pointer-events-auto"
             locale={lt}
           />
