@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "./button";
 import { Menu, X } from "lucide-react";
+import { LanguageSwitcher } from "./language-switcher";
 
 interface NavigationProps {
   logo?: string;
@@ -48,6 +49,7 @@ export function Navigation({ logo }: NavigationProps) {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageSwitcher />
             <Button variant="hero" onClick={() => window.location.href = '/kontaktai'}>Kontaktai</Button>
           </div>
 
@@ -77,7 +79,10 @@ export function Navigation({ logo }: NavigationProps) {
                   {item.name}
                 </a>
               ))}
-              <div className="pt-4 border-t mt-4">
+              <div className="pt-4 border-t mt-4 space-y-3">
+                <div className="flex justify-center">
+                  <LanguageSwitcher />
+                </div>
                 <Button variant="hero" className="w-full" onClick={() => window.location.href = '/kontaktai'}>
                   Kontaktai
                 </Button>
