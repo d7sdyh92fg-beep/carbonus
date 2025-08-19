@@ -11,7 +11,7 @@ export function Navigation({ logo }: NavigationProps) {
 
   const navItems = [
     { name: "Pradžia", href: "#" },
-    { name: "Automobiliai", href: "#cars" },
+    { name: "Automobiliai", href: "/automobiliai" },
     { name: "DUK", href: "#faq" },
     { name: "Apie mus", href: "#about" },
   ];
