@@ -64,10 +64,9 @@ export function Hero({ carImage }: HeroProps) {
       {/* Background CARBONUS Text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div 
-          className="text-[12rem] lg:text-[20rem] font-bold select-none whitespace-nowrap text-green-600/20"
+          className="text-[8rem] lg:text-[12rem] font-bold select-none whitespace-nowrap text-white/10"
           style={{
-            WebkitTextStroke: '2px rgba(34, 197, 94, 0.3)',
-            textShadow: '0 0 50px rgba(34, 197, 94, 0.4), 0 0 100px rgba(34, 197, 94, 0.2)'
+            textShadow: '0 0 20px rgba(34, 197, 94, 0.15), 0 0 40px rgba(34, 197, 94, 0.1), 0 0 60px rgba(34, 197, 94, 0.05)'
           }}
         >
           CARBONUS
