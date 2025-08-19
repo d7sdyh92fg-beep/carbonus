@@ -231,9 +231,20 @@ const CarDetail = () => {
                   {car.description}
                 </p>
 
-                <div className="text-sm text-muted-foreground mb-4">
+                <div className="text-sm text-muted-foreground mb-6">
                   * Galutinė kaina priklauso nuo nuomos trukmės
                 </div>
+
+                <Button 
+                  size="lg"
+                  onClick={() => {
+                    const bookingSection = document.getElementById('booking-section');
+                    bookingSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8"
+                >
+                  Užsakyti
+                </Button>
               </div>
 
               {/* Quick Specs */}
@@ -258,7 +269,7 @@ const CarDetail = () => {
           </div>
 
           {/* Booking Calendar */}
-          <div className="mt-20">
+          <div className="mt-20" id="booking-section">
             <div className="text-center mb-12">
               <h3 className="text-3xl font-bold text-foreground mb-4">Užsakyti automobilį</h3>
               <p className="text-lg text-muted-foreground">
