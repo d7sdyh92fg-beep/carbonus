@@ -4,33 +4,33 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 const steps = [
   {
     id: 1,
-    title: "Select",
+    title: "Pasirinkti",
     icon: Hand,
-    description: "Choose your desired car from our fleet",
+    description: "Išsirinkite norimą automobilį iš mūsų parko",
     side: "right",
     hoverSide: "left",
   },
   {
     id: 2,
-    title: "Book",
+    title: "Užsakyti",
     icon: CalendarCheck,
-    description: "Reserve your car through our website",
+    description: "Rezervuokite automobilį per mūsų svetainę",
     side: "left",
     hoverSide: "right",
   },
   {
     id: 3,
-    title: "Drive",
+    title: "Vairuoti",
     icon: Circle,
-    description: "Pick up your car and hit the road",
+    description: "Pasiimkite automobilį ir kelkitės į kelią",
     side: "right",
     hoverSide: "left",
   },
   {
     id: 4,
-    title: "Return",
+    title: "Grąžinti",
     icon: Car,
-    description: "Bring the car back at the end of your rental period",
+    description: "Grąžinkite automobilį nuomos laikotarpio pabaigoje",
     side: "left",
     hoverSide: "right",
   },
@@ -43,10 +43,10 @@ export function HowItWorks() {
         {/* Header */}
         <div className="mb-16">
           <p className="text-sm font-semibold text-primary mb-2 tracking-wider uppercase">
-            HOW IT WORKS
+            KAIP TAI VEIKIA
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            Simple Steps to Get the Car
+            Paprasti žingsniai automobilio gavimui
           </h2>
         </div>
 

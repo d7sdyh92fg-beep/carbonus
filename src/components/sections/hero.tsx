@@ -12,16 +12,16 @@ export function Hero({ carImage }: HeroProps) {
         <div className="space-y-8 animate-fade-in relative z-10">
           <div className="space-y-6">
             <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight">
-              Your Journey,
+              Jūsų kelionė,
               <br />
-              <span className="text-primary">Your Car,</span>
+              <span className="text-primary">Jūsų automobilis,</span>
               <br />
-              Your Way
+              Jūsų būdas
             </h1>
             
             <p className="text-lg lg:text-xl text-gray-600 max-w-lg leading-relaxed">
-              Experience the ultimate freedom of choice with CARBONUS - tailor your adventure by 
-              choosing from our premium fleet of vehicles.
+              Patirkite aukščiausią pasirinkimo laisvę su CARBONUS - pritaikykite savo nuotykį 
+              rinkdamiesi iš mūsų aukščiausios klasės automobilių parko.
             </p>
           </div>
 
@@ -31,7 +31,7 @@ export function Hero({ carImage }: HeroProps) {
               size="lg" 
               className="animate-scale-in"
             >
-              Get Started
+              Pradėti
             </Button>
           </div>
         </div>
@@ -48,9 +48,9 @@ export function Hero({ carImage }: HeroProps) {
             <div className="text-center">
               <div className="text-4xl font-bold text-black">50+</div>
               <div className="text-sm text-gray-600 leading-tight">
-                Car Types
+                Automobilių tipų
                 <br />
-                Available
+                pasirinkimas
               </div>
             </div>
           </div>

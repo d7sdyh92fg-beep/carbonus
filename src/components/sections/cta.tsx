@@ -20,18 +20,18 @@ export function CTA() {
           <div className="relative z-10 w-full flex justify-end">
             <div className="w-1/2 lg:w-2/5 p-8 lg:p-12 text-white">
               <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-4">
-                Ready to Go?
+                Pasiruošę kelionei?
               </h2>
               
               <p className="text-base lg:text-lg mb-8 leading-relaxed">
-                Book your car wherever you are and ride with us now!
+                Užsisakykite automobilį bet kur esate ir kelkitės su mumis!
               </p>
               
               <Button 
                 size="lg" 
                 className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
               >
-                Book Now
+                Užsakyti dabar
               </Button>
             </div>
           </div>

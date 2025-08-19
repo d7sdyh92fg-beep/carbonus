@@ -12,23 +12,23 @@ export function Footer() {
           <div className="lg:col-span-2">
             <h3 className="text-2xl font-bold mb-4">CARBONUS.</h3>
             <p className="text-background/80 mb-6 max-w-md">
-              Experience the ultimate freedom of choice with premium car rentals. 
-              Your journey, your car, your way.
+              Patirkite aukščiausią pasirinkimo laisvę su aukščiausios klasės automobilių nuoma. 
+              Jūsų kelionė, jūsų automobilis, jūsų būdas.
             </p>
             <div className="mt-4 max-w-sm">
               <p className="text-background/60 text-sm mb-3">
-                Subscribe to newsletter
+                Prenumeruoti naujienlaiškį
               </p>
               <div className="flex gap-2">
                 <Input 
                   type="email" 
-                  placeholder="Enter your email"
+                  placeholder="Įveskite el. paštą"
                   className="bg-background/10 border-background/20 text-background placeholder:text-background/60 focus:border-background"
                 />
                 <Button 
                   className="bg-black text-white hover:bg-gray-800 border-0 whitespace-nowrap"
                 >
-                  Subscribe
+                  Prenumeruoti
                 </Button>
               </div>
             </div>
@@ -36,9 +36,9 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-semibold mb-4">Greitos nuorodos</h4>
             <ul className="space-y-2">
-              {["Home", "Cars", "About", "Contact", "FAQ"].map((link) => (
+              {["Pradžia", "Automobiliai", "Apie mus", "Kontaktai", "DUK"].map((link) => (
                 <li key={link}>
                   <a
                     href={`#${link.toLowerCase()}`}
@@ -53,9 +53,9 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold mb-4">Support</h4>
+            <h4 className="font-semibold mb-4">Pagalba</h4>
             <ul className="space-y-2">
-              {["Terms", "Privacy"].map((link) => (
+              {["Sąlygos", "Privatumas"].map((link) => (
                 <li key={link}>
                   <a
                     href="#"
@@ -72,7 +72,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="border-t border-background/20 mt-12 pt-8">
           <p className="text-background/60 text-sm">
-            © 2024 Carbonus. All rights reserved.
+            © 2024 Carbonus. Visos teisės saugomos.
           </p>
         </div>
       </div>

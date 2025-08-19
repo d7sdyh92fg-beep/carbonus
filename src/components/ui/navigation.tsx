@@ -10,10 +10,10 @@ export function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: "Home", href: "#" },
-    { name: "Cars", href: "#cars" },
-    { name: "FAQ", href: "#faq" },
-    { name: "About", href: "#about" },
+    { name: "Pradžia", href: "#" },
+    { name: "Automobiliai", href: "#cars" },
+    { name: "DUK", href: "#faq" },
+    { name: "Apie mus", href: "#about" },
   ];
 
   return (
@@ -49,7 +49,7 @@ export function Navigation({ logo }: NavigationProps) {
             <Button variant="ghost" size="icon">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="hero">Contact</Button>
+            <Button variant="hero">Kontaktai</Button>
           </div>
 
           {/* Mobile menu button */}
@@ -80,7 +80,7 @@ export function Navigation({ logo }: NavigationProps) {
               ))}
               <div className="pt-4 border-t mt-4">
                 <Button variant="hero" className="w-full">
-                  Contact
+                  Kontaktai
                 </Button>
               </div>
             </div>
