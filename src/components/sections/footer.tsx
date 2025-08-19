@@ -18,6 +18,9 @@ export function Footer() {
     } else if (link === "Kontaktai") {
       navigate('/kontaktai');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (link === "DUK") {
+      navigate('/duk');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (link === "Privatumo politika") {
       navigate('/privatumo-politika');
       window.scrollTo({ top: 0, behavior: 'smooth' });

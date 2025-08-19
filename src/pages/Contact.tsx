@@ -337,55 +337,6 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 bg-muted/50 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Dažnai užduodami klausimai
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Nerandate atsakymo į savo klausimą? Susisiekite su mumis tiesiogiai.
-          </p>
-          
-          <div className="grid md:grid-cols-2 gap-6 text-left">
-            <Card className="p-6">
-              <h4 className="font-semibold text-foreground mb-2">
-                Kokius dokumentus reikia automobilio nuomai?
-              </h4>
-              <p className="text-muted-foreground text-sm">
-                Reikalingas galiojantis vairuotojo pažymėjimas, asmens dokumentas ir kreditinė kortelė užstato rezervavimui.
-              </p>
-            </Card>
-            
-            <Card className="p-6">
-              <h4 className="font-semibold text-foreground mb-2">
-                Ar galiu atšaukti rezervaciją?
-              </h4>
-              <p className="text-muted-foreground text-sm">
-                Taip, rezervaciją galite atšaukti nemokamai likus 72 valandom iki automobilio atsiėmimo.
-              </p>
-            </Card>
-            
-            <Card className="p-6">
-              <h4 className="font-semibold text-foreground mb-2">
-                Koks minimalus amžius automobilio nuomai?
-              </h4>
-              <p className="text-muted-foreground text-sm">
-                Minimalus amžius - 21 metai su ne mažiau nei 2 metų vairavimo stažu. Kai kurioms klasėms - nuo 25 metų.
-              </p>
-            </Card>
-            
-            <Card className="p-6">
-              <h4 className="font-semibold text-foreground mb-2">
-                Ar automobiliai apdrausti?
-              </h4>
-              <p className="text-muted-foreground text-sm">
-                Taip, visi automobiliai apdrausti KASKO ir OCTA draudimu. Galimas papildomo draudimo įsigijimas.
-              </p>
-            </Card>
-          </div>
-        </div>
-      </section>
 
       <Footer />
     </div>
