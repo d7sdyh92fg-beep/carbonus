@@ -8,6 +8,7 @@ const steps = [
     icon: Hand,
     description: "Choose your desired car from our fleet",
     side: "right",
+    hoverSide: "left",
   },
   {
     id: 2,
@@ -15,6 +16,7 @@ const steps = [
     icon: CalendarCheck,
     description: "Reserve your car through our website",
     side: "left",
+    hoverSide: "right",
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ const steps = [
     icon: Circle,
     description: "Pick up your car and hit the road",
     side: "right",
+    hoverSide: "left",
   },
   {
     id: 4,
@@ -29,6 +32,7 @@ const steps = [
     icon: Car,
     description: "Bring the car back at the end of your rental period",
     side: "left",
+    hoverSide: "right",
   },
 ];
 
@@ -83,7 +87,7 @@ export function HowItWorks() {
                       </button>
                     </HoverCardTrigger>
                     <HoverCardContent 
-                      side={step.side === "left" ? "left" : "right"} 
+                      side={step.hoverSide === "left" ? "left" : "right"}
                       className="w-64 p-4"
                       sideOffset={15}
                     >
