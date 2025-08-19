@@ -18,7 +18,7 @@ export function CTA() {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="relative bg-green-900 rounded-3xl overflow-hidden min-h-[300px] flex items-center">
+        <div className="relative bg-gradient-to-br from-primary to-primary/80 rounded-3xl overflow-hidden min-h-[300px] flex items-center">
           {/* Car Image - Left Side */}
           <div className="absolute left-0 top-0 bottom-0 w-1/2 lg:w-3/5">
             <img
