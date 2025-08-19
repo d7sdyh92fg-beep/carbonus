@@ -185,13 +185,13 @@ const About = () => {
             {/* Content - Left Side */}
             <div className="relative z-10 w-full">
               <div className="w-3/4 lg:w-3/5 p-8 lg:p-12 text-white">
-                <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight">
+                <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold mb-6 leading-tight">
                   Rezervuokite savo svajonių automobilį šiandien ir pajuskite geriausią kelionės patirtį
                 </h2>
                 
                 <Button 
                   size="lg" 
-                  className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-4 rounded-full transition-all duration-300"
                   onClick={() => window.location.href = '/automobiliai'}
                 >
                   Rezervuoti dabar
