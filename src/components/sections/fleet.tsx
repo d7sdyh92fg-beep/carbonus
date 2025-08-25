@@ -65,7 +65,11 @@ export function Fleet() {
                   <img
                     src={car.image}
                     alt={car.name}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                    className={`w-full h-48 transition-transform duration-300 group-hover:scale-105 ${
+                      car.name === "Volkswagen Passat" 
+                        ? "object-contain object-center" 
+                        : "object-cover"
+                    }`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
