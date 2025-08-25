@@ -65,7 +65,7 @@ export function Fleet() {
                   <img
                     src={car.image}
                     alt={car.name}
-                    className={`w-full h-48 transition-transform duration-300 group-hover:scale-105 ${
+                    className={`w-full h-48 transition-transform duration-300 group-hover:scale-115 ${
                       car.name === "Volkswagen Passat" 
                         ? "object-contain object-center scale-130" 
                         : "object-cover"
