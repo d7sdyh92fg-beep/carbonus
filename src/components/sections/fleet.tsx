@@ -33,7 +33,7 @@ export function Fleet() {
     {
       id: "3",
       name: "Volkswagen Passat",
-      price: "30-40 EUR",
+      price: "30 EUR",
       image: vwPassatSideClean,
       category: "Sedan"
     }
@@ -67,7 +67,7 @@ export function Fleet() {
                     alt={car.name}
                     className={`w-full h-48 transition-transform duration-300 group-hover:scale-105 ${
                       car.name === "Volkswagen Passat" 
-                        ? "object-contain object-center scale-120" 
+                        ? "object-contain object-center scale-130" 
                         : "object-cover"
                     }`}
                   />
