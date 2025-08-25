@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
+import vwPassat2012 from "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png";
 
 interface Car {
   id: string;
@@ -28,6 +29,13 @@ export function Fleet() {
       price: "30 EUR",
       image: chryslerTownCountrySide,
       category: "Minivan"
+    },
+    {
+      id: "3",
+      name: "Volkswagen Passat",
+      price: "30-40 EUR",
+      image: vwPassat2012,
+      category: "Sedan"
     }
   ];
 

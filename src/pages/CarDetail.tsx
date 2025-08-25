@@ -129,6 +129,40 @@ const CarDetail = () => {
         "Bagažinės talpa": "2000 L",
         "Variklio tipas": "3.6L V6"
       }
+    },
+    "3": {
+      id: "3",
+      name: "Volkswagen Passat",
+      price: "30-40 EUR",
+      image: "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png",
+      images: [
+        "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png",
+        "/lovable-uploads/1bd704ad-6405-4654-b8c9-c47106be98df.png"
+      ],
+      category: "Sedan",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.7,
+      description: "Volkswagen Passat 2012 - patikimas ir ekonomiškas sedanas, puikiai tinkantis verslo kelionėms ir kasdieniam naudojimui. Dyzelinis variklis užtikrina mažą kuro sąnaudą.",
+      features: [
+        "Ekonomiškas dyzelinis variklis",
+        "Mechaninė pavarų dėžė",
+        "Kondicionierius",
+        "Elektriniai langai",
+        "Centrinis užraktas",
+        "ABS stabdžių sistema",
+        "Patogios sėdynės",
+        "Didelis bagažas"
+      ],
+      specifications: {
+        "Kuras": "Dyzelinas",
+        "Pavarų dėžė": "Mechaninė",
+        "Keleivių skaičius": "5",
+        "Durų skaičius": "4",
+        "Bagažinės talpa": "565 L",
+        "Variklio tipas": "2.0L TDI"
+      }
     }
   };
 

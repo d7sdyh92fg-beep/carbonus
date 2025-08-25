@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Users, Fuel, Settings, Star } from "lucide-react";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
+import vwPassat2012 from "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png";
 
 interface Car {
   id: string;
@@ -81,6 +82,18 @@ const Cars = () => {
       transmission: "Automatinė",
       rating: 4.6,
       features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
+    },
+    {
+      id: "3",
+      name: "Volkswagen Passat",
+      price: "30-40 EUR",
+      image: vwPassat2012,
+      category: "Sedan",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.7,
+      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     }
   ];
 
