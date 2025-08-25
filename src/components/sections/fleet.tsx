@@ -67,7 +67,7 @@ export function Fleet() {
                     alt={car.name}
                     className={`w-full h-48 transition-transform duration-300 group-hover:scale-115 ${
                       car.name === "Volkswagen Passat" 
-                        ? "object-contain object-center scale-150" 
+                        ? "object-contain object-center scale-140" 
                         : "object-cover"
                     }`}
                   />
