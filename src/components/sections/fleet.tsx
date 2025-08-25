@@ -33,7 +33,7 @@ export function Fleet() {
     {
       id: "3",
       name: "Volkswagen Passat",
-      price: "30-40 EUR",
+      price: "30 EUR",
       image: vwPassatSideClean,
       category: "Sedan"
     }
