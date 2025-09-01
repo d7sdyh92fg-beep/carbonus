@@ -38,13 +38,6 @@ export function Fleet() {
       price: "30 EUR",
       image: vwPassatSideClean,
       category: "Sedanas"
-    },
-    {
-      id: "4",
-      name: "KIA CEED",
-      price: "30 EUR",
-      image: kiaCeedSideClean,
-      category: "Universalas"
     }
   ];
 
@@ -115,6 +108,20 @@ export function Fleet() {
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        {/* View More Button */}
+        <div className="text-center mt-12">
+          <Button 
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8"
+            onClick={() => {
+              navigate('/automobiliai');
+              setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+            }}
+          >
+            Žiūrėti daugiau automobilių
+          </Button>
         </div>
       </div>
     </section>
