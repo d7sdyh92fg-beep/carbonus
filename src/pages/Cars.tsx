@@ -132,10 +132,10 @@ const Cars = () => {
                     <img
                       src={car.image}
                       alt={car.name}
-                      className={`w-full h-48 transition-transform duration-300 group-hover:scale-105 ${
+                      className={`w-full h-48 transition-transform duration-300 ${
                         car.name === "Volkswagen Passat" 
-                          ? "object-contain object-center scale-[1.25] -translate-y-2" 
-                          : "object-cover"
+                          ? "object-contain object-center scale-[1.25] -translate-y-2 group-hover:scale-[1.31]" 
+                          : "object-cover group-hover:scale-105"
                       }`}
                     />
                     <div className="absolute top-4 left-4">
