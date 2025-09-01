@@ -72,7 +72,7 @@ const CarDetail = () => {
         "/lovable-uploads/6d952bf9-02ce-401a-844d-53602e6bd46a.png",
         "/lovable-uploads/1fde8ef6-efa7-46c4-956a-06ec5e88edb9.png"
       ],
-      category: "Sedan",
+      category: "Sedanas",
       passengers: 5,
       fuel: "Benzinas",
       transmission: "Automatinė",
@@ -106,7 +106,7 @@ const CarDetail = () => {
         "/lovable-uploads/e88041de-a960-4e68-b67d-538898a45d3d.png",
         "/lovable-uploads/c867ce9f-5f60-4429-b4c0-5bfc4060a988.png"
       ],
-      category: "Minivan",
+      category: "Miniautobusas",
       passengers: 7,
       fuel: "Benzinas",
       transmission: "Automatinė",
@@ -140,7 +140,7 @@ const CarDetail = () => {
         "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png",
         "/lovable-uploads/1bd704ad-6405-4654-b8c9-c47106be98df.png"
       ],
-      category: "Sedan",
+      category: "Sedanas",
       passengers: 5,
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
