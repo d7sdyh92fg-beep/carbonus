@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import BookingCalendar from "@/components/booking/BookingCalendar";
+import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import { useState } from "react";
 
 interface CarDetail {
@@ -162,6 +163,39 @@ const CarDetail = () => {
         "Durų skaičius": "4",
         "Bagažinės talpa": "565 L",
         "Variklio tipas": "2.0L TDI"
+      }
+    },
+    "4": {
+      id: "4",
+      name: "KIA CEED",
+      price: "30 EUR",
+      image: kiaCeedSideClean,
+      images: [
+        kiaCeedSideClean
+      ],
+      category: "Universalas",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Mechaninė",
+      rating: 4.5,
+      description: "KIA CEED 2013 universalas - praktiškas ir erdvus automobilis, idealus kelionėms ir kasdieniam naudojimui. Pilkos spalvos automobilis su 1.4 litro benzininiu varikliu.",
+      features: [
+        "1,4 litro benzininis variklis",
+        "2013 metų gamybos",
+        "Pilka spalva",
+        "Universalo kėbulas",
+        "Mechaninė pavarų dėžė",
+        "5 keleivių vietos",
+        "Kondicionierius",
+        "Didelis bagažas"
+      ],
+      specifications: {
+        "Kuras": "Benzinas",
+        "Pavarų dėžė": "Mechaninė", 
+        "Keleivių skaičius": "5",
+        "Durų skaičius": "5",
+        "Bagažinės talpa": "528 L",
+        "Variklio tipas": "1.4L"
       }
     }
   };

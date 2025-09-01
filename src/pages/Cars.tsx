@@ -11,6 +11,7 @@ import { Users, Fuel, Settings, Star } from "lucide-react";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
+import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 
 interface Car {
   id: string;
@@ -94,6 +95,18 @@ const Cars = () => {
       transmission: "Mechaninė",
       rating: 4.7,
       features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+    },
+    {
+      id: "4",
+      name: "KIA CEED",
+      price: "30 EUR",
+      image: kiaCeedSideClean,
+      category: "Universalas",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Mechaninė",
+      rating: 4.5,
+      features: ["1,4 litro variklis", "2013 m.", "Pilka spalva"]
     }
   ];
 

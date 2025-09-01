@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
+import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 
 interface Car {
   id: string;
@@ -36,6 +37,13 @@ export function Fleet() {
       price: "30 EUR",
       image: vwPassatSideClean,
       category: "Sedan"
+    },
+    {
+      id: "4",
+      name: "KIA CEED",
+      price: "30 EUR",
+      image: kiaCeedSideClean,
+      category: "Universalas"
     }
   ];
 
