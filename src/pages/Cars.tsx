@@ -106,7 +106,11 @@ const Cars = () => {
       fuel: "Benzinas",
       transmission: "Mechaninė",
       rating: 4.5,
-      features: ["1,4 litro variklis", "2013 m.", "Pilka spalva"]
+      features: [
+        "Ekonomiškas vairavimas",
+        "Erdvus universalas",
+        "Patikimas automobilis"
+      ],
     }
   ];
 

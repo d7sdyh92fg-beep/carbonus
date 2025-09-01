@@ -180,14 +180,14 @@ const CarDetail = () => {
       rating: 4.5,
       description: "KIA CEED 2013 universalas - praktiškas ir erdvus automobilis, idealus kelionėms ir kasdieniam naudojimui. Pilkos spalvos automobilis su 1.4 litro benzininiu varikliu.",
       features: [
-        "1,4 litro benzininis variklis",
-        "2013 metų gamybos",
-        "Pilka spalva",
-        "Universalo kėbulas",
+        "Ekonomiškas benzininis variklis",
+        "Erdvus universalo bagažas", 
+        "Patikimas kasdieniam naudojimui",
         "Mechaninė pavarų dėžė",
-        "5 keleivių vietos",
         "Kondicionierius",
-        "Didelis bagažas"
+        "Patogus 5 vietų salons",
+        "Didelis bagažinės skyrius",
+        "Praktiškas miesto automobilis"
       ],
       specifications: {
         "Kuras": "Benzinas",
