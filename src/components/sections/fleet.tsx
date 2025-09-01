@@ -22,21 +22,21 @@ export function Fleet() {
       name: "BMW 3 series",
       price: "30 EUR",
       image: bmw3Clean,
-      category: "Sedan"
+      category: "Sedanas"
     },
     {
       id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
       image: chryslerTownCountrySide,
-      category: "Minivan"
+      category: "Miniautobusas"
     },
     {
       id: "3",
       name: "Volkswagen Passat",
       price: "30 EUR",
       image: vwPassatSideClean,
-      category: "Sedan"
+      category: "Sedanas"
     },
     {
       id: "4",
