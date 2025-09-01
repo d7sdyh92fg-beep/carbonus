@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
@@ -79,6 +80,11 @@ export function Fleet() {
                         : "object-cover"
                     }`}
                   />
+                  <div className="absolute top-4 left-4">
+                    <Badge variant="secondary" className="bg-primary text-primary-foreground">
+                      {car.category}
+                    </Badge>
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 
