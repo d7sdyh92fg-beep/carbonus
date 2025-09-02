@@ -126,12 +126,12 @@ export default {
 				'scale-in': 'scale-in 0.4s ease-out'
 			},
 			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-hero': 'var(--gradient-hero)'
+				'gradient-primary': 'linear-gradient(135deg, hsl(147 83% 19%), hsl(147 50% 35%))',
+				'gradient-hero': 'linear-gradient(120deg, hsl(147 83% 19%) 0%, hsl(147 50% 35%) 100%)'
 			},
 			boxShadow: {
-				'elegant': 'var(--shadow-elegant)',
-				'card': 'var(--shadow-card)'
+				'elegant': '0 10px 30px -10px hsl(147 83% 19% / 0.3)',
+				'card': '0 4px 20px -2px hsl(147 83% 19% / 0.1)'
 			}
 		}
 	},
