@@ -41,9 +41,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Check if user is admin using the new function
           try {
             console.log('Checking admin for user email:', session.user.email);
+            console.log('User ID:', session.user.id);
+            
             const { data, error } = await supabase.rpc('is_current_user_admin');
             
             console.log('Admin function result:', { data, error });
+            console.log('Type of data:', typeof data);
+            console.log('Raw data value:', data);
+            
             setIsAdmin(!!data);
             console.log('Final admin status:', !!data);
           } catch (error) {
