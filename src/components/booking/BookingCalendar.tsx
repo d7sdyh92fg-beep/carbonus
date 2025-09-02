@@ -170,9 +170,33 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
             selected={selectedRange}
             onSelect={handleSelect}
             disabled={(date) => date < new Date() || isDateBooked(date)}
+            modifiers={{
+              booked: bookedDates,
+            }}
+            modifiersStyles={{
+              booked: {
+                backgroundColor: 'hsl(var(--destructive))',
+                color: 'hsl(var(--destructive-foreground))',
+                fontWeight: 'bold',
+                border: '2px solid hsl(var(--destructive))',
+                borderRadius: '4px',
+              },
+            }}
             className="rounded-md border pointer-events-auto"
             locale={lt}
           />
+          
+          {/* Calendar Legend */}
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-4 h-4 bg-destructive rounded border-2 border-destructive"></div>
+              <span className="text-muted-foreground">Užimtos datos</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-4 h-4 bg-muted border border-border rounded"></div>
+              <span className="text-muted-foreground">Laisvos datos</span>
+            </div>
+          </div>
           
           {selectedRange.from && selectedRange.to && (
             <div className="mt-4 p-4 bg-muted rounded-lg">
