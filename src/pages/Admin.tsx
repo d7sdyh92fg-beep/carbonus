@@ -13,9 +13,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
+import CarCalendarModal from '@/components/admin/CarCalendarModal';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -44,6 +45,10 @@ const Admin = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editingReservation, setEditingReservation] = useState<Reservation | null>(null);
+  const [showCarCalendar, setShowCarCalendar] = useState(false);
+  const [selectedCar, setSelectedCar] = useState<{id: string, name: string} | null>(null);
 
   // Form state for adding new reservation
   const [newReservation, setNewReservation] = useState({
@@ -295,6 +300,48 @@ const Admin = () => {
     }
   };
 
+  const updateReservation = async () => {
+    if (!editingReservation) return;
+
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({
+          start_date: editingReservation.start_date,
+          end_date: editingReservation.end_date,
+          status: editingReservation.status,
+        })
+        .eq('id', editingReservation.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Sėkmingai atnaujinta",
+        description: "Rezervacija buvo atnaujinta.",
+      });
+
+      setShowEditDialog(false);
+      setEditingReservation(null);
+      fetchReservations();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko atnaujinti rezervacijos: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditReservation = (reservation: Reservation) => {
+    setEditingReservation(reservation);
+    setShowEditDialog(true);
+  };
+
+  const handleCarClick = (car: { id: string; name: string }) => {
+    setSelectedCar(car);
+    setShowCarCalendar(true);
+  };
+
   const getStatusBadge = (status: string) => {
     const variants = {
       pending: 'secondary',
@@ -324,7 +371,11 @@ const Admin = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <span className="text-2xl font-bold text-primary">CARBONUS.</span>
+              <img 
+                src="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" 
+                alt="Logo" 
+                className="h-8 w-auto"
+              />
               <Badge variant="secondary" className="text-xs">Admin</Badge>
             </div>
             <div className="flex items-center space-x-4">
@@ -409,7 +460,11 @@ const Admin = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {cars.map((car) => (
-                <Card key={car.id} className="overflow-hidden">
+                <Card 
+                  key={car.id} 
+                  className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                  onClick={() => handleCarClick({ id: car.id, name: car.name })}
+                >
                   <div className="aspect-video relative overflow-hidden">
                     <img 
                       src={car.image} 
@@ -609,26 +664,33 @@ const Admin = () => {
                     <TableCell>€{reservation.total_amount}</TableCell>
                     <TableCell>{getStatusBadge(reservation.status)}</TableCell>
                     <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {reservation.status !== 'cancelled' && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => cancelReservation(reservation.id)}
-                          >
-                            <Ban className="h-4 w-4" />
-                          </Button>
-                        )}
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => deleteReservation(reservation.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+                     <TableCell>
+                       <div className="flex gap-2">
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={() => handleEditReservation(reservation)}
+                         >
+                           <Edit className="h-4 w-4" />
+                         </Button>
+                         {reservation.status !== 'cancelled' && (
+                           <Button
+                             variant="outline"
+                             size="sm"
+                             onClick={() => cancelReservation(reservation.id)}
+                           >
+                             <Ban className="h-4 w-4" />
+                           </Button>
+                         )}
+                         <Button
+                           variant="destructive"
+                           size="sm"
+                           onClick={() => deleteReservation(reservation.id)}
+                         >
+                           <Trash2 className="h-4 w-4" />
+                         </Button>
+                       </div>
+                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -642,6 +704,77 @@ const Admin = () => {
           </CardContent>
         </Card>
       </main>
+      
+      {/* Edit Reservation Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Redaguoti rezervaciją</DialogTitle>
+            <DialogDescription>
+              Atnaujinkite rezervacijos informaciją.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {editingReservation && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Statusas</Label>
+                <Select 
+                  value={editingReservation.status} 
+                  onValueChange={(value) => setEditingReservation({ ...editingReservation, status: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pending">Laukiama</SelectItem>
+                    <SelectItem value="confirmed">Patvirtinta</SelectItem>
+                    <SelectItem value="cancelled">Atšaukta</SelectItem>
+                    <SelectItem value="completed">Baigta</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Pradžios data</Label>
+                <Input
+                  type="date"
+                  value={editingReservation.start_date}
+                  onChange={(e) => setEditingReservation({ ...editingReservation, start_date: e.target.value })}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Pabaigos data</Label>
+                <Input
+                  type="date"
+                  value={editingReservation.end_date}
+                  onChange={(e) => setEditingReservation({ ...editingReservation, end_date: e.target.value })}
+                />
+              </div>
+            </div>
+          )}
+          
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Atšaukti
+            </Button>
+            <Button onClick={updateReservation}>
+              Atnaujinti rezervaciją
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Car Calendar Modal */}
+      {selectedCar && (
+        <CarCalendarModal
+          isOpen={showCarCalendar}
+          onClose={() => setShowCarCalendar(false)}
+          carId={selectedCar.id}
+          carName={selectedCar.name}
+        />
+      )}
       
       <Footer />
     </div>
