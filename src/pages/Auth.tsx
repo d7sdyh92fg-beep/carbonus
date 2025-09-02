@@ -21,7 +21,10 @@ const Auth = () => {
   useEffect(() => {
     if (!loading && user) {
       console.log('User authenticated, redirecting to admin...');
-      navigate('/admin', { replace: true });
+      // Add small delay to prevent browser navigation throttling
+      setTimeout(() => {
+        navigate('/admin', { replace: true });
+      }, 100);
     }
   }, [user, loading, navigate]);
 
