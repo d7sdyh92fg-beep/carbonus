@@ -22,9 +22,31 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [showBookingForm, setShowBookingForm] = useState(false);
 
-  // Fetch booked dates on component mount
+  // Fetch booked dates on component mount and set up real-time updates
   useEffect(() => {
     fetchBookedDates();
+
+    // Set up real-time subscription for reservations
+    const channel = supabase
+      .channel('reservation-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'reservations',
+          filter: `car_id=eq.${carId}`
+        },
+        () => {
+          // Refresh booked dates when reservations change
+          fetchBookedDates();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [carId]);
 
   const fetchBookedDates = async () => {
