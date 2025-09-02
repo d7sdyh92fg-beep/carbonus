@@ -228,16 +228,32 @@ const Admin = () => {
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const totalAmount = diffDays * newReservation.dailyRate;
 
-      // Use secure RPC to create or get customer without exposing PII
-      const { data: customerId, error: customerError } = await supabase
-        .rpc('create_or_get_customer', {
-          p_email: newReservation.email,
-          p_first_name: newReservation.firstName,
-          p_last_name: newReservation.lastName,
-          p_phone: newReservation.phone
-        });
+      // First, create or get customer
+      const { data: existingCustomer } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('email', newReservation.email)
+        .single();
 
-      if (customerError) throw customerError;
+      let customerId;
+
+      if (existingCustomer) {
+        customerId = existingCustomer.id;
+      } else {
+        const { data: newCustomer, error: customerError } = await supabase
+          .from('customers')
+          .insert([{
+            first_name: newReservation.firstName,
+            last_name: newReservation.lastName,
+            email: newReservation.email,
+            phone: newReservation.phone,
+          }])
+          .select('id')
+          .single();
+
+        if (customerError) throw customerError;
+        customerId = newCustomer.id;
+      }
 
       // Find the correct car ID based on car name
       const selectedCar = cars.find(car => car.name === newReservation.carName);

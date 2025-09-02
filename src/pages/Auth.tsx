@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,18 +15,11 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user, signIn, loading } = useAuth();
   const { toast } = useToast();
-  const navigate = useNavigate();
 
-  // Handle redirect after successful authentication
-  useEffect(() => {
-    if (!loading && user) {
-      console.log('User authenticated, redirecting to admin...');
-      // Add small delay to prevent browser navigation throttling
-      setTimeout(() => {
-        navigate('/admin', { replace: true });
-      }, 100);
-    }
-  }, [user, loading, navigate]);
+  // Redirect if already authenticated
+  if (!loading && user) {
+    return <Navigate to="/admin" replace />;
+  }
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();

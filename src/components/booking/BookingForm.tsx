@@ -60,21 +60,43 @@ const BookingForm: React.FC<BookingFormProps> = ({
         formData
       });
 
-      // Use secure RPC to create or get customer without exposing PII
-      const { data: customerId, error: customerError } = await supabase
-        .rpc('create_or_get_customer', {
-          p_email: formData.email,
-          p_first_name: formData.firstName,
-          p_last_name: formData.lastName,
-          p_phone: formData.phone
-        });
+      // First, create or get customer
+      const { data: existingCustomer, error: customerCheckError } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('email', formData.email)
+        .maybeSingle();
 
-      if (customerError) {
-        console.error("Customer creation error:", customerError);
-        throw customerError;
+      if (customerCheckError) {
+        console.error("Customer check error:", customerCheckError);
+        throw customerCheckError;
       }
 
-      console.log("Customer ID obtained:", customerId);
+      let customerId;
+
+      if (existingCustomer) {
+        customerId = existingCustomer.id;
+        console.log("Found existing customer:", customerId);
+      } else {
+        console.log("Creating new customer...");
+        const { data: newCustomer, error: customerError } = await supabase
+          .from('customers')
+          .insert([{
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            phone: formData.phone,
+          }])
+          .select('id')
+          .single();
+
+        if (customerError) {
+          console.error("Customer creation error:", customerError);
+          throw customerError;
+        }
+        customerId = newCustomer.id;
+        console.log("Created new customer:", customerId);
+      }
 
       // Ensure carId is in correct format
       const normalizedCarId = carId || carName.toLowerCase().replace(/\s+/g, '-');

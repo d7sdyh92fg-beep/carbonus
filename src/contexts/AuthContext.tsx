@@ -28,70 +28,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let mounted = true;
-    console.log('AuthContext initializing...');
-
-    // Add timeout to prevent infinite loading
-    const loadingTimeout = setTimeout(() => {
-      if (mounted) {
-        console.log('AuthContext loading timeout - forcing completion');
-        setLoading(false);
-      }
-    }, 3000); // 3 second timeout
-
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (!mounted) return;
-        
-        console.log('Auth state changed:', event, session?.user?.id);
-        clearTimeout(loadingTimeout);
-        
         setSession(session);
         setUser(session?.user ?? null);
-        setIsAdmin(false);
-        console.log('Setting loading to false after auth state change');
+        setIsAdmin(session?.user?.email === 'info@carbonus.lt');
         setLoading(false);
       }
     );
 
     // Check for existing session
-    const checkSession = async () => {
-      try {
-        console.log('Checking existing session...');
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (!mounted) return;
-        
-        console.log('Got session result:', { session: session?.user?.id, error });
-        clearTimeout(loadingTimeout);
-        
-        setSession(session);
-        setUser(session?.user ?? null);
-        setIsAdmin(false);
-        console.log('Setting loading to false after session check');
-        setLoading(false);
-      } catch (error) {
-        console.error('Error getting session:', error);
-        if (mounted) {
-          clearTimeout(loadingTimeout);
-          setSession(null);
-          setUser(null);
-          setIsAdmin(false);
-          console.log('Setting loading to false after error');
-          setLoading(false);
-        }
-      }
-    };
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsAdmin(session?.user?.email === 'info@carbonus.lt');
+      setLoading(false);
+    });
 
-    checkSession();
-
-    return () => {
-      console.log('AuthContext cleanup');
-      clearTimeout(loadingTimeout);
-      mounted = false;
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -99,23 +54,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email,
       password,
     });
-    
-    // Check admin status after successful login (non-blocking)
-    if (!error) {
-      setTimeout(async () => {
-        try {
-          const { data: isUserAdmin, error: adminError } = await supabase
-            .rpc('is_current_user_admin');
-          
-          if (!adminError) {
-            setIsAdmin(isUserAdmin || false);
-          }
-        } catch (err) {
-          console.error('Error checking admin status after login:', err);
-        }
-      }, 100);
-    }
-    
     return { error };
   };
 
