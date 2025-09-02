@@ -31,9 +31,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   console.log('AuthProvider state:', { user: user?.email, isAdmin, loading });
 
   useEffect(() => {
+    let isMounted = true;
+    
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (!isMounted) return;
+        
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -46,44 +50,72 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const { data, error } = await supabase.rpc('is_current_user_admin');
             
             console.log('Admin function result:', { data, error });
-            console.log('Type of data:', typeof data);
-            console.log('Raw data value:', data);
             
-            setIsAdmin(!!data);
-            console.log('Final admin status:', !!data);
+            if (isMounted) {
+              setIsAdmin(data === true);
+              console.log('Final admin status:', data === true);
+            }
           } catch (error) {
             console.log('Admin check error:', error);
-            setIsAdmin(false);
+            if (isMounted) {
+              setIsAdmin(false);
+            }
           }
         } else {
-          setIsAdmin(false);
+          if (isMounted) {
+            setIsAdmin(false);
+          }
         }
         
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     );
 
     // Get initial session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        try {
-          const { data, error } = await supabase.rpc('is_current_user_admin');
-          
-          setIsAdmin(!!data);
-          console.log('Initial admin check result:', !!data);
-        } catch (error) {
-          console.log('Initial admin check error:', error);
-          setIsAdmin(false);
+    const initializeAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!isMounted) return;
+        
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          try {
+            const { data, error } = await supabase.rpc('is_current_user_admin');
+            console.log('Initial admin check result:', { data, error });
+            
+            if (isMounted) {
+              setIsAdmin(data === true);
+            }
+          } catch (error) {
+            console.log('Initial admin check error:', error);
+            if (isMounted) {
+              setIsAdmin(false);
+            }
+          }
+        }
+        
+        if (isMounted) {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log('Auth initialization error:', error);
+        if (isMounted) {
+          setLoading(false);
         }
       }
-      
-      setLoading(false);
-    });
+    };
 
-    return () => subscription.unsubscribe();
+    initializeAuth();
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
