@@ -64,17 +64,16 @@ const Admin = () => {
   ];
 
   useEffect(() => {
-    if (user && isAdmin) {
-      fetchReservations();
-    }
-  }, [user, isAdmin]);
+    // Always fetch reservations since no auth required
+    fetchReservations();
+  }, []);
 
-  // Redirect non-admin users
-  if (!loading && (!user || !isAdmin)) {
-    return <Navigate to="/auth" replace />;
-  }
+  // Redirect non-admin users - removed since no auth required
+  // if (!loading && (!user || !isAdmin)) {
+  //   return <Navigate to="/auth" replace />;
+  // }
 
-  if (loading || isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>

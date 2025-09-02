@@ -20,20 +20,16 @@ export function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAdmin, signOut } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
 
   const navItems = [
     { name: "Pradžia", href: "/" },
     { name: "Automobiliai", href: "/automobiliai" },
     { name: "Apie mus", href: "/apie-mus" },
     { name: "DUK", href: "/duk" },
+    { name: "Admin", href: "/admin" },
   ];
 
   return (
@@ -73,32 +69,6 @@ export function Navigation({ logo }: NavigationProps) {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSwitcher />
-            
-            {user && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <User className="h-4 w-4 mr-2" />
-                    Admin
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {isAdmin && (
-                    <>
-                      <DropdownMenuItem onClick={() => navigate('/admin')}>
-                        <Shield className="h-4 w-4 mr-2" />
-                        Admin skydelis
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Atsijungti
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
           </div>
 
           {/* Mobile menu button */}
@@ -133,34 +103,6 @@ export function Navigation({ logo }: NavigationProps) {
                 <div className="flex justify-center">
                   <LanguageSwitcher />
                 </div>
-                {user && (
-                  <div className="space-y-2">
-                    {isAdmin && (
-                      <Button 
-                        variant="outline" 
-                        className="w-full" 
-                        onClick={() => {
-                          navigate('/admin');
-                          setIsOpen(false);
-                        }}
-                      >
-                        <Shield className="h-4 w-4 mr-2" />
-                        Admin skydelis
-                      </Button>
-                    )}
-                    <Button 
-                      variant="outline" 
-                      className="w-full" 
-                      onClick={() => {
-                        handleSignOut();
-                        setIsOpen(false);
-                      }}
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Atsijungti
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           </div>
