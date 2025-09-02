@@ -42,6 +42,8 @@ const Admin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
 
+  console.log('Admin component - user:', user, 'isAdmin:', isAdmin, 'loading:', loading);
+
   // Form state for adding new reservation
   const [newReservation, setNewReservation] = useState({
     firstName: '',
