@@ -67,10 +67,10 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Admin email sent:", adminEmailResponse);
 
-    // Email to customer
+    // Email to customer (temporarily sending to admin email due to Resend limitations)
     const customerEmailResponse = await resend.emails.send({
       from: "CARBONUS <onboarding@resend.dev>",
-      to: [booking.customerEmail],
+      to: ["info@carbonus.lt"], // Using admin email until domain is verified
       subject: `Rezervacijos patvirtinimas - ${booking.carName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
