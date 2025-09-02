@@ -30,19 +30,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setIsAdmin(session?.user?.email === 'info@carbonus.lt');
+        
+        // Use server-side role checking instead of hardcoded email
+        if (session?.user) {
+          try {
+            const { data: isUserAdmin, error } = await supabase
+              .rpc('is_current_user_admin');
+            
+            if (error) {
+              console.error('Error checking admin status:', error);
+              setIsAdmin(false);
+            } else {
+              setIsAdmin(isUserAdmin || false);
+            }
+          } catch (error) {
+            console.error('Error checking admin status:', error);
+            setIsAdmin(false);
+          }
+        } else {
+          setIsAdmin(false);
+        }
+        
         setLoading(false);
       }
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      setIsAdmin(session?.user?.email === 'info@carbonus.lt');
+      
+      // Use server-side role checking for existing session
+      if (session?.user) {
+        try {
+          const { data: isUserAdmin, error } = await supabase
+            .rpc('is_current_user_admin');
+          
+          if (error) {
+            console.error('Error checking admin status:', error);
+            setIsAdmin(false);
+          } else {
+            setIsAdmin(isUserAdmin || false);
+          }
+        } catch (error) {
+          console.error('Error checking admin status:', error);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+      
       setLoading(false);
     });
 

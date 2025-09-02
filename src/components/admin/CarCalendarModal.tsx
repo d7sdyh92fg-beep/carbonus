@@ -42,6 +42,7 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
 
   const fetchCarReservations = async () => {
     try {
+      // Admin users can still access full reservation data via RLS
       const { data, error } = await supabase
         .from('reservations')
         .select(`
@@ -60,7 +61,7 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
 
       setReservations(data || []);
 
-      // Generate booked dates
+      // Generate booked dates from the same data
       const dates: Date[] = [];
       data?.forEach((reservation) => {
         const start = new Date(reservation.start_date);
@@ -74,6 +75,30 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
       setBookedDates(dates);
     } catch (error) {
       console.error('Error fetching car reservations:', error);
+      // Fallback to public availability view if admin access fails
+      try {
+        const { data: availabilityData, error: availabilityError } = await supabase
+          .from('reservation_availability')
+          .select('start_date, end_date')
+          .eq('car_id', carId);
+
+        if (availabilityError) throw availabilityError;
+
+        const dates: Date[] = [];
+        availabilityData?.forEach((reservation) => {
+          const start = new Date(reservation.start_date);
+          const end = new Date(reservation.end_date);
+          
+          for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+            dates.push(new Date(date));
+          }
+        });
+
+        setBookedDates(dates);
+        setReservations([]); // Clear reservations since we don't have access
+      } catch (fallbackError) {
+        console.error('Error fetching availability data:', fallbackError);
+      }
     }
   };
 

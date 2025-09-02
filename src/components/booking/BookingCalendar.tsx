@@ -26,36 +26,22 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
   useEffect(() => {
     fetchBookedDates();
 
-    // Set up real-time subscription for reservations
-    const channel = supabase
-      .channel('reservation-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'reservations',
-          filter: `car_id=eq.${carId}`
-        },
-        () => {
-          // Refresh booked dates when reservations change
-          fetchBookedDates();
-        }
-      )
-      .subscribe();
+    // Set up periodic refresh since we can't subscribe to views
+    // Refresh every 30 seconds for near real-time updates
+    const intervalId = setInterval(fetchBookedDates, 30000);
 
     return () => {
-      supabase.removeChannel(channel);
+      clearInterval(intervalId);
     };
   }, [carId]);
 
   const fetchBookedDates = async () => {
     try {
+      // Use the safe public availability view instead of direct table access
       const { data: reservations, error } = await supabase
-        .from("reservations")
+        .from("reservation_availability")
         .select("start_date, end_date")
-        .eq("car_id", carId)
-        .in("status", ["confirmed", "pending", "requested"]);
+        .eq("car_id", carId);
 
       if (error) {
         console.error("Error fetching booked dates:", error);
