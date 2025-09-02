@@ -52,58 +52,28 @@ const BookingForm: React.FC<BookingFormProps> = ({
     setIsSubmitting(true);
 
     try {
-      // First, create or get customer
-      const { data: existingCustomer } = await supabase
-        .from("customers")
-        .select("id")
-        .eq("email", formData.email)
-        .maybeSingle();
-
-      let customerId;
-      
-      if (existingCustomer) {
-        customerId = existingCustomer.id;
-      } else {
-        const { data: newCustomer, error: customerError } = await supabase
-          .from("customers")
-          .insert({
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            email: formData.email,
-            phone: formData.phone,
-          })
-          .select("id")
-          .single();
-
-        if (customerError) {
-          throw customerError;
+      // Send booking email instead of creating database records
+      const { error } = await supabase.functions.invoke('send-booking-email', {
+        body: {
+          customerName: `${formData.firstName} ${formData.lastName}`,
+          customerEmail: formData.email,
+          customerPhone: formData.phone,
+          carName: carName,
+          startDate: startDate.toLocaleDateString('lt-LT'),
+          endDate: endDate.toLocaleDateString('lt-LT'),
+          rentalDays: rentalDays,
+          totalAmount: totalAmount,
+          depositAmount: depositAmount,
         }
-        customerId = newCustomer.id;
-      }
+      });
 
-      // Create reservation
-      const { error: reservationError } = await supabase
-        .from("reservations")
-        .insert({
-          customer_id: customerId,
-          car_id: carId,
-          car_name: carName,
-          start_date: startDate.toISOString().split('T')[0],
-          end_date: endDate.toISOString().split('T')[0],
-          rental_days: rentalDays,
-          daily_rate: dailyRate,
-          total_rental_cost: totalAmount,
-          total_amount: totalAmount + 300, // Add deposit
-          status: "confirmed",
-        });
-
-      if (reservationError) {
-        throw reservationError;
+      if (error) {
+        throw error;
       }
 
       toast({
-        title: "Rezervacija sėkminga!",
-        description: `Jūsų rezervacija ${carName} sukurta. Mes susisieksime su jumis dėl išsamesnės informacijos.`,
+        title: "Rezervacija atlikta!",
+        description: "Jūsų rezervacija gauta. Susisieksime su jumis el. paštu dėl mokėjimo ir automobilio perdavimo detalių.",
       });
 
       onBookingSuccess();
@@ -111,7 +81,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       console.error("Booking error:", error);
       toast({
         title: "Klaida",
-        description: "Nepavyko sukurti rezervacijos. Bandykite dar kartą.",
+        description: "Nepavyko išsiųsti rezervacijos. Bandykite dar kartą arba susisiekite telefonu.",
         variant: "destructive",
       });
     } finally {
