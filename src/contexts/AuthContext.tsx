@@ -38,19 +38,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Check if user is admin - remove setTimeout to avoid timing issues
+          // Check if user is admin using the new function
           try {
-            console.log('Checking admin for user ID:', session.user.id);
-            const { data, error } = await supabase
-              .from('user_roles')
-              .select('role')
-              .eq('user_id', session.user.id)
-              .eq('role', 'admin')
-              .single();
+            console.log('Checking admin for user email:', session.user.email);
+            const { data, error } = await supabase.rpc('is_current_user_admin');
             
-            console.log('Admin query result:', { data, error });
+            console.log('Admin function result:', { data, error });
             setIsAdmin(!!data);
-            console.log('Admin check result:', !!data);
+            console.log('Final admin status:', !!data);
           } catch (error) {
             console.log('Admin check error:', error);
             setIsAdmin(false);
@@ -70,12 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (session?.user) {
         try {
-          const { data } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', session.user.id)
-            .eq('role', 'admin')
-            .single();
+          const { data, error } = await supabase.rpc('is_current_user_admin');
           
           setIsAdmin(!!data);
           console.log('Initial admin check result:', !!data);
