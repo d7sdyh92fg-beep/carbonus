@@ -33,7 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email to admin (info@carbonus.lt)
     const adminEmailResponse = await resend.emails.send({
-      from: "CARBONUS <onboarding@resend.dev>",
+      from: "CARBONUS <info@carbonus.lt>",
       to: ["info@carbonus.lt"],
       subject: `Nauja rezervacija - ${booking.carName}`,
       html: `
@@ -69,7 +69,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email to customer
     const customerEmailResponse = await resend.emails.send({
-      from: "CARBONUS <onboarding@resend.dev>",
+      from: "CARBONUS <info@carbonus.lt>",
       to: [booking.customerEmail],
       subject: `Rezervacijos patvirtinimas - ${booking.carName}`,
       html: `
