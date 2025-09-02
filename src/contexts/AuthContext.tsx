@@ -31,12 +31,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let mounted = true;
     console.log('AuthContext initializing...');
 
+    // Add timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      if (mounted) {
+        console.log('AuthContext loading timeout - forcing completion');
+        setLoading(false);
+      }
+    }, 3000); // 3 second timeout
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (!mounted) return;
         
         console.log('Auth state changed:', event, session?.user?.id);
+        clearTimeout(loadingTimeout);
         
         setSession(session);
         setUser(session?.user ?? null);
@@ -50,11 +59,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const checkSession = async () => {
       try {
         console.log('Checking existing session...');
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error } = await supabase.auth.getSession();
         
         if (!mounted) return;
         
-        console.log('Got session:', session?.user?.id);
+        console.log('Got session result:', { session: session?.user?.id, error });
+        clearTimeout(loadingTimeout);
         
         setSession(session);
         setUser(session?.user ?? null);
@@ -64,6 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch (error) {
         console.error('Error getting session:', error);
         if (mounted) {
+          clearTimeout(loadingTimeout);
           setSession(null);
           setUser(null);
           setIsAdmin(false);
@@ -77,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => {
       console.log('AuthContext cleanup');
+      clearTimeout(loadingTimeout);
       mounted = false;
       subscription.unsubscribe();
     };
