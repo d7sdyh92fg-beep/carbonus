@@ -13,10 +13,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Navigation } from '@/components/ui/navigation';
 import { Footer } from '@/components/sections/footer';
+import bmw3Clean from "@/assets/bmw-3-clean.png";
+import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
+import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
+import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 
 interface Reservation {
   id: string;
@@ -54,14 +57,58 @@ const Admin = () => {
     dailyRate: 50,
   });
 
-  const carOptions = [
-    'BMW 3 series',
-    'Audi RS5',
-    'Mercedes C-Class',
-    'Toyota Camry',
-    'Tesla Model 3',
-    'Ford Mustang',
+  const cars = [
+    {
+      id: "1",
+      name: "BMW 3 series",
+      price: "30 EUR",
+      image: bmw3Clean,
+      category: "Sedanas",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
+    },
+    {
+      id: "2", 
+      name: "Chrysler Town & Country",
+      price: "30 EUR",
+      image: chryslerTownCountrySide,
+      category: "Miniautobusas",
+      passengers: 7,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.6,
+      features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
+    },
+    {
+      id: "3",
+      name: "Volkswagen Passat", 
+      price: "30 EUR",
+      image: vwPassatSideClean,
+      category: "Sedanas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.7,
+      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+    },
+    {
+      id: "4",
+      name: "KIA CEED",
+      price: "30 EUR", 
+      image: kiaCeedSideClean,
+      category: "Universalas",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Mechaninė",
+      rating: 4.5,
+      features: ["Ekonomiškas vairavimas", "Erdvus universalas", "Patikimas automobilis"]
+    }
   ];
+
+  const carOptions = cars.map(car => car.name);
 
   useEffect(() => {
     if (!loading && user && isAdmin) {
@@ -272,18 +319,130 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      
+      {/* Admin Header */}
+      <header className="border-b bg-card">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <span className="text-2xl font-bold text-primary">CARBONUS.</span>
+              <Badge variant="secondary" className="text-xs">Admin</Badge>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-muted-foreground">
+                Prisijungęs: {user?.email}
+              </span>
+              <Button variant="outline" size="sm" onClick={() => window.location.href = '/'}>
+                Grįžti į svetainę
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
       <main className="container mx-auto px-4 py-8">
+        {/* Dashboard Overview */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">Administratoriaus skydelis</h1>
-          <p className="text-muted-foreground">Valdykite rezervacijas ir klientų duomenis</p>
+          <h1 className="text-3xl font-bold mb-2">Administratoriaus skydelis</h1>
+          <p className="text-muted-foreground mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
+          
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Bendra rezervacijų</CardTitle>
+                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{reservations.length}</div>
+                <p className="text-xs text-muted-foreground">Visos rezervacijos sistemoje</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Aktyvios</CardTitle>
+                <Car className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">
+                  {reservations.filter(r => r.status === 'confirmed').length}
+                </div>
+                <p className="text-xs text-muted-foreground">Patvirtintos rezervacijos</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Automobilių</CardTitle>
+                <Settings className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{cars.length}</div>
+                <p className="text-xs text-muted-foreground">Galimų automobilių</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Pajamos</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  €{reservations.reduce((sum, r) => sum + (r.total_amount || 0), 0)}
+                </div>
+                <p className="text-xs text-muted-foreground">Bendra suma</p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
+        {/* Cars Management Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Car className="h-5 w-5" />
+              Automobilių parkas
+            </CardTitle>
+            <CardDescription>Mūsų turimų automobilių sąrašas</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {cars.map((car) => (
+                <Card key={car.id} className="overflow-hidden">
+                  <div className="aspect-video relative overflow-hidden">
+                    <img 
+                      src={car.image} 
+                      alt={car.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <Badge className="absolute top-2 right-2">{car.category}</Badge>
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold mb-2">{car.name}</h3>
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Users className="h-3 w-3" />
+                        {car.passengers} vietos
+                      </div>
+                      <div>{car.fuel} • {car.transmission}</div>
+                      <div className="font-semibold text-primary">{car.price}/dienai</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Reservations Management */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>Rezervacijos</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                Rezervacijų valdymas
+              </CardTitle>
               <CardDescription>Visos automobilių rezervacijos sistemoje</CardDescription>
             </div>
             <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
