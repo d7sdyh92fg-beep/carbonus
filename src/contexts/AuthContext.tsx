@@ -29,6 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     let mounted = true;
+    console.log('AuthContext initializing...');
 
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -40,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         setIsAdmin(false);
+        console.log('Setting loading to false after auth state change');
         setLoading(false);
       }
     );
@@ -57,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         setIsAdmin(false);
+        console.log('Setting loading to false after session check');
         setLoading(false);
       } catch (error) {
         console.error('Error getting session:', error);
@@ -64,6 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setSession(null);
           setUser(null);
           setIsAdmin(false);
+          console.log('Setting loading to false after error');
           setLoading(false);
         }
       }
@@ -72,6 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkSession();
 
     return () => {
+      console.log('AuthContext cleanup');
       mounted = false;
       subscription.unsubscribe();
     };
