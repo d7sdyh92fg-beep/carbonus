@@ -1,7 +1,16 @@
 import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogOut, Shield } from "lucide-react";
 import { LanguageSwitcher } from "./language-switcher";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface NavigationProps {
   logo?: string;
@@ -9,6 +18,16 @@ interface NavigationProps {
 
 export function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAdmin, signOut } = useAuth();
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   const navItems = [
     { name: "Pradžia", href: "/" },
@@ -36,13 +55,17 @@ export function Navigation({ logo }: NavigationProps) {
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
-                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActive(item.href)
+                      ? "text-primary border-b-2 border-primary pb-1"
+                      : "text-foreground"
+                  }`}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -50,7 +73,36 @@ export function Navigation({ logo }: NavigationProps) {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSwitcher />
-            <Button variant="hero" onClick={() => window.location.href = '/kontaktai'}>Kontaktai</Button>
+            
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <User className="h-4 w-4 mr-2" />
+                    Paskyra
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuItem onClick={() => navigate('/admin')}>
+                        <Shield className="h-4 w-4 mr-2" />
+                        Admin skydelis
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Atsijungti
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button onClick={() => navigate('/auth')} size="sm">
+                Prisijungti
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -70,22 +122,59 @@ export function Navigation({ logo }: NavigationProps) {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
-                  className="text-foreground hover:text-primary block px-3 py-2 text-base font-medium transition-colors duration-200"
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary block px-3 py-2 ${
+                    isActive(item.href) ? "text-primary" : "text-foreground"
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
               <div className="pt-4 border-t mt-4 space-y-3">
                 <div className="flex justify-center">
                   <LanguageSwitcher />
                 </div>
-                <Button variant="hero" className="w-full" onClick={() => window.location.href = '/kontaktai'}>
-                  Kontaktai
-                </Button>
+                {user ? (
+                  <div className="space-y-2">
+                    {isAdmin && (
+                      <Button 
+                        variant="outline" 
+                        className="w-full" 
+                        onClick={() => {
+                          navigate('/admin');
+                          setIsOpen(false);
+                        }}
+                      >
+                        <Shield className="h-4 w-4 mr-2" />
+                        Admin skydelis
+                      </Button>
+                    )}
+                    <Button 
+                      variant="outline" 
+                      className="w-full" 
+                      onClick={() => {
+                        handleSignOut();
+                        setIsOpen(false);
+                      }}
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Atsijungti
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    className="w-full" 
+                    onClick={() => {
+                      navigate('/auth');
+                      setIsOpen(false);
+                    }}
+                  >
+                    Prisijungti
+                  </Button>
+                )}
               </div>
             </div>
           </div>
