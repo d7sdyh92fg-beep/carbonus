@@ -74,12 +74,12 @@ export function Navigation({ logo }: NavigationProps) {
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSwitcher />
             
-            {user ? (
+            {user && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm">
                     <User className="h-4 w-4 mr-2" />
-                    Paskyra
+                    Admin
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -98,10 +98,6 @@ export function Navigation({ logo }: NavigationProps) {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
-              <Button onClick={() => navigate('/auth')} size="sm">
-                Prisijungti
-              </Button>
             )}
           </div>
 
@@ -137,7 +133,7 @@ export function Navigation({ logo }: NavigationProps) {
                 <div className="flex justify-center">
                   <LanguageSwitcher />
                 </div>
-                {user ? (
+                {user && (
                   <div className="space-y-2">
                     {isAdmin && (
                       <Button 
@@ -164,16 +160,6 @@ export function Navigation({ logo }: NavigationProps) {
                       Atsijungti
                     </Button>
                   </div>
-                ) : (
-                  <Button 
-                    className="w-full" 
-                    onClick={() => {
-                      navigate('/auth');
-                      setIsOpen(false);
-                    }}
-                  >
-                    Prisijungti
-                  </Button>
                 )}
               </div>
             </div>
