@@ -20,7 +20,7 @@ export function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -29,7 +29,6 @@ export function Navigation({ logo }: NavigationProps) {
     { name: "Automobiliai", href: "/automobiliai" },
     { name: "Apie mus", href: "/apie-mus" },
     { name: "DUK", href: "/duk" },
-    { name: "Admin", href: "/admin" },
   ];
 
   return (
@@ -69,6 +68,32 @@ export function Navigation({ logo }: NavigationProps) {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSwitcher />
+            {user && isAdmin ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Admin
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate('/admin')}>
+                    <Shield className="mr-2 h-4 w-4" />
+                    Skydelis
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Atsijungti
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button variant="ghost" size="sm" onClick={() => navigate('/auth')}>
+                <User className="h-4 w-4 mr-2" />
+                Admin
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -103,6 +128,43 @@ export function Navigation({ logo }: NavigationProps) {
                 <div className="flex justify-center">
                   <LanguageSwitcher />
                 </div>
+                {user && isAdmin ? (
+                  <div className="space-y-2">
+                    <Link
+                      to="/admin"
+                      className="text-sm font-medium block px-3 py-2 text-center"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Shield className="h-4 w-4 inline mr-2" />
+                      Admin Skydelis
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        signOut();
+                        setIsOpen(false);
+                      }}
+                      className="w-full"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Atsijungti
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      navigate('/auth');
+                      setIsOpen(false);
+                    }}
+                    className="w-full"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Admin
+                  </Button>
+                )}
               </div>
             </div>
           </div>

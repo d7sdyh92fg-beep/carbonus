@@ -64,14 +64,15 @@ const Admin = () => {
   ];
 
   useEffect(() => {
-    // Always fetch reservations since no auth required
-    fetchReservations();
-  }, []);
+    if (!loading && user && isAdmin) {
+      fetchReservations();
+    }
+  }, [user, isAdmin, loading]);
 
-  // Redirect non-admin users - removed since no auth required
-  // if (!loading && (!user || !isAdmin)) {
-  //   return <Navigate to="/auth" replace />;
-  // }
+  // Redirect non-admin users to auth page
+  if (!loading && (!user || !isAdmin)) {
+    return <Navigate to="/auth" replace />;
+  }
 
   if (loading) {
     return (
