@@ -30,6 +30,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   console.log('AuthProvider state:', { user: user?.email, isAdmin, loading });
 
+  console.log('AuthProvider rendering with:', { 
+    userExists: !!user, 
+    userEmail: user?.email, 
+    isAdmin, 
+    loading 
+  });
+
   useEffect(() => {
     let isMounted = true;
     

@@ -15,6 +15,8 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  console.log('Auth component - user:', user, 'loading:', loading);
+
   // Form states
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [signupForm, setSignupForm] = useState({
@@ -26,16 +28,20 @@ const Auth = () => {
 
   // Redirect authenticated users
   if (!loading && user) {
+    console.log('Redirecting authenticated user to home');
     return <Navigate to="/" replace />;
   }
 
   if (loading) {
+    console.log('Auth loading...');
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
     );
   }
+
+  console.log('Rendering auth form');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
