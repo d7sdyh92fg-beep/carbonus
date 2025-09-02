@@ -52,8 +52,54 @@ const BookingForm: React.FC<BookingFormProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Send booking email instead of creating database records
-      const { error } = await supabase.functions.invoke('send-booking-email', {
+      // First, create or get customer
+      const { data: existingCustomer } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('email', formData.email)
+        .maybeSingle();
+
+      let customerId;
+
+      if (existingCustomer) {
+        customerId = existingCustomer.id;
+      } else {
+        const { data: newCustomer, error: customerError } = await supabase
+          .from('customers')
+          .insert([{
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            phone: formData.phone,
+          }])
+          .select('id')
+          .single();
+
+        if (customerError) throw customerError;
+        customerId = newCustomer.id;
+      }
+
+      // Create reservation with "requested" status
+      const { error: reservationError } = await supabase
+        .from('reservations')
+        .insert([{
+          customer_id: customerId,
+          car_name: carName,
+          car_id: carId,
+          start_date: startDate.toISOString().split('T')[0],
+          end_date: endDate.toISOString().split('T')[0],
+          rental_days: rentalDays,
+          daily_rate: dailyRate,
+          total_rental_cost: totalAmount,
+          deposit_amount: depositAmount,
+          total_amount: totalAmount + depositAmount,
+          status: 'requested'
+        }]);
+
+      if (reservationError) throw reservationError;
+
+      // Also send notification email
+      await supabase.functions.invoke('send-booking-email', {
         body: {
           customerName: `${formData.firstName} ${formData.lastName}`,
           customerEmail: formData.email,
@@ -67,13 +113,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
         }
       });
 
-      if (error) {
-        throw error;
-      }
-
       toast({
-        title: "Rezervacija atlikta!",
-        description: "Jūsų rezervacija gauta. Susisieksime su jumis el. paštu dėl mokėjimo ir automobilio perdavimo detalių.",
+        title: "Rezervacija sukurta!",
+        description: "Jūsų rezervacija sėkmingai išsaugota. Galite apmokėti dabar arba vėliau susisieksime dėl mokėjimo.",
       });
 
       onBookingSuccess();
@@ -81,7 +123,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       console.error("Booking error:", error);
       toast({
         title: "Klaida",
-        description: "Nepavyko išsiųsti rezervacijos. Bandykite dar kartą arba susisiekite telefonu.",
+        description: "Nepavyko sukurti rezervacijos. Bandykite dar kartą arba susisiekite telefonu.",
         variant: "destructive",
       });
     } finally {
