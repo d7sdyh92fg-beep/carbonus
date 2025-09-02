@@ -32,69 +32,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         if (!mounted) return;
+        
+        console.log('Auth state changed:', event, session?.user?.id);
         
         setSession(session);
         setUser(session?.user ?? null);
-        setIsAdmin(false); // Reset admin status first
-        
-        // Only check admin status if user is authenticated
-        if (session?.user) {
-          try {
-            const { data: isUserAdmin, error } = await supabase
-              .rpc('is_current_user_admin');
-            
-            if (mounted) {
-              if (error) {
-                console.error('Error checking admin status:', error);
-                setIsAdmin(false);
-              } else {
-                setIsAdmin(isUserAdmin || false);
-              }
-            }
-          } catch (error) {
-            console.error('Error checking admin status:', error);
-            if (mounted) setIsAdmin(false);
-          }
-        }
-        
-        if (mounted) setLoading(false);
+        setIsAdmin(false);
+        setLoading(false);
       }
     );
 
     // Check for existing session
     const checkSession = async () => {
       try {
+        console.log('Checking existing session...');
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!mounted) return;
         
+        console.log('Got session:', session?.user?.id);
+        
         setSession(session);
         setUser(session?.user ?? null);
         setIsAdmin(false);
-        
-        // Only check admin status if user is authenticated
-        if (session?.user) {
-          try {
-            const { data: isUserAdmin, error } = await supabase
-              .rpc('is_current_user_admin');
-            
-            if (mounted) {
-              if (error) {
-                console.error('Error checking admin status:', error);
-                setIsAdmin(false);
-              } else {
-                setIsAdmin(isUserAdmin || false);
-              }
-            }
-          } catch (error) {
-            console.error('Error checking admin status:', error);
-            if (mounted) setIsAdmin(false);
-          }
-        }
-        
-        if (mounted) setLoading(false);
+        setLoading(false);
       } catch (error) {
         console.error('Error getting session:', error);
         if (mounted) {
@@ -119,6 +82,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email,
       password,
     });
+    
+    // Check admin status after successful login (non-blocking)
+    if (!error) {
+      setTimeout(async () => {
+        try {
+          const { data: isUserAdmin, error: adminError } = await supabase
+            .rpc('is_current_user_admin');
+          
+          if (!adminError) {
+            setIsAdmin(isUserAdmin || false);
+          }
+        } catch (err) {
+          console.error('Error checking admin status after login:', err);
+        }
+      }, 100);
+    }
+    
     return { error };
   };
 
