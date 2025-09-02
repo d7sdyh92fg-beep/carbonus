@@ -255,13 +255,17 @@ const Admin = () => {
         customerId = newCustomer.id;
       }
 
+      // Find the correct car ID based on car name
+      const selectedCar = cars.find(car => car.name === newReservation.carName);
+      const carId = selectedCar ? selectedCar.id : newReservation.carName.toLowerCase().replace(/ /g, '-');
+
       // Create reservation
       const { error: reservationError } = await supabase
         .from('reservations')
         .insert([{
           customer_id: customerId,
           car_name: newReservation.carName,
-          car_id: newReservation.carName.toLowerCase().replace(/ /g, '-'),
+          car_id: carId,
           start_date: format(start, 'yyyy-MM-dd'),
           end_date: format(end, 'yyyy-MM-dd'),
           rental_days: diffDays,
