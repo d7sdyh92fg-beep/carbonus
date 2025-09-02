@@ -52,18 +52,33 @@ const BookingForm: React.FC<BookingFormProps> = ({
     setIsSubmitting(true);
 
     try {
+      console.log("Starting reservation creation:", {
+        carId,
+        carName,
+        startDate: startDate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
+        formData
+      });
+
       // First, create or get customer
-      const { data: existingCustomer } = await supabase
+      const { data: existingCustomer, error: customerCheckError } = await supabase
         .from('customers')
         .select('id')
         .eq('email', formData.email)
         .maybeSingle();
 
+      if (customerCheckError) {
+        console.error("Customer check error:", customerCheckError);
+        throw customerCheckError;
+      }
+
       let customerId;
 
       if (existingCustomer) {
         customerId = existingCustomer.id;
+        console.log("Found existing customer:", customerId);
       } else {
+        console.log("Creating new customer...");
         const { data: newCustomer, error: customerError } = await supabase
           .from('customers')
           .insert([{
@@ -75,47 +90,69 @@ const BookingForm: React.FC<BookingFormProps> = ({
           .select('id')
           .single();
 
-        if (customerError) throw customerError;
+        if (customerError) {
+          console.error("Customer creation error:", customerError);
+          throw customerError;
+        }
         customerId = newCustomer.id;
+        console.log("Created new customer:", customerId);
       }
 
+      // Ensure carId is in correct format
+      const normalizedCarId = carId || carName.toLowerCase().replace(/\s+/g, '-');
+      console.log("Using carId:", normalizedCarId);
+
       // Create reservation with "requested" status
+      const reservationData = {
+        customer_id: customerId,
+        car_name: carName,
+        car_id: normalizedCarId,
+        start_date: startDate.toISOString().split('T')[0],
+        end_date: endDate.toISOString().split('T')[0],
+        rental_days: rentalDays,
+        daily_rate: dailyRate,
+        total_rental_cost: totalAmount,
+        deposit_amount: depositAmount,
+        total_amount: totalAmount + depositAmount,
+        status: 'requested'
+      };
+
+      console.log("Creating reservation with data:", reservationData);
+
       const { error: reservationError } = await supabase
         .from('reservations')
-        .insert([{
-          customer_id: customerId,
-          car_name: carName,
-          car_id: carId,
-          start_date: startDate.toISOString().split('T')[0],
-          end_date: endDate.toISOString().split('T')[0],
-          rental_days: rentalDays,
-          daily_rate: dailyRate,
-          total_rental_cost: totalAmount,
-          deposit_amount: depositAmount,
-          total_amount: totalAmount + depositAmount,
-          status: 'requested'
-        }]);
+        .insert([reservationData]);
 
-      if (reservationError) throw reservationError;
+      if (reservationError) {
+        console.error("Reservation creation error:", reservationError);
+        throw reservationError;
+      }
+
+      console.log("Reservation created successfully");
 
       // Also send notification email
-      await supabase.functions.invoke('send-booking-email', {
-        body: {
-          customerName: `${formData.firstName} ${formData.lastName}`,
-          customerEmail: formData.email,
-          customerPhone: formData.phone,
-          carName: carName,
-          startDate: startDate.toLocaleDateString('lt-LT'),
-          endDate: endDate.toLocaleDateString('lt-LT'),
-          rentalDays: rentalDays,
-          totalAmount: totalAmount,
-          depositAmount: depositAmount,
-        }
-      });
+      try {
+        await supabase.functions.invoke('send-booking-email', {
+          body: {
+            customerName: `${formData.firstName} ${formData.lastName}`,
+            customerEmail: formData.email,
+            customerPhone: formData.phone,
+            carName: carName,
+            startDate: startDate.toLocaleDateString('lt-LT'),
+            endDate: endDate.toLocaleDateString('lt-LT'),
+            rentalDays: rentalDays,
+            totalAmount: totalAmount,
+            depositAmount: depositAmount,
+          }
+        });
+        console.log("Email sent successfully");
+      } catch (emailError) {
+        console.warn("Email sending failed, but reservation was created:", emailError);
+      }
 
       toast({
         title: "Rezervacija sukurta!",
-        description: "Jūsų rezervacija sėkmingai išsaugota. Galite apmokėti dabar arba vėliau susisieksime dėl mokėjimo.",
+        description: "Jūsų rezervacija sėkmingai išsaugota. Susisieksime su jumis dėl mokėjimo detalių.",
       });
 
       onBookingSuccess();
@@ -123,7 +160,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       console.error("Booking error:", error);
       toast({
         title: "Klaida",
-        description: "Nepavyko sukurti rezervacijos. Bandykite dar kartą arba susisiekite telefonu.",
+        description: `Nepavyko sukurti rezervacijos: ${error.message}. Bandykite dar kartą arba susisiekite telefonu.`,
         variant: "destructive",
       });
     } finally {
