@@ -55,7 +55,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
         .from("reservations")
         .select("start_date, end_date")
         .eq("car_id", carId)
-        .in("status", ["confirmed", "pending"]);
+        .in("status", ["confirmed", "pending", "requested"]);
 
       if (error) {
         console.error("Error fetching booked dates:", error);

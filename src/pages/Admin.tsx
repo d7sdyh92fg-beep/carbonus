@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarCalendarModal from '@/components/admin/CarCalendarModal';
@@ -332,6 +332,54 @@ const Admin = () => {
     }
   };
 
+  const approveReservation = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({ status: 'confirmed' })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Rezervacija patvirtinta",
+        description: "Rezervacija buvo sėkmingai patvirtinta.",
+      });
+
+      fetchReservations();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko patvirtinti rezervacijos: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const denyReservation = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({ status: 'denied' })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Rezervacija atmesta",
+        description: "Rezervacija buvo atmesta.",
+      });
+
+      fetchReservations();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko atmesti rezervacijos: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleEditReservation = (reservation: Reservation) => {
     setEditingReservation(reservation);
     setShowEditDialog(true);
@@ -350,6 +398,7 @@ const Admin = () => {
       completed: 'outline',
       requested: 'outline',
       paid: 'default',
+      denied: 'destructive',
     } as const;
 
     const labels = {
@@ -359,6 +408,7 @@ const Admin = () => {
       completed: 'Baigta',
       requested: 'Prašoma',
       paid: 'Apmokėta',
+      denied: 'Atmesta',
     } as const;
 
     const colors = {
@@ -366,6 +416,7 @@ const Admin = () => {
       paid: 'bg-green-100 text-green-800 border-green-300',
       confirmed: 'bg-blue-100 text-blue-800 border-blue-300',
       cancelled: 'bg-red-100 text-red-800 border-red-300',
+      denied: 'bg-red-100 text-red-800 border-red-300',
       completed: 'bg-gray-100 text-gray-800 border-gray-300',
       pending: 'bg-gray-100 text-gray-800 border-gray-300',
     } as const;
@@ -413,7 +464,7 @@ const Admin = () => {
           <p className="text-muted-foreground mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
           
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Bendra rezervacijų</CardTitle>
@@ -427,14 +478,27 @@ const Admin = () => {
             
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Aktyvios</CardTitle>
+                <CardTitle className="text-sm font-medium">Prašomos</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-yellow-600">
+                  {reservations.filter(r => r.status === 'requested').length}
+                </div>
+                <p className="text-xs text-muted-foreground">Laukia patvirtinimo</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Patvirtintos</CardTitle>
                 <Car className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-green-600">
                   {reservations.filter(r => r.status === 'confirmed').length}
                 </div>
-                <p className="text-xs text-muted-foreground">Patvirtintos rezervacijos</p>
+                <p className="text-xs text-muted-foreground">Apmokėtos rezervacijos</p>
               </CardContent>
             </Card>
             
@@ -682,6 +746,26 @@ const Admin = () => {
                     <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
                      <TableCell>
                        <div className="flex gap-2">
+                         {reservation.status === 'requested' && (
+                           <>
+                             <Button
+                               variant="outline"
+                               size="sm"
+                               onClick={() => approveReservation(reservation.id)}
+                               className="text-green-600 border-green-300 hover:bg-green-50"
+                             >
+                               <CheckCircle className="h-4 w-4" />
+                             </Button>
+                             <Button
+                               variant="outline"
+                               size="sm"
+                               onClick={() => denyReservation(reservation.id)}
+                               className="text-red-600 border-red-300 hover:bg-red-50"
+                             >
+                               <XCircle className="h-4 w-4" />
+                             </Button>
+                           </>
+                         )}
                          <Button
                            variant="outline"
                            size="sm"
@@ -689,7 +773,7 @@ const Admin = () => {
                          >
                            <Edit className="h-4 w-4" />
                          </Button>
-                         {reservation.status !== 'cancelled' && (
+                         {reservation.status !== 'cancelled' && reservation.status !== 'denied' && (
                            <Button
                              variant="outline"
                              size="sm"
@@ -744,9 +828,9 @@ const Admin = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="requested">Prašoma</SelectItem>
-                    <SelectItem value="paid">Apmokėta</SelectItem>
-                    <SelectItem value="pending">Laukiama</SelectItem>
                     <SelectItem value="confirmed">Patvirtinta</SelectItem>
+                    <SelectItem value="denied">Atmesta</SelectItem>
+                    <SelectItem value="pending">Laukiama</SelectItem>
                     <SelectItem value="cancelled">Atšaukta</SelectItem>
                     <SelectItem value="completed">Baigta</SelectItem>
                   </SelectContent>

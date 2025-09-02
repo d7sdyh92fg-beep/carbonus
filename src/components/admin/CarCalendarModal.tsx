@@ -53,7 +53,7 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
           )
         `)
         .eq('car_id', carId)
-        .in('status', ['confirmed', 'pending'])
+        .in('status', ['confirmed', 'pending', 'requested'])
         .order('start_date', { ascending: true });
 
       if (error) throw error;
@@ -109,12 +109,16 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
       pending: 'secondary',
       confirmed: 'default',
       cancelled: 'destructive',
+      requested: 'outline',
+      denied: 'destructive',
     } as const;
 
     const labels = {
       pending: 'Laukiama',
       confirmed: 'Patvirtinta',
       cancelled: 'Atšaukta',
+      requested: 'Prašoma',
+      denied: 'Atmesta',
     } as const;
 
     return (
@@ -232,10 +236,16 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
             <CardTitle>Rezervacijų suvestinė</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
               <div>
                 <div className="text-2xl font-bold text-primary">{reservations.length}</div>
                 <div className="text-sm text-muted-foreground">Visos rezervacijos</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-yellow-600">
+                  {reservations.filter(r => r.status === 'requested').length}
+                </div>
+                <div className="text-sm text-muted-foreground">Prašomos</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-green-600">
