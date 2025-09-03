@@ -389,6 +389,25 @@ const CarDetail = () => {
                   {car.description}
                 </p>
 
+                {/* Car Specifications with Icons */}
+                <div className="grid grid-cols-3 gap-4 mb-8 p-4 bg-secondary/30 rounded-xl">
+                  <div className="text-center">
+                    <Users className="w-6 h-6 mx-auto mb-2 text-primary" />
+                    <div className="text-lg font-bold text-foreground">{car.passengers}</div>
+                    <div className="text-sm text-muted-foreground">Keleiviai</div>
+                  </div>
+                  <div className="text-center">
+                    <Fuel className="w-6 h-6 mx-auto mb-2 text-primary" />
+                    <div className="text-lg font-bold text-foreground">{car.fuel}</div>
+                    <div className="text-sm text-muted-foreground">Kuras</div>
+                  </div>
+                  <div className="text-center">
+                    <Settings className="w-6 h-6 mx-auto mb-2 text-primary" />
+                    <div className="text-lg font-bold text-foreground">{car.transmission}</div>
+                    <div className="text-sm text-muted-foreground">Pavarų dėžė</div>
+                  </div>
+                </div>
+
                 <div className="text-sm text-muted-foreground mb-6">
                   * Galutinė kaina priklauso nuo nuomos trukmės
                 </div>
@@ -404,30 +423,11 @@ const CarDetail = () => {
                   Užsakyti
                 </Button>
               </div>
-
-              {/* Quick Specs */}
-              <div className="grid grid-cols-3 gap-6 py-6 border-y">
-                <div className="text-center">
-                  <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
-                  <div className="text-2xl font-bold text-foreground">{car.passengers}</div>
-                  <div className="text-sm text-muted-foreground">Keleiviai</div>
-                </div>
-                <div className="text-center">
-                  <Fuel className="w-8 h-8 mx-auto mb-2 text-primary" />
-                  <div className="text-lg font-semibold text-foreground">{car.fuel}</div>
-                  <div className="text-sm text-muted-foreground">Kuras</div>
-                </div>
-                <div className="text-center">
-                  <Settings className="w-8 h-8 mx-auto mb-2 text-primary" />
-                  <div className="text-lg font-semibold text-foreground">{car.transmission}</div>
-                  <div className="text-sm text-muted-foreground">Pavarų dėžė</div>
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Features and Specifications */}
-          <div className="grid lg:grid-cols-2 gap-12 mt-20">
+          <div className="grid lg:grid-cols-2 gap-12 mt-12">
             {/* Features */}
             <Card>
               <CardContent className="p-8">
