@@ -448,7 +448,7 @@ const BlogPost = () => {
       // Update canonical URL
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) {
-        canonical.setAttribute('href', `https://carbonus.lt/blogas/${post.slug}`);
+        canonical.setAttribute('href', `https://carbonus.lt/naujienos/${post.slug}`);
       }
       
       // Update Open Graph tags
@@ -459,7 +459,7 @@ const BlogPost = () => {
       
       const ogUrl = document.querySelector('meta[property="og:url"]');
       if (ogUrl) {
-        ogUrl.setAttribute('content', `https://carbonus.lt/blogas/${post.slug}`);
+        ogUrl.setAttribute('content', `https://carbonus.lt/naujienos/${post.slug}`);
       }
     }
   }, [post]);
@@ -469,7 +469,7 @@ const BlogPost = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-foreground mb-4">Straipsnis nerastas</h2>
-          <Button onClick={() => navigate("/blogas")}>
+          <Button onClick={() => navigate("/naujienos")}>
             Grįžti į naujienas
           </Button>
         </div>
@@ -488,7 +488,7 @@ const BlogPost = () => {
             <Button 
               variant="ghost" 
               size="sm"
-              onClick={() => navigate("/blogas")}
+              onClick={() => navigate("/naujienos")}
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="w-4 h-4" />

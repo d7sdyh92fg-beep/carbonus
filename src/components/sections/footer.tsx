@@ -83,7 +83,7 @@ export function Footer() {
       navigate('/nuomos-salygos');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (link === "Naujienos") {
-      navigate('/blogas');
+      navigate('/naujienos');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // For other links, scroll to sections or handle as needed

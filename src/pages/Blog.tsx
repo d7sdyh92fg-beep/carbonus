@@ -42,7 +42,7 @@ const Blog = () => {
     // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      canonical.setAttribute('href', 'https://carbonus.lt/blogas');
+      canonical.setAttribute('href', 'https://carbonus.lt/naujienos');
     }
     
     // Update Open Graph tags
@@ -53,7 +53,7 @@ const Blog = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://carbonus.lt/blogas');
+      ogUrl.setAttribute('content', 'https://carbonus.lt/naujienos');
     }
   }, []);
 
@@ -164,7 +164,7 @@ const Blog = () => {
               <Card
                 key={post.id}
                 className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card cursor-pointer"
-                onClick={() => navigate(`/blogas/${post.slug}`)}
+                onClick={() => navigate(`/naujienos/${post.slug}`)}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardContent className="p-0">
