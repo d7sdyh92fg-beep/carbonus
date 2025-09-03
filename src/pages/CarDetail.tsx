@@ -245,13 +245,13 @@ const CarDetail = () => {
         "Saugos sistemos"
       ],
       specifications: {
+        "Metai": "2020",
         "Kuras": "Dyzelinas",
         "Pavarų dėžė": "Mechaninė",
         "Keleivių skaičius": "5",
         "Durų skaičius": "5",
         "Bagažinės talpa": "395 L",
-        "Variklio tipas": "1.6L CRDi",
-        "Metai": "2020"
+        "Variklio tipas": "1.6L CRDi"
       }
     }
   };
