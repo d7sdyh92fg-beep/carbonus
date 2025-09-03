@@ -26,7 +26,7 @@ export function Footer() {
     setIsSubscribing(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
+      const { data, error } = await supabase.functions.invoke('subscribe-newsletter', {
         body: { email }
       });
 
@@ -34,18 +34,18 @@ export function Footer() {
         throw error;
       }
 
-      if (data.alreadySubscribed) {
-        toast({
-          title: "Jau prenumeruojate",
-          description: data.error,
-          variant: "destructive",
-        });
-      } else {
+      if (data.success) {
         toast({
           title: "Sėkmingai užsiprenumeravote!",
-          description: "Patikrinkite savo el. paštą dėl patvirtinimo.",
+          description: data.message || "Patikrinkite savo el. paštą dėl patvirtinimo.",
         });
         setEmail(''); // Clear the input
+      } else {
+        toast({
+          title: "Klaida",
+          description: data.error || "Nepavyko užsiprenumeruoti.",
+          variant: "destructive",
+        });
       }
 
     } catch (error: any) {
