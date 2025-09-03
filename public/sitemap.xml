@@ -9,73 +9,161 @@
 <!-- Main Pages -->
 <url>
   <loc>https://carbonus.lt/</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.0</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/automobiliai</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.9</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/apie-mus</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/kontaktai</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/duk</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.6</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/privatumo-politika</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>yearly</changefreq>
   <priority>0.3</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/nuomos-salygos</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
+</url>
+
+<!-- Blog/News Pages -->
+<url>
+  <loc>https://carbonus.lt/naujienos</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/naujienos/10-patarimu-kaip-sutaupyti-nuomojant-automobili</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/naujienos/kelioniu-planavimas-lietuvoje</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/naujienos/automobiliu-draudimas-nuomojantis</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/naujienos/verslo-kelioniu-optimizavimas</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/naujienos/saugus-vairavimas-ziema</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/naujienos/seimos-kelione-kaip-pasirinkti-idealu-automobili</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
 </url>
 
 <!-- Car Detail Pages -->
 <url>
   <loc>https://carbonus.lt/automobiliai/1</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
   <image:image>
-    <image:loc>https://carbonus.lt/lovable-uploads/6d952bf9-02ce-401a-844d-53602e6bd46a.png</image:loc>
-    <image:caption>BMW 3 series - premium automobilio nuoma</image:caption>
+    <image:loc>https://carbonus.lt/assets/bmw-3-clean.png</image:loc>
+    <image:caption>BMW 3 series - premium automobilio nuoma Lietuvoje</image:caption>
+    <image:title>BMW 3 series nuoma</image:title>
   </image:image>
 </url>
 
 <url>
   <loc>https://carbonus.lt/automobiliai/2</loc>
-  <lastmod>2024-08-19</lastmod>
+  <lastmod>2024-12-19</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
   <image:image>
-    <image:loc>https://carbonus.lt/lovable-uploads/e88041de-a960-4e68-b67d-538898a45d3d.png</image:loc>
-    <image:caption>Chrysler Town & Country - šeimos automobilio nuoma</image:caption>
+    <image:loc>https://carbonus.lt/assets/chrysler-town-country-side.png</image:loc>
+    <image:caption>Chrysler Town & Country - šeimos automobilio nuoma Lietuvoje</image:caption>
+    <image:title>Chrysler Town & Country nuoma</image:title>
+  </image:image>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/automobiliai/3</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+  <image:image>
+    <image:loc>https://carbonus.lt/assets/vw-passat-side-clean.png</image:loc>
+    <image:caption>Volkswagen Passat - ekonomiško automobilio nuoma Lietuvoje</image:caption>
+    <image:title>Volkswagen Passat nuoma</image:title>
+  </image:image>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/automobiliai/4</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+  <image:image>
+    <image:loc>https://carbonus.lt/assets/kia-ceed-side-dark-gray.png</image:loc>
+    <image:caption>KIA CEED Universalas - erdvaus automobilio nuoma Lietuvoje</image:caption>
+    <image:title>KIA CEED Universalas nuoma</image:title>
+  </image:image>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/automobiliai/5</loc>
+  <lastmod>2024-12-19</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+  <image:image>
+    <image:loc>https://carbonus.lt/assets/kia-ceed-hatchback-side-gray-brown.png</image:loc>
+    <image:caption>KIA CEED Hečbekas - moderno automobilio nuoma Lietuvoje</image:caption>
+    <image:title>KIA CEED Hečbekas nuoma</image:title>
   </image:image>
 </url>
 
