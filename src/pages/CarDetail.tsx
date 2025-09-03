@@ -8,6 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
+import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
+import kiaCeedRearEnhanced from "@/assets/kia-ceed-rear-enhanced.png";
 import { useState } from "react";
 
 interface CarDetail {
@@ -169,16 +171,17 @@ const CarDetail = () => {
       id: "4",
       name: "KIA CEED",
       price: "30 EUR",
-      image: kiaCeedSideClean,
+      image: kiaCeedFrontEnhanced,
       images: [
-        kiaCeedSideClean
+        kiaCeedFrontEnhanced,
+        kiaCeedRearEnhanced
       ],
       category: "Universalas",
       passengers: 5,
       fuel: "Benzinas",
       transmission: "Mechaninė",
       rating: 4.5,
-      description: "KIA CEED 2013 universalas - praktiškas ir erdvus automobilis, idealus kelionėms ir kasdieniam naudojimui. Pilkos spalvos automobilis su 1.4 litro benzininiu varikliu.",
+      description: "KIA CEED 2013 universalas - praktiškas ir erdvus automobilis, idealus kelionėms ir kasdieniam naudojimui. Tamsiai pilkos spalvos automobilis su 1.4 litro benzininiu varikliu. Puikiai tvarkytas automobilis su visais reikalingais patogumais.",
       features: [
         "Ekonomiškas benzininis variklis",
         "Erdvus universalo bagažas", 

@@ -128,62 +128,66 @@ const loadImage = (file: Blob): Promise<HTMLImageElement> => {
 export const PhotoEnhancer: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processedImages, setProcessedImages] = useState<string[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
   const enhanceKiaPhotos = async () => {
     setIsProcessing(true);
     toast("Starting photo enhancement...");
 
     try {
-      // Load the existing KIA image from the public folder or lovable uploads
-      const kiaPaths = [
-        '/lovable-uploads/2f65caa0-2965-4077-a0fe-20723b64baa6.png',
-        '/src/assets/kia-ceed-side-clean.png'
+      const enhancedUrls: string[] = [];
+      
+      // Process the uploaded KIA photos
+      const kiaPhotoPaths = [
+        '/lovable-uploads/78559d3b-97c4-4ffb-a53b-25fc9bd9a624.png', // Front view
+        '/lovable-uploads/fd04d979-a500-4441-ab4c-cde960b0aff7.png'  // Rear view
       ];
       
-      let imageLoaded = false;
-      let imageElement: HTMLImageElement | null = null;
-      
-      // Try to load from different possible locations
-      for (const path of kiaPaths) {
+      for (let i = 0; i < kiaPhotoPaths.length; i++) {
+        const path = kiaPhotoPaths[i];
+        toast(`Processing image ${i + 1} of ${kiaPhotoPaths.length}...`);
+        
         try {
           const response = await fetch(path);
-          if (response.ok) {
-            const blob = await response.blob();
-            imageElement = await loadImage(blob);
-            imageLoaded = true;
-            break;
+          if (!response.ok) {
+            throw new Error(`Failed to load image from ${path}`);
           }
+          
+          const blob = await response.blob();
+          const imageElement = await loadImage(blob);
+          
+          toast(`Removing background from image ${i + 1}...`);
+          
+          // Remove background
+          const enhancedBlob = await removeBackground(imageElement);
+          
+          // Create download URL for preview
+          const downloadUrl = URL.createObjectURL(enhancedBlob);
+          enhancedUrls.push(downloadUrl);
+          
+          // Create download link
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+          link.download = `kia-ceed-enhanced-${i === 0 ? 'front' : 'rear'}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
         } catch (error) {
-          console.log(`Failed to load from ${path}, trying next...`);
+          console.error(`Failed to process image ${i + 1}:`, error);
+          toast.error(`Failed to process image ${i + 1}`);
         }
       }
       
-      if (!imageLoaded || !imageElement) {
-        throw new Error("Could not load KIA image from any location");
+      setProcessedImages(enhancedUrls);
+      
+      if (enhancedUrls.length > 0) {
+        toast.success(`Successfully enhanced ${enhancedUrls.length} KIA photos! Downloads started.`);
       }
-      
-      toast("Image loaded, removing background...");
-      
-      // Remove background
-      const enhancedBlob = await removeBackground(imageElement);
-      
-      // Create download URL for preview
-      const downloadUrl = URL.createObjectURL(enhancedBlob);
-      setProcessedImages([downloadUrl]);
-      
-      // Create download link
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = 'kia-ceed-enhanced.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      toast.success("KIA photo enhanced successfully! Download started.");
       
     } catch (error) {
       console.error('Enhancement failed:', error);
-      toast.error("Failed to enhance photo. Please try again.");
+      toast.error("Failed to enhance photos. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -195,13 +199,18 @@ export const PhotoEnhancer: React.FC = () => {
         <CardTitle>Photo Enhancer</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Button 
-          onClick={enhanceKiaPhotos} 
-          disabled={isProcessing}
-          className="w-full"
-        >
-          {isProcessing ? "Processing..." : "Enhance KIA Photos"}
-        </Button>
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            This will enhance the uploaded KIA photos by removing the background and person.
+          </p>
+          <Button 
+            onClick={enhanceKiaPhotos} 
+            disabled={isProcessing}
+            className="w-full"
+          >
+            {isProcessing ? "Processing..." : "Enhance Uploaded KIA Photos"}
+          </Button>
+        </div>
         
         {processedImages.length > 0 && (
           <div className="space-y-2">
