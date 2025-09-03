@@ -312,43 +312,45 @@ const Contact = () => {
               MŪSŲ BIURAI
             </Badge>
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Aplankyti mus galite
+              Mūsų biuras randasi
             </h2>
             <p className="text-xl text-muted-foreground">
               Turime biurus didžiausiuose Lietuvos miestuose
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {locations.map((location, index) => (
-              <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="p-8 text-center">
-                  <div className="flex items-center gap-3 mb-4">
-                    <MapPin className="w-6 h-6 text-primary" />
-                    <h3 className="text-2xl font-bold text-foreground">
-                      {location.city}
-                    </h3>
-                  </div>
-                  <div className="space-y-3 text-muted-foreground">
-                    <p>
-                      <strong>Adresas:</strong><br />
-                      {location.address}
-                    </p>
-                    <p>
-                      <strong>Telefonas:</strong><br />
-                      {location.phone}
-                    </p>
-                    <p>
-                      <strong>Darbo laikas:</strong><br />
-                      {location.hours}
-                    </p>
-                  </div>
-                  <Button variant="outline" className="w-full mt-6">
-                    Maršrutas
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="flex justify-center">
+            <div className="w-full max-w-md">
+              {locations.map((location, index) => (
+                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <CardContent className="p-8 text-center">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <MapPin className="w-6 h-6 text-primary" />
+                      <h3 className="text-2xl font-bold text-foreground">
+                        {location.city}
+                      </h3>
+                    </div>
+                    <div className="space-y-3 text-muted-foreground">
+                      <p>
+                        <strong>Adresas:</strong><br />
+                        {location.address}
+                      </p>
+                      <p>
+                        <strong>Telefonas:</strong><br />
+                        {location.phone}
+                      </p>
+                      <p>
+                        <strong>Darbo laikas:</strong><br />
+                        {location.hours}
+                      </p>
+                    </div>
+                    <Button variant="outline" className="w-full mt-6">
+                      Maršrutas
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
