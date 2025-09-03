@@ -30,9 +30,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let mounted = true;
     
-    // Set up auth state listener
+    // Set up auth state listener - only handle important auth events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        // Only process significant auth events, ignore token refresh spam
+        if (event === 'TOKEN_REFRESHED') {
+          return; // Skip token refresh events to prevent loops
+        }
+        
         console.log('Auth state changed:', event, !!session, session?.user?.email);
         if (!mounted) return;
         
