@@ -381,63 +381,53 @@ const BlogPost = () => {
       image: blogFamilyTravel,
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili",
       content: `
-        <h2>Šeimos kelionės ypatumai</h2>
-        <p>Keliaujant su vaikais automobilis tampa jūsų antruoju namų. Svarbu pasirinkti automobilį, kuris užtikrins saugumą, komfortą ir pakankamai vietos visiems šeimos nariams.</p>
+        <p>Kelionės su šeima – tai nuotykiai, atradimai ir kartu praleistas laikas. Tačiau norint, kad kelionė būtų patogi ir saugi, svarbu išsirinkti tinkamą automobilį. Netinkamai pasirinkta transporto priemonė gali greitai sugadinti nuotaiką tiek vaikams, tiek tėvams.</p>
+
+        <br>
+
+        <h2><strong>1.</strong> Automobilio dydis ir erdvė</h2>
+        <p>Vaikams reikia vietos – tiek sėdint patogiai, tiek laikyti žaislus, užkandžius ar kelionės daiktus.</p>
+        <p><strong>Sedanas</strong> tiks trumpoms kelionėms mieste.</p>
+        <p><strong>Universalas arba SUV</strong> suteiks daugiau erdvės ilgesnėms išvykoms.</p>
+        <p><strong>Minivenas</strong> – geriausias pasirinkimas, jei keliauja didesnė šeima ar vežatės daug bagažo.</p>
+
+        <br>
+
+        <h2><strong>2.</strong> Saugumas – svarbiausias kriterijus</h2>
+        <p>Patikrinkite, ar automobilis turi ISOFIX vaikiškų kėdučių tvirtinimo sistemas.</p>
+        <p>Rinkitės modelius su šoninėmis oro pagalvėmis ir stabdžių pagalbos sistemomis (ABS, ESP).</p>
+        <p>Įsitikinkite, kad visi keleiviai turi saugos diržus.</p>
+
+        <br>
+
+        <h2><strong>3.</strong> Patogumas vaikams kelionės metu</h2>
+        <p>Ilgose kelionėse smulkios detalės daro didelę įtaką:</p>
+        <p>Klimato kontrolė galinėje sėdynių eilėje.</p>
+        <p>Langų užuolaidėlės nuo saulės.</p>
+        <p>USB jungtys ar įkrovikliai įrenginiams.</p>
+        <p>Erdvesnės durys, kad vaikai lengviau įliptų ir išliptų.</p>
+
+        <br>
+
+        <h2><strong>4.</strong> Bagažo vieta ir papildomi daiktai</h2>
+        <p>Šeimos kelionė reiškia daug lagaminų, vežimėlių, sporto ar laisvalaikio įrangos. Todėl rinkitės automobilį su:</p>
+        <p>Dideliu bagažo skyriumi.</p>
+        <p>Galimybe nulenkti galines sėdynes.</p>
+        <p>Stogo bagažinės opcija, jei kelionė ilgesnė.</p>
+
+        <br>
+
+        <h2><strong>5.</strong> Ekonomiškumas ir praktiškumas</h2>
+        <p>Kelionė su šeima dažnai reiškia nemažus atstumus, todėl svarbu atsižvelgti į:</p>
+        <p><strong>Degalų sąnaudas</strong> – ekonomiškas dyzelinis ar hibridinis automobilis padės sutaupyti.</p>
+        <p><strong>Papildomas draudimas</strong> – verta pagalvoti apie „Zero Excess" apsaugą, kad išvengtumėte streso netikėtose situacijose.</p>
+
+        <br>
+
+        <h3><strong>Išvada</strong></h3>
+        <p>Renkantis automobilį šeimos kelionei, pirmiausia pagalvokite apie saugumą, erdvę ir patogumą vaikams. Idealiausias pasirinkimas – erdvus ir patikimas modelis, kuris leis mėgautis kelione, o ne rūpesčiais. Su tinkamu automobiliu šeimos išvyka taps maloniu nuotykiu visiems!</p>
         
-        <h3>Pagrindiniai kriterijai šeimos automobiliui</h3>
-        <h4>Saugumas</h4>
-        <ul>
-          <li>Aukštas Euro NCAP saugumo reitingas</li>
-          <li>Isofix tvirtinimai vaikų kėdutėms</li>
-          <li>Airbag sistema visoms sėdynėms</li>
-          <li>Elektroninės saugumo sistemos</li>
-        </ul>
-        
-        <h4>Erdvumas</h4>
-        <ul>
-          <li>Pakankamai vietos kojoms</li>
-          <li>Didelis bagažinės skyrius</li>
-          <li>Papildomi daiktų skyreliai</li>
-          <li>Lengvas įlipimas ir išlipimas</li>
-        </ul>
-        
-        <h3>Geriausi šeimos automobilių tipai</h3>
-        <h4>Minivenai</h4>
-        <p>Idealus pasirinkimas didelėms šeimoms:</p>
-        <ul>
-          <li>7 keleivių vietos</li>
-          <li>Didžiulis bagažas</li>
-          <li>Aukšta sėdėjimo pozicija</li>
-          <li>Slankiojančios durys</li>
-        </ul>
-        
-        <h4>SUV automobiliai</h4>
-        <p>Universalus sprendimas šeimai:</p>
-        <ul>
-          <li>Geras kelio peržvalgumas</li>
-          <li>Saugi konstrukcija</li>
-          <li>Erdvus salonas</li>
-          <li>Tinka įvairiems keliams</li>
-        </ul>
-        
-        <h3>Patarimai kelionei su vaikais</h3>
-        <ol>
-          <li><strong>Vaikų kėdutės</strong> - rezervuokite iš anksto</li>
-          <li><strong>Pramogos</strong> - pasiimkite planšetę su filmukais</li>
-          <li><strong>Užkandžiai</strong> - turėkite sveikų užkandžių</li>
-          <li><strong>Dažnos pertraukos</strong> - stabtelėkite kas 2 valandas</li>
-        </ol>
-        
-        <h3>Carbonus šeimos pasiūlymai</h3>
-        <p>Specialiai šeimoms siūlome:</p>
-        <ul>
-          <li>Nemokamas vaikų kėdutes</li>
-          <li>Šeimos nuolaidas</li>
-          <li>Automobilio higienos paslaugas</li>
-          <li>Lankstų grąžinimo grafiką</li>
-        </ul>
-        
-        <p>Kartu keliaujame saugiai ir smagu!</p>
+        <p>Carbonus siūlo platų šeimoms skirtų automobilių pasirinkimą – nuo erdvių universalų iki minivenų su visomis reikiamomis saugos sistemomis. Mūsų komanda padės pasirinkti idealų automobilį jūsų šeimos poreikiams ir užtikrins saugią kelionę su mažiaisiais.</p>
       `
     }
   };
