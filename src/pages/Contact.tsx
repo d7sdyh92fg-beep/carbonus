@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { 
   Phone, 
   Mail, 
@@ -19,6 +21,17 @@ import {
 } from "lucide-react";
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+
   useEffect(() => {
     // Set page title and meta tags
     document.title = "Kontaktai - Carbonus | Susisiekite dėl automobilių nuomos +370 698 18 781";
@@ -46,10 +59,63 @@ const Contact = () => {
       ogUrl.setAttribute('content', 'https://carbonus.lt/kontaktai');
     }
   }, []);
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted");
+    setIsSubmitting(true);
+
+    try {
+      // Validate required fields
+      if (!formData.firstName || !formData.lastName || !formData.email || !formData.subject || !formData.message) {
+        toast({
+          title: "Klaida",
+          description: "Prašome užpildyti visus privalomus laukus (*)",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Call the edge function
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      // Success
+      toast({
+        title: "Žinutė išsiųsta!",
+        description: "Ačiū už jūsų žinutę. Susisieksime su jumis kuo greičiau.",
+      });
+
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+
+    } catch (error: any) {
+      console.error("Error submitting contact form:", error);
+      toast({
+        title: "Klaida",
+        description: error.message || "Nepavyko išsiųsti žinutės. Bandykite dar kartą arba susisiekite telefonu.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const contactInfo = [
@@ -183,6 +249,8 @@ const Contact = () => {
                         placeholder="Jūsų vardas"
                         required
                         className="mt-1"
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange('firstName', e.target.value)}
                       />
                     </div>
                     <div>
@@ -192,6 +260,8 @@ const Contact = () => {
                         placeholder="Jūsų pavardė"
                         required
                         className="mt-1"
+                        value={formData.lastName}
+                        onChange={(e) => handleInputChange('lastName', e.target.value)}
                       />
                     </div>
                   </div>
@@ -205,6 +275,8 @@ const Contact = () => {
                         placeholder="jusu@email.lt"
                         required
                         className="mt-1"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
                       />
                     </div>
                     <div>
@@ -214,6 +286,8 @@ const Contact = () => {
                         type="tel"
                         placeholder="+370 698 18 781"
                         className="mt-1"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
                       />
                     </div>
                   </div>
@@ -225,6 +299,8 @@ const Contact = () => {
                       placeholder="Automobilio rezervacija"
                       required
                       className="mt-1"
+                      value={formData.subject}
+                      onChange={(e) => handleInputChange('subject', e.target.value)}
                     />
                   </div>
                   
@@ -236,11 +312,18 @@ const Contact = () => {
                       required
                       rows={6}
                       className="mt-1"
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
                     />
                   </div>
                   
-                  <Button type="submit" size="lg" className="w-full">
-                    Siųsti žinutę
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Siunčiama...' : 'Siųsti žinutę'}
                   </Button>
                 </form>
               </CardContent>
