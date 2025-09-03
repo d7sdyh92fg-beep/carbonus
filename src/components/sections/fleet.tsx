@@ -5,13 +5,6 @@ import { useNavigate } from "react-router-dom";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
-import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
-import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
-import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
-import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
-import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
-import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 
 interface Car {
   id: string;
@@ -48,22 +41,6 @@ export function Fleet() {
       image: vwPassatSideClean,
       category: "Sedanas",
       year: 2012
-    },
-    {
-      id: "4",
-      name: "KIA CEED",
-      price: "30 EUR",  
-      image: kiaCeedSideDarkGray,
-      category: "Universalas",
-      year: 2013
-    },
-    {
-      id: "5",
-      name: "KIA CEED",
-      price: "30 EUR",  
-      image: kiaCeedHatchbackSideGrayBrown,
-      category: "Hečbekas",
-      year: 2020
     }
   ];
 
