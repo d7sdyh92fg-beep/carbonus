@@ -10,7 +10,7 @@ import BookingCalendar from "@/components/booking/BookingCalendar";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import kiaCeedRearEnhanced from "@/assets/kia-ceed-rear-enhanced.png";
-import kiaCeed2020Side from "@/assets/kia-ceed-2020-side.png";
+import kiaCeed2020SideClean from "@/assets/kia-ceed-2020-side-clean.png";
 import kiaCeed2020FrontEnhanced from "@/assets/kia-ceed-2020-front-enhanced.png";
 import kiaCeed2020RearEnhanced from "@/assets/kia-ceed-2020-rear-enhanced.png";
 import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
@@ -215,7 +215,7 @@ const CarDetail = () => {
     },
     "5": {
       id: "5",
-      name: "KIA CEED 2020",
+      name: "KIA CEED",
       price: "30 EUR",
       image: kiaCeed2020FrontEnhanced,
       images: [
