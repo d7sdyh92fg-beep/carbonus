@@ -12,6 +12,7 @@ import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
+import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
 import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
 import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 
@@ -102,7 +103,7 @@ const Cars = () => {
       id: "4",
       name: "KIA CEED",
       price: "30 EUR",
-      image: kiaCeedSideClean,
+      image: kiaCeedSideDarkGray,
       category: "Universalas",
       passengers: 5,
       fuel: "Benzinas",
