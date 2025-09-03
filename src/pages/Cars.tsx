@@ -12,7 +12,8 @@ import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
-import kiaCeed2020SideClean from "@/assets/kia-ceed-2020-side-clean.png";
+import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
+import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 
 interface Car {
   id: string;
@@ -101,7 +102,7 @@ const Cars = () => {
       id: "4",
       name: "KIA CEED",
       price: "30 EUR",
-      image: kiaCeedSideClean,
+      image: kiaCeedWagonSide,
       category: "Universalas",
       passengers: 5,
       fuel: "Benzinas",
@@ -117,7 +118,7 @@ const Cars = () => {
       id: "5",
       name: "KIA CEED",
       price: "30 EUR",
-      image: kiaCeed2020SideClean,
+      image: kiaCeedHatchbackSide,
       category: "Hečbekas",
       passengers: 5,
       fuel: "Dyzelinas",
