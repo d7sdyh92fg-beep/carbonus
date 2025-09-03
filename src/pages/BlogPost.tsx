@@ -5,7 +5,7 @@ import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, Clock, User, ArrowLeft, Share2, BookOpen } from "lucide-react";
+import { Calendar, Clock, User, ArrowLeft, BookOpen } from "lucide-react";
 import blogSavingsTips from "@/assets/blog-savings-tips-final.jpg";
 import blogLithuaniaTravel from "/lovable-uploads/1d2b0b23-8949-459d-a4e5-1178e658608a.png";
 import blogCarInsurance from "@/assets/blog-car-insurance-new.jpg";
@@ -584,28 +584,6 @@ const BlogPost = () => {
                         {new Date(post.publishDate).toLocaleDateString('lt-LT')}
                       </div>
                     </div>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="w-full flex items-center gap-2"
-                      onClick={() => {
-                        if (navigator.share) {
-                          navigator.share({
-                            title: post.title,
-                            text: post.excerpt,
-                            url: window.location.href,
-                          });
-                        } else {
-                          navigator.clipboard.writeText(window.location.href);
-                        }
-                      }}
-                    >
-                      <Share2 className="w-4 h-4" />
-                      Pasidalinti
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
