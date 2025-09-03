@@ -24,6 +24,11 @@ export function Navigation({ logo }: NavigationProps) {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const handleNavigate = (href: string) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(href);
+  };
+
   const navItems = [
     { name: "Pradžia", href: "/" },
     { name: "Automobiliai", href: "/automobiliai" },
@@ -37,13 +42,13 @@ export function Navigation({ logo }: NavigationProps) {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="block">
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="block">
               {logo ? (
                 <img src={logo} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
               ) : (
                 <span className="text-2xl font-bold text-primary">CARBONUS.</span>
               )}
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -53,6 +58,7 @@ export function Navigation({ logo }: NavigationProps) {
                 <Link
                   key={item.name}
                   to={item.href}
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
                     isActive(item.href)
                       ? "text-primary border-b-2 border-primary pb-1"
@@ -77,7 +83,10 @@ export function Navigation({ logo }: NavigationProps) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => navigate('/admin')}>
+                  <DropdownMenuItem onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    navigate('/admin');
+                  }}>
                     <Shield className="mr-2 h-4 w-4" />
                     Skydelis
                   </DropdownMenuItem>
@@ -114,7 +123,10 @@ export function Navigation({ logo }: NavigationProps) {
                   className={`text-sm font-medium transition-colors hover:text-primary block px-3 py-2 ${
                     isActive(item.href) ? "text-primary" : "text-foreground"
                   }`}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                 >
                   {item.name}
                 </Link>
@@ -128,7 +140,10 @@ export function Navigation({ logo }: NavigationProps) {
                     <Link
                       to="/admin"
                       className="text-sm font-medium block px-3 py-2 text-center"
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => {
+                        setIsOpen(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                     >
                       <Shield className="h-4 w-4 inline mr-2" />
                       Admin Skydelis
