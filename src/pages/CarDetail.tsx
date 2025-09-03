@@ -10,6 +10,9 @@ import BookingCalendar from "@/components/booking/BookingCalendar";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import kiaCeedRearEnhanced from "@/assets/kia-ceed-rear-enhanced.png";
+import kiaCeed2020Side from "@/assets/kia-ceed-2020-side.png";
+import kiaCeed2020FrontEnhanced from "@/assets/kia-ceed-2020-front-enhanced.png";
+import kiaCeed2020RearEnhanced from "@/assets/kia-ceed-2020-rear-enhanced.png";
 import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
 import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
 import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
@@ -208,6 +211,41 @@ const CarDetail = () => {
         "Durų skaičius": "5",
         "Bagažinės talpa": "528 L",
         "Variklio tipas": "1.4L"
+      }
+    },
+    "5": {
+      id: "5",
+      name: "KIA CEED 2020",
+      price: "30 EUR",
+      image: kiaCeed2020FrontEnhanced,
+      images: [
+        kiaCeed2020FrontEnhanced,
+        kiaCeed2020RearEnhanced
+      ],
+      category: "Hečbekas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.6,
+      description: "KIA CEED 2020 hečbekas - modernaus dizaino automobilis su ekonomišku dyzeliniu varikliu. Ideali kombinacija sportiškumo ir praktišumo kasdieniam naudojimui. Patikimas ir stilingas automobilis miesto gatvėms.",
+      features: [
+        "Ekonomiškas dyzelinis variklis",
+        "Modernus LED apšvietimas",
+        "Patikimas mechaninis perdavimas",
+        "Kondicionierius",
+        "Elektrinis langų valdymas",
+        "Centrinis užraktas",
+        "Šiuolaikiškas salono dizainas",
+        "Saugos sistemos"
+      ],
+      specifications: {
+        "Kuras": "Dyzelinas",
+        "Pavarų dėžė": "Mechaninė",
+        "Keleivių skaičius": "5",
+        "Durų skaičius": "5",
+        "Bagažinės talpa": "395 L",
+        "Variklio tipas": "1.6L CRDi",
+        "Metai": "2020"
       }
     }
   };

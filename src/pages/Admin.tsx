@@ -22,6 +22,7 @@ import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
+import kiaCeed2020Side from "@/assets/kia-ceed-2020-side.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 
 interface Reservation {
@@ -112,6 +113,18 @@ const Admin = () => {
       transmission: "Mechaninė",
       rating: 4.5,
       features: ["Ekonomiškas vairavimas", "Erdvus universalas", "Patikimas automobilis"]
+    },
+    {
+      id: "5",
+      name: "KIA CEED 2020",
+      price: "30 EUR", 
+      image: kiaCeed2020Side,
+      category: "Hečbekas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.6,
+      features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
     }
   ];
 
