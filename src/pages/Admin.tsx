@@ -17,6 +17,7 @@ import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit,
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarCalendarModal from '@/components/admin/CarCalendarModal';
+import { PhotoEnhancer } from '@/components/admin/PhotoEnhancer';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -571,6 +572,20 @@ const Admin = () => {
                 </Card>
               ))}
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Photo Enhancement Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Settings className="h-5 w-5" />
+              Foto redagavimas
+            </CardTitle>
+            <CardDescription>Pagerinkite automobilių nuotraukas pašalinant foną</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PhotoEnhancer />
           </CardContent>
         </Card>
 
