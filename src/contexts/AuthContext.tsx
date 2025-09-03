@@ -29,9 +29,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAdminRole = async (userId: string | undefined) => {
     if (!userId) {
+      console.log('checkAdminRole: No userId provided');
       setIsAdmin(false);
       return;
     }
+
+    console.log('checkAdminRole: Checking admin role for userId:', userId);
 
     try {
       // Check if user has admin role using the has_role function
@@ -41,21 +44,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           _role: 'admin' 
         });
 
+      console.log('checkAdminRole: RPC response:', { data, error });
+
       if (error) {
         console.error('Error checking admin role:', error);
         // Fallback: check by email if RPC fails
         const { data: { user } } = await supabase.auth.getUser();
-        setIsAdmin(user?.email === 'info@carbonus.lt');
+        console.log('checkAdminRole: Fallback to email check:', user?.email);
+        const isAdminByEmail = user?.email === 'info@carbonus.lt';
+        console.log('checkAdminRole: Setting isAdmin to (fallback):', isAdminByEmail);
+        setIsAdmin(isAdminByEmail);
         return;
       }
 
-      console.log('Admin role check result:', data);
-      setIsAdmin(data === true);
+      console.log('checkAdminRole: Admin role check result:', data);
+      const isAdminResult = data === true;
+      console.log('checkAdminRole: Setting isAdmin to:', isAdminResult);
+      setIsAdmin(isAdminResult);
     } catch (error) {
       console.error('Error in checkAdminRole:', error);
       // Fallback: check by email if anything fails
       const { data: { user } } = await supabase.auth.getUser();
-      setIsAdmin(user?.email === 'info@carbonus.lt');
+      console.log('checkAdminRole: Catch fallback to email check:', user?.email);
+      const isAdminByEmail = user?.email === 'info@carbonus.lt';
+      console.log('checkAdminRole: Setting isAdmin to (catch fallback):', isAdminByEmail);
+      setIsAdmin(isAdminByEmail);
     }
   };
 
