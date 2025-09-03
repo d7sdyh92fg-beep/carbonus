@@ -97,7 +97,7 @@ const Blog = () => {
     {
       id: "4",
       title: "Verslo kelionės: kaip išsirinkti tinkamą automobilį?",
-      excerpt: "Praktiniai patarimai verslui, kaip pasirinkti automobilį komandiruotėms ir susitikimams. Ekonomiškumas vs komfortas.",
+      excerpt: "Sužinokite, į ką atkreipti dėmesį renkantis automobilį verslo kelionėms Lietuvoje ar užsienyje. Komfortas, patikimumas ir reprezentatyvumas – svarbiausi kriterijai.",
       content: "",
       author: "Carbonus komanda",
       publishDate: "2024-11-30",

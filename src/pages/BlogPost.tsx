@@ -258,7 +258,7 @@ const BlogPost = () => {
     "verslo-keliones-kaip-issirinkti-tinkama-automobili": {
       id: "4",
       title: "Verslo kelionės: kaip išsirinkti tinkamą automobilį?",
-      excerpt: "Praktiniai patarimai verslui, kaip pasirinkti automobilį komandiruotėms ir susitikimams.",
+      excerpt: "Sužinokite, į ką atkreipti dėmesį renkantis automobilį verslo kelionėms Lietuvoje ar užsienyje. Komfortas, patikimumas ir reprezentatyvumas – svarbiausi kriterijai.",
       author: "Carbonus komanda",
       publishDate: "2024-11-30",
       readTime: "4 min",
@@ -266,49 +266,51 @@ const BlogPost = () => {
       image: blogBusinessTravel,
       slug: "verslo-keliones-kaip-issirinkti-tinkama-automobili",
       content: `
-        <h2>Verslo kelionių specifika</h2>
-        <p>Verslo kelionės skiriasi nuo atostogų - čia svarbu ne tik komfortas, bet ir profesionalumas, patikimumas bei ekonomiškumas. Tinkamas automobilio pasirinkimas gali paveikti jūsų verslo derybų sėkmę.</p>
+        <p>Verslo kelionės reikalauja ne tik tikslaus planavimo, bet ir tinkamo transporto pasirinkimo. Automobilis tokiose kelionėse tampa ne tik susisiekimo priemone, bet ir įvaizdžio dalimi. Tinkamai pasirinktas automobilis padės sutaupyti laiko, keliauti patogiai ir sudaryti gerą įspūdį partneriams.</p>
+
+        <br>
+
+        <h2><strong>1.</strong> Patogumas ir komfortas</h2>
+        <p>Ilgos kelionės, susitikimai keliuose miestuose ar net šalyse reiškia daug valandų už vairo. Patogios sėdynės, erdvus salonas ir tylus variklis užtikrins produktyvesnę kelionę ir mažiau nuovargio.</p>
+
+        <br>
+
+        <h2><strong>2.</strong> Automobilio klasė ir įvaizdis</h2>
+        <p>Verslo aplinkoje svarbus ne tik funkcionalumas, bet ir reprezentatyvumas.</p>
+        <p><strong>Ekonominė klasė</strong> – tinkama trumpoms kelionėms mieste.</p>
+        <p><strong>Vidutinė klasė</strong> – patogesnė ilgesniems maršrutams.</p>
+        <p><strong>Premium klasė</strong> – idealiai tinka susitikimams su klientais ar partneriais, kai svarbus pirmas įspūdis.</p>
+
+        <br>
+
+        <h2><strong>3.</strong> Degalų sąnaudos ir ekologija</h2>
+        <p>Šiuolaikiniai verslo keliautojai vis dažniau atsižvelgia į išlaidas ir tvarumą. Rinkitės ekonomiškus hibridinius ar dyzelinius automobilius, o miestuose – net ir elektromobilius, jei nuomos punktas siūlo tokią galimybę.</p>
+
+        <br>
+
+        <h2><strong>4.</strong> Technologijos ir įranga</h2>
+        <p>Verslo kelionėse itin praverčia:</p>
+        <p>GPS navigacija arba integruota multimedijos sistema.</p>
+        <p>Bluetooth ryšys laisvoms rankoms.</p>
+        <p>USB ar bevieliai įkrovikliai įrenginiams.</p>
+        <p>Kruizo kontrolė ilgiems atstumams.</p>
+
+        <br>
+
+        <h2><strong>5.</strong> Draudimas ir pagalba kelyje</h2>
+        <p>Net ir atsakingai vairuojant, nenumatytų situacijų išvengti nepavyksta. Verslo kelionėse verta rinktis pilnesnį draudimą ir paslaugas, kurios užtikrina pagalbą kelyje visą parą. Taip būsite tikri, kad susitikimų grafikas nesugrius dėl techninių problemų.</p>
+
+        <br>
+
+        <h2><strong>6.</strong> Automobilio dydis ir lagaminų vieta</h2>
+        <p>Jeigu keliaujate vienas, pakaks kompaktiško automobilio. Tačiau komandinei kelionei verta rinktis erdvesnį modelį arba net miniveną, kad visiems būtų patogu, o bagažui užtektų vietos.</p>
+
+        <br>
+
+        <h3><strong>Išvada</strong></h3>
+        <p>Renkantis automobilį verslo kelionėms, svarbiausia suderinti komfortą, įvaizdį ir ekonomiškumą. Įvertinkite kelionės tikslą, dalyvių skaičių ir maršrutą – tuomet nuomojamas automobilis taps patikimu pagalbininku, o ne papildomu rūpesčiu.</p>
         
-        <h3>Automobilių klasės verslui</h3>
-        <h4>Ekonominė klasė</h4>
-        <ul>
-          <li>Tinka trumpoms kelionėms mieste</li>
-          <li>Mažiausios nuomos išlaidos</li>
-          <li>Geras kuro taupymas</li>
-        </ul>
-        
-        <h4>Verslo klasė</h4>
-        <ul>
-          <li>Reprezentacinis išvaizda</li>
-          <li>Patogus salons ilgoms kelionėms</li>
-          <li>Profesionalus įspūdis klientams</li>
-        </ul>
-        
-        <h4>Premium klasė</h4>
-        <ul>
-          <li>Aukščiausias prestižas</li>
-          <li>Maksimalus komfortas</li>
-          <li>Tinka svarbiausioms deryboms</li>
-        </ul>
-        
-        <h3>Svarbiausios savybės verslo automobiliui</h3>
-        <ol>
-          <li><strong>Patikimumas</strong> - automobilis negali sugesti svarbios kelionės metu</li>
-          <li><strong>Komfortas</strong> - kad po kelionės būtumėte šviežas derybose</li>
-          <li><strong>Reprezentacija</strong> - automobilis turi atspindėti jūsų profesionalumą</li>
-          <li><strong>Ekonomiškumas</strong> - kontroliuokite kelionių biudžetą</li>
-        </ol>
-        
-        <h3>Carbonus verslo sprendimai</h3>
-        <p>Siūlome specialias sąlygas verslo klientams:</p>
-        <ul>
-          <li>Nuolaidos ilgalaikei nuomai</li>
-          <li>Lankstus atsiskaitymas</li>
-          <li>24/7 palaikymas</li>
-          <li>Verslo automobiliams pritaikytas draudimas</li>
-        </ul>
-        
-        <p>Susisiekite su mumis ir aptarsime jūsų verslo poreikius!</p>
+        <p>Carbonus siūlo platų verslo automobilių parką – nuo ekonomiškų sedanų iki premium klasės modelių. Mūsų komanda padės išsirinkti idealų automobilį jūsų verslo poreikiams ir užtikrins sklandžią kelionę be rūpesčių.</p>
       `
     },
     "ziemos-vairavimas-saugumas-kelyje": {
