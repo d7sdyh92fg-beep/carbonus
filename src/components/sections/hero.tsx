@@ -53,11 +53,10 @@ export function Hero({ carImage }: HeroProps) {
 
         {/* Right Content - Car Image - Hidden on Mobile */}
         <div className="hidden lg:block relative animate-slide-up -ml-0 lg:-ml-12 mt-8 lg:mt-0">
-          {/* Enhanced Green glow around car - Hidden on mobile */}
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-400/20 blur-[100px] scale-110 animate-pulse"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-500/15 blur-[60px] scale-125"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-400/25 blur-[40px] scale-105"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-300/10 blur-[80px] scale-150"></div>
+          {/* Moderate green glow around car - Hidden on mobile */}
+          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-500/16 blur-3xl scale-110"></div>
+          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-400/12 blur-2xl scale-125"></div>
+          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-400/8 blur-xl scale-150"></div>
           
 
           {/* Main Car Image */}
