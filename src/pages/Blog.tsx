@@ -7,10 +7,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User, ArrowRight } from "lucide-react";
 import blogSavingsTips from "@/assets/blog-savings-tips-final.jpg";
-import blogLithuaniaTravel from "@/assets/blog-lithuania-travel.jpg";
+import blogLithuaniaTravel from "/lovable-uploads/1d2b0b23-8949-459d-a4e5-1178e658608a.png";
 import blogCarInsurance from "@/assets/blog-car-insurance-new.jpg";
 import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
-import blogWinterDriving from "@/assets/blog-winter-driving-new.jpg";
+import blogWinterDriving from "/lovable-uploads/7e8ac90d-43ea-4124-b0a3-07cb11da3447.png";
 import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
 
 interface BlogPost {
