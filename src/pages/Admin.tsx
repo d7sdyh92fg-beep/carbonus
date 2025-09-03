@@ -81,10 +81,11 @@ const Admin = () => {
       fuel: "Benzinas",
       transmission: "Automatinė",
       rating: 4.8,
+      year: 2017,
       features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
     },
     {
-      id: "2", 
+      id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
       image: chryslerTownCountrySide,
@@ -93,11 +94,12 @@ const Admin = () => {
       fuel: "Benzinas",
       transmission: "Automatinė",
       rating: 4.6,
+      year: 2014,
       features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
     },
     {
       id: "3",
-      name: "Volkswagen Passat", 
+      name: "Volkswagen Passat",
       price: "30 EUR",
       image: vwPassatSideClean,
       category: "Sedanas",
@@ -105,6 +107,7 @@ const Admin = () => {
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
       rating: 4.7,
+      year: 2012,
       features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     },
     {
@@ -117,6 +120,7 @@ const Admin = () => {
       fuel: "Benzinas",
       transmission: "Mechaninė",
       rating: 4.5,
+      year: 2013,
       features: ["Ekonomiškas vairavimas", "Erdvus universalas", "Patikimas automobilis"]
     },
     {
@@ -129,6 +133,7 @@ const Admin = () => {
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
       rating: 4.6,
+      year: 2020,
       features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
     }
   ];

@@ -30,6 +30,7 @@ interface Car {
   transmission: string;
   rating: number;
   features: string[];
+  year: number;
 }
 
 const Cars = () => {
@@ -76,6 +77,7 @@ const Cars = () => {
       fuel: "Benzinas",
       transmission: "Automatinė",
       rating: 4.8,
+      year: 2017,
       features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
     },
     {
@@ -88,6 +90,7 @@ const Cars = () => {
       fuel: "Benzinas",
       transmission: "Automatinė",
       rating: 4.6,
+      year: 2014,
       features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
     },
     {
@@ -100,6 +103,7 @@ const Cars = () => {
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
       rating: 4.7,
+      year: 2012,
       features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     },
     {
@@ -112,6 +116,7 @@ const Cars = () => {
       fuel: "Benzinas",
       transmission: "Mechaninė",
       rating: 4.5,
+      year: 2013,
       features: [
         "Ekonomiškas vairavimas",
         "Erdvus universalas",
@@ -128,6 +133,7 @@ const Cars = () => {
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
       rating: 4.6,
+      year: 2020,
       features: [
         "Ekonomiškas dyzelinis variklis",
         "Modernus LED apšvietimas",
@@ -196,7 +202,7 @@ const Cars = () => {
                     </div>
 
                     {/* Car Features */}
-                    <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">
+                    <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
                         <span>{car.passengers}</span>
@@ -208,6 +214,10 @@ const Cars = () => {
                       <div className="flex items-center gap-1">
                         <Settings className="w-4 h-4" />
                         <span>{car.transmission}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="w-4 h-4 text-center font-semibold">#</span>
+                        <span>{car.year}</span>
                       </div>
                     </div>
 

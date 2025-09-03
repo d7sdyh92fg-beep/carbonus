@@ -19,6 +19,7 @@ interface Car {
   price: string;
   image: string;
   category: string;
+  year: number;
 }
 
 export function Fleet() {
@@ -29,35 +30,40 @@ export function Fleet() {
       name: "BMW 3 series",
       price: "30 EUR",
       image: bmw3Clean,
-      category: "Sedanas"
+      category: "Sedanas",
+      year: 2017
     },
     {
       id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
       image: chryslerTownCountrySide,
-      category: "Miniautobusas"
+      category: "Miniautobusas",
+      year: 2014
     },
     {
       id: "3",
       name: "Volkswagen Passat",
       price: "30 EUR",
       image: vwPassatSideClean,
-      category: "Sedanas"
+      category: "Sedanas",
+      year: 2012
     },
     {
       id: "4",
       name: "KIA CEED",
       price: "30 EUR",  
       image: kiaCeedSideDarkGray,
-      category: "Universalas"
+      category: "Universalas",
+      year: 2013
     },
     {
       id: "5",
       name: "KIA CEED",
       price: "30 EUR",  
       image: kiaCeedHatchbackSideGrayBrown,
-      category: "Hečbekas"
+      category: "Hečbekas",
+      year: 2020
     }
   ];
 
@@ -106,6 +112,7 @@ export function Fleet() {
                     <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
                       {car.name}
                     </h3>
+                    <p className="text-sm text-muted-foreground">{car.year} m.</p>
                   </div>
                   
                   <div className="flex items-center justify-between">
