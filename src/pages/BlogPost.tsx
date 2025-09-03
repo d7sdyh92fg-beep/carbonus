@@ -373,7 +373,7 @@ const BlogPost = () => {
     "seimos-kelione-kaip-pasirinkti-idealu-automobili": {
       id: "6",
       title: "Šeimos kelionė: kaip pasirinkti idealų automobilį vaikams",
-      excerpt: "Geriausių šeimos automobilių apžvalga nuomai. Saugumas, erdvumas ir patogumas.",
+      excerpt: "Sužinokite, kokį automobilį geriausia rinktis šeimos kelionei su vaikais. Patogumas, saugumas, vieta bagažui ir papildomi priedai – viskas, kas svarbiausia.",
       author: "Carbonus komanda",
       publishDate: "2024-11-20",
       readTime: "5 min",
