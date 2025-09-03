@@ -105,6 +105,7 @@ const CarDetail = () => {
         "Išplėstinis saugumas"
       ],
       specifications: {
+        "Metai": "2015",
         "Kuras": "Benzinas",
         "Pavarų dėžė": "Automatinė",
         "Keleivių skaičius": "5",
@@ -139,6 +140,7 @@ const CarDetail = () => {
         "Saugos sistemos"
       ],
       specifications: {
+        "Metai": "2016",
         "Kuras": "Benzinas",
         "Pavarų dėžė": "Automatinė",
         "Keleivių skaičius": "7",
@@ -173,6 +175,7 @@ const CarDetail = () => {
         "Didelis bagažas"
       ],
       specifications: {
+        "Metai": "2012",
         "Kuras": "Dyzelinas",
         "Pavarų dėžė": "Mechaninė",
         "Keleivių skaičius": "5",
@@ -207,6 +210,7 @@ const CarDetail = () => {
         "Praktiškas miesto automobilis"
       ],
       specifications: {
+        "Metai": "2013",
         "Kuras": "Benzinas",
         "Pavarų dėžė": "Mechaninė", 
         "Keleivių skaičius": "5",
