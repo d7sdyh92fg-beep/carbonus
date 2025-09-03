@@ -82,6 +82,9 @@ export function Footer() {
     } else if (link === "Nuomos sąlygos") {
       navigate('/nuomos-salygos');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (link === "Naujienos") {
+      navigate('/blogas');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // For other links, scroll to sections or handle as needed
       console.log(`Navigate to: ${link}`);
@@ -133,7 +136,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-primary">Nuorodos</h4>
             <ul className="space-y-2">
-              {["Pradžia", "Automobiliai", "Apie mus", "Kontaktai", "DUK"].map((link) => (
+              {["Pradžia", "Automobiliai", "Apie mus", "Kontaktai", "DUK", "Naujienos"].map((link) => (
                 <li key={link}>
                   <button
                     onClick={() => handleLinkClick(link)}
