@@ -390,16 +390,13 @@ const Contact = () => {
       {/* Locations */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <Badge variant="outline" className="mb-4">
               MŪSŲ BIURAI
             </Badge>
-            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-12">
               Mūsų biuras randasi
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Turime biurus didžiausiuose Lietuvos miestuose
-            </p>
           </div>
 
           <div className="flex justify-center">
