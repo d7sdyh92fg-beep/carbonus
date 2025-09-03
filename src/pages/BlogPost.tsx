@@ -44,42 +44,60 @@ const BlogPost = () => {
       content: `
         <p>Automobilio nuoma Lietuvoje tampa vis populiaresnė tiek keliautojams, tiek vietiniams gyventojams, kuriems reikia laikino transporto. Tačiau neretai nuomos kaina būna didesnė, nei tikėtasi. Laimei, yra būdų, kaip išvengti permokų ir keliauti pigiau. Štai 10 patarimų, kurie padės sutaupyti.</p>
 
-        <h2>1. Lyginkite automobilių nuomos kainas</h2>
+        <br>
+
+        <h2><strong>1.</strong> Lyginkite automobilių nuomos kainas</h2>
         <p>Prieš priimdami sprendimą, peržiūrėkite kelias skirtingas nuomos įmones. Dažnai už tą patį automobilį vienoje vietoje mokėsite ženkliai pigiau.</p>
 
-        <h2>2. Rezervuokite iš anksto</h2>
+        <br>
+
+        <h2><strong>2.</strong> Rezervuokite iš anksto</h2>
         <p>Ankstyva rezervacija užtikrina mažesnę kainą ir didesnį automobilių pasirinkimą, ypač sezono metu.</p>
 
-        <h2>3. Rinkitės ekonomišką automobilio klasę</h2>
+        <br>
+
+        <h2><strong>3.</strong> Rinkitės ekonomišką automobilio klasę</h2>
         <p>Kompaktiški automobiliai ne tik pigesni nuomai, bet ir sunaudoja mažiau degalų, todėl sutaupysite dvigubai.</p>
 
-        <h2>4. Patikrinkite draudimo sąlygas</h2>
+        <br>
+
+        <h2><strong>4.</strong> Patikrinkite draudimo sąlygas</h2>
         <p>Dažnai nuomos įmonės siūlo papildomus draudimus. Įsitikinkite, ar jų tikrai reikia – galbūt jūsų kelionių draudimas ar kreditinė kortelė jau apima automobilio nuomą.</p>
 
-        <h2>5. Venkite nuomos punktų oro uostuose</h2>
+        <br>
+
+        <h2><strong>5.</strong> Venkite nuomos punktų oro uostuose</h2>
         <p>Oro uostuose taikomi papildomi mokesčiai. Kartais pigiau išsinuomoti automobilį miesto centre.</p>
 
-        <h2>6. Atkreipkite dėmesį į užstatą</h2>
+        <br>
+
+        <h2><strong>6.</strong> Atkreipkite dėmesį į užstatą</h2>
         <p>Kiekviena nuomos įmonė taiko skirtingą užstato dydį. Įvertinkite, ar tai nebus papildoma našta jūsų biudžetui.</p>
 
-        <h2>7. Pasirinkite tinkamą degalų politiką</h2>
+        <br>
+
+        <h2><strong>7.</strong> Pasirinkite tinkamą degalų politiką</h2>
         <p>Geriausias pasirinkimas – „pilnas–pilnas". Pasiimate automobilį su pilnu baku ir grąžinate pilną, todėl mokate tik už realiai sunaudotus degalus.</p>
 
-        <h2>8. Patikrinkite kilometražo limitą</h2>
+        <br>
+
+        <h2><strong>8.</strong> Patikrinkite kilometražo limitą</h2>
         <p>Jei planuojate ilgas keliones, rinkitės pasiūlymus su neribotu kilometražu – taip išvengsite papildomų mokesčių.</p>
 
-        <h2>9. Priedus turėkite savo</h2>
+        <br>
+
+        <h2><strong>9.</strong> Priedus turėkite savo</h2>
         <p>GPS navigacija ar vaikiška kėdutė iš nuomos įmonės gali kainuoti brangiai. Dažnai pigiau atsivežti savus priedus arba naudotis telefono navigacija.</p>
 
-        <h2>10. Perskaitykite sutartį iki galo</h2>
+        <br>
+
+        <h2><strong>10.</strong> Perskaitykite sutartį iki galo</h2>
         <p>Smulkios sąlygos gali slėpti papildomus mokesčius už automobilio švarą, vėlavimą ar grąžinimą už darbo valandų ribų. Visada perskaitykite sutartį prieš pasirašydami.</p>
+
+        <br>
 
         <h3>Išvada</h3>
         <p>Automobilio nuoma Lietuvoje nebūtinai turi būti brangi. Planuokite iš anksto, rinkitės ekonomiškus variantus ir pasitikrinkite visas sąlygas. Taip sutaupysite pinigų ir galėsite ramiai mėgautis kelione.</p>
-
-        <div style="margin-top: 2rem; padding: 1rem; background-color: #f8f9fa; border-left: 4px solid #007bff; border-radius: 4px;">
-          <p><strong>Raktažodžiai SEO:</strong> <em>automobilio nuoma Lietuvoje, pigiai išsinuomoti automobilį, kaip sutaupyti nuomojant automobilį, pigi automobilių nuoma, patarimai keliautojams Lietuvoje</em>.</p>
-        </div>
       `
     },
     "kelioniu-po-lietuva-gidas-geriausi-marsrutai": {
