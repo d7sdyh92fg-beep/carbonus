@@ -27,29 +27,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const checkAdminRole = async (userId: string | undefined) => {
-    if (!userId) {
-      console.log('checkAdminRole: No userId provided');
-      setIsAdmin(false);
-      return;
-    }
-
-    try {
-      // Get the current user
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('checkAdminRole: Checking email:', user?.email);
-      
-      // Simply check if email is info@carbonus.lt
-      const isAdmin = user?.email === 'info@carbonus.lt';
-      console.log('checkAdminRole: Setting isAdmin to:', isAdmin);
-      setIsAdmin(isAdmin);
-      
-    } catch (error) {
-      console.error('Error in checkAdminRole:', error);
-      setIsAdmin(false);
-    }
-  };
-
   useEffect(() => {
     let mounted = true;
     
@@ -62,11 +39,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         
-        if (session?.user) {
-          await checkAdminRole(session.user.id);
-        } else {
-          setIsAdmin(false);
-        }
+        // Simple admin check - just check email
+        const isUserAdmin = session?.user?.email === 'info@carbonus.lt';
+        console.log('Setting isAdmin to:', isUserAdmin, 'for email:', session?.user?.email);
+        setIsAdmin(isUserAdmin);
         
         setLoading(false);
       }
@@ -83,11 +59,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         
-        if (session?.user) {
-          await checkAdminRole(session.user.id);
-        } else {
-          setIsAdmin(false);
-        }
+        // Simple admin check - just check email
+        const isUserAdmin = session?.user?.email === 'info@carbonus.lt';
+        console.log('Initial setting isAdmin to:', isUserAdmin, 'for email:', session?.user?.email);
+        setIsAdmin(isUserAdmin);
         
         setLoading(false);
       } catch (error) {
