@@ -390,21 +390,21 @@ const CarDetail = () => {
                 </p>
 
                 {/* Car Specifications with Icons */}
-                <div className="grid grid-cols-3 gap-4 mb-8 p-4 bg-secondary/30 rounded-xl">
+                <div className="grid grid-cols-3 gap-3 mb-6 p-3 bg-secondary/30 rounded-lg">
                   <div className="text-center">
-                    <Users className="w-6 h-6 mx-auto mb-2 text-primary" />
-                    <div className="text-lg font-bold text-foreground">{car.passengers}</div>
-                    <div className="text-sm text-muted-foreground">Keleiviai</div>
+                    <Users className="w-5 h-5 mx-auto mb-1 text-primary" />
+                    <div className="text-base font-bold text-foreground">{car.passengers}</div>
+                    <div className="text-xs text-muted-foreground">Keleiviai</div>
                   </div>
                   <div className="text-center">
-                    <Fuel className="w-6 h-6 mx-auto mb-2 text-primary" />
-                    <div className="text-lg font-bold text-foreground">{car.fuel}</div>
-                    <div className="text-sm text-muted-foreground">Kuras</div>
+                    <Fuel className="w-5 h-5 mx-auto mb-1 text-primary" />
+                    <div className="text-base font-bold text-foreground">{car.fuel}</div>
+                    <div className="text-xs text-muted-foreground">Kuras</div>
                   </div>
                   <div className="text-center">
-                    <Settings className="w-6 h-6 mx-auto mb-2 text-primary" />
-                    <div className="text-lg font-bold text-foreground">{car.transmission}</div>
-                    <div className="text-sm text-muted-foreground">Pavarų dėžė</div>
+                    <Settings className="w-5 h-5 mx-auto mb-1 text-primary" />
+                    <div className="text-base font-bold text-foreground">{car.transmission}</div>
+                    <div className="text-xs text-muted-foreground">Pavarų dėžė</div>
                   </div>
                 </div>
 
