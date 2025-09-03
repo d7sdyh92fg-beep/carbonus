@@ -45,6 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
       console.log('checkAdminRole: RPC response:', { data, error });
+      console.log('checkAdminRole: Data type:', typeof data);
+      console.log('checkAdminRole: Data value:', data);
 
       if (error) {
         console.error('Error checking admin role:', error);
@@ -59,8 +61,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       console.log('checkAdminRole: Admin role check result:', data);
       const isAdminResult = data === true;
+      console.log('checkAdminRole: isAdminResult calculation:', isAdminResult);
       console.log('checkAdminRole: Setting isAdmin to:', isAdminResult);
       setIsAdmin(isAdminResult);
+      
+      // Force re-render by logging the state change
+      setTimeout(() => {
+        console.log('checkAdminRole: State should now be updated. Current values should be checked in next render.');
+      }, 100);
+      
     } catch (error) {
       console.error('Error in checkAdminRole:', error);
       // Fallback: check by email if anything fails
