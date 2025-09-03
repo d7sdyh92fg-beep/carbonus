@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Fuel, Settings, Star } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -216,7 +216,7 @@ const Cars = () => {
                         <span>{car.transmission}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="w-4 h-4 text-center font-semibold">#</span>
+                        <Calendar className="w-4 h-4" />
                         <span>{car.year}</span>
                       </div>
                     </div>
