@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Clock, User, ArrowLeft, Share2, BookOpen } from "lucide-react";
-import blogSavingsTips from "@/assets/blog-savings-tips-new.jpg";
+import blogSavingsTips from "@/assets/blog-savings-final.jpg";
 import blogLithuaniaTravel from "@/assets/blog-lithuania-travel.jpg";
 import blogCarInsurance from "@/assets/blog-car-insurance-new.jpg";
 import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
-import blogWinterDriving from "@/assets/blog-winter-driving.jpg";
+import blogWinterDriving from "@/assets/blog-winter-safe.jpg";
 import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
 
 interface BlogPostData {
