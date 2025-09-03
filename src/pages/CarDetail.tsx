@@ -17,6 +17,7 @@ import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
 import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
 import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
 import chryslerEnhanced2 from "@/assets/chrysler-enhanced-2.png";
+import chryslerEnhanced2WithPlate from "@/assets/chrysler-enhanced-2-with-plate.png";
 import vwPassatEnhanced1 from "@/assets/vw-passat-enhanced-1.png";
 import vwPassatEnhanced2 from "@/assets/vw-passat-enhanced-2.png";
 import { useState } from "react";
@@ -118,7 +119,7 @@ const CarDetail = () => {
       image: chryslerEnhanced1,
       images: [
         chryslerEnhanced1,
-        chryslerEnhanced2
+        chryslerEnhanced2WithPlate
       ],
       category: "Miniautobusas",
       passengers: 7,
