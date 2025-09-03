@@ -142,9 +142,18 @@ const Cars = () => {
     }
   ];
 
-  const categories = ["all", "Sedan", "SUV", "Minivan", "Electric", "Sports"];
+  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hečbekas"];
 
-  const filteredCars = cars;
+  // Filter cars based on search term and selected category
+  const filteredCars = cars.filter(car => {
+    const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         car.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         car.features.some(feature => feature.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesCategory = selectedCategory === "all" || car.category === selectedCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -156,9 +165,50 @@ const Cars = () => {
           <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Automobilių nuoma
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Raskite tobulą automobilį savo kelionei. Turime platų pasirinkimą aukščiausios kokybės automobilių.
           </p>
+          
+          {/* Search and Filter Controls */}
+          <div className="max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+              {/* Search Input */}
+              <div className="w-full md:w-96">
+                <Input
+                  placeholder="Ieškoti automobilio..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="h-12 text-lg"
+                />
+              </div>
+              
+              {/* Category Filter */}
+              <div className="w-full md:w-64">
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="h-12 text-lg">
+                    <SelectValue placeholder="Kategorija" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border shadow-lg z-50">
+                    <SelectItem value="all">Visos kategorijos</SelectItem>
+                    {categories.filter(cat => cat !== "all").map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            {/* Results Counter */}
+            <div className="mt-4 text-sm text-muted-foreground">
+              {searchTerm || selectedCategory !== "all" ? (
+                <span>Rasta {filteredCars.length} automobil{filteredCars.length === 1 ? 'is' : filteredCars.length < 10 ? 'iai' : 'ių'}</span>
+              ) : (
+                <span>Iš viso {cars.length} automobil{cars.length < 10 ? 'iai' : 'ių'}</span>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
