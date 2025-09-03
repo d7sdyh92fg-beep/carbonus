@@ -84,8 +84,8 @@ const Blog = () => {
     },
     {
       id: "3",
-      title: "Automobilių nuomos draudimas: kas reikia žinoti?",
-      excerpt: "Viskas, ką turite žinoti apie automobilių nuomos draudimą Lietuvoje. KASKO, OSAGO ir papildomo draudimo ypatumai.",
+      title: "Automobilių nuomos draudimas: ką reikia žinoti?",
+      excerpt: "Sužinokite, kokie yra automobilių nuomos draudimo tipai, kokių papildomų apsaugų jums gali prireikti ir kaip išvengti paslėptų mokesčių nuomojant automobilį Lietuvoje ar užsienyje.",
       content: "",
       author: "Carbonus komanda",
       publishDate: "2024-12-05", 

@@ -171,8 +171,8 @@ const BlogPost = () => {
     },
     "automobiliu-nuomos-draudimas-kas-reikia-zinoti": {
       id: "3",
-      title: "Automobilių nuomos draudimas: kas reikia žinoti?",
-      excerpt: "Viskas, ką turite žinoti apie automobilių nuomos draudimą Lietuvoje.",
+      title: "Automobilių nuomos draudimas: ką reikia žinoti?",
+      excerpt: "Sužinokite, kokie yra automobilių nuomos draudimo tipai, kokių papildomų apsaugų jums gali prireikti ir kaip išvengti paslėptų mokesčių nuomojant automobilį Lietuvoje ar užsienyje.",
       author: "Carbonus komanda", 
       publishDate: "2024-12-05",
       readTime: "6 min",
@@ -180,88 +180,79 @@ const BlogPost = () => {
       image: blogCarInsurance,
       slug: "automobiliu-nuomos-draudimas-kas-reikia-zinoti",
       content: `
-        <h2>Draudimo pagrindai nuomojant automobilį</h2>
-        <p>Automobilių nuomos draudimas - viena svarbiausių temų, kurias būtina suprasti prieš išsinuomodami automobilį. Tinkamas draudimas apsaugo ne tik jus, bet ir jūsų piniginę.</p>
+        <p>Nuomojant automobilį, vienas svarbiausių klausimų – draudimas. Dažnai jis sudaro nemažą dalį bendros nuomos kainos, todėl svarbu žinoti, kokios draudimo rūšys egzistuoja, kas jau įskaičiuota į kainą ir kada verta rinktis papildomas paslaugas.</p>
+
+        <br>
+
+        <h2><strong>Pagrindinės automobilių nuomos draudimo rūšys</strong></h2>
+
+        <br>
+
+        <h3><strong>1.</strong> Civilinės atsakomybės draudimas (TPL, Third Party Liability)</h3>
+        <p>Tai privalomas draudimas, kuris apmoka žalą kitiems asmenims ar jų turtui, jei sukelsite avariją. Lietuvoje šis draudimas įskaičiuotas pagal įstatymą.</p>
+
+        <br>
+
+        <h3><strong>2.</strong> Kasko arba žalos atlyginimo draudimas (CDW, Collision Damage Waiver)</h3>
+        <p>Padengia žalą jūsų nuomojamam automobiliui avarijos atveju. Dažnai turi frančizę (savąją riziką), kurią teks sumokėti patiems.</p>
+
+        <br>
+
+        <h3><strong>3.</strong> Vagystės draudimas (TP, Theft Protection)</h3>
+        <p>Apsaugo nuo finansinės atsakomybės, jei automobilis bus pavogtas. Taip pat paprastai taikoma frančizė.</p>
+
+        <br>
+
+        <h2><strong>Papildomi draudimai, kuriuos siūlo nuomos įmonės</strong></h2>
+
+        <br>
+
+        <h3><strong>Super CDW arba „Zero Excess"</strong></h3>
+        <p>Sumažina arba visai panaikina jūsų atsakomybę už žalą (be frančizės).</p>
+
+        <h3><strong>Asmeninis nelaimingų atsitikimų draudimas (PAI)</strong></h3>
+        <p>Apima keleivių ir vairuotojo sveikatos išlaidas.</p>
+
+        <h3><strong>Padangų, stiklų ir veidrodėlių draudimas</strong></h3>
+        <p>Nes šios dalys dažnai neįtrauktos į standartinį CDW.</p>
+
+        <br>
+
+        <h2><strong>Į ką atkreipti dėmesį renkantis draudimą?</strong></h2>
+
+        <br>
+
+        <h3><strong>Frančizė (sava rizika)</strong></h3>
+        <p>Pasitikrinkite, kokia suma teks padengti iš savo kišenės. Ji gali siekti nuo kelių šimtų iki kelių tūkstančių eurų.</p>
+
+        <h3><strong>Kas jau įskaičiuota į nuomos kainą</strong></h3>
+        <p>Dažnai bazinis draudimas yra įtrauktas, bet tik su didele frančize.</p>
+
+        <h3><strong>Kreditinės kortelės draudimas</strong></h3>
+        <p>Kai kurios banko kortelės jau apima nuomos automobilio draudimą. Tai gali padėti sutaupyti.</p>
+
+        <h3><strong>Smulkių raidžių skaitymas</strong></h3>
+        <p>Patikrinkite, ar draudimas apima stiklų, padangų, dugno ir stogo žalą.</p>
+
+        <h3><strong>Nuomos vieta</strong></h3>
+        <p>Oro uostuose draudimai gali kainuoti brangiau.</p>
+
+        <br>
+
+        <h2><strong>Patarimai, kaip sutaupyti</strong></h2>
+
+        <br>
+
+        <p>Palyginkite draudimo kainas iš anksto, ne tik atvykę į nuomos punktą.</p>
+        <p>Įvertinkite riziką – jei keliaujate tik mieste, gal pakaks bazinio draudimo, bet kalnuose ar ilguose maršrutuose verta rinktis pilnesnę apsaugą.</p>
+        <p>Fotografuokite automobilį prieš ir po nuomos – taip išvengsite ginčų dėl žalos.</p>
+
+        <br>
+
+        <h3><strong>Išvada</strong></h3>
+        <p>Automobilių nuomos draudimas gali atrodyti painus, tačiau žinant pagrindinius terminus ir sąlygas, galima išvengti permokų ir keliauti ramiai. Visada pasidomėkite, kas įskaičiuota į kainą, kokia frančizė taikoma ir ar verta rinktis papildomą apsaugą.</p>
         
-        <h3>Privalomas OSAGO draudimas</h3>
-        <p>Lietuvoje kiekvienas transporto priemonės valdytojas privalo turėti OSAGO draudimą. Nuomojant automobilį:</p>
-        <ul>
-          <li>OSAGO draudimas visada įtrauktas į nuomos kainą</li>
-          <li>Dengiamos trečiųjų asmenų žalos</li>
-          <li>Maksimali išmoka - 6 mln. eurų už žalą sveikatai, 1,2 mln. eurų už turtinę žalą</li>
-        </ul>
-        
-        <h3>KASKO draudimas - papildoma apsauga</h3>
-        <p>KASKO draudimas nėra privalomas, bet labai rekomenduojamas:</p>
-        <ul>
-          <li><strong>Visapusiškas KASKO</strong> - dengia beveik visus pažeidimus</li>
-          <li><strong>Dalinis KASKO</strong> - dengia tik tam tikrus atvejus (vagystė, gaisras, kt.)</li>
-          <li><strong>Savaimės rizikos</strong> - franšizė, kurią mokate patys</li>
-        </ul>
-        
-        <h3>Kas dengiama standartinio draudimo?</h3>
-        <h4>OSAGO dengia:</h4>
-        <ul>
-          <li>Žalą tretiesiems asmenims</li>
-          <li>Medicinos išlaidas nukentėjusiems</li>
-          <li>Trečiųjų asmenų turto žalą</li>
-        </ul>
-        
-        <h4>KASKO dengia:</h4>
-        <ul>
-          <li>Automobilio remonto išlaidas</li>
-          <li>Automobilio vagystę</li>
-          <li>Gamtos stichijų padarytą žalą</li>
-          <li>Vandalizmo atvejus</li>
-        </ul>
-        
-        <h3>Ko nedengia standartinis draudimas?</h3>
-        <p>Svarbu žinoti draudimo apribojimus:</p>
-        <ul>
-          <li>Asmeniniai daiktai automobilyje</li>
-          <li>Žala, padaryta būnant neblaiviam</li>
-          <li>Žala nuo neleistinų veiksmų</li>
-          <li>Padangų ir diskų žala (jei ne dėl avarijos)</li>
-          <li>Salono žala (dėmės, kvapai)</li>
-        </ul>
-        
-        <h3>Papildomo draudimo tipai</h3>
-        <h4>Sumažintos savaimės rizikos draudimas</h4>
-        <p>Sumažina sumą, kurią turėtumėte mokėti iš savo kišenės žalos atveju.</p>
-        
-        <h4>Pagalbos kelyje draudimas</h4>
-        <p>24/7 techninė pagalba, jei automobilis suges ar neužsives.</p>
-        
-        <h4>Asmeninių daiktų draudimas</h4>
-        <p>Dengia jūsų asmeninių daiktų vagystę iš automobilio.</p>
-        
-        <h3>Kaip elgtis žalos atveju?</h3>
-        <ol>
-          <li><strong>Saugumas pirmiausia</strong> - įsitikinkite, kad visi saugūs</li>
-          <li><strong>Iškvieskite policiją</strong> - būtina sunkių avarijų atveju</li>
-          <li><strong>Dokumentuokite žalą</strong> - fotografuokite automobilį ir aplinką</li>
-          <li><strong>Susisiekite su nuomos įmone</strong> - pranešite apie incidentą</li>
-          <li><strong>Užpildykite dokumentus</strong> - tiksliai ir sąžiningai</li>
-        </ol>
-        
-        <h3>Carbonus draudimo sprendimai</h3>
-        <p>Mes siūlome:</p>
-        <ul>
-          <li>Visapusišką KASKO draudimą visoms automobilių klasėms</li>
-          <li>24/7 pagalbą kelyje visoje Lietuvoje</li>
-          <li>Greitą žalos surašymą ir apdorojimą</li>
-          <li>Skaidrias sąlygas be paslėptų mokesčių</li>
-        </ul>
-        
-        <h2>Patarimai tinkamam draudimui pasirinkti</h2>
-        <ul>
-          <li>Visuomet skaitykite draudimo sąlygas atidžiai</li>
-          <li>Klauskite apie savaimės rizikos dydį</li>
-          <li>Įsitikinkite, kad suprantate, kas dengiama ir kas ne</li>
-          <li>Apsvarstykite papildomo draudimo poreikį</li>
-        </ul>
-        
-        <p>Tinkamas draudimas užtikrina ramią kelionę. Su Carbonus galite būti tikri, kad esate tinkamai apsaugoti!</p>
+        <p>Carbonus siūlo skaidrias draudimo sąlygas be paslėptų mokesčių. Mūsų komanda visada paaiškina visas draudimo galimybes ir padės pasirinkti tinkamą apsaugą jūsų kelionei. Su mumis galite keliauti ramiai, žinodami, kad esate tinkamai apsaugoti.</p>
       `
     },
     "verslo-keliones-kaip-issirinkti-tinkama-automobili": {
