@@ -34,6 +34,7 @@ export function Navigation({ logo }: NavigationProps) {
     { name: "Automobiliai", href: "/automobiliai" },
     { name: "Apie mus", href: "/apie-mus" },
     { name: "DUK", href: "/duk" },
+    { name: "Kontaktai", href: "/kontaktai" },
   ];
 
   return (
