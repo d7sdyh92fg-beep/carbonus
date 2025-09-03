@@ -1,9 +1,64 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export function Footer() {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Klaida",
+        description: "Prašome įvesti teisingą el. pašto adresą",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubscribing(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
+        body: { email }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.alreadySubscribed) {
+        toast({
+          title: "Jau prenumeruojate",
+          description: data.error,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Sėkmingai užsiprenumeravote!",
+          description: "Patikrinkite savo el. paštą dėl patvirtinimo.",
+        });
+        setEmail(''); // Clear the input
+      }
+
+    } catch (error: any) {
+      console.error("Newsletter subscription error:", error);
+      toast({
+        title: "Klaida",
+        description: "Nepavyko užsiprenumeruoti. Bandykite dar kartą.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   const handleLinkClick = (link: string) => {
     if (link === "Automobiliai") {
@@ -53,18 +108,24 @@ export function Footer() {
               <p className="text-muted-foreground text-sm mb-3">
                 Prenumeruoti naujienlaiškį
               </p>
-              <div className="flex gap-2">
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input 
                   type="email" 
                   placeholder="Įveskite el. paštą"
                   className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isSubscribing}
+                  required
                 />
                 <Button 
+                  type="submit"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 border-0 whitespace-nowrap"
+                  disabled={isSubscribing}
                 >
-                  Prenumeruoti
+                  {isSubscribing ? 'Siunčiama...' : 'Prenumeruoti'}
                 </Button>
-              </div>
+              </form>
             </div>
           </div>
 
