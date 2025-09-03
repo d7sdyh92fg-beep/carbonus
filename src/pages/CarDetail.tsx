@@ -42,6 +42,9 @@ const CarDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
+    // Scroll to top when navigating to car detail page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Set page title and meta tags dynamically based on car
     const carName = carDetails[id || ""]?.name || "Automobilis";
     document.title = `${carName} - Carbonus | Premium automobilio nuoma nuo 30€/dieną`;
