@@ -105,7 +105,7 @@ const Admin = () => {
       id: "4",
       name: "KIA CEED",
       price: "30 EUR", 
-      image: kiaCeedFrontEnhanced,
+      image: kiaCeedSideClean,
       category: "Universalas",
       passengers: 5,
       fuel: "Benzinas",
