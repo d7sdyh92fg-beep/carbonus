@@ -10,6 +10,12 @@ import BookingCalendar from "@/components/booking/BookingCalendar";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import kiaCeedRearEnhanced from "@/assets/kia-ceed-rear-enhanced.png";
+import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
+import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
+import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
+import chryslerEnhanced2 from "@/assets/chrysler-enhanced-2.png";
+import vwPassatEnhanced1 from "@/assets/vw-passat-enhanced-1.png";
+import vwPassatEnhanced2 from "@/assets/vw-passat-enhanced-2.png";
 import { useState } from "react";
 
 interface CarDetail {
@@ -69,10 +75,10 @@ const CarDetail = () => {
       id: "1",
       name: "BMW 3 series",
       price: "30 EUR",
-      image: "/lovable-uploads/6d952bf9-02ce-401a-844d-53602e6bd46a.png",
+      image: bmwEnhanced1,
       images: [
-        "/lovable-uploads/6d952bf9-02ce-401a-844d-53602e6bd46a.png",
-        "/lovable-uploads/1fde8ef6-efa7-46c4-956a-06ec5e88edb9.png"
+        bmwEnhanced1,
+        bmwEnhanced2
       ],
       category: "Sedanas",
       passengers: 5,
@@ -103,10 +109,10 @@ const CarDetail = () => {
       id: "2",
       name: "Chrysler Town & Country",
       price: "30 EUR",
-      image: "/lovable-uploads/e88041de-a960-4e68-b67d-538898a45d3d.png",
+      image: chryslerEnhanced1,
       images: [
-        "/lovable-uploads/e88041de-a960-4e68-b67d-538898a45d3d.png",
-        "/lovable-uploads/c867ce9f-5f60-4429-b4c0-5bfc4060a988.png"
+        chryslerEnhanced1,
+        chryslerEnhanced2
       ],
       category: "Miniautobusas",
       passengers: 7,
@@ -137,10 +143,10 @@ const CarDetail = () => {
       id: "3",
       name: "Volkswagen Passat",
       price: "30-40 EUR",
-      image: "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png",
+      image: vwPassatEnhanced1,
       images: [
-        "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png",
-        "/lovable-uploads/1bd704ad-6405-4654-b8c9-c47106be98df.png"
+        vwPassatEnhanced1,
+        vwPassatEnhanced2
       ],
       category: "Sedanas",
       passengers: 5,
