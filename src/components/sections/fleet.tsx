@@ -10,6 +10,7 @@ import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
 import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
 import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
+import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
 
 interface Car {
   id: string;
@@ -54,7 +55,7 @@ export function Fleet() {
       id: "5",
       name: "KIA CEED",
       price: "30 EUR",  
-      image: kiaCeedHatchbackSideFlipped,
+      image: kiaCeedHatchbackSideBrown,
       category: "Hečbekas"
     }
   ];
