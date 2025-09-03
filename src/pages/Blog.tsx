@@ -61,7 +61,7 @@ const Blog = () => {
     {
       id: "1",
       title: "10 patarimų, kaip sutaupyti nuomojant automobilį Lietuvoje",
-      excerpt: "Sužinokite, kaip gauti geriausią kainą automobilių nuomai ir išvengti paslėptų mokesčių. Praktiniai patarimai ekonomiškam kelionių planavimui.",
+      excerpt: "Sužinokite 10 praktiškų patarimų, kaip pigiau išsinuomoti automobilį Lietuvoje. Lyginkite kainas, pasirinkite tinkamą draudimą ir venkite paslėptų mokesčių.",
       content: "",
       author: "Carbonus komanda",
       publishDate: "2024-12-15",
