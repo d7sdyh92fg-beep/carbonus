@@ -34,58 +34,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
-    console.log('checkAdminRole: Checking admin role for userId:', userId);
-
     try {
-      // First, try the email-based check since we know it should work
+      // Get the current user
       const { data: { user } } = await supabase.auth.getUser();
-      if (user?.email === 'info@carbonus.lt') {
-        console.log('checkAdminRole: User is admin by email check');
-        setIsAdmin(true);
-        return;
-      }
-
-      // Fallback: try the RPC function
-      const { data, error } = await supabase
-        .rpc('has_role', { 
-          _user_id: userId, 
-          _role: 'admin' 
-        });
-
-      console.log('checkAdminRole: RPC response:', { data, error });
-
-      if (!error && data === true) {
-        console.log('checkAdminRole: User is admin by RPC check');
-        setIsAdmin(true);
-        return;
-      }
-
-      // Final fallback: direct database query
-      const { data: roleData, error: roleError } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .eq('role', 'admin')
-        .single();
-
-      console.log('checkAdminRole: Direct query response:', { roleData, roleError });
-
-      if (!roleError && roleData) {
-        console.log('checkAdminRole: User is admin by direct query');
-        setIsAdmin(true);
-        return;
-      }
-
-      console.log('checkAdminRole: User is not admin');
-      setIsAdmin(false);
-
+      console.log('checkAdminRole: Checking email:', user?.email);
+      
+      // Simply check if email is info@carbonus.lt
+      const isAdmin = user?.email === 'info@carbonus.lt';
+      console.log('checkAdminRole: Setting isAdmin to:', isAdmin);
+      setIsAdmin(isAdmin);
+      
     } catch (error) {
       console.error('Error in checkAdminRole:', error);
-      // Final fallback: check by email
-      const { data: { user } } = await supabase.auth.getUser();
-      const isAdminByEmail = user?.email === 'info@carbonus.lt';
-      console.log('checkAdminRole: Final fallback result:', isAdminByEmail);
-      setIsAdmin(isAdminByEmail);
+      setIsAdmin(false);
     }
   };
 
