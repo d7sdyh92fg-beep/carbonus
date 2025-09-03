@@ -28,9 +28,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+    
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state changed:', event, !!session, session?.user?.email);
+        if (!mounted) return;
+        
         setSession(session);
         setUser(session?.user ?? null);
         setIsAdmin(session?.user?.email === 'info@carbonus.lt');
@@ -39,14 +44,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const initializeAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('Initial session:', !!session, session?.user?.email);
+      
+      if (!mounted) return;
+      
       setSession(session);
       setUser(session?.user ?? null);
       setIsAdmin(session?.user?.email === 'info@carbonus.lt');
       setLoading(false);
-    });
+    };
 
-    return () => subscription.unsubscribe();
+    initializeAuth();
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {

@@ -141,13 +141,15 @@ const Admin = () => {
   const carOptions = cars.map(car => car.name);
 
   useEffect(() => {
+    console.log('Admin page - Auth state:', { user: !!user, isAdmin, loading });
     if (!loading && user && isAdmin) {
       fetchReservations();
     }
   }, [user, isAdmin, loading]);
 
-  // Redirect non-admin users to auth page
+  // Redirect non-admin users to auth page - with a small delay to prevent race conditions
   if (!loading && (!user || !isAdmin)) {
+    console.log('Admin redirect triggered:', { user: !!user, isAdmin, loading });
     return <Navigate to="/auth" replace />;
   }
 

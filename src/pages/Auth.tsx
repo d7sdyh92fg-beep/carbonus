@@ -18,6 +18,7 @@ const Auth = () => {
 
   // Redirect if already authenticated
   if (!loading && user) {
+    console.log('Auth page - Redirecting to admin:', { user: !!user, email: user?.email, loading });
     return <Navigate to="/admin" replace />;
   }
 
