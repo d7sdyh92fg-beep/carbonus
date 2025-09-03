@@ -113,65 +113,60 @@ const BlogPost = () => {
       image: blogLithuaniaTravel,
       slug: "kelioniu-po-lietuva-gidas-geriausi-marsrutai",
       content: `
-        <h2>Lietuvos grožybės laukia jūsų</h2>
-        <p>Lietuva gali ir nedidelė šalis, tačiau čia rasite neįtikėtinų gamtos vaizdų, istorinių vietų ir kultūros paminklų. Su nuomotu automobiliu galėsite lankyti vietas savo tempu.</p>
+        <p>Automobilio nuoma Lietuvoje suteikia visišką laisvę keliauti – galite atrasti tiek populiarius turistinius objektus, tiek paslėptus kampelius, kurių nepasieksite viešuoju transportu. Šis gidas padės suplanuoti įsimintinas keliones po Lietuvą su nuomotu automobiliu.</p>
+
+        <br>
+
+        <h2><strong>1.</strong> Neringa ir Kuršių nerija</h2>
+        <p><strong>Maršrutas:</strong> Klaipėda – Smiltynė – Juodkrantė – Nida</p>
+        <p>Pasiplaukite keltu iš Klaipėdos į Smiltynę.</p>
+        <p>Sustokite Juodkrantėje ir aplankykite Raganų kalną.</p>
+        <p>Toliau važiuokite iki Nidos, kur laukia kopos, Parnidžio saulės laikrodis ir žvejų tradicijos.</p>
+        <p><strong>Patariama:</strong> užsisakykite automobilį iš anksto vasaros sezonu – paklausa didelė.</p>
+
+        <br>
+
+        <h2><strong>2.</strong> Žemaitijos nacionalinis parkas</h2>
+        <p><strong>Maršrutas:</strong> Telšiai – Plateliai – Šatrijos kalnas</p>
+        <p>Pasivaikščiokite aplink Platelių ežerą.</p>
+        <p>Užlipkite ant Šatrijos kalno – legenda sako, kad čia rinkdavosi raganos.</p>
+        <p>Aplankykite Žemaičių muziejų „Alka" Telšiuose.</p>
+        <p><strong>Patariama:</strong> rinkitės kompaktišką automobilį – keliai siauri ir vingiuoti.</p>
+
+        <br>
+
+        <h2><strong>3.</strong> Aukštaitijos ežerų kelias</h2>
+        <p><strong>Maršrutas:</strong> Vilnius – Palūšė – Ladakalnis – Ginučiai</p>
+        <p>Kelionę pradėkite nuo Palūšės bažnyčios.</p>
+        <p>Užlipkite į Ladakalnį, iš kur atsiveria šešių ežerų panorama.</p>
+        <p>Sustokite Ginučiuose, kur yra malūnas ir autentiškas kaimas.</p>
+        <p><strong>Patariama:</strong> pasirinkite automobilį su neribotu kilometražu – maršrutas ilgas.</p>
+
+        <br>
+
+        <h2><strong>4.</strong> Dzūkijos gamtos perlai</h2>
+        <p><strong>Maršrutas:</strong> Druskininkai – Merkinė – Čepkeliai</p>
+        <p>Pradėkite nuo Druskininkų SPA ir Lynų kelio.</p>
+        <p>Merkinės apžvalgos bokštas leis pamatyti Nemuno vingius.</p>
+        <p>Čepkelių raisto takai patiks gamtos mylėtojams.</p>
+        <p><strong>Patariama:</strong> pasirinkite automobilį su oro kondicionieriumi – vasarą čia labai karšta.</p>
+
+        <br>
+
+        <h2><strong>5.</strong> Istorinė kelionė po Aukštaitiją</h2>
+        <p><strong>Maršrutas:</strong> Kaunas – Kernavė – Trakai – Vilnius</p>
+        <p>Kaune aplankykite Senamiestį ir Pažaislio vienuolyną.</p>
+        <p>Kernavėje susipažinkite su pirmąją Lietuvos sostine.</p>
+        <p>Trakuose nepamirškite užsukti į pilį ir paragauti kibinų.</p>
+        <p>Kelionę užbaikite Vilniaus Senamiestyje.</p>
+        <p><strong>Patariama:</strong> nuomos punktą rinkitės didesniame mieste – pasirinkimas platesnis ir kaina mažesnė.</p>
+
+        <br>
+
+        <h3><strong>Išvada</strong></h3>
+        <p>Keliauti po Lietuvą nuomotu automobiliu – patogus ir įdomus būdas pažinti šalį. Nuo pajūrio kopų iki ežerų bei miškų – kiekvienas maršrutas turi savo žavesį. Suplanuokite kelionę iš anksto, pasirinkite tinkamą automobilį ir mėgaukitės Lietuvos grožiu be rūpesčių.</p>
         
-        <h3>Maršrutas #1: Kuršių nerijos ekspedicija (2-3 dienos)</h3>
-        <p><strong>Atstumas:</strong> ~400 km iš Vilniaus</p>
-        <p><strong>Rekomenduojamas automobilis:</strong> SUV (smėlio keliams)</p>
-        <ul>
-          <li>Klaipėda - pradėkite nuo uosto miesto</li>
-          <li>Smiltynė - keltas į Kuršių neriją</li>
-          <li>Juodkrantė - Raganų kalnas</li>
-          <li>Nida - Thomas Mann namelis, Parnidžio kopa</li>
-        </ul>
-        
-        <h3>Maršrutas #2: Aukštaitijos nacionalinis parkas (2 dienos)</h3>
-        <p><strong>Atstumas:</strong> ~200 km iš Vilniaus</p>
-        <p><strong>Rekomenduojamas automobilis:</strong> Universalas (daiktams)</p>
-        <ul>
-          <li>Ignalina - bazė prie ežerų</li>
-          <li>Ladakalnis - gražiausi vaizdai</li>
-          <li>Ginučiai - vandens malūnas</li>
-          <li>Palūšė - gamtos centras</li>
-        </ul>
-        
-        <h3>Maršrutas #3: Žemaitijos kalvos (1-2 dienos)</h3>
-        <p><strong>Atstumas:</strong> ~250 km iš Vilniaus</p>
-        <p><strong>Rekomenduojamas automobilis:</strong> Sedanas (patogūs keliai)</p>
-        <ul>
-          <li>Plungė - Oginskių rūmai</li>
-          <li>Žemaičių Kalvarija - piligrimų kelias</li>
-          <li>Šateikiai - aukščiausias Žemaitijos taškas</li>
-        </ul>
-        
-        <h3>Maršrutas #4: Dzūkijos miškai ir Druskininkai (2 dienos)</h3>
-        <p><strong>Atstumas:</strong> ~150 km iš Vilniaus</p>
-        <p><strong>Rekomenduojamas automobilis:</strong> Bet kuris</p>
-        <ul>
-          <li>Druskininkai - SPA ir poilsis</li>
-          <li>Grūto parkas - sovietų skulptūrų muziejus</li>
-          <li>Dzūkijos nacionalinis parkas - pažintiniai takai</li>
-        </ul>
-        
-        <h3>Praktiniai patarimai kelionėms</h3>
-        <h4>Ką pasiimti su savimi:</h4>
-        <ul>
-          <li>GPS navigaciją ar telefono programėlę</li>
-          <li>Lietaus skėtį (oras Lietuvoje nepastovus)</li>
-          <li>Termosą su karšta arbata</li>
-          <li>Fotoaparatą gražių vaizdų fiksuoti</li>
-        </ul>
-        
-        <h4>Geriausi metų laikai kelionėms:</h4>
-        <ul>
-          <li><strong>Pavasaris (balandis-gegužė):</strong> Žydintys medžiai, mažiau turistų</li>
-          <li><strong>Vasara (birželis-rugpjūtis):</strong> Šiltas oras, visos atrakcijos veikia</li>
-          <li><strong>Ruduo (rugsėjis-spalis):</strong> Auksiniai lapai, ramiau</li>
-        </ul>
-        
-        <h2>Kodėl rinktis Carbonus kelionėms po Lietuvą?</h2>
-        <p>Mūsų automobiliai idealiai tinka Lietuvos keliams. Siūlome GPS navigaciją, visą reikiamą draudimą ir 24/7 pagalbą kelyje. Rezervuokite dabar ir pradėkite savo Lietuvos tyrimų nuotykį!</p>
+        <p>Carbonus automobiliai puikiai tinka kelionėms po Lietuvą – mūsų flotą sudaro patikimi ir ekonomiški automobiliai, kurie padės pasiekti bet kurį šalies kampelį. Su 24/7 palaikymu galite keliauti ramiai, žinodami, kad esate gerose rankose.</p>
       `
     },
     "automobiliu-nuomos-draudimas-kas-reikia-zinoti": {
