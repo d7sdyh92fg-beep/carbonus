@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User, ArrowRight } from "lucide-react";
+import blogSavingsTips from "@/assets/blog-savings-tips.jpg";
+import blogLithuaniaTravel from "@/assets/blog-lithuania-travel.jpg";
+import blogCarInsurance from "@/assets/blog-car-insurance.jpg";
+import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
+import blogWinterDriving from "@/assets/blog-winter-driving.jpg";
+import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
 
 interface BlogPost {
   id: string;
@@ -61,7 +67,7 @@ const Blog = () => {
       publishDate: "2024-12-15",
       readTime: "5 min",
       category: "Patarimai",
-      image: "/lovable-uploads/12ed3116-e98d-49d4-b5ab-305e8550f33e.png",
+      image: blogSavingsTips,
       slug: "10-patarimu-kaip-sutaupyti-nuomojant-automobili"
     },
     {
@@ -73,7 +79,7 @@ const Blog = () => {
       publishDate: "2024-12-10",
       readTime: "8 min",
       category: "Kelionės",
-      image: "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png",
+      image: blogLithuaniaTravel,
       slug: "kelioniu-po-lietuva-gidas-geriausi-marsrutai"
     },
     {
@@ -85,7 +91,7 @@ const Blog = () => {
       publishDate: "2024-12-05", 
       readTime: "6 min",
       category: "Draudimas",
-      image: "/lovable-uploads/1bd704ad-6405-4654-b8c9-c47106be98df.png",
+      image: blogCarInsurance,
       slug: "automobiliu-nuomos-draudimas-kas-reikia-zinoti"
     },
     {
@@ -97,7 +103,7 @@ const Blog = () => {
       publishDate: "2024-11-30",
       readTime: "4 min", 
       category: "Verslas",
-      image: "/lovable-uploads/1fde8ef6-efa7-46c4-956a-06ec5e88edb9.png",
+      image: blogBusinessTravel,
       slug: "verslo-keliones-kaip-issirinkti-tinkama-automobili"
     },
     {
@@ -109,7 +115,7 @@ const Blog = () => {
       publishDate: "2024-11-25",
       readTime: "7 min",
       category: "Saugumas",
-      image: "/lovable-uploads/2101c036-71b7-4282-b3a0-0a30895b680e.png",
+      image: blogWinterDriving,
       slug: "ziemos-vairavimas-saugumas-kelyje"
     },
     {
@@ -121,7 +127,7 @@ const Blog = () => {
       publishDate: "2024-11-20",
       readTime: "5 min",
       category: "Šeima", 
-      image: "/lovable-uploads/2f65caa0-2965-4077-a0fe-20723b64baa6.png",
+      image: blogFamilyTravel,
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili"
     }
   ];

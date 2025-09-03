@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Clock, User, ArrowLeft, Share2, BookOpen } from "lucide-react";
+import blogSavingsTips from "@/assets/blog-savings-tips.jpg";
+import blogLithuaniaTravel from "@/assets/blog-lithuania-travel.jpg";
+import blogCarInsurance from "@/assets/blog-car-insurance.jpg";
+import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
+import blogWinterDriving from "@/assets/blog-winter-driving.jpg";
+import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
 
 interface BlogPostData {
   id: string;
@@ -33,7 +39,7 @@ const BlogPost = () => {
       publishDate: "2024-12-15",
       readTime: "5 min",
       category: "Patarimai",
-      image: "/lovable-uploads/12ed3116-e98d-49d4-b5ab-305e8550f33e.png",
+      image: blogSavingsTips,
       slug: "10-patarimu-kaip-sutaupyti-nuomojant-automobili",
       content: `
         <h2>Kodėl verta sutaupyti nuomojant automobilį?</h2>
@@ -81,7 +87,7 @@ const BlogPost = () => {
       publishDate: "2024-12-10", 
       readTime: "8 min",
       category: "Kelionės",
-      image: "/lovable-uploads/1962d72f-6e8b-4109-9189-e0f8b4dfe195.png",
+      image: blogLithuaniaTravel,
       slug: "kelioniu-po-lietuva-gidas-geriausi-marsrutai",
       content: `
         <h2>Lietuvos grožybės laukia jūsų</h2>
@@ -153,7 +159,7 @@ const BlogPost = () => {
       publishDate: "2024-12-05",
       readTime: "6 min",
       category: "Draudimas",
-      image: "/lovable-uploads/1bd704ad-6405-4654-b8c9-c47106be98df.png",
+      image: blogCarInsurance,
       slug: "automobiliu-nuomos-draudimas-kas-reikia-zinoti",
       content: `
         <h2>Draudimo pagrindai nuomojant automobilį</h2>
@@ -238,6 +244,184 @@ const BlogPost = () => {
         </ul>
         
         <p>Tinkamas draudimas užtikrina ramią kelionę. Su Carbonus galite būti tikri, kad esate tinkamai apsaugoti!</p>
+      `
+    },
+    "verslo-keliones-kaip-issirinkti-tinkama-automobili": {
+      id: "4",
+      title: "Verslo kelionės: kaip išsirinkti tinkamą automobilį?",
+      excerpt: "Praktiniai patarimai verslui, kaip pasirinkti automobilį komandiruotėms ir susitikimams.",
+      author: "Carbonus komanda",
+      publishDate: "2024-11-30",
+      readTime: "4 min",
+      category: "Verslas",
+      image: blogBusinessTravel,
+      slug: "verslo-keliones-kaip-issirinkti-tinkama-automobili",
+      content: `
+        <h2>Verslo kelionių specifika</h2>
+        <p>Verslo kelionės skiriasi nuo atostogų - čia svarbu ne tik komfortas, bet ir profesionalumas, patikimumas bei ekonomiškumas. Tinkamas automobilio pasirinkimas gali paveikti jūsų verslo derybų sėkmę.</p>
+        
+        <h3>Automobilių klasės verslui</h3>
+        <h4>Ekonominė klasė</h4>
+        <ul>
+          <li>Tinka trumpoms kelionėms mieste</li>
+          <li>Mažiausios nuomos išlaidos</li>
+          <li>Geras kuro taupymas</li>
+        </ul>
+        
+        <h4>Verslo klasė</h4>
+        <ul>
+          <li>Reprezentacinis išvaizda</li>
+          <li>Patogus salons ilgoms kelionėms</li>
+          <li>Profesionalus įspūdis klientams</li>
+        </ul>
+        
+        <h4>Premium klasė</h4>
+        <ul>
+          <li>Aukščiausias prestižas</li>
+          <li>Maksimalus komfortas</li>
+          <li>Tinka svarbiausioms deryboms</li>
+        </ul>
+        
+        <h3>Svarbiausios savybės verslo automobiliui</h3>
+        <ol>
+          <li><strong>Patikimumas</strong> - automobilis negali sugesti svarbios kelionės metu</li>
+          <li><strong>Komfortas</strong> - kad po kelionės būtumėte šviežas derybose</li>
+          <li><strong>Reprezentacija</strong> - automobilis turi atspindėti jūsų profesionalumą</li>
+          <li><strong>Ekonomiškumas</strong> - kontroliuokite kelionių biudžetą</li>
+        </ol>
+        
+        <h3>Carbonus verslo sprendimai</h3>
+        <p>Siūlome specialias sąlygas verslo klientams:</p>
+        <ul>
+          <li>Nuolaidos ilgalaikei nuomai</li>
+          <li>Lankstus atsiskaitymas</li>
+          <li>24/7 palaikymas</li>
+          <li>Verslo automobiliams pritaikytas draudimas</li>
+        </ul>
+        
+        <p>Susisiekite su mumis ir aptarsime jūsų verslo poreikius!</p>
+      `
+    },
+    "ziemos-vairavimas-saugumas-kelyje": {
+      id: "5",
+      title: "Žiemos vairavimas: saugumas kelyje su nuomotu automobiliu",
+      excerpt: "Svarbiausios žiemos vairavimo taisyklės ir patarimai saugumui.",
+      author: "Carbonus komanda",
+      publishDate: "2024-11-25",
+      readTime: "7 min",
+      category: "Saugumas",
+      image: blogWinterDriving,
+      slug: "ziemos-vairavimas-saugumas-kelyje",
+      content: `
+        <h2>Žiemos vairavimo iššūkiai</h2>
+        <p>Žiemos sąlygos reikalauja ypatingos atsargos kelyje. Su nuomotu automobiliu ypač svarbu žinoti, kaip elgtis ekstremalaus oro sąlygomis.</p>
+        
+        <h3>Pasiruošimas žiemos kelionėms</h3>
+        <h4>Prieš išvažiuojant:</h4>
+        <ul>
+          <li>Patikrinkite padangų būklę</li>
+          <li>Įsitikinkite, kad turite gerai veikiantį šildymą</li>
+          <li>Pasiimkite šiltus drabužius ir antklodę</li>
+          <li>Užsipilkite pilną kuro baką</li>
+        </ul>
+        
+        <h3>Saugaus vairavimo taisyklės žiemą</h3>
+        <ol>
+          <li><strong>Mažinkite greitį</strong> - slidžiuose keliuose važiuokite lėčiau</li>
+          <li><strong>Didinkite atstumus</strong> - stabdymo kelias žiemą ilgesnis</li>
+          <li><strong>Lygūs judesiai</strong> - vengkite staigių manevrų</li>
+          <li><strong>Stebėkite orų prognozes</strong> - planuokite keliones pagal orą</li>
+        </ol>
+        
+        <h3>Ką daryti nepavykus situacijoms?</h3>
+        <p>Jei automobilis pradėjo slysti arba užstrigo sniego:</p>
+        <ul>
+          <li>Išlikite ramūs</li>
+          <li>Nespauškite staigiai stabdžių</li>
+          <li>Pasukite ratą slydimo kryptimi</li>
+          <li>Jei užstrigote - barstykit smėlį po ratais</li>
+        </ul>
+        
+        <h3>Carbonus žiemos pagalba</h3>
+        <p>Visi mūsų automobiliai aprūpinti:</p>
+        <ul>
+          <li>Žiemos padangomis</li>
+          <li>Ledų grandykle</li>
+          <li>24/7 pagalba kelyje</li>
+          <li>Pilna draudimo apsauga</li>
+        </ul>
+        
+        <p>Keliauki saugiai su Carbonus - net ir žiemiausią žiemą!</p>
+      `
+    },
+    "seimos-kelione-kaip-pasirinkti-idealu-automobili": {
+      id: "6",
+      title: "Šeimos kelionė: kaip pasirinkti idealų automobilį vaikams",
+      excerpt: "Geriausių šeimos automobilių apžvalga nuomai. Saugumas, erdvumas ir patogumas.",
+      author: "Carbonus komanda",
+      publishDate: "2024-11-20",
+      readTime: "5 min",
+      category: "Šeima",
+      image: blogFamilyTravel,
+      slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili",
+      content: `
+        <h2>Šeimos kelionės ypatumai</h2>
+        <p>Keliaujant su vaikais automobilis tampa jūsų antruoju namų. Svarbu pasirinkti automobilį, kuris užtikrins saugumą, komfortą ir pakankamai vietos visiems šeimos nariams.</p>
+        
+        <h3>Pagrindiniai kriterijai šeimos automobiliui</h3>
+        <h4>Saugumas</h4>
+        <ul>
+          <li>Aukštas Euro NCAP saugumo reitingas</li>
+          <li>Isofix tvirtinimai vaikų kėdutėms</li>
+          <li>Airbag sistema visoms sėdynėms</li>
+          <li>Elektroninės saugumo sistemos</li>
+        </ul>
+        
+        <h4>Erdvumas</h4>
+        <ul>
+          <li>Pakankamai vietos kojoms</li>
+          <li>Didelis bagažinės skyrius</li>
+          <li>Papildomi daiktų skyreliai</li>
+          <li>Lengvas įlipimas ir išlipimas</li>
+        </ul>
+        
+        <h3>Geriausi šeimos automobilių tipai</h3>
+        <h4>Minivenai</h4>
+        <p>Idealus pasirinkimas didelėms šeimoms:</p>
+        <ul>
+          <li>7 keleivių vietos</li>
+          <li>Didžiulis bagažas</li>
+          <li>Aukšta sėdėjimo pozicija</li>
+          <li>Slankiojančios durys</li>
+        </ul>
+        
+        <h4>SUV automobiliai</h4>
+        <p>Universalus sprendimas šeimai:</p>
+        <ul>
+          <li>Geras kelio peržvalgumas</li>
+          <li>Saugi konstrukcija</li>
+          <li>Erdvus salonas</li>
+          <li>Tinka įvairiems keliams</li>
+        </ul>
+        
+        <h3>Patarimai kelionei su vaikais</h3>
+        <ol>
+          <li><strong>Vaikų kėdutės</strong> - rezervuokite iš anksto</li>
+          <li><strong>Pramogos</strong> - pasiimkite planšetę su filmukais</li>
+          <li><strong>Užkandžiai</strong> - turėkite sveikų užkandžių</li>
+          <li><strong>Dažnos pertraukos</strong> - stabtelėkite kas 2 valandas</li>
+        </ol>
+        
+        <h3>Carbonus šeimos pasiūlymai</h3>
+        <p>Specialiai šeimoms siūlome:</p>
+        <ul>
+          <li>Nemokamas vaikų kėdutes</li>
+          <li>Šeimos nuolaidas</li>
+          <li>Automobilio higienos paslaugas</li>
+          <li>Lankstų grąžinimo grafiką</li>
+        </ul>
+        
+        <p>Kartu keliaujame saugiai ir smagu!</p>
       `
     }
   };
