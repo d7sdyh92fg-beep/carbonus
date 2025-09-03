@@ -43,7 +43,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Error checking admin role:', error);
-        setIsAdmin(false);
+        // Fallback: check by email if RPC fails
+        const { data: { user } } = await supabase.auth.getUser();
+        setIsAdmin(user?.email === 'info@carbonus.lt');
         return;
       }
 
@@ -51,7 +53,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAdmin(data === true);
     } catch (error) {
       console.error('Error in checkAdminRole:', error);
-      setIsAdmin(false);
+      // Fallback: check by email if anything fails
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAdmin(user?.email === 'info@carbonus.lt');
     }
   };
 
