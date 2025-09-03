@@ -10,7 +10,7 @@ import blogSavingsTips from "@/assets/blog-savings-tips-final.jpg";
 import blogLithuaniaTravel from "@/assets/blog-lithuania-travel.jpg";
 import blogCarInsurance from "@/assets/blog-car-insurance-new.jpg";
 import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
-import blogWinterDriving from "@/assets/blog-winter-driving-final.jpg";
+import blogWinterDriving from "@/assets/blog-winter-driving-new.jpg";
 import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
 
 interface BlogPostData {
