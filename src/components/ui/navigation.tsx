@@ -32,10 +32,10 @@ export function Navigation({ logo }: NavigationProps) {
   const navItems = [
     { name: "Pradžia", href: "/" },
     { name: "Automobiliai", href: "/automobiliai" },
-    { name: "Blogas", href: "/blogas" },
     { name: "Apie mus", href: "/apie-mus" },
     { name: "Kontaktai", href: "/kontaktai" },
     { name: "DUK", href: "/duk" },
+    { name: "Naujienos", href: "/blogas" },
   ];
 
   return (

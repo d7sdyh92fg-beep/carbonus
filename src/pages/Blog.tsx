@@ -25,12 +25,12 @@ const Blog = () => {
 
   useEffect(() => {
     // Set page title and meta tags
-    document.title = "Blogas - Carbonus | Automobilių nuomos patarimai ir kelionių gidas";
+    document.title = "Naujienos - Carbonus | Automobilių nuomos patarimai ir kelionių gidas";
     
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Skaitykite Carbonus blogą apie automobilių nuomą, kelionių patarimus, vairavimo gudrybes ir naujausias automobilių pramonės žinias Lietuvoje.');
+      metaDescription.setAttribute('content', 'Skaitykite Carbonus naujienas apie automobilių nuomą, kelionių patarimus, vairavimo gudrybes ir naujausias automobilių pramonės žinias Lietuvoje.');
     }
     
     // Update canonical URL
@@ -42,7 +42,7 @@ const Blog = () => {
     // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Blogas - Carbonus');
+      ogTitle.setAttribute('content', 'Naujienos - Carbonus');
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
@@ -137,10 +137,10 @@ const Blog = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">
-              CARBONUS BLOGAS
+              CARBONUS NAUJIENOS
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-              Automobilių nuomos gidas
+              Automobilių nuomos naujienos
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Naujausi patarimai, kelionių gidai ir automobilių pramonės žinios. 

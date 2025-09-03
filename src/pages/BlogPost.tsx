@@ -280,7 +280,7 @@ const BlogPost = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-foreground mb-4">Straipsnis nerastas</h2>
           <Button onClick={() => navigate("/blogas")}>
-            Grįžti į blogą
+            Grįžti į naujienas
           </Button>
         </div>
       </div>
@@ -302,7 +302,7 @@ const BlogPost = () => {
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="w-4 h-4" />
-              Grįžti į blogą
+              Grįžti į naujienas
             </Button>
           </div>
         </div>
