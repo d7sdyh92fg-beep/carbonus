@@ -38,6 +38,8 @@ const Cars = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  console.log("Cars page loaded - Search functionality active!", { searchTerm, selectedCategory });
+
   useEffect(() => {
     // Set page title and meta tags
     document.title = "Automobiliai - Carbonus | BMW, Audi ir kiti premium automobiliai nuomai";
