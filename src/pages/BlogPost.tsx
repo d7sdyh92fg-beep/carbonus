@@ -98,6 +98,8 @@ const BlogPost = () => {
 
         <h3>Išvada</h3>
         <p>Automobilio nuoma Lietuvoje nebūtinai turi būti brangi. Planuokite iš anksto, rinkitės ekonomiškus variantus ir pasitikrinkite visas sąlygas. Taip sutaupysite pinigų ir galėsite ramiai mėgautis kelione.</p>
+        
+        <p>Carbonus siūlo skaidrias automobilių nuomos kainas be paslėptų mokesčių, todėl galite būti tikri, kad mokėsite tik už tai, kas sutarta. Mūsų automobiliai tinkami bet kokiai kelionei - nuo verslo susitikimų iki šeimos atostogų po Lietuvą.</p>
       `
     },
     "kelioniu-po-lietuva-gidas-geriausi-marsrutai": {
