@@ -37,7 +37,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log('checkAdminRole: Checking admin role for userId:', userId);
 
     try {
-      // Check if user has admin role using the has_role function
+      // First, try the email-based check since we know it should work
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email === 'info@carbonus.lt') {
+        console.log('checkAdminRole: User is admin by email check');
+        setIsAdmin(true);
+        return;
+      }
+
+      // Fallback: try the RPC function
       const { data, error } = await supabase
         .rpc('has_role', { 
           _user_id: userId, 
@@ -45,38 +53,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
       console.log('checkAdminRole: RPC response:', { data, error });
-      console.log('checkAdminRole: Data type:', typeof data);
-      console.log('checkAdminRole: Data value:', data);
 
-      if (error) {
-        console.error('Error checking admin role:', error);
-        // Fallback: check by email if RPC fails
-        const { data: { user } } = await supabase.auth.getUser();
-        console.log('checkAdminRole: Fallback to email check:', user?.email);
-        const isAdminByEmail = user?.email === 'info@carbonus.lt';
-        console.log('checkAdminRole: Setting isAdmin to (fallback):', isAdminByEmail);
-        setIsAdmin(isAdminByEmail);
+      if (!error && data === true) {
+        console.log('checkAdminRole: User is admin by RPC check');
+        setIsAdmin(true);
         return;
       }
 
-      console.log('checkAdminRole: Admin role check result:', data);
-      const isAdminResult = data === true;
-      console.log('checkAdminRole: isAdminResult calculation:', isAdminResult);
-      console.log('checkAdminRole: Setting isAdmin to:', isAdminResult);
-      setIsAdmin(isAdminResult);
-      
-      // Force re-render by logging the state change
-      setTimeout(() => {
-        console.log('checkAdminRole: State should now be updated. Current values should be checked in next render.');
-      }, 100);
-      
+      // Final fallback: direct database query
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .single();
+
+      console.log('checkAdminRole: Direct query response:', { roleData, roleError });
+
+      if (!roleError && roleData) {
+        console.log('checkAdminRole: User is admin by direct query');
+        setIsAdmin(true);
+        return;
+      }
+
+      console.log('checkAdminRole: User is not admin');
+      setIsAdmin(false);
+
     } catch (error) {
       console.error('Error in checkAdminRole:', error);
-      // Fallback: check by email if anything fails
+      // Final fallback: check by email
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('checkAdminRole: Catch fallback to email check:', user?.email);
       const isAdminByEmail = user?.email === 'info@carbonus.lt';
-      console.log('checkAdminRole: Setting isAdmin to (catch fallback):', isAdminByEmail);
+      console.log('checkAdminRole: Final fallback result:', isAdminByEmail);
       setIsAdmin(isAdminByEmail);
     }
   };
