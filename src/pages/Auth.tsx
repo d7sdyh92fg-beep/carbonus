@@ -57,7 +57,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       <main className="container mx-auto px-4 py-24">
         <div className="max-w-md mx-auto">
           <Card>

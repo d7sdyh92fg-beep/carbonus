@@ -492,9 +492,9 @@ const Admin = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <img 
-                src="/lovable-uploads/f307c05e-658c-4866-b3eb-8b9d71719579.png" 
-                alt="Logo" 
-                className="h-8 w-auto"
+                src="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" 
+                alt="Carbonus" 
+                className="h-12 sm:h-14 md:h-16 w-auto"
               />
               <Badge variant="secondary" className="text-xs">Admin</Badge>
             </div>
