@@ -149,10 +149,25 @@ const Admin = () => {
     }
   }, [user, isAdmin, loading]);
 
-  // Redirect non-admin users to auth page - with a small delay to prevent race conditions
-  if (!loading && (!user || !isAdmin)) {
-    console.log('Admin redirect triggered:', { user: !!user, isAdmin, loading });
+  // Redirect non-admin users to auth page with better error handling
+  if (!loading && !user) {
+    console.log('Admin redirect - no user:', { user: !!user, isAdmin, loading });
     return <Navigate to="/auth" replace />;
+  }
+
+  if (!loading && user && !isAdmin) {
+    console.log('Admin redirect - not admin:', { user: !!user, isAdmin, loading, email: user?.email });
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl font-bold text-foreground">Prieiga draudžiama</h2>
+          <p className="text-muted-foreground">Jūs neturite administratoriaus teisių</p>
+          <Button onClick={() => window.location.href = '/'}>
+            Grįžti į pagrindinį puslapį
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   if (loading) {

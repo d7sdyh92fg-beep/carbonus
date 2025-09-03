@@ -27,33 +27,78 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const checkAdminRole = async (userId: string | undefined) => {
+    if (!userId) {
+      setIsAdmin(false);
+      return;
+    }
+
+    try {
+      // Check if user has admin role using the has_role function
+      const { data, error } = await supabase
+        .rpc('has_role', { 
+          _user_id: userId, 
+          _role: 'admin' 
+        });
+
+      if (error) {
+        console.error('Error checking admin role:', error);
+        setIsAdmin(false);
+        return;
+      }
+
+      console.log('Admin role check result:', data);
+      setIsAdmin(data === true);
+    } catch (error) {
+      console.error('Error in checkAdminRole:', error);
+      setIsAdmin(false);
+    }
+  };
+
   useEffect(() => {
     let mounted = true;
     
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         console.log('Auth state changed:', event, !!session, session?.user?.email);
         if (!mounted) return;
         
         setSession(session);
         setUser(session?.user ?? null);
-        setIsAdmin(session?.user?.email === 'info@carbonus.lt');
+        
+        if (session?.user) {
+          await checkAdminRole(session.user.id);
+        } else {
+          setIsAdmin(false);
+        }
+        
         setLoading(false);
       }
     );
 
     // Check for existing session
     const initializeAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log('Initial session:', !!session, session?.user?.email);
-      
-      if (!mounted) return;
-      
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsAdmin(session?.user?.email === 'info@carbonus.lt');
-      setLoading(false);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log('Initial session:', !!session, session?.user?.email);
+        
+        if (!mounted) return;
+        
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          await checkAdminRole(session.user.id);
+        } else {
+          setIsAdmin(false);
+        }
+        
+        setLoading(false);
+      } catch (error) {
+        console.error('Error initializing auth:', error);
+        setLoading(false);
+      }
     };
 
     initializeAuth();
