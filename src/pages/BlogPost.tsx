@@ -316,7 +316,7 @@ const BlogPost = () => {
     "ziemos-vairavimas-saugumas-kelyje": {
       id: "5",
       title: "Žiemos vairavimas: saugumas kelyje su nuomotu automobiliu",
-      excerpt: "Svarbiausios žiemos vairavimo taisyklės ir patarimai saugumui.",
+      excerpt: "Sužinokite, kaip saugiai vairuoti nuomotą automobilį žiemą Lietuvoje. Padangų pasirinkimas, draudimas ir vairavimo įpročiai, kurie padės išvengti nelaimių kelyje.",
       author: "Carbonus komanda",
       publishDate: "2024-11-25",
       readTime: "7 min",
@@ -324,45 +324,50 @@ const BlogPost = () => {
       image: blogWinterDriving,
       slug: "ziemos-vairavimas-saugumas-kelyje",
       content: `
-        <h2>Žiemos vairavimo iššūkiai</h2>
-        <p>Žiemos sąlygos reikalauja ypatingos atsargos kelyje. Su nuomotu automobiliu ypač svarbu žinoti, kaip elgtis ekstremalaus oro sąlygomis.</p>
+        <p>Žiema Lietuvoje gali būti itin permaininga – nuo šlapdribos iki apledėjusių kelių. Nuomojantis automobilį šaltuoju sezonu, svarbu ne tik pasirūpinti tinkama transporto priemone, bet ir laikytis saugaus vairavimo taisyklių. Štai keli patarimai, kurie padės keliauti žiemą be streso.</p>
+
+        <br>
+
+        <h2><strong>1.</strong> Pasirūpinkite tinkamomis padangomis</h2>
+        <p>Įsitikinkite, kad nuomojamas automobilis turi žiemines padangas, atitinkančias Lietuvos kelių eismo taisykles. Geriausia rinktis padangas su giliu protektoriumi arba dygliuotas, jei planuojate keliones į mažiau valomus regionus.</p>
+
+        <br>
+
+        <h2><strong>2.</strong> Patikrinkite draudimo sąlygas</h2>
+        <p>Žiemą eismo įvykių rizika didesnė, todėl verta pasidomėti, ar nuomos įmonės siūlomas draudimas apima žalą nuo slydimo ar susidūrimų. Kartais pravartu rinktis papildomą CDW ar „Zero Excess" draudimą.</p>
+
+        <br>
+
+        <h2><strong>3.</strong> Vairuokite atsargiau nei įprastai</h2>
+        <p>Laikykitės didesnio atstumo iki priekyje važiuojančios transporto priemonės.</p>
+        <p>Staigiai nestabdykite – vietoje to lėtinkite greitį palaipsniui.</p>
+        <p>Sukite vairą švelniai, kad išvengtumėte slydimo.</p>
+
+        <br>
+
+        <h2><strong>4.</strong> Turėkite būtinus žiemos aksesuarus</h2>
+        <p>Nuomojant automobilį, paklauskite, ar yra:</p>
+        <p>Ledo grandiklis ir sniego šepetys.</p>
+        <p>Langų plovimo skystis atsparus šalčiui.</p>
+        <p>Atsarginis ratas ir įrankiai jo pakeitimui.</p>
+
+        <br>
+
+        <h2><strong>5.</strong> Rinkitės tinkamą automobilį pagal kelionės maršrutą</h2>
+        <p>Miestui tiks kompaktiškas automobilis su geromis žieminėmis padangomis.</p>
+        <p>Ilgesniems maršrutams ar kaimo keliams pravartu rinktis visureigį (SUV) arba automobilį su keturių varančiųjų ratų sistema (4x4).</p>
+
+        <br>
+
+        <h2><strong>6.</strong> Planuokite keliones iš anksto</h2>
+        <p>Žiemos metu kelionės gali užtrukti ilgiau dėl oro sąlygų ar valomų kelių. Planuokite laiko rezervą ir sekite kelių priežiūros tarnybų informaciją.</p>
+
+        <br>
+
+        <h3><strong>Išvada</strong></h3>
+        <p>Nuomotas automobilis žiemą gali būti puikus pasirinkimas, jei pasirūpinsite tinkamomis padangomis, draudimu ir laikysitės saugaus vairavimo taisyklių. Atsakingas pasiruošimas leis mėgautis kelionėmis net ir pačiomis sudėtingiausiomis oro sąlygomis.</p>
         
-        <h3>Pasiruošimas žiemos kelionėms</h3>
-        <h4>Prieš išvažiuojant:</h4>
-        <ul>
-          <li>Patikrinkite padangų būklę</li>
-          <li>Įsitikinkite, kad turite gerai veikiantį šildymą</li>
-          <li>Pasiimkite šiltus drabužius ir antklodę</li>
-          <li>Užsipilkite pilną kuro baką</li>
-        </ul>
-        
-        <h3>Saugaus vairavimo taisyklės žiemą</h3>
-        <ol>
-          <li><strong>Mažinkite greitį</strong> - slidžiuose keliuose važiuokite lėčiau</li>
-          <li><strong>Didinkite atstumus</strong> - stabdymo kelias žiemą ilgesnis</li>
-          <li><strong>Lygūs judesiai</strong> - vengkite staigių manevrų</li>
-          <li><strong>Stebėkite orų prognozes</strong> - planuokite keliones pagal orą</li>
-        </ol>
-        
-        <h3>Ką daryti nepavykus situacijoms?</h3>
-        <p>Jei automobilis pradėjo slysti arba užstrigo sniego:</p>
-        <ul>
-          <li>Išlikite ramūs</li>
-          <li>Nespauškite staigiai stabdžių</li>
-          <li>Pasukite ratą slydimo kryptimi</li>
-          <li>Jei užstrigote - barstykit smėlį po ratais</li>
-        </ul>
-        
-        <h3>Carbonus žiemos pagalba</h3>
-        <p>Visi mūsų automobiliai aprūpinti:</p>
-        <ul>
-          <li>Žiemos padangomis</li>
-          <li>Ledų grandykle</li>
-          <li>24/7 pagalba kelyje</li>
-          <li>Pilna draudimo apsauga</li>
-        </ul>
-        
-        <p>Keliauki saugiai su Carbonus - net ir žiemiausią žiemą!</p>
+        <p>Carbonus automobiliai visada aprūpinti žieminėmis padangomis ir būtinais žiemos aksesuariais. Mūsų komanda pasirūpins, kad jūsų automobilys būtų paruoštas žiemos kelionėms, o 24/7 pagalba kelyje užtikrins ramybę net ir sudėtingiausiose situacijose.</p>
       `
     },
     "seimos-kelione-kaip-pasirinkti-idealu-automobili": {

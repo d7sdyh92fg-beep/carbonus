@@ -109,7 +109,7 @@ const Blog = () => {
     {
       id: "5",
       title: "Žiemos vairavimas: saugumas kelyje su nuomotu automobiliu",
-      excerpt: "Svarbiausios žiemos vairavimo taisyklės ir patarimai, kaip išlaikyti saugumą vairuojant nuomotą automobilį šaltuoju metų laiku.",
+      excerpt: "Sužinokite, kaip saugiai vairuoti nuomotą automobilį žiemą Lietuvoje. Padangų pasirinkimas, draudimas ir vairavimo įpročiai, kurie padės išvengti nelaimių kelyje.",
       content: "",
       author: "Carbonus komanda", 
       publishDate: "2024-11-25",
