@@ -68,10 +68,6 @@ const FAQ = () => {
         },
         {
           question: "Ar galiu atšaukti rezervaciją?",
-          answer: "Taip, rezervaciją galite atšaukti nemokamai likus ne mažiau kaip 72 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau – taikomas 20% mokestis nuo visos užsakymo sumos."
-        },
-        {
-          question: "Ar galiu atšaukti rezervaciją?",
           answer: "Taip, rezervaciją galite atšaukti nemokamai, jei liko daugiau nei 24 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau, taikomas 20% mokestis nuo bendros užsakymo sumos. Jei neatvykstate neatšaukę rezervacijos (\"no-show\"), imamas mokestis už pirmąją nuomos dieną."
         },
         {
