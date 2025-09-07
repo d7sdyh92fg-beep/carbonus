@@ -319,12 +319,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 <div className="flex items-center gap-2 text-sm">
                   <FileText className="w-4 h-4 text-muted-foreground" />
                   <a 
-                    href="/carbonus-nuomos-sutartis.pdf" 
+                    href="/nuomos-sutartis" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-primary hover:underline"
                   >
-                    Peržiūrėti nuomos sutartį
+                    Peržiūrėti nuomos sutartį (PDF galimas per spausdinimą)
                   </a>
                 </div>
               </div>
