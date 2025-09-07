@@ -37,7 +37,7 @@ const About = () => {
     }
   }, []);
   const stats = [
-    { number: "2024", label: "Įkūrimo metai", icon: Calendar },
+    { number: "2025", label: "Įkūrimo metai", icon: Calendar },
     { number: "200+", label: "Automobilių", icon: Car },
     { number: "1000+", label: "Klientų", icon: Users },
     { number: "98%", label: "Pasitenkinimas", icon: Star }
@@ -83,9 +83,7 @@ const About = () => {
                 Naujas žingsnis automobilių nuomos srityje
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Carbonus - tai moderni automobilių nuomos įmonė, sukurta atsižvelgiant į šiuolaikinius 
-                klientų poreikius. Mūsų tikslas - suteikti jums ne tik kokybišką transportą, 
-                bet ir išskirtinę aptarnavimo patirtį, naudojant naujausias technologijas ir inovacijas.
+                Carbonus - tai jauna, veržli ir nuolat auganti bei tobulėjanti automobilių nuomos įmonė, sukurta atsižvelgiant į šiuolaikinius klientų poreikius. Mūsų tikslas - suteikti jums ne tik kokybišką transportą, bet ir išskirtinę aptarnavimo patirtį, naudojant naujausias technologijas ir inovacijas.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" variant="default" onClick={() => window.location.href = '/automobiliai'}>
@@ -100,7 +98,7 @@ const About = () => {
                 className="rounded-2xl shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-2xl shadow-lg">
-                <div className="text-3xl font-bold">2024</div>
+                <div className="text-3xl font-bold">2025</div>
                 <div className="text-sm opacity-90">Įkūrimo metai</div>
               </div>
             </div>
@@ -120,8 +118,7 @@ const About = () => {
               Kodėl pasirinkti Carbonus?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Nors esame nauji rinkoje, mūsų komandą sudaro patyrę specialistai, 
-              kurie formuoja kiekvieną sprendimą atsižvelgdami į modernų požiūrį ir klientų poreikius.
+              Nors esame jauna įmonė, tačiau ne naujokai šioje srityje. Kartu su partneriais nuolat palaikome reikiamą automobilių parko būklę, rūpinamės kiekvienu klientu ir jo poreikiais, diegiame ir taikome naujus ir modernius aptarnavimo bei paslaugų suteikimo būdus, metodus ir technologines priemones.
             </p>
           </div>
           
@@ -158,7 +155,7 @@ const About = () => {
                 MŪSŲ VIZIJA
               </Badge>
               <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-                Ateities automobilių nuoma šiandien
+                Patikimų automobilių ir modernių paslaugų sintezė
               </h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 Mes tikime, kad automobilių nuoma turėtų būti paprasta, skaidri ir maloni. 
@@ -171,8 +168,8 @@ const About = () => {
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Ekologiški sprendimai</div>
-                    <div className="text-muted-foreground">Investuojame į elektrinius ir hibridinius automobilius</div>
+                    <div className="font-semibold text-foreground">Modernios ir nuolat vystomos paslaugų technologijos</div>
+                    <div className="text-muted-foreground">Investuojame į naujausias technologijas ir inovacijas</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -180,7 +177,7 @@ const About = () => {
                     <Award className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Aukščiausia kokybė</div>
+                    <div className="font-semibold text-foreground">Saugumas, patikimumas ir aukščiausia kokybė</div>
                     <div className="text-muted-foreground">Kiekvienas automobilis atitinka aukščiausius standartus</div>
                   </div>
                 </div>
