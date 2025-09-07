@@ -42,7 +42,7 @@ const Blog = () => {
     // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      canonical.setAttribute('href', 'https://carbonus.lt/naujienos');
+      canonical.setAttribute('href', 'https://carbonus.lt/patarimai-ir-gidas');
     }
     
     // Update Open Graph tags
@@ -53,7 +53,7 @@ const Blog = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://carbonus.lt/naujienos');
+      ogUrl.setAttribute('content', 'https://carbonus.lt/patarimai-ir-gidas');
     }
   }, []);
 

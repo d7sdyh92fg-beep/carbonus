@@ -35,7 +35,7 @@ export function Navigation({ logo }: NavigationProps) {
     { name: "Apie mus", href: "/apie-mus" },
     { name: "Kontaktai", href: "/kontaktai" },
     { name: "DUK", href: "/duk" },
-    { name: "Naujienos", href: "/naujienos" },
+    { name: "Patarimai ir gidas", href: "/naujienos" },
   ];
 
   return (
