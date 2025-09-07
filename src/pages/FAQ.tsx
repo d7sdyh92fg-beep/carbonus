@@ -64,19 +64,19 @@ const FAQ = () => {
       questions: [
         {
           question: "Kaip rezervuoti automobilį?",
-          answer: "Automobilį galite rezervuoti trimis būdais: mūsų internetinėje svetainėje, paskambinę telefonu +370 698 18 781 arba atvykę į bet kurį mūsų biurą. Online rezervacija veikia 24/7."
+          answer: "Automobilį galite rezervuoti trimis būdais: mūsų internetinėje svetainėje www.carbonus.lt (rezervacija veikia 24/7), paskambinę telefonu +370 698 18 781, el. paštu info@carbonus.lt, arba atvykę į automobilio atsiėmimo vietą."
         },
         {
           question: "Ar galiu atšaukti rezervaciją?",
-          answer: "Taip, rezervaciją galite atšaukti nemokamai likus 72 valandom iki automobilio atsiėmimo laiko. Jei atšaukiate vėliau, taikomas 20% mokestis nuo visos užsakymo sumos."
+          answer: "Taip, rezervaciją galite atšaukti nemokamai likus ne mažiau kaip 72 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau – taikomas 20% mokestis nuo visos užsakymo sumos."
         },
         {
           question: "Kiek laiko galioja rezervacija?",
-          answer: "Rezervacija galioja 24 valandas nuo jos atlikimo momento. Po šio laikotarpio rezervacija automatiškai anuliuojama."
+          answer: "Rezervacija galioja 24 val. nuo jos atlikimo momento. Po šio laikotarpio ji automatiškai anuliuojama."
         },
         {
           question: "Ar galiu pakeisti rezervacijos detales?",
-          answer: "Taip, rezervacijos detales galite keisti iki 24 valandų prieš automobilio atsiėmimą. Susisiekite su mumis telefonu arba el. paštu."
+          answer: "Taip, rezervacijos detales galite keisti iki 24 val. prieš automobilio atsiėmimą. Susisiekite telefonu arba el. paštu."
         }
       ]
     },
@@ -86,19 +86,19 @@ const FAQ = () => {
       questions: [
         {
           question: "Kokius dokumentus reikia automobilio nuomai?",
-          answer: "Reikalingas galiojantis vairuotojo pažymėjimas (ne mažiau nei 2 metų stažas), asmens dokumentas (pasas arba ID kortelė) ir kreditinė kortelė užstato rezervavimui."
+          answer: "Reikalinga: ES šalyje išduotas ir galiojantis vairuotojo pažymėjimas (ne mažiau kaip 2 metų vairavimo stažas), asmens dokumentas (pasas arba ID kortelė), kreditinė kortelė užstato rezervavimui (jei užstatas nėra sumokėtas iš anksto kartu su nuomos mokesčiu)."
         },
         {
           question: "Koks minimalus amžius automobilio nuomai?",
-          answer: "Minimalus amžius - 21 metai ekonominės ir kompaktinės klasės automobiliams. Premium ir luxury klasės automobiliams - nuo 25 metų."
+          answer: "Ekonominės ir kompaktinės klasės automobiliams – nuo 21 m. Premium ir Luxury klasės automobiliams – nuo 25 m."
         },
         {
           question: "Ar priimami užsienio vairuotojo pažymėjimai?",
-          answer: "Taip, priimami ES šalių ir tarptautiniai vairuotojo pažymėjimai. Vairuotojo pažymėjimas turi būti galiojantis ir išduotas ne mažiau nei prieš 2 metus."
+          answer: "Taip, priimami ES šalių ir tarptautiniai vairuotojo pažymėjimai. Pažymėjimas turi būti galiojantis ir išduotas ne mažiau kaip prieš 2 metus."
         },
         {
           question: "Ar galiu nuomotis automobilį be kreditinės kortelės?",
-          answer: "Deja, kreditinė kortelė yra privaloma užstato rezervavimui. Debetinės kortelės nepriimamos."
+          answer: "Deja, kreditinė kortelė būtina užstato rezervavimui. Debetinės kortelės nepriimamos, išskyrus atvejus, kai rezervacijos mokestis ir nuomos mokestis sumokami iš anksto arba atsiimant automobilį."
         }
       ]
     },
@@ -108,19 +108,19 @@ const FAQ = () => {
       questions: [
         {
           question: "Kokie apmokėjimo būdai priimami?",
-          answer: "Priimame grynuosius, banko korteles (vietoje), el. bankininkystės pervedimus ir online mokėjimus kortele. Užstatas rezervuojamas tik kreditine kortele."
+          answer: "Priimame: grynuosius, banko korteles (vietoje), el. bankininkystės pervedimus, internetinius mokėjimus kortele."
         },
         {
           question: "Ar kainos apima visus mokesčius?",
-          answer: "Taip, visos nurodytos kainos apima PVM ir pagrindinius mokesčius. Papildomi mokesčiai gali būti taikomi už vėlavimą, kuro papildymą ar valymo paslaugas."
+          answer: "Taip, visos nurodytos kainos apima pagrindinius mokesčius. Papildomi mokesčiai taikomi už: vėlavimą grąžinti automobilį, kuro papildymą (jei grąžinama ne pilnu baku), automobilio plovimą ar salono valymą, rūkymą automobilyje (50 € bauda), kelių rinkliavas, KET pažeidimus, kitas eksploatacines išlaidas (pvz., langų skystis, siurbimas)."
         },
         {
           question: "Koks užstato dydis?",
-          answer: "Užstato dydis priklauso nuo automobilio klasės: ekonominė - 800€, kompaktinė - 1000€, premium - 1500€, luxury - 3000€. Užstatas atlaisvinamas per 7-14 darbo dienų."
+          answer: "Užstato dydis – 300 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais."
         },
         {
           question: "Ar yra paslėptų mokesčių?",
-          answer: "Ne, mes netaikome jokių paslėptų mokesčių. Visi galimi papildomi mokesčiai aiškiai nurodyti mūsų sąlygose."
+          answer: "Ne, mes netaikome jokių paslėptų mokesčių. Visi papildomi mokesčiai aiškiai nurodyti sąlygose ir sutartyje."
         }
       ]
     },
@@ -133,16 +133,16 @@ const FAQ = () => {
           answer: "Taip, visi automobiliai apdrausti KASKO ir OCTA draudimu. Nuomininko atsakomybės riba priklauso nuo automobilio klasės ir gali būti sumažinta įsigijus papildomą draudimą."
         },
         {
-          question: "Ką daryti avarijų atveju?",
-          answer: "Nedelsiant skambinkite mums telefonu +370 698 18 781 (24/7) ir policijai 112. Nepaliekite įvykio vietos, kol neatvyks policija ir mūsų atstovas."
+          question: "Ką daryti avarijos atveju?",
+          answer: "Nedelsiant skambinkite: mums – +370 698 18 781 (24/7), policijai – 112. Neatidėkite įvykio vietos, kol neatvyks policija."
         },
         {
-          question: "Kas dengta draudimo?",
-          answer: "Draudimu dengiami avarijų, vagysčių, gaisrų ir gamtos stichijų padariniai. Nedengti: tyčiniai pažeidimai, vairavimas alkoholio paveiktam, dalyvavimas lenktynėse."
+          question: "Ką apima automobilio draudimas?",
+          answer: "Draudimas dengia avarijas, vagystes, gaisrus, gamtos stichijų padarinius. Nedengiama: tyčiniai pažeidimai, vairavimas apsvaigus, dalyvavimas lenktynėse."
         },
         {
           question: "Ar galiu sumažinti atsakomybės ribą?",
-          answer: "Taip, galite įsigyti papildomą draudimą, kuris sumažina jūsų atsakomybės ribą iki 0€. Kaina priklauso nuo automobilio klasės ir nuomos trukmės."
+          answer: "Taip, galite įsigyti papildomą draudimą, kuris sumažina atsakomybę iki 0 €. Kaina priklauso nuo automobilio klasės ir nuomos trukmės."
         }
       ]
     },
@@ -152,19 +152,19 @@ const FAQ = () => {
       questions: [
         {
           question: "Ar galiu išvykti už Lietuvos ribų?",
-          answer: "Taip, bet būtinas išankstinis sutikimas. ES šalims mokestis - 25€/dieną, kitoms šalims - individualus susitarimas."
+          answer: "Taip, bet reikalingas išankstinis sutikimas. ES šalims – 25 €/diena, kitoms šalims – individualus susitarimas."
         },
         {
           question: "Kiek kilometrų galiu nuvažiuoti?",
-          answer: "Kilometražas neribojamas visoms automobilio klasėms. Apmokama tik už sunaudotą kurą."
+          answer: "Kilometražas neribojamas visoms automobilių klasėms."
         },
         {
           question: "Ar galiu rūkyti automobilyje?",
-          answer: "Ne, visuose automobiliuose rūkymas griežtai draudžiamas. Už rūkymo pėdsakų šalinimą taikomas 150€ mokestis."
+          answer: "Ne, rūkymas draudžiamas. Pažeidimo atveju taikoma 50 € bauda."
         },
         {
           question: "Ar galiu vežti gyvūnus?",
-          answer: "Taip, bet būtinas išankstinis pranešimas ir papildomas 25€ mokestis automobilio valymui. Gyvūnas turi būti specialioje pernešimo priemonėje."
+          answer: "Taip, bet reikia pranešti iš anksto. Gyvūnas turi būti vežamas specialioje pernešimo priemonėje."
         }
       ]
     },
@@ -174,19 +174,15 @@ const FAQ = () => {
       questions: [
         {
           question: "Kada reikia grąžinti automobilį?",
-          answer: "Automobilį reikia grąžinti sutartyje nurodytą datą ir laiką. Galimas grąžinimas bet kuriuo paros metu naudojant raktų dėžutę."
+          answer: "Automobilį reikia grąžinti sutartyje nurodytu laiku. Už grąžinimą po darbo valandų ar savaitgalį – papildomas 20 € mokestis. Jei vėluojama ilgiau nei 3 val., skaičiuojama papildoma nuomos diena."
         },
         {
-          question: "Su kiek kuro reikia grąžinti?",
-          answer: "Automobilį reikia grąžinti su tokiu pačiu kuro kiekiu, koks buvo atsiėmimo metu (paprastai pilnas bakas). Už trūkstamą kurą mokama 1.50€/litras."
-        },
-        {
-          question: "Ką daryti jei pavėluoju grąžinti?",
-          answer: "Nedelsiant susisiekite su mumis. Už kiekvieną pavėluotą valandą taikomas 25€ mokestis. Po 6 valandų vėlavimo skaičiuojama papildoma diena."
+          question: "Su kiek kuro reikia grąžinti automobilį?",
+          answer: "Su tokiu pačiu kiekiu, koks buvo atsiėmimo metu (dažniausiai – pilnu baku). Už trūkstamą kurą mokama 1,50 €/l."
         },
         {
           question: "Ar reikia valyti automobilį prieš grąžinant?",
-          answer: "Automobilis turi būti pagrindinio švarumo. Už stipriai užterštą automobilį taikomas 50€ valymo mokestis."
+          answer: "Automobilis turi būti švarus. Jei stipriai užterštas – taikomas 20 € valymo ir 20 € plovimo mokestis."
         }
       ]
     }
