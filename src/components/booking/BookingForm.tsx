@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Mail, Phone, FileText } from "lucide-react";
@@ -40,6 +41,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
     phone: "",
   });
   const [agreementAccepted, setAgreementAccepted] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"pay_now" | "pay_at_counter">("pay_now");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -214,13 +216,40 @@ const BookingForm: React.FC<BookingFormProps> = ({
               <span>Užstatas:</span>
               <span className="font-medium">€{depositAmount}</span>
             </div>
+            {paymentMethod === "pay_at_counter" && (
+              <div className="flex justify-between text-blue-600">
+                <span>Mokėti dabar:</span>
+                <span className="font-medium">€25</span>
+              </div>
+            )}
             <div className="border-t pt-2 mt-2">
               <div className="flex justify-between font-semibold text-lg">
                 <span>Iš viso:</span>
                 <span>€{totalAmount + depositAmount}</span>
               </div>
+              {paymentMethod === "pay_at_counter" && (
+                <div className="flex justify-between text-sm text-muted-foreground mt-1">
+                  <span>Mokėti vietoje:</span>
+                  <span>€{totalAmount + depositAmount - 25}</span>
+                </div>
+              )}
             </div>
           </div>
+        </div>
+
+        {/* Payment Method Selection */}
+        <div className="mb-6 p-4 border rounded-lg">
+          <h4 className="font-semibold mb-3">Mokėjimo būdas</h4>
+          <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as "pay_now" | "pay_at_counter")}>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="pay_now" id="pay_now" />
+              <Label htmlFor="pay_now">Mokėti dabar (pilną sumą)</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
+              <Label htmlFor="pay_at_counter">Mokėti vietoje (išankstinis mokėjimas €25)</Label>
+            </div>
+          </RadioGroup>
         </div>
 
         {/* Important Notice */}
