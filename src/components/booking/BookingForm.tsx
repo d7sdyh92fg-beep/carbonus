@@ -227,11 +227,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <h4 className="font-semibold text-amber-800 mb-2">Svarbi informacija</h4>
           <div className="text-sm text-amber-700 space-y-1">
-            <p>• Prieš rezervuojant ir apmokant automobilį, reikės sumokėti ir užstatą (€300)</p>
-            <p>• Užstatas grąžinamas po automobilio grąžinimo</p>
-            <p>• Atšaukimai galimi tik el. paštu: <strong>info@carbonus.lt</strong></p>
-            <p>• Atšaukti galima ne vėliau kaip likus 3 dienoms iki paėmimo datos</p>
-            <p>• Vėliau atšaukus, vienos dienos nuomos mokestis negrąžinamas kaip kompensacija</p>
+            <p>• Užstato dydis – 300 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo</p>
+            <p>• Rezervaciją galite atšaukti nemokamai, jei liko daugiau nei 24 val. iki automobilio atsiėmimo</p>
+            <p>• Jei atšaukiate vėliau, taikomas 20% mokestis nuo bendros užsakymo sumos</p>
+            <p>• Jei neatvykstate neatšaukę rezervacijos („no-show"), imamas mokestis už pirmąją nuomos dieną</p>
+            <p>• Rezervacijos keitimas galimas iki 24 val. prieš automobilio atsiėmimą</p>
+            <p>• Susisiekti: <strong>+370 698 18 781</strong> arba <strong>info@carbonus.lt</strong></p>
           </div>
         </div>
 
