@@ -6,12 +6,12 @@ export function Features() {
     {
       icon: CheckCircle,
       title: "Lengvas užsakymas",
-      description: "Paprastas ir greitas užsakymo procesas su momentaliu patvirtinimu"
+      description: "Paprastas, greitas ir lankstus užsakymo procesas, su momentiniu rezervacijos patvirtinimu."
     },
     {
       icon: Car,
       title: "Kokybė ir įvairovė", 
-      description: "Aukščiausios klasės automobilių parkas, atitinkantis kiekvieną poreikį ir pageidavimą"
+      description: "Aukščiausios klasės ir patikimumo automobilių parkas, atitinkantis kiekvieno poreikį ir lūkesčius."
     },
     {
       icon: DollarSign,
@@ -26,10 +26,10 @@ export function Features() {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Kodėl rinktis Carbonus?
+            Kodėl verta rinktis Carbonus?!
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Prisijunkite prie mūsų patenkintų klientų, kurie pasitiki mumis savo kelionėms. Mes aptarnaujame su daugybe vertybių, kurias galite pajusti tiesiogiai.
+            Prisijunkite prie mūsų patenkintų klientų, kurie jau patikėjo savo keliones ir planus mums bei pasirinko savo kelionių automobilius iš mūsų automobilių parko. Pasirinkite ir Jūs, nes Jūs mums rūpite.
           </p>
         </div>
 

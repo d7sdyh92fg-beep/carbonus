@@ -26,16 +26,17 @@ export function Hero({ carImage }: HeroProps) {
         <div className="space-y-3 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
           <div className="space-y-3 md:space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
-              Jūsų kelionė,
+              Kurkime prisiminimus kartu:
               <br />
-              <span className="text-primary">Jūsų automobilis,</span>
+              <span className="text-primary">-Jūsų planai,</span>
               <br />
-              Jūsų būdas
+              - Mūsų automobilis Jūsų poreikiams
+              <br />
+              - Jūsų kelionės, nuotykiai ir patirtys.
             </h1>
             
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Patirkite aukščiausią pasirinkimo laisvę su CARBONUS - pritaikykite savo nuotykį 
-              rinkdamiesi iš mūsų aukščiausios klasės automobilių parko.
+              Patirkite pasirinkimo laisvę su Carbonus - pripildykite savo kelionę ir nuotykius saugiu pasirinkimu iš mūsų automobilių parko.
             </p>
           </div>
 

@@ -39,7 +39,7 @@ export function CTA() {
               </h2>
               
               <p className="text-sm md:text-base lg:text-lg mb-6 md:mb-8 leading-relaxed">
-                Užsisakykite automobilį bet kur esate ir kelkitės su mumis!
+                Užsisakykite automobilį jau dabar.
               </p>
               
               <Button 
