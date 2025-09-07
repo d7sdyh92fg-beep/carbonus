@@ -64,8 +64,13 @@ const LeaseAgreement = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => {
-              // Generate PDF from current page
-              window.print();
+              // Create a link element and trigger download
+              const link = document.createElement('a');
+              link.href = '/carbonus-nuomos-sutartis.pdf';
+              link.download = 'Carbonus-Nuomos-Sutartis.pdf';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
             }}>
               <Download className="w-5 h-5 mr-2" />
               Atsisiųsti PDF
