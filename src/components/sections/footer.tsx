@@ -104,8 +104,8 @@ export function Footer() {
               className="h-16 md:h-24 lg:h-36 mb-6"
             />
             <p className="text-muted-foreground mb-6 max-w-md">
-              Patirkite aukščiausią pasirinkimo laisvę su aukščiausios klasės automobilių nuoma. 
-              Jūsų kelionė, jūsų automobilis, jūsų būdas.
+              Patirkite aukščiausią pasirinkimo laisvę su premium automobilių nuoma Druskininkuose. 
+              Nuomokite vietoje, vairuokite visoje Lietuvoje - jūsų kelionė, jūsų automobilis, jūsų būdas.
             </p>
             <div className="mt-4 max-w-sm">
               <p className="text-muted-foreground text-sm mb-3">

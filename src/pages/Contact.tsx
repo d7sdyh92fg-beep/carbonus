@@ -34,12 +34,12 @@ const Contact = () => {
 
   useEffect(() => {
     // Set page title and meta tags
-    document.title = "Kontaktai - Carbonus | Susisiekite dėl automobilių nuomos +370 698 18 781";
+    document.title = "Kontaktai - Carbonus | Automobilių nuoma Druskininkuose +370 698 18 781";
     
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Susisiekite su Carbonus dėl automobilių nuomos. Tel: +370 698 18 781, El. paštas: info@carbonus.lt. Biuras Druskininkuose. Darbo laikas 8-17h.');
+      metaDescription.setAttribute('content', 'Susisiekite su Carbonus dėl automobilių nuomos Druskininkuose ir visoje Lietuvoje. Tel: +370 698 18 781, El. paštas: info@carbonus.lt. Pagrindinis biuras Druskininkuose.');
     }
     
     // Update canonical URL

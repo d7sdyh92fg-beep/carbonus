@@ -11,12 +11,12 @@ import fleetCars from "@/assets/fleet-cars.jpg";
 const About = () => {
   useEffect(() => {
     // Set page title and meta tags
-    document.title = "Apie mus - Carbonus | Moderni automobilių nuomos įmonė Lietuvoje";
+    document.title = "Apie mus - Carbonus | Automobilių nuoma Druskininkuose ir visoje Lietuvoje";
     
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Carbonus - moderni automobilių nuomos įmonė, įkurta 2024 metais. Siūlome aukščiausios kokybės automobilius ir išskirtinį aptarnavimą Lietuvoje.');
+      metaDescription.setAttribute('content', 'Carbonus - moderni automobilių nuomos įmonė Druskininkuose, siūlanti paslaugas visoje Lietuvoje. Aukščiausios kokybės automobiliai ir išskirtinis aptarnavimas.');
     }
     
     // Update canonical URL
@@ -83,7 +83,7 @@ const About = () => {
                 Naujas žingsnis automobilių nuomos srityje
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Carbonus - tai jauna, veržli ir nuolat auganti bei tobulėjanti automobilių nuomos įmonė, sukurta atsižvelgiant į šiuolaikinius klientų poreikius. Mūsų tikslas - suteikti jums ne tik kokybišką transportą, bet ir išskirtinę aptarnavimo patirtį, naudojant naujausias technologijas ir inovacijas.
+                Carbonus - tai jauna, veržli ir nuolat auganti bei tobulėjanti automobilių nuomos įmonė su bazė Druskininkuose, teikianti paslaugas visoje Lietuvoje. Mūsų tikslas - suteikti jums ne tik kokybišką transportą, bet ir išskirtinę aptarnavimo patirtį, naudojant naujausias technologijas ir inovacijas.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" variant="default" onClick={() => window.location.href = '/automobiliai'}>

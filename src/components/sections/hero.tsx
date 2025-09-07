@@ -26,6 +26,9 @@ export function Hero({ carImage }: HeroProps) {
         <div className="space-y-3 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
           <div className="space-y-3 md:space-y-6">
             <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-2">
+                📍 Nuoma Druskininkuose • Vairuokite visoje Lietuvoje
+              </div>
               <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-600 leading-relaxed">
                 Kurkime prisiminimus kartu:
               </h1>
@@ -37,7 +40,7 @@ export function Hero({ carImage }: HeroProps) {
             </div>
             
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Patirkite pasirinkimo laisvę su Carbonus - pripildykite savo kelionę ir nuotykius saugiu pasirinkimu iš mūsų automobilių parko.
+              Patirkite pasirinkimo laisvę su Carbonus Druskininkuose - nuomokite kokybišką automobilį ir vykite į bet kurį Lietuvos kampelį saugiai ir patogiai.
             </p>
           </div>
 
