@@ -1,4 +1,4 @@
-import { Hand, CalendarCheck, CircleDot, Car } from "lucide-react";
+import { Hand, CalendarCheck, Car, RotateCcw } from "lucide-react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 const steps = [
@@ -14,23 +14,23 @@ const steps = [
     id: 2,
     title: "Užsakyti",
     icon: CalendarCheck,
-    description: "Rezervuokite automobilį per mūsų svetainę",
+    description: "Rezervuokite automobilį internetu vos per kelias minutes",
     side: "left",
     hoverSide: "right",
   },
   {
     id: 3,
     title: "Vairuoti",
-    icon: CircleDot,
-    description: "Pasiimkite automobilį ir kelkitės į kelią",
+    icon: Car,
+    description: "Pasiimkite automobilį ir mėgaukitės kelione",
     side: "right",
     hoverSide: "left",
   },
   {
     id: 4,
     title: "Grąžinti",
-    icon: Car,
-    description: "Grąžinkite automobilį nuomos laikotarpio pabaigoje",
+    icon: RotateCcw,
+    description: "Grąžinkite automobilį sutartu laiku",
     side: "left",
     hoverSide: "right",
   },
