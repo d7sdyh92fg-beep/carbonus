@@ -26,10 +26,10 @@ export function Hero({ carImage }: HeroProps) {
         <div className="space-y-3 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
           <div className="space-y-3 md:space-y-6">
             <div className="space-y-4">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-600 leading-relaxed">
                 Kurkime prisiminimus kartu:
               </h1>
-              <div className="space-y-2 text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-relaxed">
+              <div className="space-y-2 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                 <div className="text-primary">Jūsų planai,</div>
                 <div className="text-gray-700">Mūsų automobilis Jūsų poreikiams</div>
                 <div className="text-gray-800">Jūsų kelionės, nuotykiai ir patirtys.</div>
