@@ -25,15 +25,16 @@ export function Hero({ carImage }: HeroProps) {
         {/* Left Content */}
         <div className="space-y-3 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
           <div className="space-y-3 md:space-y-6">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
-              Kurkime prisiminimus kartu:
-              <br />
-              <span className="text-primary">-Jūsų planai,</span>
-              <br />
-              - Mūsų automobilis Jūsų poreikiams
-              <br />
-              - Jūsų kelionės, nuotykiai ir patirtys.
-            </h1>
+            <div className="space-y-4">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
+                Kurkime prisiminimus kartu:
+              </h1>
+              <div className="space-y-2 text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-relaxed">
+                <div className="text-primary">Jūsų planai,</div>
+                <div className="text-gray-700">Mūsų automobilis Jūsų poreikiams</div>
+                <div className="text-gray-800">Jūsų kelionės, nuotykiai ir patirtys.</div>
+              </div>
+            </div>
             
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
               Patirkite pasirinkimo laisvę su Carbonus - pripildykite savo kelionę ir nuotykius saugiu pasirinkimu iš mūsų automobilių parko.
