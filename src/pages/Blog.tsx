@@ -31,12 +31,12 @@ const Blog = () => {
 
   useEffect(() => {
     // Set page title and meta tags
-    document.title = "Naujienos - Carbonus | Automobilių nuomos patarimai ir kelionių gidas";
+    document.title = "Patarimai ir gidas - Carbonus | Automobilių nuomos patarimai ir kelionių gidas";
     
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Skaitykite Carbonus naujienas apie automobilių nuomą, kelionių patarimus, vairavimo gudrybes ir naujausias automobilių pramonės žinias Lietuvoje.');
+      metaDescription.setAttribute('content', 'Skaitykite Carbonus patarimus apie automobilių nuomą, kelionių gidus, vairavimo gudrybes ir naudingas žinias Lietuvoje.');
     }
     
     // Update canonical URL
@@ -48,7 +48,7 @@ const Blog = () => {
     // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Naujienos - Carbonus');
+      ogTitle.setAttribute('content', 'Patarimai ir gidas - Carbonus');
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
@@ -143,14 +143,14 @@ const Blog = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">
-              CARBONUS NAUJIENOS
+              CARBONUS GIDAS
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-              Automobilių nuomos naujienos
+              Patarimai ir gidas
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Naujausi patarimai, kelionių gidai ir automobilių pramonės žinios. 
-              Visa, kas reikia žinoti apie automobilių nuomą Lietuvoje.
+              Naudingi patarimai, kelionių gidai ir praktinės žinios. 
+              Visa, kas reikia žinoti apie automobilių nuomą ir keliones Lietuvoje.
             </p>
           </div>
         </div>

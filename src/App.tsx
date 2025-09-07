@@ -12,7 +12,6 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsAndConditions from "./pages/TermsAndConditions";
 import CarDetail from "./pages/CarDetail";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -40,7 +39,6 @@ const App = () => (
           <Route path="/naujienos/:slug" element={<BlogPost />} />
           <Route path="/duk" element={<FAQ />} />
           <Route path="/privatumo-politika" element={<PrivacyPolicy />} />
-          <Route path="/nuomos-salygos" element={<TermsAndConditions />} />
           <Route path="/nuomos-sutartis" element={<LeaseAgreement />} />
           <Route path="/automobiliai/:id" element={<CarDetail />} />
           <Route path="/auth" element={<Auth />} />
