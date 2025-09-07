@@ -75,7 +75,15 @@ const LeaseAgreement = () => {
               <Download className="w-5 h-5 mr-2" />
               Atsisiųsti PDF
             </Button>
-            <Button variant="outline" size="lg" onClick={() => window.print()}>
+            <Button variant="outline" size="lg" onClick={() => {
+              // Open PDF in new window and trigger print
+              const printWindow = window.open('/carbonus-nuomos-sutartis.pdf', '_blank');
+              if (printWindow) {
+                printWindow.onload = () => {
+                  printWindow.print();
+                };
+              }
+            }}>
               <FileText className="w-5 h-5 mr-2" />
               Spausdinti
             </Button>
