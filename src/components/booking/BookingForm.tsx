@@ -379,7 +379,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               className="flex-1"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Kuriama rezervacija..." : "Patvirtinti rezervaciją"}
+              {isSubmitting ? "Kuriama rezervacija..." : "Užbaigti rezervaciją"}
             </Button>
           </div>
         </form>
