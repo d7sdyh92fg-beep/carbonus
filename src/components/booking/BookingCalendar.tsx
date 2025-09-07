@@ -80,13 +80,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
 
   const calculatePrice = (days: number, isSecondVehicle: boolean): number => {
     if (days <= 3) {
-      return isSecondVehicle ? 60 : 50;
+      return 50;
     } else if (days <= 7) {
-      return isSecondVehicle ? 50 : 40;
-    } else if (days <= 14) {
-      return isSecondVehicle ? 40 : 30;
+      return 40;
+    } else {
+      return 30;
     }
-    return isSecondVehicle ? 40 : 30; // For 14+ days, use the same as 7-14 days
   };
 
   const getDaysCount = (): number => {
@@ -98,8 +97,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
     const days = getDaysCount();
     if (days === 0) return 0;
     
-    const isSecondVehicle = carId === "2"; // Chrysler is the second vehicle
-    const dailyRate = calculatePrice(days, isSecondVehicle);
+    const dailyRate = calculatePrice(days, false);
     return dailyRate * days;
   };
 
@@ -147,7 +145,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
         endDate={selectedRange.to}
         totalAmount={getTotalPrice()}
         rentalDays={getDaysCount()}
-        dailyRate={calculatePrice(getDaysCount(), carId === "2")}
+        dailyRate={calculatePrice(getDaysCount(), false)}
         onBookingSuccess={handleBookingSuccess}
         onCancel={handleCancelBooking}
       />
@@ -228,15 +226,15 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
             <div className="space-y-2">
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">1-3 dienos</span>
-                <span className="font-semibold">€{carId === "2" ? "60" : "50"}/dieną</span>
+                <span className="font-semibold">€50/dieną</span>
               </div>
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">3-7 dienos</span>
-                <span className="font-semibold">€{carId === "2" ? "50" : "40"}/dieną</span>
+                <span className="font-semibold">€40/dieną</span>
               </div>
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">7+ dienų</span>
-                <span className="font-semibold">€{carId === "2" ? "40" : "30"}/dieną</span>
+                <span className="font-semibold">€30/dieną</span>
               </div>
             </div>
           </div>
@@ -255,7 +253,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Dienos kaina:</span>
-                    <span className="font-semibold">€{calculatePrice(getDaysCount(), carId === "2")}</span>
+                    <span className="font-semibold">€{calculatePrice(getDaysCount(), false)}</span>
                   </div>
                 </div>
               </div>

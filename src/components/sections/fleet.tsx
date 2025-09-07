@@ -21,7 +21,7 @@ export function Fleet() {
     {
       id: "1",
       name: "BMW 3 series",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: bmw3Clean,
       category: "Sedanas",
       year: 2017
@@ -29,7 +29,7 @@ export function Fleet() {
     {
       id: "2",
       name: "Chrysler Town & Country",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: chryslerTownCountrySide,
       category: "Miniautobusas",
       year: 2014
@@ -37,7 +37,7 @@ export function Fleet() {
     {
       id: "3",
       name: "Volkswagen Passat",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: vwPassatSideClean,
       category: "Sedanas",
       year: 2012

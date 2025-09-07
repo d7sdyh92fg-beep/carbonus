@@ -75,7 +75,7 @@ const Admin = () => {
     {
       id: "1",
       name: "BMW 3 series",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: bmw3Clean,
       category: "Sedanas",
       passengers: 5,
@@ -88,7 +88,7 @@ const Admin = () => {
     {
       id: "2",
       name: "Chrysler Town & Country",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: chryslerTownCountrySide,
       category: "Miniautobusas",
       passengers: 7,
@@ -101,7 +101,7 @@ const Admin = () => {
     {
       id: "3",
       name: "Volkswagen Passat",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: vwPassatSideClean,
       category: "Sedanas",
       passengers: 5,
@@ -114,7 +114,7 @@ const Admin = () => {
     {
       id: "4",
       name: "KIA CEED",
-      price: "30 EUR", 
+      price: "nuo 30 EUR",
       image: kiaCeedSideDarkGray,
       category: "Universalas",
       passengers: 5,
@@ -127,7 +127,7 @@ const Admin = () => {
     {
       id: "5",
       name: "KIA CEED",
-      price: "30 EUR", 
+      price: "nuo 30 EUR", 
       image: kiaCeedHatchbackSideGrayBrown,
       category: "Hečbekas",
       passengers: 5,

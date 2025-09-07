@@ -256,7 +256,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <h4 className="font-semibold text-amber-800 mb-2">Svarbi informacija</h4>
           <div className="text-sm text-amber-700 space-y-1">
-            <p>• Rezervacijai patvirtinti reikalingas nedidelis išankstinis mokėjimas – 20–30 €.</p>
+            <p>• Mokamas vienos dienos automobilio nuomos kaina kaip išankstinis mokėjimas.</p>
             <p>• Ši suma įskaičiuojama į bendrą nuomos kainą.</p>
             <p>• Likusi suma ir saugumo užstatas mokami automobilio atsiėmimo metu.</p>
             <p>• Atšaukus rezervaciją likus ne mažiau kaip 24 val. iki atsiėmimo – avansas grąžinamas pilnai.</p>

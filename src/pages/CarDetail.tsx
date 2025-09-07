@@ -82,7 +82,7 @@ const CarDetail = () => {
     "1": {
       id: "1",
       name: "BMW 3 series",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: bmwEnhanced1,
       images: [
         bmwEnhanced1,
@@ -117,7 +117,7 @@ const CarDetail = () => {
     "2": {
       id: "2",
       name: "Chrysler Town & Country",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: chryslerEnhanced1,
       images: [
         chryslerEnhanced1,
@@ -187,7 +187,7 @@ const CarDetail = () => {
     "4": {
       id: "4",
       name: "KIA CEED",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: kiaCeedFrontEnhanced,
       images: [
         kiaCeedFrontEnhanced,
@@ -222,7 +222,7 @@ const CarDetail = () => {
     "5": {
       id: "5",
       name: "KIA CEED",
-      price: "30 EUR",
+      price: "nuo 30 EUR",
       image: kiaCeedNewFrontEnhanced,
       images: [
         kiaCeedNewFrontEnhanced,
