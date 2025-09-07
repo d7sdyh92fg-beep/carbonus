@@ -79,7 +79,7 @@ const About = () => {
               <Badge variant="outline" className="mb-4">
                 MŪSŲ ISTORIJA
               </Badge>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-6 leading-tight">
+              <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
                 Naujas žingsnis automobilių nuomos srityje
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
