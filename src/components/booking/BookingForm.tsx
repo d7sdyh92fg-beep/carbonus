@@ -255,21 +255,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
         {/* Important Notice */}
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <h4 className="font-semibold text-amber-800 mb-2">Svarbi informacija</h4>
-          <div className="text-sm text-amber-700 space-y-2">
-            <div>
-              <p className="font-semibold">Išankstinio mokėjimo politika (Užstatas)</p>
-              <p>• Rezervacijai patvirtinti reikalingas nedidelis išankstinis mokėjimas 20–30 €</p>
-              <p>• Ši suma atskaičiuojama nuo bendros nuomos kainos</p>
-              <p>• Likusi suma ir saugumo užstatas mokami paimant automobilį</p>
-              <p>• Atšaukus rezervaciją ne vėliau kaip likus 24 val. iki automobilio atsiėmimo, išankstinis mokėjimas grąžinamas pilnai</p>
-              <p>• Vėliau atšaukus arba neatvykus, išankstinis mokėjimas negrąžinamas</p>
-              <p>• Ši politika padeda išlaikyti jūsų pasirinktą automobilį rezervuotą ir paruoštą bei apsaugo nuo "no-show" rezervacijų</p>
-            </div>
-            <div>
-              <p>• Saugumo užstato dydis – 300 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo</p>
-              <p>• Rezervacijos keitimas galimas iki 24 val. prieš automobilio atsiėmimą</p>
-              <p>• Susisiekti: <strong>+370 698 18 781</strong> arba <strong>info@carbonus.lt</strong></p>
-            </div>
+          <div className="text-sm text-amber-700 space-y-1">
+            <p>• Rezervacijai patvirtinti reikalingas nedidelis išankstinis mokėjimas – 20–30 €.</p>
+            <p>• Ši suma įskaičiuojama į bendrą nuomos kainą.</p>
+            <p>• Likusi suma ir saugumo užstatas mokami automobilio atsiėmimo metu.</p>
+            <p>• Atšaukus rezervaciją likus ne mažiau kaip 24 val. iki atsiėmimo – avansas grąžinamas pilnai.</p>
+            <p>• Atšaukus vėliau arba neatvykus – avansas negrąžinamas.</p>
+            <p>• Ši politika užtikrina, kad jūsų pasirinktas automobilis būtų rezervuotas ir paruoštas, bei apsaugo nuo „no-show" atvejų.</p>
+            <p>• Saugumo užstatas – 300 €, grąžinamas per 7 d. d. po automobilio grąžinimo.</p>
+            <p>• Rezervacijos keitimas galimas iki 24 val. prieš atsiėmimą.</p>
+            <p>• Klausimams ir rezervacijos keitimui: <strong>+370 698 18 781</strong> arba <strong>info@carbonus.lt</strong></p>
           </div>
         </div>
 
