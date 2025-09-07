@@ -43,6 +43,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"pay_now" | "pay_at_counter">("pay_now");
 
+  const calculateAdvancePayment = (): number => {
+    if (rentalDays <= 3) return 50;
+    if (rentalDays <= 7) return 40;
+    return 30;
+  };
+
+  const advancePayment = calculateAdvancePayment();
+  const depositAmount = 300;
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -157,6 +166,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             rentalDays: rentalDays,
             totalAmount: totalAmount,
             depositAmount: depositAmount,
+            advancePayment: advancePayment,
           }
         });
         console.log("Email sent successfully");
@@ -181,8 +191,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
       setIsSubmitting(false);
     }
   };
-
-  const depositAmount = 300;
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -219,7 +227,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             {paymentMethod === "pay_at_counter" && (
               <div className="flex justify-between text-blue-600">
                 <span>Mokėti dabar:</span>
-                <span className="font-medium">€25</span>
+                <span className="font-medium">€{advancePayment}</span>
               </div>
             )}
             <div className="border-t pt-2 mt-2">
@@ -230,7 +238,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               {paymentMethod === "pay_at_counter" && (
                 <div className="flex justify-between text-sm text-muted-foreground mt-1">
                   <span>Mokėti vietoje:</span>
-                  <span>€{totalAmount + depositAmount - 25}</span>
+                  <span>€{totalAmount + depositAmount - advancePayment}</span>
                 </div>
               )}
             </div>
@@ -247,7 +255,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
-              <Label htmlFor="pay_at_counter">Mokėti vietoje (išankstinis mokėjimas €25)</Label>
+              <Label htmlFor="pay_at_counter">Mokėti vietoje (išankstinis mokėjimas €{advancePayment})</Label>
             </div>
           </RadioGroup>
         </div>
