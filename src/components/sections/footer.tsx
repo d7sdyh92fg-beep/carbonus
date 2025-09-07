@@ -82,6 +82,9 @@ export function Footer() {
     } else if (link === "Nuomos sąlygos") {
       navigate('/nuomos-salygos');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (link === "Nuomos sutartis") {
+      navigate('/nuomos-sutartis');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (link === "Naujienos") {
       navigate('/naujienos');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -153,7 +156,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-primary">Pagalba</h4>
             <ul className="space-y-2">
-              {["Nuomos sąlygos", "Privatumo politika"].map((link) => (
+              {["Nuomos sąlygos", "Privatumo politika", "Nuomos sutartis"].map((link) => (
                 <li key={link}>
                   <button
                     onClick={() => handleLinkClick(link)}

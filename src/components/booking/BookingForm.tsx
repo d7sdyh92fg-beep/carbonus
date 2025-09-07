@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, FileText } from "lucide-react";
 
 interface BookingFormProps {
   carId: string;
@@ -38,6 +39,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
     email: "",
     phone: "",
   });
+  const [agreementAccepted, setAgreementAccepted] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,6 +51,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!agreementAccepted) {
+      toast({
+        title: "Klaida",
+        description: "Turite sutikti su nuomos taisyklėmis ir sąlygomis",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
@@ -285,6 +297,37 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 className="pl-10"
                 required
               />
+            </div>
+          </div>
+
+          {/* Lease Agreement Checkbox */}
+          <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
+            <div className="flex items-start space-x-3">
+              <Checkbox 
+                id="agreement" 
+                checked={agreementAccepted}
+                onCheckedChange={(checked) => setAgreementAccepted(checked as boolean)}
+                className="mt-1"
+              />
+              <div className="space-y-2 flex-1">
+                <Label 
+                  htmlFor="agreement" 
+                  className="text-sm font-medium cursor-pointer"
+                >
+                  Susipažinau ir patvirtinu, kad sutinku su nuomos taisyklėmis ir sąlygomis *
+                </Label>
+                <div className="flex items-center gap-2 text-sm">
+                  <FileText className="w-4 h-4 text-muted-foreground" />
+                  <a 
+                    href="/nuomos-sutartis" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    Peržiūrėti nuomos sutartį
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 

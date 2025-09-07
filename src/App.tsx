@@ -17,6 +17,7 @@ import CarDetail from "./pages/CarDetail";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
+import LeaseAgreement from "./pages/LeaseAgreement";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/duk" element={<FAQ />} />
           <Route path="/privatumo-politika" element={<PrivacyPolicy />} />
           <Route path="/nuomos-salygos" element={<TermsAndConditions />} />
+          <Route path="/nuomos-sutartis" element={<LeaseAgreement />} />
           <Route path="/automobiliai/:id" element={<CarDetail />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
