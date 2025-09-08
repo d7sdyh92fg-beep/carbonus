@@ -125,7 +125,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       const normalizedCarId = carId || carName.toLowerCase().replace(/\s+/g, '-');
       console.log("Using carId:", normalizedCarId);
 
-      // Create reservation with "requested" status
+      // Create reservation with "pending" status
       const reservationData = {
         customer_id: customerId,
         car_name: carName,
@@ -137,23 +137,25 @@ const BookingForm: React.FC<BookingFormProps> = ({
         total_rental_cost: totalAmount,
         deposit_amount: depositAmount,
         total_amount: totalAmount + depositAmount,
-        status: 'requested'
+        status: 'pending'
       };
 
       console.log("Creating reservation with data:", reservationData);
 
-      const { error: reservationError } = await supabase
+      const { data: reservation, error: reservationError } = await supabase
         .from('reservations')
-        .insert([reservationData]);
+        .insert([reservationData])
+        .select()
+        .single();
 
       if (reservationError) {
         console.error("Reservation creation error:", reservationError);
         throw reservationError;
       }
 
-      console.log("Reservation created successfully");
+      console.log("Reservation created successfully:", reservation);
 
-      // Also send notification email
+      // Send notification email
       try {
         await supabase.functions.invoke('send-booking-email', {
           body: {
@@ -174,12 +176,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
         console.warn("Email sending failed, but reservation was created:", emailError);
       }
 
-      toast({
-        title: "Rezervacija sukurta!",
-        description: "Jūsų rezervacija sėkmingai išsaugota. Susisieksime su jumis dėl mokėjimo detalių.",
-      });
+      // Process payment based on selected method
+      const paymentAmount = paymentMethod === "pay_now" ? totalAmount + depositAmount : advancePayment;
+      await processStripePayment(reservation.id, paymentAmount, paymentMethod === "pay_now" ? 'full' : 'advance');
 
-      onBookingSuccess();
     } catch (error) {
       console.error("Booking error:", error);
       toast({
@@ -189,6 +189,44 @@ const BookingForm: React.FC<BookingFormProps> = ({
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const processStripePayment = async (reservationId: string, amount: number, paymentType: 'full' | 'advance') => {
+    try {
+      console.log('Processing Stripe payment:', { reservationId, amount, paymentType });
+      
+      const { data, error } = await supabase.functions.invoke('create-stripe-payment', {
+        body: {
+          reservationId,
+          amount,
+          currency: 'eur',
+          customerEmail: formData.email,
+          customerName: `${formData.firstName} ${formData.lastName}`,
+          carName: carName,
+          paymentType
+        }
+      });
+
+      if (error) {
+        console.error('Stripe payment error:', error);
+        throw error;
+      }
+
+      if (data?.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.url;
+      } else {
+        throw new Error('No payment URL received');
+      }
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      toast({
+        title: "Mokėjimo klaida",
+        description: 'Klaida apdorojant mokėjimą. Bandykite dar kartą.',
+        variant: "destructive",
+      });
+      throw error;
     }
   };
 
@@ -387,7 +425,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               className="flex-1"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Kuriama rezervacija..." : "Užbaigti rezervaciją"}
+              {isSubmitting ? "Kuriama rezervacija..." : (paymentMethod === "pay_now" ? "Mokėti dabar" : "Užbaigti rezervaciją")}
             </Button>
           </div>
         </form>

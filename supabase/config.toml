@@ -1,5 +1,11 @@
 project_id = "yuvugrgoadxbmfvebsiu"
 
+[functions.create-stripe-payment]
+verify_jwt = false
+
+[functions.verify-stripe-payment]
+verify_jwt = false
+
 [functions.send-booking-email]
 verify_jwt = false
 
