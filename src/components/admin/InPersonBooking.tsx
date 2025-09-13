@@ -327,7 +327,7 @@ export function InPersonBooking() {
                 </Select>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
                   <Label className="text-base">Pradžios data *</Label>
                   <Calendar
@@ -336,7 +336,7 @@ export function InPersonBooking() {
                     onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
                     disabled={(date) => date < new Date()}
                     locale={lt}
-                    className="rounded-md border-2 bg-background p-3 pointer-events-auto"
+                    className="rounded-lg border-2 bg-card p-3 pointer-events-auto overflow-hidden shadow-sm relative z-0"
                   />
                 </div>
                 <div>
@@ -347,7 +347,7 @@ export function InPersonBooking() {
                     onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
                     disabled={(date) => !booking.startDate || date <= booking.startDate}
                     locale={lt}
-                    className="rounded-md border-2 bg-background p-3 pointer-events-auto"
+                    className="rounded-lg border-2 bg-card p-3 pointer-events-auto overflow-hidden shadow-sm relative z-0"
                   />
                 </div>
               </div>
