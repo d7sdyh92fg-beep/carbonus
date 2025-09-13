@@ -177,8 +177,23 @@ const BookingForm: React.FC<BookingFormProps> = ({
       }
 
       // Process payment based on selected method
-      const paymentAmount = paymentMethod === "pay_now" ? totalAmount + depositAmount : advancePayment;
-      await processStripePayment(reservation.id, paymentAmount, paymentMethod === "pay_now" ? 'full' : 'advance');
+      // TEMPORARILY DISABLED FOR TESTING - PAYMENT BYPASSED
+      // const paymentAmount = paymentMethod === "pay_now" ? totalAmount + depositAmount : advancePayment;
+      // await processStripePayment(reservation.id, paymentAmount, paymentMethod === "pay_now" ? 'full' : 'advance');
+
+      // Update reservation status to confirmed (bypassing payment for testing)
+      await supabase
+        .from('reservations')
+        .update({ status: 'confirmed' })
+        .eq('id', reservation.id);
+
+      toast({
+        title: "Rezervacija sukurta!",
+        description: "Jūsų rezervacija sėkmingai sukurta (mokėjimas praleistas testavimo tikslais).",
+        variant: "default",
+      });
+
+      onBookingSuccess();
 
     } catch (error) {
       console.error("Booking error:", error);
