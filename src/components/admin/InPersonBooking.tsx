@@ -327,28 +327,32 @@ export function InPersonBooking() {
                 </Select>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
                 <div>
                   <Label className="text-base">Pradžios data *</Label>
-                  <Calendar
-                    mode="single"
-                    selected={booking.startDate || undefined}
-                    onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
-                    disabled={(date) => date < new Date()}
-                    locale={lt}
-                    className="rounded-lg border-2 bg-card p-3 pointer-events-auto overflow-hidden shadow-sm relative z-0"
-                  />
+                  <div className="mt-2">
+                    <Calendar
+                      mode="single"
+                      selected={booking.startDate || undefined}
+                      onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
+                      disabled={(date) => date < new Date()}
+                      locale={lt}
+                      className="rounded-lg border-2 bg-card shadow-sm w-full max-w-full"
+                    />
+                  </div>
                 </div>
                 <div>
                   <Label className="text-base">Pabaigos data *</Label>
-                  <Calendar
-                    mode="single"
-                    selected={booking.endDate || undefined}
-                    onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
-                    disabled={(date) => !booking.startDate || date <= booking.startDate}
-                    locale={lt}
-                    className="rounded-lg border-2 bg-card p-3 pointer-events-auto overflow-hidden shadow-sm relative z-0"
-                  />
+                  <div className="mt-2">
+                    <Calendar
+                      mode="single"
+                      selected={booking.endDate || undefined}
+                      onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
+                      disabled={(date) => !booking.startDate || date <= booking.startDate}
+                      locale={lt}
+                      className="rounded-lg border-2 bg-card shadow-sm w-full max-w-full"
+                    />
+                  </div>
                 </div>
               </div>
 

@@ -180,7 +180,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
                 borderRadius: '4px',
               },
             }}
-            className="rounded-lg border bg-card pointer-events-auto overflow-hidden shadow-sm"
+            className="rounded-lg border bg-card shadow-sm w-full max-w-full"
             locale={lt}
           />
           
