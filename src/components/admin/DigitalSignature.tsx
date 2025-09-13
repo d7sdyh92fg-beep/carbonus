@@ -125,7 +125,7 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
         <div className="relative">
           <canvas
             ref={canvasRef}
-            className="w-full h-48 border-2 border-dashed border-muted-foreground rounded-lg cursor-crosshair touch-none bg-white"
+            className="w-full h-48 border-2 border-dashed border-muted-foreground rounded-lg cursor-crosshair bg-white"
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}

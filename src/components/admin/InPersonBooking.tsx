@@ -12,6 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { lt } from 'date-fns/locale';
 import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle } from 'lucide-react';
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { DigitalSignature } from './DigitalSignature';
@@ -334,7 +335,8 @@ export function InPersonBooking() {
                     selected={booking.startDate || undefined}
                     onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
                     disabled={(date) => date < new Date()}
-                    className="rounded-md border-2 bg-background"
+                    locale={lt}
+                    className="rounded-md border-2 bg-background p-3 pointer-events-auto"
                   />
                 </div>
                 <div>
@@ -344,7 +346,8 @@ export function InPersonBooking() {
                     selected={booking.endDate || undefined}
                     onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
                     disabled={(date) => !booking.startDate || date <= booking.startDate}
-                    className="rounded-md border-2 bg-background"
+                    locale={lt}
+                    className="rounded-md border-2 bg-background p-3 pointer-events-auto"
                   />
                 </div>
               </div>
