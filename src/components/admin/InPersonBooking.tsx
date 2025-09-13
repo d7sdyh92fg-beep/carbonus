@@ -193,229 +193,242 @@ export function InPersonBooking() {
 
   if (step === 'complete') {
     return (
-      <Card className="max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle className="text-center text-primary flex items-center justify-center gap-2">
-            <CheckCircle className="h-6 w-6" />
-            Rezervacija užbaigta!
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="text-center space-y-4">
-          <div className="text-lg">
-            Ačiū, {customer.firstName}! Jūsų rezervacija buvo patvirtinta.
-          </div>
-          <div className="text-muted-foreground">
-            Patvirtinimo laiškas su pasirašyta sutartimi išsiųstas į {customer.email}
-          </div>
-          <Button onClick={resetForm} className="w-full" size="lg">
-            Sukurti naują rezervaciją
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="w-full max-w-2xl mx-auto p-3 sm:p-4">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-center text-primary flex items-center justify-center gap-2 text-lg sm:text-xl">
+              <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+              Rezervacija užbaigta!
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-3 sm:space-y-4">
+            <div className="text-base sm:text-lg">
+              Ačiū, {customer.firstName}! Jūsų rezervacija buvo patvirtinta.
+            </div>
+            <div className="text-sm sm:text-base text-muted-foreground">
+              Patvirtinimo laiškas su pasirašyta sutartimi išsiųstas į {customer.email}
+            </div>
+            <Button onClick={resetForm} className="w-full h-11 sm:h-12" size="lg">
+              Sukurti naują rezervaciją
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 p-4">
-      {/* Progress Steps */}
-      <div className="flex justify-between items-center mb-8 bg-background p-4 rounded-lg border">
-        {[
-          { key: 'details', label: 'Rezervacijos duomenys', icon: FileText },
-          { key: 'documents', label: 'Dokumentai', icon: Upload },
-          { key: 'payment', label: 'Mokėjimas', icon: CreditCard }
-        ].map(({ key, label, icon: Icon }, index) => (
-          <div key={key} className="flex items-center">
-            <div className={`rounded-full p-4 ${
-              step === key ? 'bg-primary text-primary-foreground' : 
-              (step === 'documents' && key === 'details') ||
-              (step === 'payment' && (key === 'details' || key === 'documents'))
-                ? 'bg-primary text-primary-foreground' :
-              'bg-muted text-muted-foreground'
-            }`}>
-              <Icon className="h-6 w-6" />
+    <div className="w-full max-w-none space-y-4 sm:space-y-6 lg:space-y-8 p-3 sm:p-4 lg:p-6">
+      {/* Progress Steps - Mobile Optimized */}
+      <div className="bg-background p-3 sm:p-4 rounded-lg border overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2">
+          {[
+            { key: 'details', label: 'Rezervacijos duomenys', shortLabel: 'Duomenys', icon: FileText },
+            { key: 'documents', label: 'Dokumentai', shortLabel: 'Dokumentai', icon: Upload },
+            { key: 'payment', label: 'Mokėjimas', shortLabel: 'Mokėjimas', icon: CreditCard }
+          ].map(({ key, label, shortLabel, icon: Icon }, index) => (
+            <div key={key} className="flex items-center flex-1">
+              <div className={`rounded-full p-2 sm:p-3 lg:p-4 flex-shrink-0 ${
+                step === key ? 'bg-primary text-primary-foreground' : 
+                (step === 'documents' && key === 'details') ||
+                (step === 'payment' && (key === 'details' || key === 'documents'))
+                  ? 'bg-primary text-primary-foreground' :
+                'bg-muted text-muted-foreground'
+              }`}>
+                <Icon className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
+              </div>
+              <span className="ml-2 sm:ml-3 font-medium text-sm sm:text-base lg:text-lg">
+                <span className="sm:hidden">{shortLabel}</span>
+                <span className="hidden sm:inline">{label}</span>
+              </span>
+              {index < 2 && (
+                <div className="hidden sm:block w-8 lg:w-16 h-px bg-muted mx-3 lg:mx-6 flex-shrink-0" />
+              )}
             </div>
-            <span className="ml-3 font-medium text-lg">{label}</span>
-            {index < 2 && <div className="w-16 h-px bg-muted mx-6" />}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {step === 'details' && (
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          {/* Customer Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Kliento informacija</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+            {/* Customer Details */}
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">Kliento informacija</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div>
+                    <Label htmlFor="firstName" className="text-sm sm:text-base">Vardas *</Label>
+                    <Input
+                      id="firstName"
+                      value={customer.firstName}
+                      onChange={(e) => setCustomer(prev => ({ ...prev, firstName: e.target.value }))}
+                      required
+                      className="h-10 sm:h-12 text-sm sm:text-base"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName" className="text-sm sm:text-base">Pavardė *</Label>
+                    <Input
+                      id="lastName"
+                      value={customer.lastName}
+                      onChange={(e) => setCustomer(prev => ({ ...prev, lastName: e.target.value }))}
+                      required
+                      className="h-10 sm:h-12 text-sm sm:text-base"
+                    />
+                  </div>
+                </div>
                 <div>
-                  <Label htmlFor="firstName" className="text-base">Vardas *</Label>
+                  <Label htmlFor="email" className="text-sm sm:text-base">El. paštas *</Label>
                   <Input
-                    id="firstName"
-                    value={customer.firstName}
-                    onChange={(e) => setCustomer(prev => ({ ...prev, firstName: e.target.value }))}
+                    id="email"
+                    type="email"
+                    value={customer.email}
+                    onChange={(e) => setCustomer(prev => ({ ...prev, email: e.target.value }))}
                     required
-                    className="h-12 text-base"
+                    className="h-10 sm:h-12 text-sm sm:text-base"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName" className="text-base">Pavardė *</Label>
+                  <Label htmlFor="phone" className="text-sm sm:text-base">Telefonas *</Label>
                   <Input
-                    id="lastName"
-                    value={customer.lastName}
-                    onChange={(e) => setCustomer(prev => ({ ...prev, lastName: e.target.value }))}
+                    id="phone"
+                    value={customer.phone}
+                    onChange={(e) => setCustomer(prev => ({ ...prev, phone: e.target.value }))}
                     required
-                    className="h-12 text-base"
+                    className="h-10 sm:h-12 text-sm sm:text-base"
+                    placeholder="+370..."
                   />
                 </div>
-              </div>
-              <div>
-                <Label htmlFor="email" className="text-base">El. paštas *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={customer.email}
-                  onChange={(e) => setCustomer(prev => ({ ...prev, email: e.target.value }))}
-                  required
-                  className="h-12 text-base"
-                />
-              </div>
-              <div>
-                <Label htmlFor="phone" className="text-base">Telefonas *</Label>
-                <Input
-                  id="phone"
-                  value={customer.phone}
-                  onChange={(e) => setCustomer(prev => ({ ...prev, phone: e.target.value }))}
-                  required
-                  className="h-12 text-base"
-                  placeholder="+370..."
-                />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          {/* Booking Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Nuomos duomenys</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <Label htmlFor="car" className="text-base">Pasirinkite automobilį *</Label>
-                <Select value={booking.carId} onValueChange={handleCarSelect}>
-                  <SelectTrigger className="h-12 text-base bg-background border-2">
-                    <SelectValue placeholder="Pasirinkite automobilį" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background border z-50">
-                    {cars.map((car) => (
-                      <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-base p-3">
-                        <div className="flex items-center justify-between w-full">
-                          <span>{car.name}</span>
-                          <div className="flex items-center gap-2 ml-4">
-                            <span>€{car.dailyRate}/d.</span>
-                            {car.available ? (
-                              <Badge variant="default" className="bg-green-500">Laisvas</Badge>
-                            ) : (
-                              <Badge variant="destructive">Užimtas</Badge>
-                            )}
+            {/* Booking Details */}
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">Nuomos duomenys</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 sm:space-y-6">
+                <div>
+                  <Label htmlFor="car" className="text-sm sm:text-base">Pasirinkite automobilį *</Label>
+                  <Select value={booking.carId} onValueChange={handleCarSelect}>
+                    <SelectTrigger className="h-10 sm:h-12 text-sm sm:text-base bg-background border-2">
+                      <SelectValue placeholder="Pasirinkite automobilį" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border z-50">
+                      {cars.map((car) => (
+                        <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm sm:text-base p-2 sm:p-3">
+                          <div className="flex items-center justify-between w-full">
+                            <span>{car.name}</span>
+                            <div className="flex items-center gap-2 ml-4">
+                              <span>€{car.dailyRate}/d.</span>
+                              {car.available ? (
+                                <Badge variant="default" className="bg-green-500 text-xs">Laisvas</Badge>
+                              ) : (
+                                <Badge variant="destructive" className="text-xs">Užimtas</Badge>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="space-y-6">
-                <div>
-                  <Label className="text-base">Pradžios data *</Label>
-                  <div className="mt-2">
-                    <Calendar
-                      mode="single"
-                      selected={booking.startDate || undefined}
-                      onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
-                      disabled={(date) => date < new Date()}
-                      locale={lt}
-                      className="rounded-lg border-2 bg-card shadow-sm w-full max-w-full"
-                    />
+                <div className="space-y-4 sm:space-y-6">
+                  <div>
+                    <Label className="text-sm sm:text-base">Pradžios data *</Label>
+                    <div className="mt-2">
+                      <Calendar
+                        mode="single"
+                        selected={booking.startDate || undefined}
+                        onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
+                        disabled={(date) => date < new Date()}
+                        locale={lt}
+                        className="rounded-lg border-2 bg-card shadow-sm w-full"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label className="text-sm sm:text-base">Pabaigos data *</Label>
+                    <div className="mt-2">
+                      <Calendar
+                        mode="single"
+                        selected={booking.endDate || undefined}
+                        onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
+                        disabled={(date) => !booking.startDate || date <= booking.startDate}
+                        locale={lt}
+                        className="rounded-lg border-2 bg-card shadow-sm w-full"
+                      />
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <Label className="text-base">Pabaigos data *</Label>
-                  <div className="mt-2">
-                    <Calendar
-                      mode="single"
-                      selected={booking.endDate || undefined}
-                      onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
-                      disabled={(date) => !booking.startDate || date <= booking.startDate}
-                      locale={lt}
-                      className="rounded-lg border-2 bg-card shadow-sm w-full max-w-full"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              {booking.startDate && booking.endDate && booking.dailyRate > 0 && (
-                <div className="p-6 bg-muted rounded-lg border-2">
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-base">
-                      <span>Nuomos dienų:</span>
-                      <span className="font-medium">{getRentalDays()} d.</span>
-                    </div>
-                    <div className="flex justify-between text-base">
-                      <span>Dienos kaina:</span>
-                      <span className="font-medium">€{booking.dailyRate}</span>
-                    </div>
-                    <div className="flex justify-between text-base">
-                      <span>Nuomos kaina:</span>
-                      <span className="font-medium">€{getRentalDays() * booking.dailyRate}</span>
-                    </div>
-                    <div className="flex justify-between text-base">
-                      <span>Užstatas:</span>
-                      <span className="font-medium">€300</span>
-                    </div>
-                    <Separator />
-                    <div className="flex justify-between font-bold text-lg">
-                      <span>Iš viso:</span>
-                      <span>€{calculateTotal()}</span>
+                {booking.startDate && booking.endDate && booking.dailyRate > 0 && (
+                  <div className="p-4 sm:p-6 bg-muted rounded-lg border-2">
+                    <div className="space-y-2 sm:space-y-3">
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span>Nuomos dienų:</span>
+                        <span className="font-medium">{getRentalDays()} d.</span>
+                      </div>
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span>Dienos kaina:</span>
+                        <span className="font-medium">€{booking.dailyRate}</span>
+                      </div>
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span>Nuomos kaina:</span>
+                        <span className="font-medium">€{getRentalDays() * booking.dailyRate}</span>
+                      </div>
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span>Užstatas:</span>
+                        <span className="font-medium">€300</span>
+                      </div>
+                      <Separator />
+                      <div className="flex justify-between font-bold text-base sm:text-lg">
+                        <span>Iš viso:</span>
+                        <span>€{calculateTotal()}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       )}
 
       {step === 'documents' && (
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Vairuotojo pažymėjimo įkėlimas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <DriverLicenseUpload
-                onUpload={(url) => setDriverLicenseUrl(url)}
-                uploadedUrl={driverLicenseUrl}
-              />
-            </CardContent>
-          </Card>
+        <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">Vairuotojo pažymėjimo įkėlimas</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <DriverLicenseUpload
+                  onUpload={(url) => setDriverLicenseUrl(url)}
+                  uploadedUrl={driverLicenseUrl}
+                />
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Sutarties pasirašymas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <DigitalSignature
-                onSign={(signature) => {
-                  setSignatureData(signature);
-                  setContractSigned(true);
-                }}
-                customerName={`${customer.firstName} ${customer.lastName}`}
-              />
-            </CardContent>
-          </Card>
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">Sutarties pasirašymas</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <DigitalSignature
+                  onSign={(signature) => {
+                    setSignatureData(signature);
+                    setContractSigned(true);
+                  }}
+                  customerName={`${customer.firstName} ${customer.lastName}`}
+                />
+              </CardContent>
+            </Card>
+          </div>
         </div>
       )}
 

@@ -135,14 +135,14 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <Pen className="h-5 w-5" />
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+          <Pen className="h-4 w-4 sm:h-5 sm:w-5" />
           Reikalingas skaitmeninis parašas
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="text-base text-muted-foreground">
+      <CardContent className="space-y-4 sm:space-y-6">
+        <div className="text-sm sm:text-base text-muted-foreground">
           Pasirašydamas(-a) žemiau, {customerName} sutinka su nuomos taisyklėmis ir sąlygomis.
         </div>
 
@@ -151,7 +151,7 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
         <div className="relative">
           <canvas
             ref={canvasRef}
-            className="w-full h-48 border-2 border-dashed border-muted-foreground rounded-lg cursor-crosshair bg-white touch-none select-none"
+            className="w-full h-40 sm:h-48 border-2 border-dashed border-muted-foreground rounded-lg cursor-crosshair bg-white touch-none select-none"
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
@@ -162,32 +162,32 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
           />
           {!hasSignature && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-muted-foreground text-base">
+              <div className="text-muted-foreground text-sm sm:text-base text-center px-2">
                 Pasirašykite čia pirštu ar rašikliu
               </div>
             </div>
           )}
         </div>
 
-        <div className="flex justify-between items-center">
-          <div className="text-sm text-muted-foreground">Klientas: {customerName}</div>
-          <div className="text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
+          <div className="text-xs sm:text-sm text-muted-foreground">Klientas: {customerName}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">
             Data: {new Date().toLocaleDateString('lt-LT')}
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <Button
             variant="outline"
             onClick={clearSignature}
             disabled={!hasSignature}
-            className="flex-1"
+            className="flex-1 h-10 sm:h-11 text-sm sm:text-base"
             size="lg"
           >
-            <X className="h-4 w-4 mr-2" />
+            <X className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
             Išvalyti
           </Button>
-          <Button onClick={saveSignature} disabled={!hasSignature} className="flex-1" size="lg">
+          <Button onClick={saveSignature} disabled={!hasSignature} className="flex-1 h-10 sm:h-11 text-sm sm:text-base" size="lg">
             Patvirtinti parašą
           </Button>
         </div>
