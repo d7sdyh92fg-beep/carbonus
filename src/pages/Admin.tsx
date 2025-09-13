@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarCalendarModal from '@/components/admin/CarCalendarModal';
@@ -31,17 +31,21 @@ import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.pn
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import { InPersonBooking } from "@/components/admin/InPersonBooking";
+import { ReservationReview } from "@/components/admin/ReservationReview";
 
 interface Reservation {
   id: string;
   car_name: string;
+  car_id: string;
   start_date: string;
   end_date: string;
   rental_days: number;
   total_amount: number;
   status: string;
   created_at: string;
+  driver_license_url?: string;
   customers: {
+    id: string;
     first_name: string;
     last_name: string;
     email: string;
@@ -59,6 +63,8 @@ const Admin = () => {
   const [editingReservation, setEditingReservation] = useState<Reservation | null>(null);
   const [showCarCalendar, setShowCarCalendar] = useState(false);
   const [selectedCar, setSelectedCar] = useState<{id: string, name: string} | null>(null);
+  const [showReservationReview, setShowReservationReview] = useState(false);
+  const [reviewingReservation, setReviewingReservation] = useState<Reservation | null>(null);
 
   // Form state for adding new reservation
   const [newReservation, setNewReservation] = useState({
@@ -190,6 +196,7 @@ const Admin = () => {
         .select(`
           *,
           customers (
+            id,
             first_name,
             last_name,
             email,
@@ -440,7 +447,12 @@ const Admin = () => {
 
   const handleCarClick = (car: { id: string; name: string }) => {
     setSelectedCar(car);
-    setShowCarCalendar(true);
+    setShowCarCalendar(true);  
+  };
+
+  const handleReviewReservation = (reservation: Reservation) => {
+    setReviewingReservation(reservation);
+    setShowReservationReview(true);
   };
 
   const getStatusBadge = (status: string) => {
@@ -827,51 +839,58 @@ const Admin = () => {
                              <TableCell>€{reservation.total_amount}</TableCell>
                              <TableCell>{getStatusBadge(reservation.status)}</TableCell>
                              <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
-                             <TableCell>
-                               <div className="flex gap-2">
-                                 <Button
-                                   variant="outline"
-                                   size="sm"
-                                   onClick={() => handleEditReservation(reservation)}
-                                 >
-                                   <Edit className="h-4 w-4" />
-                                 </Button>
-                                 {reservation.status === 'requested' && (
-                                   <>
-                                     <Button
-                                       variant="default"
-                                       size="sm"
-                                       onClick={() => approveReservation(reservation.id)}
-                                     >
-                                       <CheckCircle className="h-4 w-4" />
-                                     </Button>
-                                     <Button
-                                       variant="destructive"
-                                       size="sm"
-                                       onClick={() => denyReservation(reservation.id)}
-                                     >
-                                       <XCircle className="h-4 w-4" />
-                                     </Button>
-                                   </>
-                                 )}
-                                 {reservation.status === 'confirmed' && (
-                                   <Button
-                                     variant="outline"
-                                     size="sm"
-                                     onClick={() => cancelReservation(reservation.id)}
-                                   >
-                                     <Ban className="h-4 w-4" />
-                                   </Button>
-                                 )}
-                                 <Button
-                                   variant="destructive"
-                                   size="sm"
-                                   onClick={() => deleteReservation(reservation.id)}
-                                 >
-                                   <Trash2 className="h-4 w-4" />
-                                 </Button>
-                               </div>
-                             </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() => handleReviewReservation(reservation)}
+                                  >
+                                    <FileText className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleEditReservation(reservation)}
+                                  >
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                  {reservation.status === 'requested' && (
+                                    <>
+                                      <Button
+                                        variant="default"
+                                        size="sm"
+                                        onClick={() => approveReservation(reservation.id)}
+                                      >
+                                        <CheckCircle className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={() => denyReservation(reservation.id)}
+                                      >
+                                        <XCircle className="h-4 w-4" />
+                                      </Button>
+                                    </>
+                                  )}
+                                  {reservation.status === 'confirmed' && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => cancelReservation(reservation.id)}
+                                    >
+                                      <Ban className="h-4 w-4" />
+                                    </Button>
+                                  )}
+                                  <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => deleteReservation(reservation.id)}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
                            </TableRow>
                          ))}
                        </TableBody>
@@ -921,59 +940,68 @@ const Admin = () => {
                              </div>
                            </div>
                            
-                           <div className="flex flex-wrap gap-2 pt-2 border-t">
-                             <Button
-                               variant="outline"
-                               size="sm"
-                               onClick={() => handleEditReservation(reservation)}
-                               className="text-xs"
-                             >
-                               <Edit className="h-3 w-3 mr-1" />
-                               Redaguoti
-                             </Button>
-                             {reservation.status === 'requested' && (
-                               <>
-                                 <Button
-                                   variant="default"
-                                   size="sm"
-                                   onClick={() => approveReservation(reservation.id)}
-                                   className="text-xs"
-                                 >
-                                   <CheckCircle className="h-3 w-3 mr-1" />
-                                   Patvirtinti
-                                 </Button>
-                                 <Button
-                                   variant="destructive"
-                                   size="sm"
-                                   onClick={() => denyReservation(reservation.id)}
-                                   className="text-xs"
-                                 >
-                                   <XCircle className="h-3 w-3 mr-1" />
-                                   Atmesti
-                                 </Button>
-                               </>
-                             )}
-                             {reservation.status === 'confirmed' && (
-                               <Button
-                                 variant="outline"
-                                 size="sm"
-                                 onClick={() => cancelReservation(reservation.id)}
-                                 className="text-xs"
-                               >
-                                 <Ban className="h-3 w-3 mr-1" />
-                                 Atšaukti
-                               </Button>
-                             )}
-                             <Button
-                               variant="destructive"
-                               size="sm"
-                               onClick={() => deleteReservation(reservation.id)}
-                               className="text-xs"
-                             >
-                               <Trash2 className="h-3 w-3 mr-1" />
-                               Ištrinti
-                             </Button>
-                           </div>
+                            <div className="flex flex-wrap gap-2 pt-2 border-t">
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={() => handleReviewReservation(reservation)}
+                                className="text-xs"
+                              >
+                                <FileText className="h-3 w-3 mr-1" />
+                                Peržiūrėti
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditReservation(reservation)}
+                                className="text-xs"
+                              >
+                                <Edit className="h-3 w-3 mr-1" />
+                                Redaguoti
+                              </Button>
+                              {reservation.status === 'requested' && (
+                                <>
+                                  <Button
+                                    variant="default"
+                                    size="sm"
+                                    onClick={() => approveReservation(reservation.id)}
+                                    className="text-xs"
+                                  >
+                                    <CheckCircle className="h-3 w-3 mr-1" />
+                                    Patvirtinti
+                                  </Button>
+                                  <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => denyReservation(reservation.id)}
+                                    className="text-xs"
+                                  >
+                                    <XCircle className="h-3 w-3 mr-1" />
+                                    Atmesti
+                                  </Button>
+                                </>
+                              )}
+                              {reservation.status === 'confirmed' && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => cancelReservation(reservation.id)}
+                                  className="text-xs"
+                                >
+                                  <Ban className="h-3 w-3 mr-1" />
+                                  Atšaukti
+                                </Button>
+                              )}
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => deleteReservation(reservation.id)}
+                                className="text-xs"
+                              >
+                                <Trash2 className="h-3 w-3 mr-1" />
+                                Ištrinti
+                              </Button>
+                            </div>
                          </div>
                        </Card>
                       ))}
@@ -1073,6 +1101,14 @@ const Admin = () => {
         />
       )}
       
+      {/* Reservation Review Modal */}
+      <ReservationReview 
+        reservation={reviewingReservation}
+        isOpen={showReservationReview}
+        onClose={() => setShowReservationReview(false)}
+        onUpdate={fetchReservations}
+      />
+
       <Footer />
     </div>
   );
