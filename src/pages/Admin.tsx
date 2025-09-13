@@ -521,6 +521,10 @@ const Admin = () => {
                 <BarChart3 className="h-4 w-4" />
                 Skydelis
               </TabsTrigger>
+              <TabsTrigger value="in-person" className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Walk-in Booking
+              </TabsTrigger>
               <TabsTrigger value="analytics" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 Google Analytics
@@ -869,10 +873,6 @@ const Admin = () => {
                 </CardContent>
               </Card>
             </TabsContent>
-
-          <TabsContent value="in-person">
-            <InPersonBooking />
-          </TabsContent>
 
           <TabsContent value="in-person">
             <InPersonBooking />
