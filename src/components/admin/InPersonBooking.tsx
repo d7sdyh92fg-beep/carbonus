@@ -35,7 +35,7 @@ interface BookingDetails {
 const cars = [
   { id: 'kia-ceed-2020', name: 'Kia Ceed 2020', dailyRate: 30, available: true },
   { id: 'bmw-3-2017', name: 'BMW 3 Series 2017', dailyRate: 50, available: true },
-  { id: 'vw-passat-2019', name: 'VW Passat 2019', dailyRate: 40, available: false },
+  { id: 'vw-passat-2019', name: 'VW Passat 2019', dailyRate: 40, available: true },
   { id: 'chrysler-town-country', name: 'Chrysler Town & Country', dailyRate: 35, available: true },
 ];
 

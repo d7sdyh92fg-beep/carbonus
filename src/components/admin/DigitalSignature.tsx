@@ -2,8 +2,10 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { X, Pen } from 'lucide-react';
-
+import { toast } from 'sonner';
 interface DigitalSignatureProps {
   onSign: (signatureData: string) => void;
   customerName: string;
@@ -14,7 +16,8 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
-
+  const [mode, setMode] = useState<'draw' | 'type'>('draw');
+  const [typedSignature, setTypedSignature] = useState('');
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -99,9 +102,35 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
     context.fillStyle = '#ffffff';
     context.fillRect(0, 0, canvas.width, canvas.height);
     setHasSignature(false);
+    setTypedSignature('');
   };
 
   const saveSignature = () => {
+    if (mode === 'type') {
+      const text = typedSignature.trim();
+      if (!text) {
+        toast.error('Įveskite parašą (tekstu) arba pasirašykite piešimo laukelyje');
+        return;
+      }
+      const tmp = document.createElement('canvas');
+      const width = 600, height = 180;
+      tmp.width = width; tmp.height = height;
+      const ctx = tmp.getContext('2d')!;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#000000';
+      ctx.font = '36px cursive';
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.fillText(text, width / 2, height / 2);
+      const signatureData = tmp.toDataURL('image/png');
+      onSign(signatureData);
+      return;
+    }
+    if (!hasSignature) {
+      toast.error('Prašome pasirašyti');
+      return;
+    }
     const canvas = canvasRef.current!;
     const signatureData = canvas.toDataURL('image/png');
     onSign(signatureData);
@@ -122,28 +151,47 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
         
         <Separator />
         
-        <div className="relative">
-          <canvas
-            ref={canvasRef}
-            className="w-full h-48 border-2 border-dashed border-muted-foreground rounded-lg cursor-crosshair bg-white"
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={stopDrawing}
-            onMouseLeave={stopDrawing}
-            onTouchStart={startDrawing}
-            onTouchMove={draw}
-            onTouchEnd={stopDrawing}
-          />
-          
-          {!hasSignature && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-muted-foreground text-base">
-                Pasirašykite čia pirštu ar rašikliu
-              </div>
-            </div>
-          )}
+        <div className="flex items-center gap-2">
+          <Button variant={mode === 'draw' ? 'default' : 'outline'} size="sm" onClick={() => setMode('draw')}>Piešti</Button>
+          <Button variant={mode === 'type' ? 'default' : 'outline'} size="sm" onClick={() => setMode('type')}>Įvesti</Button>
         </div>
         
+        {mode === 'draw' ? (
+          <div className="relative">
+            <canvas
+              ref={canvasRef}
+              className="w-full h-48 border-2 border-dashed border-muted-foreground rounded-lg cursor-crosshair bg-white"
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+              onTouchStart={startDrawing}
+              onTouchMove={draw}
+              onTouchEnd={stopDrawing}
+            />
+            {!hasSignature && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="text-muted-foreground text-base">
+                  Pasirašykite čia pirštu ar rašikliu
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <Label>Įveskite parašą (tekstu)</Label>
+            <Input
+              value={typedSignature}
+              onChange={(e) => setTypedSignature(e.target.value)}
+              placeholder="Vardas Pavardė"
+              className="h-12 text-base"
+            />
+            <div className="p-4 border rounded bg-white">
+              <div className="text-2xl italic">{typedSignature || 'Parašo peržiūra'}</div>
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-between items-center">
           <div className="text-sm text-muted-foreground">
             Klientas: {customerName}
@@ -166,7 +214,7 @@ export function DigitalSignature({ onSign, customerName }: DigitalSignatureProps
           </Button>
           <Button
             onClick={saveSignature}
-            disabled={!hasSignature}
+            disabled={mode === 'draw' ? !hasSignature : typedSignature.trim().length === 0}
             className="flex-1"
             size="lg"
           >
