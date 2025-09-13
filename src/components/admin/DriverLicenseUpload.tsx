@@ -33,7 +33,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
       }
     } catch (error) {
       console.error('Error accessing camera:', error);
-      toast.error('Unable to access camera. Please use file upload instead.');
+      toast.error('Nepavyko pasiekti kameros. Naudokite failų įkėlimą.');
     }
   };
 
@@ -77,7 +77,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
 
   const uploadFile = async (file: Blob) => {
     if (file.size > 10 * 1024 * 1024) { // 10MB limit
-      toast.error('File size must be less than 10MB');
+      toast.error('Failo dydis turi būti mažesnis nei 10MB');
       return;
     }
 
@@ -98,10 +98,10 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
 
       setPreview(publicUrl);
       onUpload(publicUrl);
-      toast.success('Driver license uploaded successfully!');
+      toast.success('Vairuotojo pažymėjimas sėkmingai įkeltas!');
     } catch (error) {
       console.error('Error uploading file:', error);
-      toast.error('Failed to upload driver license. Please try again.');
+      toast.error('Nepavyko įkelti vairuotojo pažymėjimo. Bandykite dar kartą.');
     } finally {
       setUploading(false);
     }
@@ -118,11 +118,11 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
   const currentImageUrl = uploadedUrl || preview;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Camera Section */}
       {cameraActive && (
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-6">
             <div className="relative">
               <video
                 ref={videoRef}
@@ -130,12 +130,12 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
                 autoPlay
                 playsInline
               />
-              <div className="flex justify-center gap-2 mt-4">
-                <Button onClick={capturePhoto} disabled={uploading}>
-                  {uploading ? 'Uploading...' : 'Capture Photo'}
+              <div className="flex justify-center gap-4 mt-6">
+                <Button onClick={capturePhoto} disabled={uploading} size="lg">
+                  {uploading ? 'Įkeliama...' : 'Fotografuoti'}
                 </Button>
-                <Button variant="outline" onClick={stopCamera}>
-                  Cancel
+                <Button variant="outline" onClick={stopCamera} size="lg">
+                  Atšaukti
                 </Button>
               </div>
             </div>
@@ -145,25 +145,25 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
 
       {/* Upload Options */}
       {!cameraActive && !currentImageUrl && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Button
             variant="outline"
             onClick={startCamera}
-            className="h-24 flex flex-col gap-2"
+            className="h-32 flex flex-col gap-3 text-base"
             disabled={uploading}
           >
-            <Camera className="h-6 w-6" />
-            Take Photo
+            <Camera className="h-8 w-8" />
+            Fotografuoti
           </Button>
           
           <Button
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
-            className="h-24 flex flex-col gap-2"
+            className="h-32 flex flex-col gap-3 text-base"
             disabled={uploading}
           >
-            <Upload className="h-6 w-6" />
-            {uploading ? 'Uploading...' : 'Upload File'}
+            <Upload className="h-8 w-8" />
+            {uploading ? 'Įkeliama...' : 'Įkelti failą'}
           </Button>
         </div>
       )}
@@ -171,9 +171,9 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
       {/* Preview Section */}
       {currentImageUrl && (
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="text-sm font-medium">Driver License Uploaded</h4>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-base font-medium">Vairuotojo pažymėjimas įkeltas</h4>
               <div className="flex gap-2">
                 <Button
                   size="sm"
@@ -191,10 +191,10 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
                 </Button>
               </div>
             </div>
-            <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center">
+            <div className="w-full h-40 bg-muted rounded-lg flex items-center justify-center border-2">
               <img
                 src={currentImageUrl}
-                alt="Driver License"
+                alt="Vairuotojo pažymėjimas"
                 className="max-w-full max-h-full object-contain rounded"
               />
             </div>
@@ -216,14 +216,14 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
 
       {/* Preview Dialog */}
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-4xl bg-background border">
           <DialogHeader>
-            <DialogTitle>Driver License Preview</DialogTitle>
+            <DialogTitle>Vairuotojo pažymėjimo peržiūra</DialogTitle>
           </DialogHeader>
           <div className="flex justify-center">
             <img
               src={currentImageUrl}
-              alt="Driver License Preview"
+              alt="Vairuotojo pažymėjimo peržiūra"
               className="max-w-full max-h-[70vh] object-contain"
             />
           </div>
