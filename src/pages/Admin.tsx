@@ -487,111 +487,115 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4">
+      <header className="border-b bg-card sticky top-0 z-50">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
               <img 
                 src="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" 
                 alt="Carbonus" 
-                className="h-12 sm:h-14 md:h-16 w-auto"
+                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto flex-shrink-0"
               />
-              <Badge variant="secondary" className="text-xs">Admin</Badge>
+              <Badge variant="secondary" className="text-xs hidden sm:inline-flex">Admin</Badge>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-muted-foreground">
-                Prisijungęs: {user?.email}
+            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
+              <span className="text-xs sm:text-sm text-muted-foreground hidden md:block truncate">
+                {user?.email}
               </span>
-              <Button variant="outline" size="sm" onClick={() => window.location.href = '/'}>
-                Grįžti į svetainę
+              <Button variant="outline" size="sm" onClick={() => window.location.href = '/'} className="text-xs sm:text-sm">
+                <span className="hidden sm:inline">Grįžti į svetainę</span>
+                <span className="sm:hidden">Svetainė</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Administratoriaus skydelis</h1>
-          <p className="text-muted-foreground mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Administratoriaus skydelis</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
-          <Tabs defaultValue="dashboard" className="space-y-6">
-            <TabsList>
-              <TabsTrigger value="dashboard" className="flex items-center gap-2">
+          <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
+            <TabsList className="grid grid-cols-3 gap-1 h-auto p-1 bg-muted rounded-lg">
+              <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
-                Skydelis
+                <span className="hidden sm:inline">Skydelis</span>
+                <span className="sm:hidden text-[10px]">Duomenys</span>
               </TabsTrigger>
-              <TabsTrigger value="in-person" className="flex items-center gap-2">
+              <TabsTrigger value="in-person" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <Users className="h-4 w-4" />
-                Vietinė rezervacija
+                <span className="hidden sm:inline">Vietinė rezervacija</span>
+                <span className="sm:hidden text-[10px] text-center leading-3">Vietinė</span>
               </TabsTrigger>
-              <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <TabsTrigger value="analytics" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <TrendingUp className="h-4 w-4" />
-                Google Analytics
+                <span className="hidden sm:inline">Google Analytics</span>
+                <span className="sm:hidden text-[10px]">Analitika</span>
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="dashboard" className="space-y-8">
+            <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                <Card>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
+                <Card className="hover:shadow-md transition-shadow">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Bendra rezervacijų</CardTitle>
-                    <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-xs sm:text-sm font-medium">Bendra</CardTitle>
+                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{reservations.length}</div>
-                    <p className="text-xs text-muted-foreground">Visos rezervacijos sistemoje</p>
+                    <div className="text-lg sm:text-2xl font-bold">{reservations.length}</div>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">Visos rezervacijos</p>
                   </CardContent>
                 </Card>
                 
-                <Card>
+                <Card className="hover:shadow-md transition-shadow">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Prašomos</CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-xs sm:text-sm font-medium">Prašomos</CardTitle>
+                    <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-yellow-600">
+                    <div className="text-lg sm:text-2xl font-bold text-yellow-600">
                       {reservations.filter(r => r.status === 'requested').length}
                     </div>
-                    <p className="text-xs text-muted-foreground">Laukia patvirtinimo</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">Laukia patvirtinimo</p>
                   </CardContent>
                 </Card>
                 
-                <Card>
+                <Card className="hover:shadow-md transition-shadow">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Patvirtintos</CardTitle>
-                    <Car className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-xs sm:text-sm font-medium">Patvirtintos</CardTitle>
+                    <Car className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-lg sm:text-2xl font-bold text-green-600">
                       {reservations.filter(r => r.status === 'confirmed').length}
                     </div>
-                    <p className="text-xs text-muted-foreground">Apmokėtos rezervacijos</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">Apmokėtos</p>
                   </CardContent>
                 </Card>
                 
-                <Card>
+                <Card className="hover:shadow-md transition-shadow">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Automobilių</CardTitle>
-                    <Settings className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-xs sm:text-sm font-medium">Automobilių</CardTitle>
+                    <Settings className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{cars.length}</div>
-                    <p className="text-xs text-muted-foreground">Galimų automobilių</p>
+                    <div className="text-lg sm:text-2xl font-bold">{cars.length}</div>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">Galimų auto</p>
                   </CardContent>
                 </Card>
                 
-                <Card>
+                <Card className="hover:shadow-md transition-shadow col-span-2 sm:col-span-1">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Pajamos</CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-xs sm:text-sm font-medium">Pajamos</CardTitle>
+                    <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">
+                    <div className="text-lg sm:text-2xl font-bold">
                       €{reservations.reduce((sum, r) => sum + (r.total_amount || 0), 0)}
                     </div>
-                    <p className="text-xs text-muted-foreground">Bendra suma</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">Bendra suma</p>
                   </CardContent>
                 </Card>
               </div>
@@ -605,35 +609,37 @@ const Admin = () => {
                   </CardTitle>
                   <CardDescription>Mūsų turimų automobilių sąrašas</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {cars.map((car) => (
-                      <Card 
-                        key={car.id} 
-                        className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-                        onClick={() => handleCarClick({ id: car.id, name: car.name })}
-                      >
-                        <div className="aspect-video relative overflow-hidden">
-                          <img 
-                            src={car.image} 
-                            alt={car.name}
-                            className="w-full h-full object-cover"
-                          />
-                          <Badge className="absolute top-2 right-2">{car.category}</Badge>
-                        </div>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold mb-2">{car.name}</h3>
-                          <div className="text-sm text-muted-foreground space-y-1">
-                            <div className="flex items-center gap-2">
-                              <Users className="h-3 w-3" />
-                              {car.passengers} vietos
-                            </div>
-                            <div>{car.fuel} • {car.transmission}</div>
-                            <div className="font-semibold text-primary">{car.price}/dienai</div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                 <CardContent>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                     {cars.map((car) => (
+                       <Card 
+                         key={car.id} 
+                         className="overflow-hidden cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
+                         onClick={() => handleCarClick({ id: car.id, name: car.name })}
+                       >
+                         <div className="aspect-video relative overflow-hidden">
+                           <img 
+                             src={car.image} 
+                             alt={car.name}
+                             className="w-full h-full object-cover"
+                           />
+                           <Badge className="absolute top-2 right-2 text-xs">{car.category}</Badge>
+                         </div>
+                         <CardContent className="p-3 sm:p-4">
+                           <h3 className="font-semibold mb-2 text-sm sm:text-base">{car.name}</h3>
+                           <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
+                             <div className="flex items-center gap-2">
+                               <Users className="h-3 w-3 flex-shrink-0" />
+                               <span>{car.passengers} vietos</span>
+                             </div>
+                             <div className="flex items-center justify-between">
+                               <span>{car.fuel} • {car.transmission}</span>
+                               <span className="font-semibold text-primary">{car.price}/d.</span>
+                             </div>
+                           </div>
+                         </CardContent>
+                       </Card>
+                     ))}
                   </div>
                 </CardContent>
               </Card>
@@ -651,57 +657,62 @@ const Admin = () => {
                   </div>
                   <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
                     <DialogTrigger asChild>
-                      <Button>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Pridėti rezervaciją
+                      <Button className="text-sm h-9">
+                        <Plus className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="hidden sm:inline">Pridėti rezervaciją</span>
+                        <span className="sm:hidden">Pridėti</span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl">
+                    <DialogContent className="max-w-2xl mx-3 sm:mx-auto max-h-[90vh] overflow-y-auto">
                       <DialogHeader>
-                        <DialogTitle>Nauja rezervacija</DialogTitle>
-                        <DialogDescription>
-                          Sukurkite naują rezervaciją klientui, kuris kreipėsi telefonu arba atėjo į biurą.
+                        <DialogTitle className="text-base sm:text-lg">Nauja rezervacija</DialogTitle>
+                        <DialogDescription className="text-sm">
+                          Sukurkite naują rezervaciją klientui.
                         </DialogDescription>
                       </DialogHeader>
                       
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="firstName">Vardas</Label>
+                          <Label htmlFor="firstName" className="text-sm">Vardas</Label>
                           <Input
                             id="firstName"
                             value={newReservation.firstName}
                             onChange={(e) => setNewReservation({ ...newReservation, firstName: e.target.value })}
+                            className="h-10"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="lastName">Pavardė</Label>
+                          <Label htmlFor="lastName" className="text-sm">Pavardė</Label>
                           <Input
                             id="lastName"
                             value={newReservation.lastName}
                             onChange={(e) => setNewReservation({ ...newReservation, lastName: e.target.value })}
+                            className="h-10"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="email">El. paštas</Label>
+                          <Label htmlFor="email" className="text-sm">El. paštas</Label>
                           <Input
                             id="email"
                             type="email"
                             value={newReservation.email}
                             onChange={(e) => setNewReservation({ ...newReservation, email: e.target.value })}
+                            className="h-10"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="phone">Telefonas</Label>
+                          <Label htmlFor="phone" className="text-sm">Telefonas</Label>
                           <Input
                             id="phone"
                             value={newReservation.phone}
                             onChange={(e) => setNewReservation({ ...newReservation, phone: e.target.value })}
+                            className="h-10"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="carName">Automobilis</Label>
+                          <Label htmlFor="carName" className="text-sm">Automobilis</Label>
                           <Select value={newReservation.carName} onValueChange={(value) => setNewReservation({ ...newReservation, carName: value })}>
-                            <SelectTrigger>
+                            <SelectTrigger className="h-10">
                               <SelectValue placeholder="Pasirinkite automobilį" />
                             </SelectTrigger>
                             <SelectContent>
@@ -712,20 +723,21 @@ const Admin = () => {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="dailyRate">Dienos kaina (€)</Label>
+                          <Label htmlFor="dailyRate" className="text-sm">Dienos kaina (€)</Label>
                           <Input
                             id="dailyRate"
                             type="number"
                             value={newReservation.dailyRate}
                             onChange={(e) => setNewReservation({ ...newReservation, dailyRate: Number(e.target.value) })}
+                            className="h-10"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label>Pradžios data</Label>
+                          <Label className="text-sm">Pradžios data</Label>
                           <Popover>
                             <PopoverTrigger asChild>
-                              <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                <CalendarIcon className="mr-2 h-4 w-4" />
+                              <Button variant="outline" className="w-full justify-start text-left font-normal h-10 text-sm">
+                                <CalendarIcon className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                                 {newReservation.startDate ? format(newReservation.startDate, 'yyyy-MM-dd') : 'Pasirinkite datą'}
                               </Button>
                             </PopoverTrigger>
@@ -740,11 +752,11 @@ const Admin = () => {
                           </Popover>
                         </div>
                         <div className="space-y-2">
-                          <Label>Pabaigos data</Label>
+                          <Label className="text-sm">Pabaigos data</Label>
                           <Popover>
                             <PopoverTrigger asChild>
-                              <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                <CalendarIcon className="mr-2 h-4 w-4" />
+                              <Button variant="outline" className="w-full justify-start text-left font-normal h-10 text-sm">
+                                <CalendarIcon className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                                 {newReservation.endDate ? format(newReservation.endDate, 'yyyy-MM-dd') : 'Pasirinkite datą'}
                               </Button>
                             </PopoverTrigger>
@@ -760,119 +772,220 @@ const Admin = () => {
                         </div>
                       </div>
                       
-                      <div className="flex justify-end gap-2 mt-6">
-                        <Button variant="outline" onClick={() => setShowAddDialog(false)}>
+                      <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
+                        <Button variant="outline" onClick={() => setShowAddDialog(false)} className="h-10">
                           Atšaukti
                         </Button>
-                        <Button onClick={addReservation}>
+                        <Button onClick={addReservation} className="h-10">
                           Sukurti rezervaciją
                         </Button>
                       </div>
                     </DialogContent>
                   </Dialog>
                 </CardHeader>
-                
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Klientas</TableHead>
-                        <TableHead>Automobilis</TableHead>
-                        <TableHead>Datos</TableHead>
-                        <TableHead>Dienų</TableHead>
-                        <TableHead>Suma</TableHead>
-                        <TableHead>Statusas</TableHead>
-                        <TableHead>Sukurta</TableHead>
-                        <TableHead>Veiksmai</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {reservations.map((reservation) => (
-                        <TableRow key={reservation.id}>
-                          <TableCell>
-                            <div>
-                              <div className="font-medium">
-                                {reservation.customers.first_name} {reservation.customers.last_name}
-                              </div>
-                              <div className="text-sm text-muted-foreground">
-                                {reservation.customers.email}
-                              </div>
-                              <div className="text-sm text-muted-foreground">
-                                {reservation.customers.phone}
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell className="font-medium">{reservation.car_name}</TableCell>
-                          <TableCell>
-                            <div className="text-sm">
-                              <div>{reservation.start_date}</div>
-                              <div>{reservation.end_date}</div>
-                            </div>
-                          </TableCell>
-                          <TableCell>{reservation.rental_days}</TableCell>
-                          <TableCell>€{reservation.total_amount}</TableCell>
-                          <TableCell>{getStatusBadge(reservation.status)}</TableCell>
-                          <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
-                           <TableCell>
-                             <div className="flex gap-2">
-                               {reservation.status === 'requested' && (
-                                 <>
-                                   <Button
-                                     variant="outline"
-                                     size="sm"
-                                     onClick={() => approveReservation(reservation.id)}
-                                     className="text-green-600 border-green-300 hover:bg-green-50"
-                                   >
-                                     <CheckCircle className="h-4 w-4" />
-                                   </Button>
-                                   <Button
-                                     variant="outline"
-                                     size="sm"
-                                     onClick={() => denyReservation(reservation.id)}
-                                     className="text-red-600 border-red-300 hover:bg-red-50"
-                                   >
-                                     <XCircle className="h-4 w-4" />
-                                   </Button>
-                                 </>
-                               )}
-                               <Button
-                                 variant="outline"
-                                 size="sm"
-                                 onClick={() => handleEditReservation(reservation)}
-                               >
-                                 <Edit className="h-4 w-4" />
-                               </Button>
-                               {reservation.status !== 'cancelled' && reservation.status !== 'denied' && (
+                 
+                 <CardContent>
+                   {/* Desktop Table View */}
+                   <div className="hidden lg:block">
+                     <Table>
+                       <TableHeader>
+                         <TableRow>
+                           <TableHead>Klientas</TableHead>
+                           <TableHead>Automobilis</TableHead>
+                           <TableHead>Datos</TableHead>
+                           <TableHead>Dienų</TableHead>
+                           <TableHead>Suma</TableHead>
+                           <TableHead>Statusas</TableHead>
+                           <TableHead>Sukurta</TableHead>
+                           <TableHead>Veiksmai</TableHead>
+                         </TableRow>
+                       </TableHeader>
+                       <TableBody>
+                         {reservations.map((reservation) => (
+                           <TableRow key={reservation.id}>
+                             <TableCell>
+                               <div>
+                                 <div className="font-medium">
+                                   {reservation.customers.first_name} {reservation.customers.last_name}
+                                 </div>
+                                 <div className="text-sm text-muted-foreground">
+                                   {reservation.customers.email}
+                                 </div>
+                                 <div className="text-sm text-muted-foreground">
+                                   {reservation.customers.phone}
+                                 </div>
+                               </div>
+                             </TableCell>
+                             <TableCell className="font-medium">{reservation.car_name}</TableCell>
+                             <TableCell>
+                               <div className="text-sm">
+                                 <div>{reservation.start_date}</div>
+                                 <div>{reservation.end_date}</div>
+                               </div>
+                             </TableCell>
+                             <TableCell>{reservation.rental_days}</TableCell>
+                             <TableCell>€{reservation.total_amount}</TableCell>
+                             <TableCell>{getStatusBadge(reservation.status)}</TableCell>
+                             <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
+                             <TableCell>
+                               <div className="flex gap-2">
                                  <Button
                                    variant="outline"
                                    size="sm"
-                                   onClick={() => cancelReservation(reservation.id)}
+                                   onClick={() => handleEditReservation(reservation)}
                                  >
-                                   <Ban className="h-4 w-4" />
+                                   <Edit className="h-4 w-4" />
                                  </Button>
-                               )}
-                               <Button
-                                 variant="destructive"
-                                 size="sm"
-                                 onClick={() => deleteReservation(reservation.id)}
-                               >
-                                 <Trash2 className="h-4 w-4" />
-                               </Button>
+                                 {reservation.status === 'requested' && (
+                                   <>
+                                     <Button
+                                       variant="default"
+                                       size="sm"
+                                       onClick={() => approveReservation(reservation.id)}
+                                     >
+                                       <CheckCircle className="h-4 w-4" />
+                                     </Button>
+                                     <Button
+                                       variant="destructive"
+                                       size="sm"
+                                       onClick={() => denyReservation(reservation.id)}
+                                     >
+                                       <XCircle className="h-4 w-4" />
+                                     </Button>
+                                   </>
+                                 )}
+                                 {reservation.status === 'confirmed' && (
+                                   <Button
+                                     variant="outline"
+                                     size="sm"
+                                     onClick={() => cancelReservation(reservation.id)}
+                                   >
+                                     <Ban className="h-4 w-4" />
+                                   </Button>
+                                 )}
+                                 <Button
+                                   variant="destructive"
+                                   size="sm"
+                                   onClick={() => deleteReservation(reservation.id)}
+                                 >
+                                   <Trash2 className="h-4 w-4" />
+                                 </Button>
+                               </div>
+                             </TableCell>
+                           </TableRow>
+                         ))}
+                       </TableBody>
+                     </Table>
+                   </div>
+
+                   {/* Mobile Card View */}
+                   <div className="lg:hidden space-y-3">
+                     {reservations.map((reservation) => (
+                       <Card key={reservation.id} className="p-4">
+                         <div className="space-y-3">
+                           <div className="flex items-start justify-between">
+                             <div className="flex-1 min-w-0">
+                               <div className="font-semibold text-sm truncate">
+                                 {reservation.customers.first_name} {reservation.customers.last_name}
+                               </div>
+                               <div className="text-xs text-muted-foreground truncate">
+                                 {reservation.customers.email}
+                               </div>
+                               <div className="text-xs text-muted-foreground">
+                                 {reservation.customers.phone}
+                               </div>
                              </div>
-                           </TableCell>
-                        </TableRow>
+                             <div className="flex-shrink-0 ml-2">
+                               {getStatusBadge(reservation.status)}
+                             </div>
+                           </div>
+                           
+                           <div className="grid grid-cols-2 gap-3 text-xs">
+                             <div>
+                               <div className="text-muted-foreground">Automobilis</div>
+                               <div className="font-medium">{reservation.car_name}</div>
+                             </div>
+                             <div>
+                               <div className="text-muted-foreground">Suma</div>
+                               <div className="font-medium">€{reservation.total_amount}</div>
+                             </div>
+                             <div>
+                               <div className="text-muted-foreground">Datos</div>
+                               <div className="font-medium">
+                                 {reservation.start_date} - {reservation.end_date}
+                               </div>
+                             </div>
+                             <div>
+                               <div className="text-muted-foreground">Dienų / Sukurta</div>
+                               <div className="font-medium">{reservation.rental_days} d. / {format(new Date(reservation.created_at), 'MM-dd')}</div>
+                             </div>
+                           </div>
+                           
+                           <div className="flex flex-wrap gap-2 pt-2 border-t">
+                             <Button
+                               variant="outline"
+                               size="sm"
+                               onClick={() => handleEditReservation(reservation)}
+                               className="text-xs"
+                             >
+                               <Edit className="h-3 w-3 mr-1" />
+                               Redaguoti
+                             </Button>
+                             {reservation.status === 'requested' && (
+                               <>
+                                 <Button
+                                   variant="default"
+                                   size="sm"
+                                   onClick={() => approveReservation(reservation.id)}
+                                   className="text-xs"
+                                 >
+                                   <CheckCircle className="h-3 w-3 mr-1" />
+                                   Patvirtinti
+                                 </Button>
+                                 <Button
+                                   variant="destructive"
+                                   size="sm"
+                                   onClick={() => denyReservation(reservation.id)}
+                                   className="text-xs"
+                                 >
+                                   <XCircle className="h-3 w-3 mr-1" />
+                                   Atmesti
+                                 </Button>
+                               </>
+                             )}
+                             {reservation.status === 'confirmed' && (
+                               <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() => cancelReservation(reservation.id)}
+                                 className="text-xs"
+                               >
+                                 <Ban className="h-3 w-3 mr-1" />
+                                 Atšaukti
+                               </Button>
+                             )}
+                             <Button
+                               variant="destructive"
+                               size="sm"
+                               onClick={() => deleteReservation(reservation.id)}
+                               className="text-xs"
+                             >
+                               <Trash2 className="h-3 w-3 mr-1" />
+                               Ištrinti
+                             </Button>
+                           </div>
+                         </div>
+                       </Card>
                       ))}
-                    </TableBody>
-                  </Table>
-                  
-                  {reservations.length === 0 && (
-                    <div className="text-center py-8 text-muted-foreground">
-                      Rezervacijų nėra
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+                   {reservations.length === 0 && (
+                     <div className="text-center py-8 text-muted-foreground">
+                       Rezervacijų nėra
+                     </div>
+                   )}
+                 </CardContent>
+               </Card>
+             </TabsContent>
 
           <TabsContent value="in-person">
             <InPersonBooking />
@@ -887,10 +1000,10 @@ const Admin = () => {
       
       {/* Edit Reservation Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md mx-3 sm:mx-auto">
           <DialogHeader>
-            <DialogTitle>Redaguoti rezervaciją</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-base sm:text-lg">Redaguoti rezervaciją</DialogTitle>
+            <DialogDescription className="text-sm">
               Atnaujinkite rezervacijos informaciją.
             </DialogDescription>
           </DialogHeader>
@@ -898,12 +1011,12 @@ const Admin = () => {
           {editingReservation && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Statusas</Label>
+                <Label className="text-sm">Statusas</Label>
                 <Select 
                   value={editingReservation.status} 
                   onValueChange={(value) => setEditingReservation({ ...editingReservation, status: value })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-10">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -918,30 +1031,32 @@ const Admin = () => {
               </div>
               
               <div className="space-y-2">
-                <Label>Pradžios data</Label>
+                <Label className="text-sm">Pradžios data</Label>
                 <Input
                   type="date"
                   value={editingReservation.start_date}
                   onChange={(e) => setEditingReservation({ ...editingReservation, start_date: e.target.value })}
+                  className="h-10"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label>Pabaigos data</Label>
+                <Label className="text-sm">Pabaigos data</Label>
                 <Input
                   type="date"
                   value={editingReservation.end_date}
                   onChange={(e) => setEditingReservation({ ...editingReservation, end_date: e.target.value })}
+                  className="h-10"
                 />
               </div>
             </div>
           )}
           
-          <div className="flex justify-end gap-2 mt-6">
-            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setShowEditDialog(false)} className="h-10">
               Atšaukti
             </Button>
-            <Button onClick={updateReservation}>
+            <Button onClick={updateReservation} className="h-10">
               Atnaujinti rezervaciją
             </Button>
           </div>
