@@ -30,6 +30,7 @@ import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flippe
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
+import { InPersonBooking } from "@/components/admin/InPersonBooking";
 
 interface Reservation {
   id: string;
@@ -869,9 +870,17 @@ const Admin = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="analytics">
-              <GoogleAnalytics />
-            </TabsContent>
+          <TabsContent value="in-person">
+            <InPersonBooking />
+          </TabsContent>
+
+          <TabsContent value="in-person">
+            <InPersonBooking />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <GoogleAnalytics />
+          </TabsContent>
           </Tabs>
         </div>
       </main>

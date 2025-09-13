@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      contract_signatures: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: unknown | null
+          reservation_id: string
+          signature_data: string
+          signed_at: string
+          signed_by: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          reservation_id: string
+          signature_data: string
+          signed_at?: string
+          signed_by: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          reservation_id?: string
+          signature_data?: string
+          signed_at?: string
+          signed_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_signatures_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           created_at: string
@@ -127,12 +165,18 @@ export type Database = {
           cancellation_deadline: string | null
           car_id: string
           car_name: string
+          contract_pdf_url: string | null
+          contract_signed_at: string | null
           created_at: string
           customer_id: string
           daily_rate: number
           deposit_amount: number
+          driver_license_url: string | null
           end_date: string
           id: string
+          notes: string | null
+          payment_completed_at: string | null
+          payment_method: string | null
           rental_days: number
           start_date: string
           status: string
@@ -145,12 +189,18 @@ export type Database = {
           cancellation_deadline?: string | null
           car_id: string
           car_name: string
+          contract_pdf_url?: string | null
+          contract_signed_at?: string | null
           created_at?: string
           customer_id: string
           daily_rate: number
           deposit_amount?: number
+          driver_license_url?: string | null
           end_date: string
           id?: string
+          notes?: string | null
+          payment_completed_at?: string | null
+          payment_method?: string | null
           rental_days: number
           start_date: string
           status?: string
@@ -163,12 +213,18 @@ export type Database = {
           cancellation_deadline?: string | null
           car_id?: string
           car_name?: string
+          contract_pdf_url?: string | null
+          contract_signed_at?: string | null
           created_at?: string
           customer_id?: string
           daily_rate?: number
           deposit_amount?: number
+          driver_license_url?: string | null
           end_date?: string
           id?: string
+          notes?: string | null
+          payment_completed_at?: string | null
+          payment_method?: string | null
           rental_days?: number
           start_date?: string
           status?: string
