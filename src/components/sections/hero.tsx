@@ -23,23 +23,23 @@ export function Hero({ carImage }: HeroProps) {
     <section className="relative min-h-[60vh] md:min-h-screen pt-12 md:pt-16 flex items-start md:items-center overflow-hidden bg-transparent md:bg-gradient-to-br md:from-background md:to-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
         {/* Left Content */}
-        <div className="space-y-3 md:space-y-8 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
-          <div className="space-y-3 md:space-y-6">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-2">
+        <div className="space-y-4 md:space-y-12 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
+          <div className="space-y-4 md:space-y-8">
+            <div className="space-y-6 md:space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4 md:mb-6">
                 📍 Nuoma Druskininkuose • Vairuokite visoje Lietuvoje
               </div>
               <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-muted-foreground leading-relaxed">
                 Kurkime prisiminimus kartu:
               </h1>
-              <div className="space-y-2 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+              <div className="space-y-3 md:space-y-4 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                 <div className="text-primary">Jūsų planai,</div>
                 <div className="text-foreground">Mūsų automobilis Jūsų poreikiams</div>
                 <div className="text-primary">Jūsų kelionės, nuotykiai ir patirtys.</div>
               </div>
             </div>
             
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed mt-6 md:mt-8">
               Patirkite pasirinkimo laisvę su Carbonus Druskininkuose - nuomokite kokybišką automobilį ir vykite į bet kurį Lietuvos kampelį saugiai ir patogiai.
             </p>
           </div>
