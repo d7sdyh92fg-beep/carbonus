@@ -70,11 +70,7 @@ export function Fleet() {
                   <img
                     src={car.image}
                     alt={car.name}
-                    className={`w-full h-48 transition-transform duration-300 group-hover:scale-115 ${
-                      car.name === "Volkswagen Passat" 
-                        ? "object-contain object-center scale-[1.25] -translate-y-2" 
-                        : "object-cover"
-                    }`}
+                    className="w-full h-48 md:h-52 object-contain object-center transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
