@@ -30,7 +30,7 @@ import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flippe
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 
-// Image mapping object
+// Image mapping object for car images
 const imageMap: { [key: string]: string } = {
   bmw3Clean,
   chryslerTownCountrySide,
@@ -42,6 +42,22 @@ const imageMap: { [key: string]: string } = {
   kiaCeedHatchbackSideFlipped,
   kiaCeedHatchbackSideBrown,
   kiaCeedHatchbackSideGrayBrown,
+};
+
+// Function to get the correct image for a car
+const getCarImage = (car: any) => {
+  // Map car names to image keys
+  const nameToImageMap: { [key: string]: string } = {
+    'BMW 3 series': 'bmw3Clean',
+    'Chrysler Town & Country': 'chryslerTownCountrySide',
+    'Volkswagen Passat': 'vwPassatSideClean',
+    'KIA CEED': car.category === 'Universalas' ? 'kiaCeedSideDarkGray' : 
+               car.category === 'Hečbekas' && car.year >= 2018 ? 'kiaCeedHatchbackSideGrayBrown' :
+               'kiaCeedHatchbackSide',
+  };
+  
+  const imageKey = nameToImageMap[car.name] || 'bmw3Clean';
+  return imageMap[imageKey] || car.image_url || '';
 };
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import { InPersonBooking } from "@/components/admin/InPersonBooking";
@@ -607,14 +623,14 @@ const Admin = () => {
                          className="overflow-hidden cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
                          onClick={() => handleCarClick({ id: car.id, name: car.name })}
                        >
-                         <div className="aspect-video relative overflow-hidden">
-                           <img 
-                             src={car.image} 
-                             alt={car.name}
-                             className="w-full h-full object-cover"
-                           />
-                           <Badge className="absolute top-2 right-2 text-xs">{car.category}</Badge>
-                         </div>
+                          <div className="aspect-video relative overflow-hidden">
+                            <img 
+                              src={getCarImage(car)} 
+                              alt={car.name}
+                              className="w-full h-full object-cover"
+                            />
+                            <Badge className="absolute top-2 right-2 text-xs">{car.category}</Badge>
+                          </div>
                          <CardContent className="p-3 sm:p-4">
                            <h3 className="font-semibold mb-2 text-sm sm:text-base">{car.name}</h3>
                            <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
