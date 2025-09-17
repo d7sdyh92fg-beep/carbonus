@@ -33,12 +33,25 @@ interface BookingDetails {
 }
 
 const cars = [
-  { id: '1', name: 'BMW 3 series', dailyRate: 30, available: true },
-  { id: '2', name: 'Chrysler Town & Country', dailyRate: 30, available: true },
-  { id: '3', name: 'Volkswagen Passat', dailyRate: 30, available: true },
-  { id: '4', name: 'KIA CEED', dailyRate: 30, available: true },
-  { id: '5', name: 'KIA CEED', dailyRate: 30, available: true },
+  { id: '1', name: 'BMW 3 series', available: true },
+  { id: '2', name: 'Chrysler Town & Country', available: true },
+  { id: '3', name: 'Volkswagen Passat', available: true },
+  { id: '4', name: 'KIA CEED', available: true },
+  { id: '5', name: 'KIA CEED', available: true },
 ];
+
+// Tiered pricing function
+const getDailyRate = (days: number): number => {
+  if (days >= 7) return 30;
+  if (days >= 3) return 40;
+  return 50; // 1-3 days
+};
+
+const getPricingTier = (days: number): string => {
+  if (days >= 7) return '7+ dienų: €30/dieną';
+  if (days >= 3) return '3-7 dienos: €40/dieną';
+  return '1-3 dienos: €50/dieną';
+};
 
 export function InPersonBooking() {
   const [step, setStep] = useState<'details' | 'documents' | 'payment' | 'complete'>('details');
@@ -65,7 +78,8 @@ export function InPersonBooking() {
   const calculateTotal = () => {
     if (!booking.startDate || !booking.endDate) return 0;
     const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
-    const rentalCost = days * booking.dailyRate;
+    const dailyRate = getDailyRate(days);
+    const rentalCost = days * dailyRate;
     const deposit = 300;
     return rentalCost + deposit;
   };
@@ -82,7 +96,7 @@ export function InPersonBooking() {
         ...prev,
         carId,
         carName: selectedCar.name,
-        dailyRate: selectedCar.dailyRate
+        dailyRate: 0 // Will be calculated dynamically based on days
       }));
     }
   };
@@ -122,7 +136,8 @@ export function InPersonBooking() {
 
       // Create reservation
       const rentalDays = getRentalDays();
-      const rentalCost = rentalDays * booking.dailyRate;
+      const dailyRate = getDailyRate(rentalDays);
+      const rentalCost = rentalDays * dailyRate;
       const totalAmount = rentalCost + 300; // 300 EUR deposit
 
       const { data: reservation, error: reservationError } = await supabase
@@ -134,7 +149,7 @@ export function InPersonBooking() {
           start_date: format(booking.startDate!, 'yyyy-MM-dd'),
           end_date: format(booking.endDate!, 'yyyy-MM-dd'),
           rental_days: rentalDays,
-          daily_rate: booking.dailyRate,
+          daily_rate: dailyRate,
           total_rental_cost: rentalCost,
           total_amount: totalAmount,
           status: 'confirmed',
@@ -323,8 +338,10 @@ export function InPersonBooking() {
                         <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm sm:text-base p-2 sm:p-3">
                           <div className="flex items-center justify-between w-full">
                             <span>{car.name}</span>
-                            <div className="flex items-center gap-2 ml-4">
-                              <span>€{car.dailyRate}/d.</span>
+                            <div className="flex flex-col items-end gap-1 ml-4">
+                              <div className="text-xs text-muted-foreground">
+                                Kaina priklauso nuo dienų skaičiaus
+                              </div>
                               {car.available ? (
                                 <Badge variant="default" className="bg-green-500 text-xs">Laisvas</Badge>
                               ) : (
@@ -367,29 +384,48 @@ export function InPersonBooking() {
                   </div>
                 </div>
 
-                {booking.startDate && booking.endDate && booking.dailyRate > 0 && (
-                  <div className="p-4 sm:p-6 bg-muted rounded-lg border-2">
-                    <div className="space-y-2 sm:space-y-3">
-                      <div className="flex justify-between text-sm sm:text-base">
-                        <span>Nuomos dienų:</span>
-                        <span className="font-medium">{getRentalDays()} d.</span>
+                {booking.startDate && booking.endDate && booking.carId && (
+                  <div className="space-y-4">
+                    {/* Pricing Explanation */}
+                    <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <div className="text-sm sm:text-base font-medium text-blue-900 mb-2">
+                        Kainų struktūra:
                       </div>
-                      <div className="flex justify-between text-sm sm:text-base">
-                        <span>Dienos kaina:</span>
-                        <span className="font-medium">€{booking.dailyRate}</span>
+                      <div className="space-y-1 text-xs sm:text-sm text-blue-800">
+                        <div>• 1-3 dienos: €50/dieną</div>
+                        <div>• 3-7 dienos: €40/dieną</div>
+                        <div>• 7+ dienų: €30/dieną</div>
                       </div>
-                      <div className="flex justify-between text-sm sm:text-base">
-                        <span>Nuomos kaina:</span>
-                        <span className="font-medium">€{getRentalDays() * booking.dailyRate}</span>
-                      </div>
-                      <div className="flex justify-between text-sm sm:text-base">
-                        <span>Užstatas:</span>
-                        <span className="font-medium">€300</span>
-                      </div>
-                      <Separator />
-                      <div className="flex justify-between font-bold text-base sm:text-lg">
-                        <span>Iš viso:</span>
-                        <span>€{calculateTotal()}</span>
+                    </div>
+                    
+                    {/* Price Calculation */}
+                    <div className="p-4 sm:p-6 bg-muted rounded-lg border-2">
+                      <div className="space-y-2 sm:space-y-3">
+                        <div className="flex justify-between text-sm sm:text-base">
+                          <span>Nuomos dienų:</span>
+                          <span className="font-medium">{getRentalDays()} d.</span>
+                        </div>
+                        <div className="flex justify-between text-sm sm:text-base">
+                          <span>Kainų kategorija:</span>
+                          <span className="font-medium text-primary">{getPricingTier(getRentalDays())}</span>
+                        </div>
+                        <div className="flex justify-between text-sm sm:text-base">
+                          <span>Dienos kaina:</span>
+                          <span className="font-medium">€{getDailyRate(getRentalDays())}</span>
+                        </div>
+                        <div className="flex justify-between text-sm sm:text-base">
+                          <span>Nuomos kaina:</span>
+                          <span className="font-medium">€{getRentalDays() * getDailyRate(getRentalDays())}</span>
+                        </div>
+                        <div className="flex justify-between text-sm sm:text-base">
+                          <span>Užstatas:</span>
+                          <span className="font-medium">€300</span>
+                        </div>
+                        <Separator />
+                        <div className="flex justify-between font-bold text-base sm:text-lg">
+                          <span>Iš viso:</span>
+                          <span>€{calculateTotal()}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
