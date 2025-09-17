@@ -17,7 +17,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
-import CarCalendarModal from '@/components/admin/CarCalendarModal';
+import CarManagementModal from '@/components/admin/CarManagementModal';
 import { GoogleAnalytics } from '@/components/admin/GoogleAnalytics';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
@@ -1091,9 +1091,9 @@ const Admin = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Car Calendar Modal */}
+      {/* Car Management Modal */}
       {selectedCar && (
-        <CarCalendarModal
+        <CarManagementModal
           isOpen={showCarCalendar}
           onClose={() => setShowCarCalendar(false)}
           carId={selectedCar.id}

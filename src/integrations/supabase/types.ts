@@ -14,6 +14,125 @@ export type Database = {
   }
   public: {
     Tables: {
+      car_service_records: {
+        Row: {
+          car_id: string
+          cost: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          mileage_at_service: number
+          next_service_due_date: string | null
+          next_service_due_mileage: number | null
+          notes: string | null
+          performed_by: string | null
+          service_date: string
+          service_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          car_id: string
+          cost?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          mileage_at_service: number
+          next_service_due_date?: string | null
+          next_service_due_mileage?: number | null
+          notes?: string | null
+          performed_by?: string | null
+          service_date: string
+          service_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          car_id?: string
+          cost?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          mileage_at_service?: number
+          next_service_due_date?: string | null
+          next_service_due_mileage?: number | null
+          notes?: string | null
+          performed_by?: string | null
+          service_date?: string
+          service_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "car_service_records_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cars: {
+        Row: {
+          category: string
+          created_at: string | null
+          current_mileage: number | null
+          fuel: string
+          health_status: string | null
+          id: string
+          image_url: string | null
+          is_available: boolean | null
+          last_service_date: string | null
+          name: string
+          next_service_date: string | null
+          notes: string | null
+          passengers: number
+          price_per_day: number
+          service_interval_km: number | null
+          transmission: string
+          updated_at: string | null
+          year: number
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          current_mileage?: number | null
+          fuel: string
+          health_status?: string | null
+          id: string
+          image_url?: string | null
+          is_available?: boolean | null
+          last_service_date?: string | null
+          name: string
+          next_service_date?: string | null
+          notes?: string | null
+          passengers: number
+          price_per_day: number
+          service_interval_km?: number | null
+          transmission: string
+          updated_at?: string | null
+          year: number
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          current_mileage?: number | null
+          fuel?: string
+          health_status?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          last_service_date?: string | null
+          name?: string
+          next_service_date?: string | null
+          notes?: string | null
+          passengers?: number
+          price_per_day?: number
+          service_interval_km?: number | null
+          transmission?: string
+          updated_at?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
       contract_signatures: {
         Row: {
           created_at: string
