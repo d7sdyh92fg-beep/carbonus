@@ -78,7 +78,8 @@ const Admin = () => {
     dailyRate: 50,
   });
 
-  const cars = [
+  const [cars, setCars] = useState<any[]>([]);
+  const [isLoadingCars, setIsLoadingCars] = useState(true);
     {
       id: "1",
       name: "BMW 3 series",
@@ -142,9 +143,26 @@ const Admin = () => {
       transmission: "Mechaninė",
       rating: 4.6,
       year: 2020,
-      features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
+  const fetchCars = async () => {
+    try {
+      setIsLoadingCars(true);
+      const { data, error } = await supabase
+        .from('cars')
+        .select('*')
+        .order('name');
+
+      if (error) throw error;
+      setCars(data || []);
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko gauti automobilių: " + error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoadingCars(false);
     }
-  ];
+  };
 
   const carOptions = cars.map(car => car.name);
 
