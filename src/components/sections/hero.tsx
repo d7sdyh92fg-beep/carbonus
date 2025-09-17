@@ -35,7 +35,10 @@ export function Hero({ carImage }: HeroProps) {
               <div className="space-y-3 md:space-y-4 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                 <div className="text-primary">Jūsų planai,</div>
                 <div className="text-foreground">Mūsų automobilis Jūsų poreikiams</div>
-                <div className="text-primary">Jūsų kelionės, nuotykiai ir patirtys.</div>
+                <div className="text-primary">
+                  Jūsų kelionės, nuotykiai<br />
+                  ir patirtys.
+                </div>
               </div>
             </div>
             
