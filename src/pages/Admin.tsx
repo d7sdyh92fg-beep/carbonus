@@ -109,6 +109,10 @@ const Admin = () => {
   const carOptions = cars.map(car => car.name);
 
   useEffect(() => {
+    fetchCars();
+  }, []);
+
+  useEffect(() => {
     console.log('Admin page - Auth state:', { user: !!user, isAdmin, loading, userEmail: user?.email });
     if (!loading && user && isAdmin) {
       console.log('Admin authenticated - fetching reservations');
