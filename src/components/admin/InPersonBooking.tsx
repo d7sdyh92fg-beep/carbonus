@@ -33,11 +33,11 @@ interface BookingDetails {
 }
 
 const cars = [
-  { id: '1', name: 'BMW 3 series', year: '2017', color: 'Sidabrinė', available: true },
-  { id: '2', name: 'Chrysler Town & Country', year: '2008', color: 'Mėlyna', available: true },
-  { id: '3', name: 'Volkswagen Passat', year: '2015', color: 'Juoda', available: true },
-  { id: '4', name: 'KIA CEED', year: '2020', color: 'Balta', available: true },
-  { id: '5', name: 'KIA CEED', year: '2018', color: 'Pilka', available: true },
+  { id: '1', name: 'BMW 3 series', year: '2017', available: true },
+  { id: '2', name: 'Chrysler Town & Country', year: '2008', available: true },
+  { id: '3', name: 'Volkswagen Passat', year: '2015', available: true },
+  { id: '4', name: 'KIA CEED', year: '2020', available: true },
+  { id: '5', name: 'KIA CEED', year: '2018', available: true },
 ];
 
 // Tiered pricing function
@@ -95,7 +95,7 @@ export function InPersonBooking() {
       setBooking(prev => ({
         ...prev,
         carId,
-        carName: `${selectedCar.name} (${selectedCar.year}, ${selectedCar.color})`,
+        carName: `${selectedCar.name} (${selectedCar.year})`,
         dailyRate: 0 // Will be calculated dynamically based on days
       }));
     }
@@ -339,7 +339,7 @@ export function InPersonBooking() {
                           <div className="flex items-center justify-between w-full">
                             <div className="flex flex-col">
                               <span className="font-medium">{car.name}</span>
-                              <span className="text-xs text-muted-foreground">{car.year} • {car.color}</span>
+                              <span className="text-xs text-muted-foreground">{car.year}</span>
                             </div>
                             <div className="flex flex-col items-end gap-1 ml-4">
                               <div className="text-xs text-muted-foreground">
