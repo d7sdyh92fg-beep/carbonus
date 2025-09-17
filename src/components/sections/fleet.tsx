@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -12,6 +13,11 @@ interface Car {
   price: string;
   image: string;
   category: string;
+  passengers: number;
+  fuel: string;
+  transmission: string;
+  rating: number;
+  features: string[];
   year: number;
 }
 
@@ -24,7 +30,12 @@ export function Fleet() {
       price: "nuo 30 EUR",
       image: bmw3Clean,
       category: "Sedanas",
-      year: 2017
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: 2017,
+      features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
     },
     {
       id: "2",
@@ -32,7 +43,12 @@ export function Fleet() {
       price: "nuo 30 EUR",
       image: chryslerTownCountrySide,
       category: "Miniautobusas",
-      year: 2014
+      passengers: 7,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.6,
+      year: 2014,
+      features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
     },
     {
       id: "3",
@@ -40,7 +56,12 @@ export function Fleet() {
       price: "nuo 30 EUR",
       image: vwPassatSideClean,
       category: "Sedanas",
-      year: 2012
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.7,
+      year: 2012,
+      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     }
   ];
 
@@ -70,32 +91,67 @@ export function Fleet() {
                   <img
                     src={car.image}
                     alt={car.name}
-                    className="w-full h-64 md:h-80 lg:h-96 object-contain object-center transition-transform duration-300 group-hover:scale-110"
+                    className={`w-full h-48 transition-transform duration-300 ${
+                      car.name === "Volkswagen Passat" 
+                        ? "object-contain object-center scale-[1.25] -translate-y-2 group-hover:scale-[1.31]" 
+                        : "object-cover group-hover:scale-105"
+                    }`}
                   />
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
                       {car.category}
                     </Badge>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold">{car.rating}</span>
+                  </div>
                 </div>
                 
                 <div className="p-6 space-y-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                    <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
                       {car.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground">{car.year} m.</p>
+                  </div>
+
+                  {/* Car Features */}
+                  <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Users className="w-4 h-4" />
+                      <span>{car.passengers}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Fuel className="w-4 h-4" />
+                      <span>{car.fuel}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Settings className="w-4 h-4" />
+                      <span>{car.transmission}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{car.year}</span>
+                    </div>
+                  </div>
+
+                  {/* Features List */}
+                  <div className="space-y-1">
+                    {car.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="text-sm text-muted-foreground">
+                        • {feature}
+                      </div>
+                    ))}
                   </div>
                   
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between pt-4">
                     <div>
                       <p className="text-sm text-muted-foreground">Kaina nuo</p>
-                      <p className="text-xl font-bold text-primary">{car.price}</p>
+                      <p className="text-2xl font-bold text-primary">{car.price}</p>
+                      <p className="text-xs text-muted-foreground">per dieną</p>
                     </div>
                     <Button 
-                      variant="outline" 
-                      className="hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground"
                       onClick={() => {
                         navigate(`/automobiliai/${car.id}`);
                         setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
