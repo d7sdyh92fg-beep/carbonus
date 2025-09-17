@@ -80,69 +80,7 @@ const Admin = () => {
 
   const [cars, setCars] = useState<any[]>([]);
   const [isLoadingCars, setIsLoadingCars] = useState(true);
-    {
-      id: "1",
-      name: "BMW 3 series",
-      price: "nuo 30 EUR",
-      image: bmw3Clean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.8,
-      year: 2017,
-      features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
-    },
-    {
-      id: "2",
-      name: "Chrysler Town & Country",
-      price: "nuo 30 EUR",
-      image: chryslerTownCountrySide,
-      category: "Miniautobusas",
-      passengers: 7,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.6,
-      year: 2014,
-      features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
-    },
-    {
-      id: "3",
-      name: "Volkswagen Passat",
-      price: "nuo 30 EUR",
-      image: vwPassatSideClean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Dyzelinas",
-      transmission: "Mechaninė",
-      rating: 4.7,
-      year: 2012,
-      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
-    },
-    {
-      id: "4",
-      name: "KIA CEED",
-      price: "nuo 30 EUR",
-      image: kiaCeedSideDarkGray,
-      category: "Universalas",
-      passengers: 5,
-      fuel: "Benzinas",
-      transmission: "Mechaninė",
-      rating: 4.5,
-      year: 2013,
-      features: ["Ekonomiškas vairavimas", "Erdvus universalas", "Patikimas automobilis"]
-    },
-    {
-      id: "5",
-      name: "KIA CEED",
-      price: "nuo 30 EUR", 
-      image: kiaCeedHatchbackSideGrayBrown,
-      category: "Hečbekas",
-      passengers: 5,
-      fuel: "Dyzelinas",
-      transmission: "Mechaninė",
-      rating: 4.6,
-      year: 2020,
+
   const fetchCars = async () => {
     try {
       setIsLoadingCars(true);
@@ -163,6 +101,10 @@ const Admin = () => {
       setIsLoadingCars(false);
     }
   };
+
+  useEffect(() => {
+    fetchCars();
+  }, []);
 
   const carOptions = cars.map(car => car.name);
 
