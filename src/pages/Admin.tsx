@@ -29,6 +29,20 @@ import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
+
+// Image mapping object
+const imageMap: { [key: string]: string } = {
+  bmw3Clean,
+  chryslerTownCountrySide,
+  vwPassatSideClean,
+  kiaCeedSideClean,
+  kiaCeedSideDarkGray,
+  kiaCeedWagonSide,
+  kiaCeedHatchbackSide,
+  kiaCeedHatchbackSideFlipped,
+  kiaCeedHatchbackSideBrown,
+  kiaCeedHatchbackSideGrayBrown,
+};
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import { InPersonBooking } from "@/components/admin/InPersonBooking";
 import { ReservationReview } from "@/components/admin/ReservationReview";

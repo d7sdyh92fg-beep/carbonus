@@ -6,6 +6,8 @@ import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
+import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
+import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 
 interface Car {
   id: string;
@@ -20,6 +22,15 @@ interface Car {
   features: string[];
   year: number;
 }
+
+// Image mapping object
+const imageMap: { [key: string]: string } = {
+  bmw3Clean,
+  chryslerTownCountrySide,
+  vwPassatSideClean,
+  kiaCeedSideDarkGray,
+  kiaCeedHatchbackSideGrayBrown,
+};
 
 export function Fleet() {
   const navigate = useNavigate();
@@ -62,6 +73,32 @@ export function Fleet() {
       rating: 4.7,
       year: 2012,
       features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+    },
+    {
+      id: "4",
+      name: "KIA CEED",
+      price: "nuo 30 EUR",
+      image: kiaCeedSideDarkGray,
+      category: "Universalas",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Mechaninė",
+      rating: 4.5,
+      year: 2013,
+      features: ["Ekonomiškas vairavimas", "Erdvus universalas", "Patikimas automobilis"]
+    },
+    {
+      id: "5",
+      name: "KIA CEED",
+      price: "nuo 30 EUR",
+      image: kiaCeedHatchbackSideGrayBrown,
+      category: "Hečbekas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.6,
+      year: 2020,
+      features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
     }
   ];
 
