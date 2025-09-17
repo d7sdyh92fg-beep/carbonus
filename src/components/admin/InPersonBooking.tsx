@@ -13,14 +13,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { lt } from 'date-fns/locale';
-import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Users, Fuel, Settings } from 'lucide-react';
+import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle } from 'lucide-react';
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { DigitalSignature } from './DigitalSignature';
-import bmw3Clean from "@/assets/bmw-3-clean.png";
-import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
-import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
-import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 
 interface Customer {
   firstName: string;
@@ -38,61 +33,11 @@ interface BookingDetails {
 }
 
 const cars = [
-  { 
-    id: '1', 
-    name: 'BMW 3 series',
-    category: 'Sedanas',
-    passengers: 5,
-    fuel: 'Benzinas',
-    transmission: 'Automatinė',
-    year: 2017,
-    image: bmw3Clean,
-    available: true 
-  },
-  { 
-    id: '2', 
-    name: 'Chrysler Town & Country',
-    category: 'Miniautobusas',
-    passengers: 7,
-    fuel: 'Benzinas',
-    transmission: 'Automatinė',
-    year: 2014,
-    image: chryslerTownCountrySide,
-    available: true 
-  },
-  { 
-    id: '3', 
-    name: 'Volkswagen Passat',
-    category: 'Sedanas',
-    passengers: 5,
-    fuel: 'Dyzelinas',
-    transmission: 'Mechaninė',
-    year: 2012,
-    image: vwPassatSideClean,
-    available: true 
-  },
-  { 
-    id: '4', 
-    name: 'KIA CEED',
-    category: 'Universalas',
-    passengers: 5,
-    fuel: 'Benzinas',
-    transmission: 'Mechaninė',
-    year: 2013,
-    image: kiaCeedSideDarkGray,
-    available: true 
-  },
-  { 
-    id: '5', 
-    name: 'KIA CEED',
-    category: 'Hečbekas',
-    passengers: 5,
-    fuel: 'Dyzelinas',
-    transmission: 'Mechaninė',
-    year: 2020,
-    image: kiaCeedHatchbackSideGrayBrown,
-    available: true 
-  },
+  { id: '1', name: 'BMW 3 series', available: true },
+  { id: '2', name: 'Chrysler Town & Country', available: true },
+  { id: '3', name: 'Volkswagen Passat', available: true },
+  { id: '4', name: 'KIA CEED', available: true },
+  { id: '5', name: 'KIA CEED', available: true },
 ];
 
 // Tiered pricing function
@@ -380,73 +325,34 @@ export function InPersonBooking() {
             <Card className="w-full">
               <CardHeader>
                 <CardTitle className="text-lg sm:text-xl">Nuomos duomenys</CardTitle>
-                <div className="text-sm text-muted-foreground">
-                  <div className="font-medium mb-2">Kainų struktūra:</div>
-                  <div className="space-y-1">
-                    <div>• 1-3 dienos: €50/dieną</div>
-                    <div>• 3-7 dienos: €40/dieną</div>
-                    <div>• 7+ dienų: €30/dieną</div>
-                  </div>
-                </div>
               </CardHeader>
               <CardContent className="space-y-4 sm:space-y-6">
                 <div>
                   <Label htmlFor="car" className="text-sm sm:text-base">Pasirinkite automobilį *</Label>
-                  <div className="mt-2 space-y-3">
-                    {cars.map((car) => (
-                      <Card 
-                        key={car.id} 
-                        className={`cursor-pointer transition-all hover:shadow-md ${
-                          booking.carId === car.id ? 'ring-2 ring-primary bg-primary/5' : ''
-                        } ${!car.available ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => car.available && handleCarSelect(car.id)}
-                      >
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-4">
-                            <div className="w-20 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                              <img
-                                src={car.image}
-                                alt={car.name}
-                                className={`w-full h-full object-cover ${
-                                  car.name === "Volkswagen Passat" 
-                                    ? "object-contain scale-125 -translate-y-1" 
-                                    : ""
-                                }`}
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-2">
-                                <h3 className="font-semibold text-sm sm:text-base truncate">{car.name}</h3>
-                                <Badge variant="secondary" className="text-xs">{car.category}</Badge>
-                                {car.available ? (
-                                  <Badge variant="default" className="bg-green-500 text-xs">Laisvas</Badge>
-                                ) : (
-                                  <Badge variant="destructive" className="text-xs">Užimtas</Badge>
-                                )}
+                  <Select value={booking.carId} onValueChange={handleCarSelect}>
+                    <SelectTrigger className="h-10 sm:h-12 text-sm sm:text-base bg-background border-2">
+                      <SelectValue placeholder="Pasirinkite automobilį" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border z-50">
+                      {cars.map((car) => (
+                        <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm sm:text-base p-2 sm:p-3">
+                          <div className="flex items-center justify-between w-full">
+                            <span>{car.name}</span>
+                            <div className="flex flex-col items-end gap-1 ml-4">
+                              <div className="text-xs text-muted-foreground">
+                                Kaina priklauso nuo dienų skaičiaus
                               </div>
-                              <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-                                <div className="flex items-center gap-1">
-                                  <Users className="w-3 h-3" />
-                                  <span>{car.passengers}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <Fuel className="w-3 h-3" />
-                                  <span>{car.fuel}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <Settings className="w-3 h-3" />
-                                  <span>{car.transmission}</span>
-                                </div>
-                              </div>
-                              <div className="text-xs text-muted-foreground mt-1">
-                                {car.year} m.
-                              </div>
+                              {car.available ? (
+                                <Badge variant="default" className="bg-green-500 text-xs">Laisvas</Badge>
+                              ) : (
+                                <Badge variant="destructive" className="text-xs">Užimtas</Badge>
+                              )}
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-4 sm:space-y-6">
