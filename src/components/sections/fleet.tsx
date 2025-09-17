@@ -70,7 +70,7 @@ export function Fleet() {
                   <img
                     src={car.image}
                     alt={car.name}
-                    className="w-full h-48 md:h-52 object-contain object-center transition-transform duration-300 group-hover:scale-110"
+                    className="w-full h-64 md:h-80 lg:h-96 object-contain object-center transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
