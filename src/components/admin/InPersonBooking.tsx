@@ -335,10 +335,10 @@ export function InPersonBooking() {
                     </SelectTrigger>
                     <SelectContent className="bg-background border z-50">
                       {cars.map((car) => (
-                        <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm sm:text-base p-2 sm:p-3">
+                        <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm p-3">
                           <div className="flex items-center justify-between w-full">
-                            <div className="flex flex-col">
-                              <span className="font-medium">{car.name}</span>
+                            <div className="flex flex-col gap-1">
+                              <span className="font-medium text-sm">{car.name}</span>
                               <span className="text-xs text-muted-foreground">{car.year}</span>
                             </div>
                             <div className="flex flex-col items-end gap-1 ml-4">
