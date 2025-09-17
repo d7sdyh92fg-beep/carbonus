@@ -39,7 +39,7 @@ export function Navigation({ logo }: NavigationProps) {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent md:bg-background/80 backdrop-blur-md border-b-0 md:border-b">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent lg:bg-background/80 backdrop-blur-md border-b-0 lg:border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -54,7 +54,7 @@ export function Navigation({ logo }: NavigationProps) {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="ml-10 flex items-center space-x-8">
               {navItems.map((item) => (
                 <Link
@@ -74,7 +74,7 @@ export function Navigation({ logo }: NavigationProps) {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4">
             <LanguageSwitcher />
             {user && isAdmin && (
               <DropdownMenu>
@@ -103,7 +103,7 @@ export function Navigation({ logo }: NavigationProps) {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Button
               variant="ghost"
               size="icon"
@@ -116,7 +116,7 @@ export function Navigation({ logo }: NavigationProps) {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t">
               {navItems.map((item) => (
                 <Link
