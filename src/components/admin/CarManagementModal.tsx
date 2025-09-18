@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertTriangle, Calendar as CalendarIcon, Car, Clock, Gauge, Settings, Wrench, CheckCircle, XCircle, Plus } from 'lucide-react';
+import { AlertTriangle, Calendar as CalendarIcon, Car, Clock, Gauge, Settings, Wrench, CheckCircle, XCircle, Plus, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { lt } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
@@ -64,6 +64,15 @@ interface ServiceRecord {
   notes: string | null;
 }
 
+interface BlockedDate {
+  id: string;
+  car_id: string;
+  blocked_date: string;
+  reason: string | null;
+  created_at: string;
+  created_by: string | null;
+}
+
 const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose, carId, carName }) => {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -84,6 +93,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     notes: ''
   });
   
+  // Blocked dates state
+  const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+  const [blockedDatesData, setBlockedDatesData] = useState<BlockedDate[]>([]);
+  const [selectedBlockDates, setSelectedBlockDates] = useState<Date[] | undefined>();
+  const [blockReason, setBlockReason] = useState('');
+  
   const { toast } = useToast();
 
   useEffect(() => {
@@ -91,6 +106,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       fetchCarData();
       fetchCarReservations();
       fetchServiceRecords();
+      fetchBlockedDates();
     }
   }, [isOpen, carId]);
 
@@ -226,6 +242,112 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       toast({
         title: "Klaida",
         description: "Nepavyko pridėti aptarnavimo įrašo: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchBlockedDates = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('car_blocked_dates')
+        .select('*')
+        .eq('car_id', carId)
+        .order('blocked_date', { ascending: true });
+
+      if (error) throw error;
+      
+      const blockedDatesArray = (data || []).map(item => new Date(item.blocked_date));
+      setBlockedDates(blockedDatesArray);
+      setBlockedDatesData(data || []);
+    } catch (error) {
+      console.error('Error fetching blocked dates:', error);
+    }
+  };
+
+  const blockSelectedDates = async () => {
+    if (!selectedBlockDates || selectedBlockDates.length === 0) return;
+
+    try {
+      const blockedDateEntries = selectedBlockDates.map(date => ({
+        car_id: carId,
+        blocked_date: date.toISOString().split('T')[0],
+        reason: blockReason || null,
+        created_by: null // Will be set by RLS if authenticated
+      }));
+
+      const { error } = await supabase
+        .from('car_blocked_dates')
+        .insert(blockedDateEntries);
+
+      if (error) throw error;
+
+      toast({
+        title: "Datos blokuotos",
+        description: `Sėkmingai blokuota ${selectedBlockDates.length} datos.`,
+      });
+
+      setSelectedBlockDates(undefined);
+      setBlockReason('');
+      fetchBlockedDates();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko blokuoti datų: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const unblockSelectedDates = async () => {
+    if (!selectedBlockDates || selectedBlockDates.length === 0) return;
+
+    try {
+      const datesToUnblock = selectedBlockDates.map(date => date.toISOString().split('T')[0]);
+      
+      const { error } = await supabase
+        .from('car_blocked_dates')
+        .delete()
+        .eq('car_id', carId)
+        .in('blocked_date', datesToUnblock);
+
+      if (error) throw error;
+
+      toast({
+        title: "Datos atblokuotos",
+        description: `Sėkmingai atblokuota ${selectedBlockDates.length} datos.`,
+      });
+
+      setSelectedBlockDates(undefined);
+      fetchBlockedDates();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko atblokuoti datų: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const removeBlockedDate = async (blockedDateId: string) => {
+    try {
+      const { error } = await supabase
+        .from('car_blocked_dates')
+        .delete()
+        .eq('id', blockedDateId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Data atblokuota",
+        description: "Data sėkmingai atblokuota.",
+      });
+
+      fetchBlockedDates();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko atblokuoti datos: " + error.message,
         variant: "destructive",
       });
     }
@@ -889,6 +1011,114 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   {getAvailabilityBadge(carDetails.is_available)}
                 </div>
 
+                {/* Date Blocking Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      Blokuoti datos
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Pasirinkite ir blokuokite datas, kai automobilis nebus prieinamas
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <div className="border rounded-lg p-3">
+                          <Calendar
+                            mode="multiple"
+                            selected={blockedDates}
+                            onSelect={setSelectedBlockDates}
+                            className="rounded-md border-0"
+                            disabled={(date) => {
+                              const today = new Date();
+                              today.setHours(0, 0, 0, 0);
+                              return date < today;
+                            }}
+                            modifiers={{
+                              blocked: blockedDates,
+                              booked: bookedDates.map(d => new Date(d))
+                            }}
+                            modifiersStyles={{
+                              blocked: { backgroundColor: '#ef4444', color: 'white' },
+                              booked: { backgroundColor: '#f59e0b', color: 'white' }
+                            }}
+                          />
+                        </div>
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-1">
+                              <div className="w-3 h-3 bg-red-500 rounded"></div>
+                              <span>Blokuota</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <div className="w-3 h-3 bg-amber-500 rounded"></div>
+                              <span>Rezervuota</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        {selectedBlockDates && selectedBlockDates.length > 0 && (
+                          <div>
+                            <Label htmlFor="block-reason">Blokavimo priežastis</Label>
+                            <Textarea
+                              id="block-reason"
+                              placeholder="Pvz., Remontas, Aptarnavimas, Kita..."
+                              value={blockReason}
+                              onChange={(e) => setBlockReason(e.target.value)}
+                              rows={3}
+                            />
+                          </div>
+                        )}
+                        
+                        <div className="flex gap-2">
+                          <Button 
+                            onClick={blockSelectedDates}
+                            disabled={!selectedBlockDates || selectedBlockDates.length === 0}
+                            size="sm"
+                          >
+                            Blokuoti pasirinktas datas
+                          </Button>
+                          <Button 
+                            variant="outline"
+                            onClick={unblockSelectedDates}
+                            disabled={!selectedBlockDates || selectedBlockDates.length === 0}
+                            size="sm"
+                          >
+                            Atblokuoti
+                          </Button>
+                        </div>
+
+                        {blockedDates.length > 0 && (
+                          <div className="mt-4">
+                            <h4 className="font-medium mb-2">Blokuotos datos:</h4>
+                            <div className="space-y-1 max-h-32 overflow-y-auto">
+                              {blockedDatesData.map((blocked) => (
+                                <div key={blocked.id} className="flex items-center justify-between p-2 bg-muted rounded text-sm">
+                                  <div>
+                                    <span className="font-medium">{format(new Date(blocked.blocked_date), 'PPP', { locale: lt })}</span>
+                                    {blocked.reason && <p className="text-xs text-muted-foreground">{blocked.reason}</p>}
+                                  </div>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeBlockedDate(blocked.id)}
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <div className="grid md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
@@ -914,6 +1144,10 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       <div className="flex justify-between">
                         <span>Užimtų dienų:</span>
                         <Badge variant="outline">{bookedDates.length}</Badge>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Blokuotų dienų:</span>
+                        <Badge variant="destructive">{blockedDates.length}</Badge>
                       </div>
                     </CardContent>
                   </Card>

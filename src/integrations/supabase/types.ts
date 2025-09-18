@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      car_blocked_dates: {
+        Row: {
+          blocked_date: string
+          car_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          reason: string | null
+        }
+        Insert: {
+          blocked_date: string
+          car_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          reason?: string | null
+        }
+        Update: {
+          blocked_date?: string
+          car_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
       car_service_records: {
         Row: {
           car_id: string
