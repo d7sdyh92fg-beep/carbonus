@@ -323,10 +323,11 @@ export type Database = {
           notes: string | null
           payment_completed_at: string | null
           payment_method: string | null
+          payment_provider: string | null
+          payment_transaction_id: string | null
           rental_days: number
           start_date: string
           status: string
-          stripe_payment_intent_id: string | null
           total_amount: number
           total_rental_cost: number
           updated_at: string
@@ -347,10 +348,11 @@ export type Database = {
           notes?: string | null
           payment_completed_at?: string | null
           payment_method?: string | null
+          payment_provider?: string | null
+          payment_transaction_id?: string | null
           rental_days: number
           start_date: string
           status?: string
-          stripe_payment_intent_id?: string | null
           total_amount: number
           total_rental_cost: number
           updated_at?: string
@@ -371,10 +373,11 @@ export type Database = {
           notes?: string | null
           payment_completed_at?: string | null
           payment_method?: string | null
+          payment_provider?: string | null
+          payment_transaction_id?: string | null
           rental_days?: number
           start_date?: string
           status?: string
-          stripe_payment_intent_id?: string | null
           total_amount?: number
           total_rental_cost?: number
           updated_at?: string

@@ -42,6 +42,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   });
   const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"pay_now" | "pay_at_counter">("pay_now");
+  const [paymentProvider, setPaymentProvider] = useState<"stripe" | "paysera">("paysera");
 
   const calculateAdvancePayment = (): number => {
     if (rentalDays <= 3) return 50;
@@ -177,24 +178,25 @@ const BookingForm: React.FC<BookingFormProps> = ({
       }
 
       // Process payment based on selected method
-      // TEMPORARILY DISABLED FOR TESTING - PAYMENT BYPASSED
-      // const paymentAmount = paymentMethod === "pay_now" ? totalAmount + depositAmount : advancePayment;
-      // await processStripePayment(reservation.id, paymentAmount, paymentMethod === "pay_now" ? 'full' : 'advance');
-
-      // Update reservation status to confirmed (bypassing payment for testing)
-      await supabase
-        .from('reservations')
-        .update({ status: 'confirmed' })
-        .eq('id', reservation.id);
-
-      toast({
-        title: "Rezervacija sukurta!",
-        description: "Jūsų rezervacija sėkmingai sukurta (mokėjimas praleistas testavimo tikslais).",
-        variant: "default",
-      });
-
-      onBookingSuccess();
-
+      if (paymentMethod === "pay_now") {
+        const paymentAmount = totalAmount + depositAmount;
+        if (paymentProvider === "stripe") {
+          await processStripePayment(reservation.id, paymentAmount, 'full');
+          return; // Exit here as Stripe will redirect
+        } else {
+          await processPayseraPayment(reservation.id, paymentAmount, 'full');
+          return; // Exit here as Paysera will redirect
+        }
+      } else {
+        // Pay at counter - advance payment
+        if (paymentProvider === "stripe") {
+          await processStripePayment(reservation.id, advancePayment, 'advance');
+          return; // Exit here as Stripe will redirect
+        } else {
+          await processPayseraPayment(reservation.id, advancePayment, 'advance');
+          return; // Exit here as Paysera will redirect
+        }
+      }
     } catch (error) {
       console.error("Booking error:", error);
       toast({
@@ -204,6 +206,62 @@ const BookingForm: React.FC<BookingFormProps> = ({
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const processPayseraPayment = async (reservationId: string, amount: number, paymentType: 'full' | 'advance') => {
+    try {
+      console.log('Processing Paysera payment:', { reservationId, amount, paymentType });
+      
+      const { data, error } = await supabase.functions.invoke('create-paysera-payment', {
+        body: {
+          reservationId,
+          amount,
+          currency: 'eur',
+          customerEmail: formData.email,
+          customerName: `${formData.firstName} ${formData.lastName}`,
+          carName: carName,
+          paymentType
+        }
+      });
+
+      if (error) {
+        console.error('Paysera payment error:', error);
+        throw error;
+      }
+
+      if (data?.success && data?.paymentUrl && data?.formData) {
+        // Create and submit form to Paysera
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = data.paymentUrl;
+        
+        const dataInput = document.createElement('input');
+        dataInput.type = 'hidden';
+        dataInput.name = 'data';
+        dataInput.value = data.formData.data;
+        form.appendChild(dataInput);
+        
+        const signInput = document.createElement('input');
+        signInput.type = 'hidden';
+        signInput.name = 'sign';
+        signInput.value = data.formData.sign;
+        form.appendChild(signInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      } else {
+        throw new Error('No payment form data received');
+      }
+    } catch (error) {
+      console.error('Error processing Paysera payment:', error);
+      toast({
+        title: "Mokėjimo klaida",
+        description: 'Klaida apdorojant Paysera mokėjimą. Bandykite dar kartą.',
+        variant: "destructive",
+      });
+      throw error;
     }
   };
 
@@ -302,13 +360,60 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <div className="mb-6 p-4 border rounded-lg">
           <h4 className="font-semibold mb-3">Mokėjimo būdas</h4>
           <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as "pay_now" | "pay_at_counter")}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="pay_now" id="pay_now" />
-              <Label htmlFor="pay_now">Mokėti dabar (pilną sumą)</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
-              <Label htmlFor="pay_at_counter">Mokėti vietoje (išankstinis mokėjimas €{advancePayment})</Label>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="pay_now" id="pay_now" />
+                <Label htmlFor="pay_now">Mokėti dabar (pilną sumą)</Label>
+              </div>
+              
+              {paymentMethod === "pay_now" && (
+                <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
+                  <p className="text-sm font-medium">Pasirinkite mokėjimo būdą:</p>
+                  <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="paysera" id="paysera" />
+                      <Label htmlFor="paysera" className="cursor-pointer">
+                        <span className="font-medium">Lietuvos bankai</span>
+                        <span className="text-sm text-muted-foreground block">Swedbank, SEB, Luminor, Šiaulių bankas ir kiti</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="stripe" id="stripe" />
+                      <Label htmlFor="stripe" className="cursor-pointer">
+                        <span className="font-medium">Mokėjimo kortelė</span>
+                        <span className="text-sm text-muted-foreground block">Visa, Mastercard, Apple Pay, Google Pay</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+              
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
+                <Label htmlFor="pay_at_counter">Mokėti vietoje (išankstinis mokėjimas €{advancePayment})</Label>
+              </div>
+              
+              {paymentMethod === "pay_at_counter" && (
+                <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
+                  <p className="text-sm font-medium">Išankstinio mokėjimo būdas:</p>
+                  <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="paysera" id="paysera_advance" />
+                      <Label htmlFor="paysera_advance" className="cursor-pointer">
+                        <span className="font-medium">Lietuvos bankai</span>
+                        <span className="text-sm text-muted-foreground block">Swedbank, SEB, Luminor, Šiaulių bankas ir kiti</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="stripe" id="stripe_advance" />
+                      <Label htmlFor="stripe_advance" className="cursor-pointer">
+                        <span className="font-medium">Mokėjimo kortelė</span>
+                        <span className="text-sm text-muted-foreground block">Visa, Mastercard, Apple Pay, Google Pay</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
             </div>
           </RadioGroup>
         </div>

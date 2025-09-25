@@ -19,6 +19,8 @@ import NotFound from "./pages/NotFound";
 import LeaseAgreement from "./pages/LeaseAgreement";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCanceled from "./pages/PaymentCanceled";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,8 @@ const App = () => (
           <Route path="/privatumo-politika" element={<PrivacyPolicy />} />
           <Route path="/nuomos-sutartis" element={<LeaseAgreement />} />
           <Route path="/automobiliai/:id" element={<CarDetail />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-canceled" element={<PaymentCanceled />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
