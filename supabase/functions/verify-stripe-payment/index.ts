@@ -77,9 +77,9 @@ serve(async (req) => {
         status: 400,
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error verifying payment:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error?.message || 'Unknown error' }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });

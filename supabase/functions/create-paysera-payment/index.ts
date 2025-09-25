@@ -4,6 +4,7 @@ import CryptoJS from "https://esm.sh/crypto-js@4.1.1"
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 }
 
 interface PayseraPaymentRequest {
@@ -55,7 +56,11 @@ serve(async (req) => {
     console.log('Paysera payment parameters:', params);
 
     // Create URL-encoded string
-    const urlEncoded = new URLSearchParams(params as Record<string, string>).toString();
+    const paramsForUrl = {
+      ...params,
+      amount: params.amount.toString(),
+    };
+    const urlEncoded = new URLSearchParams(paramsForUrl as Record<string, string>).toString();
     console.log('URL encoded string:', urlEncoded);
 
     // Base64 encode with replacements for Paysera format
@@ -88,12 +93,12 @@ serve(async (req) => {
       }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating Paysera payment:', error);
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message 
+        error: error?.message || 'Unknown error'
       }),
       { 
         headers: { 

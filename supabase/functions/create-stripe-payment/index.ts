@@ -91,9 +91,9 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
-  } catch (error) {
-    console.error('Error creating Stripe payment session:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    } catch (error: any) {
+      console.error('Error creating Stripe payment session:', error);
+      return new Response(JSON.stringify({ error: error?.message || 'Unknown error' }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
