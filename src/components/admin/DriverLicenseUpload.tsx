@@ -7,33 +7,62 @@ import { Camera, Upload, X, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface DriverLicenseUploadProps {
-  onUpload: (url: string) => void;
-  uploadedUrl?: string;
+  onUpload: (urls: { front?: string; back?: string }) => void;
+  uploadedUrls?: { front?: string; back?: string };
 }
 
-export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUploadProps) {
+export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUploadProps) {
   const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [frontPreview, setFrontPreview] = useState<string | null>(null);
+  const [backPreview, setBackPreview] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [previewSide, setPreviewSide] = useState<'front' | 'back'>('front');
+  const [uploadingSide, setUploadingSide] = useState<'front' | 'back'>('front');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [cameraActive, setCameraActive] = useState(false);
+  const [cameraSupported, setCameraSupported] = useState(true);
 
-  const startCamera = async () => {
+  const startCamera = async (side: 'front' | 'back') => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' } // Use back camera on mobile
-      });
+      // Check if camera is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setCameraSupported(false);
+        toast.error('Kamera nepalaikoma šiame įrenginyje. Naudokite failų įkėlimą.');
+        return;
+      }
+
+      setUploadingSide(side);
+      
+      const constraints = {
+        video: {
+          facingMode: 'environment', // Use back camera on mobile
+          width: { ideal: 1280, max: 1920 },
+          height: { ideal: 720, max: 1080 }
+        }
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        await videoRef.current.play();
         setCameraActive(true);
       }
     } catch (error) {
       console.error('Error accessing camera:', error);
-      toast.error('Nepavyko pasiekti kameros. Naudokite failų įkėlimą.');
+      setCameraSupported(false);
+      
+      if (error instanceof Error) {
+        if (error.name === 'NotAllowedError') {
+          toast.error('Kameros prieiga atmesta. Suteikite leidimą naršyklės nustatymuose.');
+        } else if (error.name === 'NotFoundError') {
+          toast.error('Kamera nerasta. Naudokite failų įkėlimą.');
+        } else {
+          toast.error('Nepavyko pasiekti kameros. Naudokite failų įkėlimą.');
+        }
+      }
     }
   };
 
@@ -60,22 +89,26 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
         
         canvas.toBlob(async (blob) => {
           if (blob) {
-            await uploadFile(blob);
+            await uploadFile(blob, uploadingSide);
             stopCamera();
           }
-        }, 'image/jpeg', 0.8);
+        }, 'image/jpeg', 0.9);
       }
     }
   };
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>, side: 'front' | 'back') => {
     const file = event.target.files?.[0];
     if (file) {
-      uploadFile(file);
+      uploadFile(file, side);
+    }
+    // Reset the input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
-  const uploadFile = async (file: Blob) => {
+  const uploadFile = async (file: Blob, side: 'front' | 'back') => {
     if (file.size > 10 * 1024 * 1024) { // 10MB limit
       toast.error('Failo dydis turi būti mažesnis nei 10MB');
       return;
@@ -84,7 +117,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
     setUploading(true);
     try {
       const fileExt = file instanceof File ? file.name.split('.').pop() : 'jpg';
-      const fileName = `driver_license_${Date.now()}.${fileExt}`;
+      const fileName = `driver_license_${side}_${Date.now()}.${fileExt}`;
       
       const { data, error } = await supabase.storage
         .from('driver-licenses')
@@ -96,9 +129,17 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
         .from('driver-licenses')
         .getPublicUrl(data.path);
 
-      setPreview(publicUrl);
-      onUpload(publicUrl);
-      toast.success('Vairuotojo pažymėjimas sėkmingai įkeltas!');
+      if (side === 'front') {
+        setFrontPreview(publicUrl);
+      } else {
+        setBackPreview(publicUrl);
+      }
+
+      const currentUrls = uploadedUrls || {};
+      const newUrls = { ...currentUrls, [side]: publicUrl };
+      onUpload(newUrls);
+      
+      toast.success(`Vairuotojo pažymėjimo ${side === 'front' ? 'priekis' : 'galas'} sėkmingai įkeltas!`);
     } catch (error) {
       console.error('Error uploading file:', error);
       toast.error('Nepavyko įkelti vairuotojo pažymėjimo. Bandykite dar kartą.');
@@ -107,15 +148,25 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
     }
   };
 
-  const removeUpload = () => {
-    setPreview(null);
-    onUpload('');
+  const removeUpload = (side: 'front' | 'back') => {
+    if (side === 'front') {
+      setFrontPreview(null);
+    } else {
+      setBackPreview(null);
+    }
+    
+    const currentUrls = uploadedUrls || {};
+    const newUrls = { ...currentUrls };
+    delete newUrls[side];
+    onUpload(newUrls);
+    
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
-  const currentImageUrl = uploadedUrl || preview;
+  const frontImageUrl = uploadedUrls?.front || frontPreview;
+  const backImageUrl = uploadedUrls?.back || backPreview;
 
   return (
     <div className="space-y-6">
@@ -143,71 +194,151 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
         </Card>
       )}
 
-      {/* Upload Options */}
-      {!cameraActive && !currentImageUrl && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Button
-            variant="outline"
-            onClick={startCamera}
-            className="h-32 flex flex-col gap-3 text-base"
-            disabled={uploading}
-          >
-            <Camera className="h-8 w-8" />
-            Fotografuoti
-          </Button>
-          
-          <Button
-            variant="outline"
-            onClick={() => fileInputRef.current?.click()}
-            className="h-32 flex flex-col gap-3 text-base"
-            disabled={uploading}
-          >
-            <Upload className="h-8 w-8" />
-            {uploading ? 'Įkeliama...' : 'Įkelti failą'}
-          </Button>
+      {/* Upload Options - Front Side */}
+      {!cameraActive && (
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-medium mb-4">Pažymėjimo priekis</h3>
+            {!frontImageUrl ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {cameraSupported && (
+                  <Button
+                    variant="outline"
+                    onClick={() => startCamera('front')}
+                    className="h-32 flex flex-col gap-3 text-base"
+                    disabled={uploading}
+                  >
+                    <Camera className="h-8 w-8" />
+                    Fotografuoti priekį
+                  </Button>
+                )}
+                
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setUploadingSide('front');
+                    fileInputRef.current?.click();
+                  }}
+                  className="h-32 flex flex-col gap-3 text-base"
+                  disabled={uploading}
+                >
+                  <Upload className="h-8 w-8" />
+                  {uploading && uploadingSide === 'front' ? 'Įkeliama...' : 'Įkelti priekio failą'}
+                </Button>
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-base font-medium">Priekis įkeltas</h4>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setPreviewSide('front');
+                          setShowPreview(true);
+                        }}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => removeUpload('front')}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="w-full h-40 bg-muted rounded-lg flex items-center justify-center border-2">
+                    <img
+                      src={frontImageUrl}
+                      alt="Vairuotojo pažymėjimo priekis"
+                      className="max-w-full max-h-full object-contain rounded"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Pažymėjimo galas</h3>
+            {!backImageUrl ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {cameraSupported && (
+                  <Button
+                    variant="outline"
+                    onClick={() => startCamera('back')}
+                    className="h-32 flex flex-col gap-3 text-base"
+                    disabled={uploading}
+                  >
+                    <Camera className="h-8 w-8" />
+                    Fotografuoti galą
+                  </Button>
+                )}
+                
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setUploadingSide('back');
+                    fileInputRef.current?.click();
+                  }}
+                  className="h-32 flex flex-col gap-3 text-base"
+                  disabled={uploading}
+                >
+                  <Upload className="h-8 w-8" />
+                  {uploading && uploadingSide === 'back' ? 'Įkeliama...' : 'Įkelti galo failą'}
+                </Button>
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-base font-medium">Galas įkeltas</h4>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setPreviewSide('back');
+                          setShowPreview(true);
+                        }}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => removeUpload('back')}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="w-full h-40 bg-muted rounded-lg flex items-center justify-center border-2">
+                    <img
+                      src={backImageUrl}
+                      alt="Vairuotojo pažymėjimo galas"
+                      className="max-w-full max-h-full object-contain rounded"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Preview Section */}
-      {currentImageUrl && (
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-base font-medium">Vairuotojo pažymėjimas įkeltas</h4>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setShowPreview(true)}
-                >
-                  <Eye className="h-4 w-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={removeUpload}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            <div className="w-full h-40 bg-muted rounded-lg flex items-center justify-center border-2">
-              <img
-                src={currentImageUrl}
-                alt="Vairuotojo pažymėjimas"
-                className="max-w-full max-h-full object-contain rounded"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Hidden file input */}
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
-        onChange={handleFileSelect}
+        accept="image/*,image/heic,image/heif"
+        capture="environment"
+        onChange={(e) => handleFileSelect(e, uploadingSide)}
         className="hidden"
       />
 
@@ -218,12 +349,14 @@ export function DriverLicenseUpload({ onUpload, uploadedUrl }: DriverLicenseUplo
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
         <DialogContent className="max-w-4xl bg-background border">
           <DialogHeader>
-            <DialogTitle>Vairuotojo pažymėjimo peržiūra</DialogTitle>
+            <DialogTitle>
+              Vairuotojo pažymėjimo peržiūra - {previewSide === 'front' ? 'Priekis' : 'Galas'}
+            </DialogTitle>
           </DialogHeader>
           <div className="flex justify-center">
             <img
-              src={currentImageUrl}
-              alt="Vairuotojo pažymėjimo peržiūra"
+              src={previewSide === 'front' ? frontImageUrl : backImageUrl}
+              alt={`Vairuotojo pažymėjimo ${previewSide === 'front' ? 'priekis' : 'galas'}`}
               className="max-w-full max-h-[70vh] object-contain"
             />
           </div>
