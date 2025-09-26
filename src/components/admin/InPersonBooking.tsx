@@ -94,7 +94,7 @@ export function InPersonBooking() {
     dailyRate: 0
   });
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card_reader'>('cash');
-  const [driverLicenseUrl, setDriverLicenseUrl] = useState<string>('');
+  const [driverLicenseUrls, setDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
   const [contractSigned, setContractSigned] = useState(false);
   const [signatureData, setSignatureData] = useState<string>('');
   const [notes, setNotes] = useState('');
@@ -135,8 +135,8 @@ export function InPersonBooking() {
       }
       setStep('documents');
     } else if (step === 'documents') {
-      if (!driverLicenseUrl || !contractSigned) {
-        toast.error('Prašome įkelti vairuotojo pažymėjimą ir pasirašyti sutartį');
+      if (!driverLicenseUrls.front || !contractSigned) {
+        toast.error('Prašome įkelti vairuotojo pažymėjimo priekį ir pasirašyti sutartį');
         return;
       }
       setStep('payment');
@@ -180,7 +180,8 @@ export function InPersonBooking() {
           status: 'confirmed',
           payment_method: paymentMethod,
           payment_completed_at: new Date().toISOString(),
-          driver_license_url: driverLicenseUrl,
+          driver_license_url: driverLicenseUrls.front || null,
+          driver_license_back_url: driverLicenseUrls.back || null,
           contract_signed_at: new Date().toISOString(),
           notes: notes
         })
@@ -226,7 +227,7 @@ export function InPersonBooking() {
     setStep('details');
     setCustomer({ firstName: '', lastName: '', email: '', phone: '' });
     setBooking({ carId: '', carName: '', startDate: null, endDate: null, dailyRate: 0 });
-    setDriverLicenseUrl('');
+    setDriverLicenseUrls({});
     setContractSigned(false);
     setSignatureData('');
     setNotes('');
@@ -473,8 +474,8 @@ export function InPersonBooking() {
               </CardHeader>
               <CardContent>
                 <DriverLicenseUpload
-                  onUpload={(url) => setDriverLicenseUrl(url)}
-                  uploadedUrl={driverLicenseUrl}
+                  onUpload={(urls) => setDriverLicenseUrls(urls)}
+                  uploadedUrls={driverLicenseUrls}
                 />
               </CardContent>
             </Card>

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
+import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -37,8 +38,17 @@ const Cars = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [pendingCarId, setPendingCarId] = useState<string | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
   useEffect(() => {
+    // Check if user has already accepted terms in this session
+    const hasAcceptedTerms = localStorage.getItem('carbonus_terms_accepted');
+    if (hasAcceptedTerms === 'true') {
+      setTermsAccepted(true);
+    }
+
     // Set page title and meta tags
     document.title = "Automobiliai - Carbonus | BMW, Audi ir kiti premium automobiliai nuomai";
     
@@ -65,6 +75,31 @@ const Cars = () => {
       ogUrl.setAttribute('content', 'https://carbonus.lt/automobiliai');
     }
   }, []);
+
+  const handleCarSelect = (carId: string) => {
+    if (termsAccepted) {
+      navigate(`/automobiliai/${carId}`);
+    } else {
+      setPendingCarId(carId);
+      setShowTermsModal(true);
+    }
+  };
+
+  const handleTermsAccept = () => {
+    setTermsAccepted(true);
+    localStorage.setItem('carbonus_terms_accepted', 'true');
+    setShowTermsModal(false);
+    
+    if (pendingCarId) {
+      navigate(`/automobiliai/${pendingCarId}`);
+      setPendingCarId(null);
+    }
+  };
+
+  const handleTermsDecline = () => {
+    setShowTermsModal(false);
+    setPendingCarId(null);
+  };
 
   const cars: Car[] = [
     {
@@ -288,7 +323,7 @@ const Cars = () => {
                       </div>
                       <Button 
                         className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                        onClick={() => navigate(`/automobiliai/${car.id}`)}
+                        onClick={() => handleCarSelect(car.id)}
                       >
                         Žiūrėti
                       </Button>
@@ -310,6 +345,13 @@ const Cars = () => {
       </section>
 
       <Footer />
+
+      {/* Terms Acceptance Modal */}
+      <TermsAcceptanceModal
+        isOpen={showTermsModal}
+        onAccept={handleTermsAccept}
+        onDecline={handleTermsDecline}
+      />
     </div>
   );
 };

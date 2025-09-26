@@ -317,6 +317,7 @@ export type Database = {
           customer_id: string
           daily_rate: number
           deposit_amount: number
+          driver_license_back_url: string | null
           driver_license_url: string | null
           end_date: string
           id: string
@@ -342,6 +343,7 @@ export type Database = {
           customer_id: string
           daily_rate: number
           deposit_amount?: number
+          driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date: string
           id?: string
@@ -367,6 +369,7 @@ export type Database = {
           customer_id?: string
           daily_rate?: number
           deposit_amount?: number
+          driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date?: string
           id?: string
