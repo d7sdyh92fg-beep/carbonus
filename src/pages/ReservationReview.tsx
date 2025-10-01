@@ -464,94 +464,65 @@ export default function ReservationReview() {
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-24">
-              <h3 className="font-semibold text-lg mb-4">Užsakymo santrauka</h3>
+              <h3 className="font-semibold text-lg mb-4">Jūsų užsakymas</h3>
               
-              {/* Car & Dates with Image */}
-              
-              <div className="space-y-3 mb-4">
-                <div>
-                  <p className="font-medium text-lg">{bookingData.carName}</p>
-                  
-                  {/* Pickup and Return with Car Image */}
-                  <div className="mt-3 flex items-start gap-3">
-                    {bookingData.carImage && (
-                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                        <img 
-                          src={bookingData.carImage} 
-                          alt={bookingData.carName}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <p className="text-sm text-muted-foreground">
-                        <span className="font-medium">Paėmimas:</span><br />
-                        {format(new Date(bookingData.startDate), 'MMM d, yyyy', { locale: lt })}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        <span className="font-medium">Grąžinimas:</span><br />
-                        {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        <span className="font-medium">Trukmė:</span> {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
-                      </p>
-                    </div>
-                  </div>
+              {/* Car Image */}
+              {bookingData.carImage && (
+                <div className="mb-4 rounded-lg overflow-hidden">
+                  <img 
+                    src={bookingData.carImage} 
+                    alt={bookingData.carName}
+                    className="w-full h-auto object-cover"
+                  />
                 </div>
+              )}
+              
+              <div className="space-y-1 mb-4">
+                <p className="font-medium text-base">{bookingData.carName}</p>
+                <p className="text-sm text-muted-foreground">
+                  {format(new Date(bookingData.startDate), 'MMM d', { locale: lt })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
+                </p>
               </div>
 
               <Separator className="my-4" />
 
-              <div className="flex justify-between font-bold text-lg mb-2">
-                <span>Iš viso</span>
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span>Nuomos kaina</span>
+                  <span>{bookingData.basePrice.toFixed(2)} €</span>
+                </div>
+                
+                {servicesTotal > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span>Papildomos paslaugos</span>
+                    <span>{servicesTotal.toFixed(2)} €</span>
+                  </div>
+                )}
+              </div>
+
+              <Separator className="my-4" />
+
+              <div className="flex justify-between font-bold text-lg mb-6">
+                <span>Viso</span>
                 <span className="text-primary">{totalPrice.toFixed(2)} €</span>
               </div>
 
-              <div className="mb-4">
-                <button
-                  type="button"
-                  className="text-sm text-primary underline cursor-pointer"
-                  onClick={() => {
-                    const details = document.getElementById('price-details');
-                    if (details) details.classList.toggle('hidden');
-                  }}
-                >
-                  Kainos informacija
-                </button>
-                <div id="price-details" className="hidden mt-2 text-xs text-muted-foreground space-y-1">
-                  <p className="font-medium mb-1">Kainoje įskaičiuota:</p>
-                  <ul className="list-disc list-inside space-y-1">
-                    <li>Nuomos kaina: {bookingData.basePrice.toFixed(2)} €</li>
-                    {insuranceTotal > 0 && (
-                      <li>Draudimas: {insuranceTotal.toFixed(2)} €</li>
-                    )}
-                    {bookingData.services.map(service => {
-                      const price = service.unit === 'perDay' 
-                        ? service.price * bookingData.rentalDays 
-                        : service.price;
-                      return (
-                        <li key={service.id}>{service.title}: {price.toFixed(2)} €</li>
-                      );
-                    })}
-                  </ul>
+              {/* Additional Information */}
+              <div className="space-y-4">
+                <div className="bg-muted/30 p-3 rounded-md">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="font-medium">Užstatas (grąžinamas)</span>
+                    <span className="font-medium">{depositAmount.toFixed(2)} €</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Papildomas 200€ užstatas bus įtrauktas ir grąžintas per kelias dienas po transporto priemonės grąžinimo.
+                  </p>
                 </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div className="bg-muted/30 p-3 rounded-md">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium">Užstatas (grąžinamas)</span>
-                  <span className="font-medium">{depositAmount.toFixed(2)} €</span>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Papildomas 200€ užstatas bus įtrauktas ir grąžintas per kelias dienas po transporto priemonės grąžinimo.
-                </p>
-              </div>
-              
-              {paymentMethod === 'pay_at_counter' && (
-                <>
-                  <Separator className="my-4" />
+                
+                {paymentMethod === 'pay_at_counter' && (
                   <div className="bg-primary/5 border border-primary/20 p-4 rounded-md space-y-3">
                     <p className="text-sm font-semibold text-primary">Mokėjimas vietoje</p>
                     
@@ -575,8 +546,8 @@ export default function ReservationReview() {
                       Rezervacijos mokestis užskaitomas kaip 1 dienos nuoma ir atimamas iš pilnos sumos
                     </p>
                   </div>
-                </>
-              )}
+                )}
+              </div>
             </Card>
           </div>
         </div>

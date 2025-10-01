@@ -212,16 +212,14 @@ export default function ReservationServices() {
                 </div>
               )}
               
-              <div className="space-y-3 mb-4">
-                <div>
-                  <p className="font-medium">{bookingData.carName}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {format(new Date(bookingData.startDate), 'MMM d', { locale: lt })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
-                  </p>
-                </div>
+              <div className="space-y-1 mb-4">
+                <p className="font-medium text-base">{bookingData.carName}</p>
+                <p className="text-sm text-muted-foreground">
+                  {format(new Date(bookingData.startDate), 'MMM d', { locale: lt })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
+                </p>
               </div>
 
               <Separator className="my-4" />
@@ -232,15 +230,6 @@ export default function ReservationServices() {
                   <span>{bookingData.basePrice.toFixed(2)} €</span>
                 </div>
                 
-                {bookingData.insurance && bookingData.insurance.pricePerDay > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span>Draudimas</span>
-                    <span>
-                      {(bookingData.insurance.pricePerDay * bookingData.rentalDays).toFixed(2)} €
-                    </span>
-                  </div>
-                )}
-
                 {servicesTotal > 0 && (
                   <div className="flex justify-between text-sm">
                     <span>Papildomos paslaugos</span>
