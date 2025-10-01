@@ -1030,7 +1030,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                           <div className="w-full max-w-full overflow-hidden [&_.rdp-caption]:text-xs [&_.rdp-nav_button]:h-6 [&_.rdp-nav_button]:w-6">
                             <Calendar
                               mode="multiple"
-                              selected={blockedDates}
+                              selected={selectedBlockDates}
                               onSelect={setSelectedBlockDates}
                               className="rounded-md border-0 pointer-events-auto w-full max-w-full"
                               disabled={(date) => {
