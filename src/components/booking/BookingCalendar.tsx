@@ -14,9 +14,10 @@ import { useToast } from "@/hooks/use-toast";
 interface BookingCalendarProps {
   carId: string;
   carName: string;
+  carImage?: string;
 }
 
-const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => {
+const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage }) => {
   const navigate = useNavigate();
   const { setBookingData } = useBooking();
   const { toast } = useToast();
@@ -135,10 +136,11 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
       return;
     }
 
-    // Set booking data and navigate to insurance selection
+    // Set booking data and navigate to services
     setBookingData({
       carId,
       carName,
+      carImage,
       startDate: selectedRange.from.toISOString().split('T')[0],
       endDate: selectedRange.to.toISOString().split('T')[0],
       rentalDays: getDaysCount(),
@@ -263,13 +265,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">Užstatas (grąžinamas):</span>
-                  <span className="font-semibold">€300</span>
+                  <span className="font-semibold">€200</span>
                 </div>
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between items-center text-lg">
                     <span className="font-semibold">Bendra suma:</span>
-                    <span className="text-2xl font-bold text-primary">€{getTotalPrice() + 300}</span>
+                    <span className="text-2xl font-bold text-primary">€{getTotalPrice() + 200}</span>
                   </div>
                 </div>
               </div>
@@ -279,12 +281,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 size="lg"
               >
-                Užsakyti už €{getTotalPrice() + 300}
+                Užsakyti už €{getTotalPrice() + 200}
               </Button>
               
               <div className="text-xs text-muted-foreground text-center">
-                <p>* Užstatas €300 grąžinamas po automobilio grąžinimo</p>
-                <p>* Bendra mokėtina suma: €{getTotalPrice() + 300}</p>
+                <p>* Užstatas €200 grąžinamas po automobilio grąžinimo</p>
+                <p>* Bendra mokėtina suma: €{getTotalPrice() + 200}</p>
               </div>
             </>
           )}

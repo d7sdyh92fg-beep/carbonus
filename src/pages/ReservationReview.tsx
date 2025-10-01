@@ -172,7 +172,7 @@ export default function ReservationReview() {
         rental_days: bookingData.rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
-        deposit_amount: 300,
+        deposit_amount: 200,
         total_amount: paymentAmount,
         status: paymentMethod === 'in_person' ? 'confirmed' : 'awaiting_payment',
         payment_method: paymentMethod,
@@ -241,7 +241,7 @@ export default function ReservationReview() {
     return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
   }, 0);
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
-  const depositAmount = 300;
+  const depositAmount = 200;
   const paymentAmount = paymentMethod === 'in_person' ? bookingData.basePrice / bookingData.rentalDays : totalPrice;
 
   return (
@@ -464,6 +464,17 @@ export default function ReservationReview() {
             <Card className="p-6 sticky top-24">
               <h3 className="font-semibold text-lg mb-4">Užsakymo santrauka</h3>
               
+              {/* Car Image */}
+              {bookingData.carImage && (
+                <div className="mb-4 rounded-lg overflow-hidden">
+                  <img 
+                    src={bookingData.carImage} 
+                    alt={bookingData.carName}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              )}
+              
               {/* Car & Dates */}
               
               <div className="space-y-3 mb-4">
@@ -562,21 +573,36 @@ export default function ReservationReview() {
                 >
                   Kainos informacija
                 </button>
-                <div id="price-details" className="hidden mt-2 text-xs text-muted-foreground">
-                  Grąžinamas užstatas: Papildomas 200€ užstatas bus įtrauktas ir grąžintas per kelias dienas po transporto priemonės grąžinimo.
+                <div id="price-details" className="hidden mt-2 text-xs text-muted-foreground space-y-1">
+                  <p className="font-medium mb-1">Kainoje įskaičiuota:</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Nuomos kaina: {bookingData.basePrice.toFixed(2)} €</li>
+                    {insuranceTotal > 0 && (
+                      <li>Draudimas: {insuranceTotal.toFixed(2)} €</li>
+                    )}
+                    {bookingData.services.map(service => {
+                      const price = service.unit === 'perDay' 
+                        ? service.price * bookingData.rentalDays 
+                        : service.price;
+                      return (
+                        <li key={service.id}>{service.title}: {price.toFixed(2)} €</li>
+                      );
+                    })}
+                  </ul>
                 </div>
               </div>
 
               <Separator className="my-4" />
 
-              <div className="flex justify-between text-sm mb-2">
-                <span>Užstatas (grąžinamas)</span>
-                <span className="font-medium">{depositAmount.toFixed(2)} €</span>
+              <div className="bg-muted/30 p-3 rounded-md">
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="font-medium">Užstatas (grąžinamas)</span>
+                  <span className="font-medium">{depositAmount.toFixed(2)} €</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Papildomas 200€ užstatas bus įtrauktas ir grąžintas per kelias dienas po transporto priemonės grąžinimo.
+                </p>
               </div>
-
-              <p className="text-xs text-muted-foreground">
-                * Užstatas grąžinamas po automobilio grąžinimo
-              </p>
               
               {paymentMethod === 'in_person' && (
                 <>

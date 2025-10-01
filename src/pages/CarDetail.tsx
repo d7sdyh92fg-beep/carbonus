@@ -470,7 +470,7 @@ const CarDetail = () => {
               Pasirinkite datas ir pamatykite tikslią kainą
             </p>
           </div>
-          <BookingCalendar carId={car.id} carName={car.name} />
+          <BookingCalendar carId={car.id} carName={car.name} carImage={car.image} />
         </div>
       </section>
 

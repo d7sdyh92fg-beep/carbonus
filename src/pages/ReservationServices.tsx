@@ -201,6 +201,17 @@ export default function ReservationServices() {
             <Card className="p-6 sticky top-24">
               <h3 className="font-semibold text-lg mb-4">Jūsų užsakymas</h3>
               
+              {/* Car Image */}
+              {bookingData.carImage && (
+                <div className="mb-4 rounded-lg overflow-hidden">
+                  <img 
+                    src={bookingData.carImage} 
+                    alt={bookingData.carName}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              )}
+              
               <div className="space-y-3 mb-4">
                 <div>
                   <p className="font-medium">{bookingData.carName}</p>

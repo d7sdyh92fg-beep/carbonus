@@ -20,6 +20,7 @@ export interface AdditionalService {
 export interface BookingData {
   carId: string;
   carName: string;
+  carImage?: string;
   startDate: string;
   endDate: string;
   rentalDays: number;
