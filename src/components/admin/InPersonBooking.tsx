@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Calendar } from '@/components/ui/calendar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
@@ -22,6 +23,14 @@ interface Customer {
   lastName: string;
   email: string;
   phone: string;
+  refundAccount: string;
+  isCorporate: boolean;
+  companyName: string;
+  companyCode: string;
+  vatCode: string;
+  representativeName: string;
+  representativePhone: string;
+  representativeEmail: string;
 }
 
 interface BookingDetails {
@@ -84,7 +93,15 @@ export function InPersonBooking() {
     firstName: '',
     lastName: '',
     email: '',
-    phone: ''
+    phone: '',
+    refundAccount: '',
+    isCorporate: false,
+    companyName: '',
+    companyCode: '',
+    vatCode: '',
+    representativeName: '',
+    representativePhone: '',
+    representativeEmail: '',
   });
   const [booking, setBooking] = useState<BookingDetails>({
     carId: '',
@@ -99,14 +116,43 @@ export function InPersonBooking() {
   const [signatureData, setSignatureData] = useState<string>('');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+  const [useCustomPricing, setUseCustomPricing] = useState(false);
+  const [customRentalPrice, setCustomRentalPrice] = useState<string>('');
+  const [customDeposit, setCustomDeposit] = useState<string>('300');
+  const [pricingNotes, setPricingNotes] = useState('');
 
   const calculateTotal = () => {
     if (!booking.startDate || !booking.endDate) return 0;
+    
+    if (useCustomPricing) {
+      const rental = parseFloat(customRentalPrice) || 0;
+      const deposit = parseFloat(customDeposit) || 0;
+      return rental + deposit;
+    }
+    
     const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
     const dailyRate = getDailyRate(days);
     const rentalCost = days * dailyRate;
     const deposit = 300;
     return rentalCost + deposit;
+  };
+  
+  const getRentalCost = () => {
+    if (!booking.startDate || !booking.endDate) return 0;
+    
+    if (useCustomPricing) {
+      return parseFloat(customRentalPrice) || 0;
+    }
+    
+    const days = getRentalDays();
+    return days * getDailyRate(days);
+  };
+  
+  const getDepositAmount = () => {
+    if (useCustomPricing) {
+      return parseFloat(customDeposit) || 0;
+    }
+    return 300;
   };
 
   const getRentalDays = () => {
@@ -159,11 +205,26 @@ export function InPersonBooking() {
 
       if (customerError) throw customerError;
 
+      // Update customer with additional info
+      await supabase
+        .from('customers')
+        .update({
+          refund_account_number: customer.refundAccount || null,
+          is_corporate: customer.isCorporate,
+          company_name: customer.isCorporate ? customer.companyName : null,
+          company_code: customer.isCorporate ? customer.companyCode : null,
+          vat_code: customer.isCorporate ? customer.vatCode : null,
+          representative_name: customer.isCorporate ? customer.representativeName : null,
+          representative_phone: customer.isCorporate ? customer.representativePhone : null,
+          representative_email: customer.isCorporate ? customer.representativeEmail : null,
+        })
+        .eq('id', customerData);
+
       // Create reservation
       const rentalDays = getRentalDays();
-      const dailyRate = getDailyRate(rentalDays);
-      const rentalCost = rentalDays * dailyRate;
-      const totalAmount = rentalCost + 300; // 300 EUR deposit
+      const rentalCost = getRentalCost();
+      const depositAmount = getDepositAmount();
+      const totalAmount = rentalCost + depositAmount;
 
       const { data: reservation, error: reservationError } = await supabase
         .from('reservations')
@@ -174,8 +235,9 @@ export function InPersonBooking() {
           start_date: format(booking.startDate!, 'yyyy-MM-dd'),
           end_date: format(booking.endDate!, 'yyyy-MM-dd'),
           rental_days: rentalDays,
-          daily_rate: dailyRate,
+          daily_rate: useCustomPricing ? 0 : getDailyRate(rentalDays),
           total_rental_cost: rentalCost,
+          deposit_amount: depositAmount,
           total_amount: totalAmount,
           status: 'confirmed',
           payment_method: paymentMethod,
@@ -183,7 +245,10 @@ export function InPersonBooking() {
           driver_license_url: driverLicenseUrls.front || null,
           driver_license_back_url: driverLicenseUrls.back || null,
           contract_signed_at: new Date().toISOString(),
-          notes: notes
+          notes: notes,
+          custom_rental_price: useCustomPricing ? rentalCost : null,
+          custom_deposit_amount: useCustomPricing ? depositAmount : null,
+          pricing_notes: useCustomPricing ? pricingNotes : null,
         })
         .select()
         .single();
@@ -225,12 +290,29 @@ export function InPersonBooking() {
 
   const resetForm = () => {
     setStep('details');
-    setCustomer({ firstName: '', lastName: '', email: '', phone: '' });
+    setCustomer({ 
+      firstName: '', 
+      lastName: '', 
+      email: '', 
+      phone: '',
+      refundAccount: '',
+      isCorporate: false,
+      companyName: '',
+      companyCode: '',
+      vatCode: '',
+      representativeName: '',
+      representativePhone: '',
+      representativeEmail: '',
+    });
     setBooking({ carId: '', carName: '', startDate: null, endDate: null, dailyRate: 0 });
     setDriverLicenseUrls({});
     setContractSigned(false);
     setSignatureData('');
     setNotes('');
+    setUseCustomPricing(false);
+    setCustomRentalPrice('');
+    setCustomDeposit('300');
+    setPricingNotes('');
   };
 
   if (step === 'complete') {
@@ -344,6 +426,99 @@ export function InPersonBooking() {
                     placeholder="+370..."
                   />
                 </div>
+                <div>
+                  <Label htmlFor="refundAccount" className="text-sm sm:text-base">Sąskaitos numeris</Label>
+                  <Input
+                    id="refundAccount"
+                    value={customer.refundAccount}
+                    onChange={(e) => setCustomer(prev => ({ ...prev, refundAccount: e.target.value }))}
+                    className="h-10 sm:h-12 text-sm sm:text-base"
+                    placeholder="LT..."
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Užstato grąžinimui</p>
+                </div>
+                
+                <Separator className="my-4" />
+                
+                <div className="flex items-center space-x-2">
+                  <Checkbox 
+                    id="isCorporate" 
+                    checked={customer.isCorporate} 
+                    onCheckedChange={(checked) => setCustomer(prev => ({ ...prev, isCorporate: checked as boolean }))}
+                  />
+                  <Label htmlFor="isCorporate" className="cursor-pointer font-medium">
+                    Įmonės rezervacija
+                  </Label>
+                </div>
+                
+                {customer.isCorporate && (
+                  <div className="p-3 sm:p-4 border rounded-lg space-y-3 sm:space-y-4 bg-muted/30">
+                    <div>
+                      <Label htmlFor="companyName" className="text-sm sm:text-base">Įmonės pavadinimas *</Label>
+                      <Input
+                        id="companyName"
+                        value={customer.companyName}
+                        onChange={(e) => setCustomer(prev => ({ ...prev, companyName: e.target.value }))}
+                        required={customer.isCorporate}
+                        className="h-10 sm:h-12 text-sm sm:text-base"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div>
+                        <Label htmlFor="companyCode" className="text-sm sm:text-base">Įmonės kodas *</Label>
+                        <Input
+                          id="companyCode"
+                          value={customer.companyCode}
+                          onChange={(e) => setCustomer(prev => ({ ...prev, companyCode: e.target.value }))}
+                          required={customer.isCorporate}
+                          className="h-10 sm:h-12 text-sm sm:text-base"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="vatCode" className="text-sm sm:text-base">PVM mokėtojo kodas</Label>
+                        <Input
+                          id="vatCode"
+                          value={customer.vatCode}
+                          onChange={(e) => setCustomer(prev => ({ ...prev, vatCode: e.target.value }))}
+                          className="h-10 sm:h-12 text-sm sm:text-base"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="representativeName" className="text-sm sm:text-base">Atstovas *</Label>
+                      <Input
+                        id="representativeName"
+                        value={customer.representativeName}
+                        onChange={(e) => setCustomer(prev => ({ ...prev, representativeName: e.target.value }))}
+                        required={customer.isCorporate}
+                        className="h-10 sm:h-12 text-sm sm:text-base"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div>
+                        <Label htmlFor="representativePhone" className="text-sm sm:text-base">Atstovo tel. *</Label>
+                        <Input
+                          id="representativePhone"
+                          value={customer.representativePhone}
+                          onChange={(e) => setCustomer(prev => ({ ...prev, representativePhone: e.target.value }))}
+                          required={customer.isCorporate}
+                          className="h-10 sm:h-12 text-sm sm:text-base"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="representativeEmail" className="text-sm sm:text-base">Atstovo el. paštas *</Label>
+                        <Input
+                          id="representativeEmail"
+                          type="email"
+                          value={customer.representativeEmail}
+                          onChange={(e) => setCustomer(prev => ({ ...prev, representativeEmail: e.target.value }))}
+                          required={customer.isCorporate}
+                          className="h-10 sm:h-12 text-sm sm:text-base"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -444,11 +619,11 @@ export function InPersonBooking() {
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Nuomos kaina:</span>
-                          <span className="font-medium">€{getRentalDays() * getDailyRate(getRentalDays())}</span>
+                          <span className="font-medium">€{useCustomPricing ? customRentalPrice : getRentalCost()}</span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Užstatas:</span>
-                          <span className="font-medium">€300</span>
+                          <span className="font-medium">€{useCustomPricing ? customDeposit : 300}</span>
                         </div>
                         <Separator />
                         <div className="flex justify-between font-bold text-base sm:text-lg">
@@ -456,6 +631,74 @@ export function InPersonBooking() {
                           <span>€{calculateTotal()}</span>
                         </div>
                       </div>
+                    </div>
+                    
+                    {/* Custom Pricing Override */}
+                    <div className="p-4 border rounded-lg bg-amber-50 space-y-3">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox 
+                          id="useCustomPricing" 
+                          checked={useCustomPricing} 
+                          onCheckedChange={(checked) => {
+                            setUseCustomPricing(checked as boolean);
+                            if (!checked) {
+                              setCustomRentalPrice('');
+                              setCustomDeposit('300');
+                              setPricingNotes('');
+                            }
+                          }}
+                        />
+                        <Label htmlFor="useCustomPricing" className="cursor-pointer font-medium text-amber-900">
+                          Specialus kainodaros režimas
+                        </Label>
+                      </div>
+                      
+                      {useCustomPricing && (
+                        <div className="space-y-3 pl-6">
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label htmlFor="customRentalPrice" className="text-sm">Nuomos kaina (€) *</Label>
+                              <Input
+                                id="customRentalPrice"
+                                type="number"
+                                step="0.01"
+                                value={customRentalPrice}
+                                onChange={(e) => setCustomRentalPrice(e.target.value)}
+                                placeholder="0.00"
+                                className="h-10"
+                                required={useCustomPricing}
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="customDeposit" className="text-sm">Užstatas (€) *</Label>
+                              <Input
+                                id="customDeposit"
+                                type="number"
+                                step="0.01"
+                                value={customDeposit}
+                                onChange={(e) => setCustomDeposit(e.target.value)}
+                                placeholder="300.00"
+                                className="h-10"
+                                required={useCustomPricing}
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor="pricingNotes" className="text-sm">Pastabos *</Label>
+                            <Textarea
+                              id="pricingNotes"
+                              value={pricingNotes}
+                              onChange={(e) => setPricingNotes(e.target.value)}
+                              placeholder="Priežastis (nuolaida, VIP klientas, užstato atsisakyta ir kt.)"
+                              className="h-20"
+                              required={useCustomPricing}
+                            />
+                          </div>
+                          <p className="text-xs text-amber-700">
+                            Šis režimas leidžia pakeisti standartines kainas. Bus taikomos tik čia nurodytos sumos.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

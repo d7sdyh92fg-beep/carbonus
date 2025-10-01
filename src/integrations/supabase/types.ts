@@ -200,28 +200,52 @@ export type Database = {
       }
       customers: {
         Row: {
+          company_code: string | null
+          company_name: string | null
           created_at: string
           email: string
           first_name: string
           id: string
+          is_corporate: boolean | null
           last_name: string
           phone: string
+          refund_account_number: string | null
+          representative_email: string | null
+          representative_name: string | null
+          representative_phone: string | null
+          vat_code: string | null
         }
         Insert: {
+          company_code?: string | null
+          company_name?: string | null
           created_at?: string
           email: string
           first_name: string
           id?: string
+          is_corporate?: boolean | null
           last_name: string
           phone: string
+          refund_account_number?: string | null
+          representative_email?: string | null
+          representative_name?: string | null
+          representative_phone?: string | null
+          vat_code?: string | null
         }
         Update: {
+          company_code?: string | null
+          company_name?: string | null
           created_at?: string
           email?: string
           first_name?: string
           id?: string
+          is_corporate?: boolean | null
           last_name?: string
           phone?: string
+          refund_account_number?: string | null
+          representative_email?: string | null
+          representative_name?: string | null
+          representative_phone?: string | null
+          vat_code?: string | null
         }
         Relationships: []
       }
@@ -314,8 +338,12 @@ export type Database = {
           contract_pdf_url: string | null
           contract_signed_at: string | null
           created_at: string
+          custom_deposit_amount: number | null
+          custom_rental_price: number | null
           customer_id: string
           daily_rate: number
+          deleted_at: string | null
+          deleted_by: string | null
           deposit_amount: number
           driver_license_back_url: string | null
           driver_license_url: string | null
@@ -326,6 +354,7 @@ export type Database = {
           payment_method: string | null
           payment_provider: string | null
           payment_transaction_id: string | null
+          pricing_notes: string | null
           rental_days: number
           start_date: string
           status: string
@@ -340,8 +369,12 @@ export type Database = {
           contract_pdf_url?: string | null
           contract_signed_at?: string | null
           created_at?: string
+          custom_deposit_amount?: number | null
+          custom_rental_price?: number | null
           customer_id: string
           daily_rate: number
+          deleted_at?: string | null
+          deleted_by?: string | null
           deposit_amount?: number
           driver_license_back_url?: string | null
           driver_license_url?: string | null
@@ -352,6 +385,7 @@ export type Database = {
           payment_method?: string | null
           payment_provider?: string | null
           payment_transaction_id?: string | null
+          pricing_notes?: string | null
           rental_days: number
           start_date: string
           status?: string
@@ -366,8 +400,12 @@ export type Database = {
           contract_pdf_url?: string | null
           contract_signed_at?: string | null
           created_at?: string
+          custom_deposit_amount?: number | null
+          custom_rental_price?: number | null
           customer_id?: string
           daily_rate?: number
+          deleted_at?: string | null
+          deleted_by?: string | null
           deposit_amount?: number
           driver_license_back_url?: string | null
           driver_license_url?: string | null
@@ -378,6 +416,7 @@ export type Database = {
           payment_method?: string | null
           payment_provider?: string | null
           payment_transaction_id?: string | null
+          pricing_notes?: string | null
           rental_days?: number
           start_date?: string
           status?: string

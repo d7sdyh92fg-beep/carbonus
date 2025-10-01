@@ -39,6 +39,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
     lastName: "",
     email: "",
     phone: "",
+    refundAccount: "",
+  });
+  const [isCorporate, setIsCorporate] = useState(false);
+  const [corporateData, setCorporateData] = useState({
+    companyName: "",
+    companyCode: "",
+    vatCode: "",
+    representativeName: "",
+    representativePhone: "",
+    representativeEmail: "",
   });
   const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"pay_now" | "pay_at_counter">("pay_now");
@@ -101,6 +111,24 @@ const BookingForm: React.FC<BookingFormProps> = ({
       if (existingCustomer) {
         customerId = existingCustomer.id;
         console.log("Found existing customer:", customerId);
+        
+        // Update customer with new data including corporate info
+        await supabase
+          .from('customers')
+          .update({
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            phone: formData.phone,
+            refund_account_number: formData.refundAccount || null,
+            is_corporate: isCorporate,
+            company_name: isCorporate ? corporateData.companyName : null,
+            company_code: isCorporate ? corporateData.companyCode : null,
+            vat_code: isCorporate ? corporateData.vatCode : null,
+            representative_name: isCorporate ? corporateData.representativeName : null,
+            representative_phone: isCorporate ? corporateData.representativePhone : null,
+            representative_email: isCorporate ? corporateData.representativeEmail : null,
+          })
+          .eq('id', customerId);
       } else {
         console.log("Creating new customer...");
         const { data: newCustomer, error: customerError } = await supabase
@@ -110,6 +138,14 @@ const BookingForm: React.FC<BookingFormProps> = ({
             last_name: formData.lastName,
             email: formData.email,
             phone: formData.phone,
+            refund_account_number: formData.refundAccount || null,
+            is_corporate: isCorporate,
+            company_name: isCorporate ? corporateData.companyName : null,
+            company_code: isCorporate ? corporateData.companyCode : null,
+            vat_code: isCorporate ? corporateData.vatCode : null,
+            representative_name: isCorporate ? corporateData.representativeName : null,
+            representative_phone: isCorporate ? corporateData.representativePhone : null,
+            representative_email: isCorporate ? corporateData.representativeEmail : null,
           }])
           .select('id')
           .single();
@@ -434,8 +470,85 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </div>
         </div>
 
+        {/* Customer Type Selection */}
+        <div className="mb-6 p-4 border rounded-lg">
+          <div className="flex items-center space-x-2 mb-4">
+            <Checkbox 
+              id="isCorporate" 
+              checked={isCorporate} 
+              onCheckedChange={(checked) => setIsCorporate(checked as boolean)}
+            />
+            <Label htmlFor="isCorporate" className="cursor-pointer font-medium">
+              Įmonės rezervacija
+            </Label>
+          </div>
+        </div>
+
         {/* Contact Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {isCorporate && (
+            <div className="p-4 border rounded-lg space-y-4 bg-muted/30">
+              <h4 className="font-semibold">Įmonės duomenys</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="companyName">Įmonės pavadinimas *</Label>
+                  <Input
+                    id="companyName"
+                    value={corporateData.companyName}
+                    onChange={(e) => setCorporateData(prev => ({ ...prev, companyName: e.target.value }))}
+                    required={isCorporate}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="companyCode">Įmonės kodas *</Label>
+                  <Input
+                    id="companyCode"
+                    value={corporateData.companyCode}
+                    onChange={(e) => setCorporateData(prev => ({ ...prev, companyCode: e.target.value }))}
+                    required={isCorporate}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="vatCode">PVM mokėtojo kodas</Label>
+                  <Input
+                    id="vatCode"
+                    value={corporateData.vatCode}
+                    onChange={(e) => setCorporateData(prev => ({ ...prev, vatCode: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="representativeName">Atstovas *</Label>
+                  <Input
+                    id="representativeName"
+                    value={corporateData.representativeName}
+                    onChange={(e) => setCorporateData(prev => ({ ...prev, representativeName: e.target.value }))}
+                    required={isCorporate}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="representativePhone">Atstovo telefonas *</Label>
+                  <Input
+                    id="representativePhone"
+                    value={corporateData.representativePhone}
+                    onChange={(e) => setCorporateData(prev => ({ ...prev, representativePhone: e.target.value }))}
+                    required={isCorporate}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="representativeEmail">Atstovo el. paštas *</Label>
+                  <Input
+                    id="representativeEmail"
+                    type="email"
+                    value={corporateData.representativeEmail}
+                    onChange={(e) => setCorporateData(prev => ({ ...prev, representativeEmail: e.target.value }))}
+                    required={isCorporate}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <h4 className="font-semibold mt-6">Kontaktinė informacija</h4>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName">Vardas *</Label>
@@ -497,6 +610,20 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 required
               />
             </div>
+          </div>
+
+          <div>
+            <Label htmlFor="refundAccount">Sąskaitos numeris užstato grąžinimui</Label>
+            <Input
+              id="refundAccount"
+              name="refundAccount"
+              value={formData.refundAccount}
+              onChange={handleInputChange}
+              placeholder="LT..."
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Į šią sąskaitą bus grąžintas užstatas po automobilio grąžinimo
+            </p>
           </div>
 
           {/* Lease Agreement Checkbox */}
