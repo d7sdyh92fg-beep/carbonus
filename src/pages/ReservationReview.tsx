@@ -464,78 +464,40 @@ export default function ReservationReview() {
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-24">
-              <div className="flex items-start justify-between gap-4 mb-4">
-                <h3 className="font-semibold text-lg">Užsakymo santrauka</h3>
-                
-                {/* Car Image - Top Right */}
-                {bookingData.carImage && (
-                  <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-                    <img 
-                      src={bookingData.carImage} 
-                      alt={bookingData.carName}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-              </div>
+              <h3 className="font-semibold text-lg mb-4">Užsakymo santrauka</h3>
               
-              {/* Car & Dates */}
+              {/* Car & Dates with Image */}
               
               <div className="space-y-3 mb-4">
                 <div>
                   <p className="font-medium text-lg">{bookingData.carName}</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    <span className="font-medium">Paėmimas:</span><br />
-                    {format(new Date(bookingData.startDate), 'MMM d, yyyy', { locale: lt })}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    <span className="font-medium">Grąžinimas:</span><br />
-                    {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    <span className="font-medium">Trukmė:</span> {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
-                  </p>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              {/* Additional Services - Detailed List */}
-              {bookingData.services.length > 0 && (
-                <>
-                  <div className="mb-4">
-                    <p className="font-medium text-sm mb-2">Papildomos paslaugos</p>
-                    <div className="space-y-2">
-                      {bookingData.services.map(service => {
-                        const price = service.unit === 'perDay' 
-                          ? service.price * bookingData.rentalDays 
-                          : service.price;
-                        return (
-                          <div key={service.id} className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">{service.title}</span>
-                            <span>{price.toFixed(2)} €</span>
-                          </div>
-                        );
-                      })}
+                  
+                  {/* Pickup and Return with Car Image */}
+                  <div className="mt-3 flex items-start gap-3">
+                    {bookingData.carImage && (
+                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                        <img 
+                          src={bookingData.carImage} 
+                          alt={bookingData.carName}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Paėmimas:</span><br />
+                        {format(new Date(bookingData.startDate), 'MMM d, yyyy', { locale: lt })}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        <span className="font-medium">Grąžinimas:</span><br />
+                        {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        <span className="font-medium">Trukmė:</span> {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
+                      </p>
                     </div>
                   </div>
-                  <Separator className="my-4" />
-                </>
-              )}
-
-              {/* Pricing Summary */}
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span>Nuomos kaina</span>
-                  <span>{bookingData.basePrice.toFixed(2)} €</span>
                 </div>
-                
-                {insuranceTotal > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span>Draudimas</span>
-                    <span>{insuranceTotal.toFixed(2)} €</span>
-                  </div>
-                )}
               </div>
 
               <Separator className="my-4" />
