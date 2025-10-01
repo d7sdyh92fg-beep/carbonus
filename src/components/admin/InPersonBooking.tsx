@@ -777,9 +777,33 @@ export function InPersonBooking() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="p-6 bg-muted rounded-lg border-2">
-              <div className="text-xl font-semibold mb-2">Bendra suma: €{calculateTotal()}</div>
-              <div className="text-base text-muted-foreground">
+              <div className="text-base text-muted-foreground mb-4">
                 {customer.firstName} {customer.lastName} • {booking.carName}
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between text-base">
+                  <span>Nuomos dienų:</span>
+                  <span className="font-medium">{getRentalDays()} d.</span>
+                </div>
+                {!useCustomPricing && (
+                  <div className="flex justify-between text-base">
+                    <span>Dienos kaina:</span>
+                    <span className="font-medium">€{getDailyRate(getRentalDays())}</span>
+                  </div>
+                )}
+                <div className="flex justify-between text-base">
+                  <span>Nuomos kaina:</span>
+                  <span className="font-medium">€{getRentalCost()}</span>
+                </div>
+                <div className="flex justify-between text-base">
+                  <span>Užstatas:</span>
+                  <span className="font-medium">€{getDepositAmount()}</span>
+                </div>
+                <Separator />
+                <div className="flex justify-between font-bold text-xl">
+                  <span>Iš viso:</span>
+                  <span>€{calculateTotal()}</span>
+                </div>
               </div>
             </div>
 
