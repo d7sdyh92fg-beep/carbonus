@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, Calculator, Clock } from "lucide-react";
-import { addDays, differenceInDays, format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import { lt } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
-import BookingForm from "./BookingForm";
-import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
+import { useBooking } from "@/contexts/BookingContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface BookingCalendarProps {
   carId: string;
@@ -16,13 +17,14 @@ interface BookingCalendarProps {
 }
 
 const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => {
+  const navigate = useNavigate();
+  const { setBookingData } = useBooking();
+  const { toast } = useToast();
   const [selectedRange, setSelectedRange] = useState<{
     from: Date | undefined;
     to: Date | undefined;
   }>({ from: undefined, to: undefined });
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
-  const [showBookingForm, setShowBookingForm] = useState(false);
-  const [showTermsModal, setShowTermsModal] = useState(false);
 
   // Fetch booked dates on component mount and set up real-time updates
   useEffect(() => {
@@ -124,53 +126,30 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
   };
 
   const handleBooking = () => {
-    if (selectedRange.from && selectedRange.to) {
-      setShowTermsModal(true);
+    if (!selectedRange.from || !selectedRange.to) {
+      toast({
+        title: "Klaida",
+        description: "Prašome pasirinkti nuomos datas",
+        variant: "destructive",
+      });
+      return;
     }
-  };
 
-  const handleTermsAccept = () => {
-    setShowTermsModal(false);
-    setShowBookingForm(true);
-  };
+    // Set booking data and navigate to insurance selection
+    setBookingData({
+      carId,
+      carName,
+      startDate: selectedRange.from.toISOString().split('T')[0],
+      endDate: selectedRange.to.toISOString().split('T')[0],
+      rentalDays: getDaysCount(),
+      basePrice: getTotalPrice(),
+      services: [],
+    });
 
-  const handleTermsDecline = () => {
-    setShowTermsModal(false);
+    navigate(`/rezervacija/${carId}/atsakomybe`);
   };
-
-  const handleBookingSuccess = () => {
-    setShowBookingForm(false);
-    setSelectedRange({ from: undefined, to: undefined });
-    fetchBookedDates(); // Refresh booked dates
-  };
-
-  const handleCancelBooking = () => {
-    setShowBookingForm(false);
-  };
-
-  if (showBookingForm && selectedRange.from && selectedRange.to) {
-    return (
-      <BookingForm
-        carId={carId}
-        carName={carName}
-        startDate={selectedRange.from}
-        endDate={selectedRange.to}
-        totalAmount={getTotalPrice()}
-        rentalDays={getDaysCount()}
-        dailyRate={calculatePrice(getDaysCount(), false)}
-        onBookingSuccess={handleBookingSuccess}
-        onCancel={handleCancelBooking}
-      />
-    );
-  }
 
   return (
-    <>
-      <TermsAcceptanceModal
-        isOpen={showTermsModal}
-        onAccept={handleTermsAccept}
-        onDecline={handleTermsDecline}
-      />
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Calendar */}
       <Card>
@@ -319,7 +298,6 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
         </CardContent>
       </Card>
     </div>
-    </>
   );
 };
 
