@@ -1024,14 +1024,14 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <div className="border rounded-lg p-3">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                      <div className="w-full">
+                        <div className="border rounded-lg p-2 sm:p-3 w-full overflow-x-auto">
                           <Calendar
                             mode="multiple"
                             selected={blockedDates}
                             onSelect={setSelectedBlockDates}
-                            className="rounded-md border-0"
+                            className="rounded-md border-0 pointer-events-auto mx-auto w-full"
                             disabled={(date) => {
                               const today = new Date();
                               today.setHours(0, 0, 0, 0);
@@ -1048,13 +1048,13 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                           />
                         </div>
                         <div className="mt-2 text-xs text-muted-foreground">
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2 sm:gap-4">
                             <div className="flex items-center gap-1">
-                              <div className="w-3 h-3 bg-red-500 rounded"></div>
+                              <div className="w-3 h-3 bg-red-500 rounded shrink-0"></div>
                               <span>Blokuota</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <div className="w-3 h-3 bg-amber-500 rounded"></div>
+                              <div className="w-3 h-3 bg-amber-500 rounded shrink-0"></div>
                               <span>Rezervuota</span>
                             </div>
                           </div>
@@ -1064,22 +1064,24 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       <div className="space-y-4">
                         {selectedBlockDates && selectedBlockDates.length > 0 && (
                           <div>
-                            <Label htmlFor="block-reason">Blokavimo priežastis</Label>
+                            <Label htmlFor="block-reason" className="text-sm">Blokavimo priežastis</Label>
                             <Textarea
                               id="block-reason"
                               placeholder="Pvz., Remontas, Aptarnavimas, Kita..."
                               value={blockReason}
                               onChange={(e) => setBlockReason(e.target.value)}
                               rows={3}
+                              className="text-sm"
                             />
                           </div>
                         )}
                         
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <Button 
                             onClick={blockSelectedDates}
                             disabled={!selectedBlockDates || selectedBlockDates.length === 0}
                             size="sm"
+                            className="w-full sm:w-auto text-xs sm:text-sm"
                           >
                             Blokuoti pasirinktas datas
                           </Button>
@@ -1088,6 +1090,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                             onClick={unblockSelectedDates}
                             disabled={!selectedBlockDates || selectedBlockDates.length === 0}
                             size="sm"
+                            className="w-full sm:w-auto text-xs sm:text-sm"
                           >
                             Atblokuoti
                           </Button>
@@ -1095,18 +1098,19 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
                         {blockedDates.length > 0 && (
                           <div className="mt-4">
-                            <h4 className="font-medium mb-2">Blokuotos datos:</h4>
+                            <h4 className="font-medium mb-2 text-sm">Blokuotos datos:</h4>
                             <div className="space-y-1 max-h-32 overflow-y-auto">
                               {blockedDatesData.map((blocked) => (
-                                <div key={blocked.id} className="flex items-center justify-between p-2 bg-muted rounded text-sm">
-                                  <div>
-                                    <span className="font-medium">{format(new Date(blocked.blocked_date), 'PPP', { locale: lt })}</span>
-                                    {blocked.reason && <p className="text-xs text-muted-foreground">{blocked.reason}</p>}
+                                <div key={blocked.id} className="flex items-center justify-between p-2 bg-muted rounded text-xs sm:text-sm">
+                                  <div className="flex-1 min-w-0">
+                                    <span className="font-medium block truncate">{format(new Date(blocked.blocked_date), 'PPP', { locale: lt })}</span>
+                                    {blocked.reason && <p className="text-xs text-muted-foreground truncate">{blocked.reason}</p>}
                                   </div>
                                   <Button
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => removeBlockedDate(blocked.id)}
+                                    className="shrink-0"
                                   >
                                     <X className="w-3 h-3" />
                                   </Button>
@@ -1120,33 +1124,33 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   </CardContent>
                 </Card>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-lg">Realaus laiko statistikos</CardTitle>
+                      <CardTitle className="text-base sm:text-lg">Realaus laiko statistikos</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex justify-between">
+                    <CardContent className="space-y-3 sm:space-y-4">
+                      <div className="flex justify-between text-sm">
                         <span>Visos rezervacijos:</span>
                         <Badge variant="outline">{reservations.length}</Badge>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between text-sm">
                         <span>Aktyvios rezervacijos:</span>
                         <Badge variant="default">
                           {reservations.filter(r => r.status === 'confirmed').length}
                         </Badge>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between text-sm">
                         <span>Laukiančios patvirtinimo:</span>
                         <Badge variant="secondary">
                           {reservations.filter(r => r.status === 'requested').length}
                         </Badge>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between text-sm">
                         <span>Užimtų dienų:</span>
                         <Badge variant="outline">{bookedDates.length}</Badge>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between text-sm">
                         <span>Blokuotų dienų:</span>
                         <Badge variant="destructive">{blockedDates.length}</Badge>
                       </div>
@@ -1155,16 +1159,16 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-lg">Aptarnavimo priminimas</CardTitle>
+                      <CardTitle className="text-base sm:text-lg">Aptarnavimo priminimas</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-3 sm:space-y-4">
                       {carDetails.next_service_date && (
                         <div className="p-3 border rounded-lg">
                           <div className="flex items-center gap-2 mb-2">
-                            <AlertTriangle className="w-4 h-4 text-amber-500" />
-                            <span className="font-medium">Artėja aptarnavimas</span>
+                            <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
+                            <span className="font-medium text-sm">Artėja aptarnavimas</span>
                           </div>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-xs sm:text-sm text-muted-foreground">
                             Planuojama: {format(new Date(carDetails.next_service_date), 'PPP', { locale: lt })}
                           </p>
                         </div>
@@ -1173,10 +1177,10 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       {carDetails.current_mileage && carDetails.service_interval_km && (
                         <div className="p-3 border rounded-lg">
                           <div className="flex items-center gap-2 mb-2">
-                            <Gauge className="w-4 h-4 text-blue-500" />
-                            <span className="font-medium">Ridos kontrolė</span>
+                            <Gauge className="w-4 h-4 text-blue-500 shrink-0" />
+                            <span className="font-medium text-sm">Ridos kontrolė</span>
                           </div>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-xs sm:text-sm text-muted-foreground">
                             Iki kito aptarnavimo: {Math.max(0, (Math.ceil(carDetails.current_mileage / carDetails.service_interval_km) * carDetails.service_interval_km) - carDetails.current_mileage).toLocaleString()} km
                           </p>
                         </div>
