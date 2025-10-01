@@ -22,97 +22,6 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
   const [previewSide, setPreviewSide] = useState<'front' | 'back'>('front');
   const [uploadingSide, setUploadingSide] = useState<'front' | 'back'>('front');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const cameraCaptureInputRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [cameraActive, setCameraActive] = useState(false);
-  const [cameraSupported, setCameraSupported] = useState(true);
-  const [deviceInfo] = useState(() => detectDevice());
-
-  useEffect(() => {
-    // Cleanup camera on unmount
-    return () => {
-      stopCamera();
-    };
-  }, []);
-
-  const startCamera = async (side: 'front' | 'back') => {
-    try {
-      setUploadingSide(side);
-      
-      // Get device-specific camera constraints
-      const constraints = getCameraConstraints(deviceInfo);
-
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-          setCameraActive(true);
-        }
-      } catch (constraintError) {
-        // If specific constraints fail, try with basic constraints
-        if (constraintError instanceof Error && constraintError.name === 'OverconstrainedError') {
-          console.log('Trying with fallback constraints...');
-          const fallbackConstraints: MediaStreamConstraints = {
-            video: { facingMode: 'environment' }
-          };
-          
-          const stream = await navigator.mediaDevices.getUserMedia(fallbackConstraints);
-          
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            await videoRef.current.play();
-            setCameraActive(true);
-          }
-        } else {
-          throw constraintError;
-        }
-      }
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-      // Fallback: open native camera picker if direct camera is blocked (e.g., iframe / Permissions-Policy)
-      toast.info('Atidaromas kameros pasirinkiklis...');
-      cameraCaptureInputRef.current?.click();
-
-      if (error instanceof Error) {
-        const errorMessage = getDeviceSpecificErrorMessage(error, deviceInfo);
-        console.debug('Camera error:', errorMessage);
-      }
-    }
-  };
-
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-      setCameraActive(false);
-    }
-  };
-
-  const capturePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-      
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(video, 0, 0);
-        
-        canvas.toBlob(async (blob) => {
-          if (blob) {
-            await uploadFile(blob, uploadingSide);
-            stopCamera();
-          }
-        }, 'image/jpeg', 0.9);
-      }
-    }
-  };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>, side: 'front' | 'back') => {
     const file = event.target.files?.[0];
@@ -220,51 +129,34 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
 
   return (
     <div className="space-y-6">
-      {/* Camera Section */}
-      {cameraActive && (
-        <Card>
-          <CardContent className="p-6">
-            <div className="relative">
-              <video
-                ref={videoRef}
-                className="w-full max-w-md mx-auto rounded-lg"
-                autoPlay
-                muted
-                playsInline
-              />
-              <div className="flex justify-center gap-4 mt-6">
-                <Button onClick={capturePhoto} disabled={uploading} size="lg">
-                  {uploading ? 'Įkeliama...' : 'Fotografuoti'}
-                </Button>
-                <Button variant="outline" onClick={stopCamera} size="lg">
-                  Atšaukti
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Upload Options - Front Side */}
-      {!cameraActive && (
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium mb-4">Pažymėjimo priekis</h3>
+      <div>
+        <h3 className="text-lg font-medium mb-4">Pažymėjimo priekis</h3>
             {!frontImageUrl ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {cameraSupported && (
-                  <Button
-                    variant="outline"
-                    onClick={() => startCamera('front')}
-                    className="h-32 flex flex-col gap-3 text-base"
-                    disabled={uploading}
-                  >
-                    <Camera className="h-8 w-8" />
-                    Fotografuoti priekį
-                  </Button>
-                )}
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setUploadingSide('front');
+                    fileInputRef.current?.click();
+                  }}
+                  className="h-32 flex flex-col gap-3 text-base"
+                  disabled={uploading || processing}
+                >
+                  {(uploading || processing) && uploadingSide === 'front' ? (
+                    <>
+                      <Loader2 className="h-8 w-8 animate-spin" />
+                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="h-8 w-8" />
+                      Fotografuoti priekį
+                    </>
+                  )}
+                </Button>
                 
-                 <Button
+                <Button
                   variant="outline"
                   onClick={() => {
                     setUploadingSide('front');
@@ -323,21 +215,31 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
             )}
           </div>
 
-          <div>
-            <h3 className="text-lg font-medium mb-4">Pažymėjimo galas</h3>
+      <div>
+        <h3 className="text-lg font-medium mb-4">Pažymėjimo galas</h3>
             {!backImageUrl ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {cameraSupported && (
-                  <Button
-                    variant="outline"
-                    onClick={() => startCamera('back')}
-                    className="h-32 flex flex-col gap-3 text-base"
-                    disabled={uploading}
-                  >
-                    <Camera className="h-8 w-8" />
-                    Fotografuoti galą
-                  </Button>
-                )}
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setUploadingSide('back');
+                    fileInputRef.current?.click();
+                  }}
+                  className="h-32 flex flex-col gap-3 text-base"
+                  disabled={uploading || processing}
+                >
+                  {(uploading || processing) && uploadingSide === 'back' ? (
+                    <>
+                      <Loader2 className="h-8 w-8 animate-spin" />
+                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="h-8 w-8" />
+                      Fotografuoti galą
+                    </>
+                  )}
+                </Button>
                 
                 <Button
                   variant="outline"
@@ -397,31 +299,16 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
               </Card>
             )}
           </div>
-        </div>
-      )}
 
-
-      {/* Hidden file inputs */}
-      {/* Gallery / Photos picker */}
+      {/* Hidden file input with camera capture */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*,image/heic,image/heif"
-        onChange={(e) => handleFileSelect(e, uploadingSide)}
-        className="hidden"
-      />
-      {/* Native camera picker fallback (used when getUserMedia is blocked) */}
-      <input
-        ref={cameraCaptureInputRef}
-        type="file"
-        accept="image/*"
         capture="environment"
         onChange={(e) => handleFileSelect(e, uploadingSide)}
         className="hidden"
       />
-
-      {/* Hidden canvas for photo capture */}
-      <canvas ref={canvasRef} className="hidden" />
 
       {/* Preview Dialog */}
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
