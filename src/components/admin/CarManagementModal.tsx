@@ -1026,29 +1026,31 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       <div className="w-full">
-                        <div className="border rounded-lg p-2 sm:p-3 w-full overflow-x-auto">
-                          <Calendar
-                            mode="multiple"
-                            selected={blockedDates}
-                            onSelect={setSelectedBlockDates}
-                            className="rounded-md border-0 pointer-events-auto mx-auto w-full"
-                            disabled={(date) => {
-                              const today = new Date();
-                              today.setHours(0, 0, 0, 0);
-                              return date < today;
-                            }}
-                            modifiers={{
-                              blocked: blockedDates,
-                              booked: bookedDates.map(d => new Date(d))
-                            }}
-                            modifiersStyles={{
-                              blocked: { backgroundColor: '#ef4444', color: 'white' },
-                              booked: { backgroundColor: '#f59e0b', color: 'white' }
-                            }}
-                          />
+                        <div className="border rounded-lg p-2 w-full">
+                          <div className="w-full max-w-full overflow-hidden">
+                            <Calendar
+                              mode="multiple"
+                              selected={blockedDates}
+                              onSelect={setSelectedBlockDates}
+                              className="rounded-md border-0 pointer-events-auto w-full max-w-full scale-90 sm:scale-100 origin-top-left"
+                              disabled={(date) => {
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                return date < today;
+                              }}
+                              modifiers={{
+                                blocked: blockedDates,
+                                booked: bookedDates.map(d => new Date(d))
+                              }}
+                              modifiersStyles={{
+                                blocked: { backgroundColor: '#ef4444', color: 'white' },
+                                booked: { backgroundColor: '#f59e0b', color: 'white' }
+                              }}
+                            />
+                          </div>
                         </div>
                         <div className="mt-2 text-xs text-muted-foreground">
-                          <div className="flex items-center gap-2 sm:gap-4">
+                          <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                             <div className="flex items-center gap-1">
                               <div className="w-3 h-3 bg-red-500 rounded shrink-0"></div>
                               <span>Blokuota</span>
