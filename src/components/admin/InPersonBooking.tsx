@@ -431,17 +431,6 @@ export function InPersonBooking() {
                     placeholder="+370..."
                   />
                 </div>
-                <div>
-                  <Label htmlFor="refundAccount" className="text-sm sm:text-base">Sąskaitos numeris</Label>
-                  <Input
-                    id="refundAccount"
-                    value={customer.refundAccount}
-                    onChange={(e) => setCustomer(prev => ({ ...prev, refundAccount: e.target.value }))}
-                    className="h-10 sm:h-12 text-sm sm:text-base"
-                    placeholder="LT..."
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">Užstato grąžinimui</p>
-                </div>
                 
                 <Separator className="my-4" />
                 

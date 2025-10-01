@@ -407,7 +407,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
                   <p className="text-sm font-medium">Pasirinkite mokėjimo būdą:</p>
                   <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
-                    <div className="flex items-center space-x-2">
+                    <div className="hidden flex items-center space-x-2">
                       <RadioGroupItem value="paysera" id="paysera" />
                       <Label htmlFor="paysera" className="cursor-pointer">
                         <span className="font-medium">Lietuvos bankai</span>
@@ -434,7 +434,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
                   <p className="text-sm font-medium">Išankstinio mokėjimo būdas:</p>
                   <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
-                    <div className="flex items-center space-x-2">
+                    <div className="hidden flex items-center space-x-2">
                       <RadioGroupItem value="paysera" id="paysera_advance" />
                       <Label htmlFor="paysera_advance" className="cursor-pointer">
                         <span className="font-medium">Lietuvos bankai</span>
