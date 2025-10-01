@@ -16,11 +16,11 @@ const PaymentCanceled: React.FC = () => {
     const updateReservationStatus = async () => {
       if (reservationId) {
         try {
-          // Update reservation status to canceled
+          // Update reservation status to awaiting_payment (not canceled, allow retry)
           await supabase
             .from('reservations')
             .update({ 
-              status: 'canceled',
+              status: 'awaiting_payment',
               payment_provider: provider || 'unknown'
             })
             .eq('id', reservationId);
@@ -74,10 +74,18 @@ const PaymentCanceled: React.FC = () => {
               Grįžti į pradžią
             </Button>
             <Button
-              onClick={() => navigate('/cars')}
+              onClick={() => {
+                // If we have a reservation ID, navigate to cars with that reservation
+                // to allow re-attempting payment
+                if (reservationId) {
+                  navigate(`/cars?retry_reservation=${reservationId}`);
+                } else {
+                  navigate('/cars');
+                }
+              }}
               className="flex-1"
             >
-              Bandyti dar kartą
+              Bandyti mokėti dar kartą
             </Button>
           </div>
         </CardContent>

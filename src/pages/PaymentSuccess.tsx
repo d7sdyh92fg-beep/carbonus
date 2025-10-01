@@ -16,6 +16,9 @@ const PaymentSuccess: React.FC = () => {
   const reservationIdParam = searchParams.get('reservation_id'); // Paysera
 
   useEffect(() => {
+    let retryCount = 0;
+    const maxRetries = 10;
+
     const verifyPayment = async () => {
       try {
         if (provider === 'stripe' && sessionId) {
@@ -38,12 +41,11 @@ const PaymentSuccess: React.FC = () => {
           }
         } else if (provider === 'paysera' && reservationIdParam) {
           // For Paysera, check reservation status in database
-          // The callback should have already updated the reservation
           const { data, error } = await supabase
             .from('reservations')
             .select('status, payment_completed_at')
             .eq('id', reservationIdParam)
-            .single();
+            .maybeSingle();
 
           if (error) {
             console.error('Paysera verification error:', error);
@@ -51,13 +53,22 @@ const PaymentSuccess: React.FC = () => {
             return;
           }
 
-          if (data.status === 'confirmed' && data.payment_completed_at) {
+          if (!data) {
+            setStatus('error');
+            return;
+          }
+
+          if (data.status === 'confirmed' || data.status === 'partial_payment') {
             setStatus('success');
             setReservationId(reservationIdParam);
-          } else {
+          } else if (data.status === 'payment_failed') {
+            setStatus('error');
+          } else if (retryCount < maxRetries) {
             setStatus('processing');
-            // Check again after a delay
+            retryCount++;
             setTimeout(verifyPayment, 3000);
+          } else {
+            setStatus('error');
           }
         } else {
           setStatus('error');

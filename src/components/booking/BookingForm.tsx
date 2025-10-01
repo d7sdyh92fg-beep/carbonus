@@ -162,7 +162,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       const normalizedCarId = carId || carName.toLowerCase().replace(/\s+/g, '-');
       console.log("Using carId:", normalizedCarId);
 
-      // Create reservation with "pending" status
+      // Create reservation with "awaiting_payment" status
       const reservationData = {
         customer_id: customerId,
         car_name: carName,
@@ -174,7 +174,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
         total_rental_cost: totalAmount,
         deposit_amount: depositAmount,
         total_amount: totalAmount + depositAmount,
-        status: 'pending'
+        status: 'awaiting_payment',
+        payment_method: paymentMethod
       };
 
       console.log("Creating reservation with data:", reservationData);

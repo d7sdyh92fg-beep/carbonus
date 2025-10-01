@@ -38,10 +38,103 @@ const getEmailContent = (data: StatusEmailRequest) => {
             <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
             <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
             <p><strong>Bendra suma:</strong> €${totalAmount}</p>
+            <p><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
+          </div>
+          
+          <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0;"><strong>📋 Kas toliau?</strong></p>
+            <p style="margin: 10px 0 0 0;">
+              • Prieš pasiėmimą su jumis susisieks mūsų darbuotojai<br>
+              • Pasiruoškite vairuotojo pažymėjimą ir asmens dokumentą<br>
+              • Automobilis bus paruoštas nurodytą dieną<br>
+              • Atšaukti galite iki 3 dienų prieš nuomos pradžią
+            </p>
           </div>
           
           <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>El. paštas: info@carbonus.lt<br>Telefonas: +370 123 45678</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
+          
+          <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+            Pagarbiai,<br>Carbonus komanda
+          </p>
+        </div>
+      `
+    },
+    partial_payment: {
+      subject: "Išankstinis mokėjimas gautas - Carbonus",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #22c55e;">Išankstinis mokėjimas gautas!</h1>
+          <p>Sveiki, ${customerName}!</p>
+          <p>Gavome jūsų išankstinį mokėjimą. Jūsų rezervacija patvirtinta!</p>
+          
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
+            <p><strong>Automobilis:</strong> ${carName}</p>
+            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p><strong>Bendra suma:</strong> €${totalAmount}</p>
+            <p><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
+          </div>
+          
+          <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+            <p style="margin: 0;"><strong>💰 Likusi suma</strong></p>
+            <p style="margin: 10px 0 0 0;">Likusi suma bus apmokėta pasiimant automobilį. Galėsite mokėti kortele arba grynaisiais.</p>
+          </div>
+          
+          <p>Jei turite klausimų, susisiekite su mumis:</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
+          
+          <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+            Pagarbiai,<br>Carbonus komanda
+          </p>
+        </div>
+      `
+    },
+    awaiting_payment: {
+      subject: "Užbaikite rezervaciją - Carbonus",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #3b82f6;">Laukiame jūsų mokėjimo</h1>
+          <p>Sveiki, ${customerName}!</p>
+          <p>Jūsų rezervacija sukurta, bet laukiame mokėjimo patvirtinimo.</p>
+          
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
+            <p><strong>Automobilis:</strong> ${carName}</p>
+            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p><strong>Suma:</strong> €${totalAmount}</p>
+            <p><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
+          </div>
+          
+          <p>Jei įvyko mokėjimo klaida arba norite pakeisti mokėjimo būdą, susisiekite su mumis:</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
+          
+          <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+            Pagarbiai,<br>Carbonus komanda
+          </p>
+        </div>
+      `
+    },
+    payment_failed: {
+      subject: "Mokėjimo klaida - Carbonus",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #ef4444;">Mokėjimas nepavyko</h1>
+          <p>Sveiki, ${customerName}!</p>
+          <p>Deja, jūsų mokėjimas už rezervaciją nepavyko.</p>
+          
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
+            <p><strong>Automobilis:</strong> ${carName}</p>
+            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p><strong>Suma:</strong> €${totalAmount}</p>
+          </div>
+          
+          <p>Prašome susisiekti su mumis, kad galėtume padėti užbaigti rezervaciją:</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
