@@ -120,6 +120,7 @@ export function InPersonBooking() {
   const [customRentalPrice, setCustomRentalPrice] = useState<string>('');
   const [customDeposit, setCustomDeposit] = useState<string>('300');
   const [pricingNotes, setPricingNotes] = useState('');
+  const [isRetroactive, setIsRetroactive] = useState(false);
 
   const calculateTotal = () => {
     if (!booking.startDate || !booking.endDate) return 0;
@@ -313,6 +314,7 @@ export function InPersonBooking() {
     setCustomRentalPrice('');
     setCustomDeposit('300');
     setPricingNotes('');
+    setIsRetroactive(false);
   };
 
   if (step === 'complete') {
@@ -560,6 +562,30 @@ export function InPersonBooking() {
                 </div>
 
                 <div className="space-y-4 sm:space-y-6">
+                  {/* Retroactive Booking Toggle */}
+                  <div className="p-3 sm:p-4 border rounded-lg bg-amber-50 border-amber-200">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="isRetroactive" 
+                        checked={isRetroactive} 
+                        onCheckedChange={(checked) => {
+                          setIsRetroactive(checked as boolean);
+                          if (!checked) {
+                            setBooking(prev => ({ ...prev, startDate: null, endDate: null }));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="isRetroactive" className="cursor-pointer font-medium text-sm sm:text-base">
+                        Atgalinė rezervacija (leisti praeities datas)
+                      </Label>
+                    </div>
+                    {isRetroactive && (
+                      <p className="text-xs text-amber-700 mt-2">
+                        Įjungtas režimas praeities datoms. Galite sukurti rezervaciją už automobilio, kuris jau grąžintas.
+                      </p>
+                    )}
+                  </div>
+
                   <div>
                     <Label className="text-sm sm:text-base">Pradžios data *</Label>
                     <div className="mt-2">
@@ -567,7 +593,7 @@ export function InPersonBooking() {
                         mode="single"
                         selected={booking.startDate || undefined}
                         onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
-                        disabled={(date) => date < new Date()}
+                        disabled={isRetroactive ? undefined : (date) => date < new Date()}
                         locale={lt}
                         className="rounded-lg border-2 bg-card shadow-sm w-full"
                       />
