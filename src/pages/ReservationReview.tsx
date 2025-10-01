@@ -45,7 +45,7 @@ export default function ReservationReview() {
     // Scroll to top on page load
     window.scrollTo(0, 0);
     
-    if (!bookingData || !bookingData.insurance) {
+    if (!bookingData) {
       navigate('/automobiliai');
     }
   }, [bookingData, navigate]);
