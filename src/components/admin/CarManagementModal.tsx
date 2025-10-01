@@ -1027,12 +1027,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       <div className="w-full">
                         <div className="border rounded-lg p-2 w-full">
-                          <div className="w-full max-w-full overflow-hidden">
+                          <div className="w-full max-w-full overflow-hidden [&_.rdp-caption]:text-xs [&_.rdp-nav_button]:h-6 [&_.rdp-nav_button]:w-6">
                             <Calendar
                               mode="multiple"
                               selected={blockedDates}
                               onSelect={setSelectedBlockDates}
-                              className="rounded-md border-0 pointer-events-auto w-full max-w-full scale-90 sm:scale-100 origin-top-left"
+                              className="rounded-md border-0 pointer-events-auto w-full max-w-full"
                               disabled={(date) => {
                                 const today = new Date();
                                 today.setHours(0, 0, 0, 0);
