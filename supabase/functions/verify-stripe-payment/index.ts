@@ -44,7 +44,7 @@ serve(async (req) => {
       const { data, error } = await supabase
         .from('reservations')
         .update({ 
-          status: session.metadata?.paymentType === 'full' ? 'confirmed' : 'partial_payment',
+          status: session.metadata?.paymentType === 'full' ? 'confirmed' : 'awaiting_payment',
           stripe_payment_intent_id: session.payment_intent as string,
           updated_at: new Date().toISOString()
         })

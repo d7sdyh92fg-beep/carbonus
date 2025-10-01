@@ -72,11 +72,30 @@ serve(async (req) => {
     if (status === '1') { // Payment successful
       console.log('Payment successful, updating reservation:', reservationId);
       
+      // First, get the reservation to check payment amount
+      const { data: reservation, error: fetchError } = await supabase
+        .from('reservations')
+        .select('total_amount')
+        .eq('id', reservationId)
+        .single();
+
+      if (fetchError) {
+        console.error('Error fetching reservation:', fetchError);
+        return new Response('Database error', { status: 500 });
+      }
+
+      // Determine if this is full payment or advance payment
+      const paidAmount = parseFloat(amount || '0') / 100; // Convert cents to euros
+      const totalAmount = parseFloat(reservation.total_amount);
+      const isFull = Math.abs(paidAmount - totalAmount) < 1; // Allow 1 euro difference for rounding
+      
+      console.log('Payment comparison:', { paidAmount, totalAmount, isFull });
+      
       const { error } = await supabase
         .from('reservations')
         .update({
-          status: 'confirmed',
-          payment_completed_at: new Date().toISOString(),
+          status: isFull ? 'confirmed' : 'awaiting_payment',
+          payment_completed_at: isFull ? new Date().toISOString() : null,
           payment_transaction_id: reservationId,
           payment_provider: 'paysera'
         })

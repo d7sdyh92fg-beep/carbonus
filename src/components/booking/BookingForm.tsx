@@ -215,24 +215,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
       }
 
       // Process payment based on selected method
-      // TEMPORARY: Skip payment for testing - mark as confirmed immediately
-      await supabase
-        .from('reservations')
-        .update({ status: 'confirmed' })
-        .eq('id', reservation.id);
-
-      toast({
-        title: "Rezervacija patvirtinta!",
-        description: "Jūsų rezervacija sėkmingai užbaigta. Patvirtinimo laiškas išsiųstas į jūsų el. paštą.",
-      });
-      
-      setTimeout(() => {
-        onBookingSuccess();
-      }, 2000);
-      
-      return;
-      
-      /* PAYMENT TEMPORARILY DISABLED FOR TESTING
       if (paymentMethod === "pay_now") {
         const paymentAmount = totalAmount;
         if (paymentProvider === "stripe") {
@@ -252,7 +234,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
           return; // Exit here as Paysera will redirect
         }
       }
-      */
     } catch (error) {
       console.error("Booking error:", error);
       toast({
