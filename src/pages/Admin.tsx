@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp, FileText } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp, FileText, DollarSign } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarManagementModal from '@/components/admin/CarManagementModal';
@@ -64,6 +64,7 @@ import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import { InPersonBooking } from "@/components/admin/InPersonBooking";
 import { ReservationReview } from "@/components/admin/ReservationReview";
 import { RecycleBin } from "@/components/admin/RecycleBin";
+import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 
 interface Reservation {
   id: string;
@@ -72,7 +73,13 @@ interface Reservation {
   start_date: string;
   end_date: string;
   rental_days: number;
+  daily_rate: number;
+  total_rental_cost: number;
+  deposit_amount: number;
   total_amount: number;
+  custom_rental_price?: number;
+  custom_deposit_amount?: number;
+  pricing_notes?: string;
   status: string;
   created_at: string;
   driver_license_url?: string;
@@ -97,6 +104,8 @@ const Admin = () => {
   const [selectedCar, setSelectedCar] = useState<{id: string, name: string} | null>(null);
   const [showReservationReview, setShowReservationReview] = useState(false);
   const [reviewingReservation, setReviewingReservation] = useState<Reservation | null>(null);
+  const [showPricingOverride, setShowPricingOverride] = useState(false);
+  const [pricingReservation, setPricingReservation] = useState<Reservation | null>(null);
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
     title: string;
@@ -542,6 +551,11 @@ const Admin = () => {
     setShowReservationReview(true);
   };
 
+  const handlePricingOverride = (reservation: Reservation) => {
+    setPricingReservation(reservation);
+    setShowPricingOverride(true);
+  };
+
   const getStatusBadge = (status: string) => {
     const variants = {
       pending: 'secondary',
@@ -894,14 +908,14 @@ const Admin = () => {
                      <Table>
                        <TableHeader>
                          <TableRow>
-                           <TableHead>Klientas</TableHead>
-                           <TableHead>Automobilis</TableHead>
-                           <TableHead>Datos</TableHead>
-                           <TableHead>Dienų</TableHead>
-                           <TableHead>Suma</TableHead>
-                           <TableHead>Statusas</TableHead>
-                           <TableHead>Sukurta</TableHead>
-                           <TableHead>Veiksmai</TableHead>
+                            <TableHead>Klientas</TableHead>
+                            <TableHead>Automobilis</TableHead>
+                            <TableHead>Datos</TableHead>
+                            <TableHead>Dienų</TableHead>
+                            <TableHead>Suma / Kaina</TableHead>
+                            <TableHead>Statusas</TableHead>
+                            <TableHead>Sukurta</TableHead>
+                            <TableHead>Veiksmai</TableHead>
                          </TableRow>
                        </TableHeader>
                        <TableBody>
@@ -927,26 +941,48 @@ const Admin = () => {
                                  <div>{reservation.end_date}</div>
                                </div>
                              </TableCell>
-                             <TableCell>{reservation.rental_days}</TableCell>
-                             <TableCell>€{reservation.total_amount}</TableCell>
-                             <TableCell>{getStatusBadge(reservation.status)}</TableCell>
-                             <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
+                              <TableCell>{reservation.rental_days}</TableCell>
                               <TableCell>
-                                <div className="flex gap-2">
-                                  <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    onClick={() => handleReviewReservation(reservation)}
-                                  >
-                                    <FileText className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleEditReservation(reservation)}
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
+                                <div className="space-y-1">
+                                  <div className="font-semibold">€{reservation.total_amount}</div>
+                                  {(reservation as any).custom_rental_price && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      Individuali kaina
+                                    </Badge>
+                                  )}
+                                  {(reservation as any).pricing_notes && (
+                                    <div className="text-xs text-muted-foreground max-w-[150px] truncate">
+                                      {(reservation as any).pricing_notes}
+                                    </div>
+                                  )}
+                                </div>
+                              </TableCell>
+                              <TableCell>{getStatusBadge(reservation.status)}</TableCell>
+                             <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
+                               <TableCell>
+                                 <div className="flex gap-2 flex-wrap">
+                                   <Button
+                                     variant="secondary"
+                                     size="sm"
+                                     onClick={() => handleReviewReservation(reservation)}
+                                   >
+                                     <FileText className="h-4 w-4" />
+                                   </Button>
+                                   <Button
+                                     variant="outline"
+                                     size="sm"
+                                     onClick={() => handlePricingOverride(reservation)}
+                                     title="Nustatyti specialią kainą"
+                                   >
+                                     <DollarSign className="h-4 w-4" />
+                                   </Button>
+                                   <Button
+                                     variant="outline"
+                                     size="sm"
+                                     onClick={() => handleEditReservation(reservation)}
+                                   >
+                                     <Edit className="h-4 w-4" />
+                                   </Button>
                                   {reservation.status === 'requested' && (
                                     <>
                                       <Button
@@ -1016,10 +1052,17 @@ const Admin = () => {
                                <div className="text-muted-foreground">Automobilis</div>
                                <div className="font-medium">{reservation.car_name}</div>
                              </div>
-                             <div>
-                               <div className="text-muted-foreground">Suma</div>
-                               <div className="font-medium">€{reservation.total_amount}</div>
-                             </div>
+                              <div>
+                                <div className="text-muted-foreground">Suma</div>
+                                <div className="space-y-1">
+                                  <div className="font-medium">€{reservation.total_amount}</div>
+                                  {(reservation as any).custom_rental_price && (
+                                    <Badge variant="secondary" className="text-[10px]">
+                                      Spec. kaina
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
                              <div>
                                <div className="text-muted-foreground">Datos</div>
                                <div className="font-medium">
@@ -1032,25 +1075,35 @@ const Admin = () => {
                              </div>
                            </div>
                            
-                            <div className="flex flex-wrap gap-2 pt-2 border-t">
-                              <Button
-                                variant="secondary"
-                                size="sm"
-                                onClick={() => handleReviewReservation(reservation)}
-                                className="text-xs"
-                              >
-                                <FileText className="h-3 w-3 mr-1" />
-                                Peržiūrėti
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleEditReservation(reservation)}
-                                className="text-xs"
-                              >
-                                <Edit className="h-3 w-3 mr-1" />
-                                Redaguoti
-                              </Button>
+                             <div className="flex flex-wrap gap-2 pt-2 border-t">
+                               <Button
+                                 variant="secondary"
+                                 size="sm"
+                                 onClick={() => handleReviewReservation(reservation)}
+                                 className="text-xs"
+                               >
+                                 <FileText className="h-3 w-3 mr-1" />
+                                 Peržiūrėti
+                               </Button>
+                               <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() => handlePricingOverride(reservation)}
+                                 className="text-xs"
+                                 title="Nustatyti specialią kainą"
+                               >
+                                 <DollarSign className="h-3 w-3 mr-1" />
+                                 Kaina
+                               </Button>
+                               <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() => handleEditReservation(reservation)}
+                                 className="text-xs"
+                               >
+                                 <Edit className="h-3 w-3 mr-1" />
+                                 Redaguoti
+                               </Button>
                               {reservation.status === 'requested' && (
                                 <>
                                   <Button
@@ -1202,6 +1255,14 @@ const Admin = () => {
         reservation={reviewingReservation}
         isOpen={showReservationReview}
         onClose={() => setShowReservationReview(false)}
+        onUpdate={fetchReservations}
+      />
+
+      {/* Pricing Override Modal */}
+      <PricingOverrideModal
+        reservation={pricingReservation}
+        isOpen={showPricingOverride}
+        onClose={() => setShowPricingOverride(false)}
         onUpdate={fetchReservations}
       />
 
