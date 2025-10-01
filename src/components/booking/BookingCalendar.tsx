@@ -259,19 +259,19 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
               <div className="border-t pt-4 space-y-3">
                 <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Nuomos kaina:</span>
-                  <span className="font-semibold">€{getTotalPrice()}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Užstatas (grąžinamas):</span>
-                  <span className="font-semibold">€200</span>
-                </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Nuomos kaina:</span>
+                    <span className="font-semibold">€{getTotalPrice()}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Užstatas (grąžinamas):</span>
+                    <span className="font-semibold">€200</span>
+                  </div>
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between items-center text-lg">
                     <span className="font-semibold">Bendra suma:</span>
-                    <span className="text-2xl font-bold text-primary">€{getTotalPrice() + 200}</span>
+                    <span className="text-2xl font-bold text-primary">€{getTotalPrice()}</span>
                   </div>
                 </div>
               </div>
@@ -281,10 +281,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 size="lg"
               >
-                Užsakyti už €{getTotalPrice() + 200}
+                Užsakyti už €{getTotalPrice()}
               </Button>
               
-              <div className="text-xs text-muted-foreground text-center">
+              <div className="text-xs text-muted-foreground text-center space-y-1">
                 <p>* Užstatas €200 grąžinamas po automobilio grąžinimo</p>
                 <p>* Bendra mokėtina suma: €{getTotalPrice() + 200}</p>
               </div>
