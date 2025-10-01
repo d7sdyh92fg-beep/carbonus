@@ -438,34 +438,34 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Car className="h-5 w-5" />
-            {carName} - Automobilio valdymas
+          <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Car className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="truncate">{carName} - Automobilio valdymas</span>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-xs sm:text-sm">
             Išsami automobilio informacija, rezervacijos ir aptarnavimo valdymas.
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="calendar" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="calendar" className="flex items-center gap-2">
-              <CalendarIcon className="w-4 h-4" />
-              Kalendorius
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto gap-1">
+            <TabsTrigger value="calendar" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+              <CalendarIcon className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
+              <span className="truncate">Kalendorius</span>
             </TabsTrigger>
-            <TabsTrigger value="details" className="flex items-center gap-2">
-              <Car className="w-4 h-4" />
-              Automobilis
+            <TabsTrigger value="details" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+              <Car className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
+              <span className="truncate">Automobilis</span>
             </TabsTrigger>
-            <TabsTrigger value="service" className="flex items-center gap-2">
-              <Wrench className="w-4 h-4" />
-              Aptarnavimas
+            <TabsTrigger value="service" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+              <Wrench className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
+              <span className="truncate">Aptarnavimas</span>
             </TabsTrigger>
-            <TabsTrigger value="availability" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Prieinamumas
+            <TabsTrigger value="availability" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+              <Settings className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
+              <span className="truncate">Prieinamumas</span>
             </TabsTrigger>
           </TabsList>
 
