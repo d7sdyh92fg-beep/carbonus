@@ -20,7 +20,7 @@ export default function ReservationReview() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [agreementAccepted, setAgreementAccepted] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'online' | 'in_person'>('online');
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
   const [paymentProvider, setPaymentProvider] = useState<'stripe'>('stripe');
   
   const [formData, setFormData] = useState({
@@ -160,7 +160,7 @@ export default function ReservationReview() {
         return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
       }, 0);
       const totalAmount = bookingData.basePrice + insuranceTotal + servicesTotal;
-      const paymentAmount = paymentMethod === 'in_person' ? dailyRate : totalAmount;
+      const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalAmount;
 
       // Create reservation
       const reservationData = {
@@ -174,7 +174,7 @@ export default function ReservationReview() {
         total_rental_cost: totalAmount,
         deposit_amount: 200,
         total_amount: paymentAmount,
-        status: paymentMethod === 'in_person' ? 'confirmed' : 'awaiting_payment',
+        status: paymentMethod === 'pay_at_counter' ? 'confirmed' : 'awaiting_payment',
         payment_method: paymentMethod,
         payment_provider: paymentProvider,
         pricing_notes: JSON.stringify({
@@ -243,8 +243,8 @@ export default function ReservationReview() {
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
   const depositAmount = 200;
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
-  const paymentAmount = paymentMethod === 'in_person' ? dailyRate : totalPrice;
-  const remainingBalance = paymentMethod === 'in_person' ? totalPrice - dailyRate : 0;
+  const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
+  const remainingBalance = paymentMethod === 'pay_at_counter' ? totalPrice - dailyRate : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -263,7 +263,7 @@ export default function ReservationReview() {
             </Button>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">
-                {paymentMethod === 'in_person' ? 'Rezervacijos mokestis' : 'Viso mokėti'}
+                {paymentMethod === 'pay_at_counter' ? 'Rezervacijos mokestis' : 'Viso mokėti'}
               </p>
               <p className="text-2xl font-bold text-primary">
                 {paymentAmount.toFixed(2)} €
@@ -407,7 +407,7 @@ export default function ReservationReview() {
                   <CreditCard className="h-5 w-5" />
                   Mokėjimo būdas
                 </h3>
-                <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'online' | 'in_person')}>
+                <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'online' | 'pay_at_counter')}>
                   <div className="flex items-center space-x-2 mb-4">
                     <RadioGroupItem value="online" id="online" />
                     <Label htmlFor="online" className="cursor-pointer">
@@ -418,8 +418,8 @@ export default function ReservationReview() {
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="in_person" id="in_person" />
-                    <Label htmlFor="in_person" className="cursor-pointer">
+                    <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
+                    <Label htmlFor="pay_at_counter" className="cursor-pointer">
                       <span className="font-medium">Mokėjimas vietoje</span>
                       <span className="text-sm text-muted-foreground block">
                         Rezervacijos mokestis: {(bookingData.basePrice / bookingData.rentalDays).toFixed(2)} € (1 dienos kaina)
@@ -456,7 +456,7 @@ export default function ReservationReview() {
                 size="lg"
                 disabled={isSubmitting || !agreementAccepted}
               >
-                {isSubmitting ? 'Vykdoma...' : paymentMethod === 'in_person' ? `Rezervuoti (${paymentAmount.toFixed(2)} €)` : `Mokėti ${paymentAmount.toFixed(2)} €`}
+                {isSubmitting ? 'Vykdoma...' : paymentMethod === 'pay_at_counter' ? `Rezervuoti (${paymentAmount.toFixed(2)} €)` : `Mokėti ${paymentAmount.toFixed(2)} €`}
               </Button>
             </form>
           </div>
@@ -549,7 +549,7 @@ export default function ReservationReview() {
                 </p>
               </div>
               
-              {paymentMethod === 'in_person' && (
+              {paymentMethod === 'pay_at_counter' && (
                 <>
                   <Separator className="my-4" />
                   <div className="bg-primary/5 border border-primary/20 p-4 rounded-md space-y-3">
