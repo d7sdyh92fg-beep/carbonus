@@ -235,7 +235,7 @@ const Cars = () => {
                       alt={car.name}
                       className={`w-full h-48 transition-transform duration-300 ${
                         car.name === "Volkswagen Passat" 
-                          ? "object-contain object-center scale-[1.4] md:scale-[1.5] lg:scale-[1.55] -translate-y-2 group-hover:scale-[1.45] md:group-hover:scale-[1.55] lg:group-hover:scale-[1.6]" 
+                          ? "object-contain object-center scale-[1.15] md:scale-[1.25] lg:scale-[1.3] -translate-y-2 group-hover:scale-[1.2] md:group-hover:scale-[1.31] lg:group-hover:scale-[1.36]" 
                           : "object-cover group-hover:scale-105"
                       }`}
                     />
