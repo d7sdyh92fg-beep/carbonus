@@ -22,6 +22,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
   const [previewSide, setPreviewSide] = useState<'front' | 'back'>('front');
   const [uploadingSide, setUploadingSide] = useState<'front' | 'back'>('front');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraCaptureInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [cameraActive, setCameraActive] = useState(false);
@@ -71,13 +72,13 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
       }
     } catch (error) {
       console.error('Error accessing camera:', error);
-      setCameraSupported(false);
-      
+      // Fallback: open native camera picker if direct camera is blocked (e.g., iframe / Permissions-Policy)
+      toast.info('Atidaromas kameros pasirinkiklis...');
+      cameraCaptureInputRef.current?.click();
+
       if (error instanceof Error) {
         const errorMessage = getDeviceSpecificErrorMessage(error, deviceInfo);
-        toast.error(errorMessage);
-      } else {
-        toast.error('Nepavyko pasiekti kameros. Naudokite failų įkėlimą.');
+        console.debug('Camera error:', errorMessage);
       }
     }
   };
@@ -228,6 +229,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
                 ref={videoRef}
                 className="w-full max-w-md mx-auto rounded-lg"
                 autoPlay
+                muted
                 playsInline
               />
               <div className="flex justify-center gap-4 mt-6">
@@ -399,11 +401,21 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
       )}
 
 
-      {/* Hidden file input */}
+      {/* Hidden file inputs */}
+      {/* Gallery / Photos picker */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*,image/heic,image/heif"
+        onChange={(e) => handleFileSelect(e, uploadingSide)}
+        className="hidden"
+      />
+      {/* Native camera picker fallback (used when getUserMedia is blocked) */}
+      <input
+        ref={cameraCaptureInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
         onChange={(e) => handleFileSelect(e, uploadingSide)}
         className="hidden"
       />
