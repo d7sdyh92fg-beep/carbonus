@@ -146,7 +146,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
       services: [],
     });
 
-    navigate(`/rezervacija/${carId}/atsakomybe`);
+    navigate(`/rezervacija/${carId}/paslaugos`);
   };
 
   return (
