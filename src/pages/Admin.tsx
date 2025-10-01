@@ -330,6 +330,13 @@ const Admin = () => {
     if (!editingReservation) return;
 
     try {
+      // Get current reservation to check if status changed
+      const { data: currentReservation } = await supabase
+        .from('reservations')
+        .select('status, *, customers(*)')
+        .eq('id', editingReservation.id)
+        .single();
+
       const { error } = await supabase
         .from('reservations')
         .update({
@@ -340,6 +347,22 @@ const Admin = () => {
         .eq('id', editingReservation.id);
 
       if (error) throw error;
+
+      // Send email if status changed
+      if (currentReservation && currentReservation.status !== editingReservation.status) {
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: editingReservation.id,
+            customerEmail: currentReservation.customers.email,
+            customerName: `${currentReservation.customers.first_name} ${currentReservation.customers.last_name}`,
+            carName: editingReservation.car_name,
+            startDate: format(new Date(editingReservation.start_date), 'yyyy-MM-dd'),
+            endDate: format(new Date(editingReservation.end_date), 'yyyy-MM-dd'),
+            totalAmount: editingReservation.total_amount,
+            status: editingReservation.status
+          }
+        });
+      }
 
       toast({
         title: "Sėkmingai atnaujinta",
@@ -407,6 +430,13 @@ const Admin = () => {
 
   const denyReservation = async (id: string) => {
     try {
+      // Get reservation details for email
+      const { data: reservation } = await supabase
+        .from('reservations')
+        .select('*, customers(*)')
+        .eq('id', id)
+        .single();
+
       const { error } = await supabase
         .from('reservations')
         .update({ status: 'denied' })
@@ -414,9 +444,25 @@ const Admin = () => {
 
       if (error) throw error;
 
+      // Send denial email
+      if (reservation) {
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: reservation.id,
+            customerEmail: reservation.customers.email,
+            customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+            carName: reservation.car_name,
+            startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+            endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+            totalAmount: reservation.total_amount,
+            status: 'cancelled' // Using cancelled template for denied status
+          }
+        });
+      }
+
       toast({
         title: "Rezervacija atmesta",
-        description: "Rezervacija buvo atmesta.",
+        description: "Rezervacija buvo atmesta ir klientui išsiųstas pranešimas.",
       });
 
       fetchReservations();
