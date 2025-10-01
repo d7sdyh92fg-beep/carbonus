@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Camera, Upload, X, Eye } from 'lucide-react';
+import { Camera, Upload, X, Eye, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { detectDevice, getCameraConstraints, getDeviceSpecificErrorMessage } from '@/lib/deviceDetection';
+import { compressImage, convertHEICtoJPEG, shouldCompress } from '@/lib/imageProcessing';
 
 interface DriverLicenseUploadProps {
   onUpload: (urls: { front?: string; back?: string }) => void;
@@ -13,6 +15,7 @@ interface DriverLicenseUploadProps {
 
 export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUploadProps) {
   const [uploading, setUploading] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const [frontPreview, setFrontPreview] = useState<string | null>(null);
   const [backPreview, setBackPreview] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
@@ -23,11 +26,19 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraSupported, setCameraSupported] = useState(true);
+  const [deviceInfo] = useState(() => detectDevice());
+
+  useEffect(() => {
+    // Cleanup camera on unmount
+    return () => {
+      stopCamera();
+    };
+  }, []);
 
   const startCamera = async (side: 'front' | 'back') => {
     try {
       // Check if camera is supported
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      if (!deviceInfo.supportsCamera) {
         setCameraSupported(false);
         toast.error('Kamera nepalaikoma šiame įrenginyje. Naudokite failų įkėlimą.');
         return;
@@ -35,33 +46,45 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
 
       setUploadingSide(side);
       
-      const constraints = {
-        video: {
-          facingMode: { ideal: 'environment' }, // Use back camera on mobile
-          width: { ideal: 1920, min: 640 },
-          height: { ideal: 1080, min: 480 }
-        }
-      };
+      // Get device-specific camera constraints
+      const constraints = getCameraConstraints(deviceInfo);
 
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-        setCameraActive(true);
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          await videoRef.current.play();
+          setCameraActive(true);
+        }
+      } catch (constraintError) {
+        // If specific constraints fail, try with basic constraints
+        if (constraintError instanceof Error && constraintError.name === 'OverconstrainedError') {
+          console.log('Trying with fallback constraints...');
+          const fallbackConstraints: MediaStreamConstraints = {
+            video: { facingMode: 'environment' }
+          };
+          
+          const stream = await navigator.mediaDevices.getUserMedia(fallbackConstraints);
+          
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            await videoRef.current.play();
+            setCameraActive(true);
+          }
+        } else {
+          throw constraintError;
+        }
       }
     } catch (error) {
       console.error('Error accessing camera:', error);
       setCameraSupported(false);
       
       if (error instanceof Error) {
-        if (error.name === 'NotAllowedError') {
-          toast.error('Kameros prieiga atmesta. Suteikite leidimą naršyklės nustatymuose.');
-        } else if (error.name === 'NotFoundError') {
-          toast.error('Kamera nerasta. Naudokite failų įkėlimą.');
-        } else {
-          toast.error('Nepavyko pasiekti kameros. Naudokite failų įkėlimą.');
-        }
+        const errorMessage = getDeviceSpecificErrorMessage(error, deviceInfo);
+        toast.error(errorMessage);
+      } else {
+        toast.error('Nepavyko pasiekti kameros. Naudokite failų įkėlimą.');
       }
     }
   };
@@ -97,21 +120,47 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
     }
   };
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>, side: 'front' | 'back') => {
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>, side: 'front' | 'back') => {
     const file = event.target.files?.[0];
     if (!file) return;
     
     // Validate file type
-    if (!file.type.startsWith('image/')) {
+    const isImage = file.type.startsWith('image/') || 
+                    file.name.toLowerCase().endsWith('.heic') || 
+                    file.name.toLowerCase().endsWith('.heif');
+    
+    if (!isImage) {
       toast.error('Prašome pasirinkti nuotrauką (JPG, PNG, HEIC)');
       return;
     }
     
-    uploadFile(file, side);
+    setProcessing(true);
     
-    // Reset the input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+    try {
+      let processedFile: Blob = file;
+      
+      // Handle HEIC conversion
+      if (file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif')) {
+        toast.info('Konvertuojama HEIC nuotrauka...');
+        processedFile = await convertHEICtoJPEG(file);
+      }
+      
+      // Compress if needed
+      if (shouldCompress(processedFile, 3)) {
+        toast.info('Optimizuojama nuotrauka...');
+        processedFile = await compressImage(file, 3);
+      }
+      
+      await uploadFile(processedFile, side);
+    } catch (error) {
+      console.error('Error processing file:', error);
+      toast.error('Nepavyko apdoroti nuotraukos. Bandykite dar kartą.');
+    } finally {
+      setProcessing(false);
+      // Reset the input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -220,17 +269,26 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
                   </Button>
                 )}
                 
-                <Button
+                 <Button
                   variant="outline"
                   onClick={() => {
                     setUploadingSide('front');
                     fileInputRef.current?.click();
                   }}
                   className="h-32 flex flex-col gap-3 text-base"
-                  disabled={uploading}
+                  disabled={uploading || processing}
                 >
-                  <Upload className="h-8 w-8" />
-                  {uploading && uploadingSide === 'front' ? 'Įkeliama...' : 'Įkelti priekio failą'}
+                  {(uploading || processing) && uploadingSide === 'front' ? (
+                    <>
+                      <Loader2 className="h-8 w-8 animate-spin" />
+                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-8 w-8" />
+                      Įkelti priekio failą
+                    </>
+                  )}
                 </Button>
               </div>
             ) : (
@@ -293,10 +351,19 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
                     fileInputRef.current?.click();
                   }}
                   className="h-32 flex flex-col gap-3 text-base"
-                  disabled={uploading}
+                  disabled={uploading || processing}
                 >
-                  <Upload className="h-8 w-8" />
-                  {uploading && uploadingSide === 'back' ? 'Įkeliama...' : 'Įkelti galo failą'}
+                  {(uploading || processing) && uploadingSide === 'back' ? (
+                    <>
+                      <Loader2 className="h-8 w-8 animate-spin" />
+                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-8 w-8" />
+                      Įkelti galo failą
+                    </>
+                  )}
                 </Button>
               </div>
             ) : (
