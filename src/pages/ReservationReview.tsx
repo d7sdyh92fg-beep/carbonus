@@ -464,18 +464,20 @@ export default function ReservationReview() {
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-24">
-              <h3 className="font-semibold text-lg mb-4">Užsakymo santrauka</h3>
-              
-              {/* Car Image */}
-              {bookingData.carImage && (
-                <div className="mb-4 rounded-lg overflow-hidden">
-                  <img 
-                    src={bookingData.carImage} 
-                    alt={bookingData.carName}
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              )}
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <h3 className="font-semibold text-lg">Užsakymo santrauka</h3>
+                
+                {/* Car Image - Top Right */}
+                {bookingData.carImage && (
+                  <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+                    <img 
+                      src={bookingData.carImage} 
+                      alt={bookingData.carName}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+              </div>
               
               {/* Car & Dates */}
               
@@ -498,21 +500,7 @@ export default function ReservationReview() {
 
               <Separator className="my-4" />
 
-              {/* Insurance */}
-              {bookingData.insurance && (
-                <>
-                  <div className="mb-4">
-                    <p className="font-medium text-sm mb-2">Atsakomybė</p>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">{bookingData.insurance.title}</span>
-                      <span>{insuranceTotal.toFixed(2)} €</span>
-                    </div>
-                  </div>
-                  <Separator className="my-4" />
-                </>
-              )}
-
-              {/* Additional Services */}
+              {/* Additional Services - Detailed List */}
               {bookingData.services.length > 0 && (
                 <>
                   <div className="mb-4">
@@ -535,7 +523,7 @@ export default function ReservationReview() {
                 </>
               )}
 
-              {/* Pricing */}
+              {/* Pricing Summary */}
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
                   <span>Nuomos kaina</span>
@@ -546,13 +534,6 @@ export default function ReservationReview() {
                   <div className="flex justify-between text-sm">
                     <span>Draudimas</span>
                     <span>{insuranceTotal.toFixed(2)} €</span>
-                  </div>
-                )}
-
-                {servicesTotal > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span>Papildomos paslaugos</span>
-                    <span>{servicesTotal.toFixed(2)} €</span>
                   </div>
                 )}
               </div>
