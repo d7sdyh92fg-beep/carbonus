@@ -127,15 +127,13 @@ export function InPersonBooking() {
     
     if (useCustomPricing) {
       const rental = parseFloat(customRentalPrice) || 0;
-      const deposit = parseFloat(customDeposit) || 0;
-      return rental + deposit;
+      return rental;
     }
     
     const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
     const dailyRate = getDailyRate(days);
     const rentalCost = days * dailyRate;
-    const deposit = 300;
-    return rentalCost + deposit;
+    return rentalCost;
   };
   
   const getRentalCost = () => {
@@ -150,10 +148,7 @@ export function InPersonBooking() {
   };
   
   const getDepositAmount = () => {
-    if (useCustomPricing) {
-      return parseFloat(customDeposit) || 0;
-    }
-    return 300;
+    return 0;
   };
 
   const getRentalDays = () => {
@@ -227,8 +222,8 @@ export function InPersonBooking() {
       // Create reservation
       const rentalDays = getRentalDays();
       const rentalCost = getRentalCost();
-      const depositAmount = getDepositAmount();
-      const totalAmount = rentalCost + depositAmount;
+      const depositAmount = 0;
+      const totalAmount = rentalCost;
 
       const { data: reservation, error: reservationError } = await supabase
         .from('reservations')
@@ -783,10 +778,6 @@ export function InPersonBooking() {
                 <div className="flex justify-between text-base">
                   <span>Nuomos kaina:</span>
                   <span className="font-medium">€{getRentalCost()}</span>
-                </div>
-                <div className="flex justify-between text-base">
-                  <span>Užstatas:</span>
-                  <span className="font-medium">€{getDepositAmount()}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold text-xl">

@@ -61,7 +61,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   };
 
   const advancePayment = calculateAdvancePayment();
-  const depositAmount = 300;
+  const depositAmount = 0;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -172,8 +172,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
         rental_days: rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
-        deposit_amount: depositAmount,
-        total_amount: totalAmount + depositAmount,
+        deposit_amount: 0,
+        total_amount: totalAmount,
         status: 'awaiting_payment',
         payment_method: paymentMethod
       };
@@ -215,8 +215,26 @@ const BookingForm: React.FC<BookingFormProps> = ({
       }
 
       // Process payment based on selected method
+      // TEMPORARY: Skip payment for testing - mark as confirmed immediately
+      await supabase
+        .from('reservations')
+        .update({ status: 'confirmed' })
+        .eq('id', reservation.id);
+
+      toast({
+        title: "Rezervacija patvirtinta!",
+        description: "Jūsų rezervacija sėkmingai užbaigta. Patvirtinimo laiškas išsiųstas į jūsų el. paštą.",
+      });
+      
+      setTimeout(() => {
+        onBookingSuccess();
+      }, 2000);
+      
+      return;
+      
+      /* PAYMENT TEMPORARILY DISABLED FOR TESTING
       if (paymentMethod === "pay_now") {
-        const paymentAmount = totalAmount + depositAmount;
+        const paymentAmount = totalAmount;
         if (paymentProvider === "stripe") {
           await processStripePayment(reservation.id, paymentAmount, 'full');
           return; // Exit here as Stripe will redirect
@@ -234,6 +252,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           return; // Exit here as Paysera will redirect
         }
       }
+      */
     } catch (error) {
       console.error("Booking error:", error);
       toast({
@@ -368,25 +387,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
               <span>Nuomos kaina:</span>
               <span className="font-medium">€{totalAmount}</span>
             </div>
-            <div className="flex justify-between">
-              <span>Užstatas:</span>
-              <span className="font-medium">€{depositAmount}</span>
-            </div>
-            {paymentMethod === "pay_at_counter" && (
-              <div className="flex justify-between text-blue-600">
-                <span>Mokėti dabar:</span>
-                <span className="font-medium">€{advancePayment}</span>
-              </div>
-            )}
             <div className="border-t pt-2 mt-2">
               <div className="flex justify-between font-semibold text-lg">
                 <span>Iš viso:</span>
-                <span>€{totalAmount + depositAmount}</span>
+                <span>€{totalAmount}</span>
               </div>
               {paymentMethod === "pay_at_counter" && (
                 <div className="flex justify-between text-sm text-muted-foreground mt-1">
                   <span>Mokėti vietoje:</span>
-                  <span>€{totalAmount + depositAmount - advancePayment}</span>
+                  <span>€{totalAmount - advancePayment}</span>
                 </div>
               )}
             </div>
@@ -611,20 +620,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 required
               />
             </div>
-          </div>
-
-          <div>
-            <Label htmlFor="refundAccount">Sąskaitos numeris užstato grąžinimui</Label>
-            <Input
-              id="refundAccount"
-              name="refundAccount"
-              value={formData.refundAccount}
-              onChange={handleInputChange}
-              placeholder="LT..."
-            />
-            <p className="text-xs text-muted-foreground mt-1">
-              Į šią sąskaitą bus grąžintas užstatas po automobilio grąžinimo
-            </p>
           </div>
 
           {/* Lease Agreement Checkbox */}

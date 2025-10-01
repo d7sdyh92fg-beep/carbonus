@@ -175,7 +175,6 @@ export function Footer() {
               <h4 className="font-semibold mb-3 text-primary">UAB „Carbonus"</h4>
               <div className="text-muted-foreground text-sm space-y-1">
                 <p>Įmonės kodas: 307196558</p>
-                <p>Adresas: Neravų g. 2A-6, Neravų k, LT-66412 Druskininkai</p>
                 <p>Telefonas: +370 6 98 18 781</p>
                 <p>El. paštas: info@carbonus.lt</p>
               </div>
