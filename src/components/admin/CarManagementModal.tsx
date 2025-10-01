@@ -1016,7 +1016,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Calendar className="w-5 h-5" />
+                      <CalendarIcon className="w-5 h-5" />
                       Blokuoti datos
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
