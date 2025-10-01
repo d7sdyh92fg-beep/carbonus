@@ -174,6 +174,9 @@ export function InPersonBooking() {
   };
 
   const handleNextStep = () => {
+    // Scroll to top when moving to next step
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     if (step === 'details') {
       if (!customer.firstName || !customer.lastName || !customer.email || !customer.phone || 
           !booking.carId || !booking.startDate || !booking.endDate) {
