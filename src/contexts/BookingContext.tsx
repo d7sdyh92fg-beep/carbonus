@@ -14,6 +14,7 @@ export interface AdditionalService {
   description: string;
   price: number;
   unit: 'perDay' | 'oneTime';
+  icon?: any;
 }
 
 export interface BookingData {

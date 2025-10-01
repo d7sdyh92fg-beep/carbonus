@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Plus, Package } from 'lucide-react';
+import { ChevronLeft, Plus, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
 import { useBooking, AdditionalService } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,13 +16,7 @@ const availableServices: AdditionalService[] = [
     description: 'Galimybė nuomoti automobilį su papildomu vairuotoju',
     price: 4.01,
     unit: 'perDay',
-  },
-  {
-    id: 'carplay',
-    title: 'Apple CarPlay / Android Auto',
-    description: 'Įrenginys telefono prijungimui prie automobilio sistemos',
-    price: 4.84,
-    unit: 'perDay',
+    icon: Users,
   },
   {
     id: 'abroad-zone3',
@@ -30,6 +24,7 @@ const availableServices: AdditionalService[] = [
     description: 'Rusija, Baltarusija, Ukraina, Moldavija',
     price: 500,
     unit: 'oneTime',
+    icon: Map,
   },
   {
     id: 'abroad-zone2',
@@ -37,6 +32,7 @@ const availableServices: AdditionalService[] = [
     description: 'Lenkija, Čekija, Slovakija, Vengrija, Rumunija',
     price: 300,
     unit: 'oneTime',
+    icon: Map,
   },
   {
     id: 'abroad-zone1',
@@ -44,6 +40,7 @@ const availableServices: AdditionalService[] = [
     description: 'Latvija, Estija',
     price: 150,
     unit: 'oneTime',
+    icon: Map,
   },
   {
     id: 'roadside-assistance',
@@ -51,6 +48,7 @@ const availableServices: AdditionalService[] = [
     description: 'Visą parą veikianti pagalba kelyje Lietuvoje',
     price: 15,
     unit: 'oneTime',
+    icon: Navigation,
   },
   {
     id: 'tire-glass-protection',
@@ -58,6 +56,7 @@ const availableServices: AdditionalService[] = [
     description: 'Papildoma apsauga padangoms ir stiklams',
     price: 5.5,
     unit: 'perDay',
+    icon: Shield,
   },
   {
     id: 'baby-seat',
@@ -65,6 +64,7 @@ const availableServices: AdditionalService[] = [
     description: 'Kūdikio kėdutė iki 13 kg svorio',
     price: 3,
     unit: 'perDay',
+    icon: Baby,
   },
   {
     id: 'child-seat',
@@ -72,6 +72,7 @@ const availableServices: AdditionalService[] = [
     description: 'Vaikiška kėdutė nuo 9 iki 36 kg svorio',
     price: 3,
     unit: 'perDay',
+    icon: UserCircle,
   },
 ];
 
@@ -146,6 +147,7 @@ export default function ReservationServices() {
               {availableServices.map((service) => {
                 const isSelected = isServiceSelected(service.id);
                 const totalPrice = getServicePrice(service);
+                const ServiceIcon = service.icon;
 
                 return (
                   <Card
@@ -156,9 +158,12 @@ export default function ReservationServices() {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold mb-2">
-                          {service.title}
-                        </h3>
+                        <div className="flex items-center gap-3 mb-2">
+                          {ServiceIcon && <ServiceIcon className="h-5 w-5 text-primary" />}
+                          <h3 className="text-lg font-semibold">
+                            {service.title}
+                          </h3>
+                        </div>
                         <p className="text-sm text-muted-foreground mb-3">
                           {service.description}
                         </p>

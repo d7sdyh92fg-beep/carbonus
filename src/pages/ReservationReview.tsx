@@ -20,6 +20,7 @@ export default function ReservationReview() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [agreementAccepted, setAgreementAccepted] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'in_person'>('online');
   const [paymentProvider, setPaymentProvider] = useState<'stripe'>('stripe');
   
   const [formData, setFormData] = useState({
@@ -150,8 +151,13 @@ export default function ReservationReview() {
         customerId = newCustomer.id;
       }
 
-      const totalAmount = getTotalPrice();
       const dailyRate = bookingData.basePrice / bookingData.rentalDays;
+      const insuranceTotal = bookingData.insurance ? bookingData.insurance.pricePerDay * bookingData.rentalDays : 0;
+      const servicesTotal = bookingData.services.reduce((sum, service) => {
+        return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
+      }, 0);
+      const totalAmount = bookingData.basePrice + insuranceTotal + servicesTotal;
+      const paymentAmount = paymentMethod === 'in_person' ? dailyRate : totalAmount;
 
       // Create reservation
       const reservationData = {
@@ -164,9 +170,9 @@ export default function ReservationReview() {
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
         deposit_amount: 300,
-        total_amount: totalAmount,
-        status: 'awaiting_payment',
-        payment_method: 'online',
+        total_amount: paymentAmount,
+        status: paymentMethod === 'in_person' ? 'confirmed' : 'awaiting_payment',
+        payment_method: paymentMethod,
         payment_provider: paymentProvider,
         pricing_notes: JSON.stringify({
           insurance: bookingData.insurance,
@@ -182,6 +188,20 @@ export default function ReservationReview() {
 
       if (reservationError) throw reservationError;
 
+      // Process payment only if online payment
+      if (paymentMethod === 'online') {
+        await processStripePayment(reservation.id, paymentAmount);
+      } else {
+        // For in-person payment, just show success and redirect
+        toast({
+          title: 'Sėkmingai',
+          description: 'Rezervacija sukurta. Sumokėkite rezervacijos mokestį atsiėmimo metu.',
+        });
+        clearBooking();
+        navigate('/automobiliai');
+        return;
+      }
+
       // Send notification email
       try {
         await supabase.functions.invoke('send-booking-email', {
@@ -195,18 +215,12 @@ export default function ReservationReview() {
             rentalDays: bookingData.rentalDays,
             totalAmount: totalAmount,
             depositAmount: 300,
-            advancePayment: totalAmount,
+            advancePayment: paymentAmount,
           }
         });
       } catch (emailError) {
         console.warn('Email sending failed:', emailError);
       }
-
-      // Process payment
-      await processStripePayment(reservation.id, totalAmount);
-      
-      // Clear booking data after successful submission
-      clearBooking();
     } catch (error: any) {
       console.error('Booking error:', error);
       toast({
@@ -219,11 +233,13 @@ export default function ReservationReview() {
     }
   };
 
-  const totalPrice = getTotalPrice();
   const insuranceTotal = bookingData.insurance ? bookingData.insurance.pricePerDay * bookingData.rentalDays : 0;
   const servicesTotal = bookingData.services.reduce((sum, service) => {
     return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
   }, 0);
+  const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
+  const depositAmount = 300;
+  const paymentAmount = paymentMethod === 'in_person' ? bookingData.basePrice / bookingData.rentalDays : totalPrice;
 
   return (
     <div className="min-h-screen bg-background">
@@ -241,9 +257,11 @@ export default function ReservationReview() {
               Grįžti
             </Button>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Viso mokėti</p>
+              <p className="text-sm text-muted-foreground">
+                {paymentMethod === 'in_person' ? 'Rezervacijos mokestis' : 'Viso mokėti'}
+              </p>
               <p className="text-2xl font-bold text-primary">
-                {totalPrice.toFixed(2)} €
+                {paymentAmount.toFixed(2)} €
               </p>
             </div>
           </div>
@@ -384,13 +402,22 @@ export default function ReservationReview() {
                   <CreditCard className="h-5 w-5" />
                   Mokėjimo būdas
                 </h3>
-                <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as 'stripe')}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="stripe" id="stripe" />
-                    <Label htmlFor="stripe" className="cursor-pointer">
-                      <span className="font-medium">Mokėjimo kortelė</span>
+                <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'online' | 'in_person')}>
+                  <div className="flex items-center space-x-2 mb-4">
+                    <RadioGroupItem value="online" id="online" />
+                    <Label htmlFor="online" className="cursor-pointer">
+                      <span className="font-medium">Mokėjimas internetu</span>
                       <span className="text-sm text-muted-foreground block">
                         Visa, Mastercard, Apple Pay, Google Pay
+                      </span>
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="in_person" id="in_person" />
+                    <Label htmlFor="in_person" className="cursor-pointer">
+                      <span className="font-medium">Mokėjimas vietoje</span>
+                      <span className="text-sm text-muted-foreground block">
+                        Rezervacijos mokestis: {(bookingData.basePrice / bookingData.rentalDays).toFixed(2)} € (1 dienos kaina)
                       </span>
                     </Label>
                   </div>
@@ -424,7 +451,7 @@ export default function ReservationReview() {
                 size="lg"
                 disabled={isSubmitting || !agreementAccepted}
               >
-                {isSubmitting ? 'Vykdoma...' : `Mokėti ${totalPrice.toFixed(2)} €`}
+                {isSubmitting ? 'Vykdoma...' : paymentMethod === 'in_person' ? `Rezervuoti (${paymentAmount.toFixed(2)} €)` : `Mokėti ${paymentAmount.toFixed(2)} €`}
               </Button>
             </form>
           </div>
@@ -434,49 +461,84 @@ export default function ReservationReview() {
             <Card className="p-6 sticky top-24">
               <h3 className="font-semibold text-lg mb-4">Užsakymo santrauka</h3>
               
+              {/* Car & Dates */}
+              
               <div className="space-y-3 mb-4">
                 <div>
                   <p className="font-medium text-lg">{bookingData.carName}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {format(new Date(bookingData.startDate), 'MMM d', { locale: lt })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
+                  <p className="text-sm text-muted-foreground mt-2">
+                    <span className="font-medium">Paėmimas:</span><br />
+                    {format(new Date(bookingData.startDate), 'MMM d, yyyy', { locale: lt })}
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
+                  <p className="text-sm text-muted-foreground mt-1">
+                    <span className="font-medium">Grąžinimas:</span><br />
+                    {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    <span className="font-medium">Trukmė:</span> {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
                   </p>
                 </div>
               </div>
 
               <Separator className="my-4" />
 
+              {/* Insurance */}
+              {bookingData.insurance && (
+                <>
+                  <div className="mb-4">
+                    <p className="font-medium text-sm mb-2">Atsakomybė</p>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">{bookingData.insurance.title}</span>
+                      <span>{insuranceTotal.toFixed(2)} €</span>
+                    </div>
+                  </div>
+                  <Separator className="my-4" />
+                </>
+              )}
+
+              {/* Additional Services */}
+              {bookingData.services.length > 0 && (
+                <>
+                  <div className="mb-4">
+                    <p className="font-medium text-sm mb-2">Papildomos paslaugos</p>
+                    <div className="space-y-2">
+                      {bookingData.services.map(service => {
+                        const price = service.unit === 'perDay' 
+                          ? service.price * bookingData.rentalDays 
+                          : service.price;
+                        return (
+                          <div key={service.id} className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">{service.title}</span>
+                            <span>{price.toFixed(2)} €</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <Separator className="my-4" />
+                </>
+              )}
+
+              {/* Pricing */}
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
                   <span>Nuomos kaina</span>
                   <span>{bookingData.basePrice.toFixed(2)} €</span>
                 </div>
                 
-                {bookingData.insurance && (
+                {insuranceTotal > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span>{bookingData.insurance.title}</span>
+                    <span>Draudimas</span>
                     <span>{insuranceTotal.toFixed(2)} €</span>
                   </div>
                 )}
 
-                {bookingData.services.map(service => {
-                  const price = service.unit === 'perDay' 
-                    ? service.price * bookingData.rentalDays 
-                    : service.price;
-                  return (
-                    <div key={service.id} className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">{service.title}</span>
-                      <span>{price.toFixed(2)} €</span>
-                    </div>
-                  );
-                })}
-
-                <div className="flex justify-between text-sm">
-                  <span>Užstatas</span>
-                  <span>300.00 €</span>
-                </div>
+                {servicesTotal > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span>Papildomos paslaugos</span>
+                    <span>{servicesTotal.toFixed(2)} €</span>
+                  </div>
+                )}
               </div>
 
               <Separator className="my-4" />
@@ -486,9 +548,45 @@ export default function ReservationReview() {
                 <span className="text-primary">{totalPrice.toFixed(2)} €</span>
               </div>
 
+              <div className="mb-4">
+                <button
+                  type="button"
+                  className="text-sm text-primary underline cursor-pointer"
+                  onClick={() => {
+                    const details = document.getElementById('price-details');
+                    if (details) details.classList.toggle('hidden');
+                  }}
+                >
+                  Kainos informacija
+                </button>
+                <div id="price-details" className="hidden mt-2 text-xs text-muted-foreground">
+                  Grąžinamas užstatas: Papildomas 200€ užstatas bus įtrauktas ir grąžintas per kelias dienas po transporto priemonės grąžinimo.
+                </div>
+              </div>
+
+              <Separator className="my-4" />
+
+              <div className="flex justify-between text-sm mb-2">
+                <span>Užstatas (grąžinamas)</span>
+                <span className="font-medium">{depositAmount.toFixed(2)} €</span>
+              </div>
+
               <p className="text-xs text-muted-foreground">
                 * Užstatas grąžinamas po automobilio grąžinimo
               </p>
+              
+              {paymentMethod === 'in_person' && (
+                <>
+                  <Separator className="my-4" />
+                  <div className="bg-muted/50 p-3 rounded-md">
+                    <p className="text-sm font-medium mb-1">Mokėjimas vietoje</p>
+                    <p className="text-xs text-muted-foreground">
+                      Rezervacijos mokestis: {paymentAmount.toFixed(2)} €<br />
+                      Likusi suma mokama atsiėmimo metu
+                    </p>
+                  </div>
+                </>
+              )}
             </Card>
           </div>
         </div>
