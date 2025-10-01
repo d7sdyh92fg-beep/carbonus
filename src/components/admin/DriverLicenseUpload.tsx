@@ -252,12 +252,11 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
             )}
           </div>
 
-      {/* Hidden file input with camera capture */}
+      {/* Hidden file input */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*,image/heic,image/heif"
-        capture="environment"
         onChange={(e) => handleFileSelect(e, uploadingSide)}
         className="hidden"
       />
