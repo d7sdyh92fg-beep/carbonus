@@ -711,9 +711,9 @@ const Admin = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-lg sm:text-2xl font-bold">
-                      €{reservations.reduce((sum, r) => sum + (r.total_amount || 0), 0)}
+                      €{reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}
                     </div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">Bendra suma</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">Nuomos pajamos (be užstato)</p>
                   </CardContent>
                 </Card>
               </div>
