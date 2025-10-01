@@ -133,51 +133,27 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
       <div>
         <h3 className="text-lg font-medium mb-4">Pažymėjimo priekis</h3>
             {!frontImageUrl ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setUploadingSide('front');
-                    fileInputRef.current?.click();
-                  }}
-                  className="h-32 flex flex-col gap-3 text-base"
-                  disabled={uploading || processing}
-                >
-                  {(uploading || processing) && uploadingSide === 'front' ? (
-                    <>
-                      <Loader2 className="h-8 w-8 animate-spin" />
-                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
-                    </>
-                  ) : (
-                    <>
-                      <Camera className="h-8 w-8" />
-                      Fotografuoti priekį
-                    </>
-                  )}
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setUploadingSide('front');
-                    fileInputRef.current?.click();
-                  }}
-                  className="h-32 flex flex-col gap-3 text-base"
-                  disabled={uploading || processing}
-                >
-                  {(uploading || processing) && uploadingSide === 'front' ? (
-                    <>
-                      <Loader2 className="h-8 w-8 animate-spin" />
-                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="h-8 w-8" />
-                      Įkelti priekio failą
-                    </>
-                  )}
-                </Button>
-              </div>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setUploadingSide('front');
+                  fileInputRef.current?.click();
+                }}
+                className="h-32 flex flex-col gap-3 text-base w-full max-w-md"
+                disabled={uploading || processing}
+              >
+                {(uploading || processing) && uploadingSide === 'front' ? (
+                  <>
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-8 w-8" />
+                    Įkelti priekio failą
+                  </>
+                )}
+              </Button>
             ) : (
               <Card>
                 <CardContent className="p-6">
@@ -218,51 +194,27 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
       <div>
         <h3 className="text-lg font-medium mb-4">Pažymėjimo galas</h3>
             {!backImageUrl ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setUploadingSide('back');
-                    fileInputRef.current?.click();
-                  }}
-                  className="h-32 flex flex-col gap-3 text-base"
-                  disabled={uploading || processing}
-                >
-                  {(uploading || processing) && uploadingSide === 'back' ? (
-                    <>
-                      <Loader2 className="h-8 w-8 animate-spin" />
-                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
-                    </>
-                  ) : (
-                    <>
-                      <Camera className="h-8 w-8" />
-                      Fotografuoti galą
-                    </>
-                  )}
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setUploadingSide('back');
-                    fileInputRef.current?.click();
-                  }}
-                  className="h-32 flex flex-col gap-3 text-base"
-                  disabled={uploading || processing}
-                >
-                  {(uploading || processing) && uploadingSide === 'back' ? (
-                    <>
-                      <Loader2 className="h-8 w-8 animate-spin" />
-                      {processing ? 'Apdorojama...' : 'Įkeliama...'}
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="h-8 w-8" />
-                      Įkelti galo failą
-                    </>
-                  )}
-                </Button>
-              </div>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setUploadingSide('back');
+                  fileInputRef.current?.click();
+                }}
+                className="h-32 flex flex-col gap-3 text-base w-full max-w-md"
+                disabled={uploading || processing}
+              >
+                {(uploading || processing) && uploadingSide === 'back' ? (
+                  <>
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-8 w-8" />
+                    Įkelti galo failą
+                  </>
+                )}
+              </Button>
             ) : (
               <Card>
                 <CardContent className="p-6">
