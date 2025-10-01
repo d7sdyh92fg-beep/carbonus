@@ -63,6 +63,7 @@ const getCarImage = (car: any) => {
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import { InPersonBooking } from "@/components/admin/InPersonBooking";
 import { ReservationReview } from "@/components/admin/ReservationReview";
+import { RecycleBin } from "@/components/admin/RecycleBin";
 
 interface Reservation {
   id: string;
@@ -211,6 +212,7 @@ const Admin = () => {
             phone
           )
         `)
+        .is('deleted_at', null)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -230,20 +232,25 @@ const Admin = () => {
     setConfirmDialog({
       isOpen: true,
       title: "Ar tikrai norite ištrinti šią rezervaciją?",
-      description: "Ši veiksmą negalima atšaukti. Rezervacija bus visiškai pašalinta iš sistemos.",
+      description: "Rezervacija bus perkelta į šiukšlinę. Galėsite ją atkurti.",
       variant: "destructive",
       onConfirm: async () => {
         try {
+          const { data: { user } } = await supabase.auth.getUser();
+          
           const { error } = await supabase
             .from('reservations')
-            .delete()
+            .update({ 
+              deleted_at: new Date().toISOString(),
+              deleted_by: user?.id || null 
+            })
             .eq('id', id);
 
           if (error) throw error;
 
           toast({
-            title: "Sėkmingai ištrinta",
-            description: "Rezervacija buvo ištrinta.",
+            title: "Perkelta į šiukšlinę",
+            description: "Rezervacija perkelta į šiukšlinę.",
           });
 
           fetchReservations();
@@ -264,10 +271,12 @@ const Admin = () => {
     setConfirmDialog({
       isOpen: true,
       title: "Ar tikrai norite atšaukti šią rezervaciją?",
-      description: "Rezervacijos statusas bus pakeistas į 'Atšaukta'. Klientui bus pranešta apie atšaukimą.",
+      description: "Rezervacija bus atšaukta ir perkelta į šiukšlinę. Klientui bus pranešta apie atšaukimą.",
       variant: "default",
       onConfirm: async () => {
         try {
+          const { data: { user } } = await supabase.auth.getUser();
+          
           // Get reservation details for email
           const { data: reservation } = await supabase
             .from('reservations')
@@ -277,7 +286,11 @@ const Admin = () => {
 
           const { error } = await supabase
             .from('reservations')
-            .update({ status: 'cancelled' })
+            .update({ 
+              status: 'cancelled',
+              deleted_at: new Date().toISOString(),
+              deleted_by: user?.id || null
+            })
             .eq('id', id);
 
           if (error) throw error;
@@ -300,7 +313,7 @@ const Admin = () => {
 
           toast({
             title: "Sėkmingai atšaukta",
-            description: "Rezervacija buvo atšaukta ir klientui išsiųstas pranešimas.",
+            description: "Rezervacija atšaukta ir perkelta į šiukšlinę.",
           });
 
           fetchReservations();
@@ -603,7 +616,7 @@ const Admin = () => {
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
           <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-3 gap-1 h-auto p-1 bg-muted rounded-lg">
+            <TabsList className="grid grid-cols-4 gap-1 h-auto p-1 bg-muted rounded-lg">
               <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Skydelis</span>
@@ -613,6 +626,11 @@ const Admin = () => {
                 <Users className="h-4 w-4" />
                 <span className="hidden sm:inline">Vietinė rezervacija</span>
                 <span className="sm:hidden text-[10px] text-center leading-3">Vietinė</span>
+              </TabsTrigger>
+              <TabsTrigger value="recycle" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <Trash2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Šiukšlinė</span>
+                <span className="sm:hidden text-[10px]">Šiukšlinė</span>
               </TabsTrigger>
               <TabsTrigger value="analytics" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <TrendingUp className="h-4 w-4" />
@@ -1093,10 +1111,14 @@ const Admin = () => {
             <InPersonBooking />
           </TabsContent>
 
-          <TabsContent value="analytics">
-            <GoogleAnalytics />
-          </TabsContent>
-          </Tabs>
+              <TabsContent value="recycle">
+                <RecycleBin />
+              </TabsContent>
+
+              <TabsContent value="analytics">
+                <GoogleAnalytics />
+              </TabsContent>
+            </Tabs>
         </div>
       </main>
       
