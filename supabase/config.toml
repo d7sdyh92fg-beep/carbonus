@@ -29,3 +29,15 @@ verify_jwt = false
 
 [functions.send-payment-reminder]
 verify_jwt = false
+
+[functions.send-contract-confirmation]
+verify_jwt = false
+
+[functions.send-pickup-reminder]
+verify_jwt = false
+
+[functions.send-return-reminder]
+verify_jwt = false
+
+[functions.send-feedback-request]
+verify_jwt = false

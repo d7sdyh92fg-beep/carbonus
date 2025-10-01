@@ -165,7 +165,7 @@ const getEmailContent = (data: StatusEmailRequest) => {
           </div>
           
           <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>El. paštas: info@carbonus.lt<br>Telefonas: +370 123 45678</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -192,7 +192,7 @@ const getEmailContent = (data: StatusEmailRequest) => {
           <p>Jei rezervacija buvo atšaukta dėl mūsų administracijos sprendimo, su jumis susisieksime atskirai.</p>
           
           <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>El. paštas: info@carbonus.lt<br>Telefonas: +370 123 45678</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -225,7 +225,7 @@ const getEmailContent = (data: StatusEmailRequest) => {
           <p>Tikimės vėl matyti jus tarp mūsų klientų!</p>
           
           <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>El. paštas: info@carbonus.lt<br>Telefonas: +370 123 45678</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
