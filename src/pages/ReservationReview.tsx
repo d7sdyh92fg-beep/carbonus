@@ -242,7 +242,9 @@ export default function ReservationReview() {
   }, 0);
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
   const depositAmount = 200;
-  const paymentAmount = paymentMethod === 'in_person' ? bookingData.basePrice / bookingData.rentalDays : totalPrice;
+  const dailyRate = bookingData.basePrice / bookingData.rentalDays;
+  const paymentAmount = paymentMethod === 'in_person' ? dailyRate : totalPrice;
+  const remainingBalance = paymentMethod === 'in_person' ? totalPrice - dailyRate : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -607,11 +609,27 @@ export default function ReservationReview() {
               {paymentMethod === 'in_person' && (
                 <>
                   <Separator className="my-4" />
-                  <div className="bg-muted/50 p-3 rounded-md">
-                    <p className="text-sm font-medium mb-1">Mokėjimas vietoje</p>
+                  <div className="bg-primary/5 border border-primary/20 p-4 rounded-md space-y-3">
+                    <p className="text-sm font-semibold text-primary">Mokėjimas vietoje</p>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Iš viso:</span>
+                        <span className="font-medium">{totalPrice.toFixed(2)} €</span>
+                      </div>
+                      <div className="flex justify-between text-primary">
+                        <span>Rezervacijos mokestis (1 diena):</span>
+                        <span className="font-semibold">-{paymentAmount.toFixed(2)} €</span>
+                      </div>
+                      <Separator />
+                      <div className="flex justify-between font-semibold">
+                        <span>Mokėti atsiėmimo metu:</span>
+                        <span className="text-primary">{remainingBalance.toFixed(2)} €</span>
+                      </div>
+                    </div>
+                    
                     <p className="text-xs text-muted-foreground">
-                      Rezervacijos mokestis: {paymentAmount.toFixed(2)} €<br />
-                      Likusi suma mokama atsiėmimo metu
+                      Rezervacijos mokestis užskaitomas kaip 1 dienos nuoma ir atimamas iš pilnos sumos
                     </p>
                   </div>
                 </>
