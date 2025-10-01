@@ -97,7 +97,6 @@ const Admin = () => {
   const { toast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editingReservation, setEditingReservation] = useState<Reservation | null>(null);
   const [showCarCalendar, setShowCarCalendar] = useState(false);
@@ -118,18 +117,6 @@ const Admin = () => {
     description: "",
     onConfirm: () => {},
     variant: "default"
-  });
-
-  // Form state for adding new reservation
-  const [newReservation, setNewReservation] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    carName: '',
-    startDate: null as Date | null,
-    endDate: null as Date | null,
-    dailyRate: 50,
   });
 
   const [cars, setCars] = useState<any[]>([]);
@@ -337,100 +324,6 @@ const Admin = () => {
         }
       }
     });
-  };
-
-  const addReservation = async () => {
-    if (!newReservation.startDate || !newReservation.endDate) {
-      toast({
-        title: "Klaida",
-        description: "Prašome pasirinkti pradžios ir pabaigos datas.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      // Calculate rental days
-      const start = new Date(newReservation.startDate);
-      const end = new Date(newReservation.endDate);
-      const diffTime = Math.abs(end.getTime() - start.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      const totalAmount = diffDays * newReservation.dailyRate;
-
-      // First, create or get customer
-      const { data: existingCustomer } = await supabase
-        .from('customers')
-        .select('id')
-        .eq('email', newReservation.email)
-        .single();
-
-      let customerId;
-
-      if (existingCustomer) {
-        customerId = existingCustomer.id;
-      } else {
-        const { data: newCustomer, error: customerError } = await supabase
-          .from('customers')
-          .insert([{
-            first_name: newReservation.firstName,
-            last_name: newReservation.lastName,
-            email: newReservation.email,
-            phone: newReservation.phone,
-          }])
-          .select('id')
-          .single();
-
-        if (customerError) throw customerError;
-        customerId = newCustomer.id;
-      }
-
-      // Find the correct car ID based on car name
-      const selectedCar = cars.find(car => car.name === newReservation.carName);
-      const carId = selectedCar ? selectedCar.id : newReservation.carName.toLowerCase().replace(/ /g, '-');
-
-      // Create reservation
-      const { error: reservationError } = await supabase
-        .from('reservations')
-        .insert([{
-          customer_id: customerId,
-          car_name: newReservation.carName,
-          car_id: carId,
-          start_date: format(start, 'yyyy-MM-dd'),
-          end_date: format(end, 'yyyy-MM-dd'),
-          rental_days: diffDays,
-          daily_rate: newReservation.dailyRate,
-          total_rental_cost: totalAmount,
-          deposit_amount: 300,
-          total_amount: totalAmount,
-          status: 'confirmed'
-        }]);
-
-      if (reservationError) throw reservationError;
-
-      toast({
-        title: "Sėkmingai pridėta",
-        description: "Nauja rezervacija buvo sukurta.",
-      });
-
-      setShowAddDialog(false);
-      setNewReservation({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        carName: '',
-        startDate: null,
-        endDate: null,
-        dailyRate: 50,
-      });
-      fetchReservations();
-    } catch (error: any) {
-      toast({
-        title: "Klaida",
-        description: "Nepavyko sukurti rezervacijos: " + error.message,
-        variant: "destructive",
-      });
-    }
   };
 
   const updateReservation = async () => {
@@ -773,133 +666,6 @@ const Admin = () => {
                     </CardTitle>
                     <CardDescription>Visos automobilių rezervacijos sistemoje</CardDescription>
                   </div>
-                  <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-                    <DialogTrigger asChild>
-                      <Button className="text-sm h-9">
-                        <Plus className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className="hidden sm:inline">Pridėti rezervaciją</span>
-                        <span className="sm:hidden">Pridėti</span>
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl mx-3 sm:mx-auto max-h-[90vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle className="text-base sm:text-lg">Nauja rezervacija</DialogTitle>
-                        <DialogDescription className="text-sm">
-                          Sukurkite naują rezervaciją klientui.
-                        </DialogDescription>
-                      </DialogHeader>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="firstName" className="text-sm">Vardas</Label>
-                          <Input
-                            id="firstName"
-                            value={newReservation.firstName}
-                            onChange={(e) => setNewReservation({ ...newReservation, firstName: e.target.value })}
-                            className="h-10"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="lastName" className="text-sm">Pavardė</Label>
-                          <Input
-                            id="lastName"
-                            value={newReservation.lastName}
-                            onChange={(e) => setNewReservation({ ...newReservation, lastName: e.target.value })}
-                            className="h-10"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="email" className="text-sm">El. paštas</Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            value={newReservation.email}
-                            onChange={(e) => setNewReservation({ ...newReservation, email: e.target.value })}
-                            className="h-10"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="phone" className="text-sm">Telefonas</Label>
-                          <Input
-                            id="phone"
-                            value={newReservation.phone}
-                            onChange={(e) => setNewReservation({ ...newReservation, phone: e.target.value })}
-                            className="h-10"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="carName" className="text-sm">Automobilis</Label>
-                          <Select value={newReservation.carName} onValueChange={(value) => setNewReservation({ ...newReservation, carName: value })}>
-                            <SelectTrigger className="h-10">
-                              <SelectValue placeholder="Pasirinkite automobilį" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {carOptions.map((car) => (
-                                <SelectItem key={car} value={car}>{car}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="dailyRate" className="text-sm">Dienos kaina (€)</Label>
-                          <Input
-                            id="dailyRate"
-                            type="number"
-                            value={newReservation.dailyRate}
-                            onChange={(e) => setNewReservation({ ...newReservation, dailyRate: Number(e.target.value) })}
-                            className="h-10"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label className="text-sm">Pradžios data</Label>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button variant="outline" className="w-full justify-start text-left font-normal h-10 text-sm">
-                                <CalendarIcon className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                                {newReservation.startDate ? format(newReservation.startDate, 'yyyy-MM-dd') : 'Pasirinkite datą'}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={newReservation.startDate || undefined}
-                                onSelect={(date) => setNewReservation({ ...newReservation, startDate: date || null })}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </div>
-                        <div className="space-y-2">
-                          <Label className="text-sm">Pabaigos data</Label>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button variant="outline" className="w-full justify-start text-left font-normal h-10 text-sm">
-                                <CalendarIcon className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                                {newReservation.endDate ? format(newReservation.endDate, 'yyyy-MM-dd') : 'Pasirinkite datą'}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={newReservation.endDate || undefined}
-                                onSelect={(date) => setNewReservation({ ...newReservation, endDate: date || null })}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
-                        <Button variant="outline" onClick={() => setShowAddDialog(false)} className="h-10">
-                          Atšaukti
-                        </Button>
-                        <Button onClick={addReservation} className="h-10">
-                          Sukurti rezervaciją
-                        </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
                 </CardHeader>
                  
                  <CardContent>
