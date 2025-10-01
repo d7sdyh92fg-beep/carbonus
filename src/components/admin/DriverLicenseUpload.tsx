@@ -37,13 +37,6 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
 
   const startCamera = async (side: 'front' | 'back') => {
     try {
-      // Check if camera is supported
-      if (!deviceInfo.supportsCamera) {
-        setCameraSupported(false);
-        toast.error('Kamera nepalaikoma šiame įrenginyje. Naudokite failų įkėlimą.');
-        return;
-      }
-
       setUploadingSide(side);
       
       // Get device-specific camera constraints
@@ -411,7 +404,6 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
         ref={fileInputRef}
         type="file"
         accept="image/*,image/heic,image/heif"
-        capture="environment"
         onChange={(e) => handleFileSelect(e, uploadingSide)}
         className="hidden"
       />
