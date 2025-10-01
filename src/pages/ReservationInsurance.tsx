@@ -34,6 +34,9 @@ export default function ReservationInsurance() {
   const { bookingData, updateInsurance } = useBooking();
 
   useEffect(() => {
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+    
     if (!bookingData) {
       navigate('/automobiliai');
     }

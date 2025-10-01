@@ -81,6 +81,9 @@ export default function ReservationServices() {
   const { bookingData, toggleService, getTotalPrice } = useBooking();
 
   useEffect(() => {
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+    
     if (!bookingData) {
       navigate('/automobiliai');
     }
