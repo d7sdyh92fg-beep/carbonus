@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Edit, Save, X, FileText, Image, User, Calendar, Car } from 'lucide-react';
+import { Edit, Save, X, FileText, Image, User, Calendar, Car, CreditCard, Link as LinkIcon, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Customer {
@@ -139,6 +139,75 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       });
     }
     setIsEditing(false);
+  };
+
+  const handleMarkAsPaid = async () => {
+    if (!reservation) return;
+    
+    setIsLoading(true);
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({
+          status: 'paid',
+          payment_completed_at: new Date().toISOString(),
+          payment_method: 'manual',
+          payment_transaction_id: `MANUAL-${Date.now()}`
+        })
+        .eq('id', reservation.id);
+
+      if (error) throw error;
+
+      // Send status email
+      await supabase.functions.invoke('send-status-email', {
+        body: {
+          reservationId: reservation.id,
+          customerEmail: reservation.customers.email,
+          customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+          carName: reservation.car_name,
+          startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+          endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+          totalAmount: reservation.total_amount,
+          status: 'paid'
+        }
+      });
+
+      toast({
+        title: "Sėkmingai pažymėta",
+        description: "Rezervacija pažymėta kaip apmokėta. Klientui išsiųstas patvirtinimo laiškas."
+      });
+
+      onUpdate();
+      onClose();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko pažymėti kaip apmokėta: " + error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGeneratePaymentLink = async () => {
+    if (!reservation) return;
+    
+    try {
+      const paymentLink = `${window.location.origin}/payment/${reservation.id}`;
+      await navigator.clipboard.writeText(paymentLink);
+      
+      toast({
+        title: "Nuoroda nukopijuota",
+        description: "Mokėjimo nuoroda nukopijuota į iškarpinę. Galite ją išsiųsti klientui."
+      });
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko nukopijuoti nuorodos: " + error.message,
+        variant: "destructive"
+      });
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -368,6 +437,39 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
             </CardContent>
           </Card>
         </div>
+
+        {/* Payment Actions */}
+        {(reservation.status === 'pending' || reservation.status === 'confirmed') && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                <CardTitle className="text-lg">Mokėjimo valdymas</CardTitle>
+              </div>
+              <CardDescription>
+                Pažymėkite rezervaciją kaip apmokėtą arba sugeneruokite mokėjimo nuorodą
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button 
+                onClick={handleMarkAsPaid} 
+                disabled={isLoading}
+                className="w-full"
+              >
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Pažymėti kaip apmokėtą
+              </Button>
+              <Button 
+                onClick={handleGeneratePaymentLink} 
+                variant="outline"
+                className="w-full"
+              >
+                <LinkIcon className="h-4 w-4 mr-2" />
+                Nukopijuoti mokėjimo nuorodą
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="flex justify-end gap-2 mt-6">
           <Button variant="outline" onClick={onClose}>

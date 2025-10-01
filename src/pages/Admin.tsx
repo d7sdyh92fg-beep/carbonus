@@ -268,6 +268,13 @@ const Admin = () => {
       variant: "default",
       onConfirm: async () => {
         try {
+          // Get reservation details for email
+          const { data: reservation } = await supabase
+            .from('reservations')
+            .select('*, customers(*)')
+            .eq('id', id)
+            .single();
+
           const { error } = await supabase
             .from('reservations')
             .update({ status: 'cancelled' })
@@ -275,9 +282,25 @@ const Admin = () => {
 
           if (error) throw error;
 
+          // Send cancellation email
+          if (reservation) {
+            await supabase.functions.invoke('send-status-email', {
+              body: {
+                reservationId: reservation.id,
+                customerEmail: reservation.customers.email,
+                customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+                carName: reservation.car_name,
+                startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+                endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+                totalAmount: reservation.total_amount,
+                status: 'cancelled'
+              }
+            });
+          }
+
           toast({
             title: "Sėkmingai atšaukta",
-            description: "Rezervacija buvo atšaukta.",
+            description: "Rezervacija buvo atšaukta ir klientui išsiųstas pranešimas.",
           });
 
           fetchReservations();
@@ -422,6 +445,13 @@ const Admin = () => {
 
   const approveReservation = async (id: string) => {
     try {
+      // Get reservation details for email
+      const { data: reservation } = await supabase
+        .from('reservations')
+        .select('*, customers(*)')
+        .eq('id', id)
+        .single();
+
       const { error } = await supabase
         .from('reservations')
         .update({ status: 'confirmed' })
@@ -429,9 +459,25 @@ const Admin = () => {
 
       if (error) throw error;
 
+      // Send confirmation email
+      if (reservation) {
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: reservation.id,
+            customerEmail: reservation.customers.email,
+            customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+            carName: reservation.car_name,
+            startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+            endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+            totalAmount: reservation.total_amount,
+            status: 'confirmed'
+          }
+        });
+      }
+
       toast({
         title: "Rezervacija patvirtinta",
-        description: "Rezervacija buvo sėkmingai patvirtinta.",
+        description: "Rezervacija buvo sėkmingai patvirtinta ir klientui išsiųstas pranešimas.",
       });
 
       fetchReservations();
