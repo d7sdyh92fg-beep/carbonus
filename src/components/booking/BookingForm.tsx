@@ -61,7 +61,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   };
 
   const advancePayment = calculateAdvancePayment();
-  const depositAmount = 0;
+  const depositAmount = 300;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -172,8 +172,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
         rental_days: rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
-        deposit_amount: 0,
-        total_amount: totalAmount,
+        deposit_amount: depositAmount,
+        total_amount: totalAmount + depositAmount,
         status: 'awaiting_payment',
         payment_method: paymentMethod
       };
@@ -215,26 +215,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
       }
 
       // Process payment based on selected method
-      // TEMPORARY: Skip payment for testing - mark as confirmed immediately
-      await supabase
-        .from('reservations')
-        .update({ status: 'confirmed' })
-        .eq('id', reservation.id);
-
-      toast({
-        title: "Rezervacija patvirtinta!",
-        description: "Jūsų rezervacija sėkmingai užbaigta. Patvirtinimo laiškas išsiųstas į jūsų el. paštą.",
-      });
-      
-      setTimeout(() => {
-        onBookingSuccess();
-      }, 2000);
-      
-      return;
-      
-      /* PAYMENT TEMPORARILY DISABLED FOR TESTING
       if (paymentMethod === "pay_now") {
-        const paymentAmount = totalAmount;
+        const paymentAmount = totalAmount + depositAmount;
         if (paymentProvider === "stripe") {
           await processStripePayment(reservation.id, paymentAmount, 'full');
           return; // Exit here as Stripe will redirect
@@ -252,7 +234,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
           return; // Exit here as Paysera will redirect
         }
       }
-      */
     } catch (error) {
       console.error("Booking error:", error);
       toast({
@@ -387,35 +368,104 @@ const BookingForm: React.FC<BookingFormProps> = ({
               <span>Nuomos kaina:</span>
               <span className="font-medium">€{totalAmount}</span>
             </div>
+            <div className="flex justify-between">
+              <span>Užstatas:</span>
+              <span className="font-medium">€{depositAmount}</span>
+            </div>
+            {paymentMethod === "pay_at_counter" && (
+              <div className="flex justify-between text-blue-600">
+                <span>Mokėti dabar:</span>
+                <span className="font-medium">€{advancePayment}</span>
+              </div>
+            )}
             <div className="border-t pt-2 mt-2">
               <div className="flex justify-between font-semibold text-lg">
                 <span>Iš viso:</span>
-                <span>€{totalAmount}</span>
+                <span>€{totalAmount + depositAmount}</span>
               </div>
               {paymentMethod === "pay_at_counter" && (
                 <div className="flex justify-between text-sm text-muted-foreground mt-1">
                   <span>Mokėti vietoje:</span>
-                  <span>€{totalAmount - advancePayment}</span>
+                  <span>€{totalAmount + depositAmount - advancePayment}</span>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Payment Method Selection - Temporarily disabled for testing */}
-        <div className="mb-6 p-4 bg-muted/50 rounded-lg">
-          <h4 className="font-semibold mb-1">Mokėjimas laikinai išjungtas</h4>
-          <p className="text-sm text-muted-foreground">
-            Testavimo metu mokėti nereikia. Jūsų rezervacija bus patvirtinta automatiškai be apmokėjimo.
-          </p>
+        {/* Payment Method Selection */}
+        <div className="mb-6 p-4 border rounded-lg">
+          <h4 className="font-semibold mb-3">Mokėjimo būdas</h4>
+          <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as "pay_now" | "pay_at_counter")}>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="pay_now" id="pay_now" />
+                <Label htmlFor="pay_now">Mokėti dabar (pilną sumą)</Label>
+              </div>
+              
+              {paymentMethod === "pay_now" && (
+                <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
+                  <p className="text-sm font-medium">Pasirinkite mokėjimo būdą:</p>
+                  <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
+                    <div className="hidden flex items-center space-x-2">
+                      <RadioGroupItem value="paysera" id="paysera" />
+                      <Label htmlFor="paysera" className="cursor-pointer">
+                        <span className="font-medium">Lietuvos bankai</span>
+                        <span className="text-sm text-muted-foreground block">Swedbank, SEB, Luminor, Šiaulių bankas ir kiti</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="stripe" id="stripe" />
+                      <Label htmlFor="stripe" className="cursor-pointer">
+                        <span className="font-medium">Mokėjimo kortelė</span>
+                        <span className="text-sm text-muted-foreground block">Visa, Mastercard, Apple Pay, Google Pay</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+              
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
+                <Label htmlFor="pay_at_counter">Mokėti vietoje (išankstinis mokėjimas €{advancePayment})</Label>
+              </div>
+              
+              {paymentMethod === "pay_at_counter" && (
+                <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
+                  <p className="text-sm font-medium">Išankstinio mokėjimo būdas:</p>
+                  <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
+                    <div className="hidden flex items-center space-x-2">
+                      <RadioGroupItem value="paysera" id="paysera_advance" />
+                      <Label htmlFor="paysera_advance" className="cursor-pointer">
+                        <span className="font-medium">Lietuvos bankai</span>
+                        <span className="text-sm text-muted-foreground block">Swedbank, SEB, Luminor, Šiaulių bankas ir kiti</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="stripe" id="stripe_advance" />
+                      <Label htmlFor="stripe_advance" className="cursor-pointer">
+                        <span className="font-medium">Mokėjimo kortelė</span>
+                        <span className="text-sm text-muted-foreground block">Visa, Mastercard, Apple Pay, Google Pay</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+            </div>
+          </RadioGroup>
         </div>
 
         {/* Important Notice */}
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <h4 className="font-semibold text-amber-800 mb-2">Svarbi informacija</h4>
           <div className="text-sm text-amber-700 space-y-1">
-            <p>• Testavimo metu mokėti nereikia – rezervacija patvirtinama automatiškai.</p>
-            <p>• Likusi informacija ir detalių suderinimas – telefonu ar el. paštu.</p>
+            <p>• Mokamas vienos dienos automobilio nuomos kaina kaip išankstinis mokėjimas.</p>
+            <p>• Ši suma įskaičiuojama į bendrą nuomos kainą.</p>
+            <p>• Likusi suma ir saugumo užstatas mokami automobilio atsiėmimo metu.</p>
+            <p>• Atšaukus rezervaciją likus ne mažiau kaip 24 val. iki atsiėmimo – avansas grąžinamas pilnai.</p>
+            <p>• Atšaukus vėliau arba neatvykus – avansas negrąžinamas.</p>
+            <p>• Ši politika užtikrina, kad jūsų pasirinktas automobilis būtų rezervuotas ir paruoštas, bei apsaugo nuo „no-show" atvejų.</p>
+            <p>• Saugumo užstatas – 300 €, grąžinamas per 7 d. d. po automobilio grąžinimo.</p>
             <p>• Rezervacijos keitimas galimas iki 24 val. prieš atsiėmimą.</p>
             <p>• Klausimams ir rezervacijos keitimui: <strong>+370 698 18 781</strong> arba <strong>info@carbonus.lt</strong></p>
           </div>
@@ -561,6 +611,20 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 required
               />
             </div>
+          </div>
+
+          <div>
+            <Label htmlFor="refundAccount">Sąskaitos numeris užstato grąžinimui</Label>
+            <Input
+              id="refundAccount"
+              name="refundAccount"
+              value={formData.refundAccount}
+              onChange={handleInputChange}
+              placeholder="LT..."
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Į šią sąskaitą bus grąžintas užstatas po automobilio grąžinimo
+            </p>
           </div>
 
           {/* Lease Agreement Checkbox */}
