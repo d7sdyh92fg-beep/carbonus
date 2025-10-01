@@ -77,7 +77,7 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="background: #dcfce7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #22c55e;">
             <p style="margin: 0;"><strong>💰 Užstato grąžinimas:</strong></p>
             <p style="margin: 10px 0 0 0;">
-              Po automobilio apžiūros, jūsų užstatas (€300) bus grąžintas į nurodytą sąskaitą per 3-5 darbo dienas.
+              Po automobilio apžiūros, jūsų užstatas (€200) bus grąžintas į nurodytą sąskaitą per 3-5 darbo dienas.
             </p>
           </div>
           

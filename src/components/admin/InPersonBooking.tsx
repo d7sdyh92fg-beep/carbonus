@@ -118,7 +118,7 @@ export function InPersonBooking() {
   const [loading, setLoading] = useState(false);
   const [useCustomPricing, setUseCustomPricing] = useState(false);
   const [customRentalPrice, setCustomRentalPrice] = useState<string>('');
-  const [customDeposit, setCustomDeposit] = useState<string>('300');
+  const [customDeposit, setCustomDeposit] = useState<string>('200');
   const [pricingNotes, setPricingNotes] = useState('');
   const [isRetroactive, setIsRetroactive] = useState(false);
 
@@ -310,7 +310,7 @@ export function InPersonBooking() {
     setNotes('');
     setUseCustomPricing(false);
     setCustomRentalPrice('');
-    setCustomDeposit('300');
+    setCustomDeposit('200');
     setPricingNotes('');
     setIsRetroactive(false);
   };
@@ -636,7 +636,7 @@ export function InPersonBooking() {
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Užstatas:</span>
-                          <span className="font-medium">€{useCustomPricing ? customDeposit : 300}</span>
+                          <span className="font-medium">€{useCustomPricing ? customDeposit : 200}</span>
                         </div>
                         <Separator />
                         <div className="flex justify-between font-bold text-base sm:text-lg">
@@ -656,7 +656,7 @@ export function InPersonBooking() {
                             setUseCustomPricing(checked as boolean);
                             if (!checked) {
                               setCustomRentalPrice('');
-                              setCustomDeposit('300');
+                              setCustomDeposit('200');
                               setPricingNotes('');
                             }
                           }}
@@ -690,7 +690,7 @@ export function InPersonBooking() {
                                 step="0.01"
                                 value={customDeposit}
                                 onChange={(e) => setCustomDeposit(e.target.value)}
-                                placeholder="300.00"
+                                placeholder="200.00"
                                 className="h-10"
                                 required={useCustomPricing}
                               />

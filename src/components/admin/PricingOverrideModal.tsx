@@ -54,7 +54,7 @@ export const PricingOverrideModal: React.FC<PricingOverrideModalProps> = ({
       setCustomDeposit(
         reservation.custom_deposit_amount?.toString() || 
         reservation.deposit_amount?.toString() || 
-        '300'
+        '200'
       );
       setPricingNotes(reservation.pricing_notes || '');
     }

@@ -93,7 +93,7 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
             <h3 style="color: #856404; margin-top: 0;">Svarbi informacija:</h3>
             <ul style="color: #856404; margin: 0; padding-left: 20px;">
-              <li>Užstatas (€300) bus grąžinamas po automobilio grąžinimo</li>
+              <li>Užstatas (€200) bus grąžinamas po automobilio grąžinimo</li>
               <li>Atšaukti galima ne vėliau kaip likus 3 dienoms iki paėmimo datos</li>
               <li>Vėliau atšaukus, vienos dienos nuomos mokestis negrąžinamas</li>
             </ul>

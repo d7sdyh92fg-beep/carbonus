@@ -455,7 +455,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             <p>• Atšaukus rezervaciją likus ne mažiau kaip 24 val. iki atsiėmimo – avansas grąžinamas pilnai.</p>
             <p>• Atšaukus vėliau arba neatvykus – avansas negrąžinamas.</p>
             <p>• Ši politika užtikrina, kad jūsų pasirinktas automobilis būtų rezervuotas ir paruoštas, bei apsaugo nuo „no-show" atvejų.</p>
-            <p>• Saugumo užstatas – 300 €, grąžinamas per 7 d. d. po automobilio grąžinimo.</p>
+            <p>• Saugumo užstatas – 200 €, grąžinamas per 7 d. d. po automobilio grąžinimo.</p>
             <p>• Rezervacijos keitimas galimas iki 24 val. prieš atsiėmimą.</p>
             <p>• Klausimams ir rezervacijos keitimui: <strong>+370 698 18 781</strong> arba <strong>info@carbonus.lt</strong></p>
           </div>

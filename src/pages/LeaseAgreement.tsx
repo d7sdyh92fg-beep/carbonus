@@ -262,7 +262,7 @@ const LeaseAgreement = () => {
                   
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">3.3 Užstatas</h3>
-                    <p>Užstato dydis – 300 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais.</p>
+                    <p>Užstato dydis – 200 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais.</p>
                   </div>
                   
                   <div>

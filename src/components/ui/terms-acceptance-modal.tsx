@@ -145,7 +145,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, onDecline }: TermsAccep
                     
                     <div>
                       <h4 className="font-medium mb-2">3.2 Užstatas</h4>
-                      <p><strong>Užstato dydis – 300 €.</strong> Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, jei nėra pažeidimų.</p>
+                      <p><strong>Užstato dydis – 200 €.</strong> Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, jei nėra pažeidimų.</p>
                     </div>
                   </div>
                 </div>

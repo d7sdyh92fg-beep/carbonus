@@ -112,7 +112,7 @@ const FAQ = () => {
         },
         {
           question: "Koks užstato dydis?",
-          answer: "Užstato dydis – 300 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais."
+          answer: "Užstato dydis – 200 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais."
         },
         {
           question: "Ar yra paslėptų mokesčių?",

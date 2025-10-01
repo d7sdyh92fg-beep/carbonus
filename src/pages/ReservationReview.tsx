@@ -217,7 +217,7 @@ export default function ReservationReview() {
             endDate: format(new Date(bookingData.endDate), 'yyyy-MM-dd'),
             rentalDays: bookingData.rentalDays,
             totalAmount: totalAmount,
-            depositAmount: 300,
+            depositAmount: 200,
             advancePayment: paymentAmount,
           }
         });
