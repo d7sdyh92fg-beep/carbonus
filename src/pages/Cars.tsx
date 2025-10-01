@@ -38,16 +38,8 @@ const Cars = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [showTermsModal, setShowTermsModal] = useState(false);
-  const [pendingCarId, setPendingCarId] = useState<string | null>(null);
-  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
   useEffect(() => {
-    // Check if user has already accepted terms in this session
-    const hasAcceptedTerms = localStorage.getItem('carbonus_terms_accepted');
-    if (hasAcceptedTerms === 'true') {
-      setTermsAccepted(true);
-    }
 
     // Set page title and meta tags
     document.title = "Automobiliai - Carbonus | BMW, Audi ir kiti premium automobiliai nuomai";
@@ -77,28 +69,7 @@ const Cars = () => {
   }, []);
 
   const handleCarSelect = (carId: string) => {
-    if (termsAccepted) {
-      navigate(`/automobiliai/${carId}`);
-    } else {
-      setPendingCarId(carId);
-      setShowTermsModal(true);
-    }
-  };
-
-  const handleTermsAccept = () => {
-    setTermsAccepted(true);
-    localStorage.setItem('carbonus_terms_accepted', 'true');
-    setShowTermsModal(false);
-    
-    if (pendingCarId) {
-      navigate(`/automobiliai/${pendingCarId}`);
-      setPendingCarId(null);
-    }
-  };
-
-  const handleTermsDecline = () => {
-    setShowTermsModal(false);
-    setPendingCarId(null);
+    navigate(`/automobiliai/${carId}`);
   };
 
   const cars: Car[] = [
@@ -345,13 +316,6 @@ const Cars = () => {
       </section>
 
       <Footer />
-
-      {/* Terms Acceptance Modal */}
-      <TermsAcceptanceModal
-        isOpen={showTermsModal}
-        onAccept={handleTermsAccept}
-        onDecline={handleTermsDecline}
-      />
     </div>
   );
 };

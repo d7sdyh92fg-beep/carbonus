@@ -8,6 +8,7 @@ import { addDays, differenceInDays, format } from "date-fns";
 import { lt } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import BookingForm from "./BookingForm";
+import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
 
 interface BookingCalendarProps {
   carId: string;
@@ -21,6 +22,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
   }>({ from: undefined, to: undefined });
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   // Fetch booked dates on component mount and set up real-time updates
   useEffect(() => {
@@ -122,8 +124,17 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
 
   const handleBooking = () => {
     if (selectedRange.from && selectedRange.to) {
-      setShowBookingForm(true);
+      setShowTermsModal(true);
     }
+  };
+
+  const handleTermsAccept = () => {
+    setShowTermsModal(false);
+    setShowBookingForm(true);
+  };
+
+  const handleTermsDecline = () => {
+    setShowTermsModal(false);
   };
 
   const handleBookingSuccess = () => {
@@ -153,6 +164,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
   }
 
   return (
+    <>
+      <TermsAcceptanceModal
+        isOpen={showTermsModal}
+        onAccept={handleTermsAccept}
+        onDecline={handleTermsDecline}
+      />
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Calendar */}
       <Card>
@@ -260,14 +277,14 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
 
               <div className="border-t pt-4 space-y-3">
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Nuomos kaina:</span>
-                    <span className="font-semibold">€{getTotalPrice()}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Užstatas:</span>
-                    <span className="font-semibold">€300</span>
-                  </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Nuomos kaina:</span>
+                  <span className="font-semibold">€{getTotalPrice()}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Užstatas (grąžinamas):</span>
+                  <span className="font-semibold">€300</span>
+                </div>
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between items-center text-lg">
@@ -286,7 +303,8 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
               </Button>
               
               <div className="text-xs text-muted-foreground text-center">
-                <p>Kaina įskaičiuotas €300 užstatas, kuris grąžinamas po automobilio grąžinimo</p>
+                <p>* Užstatas €300 grąžinamas po automobilio grąžinimo</p>
+                <p>* Bendra mokėtina suma: €{getTotalPrice() + 300}</p>
               </div>
             </>
           )}
@@ -300,6 +318,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName }) => 
         </CardContent>
       </Card>
     </div>
+    </>
   );
 };
 

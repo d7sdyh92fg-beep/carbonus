@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarManagementModal from '@/components/admin/CarManagementModal';
 import { GoogleAnalytics } from '@/components/admin/GoogleAnalytics';
+import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -95,6 +96,19 @@ const Admin = () => {
   const [selectedCar, setSelectedCar] = useState<{id: string, name: string} | null>(null);
   const [showReservationReview, setShowReservationReview] = useState(false);
   const [reviewingReservation, setReviewingReservation] = useState<Reservation | null>(null);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    description: string;
+    onConfirm: () => void;
+    variant?: "default" | "destructive";
+  }>({
+    isOpen: false,
+    title: "",
+    description: "",
+    onConfirm: () => {},
+    variant: "default"
+  });
 
   // Form state for adding new reservation
   const [newReservation, setNewReservation] = useState({
@@ -213,51 +227,71 @@ const Admin = () => {
   };
 
   const deleteReservation = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('reservations')
-        .delete()
-        .eq('id', id);
+    setConfirmDialog({
+      isOpen: true,
+      title: "Ar tikrai norite ištrinti šią rezervaciją?",
+      description: "Ši veiksmą negalima atšaukti. Rezervacija bus visiškai pašalinta iš sistemos.",
+      variant: "destructive",
+      onConfirm: async () => {
+        try {
+          const { error } = await supabase
+            .from('reservations')
+            .delete()
+            .eq('id', id);
 
-      if (error) throw error;
+          if (error) throw error;
 
-      toast({
-        title: "Sėkmingai ištrinta",
-        description: "Rezervacija buvo ištrinta.",
-      });
+          toast({
+            title: "Sėkmingai ištrinta",
+            description: "Rezervacija buvo ištrinta.",
+          });
 
-      fetchReservations();
-    } catch (error: any) {
-      toast({
-        title: "Klaida",
-        description: "Nepavyko ištrinti rezervacijos: " + error.message,
-        variant: "destructive",
-      });
-    }
+          fetchReservations();
+        } catch (error: any) {
+          toast({
+            title: "Klaida",
+            description: "Nepavyko ištrinti rezervacijos: " + error.message,
+            variant: "destructive",
+          });
+        } finally {
+          setConfirmDialog({ ...confirmDialog, isOpen: false });
+        }
+      }
+    });
   };
 
   const cancelReservation = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('reservations')
-        .update({ status: 'cancelled' })
-        .eq('id', id);
+    setConfirmDialog({
+      isOpen: true,
+      title: "Ar tikrai norite atšaukti šią rezervaciją?",
+      description: "Rezervacijos statusas bus pakeistas į 'Atšaukta'. Klientui bus pranešta apie atšaukimą.",
+      variant: "default",
+      onConfirm: async () => {
+        try {
+          const { error } = await supabase
+            .from('reservations')
+            .update({ status: 'cancelled' })
+            .eq('id', id);
 
-      if (error) throw error;
+          if (error) throw error;
 
-      toast({
-        title: "Sėkmingai atšaukta",
-        description: "Rezervacija buvo atšaukta.",
-      });
+          toast({
+            title: "Sėkmingai atšaukta",
+            description: "Rezervacija buvo atšaukta.",
+          });
 
-      fetchReservations();
-    } catch (error: any) {
-      toast({
-        title: "Klaida",
-        description: "Nepavyko atšaukti rezervacijos: " + error.message,
-        variant: "destructive",
-      });
-    }
+          fetchReservations();
+        } catch (error: any) {
+          toast({
+            title: "Klaida",
+            description: "Nepavyko atšaukti rezervacijos: " + error.message,
+            variant: "destructive",
+          });
+        } finally {
+          setConfirmDialog({ ...confirmDialog, isOpen: false });
+        }
+      }
+    });
   };
 
   const addReservation = async () => {
@@ -1101,6 +1135,18 @@ const Admin = () => {
         isOpen={showReservationReview}
         onClose={() => setShowReservationReview(false)}
         onUpdate={fetchReservations}
+      />
+
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        confirmText="Taip, tęsti"
+        cancelText="Ne, atšaukti"
+        variant={confirmDialog.variant}
       />
 
       <Footer />

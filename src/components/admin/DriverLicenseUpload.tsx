@@ -37,9 +37,9 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
       
       const constraints = {
         video: {
-          facingMode: 'environment', // Use back camera on mobile
-          width: { ideal: 1280, max: 1920 },
-          height: { ideal: 720, max: 1080 }
+          facingMode: { ideal: 'environment' }, // Use back camera on mobile
+          width: { ideal: 1920, min: 640 },
+          height: { ideal: 1080, min: 480 }
         }
       };
 
@@ -99,9 +99,16 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>, side: 'front' | 'back') => {
     const file = event.target.files?.[0];
-    if (file) {
-      uploadFile(file, side);
+    if (!file) return;
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Prašome pasirinkti nuotrauką (JPG, PNG, HEIC)');
+      return;
     }
+    
+    uploadFile(file, side);
+    
     // Reset the input
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
