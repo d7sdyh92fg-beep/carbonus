@@ -286,24 +286,22 @@ export default function ReservationReview() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Customer Type */}
-              <Card className="p-6">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Checkbox
-                    id="corporate"
-                    checked={isCorporate}
-                    onCheckedChange={(checked) => setIsCorporate(checked as boolean)}
-                  />
-                  <Label htmlFor="corporate">Nuomoju kaip įmonė</Label>
-                </div>
-              </Card>
-
               {/* Personal Information */}
               <Card className="p-6">
                 <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
                   <User className="h-5 w-5" />
                   Asmeninė informacija
                 </h3>
+                
+                {/* Corporate checkbox */}
+                <div className="flex items-center space-x-2 mb-4">
+                  <Checkbox
+                    id="corporate"
+                    checked={isCorporate}
+                    onCheckedChange={(checked) => setIsCorporate(checked as boolean)}
+                  />
+                  <Label htmlFor="corporate">Nuomoju kaip įmonę</Label>
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName">Vardas *</Label>
@@ -358,16 +356,17 @@ export default function ReservationReview() {
                     />
                   </div>
                 </div>
-              </Card>
-
-              {/* Corporate Information */}
-              {isCorporate && (
-                <Card className="p-6">
-                  <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    Įmonės informacija
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4">
+                
+                {/* Corporate Information - shown when checkbox is checked */}
+                {isCorporate && (
+                  <>
+                    <Separator className="my-6" />
+                    <div>
+                      <h4 className="font-semibold text-base mb-4 flex items-center gap-2">
+                        <FileText className="h-5 w-5" />
+                        Įmonės informacija
+                      </h4>
+                      <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
                       <Label htmlFor="companyName">Įmonės pavadinimas *</Label>
                       <Input
@@ -398,8 +397,10 @@ export default function ReservationReview() {
                       />
                     </div>
                   </div>
-                </Card>
-              )}
+                    </div>
+                  </>
+                )}
+              </Card>
 
               {/* Payment Method */}
               <Card className="p-6">
