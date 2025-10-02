@@ -335,6 +335,8 @@ export type Database = {
           cancellation_deadline: string | null
           car_id: string
           car_name: string
+          condition_pickup: string | null
+          condition_return: string | null
           contract_pdf_url: string | null
           contract_signed_at: string | null
           created_at: string
@@ -349,6 +351,8 @@ export type Database = {
           driver_license_back_url: string | null
           driver_license_url: string | null
           end_date: string
+          fuel_level_pickup: string | null
+          fuel_level_return: string | null
           id: string
           notes: string | null
           payment_completed_at: string | null
@@ -357,6 +361,8 @@ export type Database = {
           payment_transaction_id: string | null
           pricing_notes: string | null
           rental_days: number
+          return_notes: string | null
+          returned_at: string | null
           start_date: string
           status: string
           total_amount: number
@@ -367,6 +373,8 @@ export type Database = {
           cancellation_deadline?: string | null
           car_id: string
           car_name: string
+          condition_pickup?: string | null
+          condition_return?: string | null
           contract_pdf_url?: string | null
           contract_signed_at?: string | null
           created_at?: string
@@ -381,6 +389,8 @@ export type Database = {
           driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date: string
+          fuel_level_pickup?: string | null
+          fuel_level_return?: string | null
           id?: string
           notes?: string | null
           payment_completed_at?: string | null
@@ -389,6 +399,8 @@ export type Database = {
           payment_transaction_id?: string | null
           pricing_notes?: string | null
           rental_days: number
+          return_notes?: string | null
+          returned_at?: string | null
           start_date: string
           status?: string
           total_amount: number
@@ -399,6 +411,8 @@ export type Database = {
           cancellation_deadline?: string | null
           car_id?: string
           car_name?: string
+          condition_pickup?: string | null
+          condition_return?: string | null
           contract_pdf_url?: string | null
           contract_signed_at?: string | null
           created_at?: string
@@ -413,6 +427,8 @@ export type Database = {
           driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date?: string
+          fuel_level_pickup?: string | null
+          fuel_level_return?: string | null
           id?: string
           notes?: string | null
           payment_completed_at?: string | null
@@ -421,6 +437,8 @@ export type Database = {
           payment_transaction_id?: string | null
           pricing_notes?: string | null
           rental_days?: number
+          return_notes?: string | null
+          returned_at?: string | null
           start_date?: string
           status?: string
           total_amount?: number

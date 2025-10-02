@@ -10,6 +10,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Edit, Save, X, FileText, Image, User, Calendar, Car, CreditCard, Link as LinkIcon, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Customer {
   id: string;
@@ -31,6 +33,12 @@ interface Reservation {
   created_at: string;
   driver_license_url?: string;
   customers: Customer;
+  fuel_level_pickup?: string;
+  fuel_level_return?: string;
+  condition_pickup?: string;
+  condition_return?: string;
+  return_notes?: string;
+  returned_at?: string;
 }
 
 interface ContractSignature {
@@ -65,6 +73,14 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     phone: ''
   });
 
+  const [returnInspection, setReturnInspection] = useState({
+    fuel_level_pickup: '',
+    fuel_level_return: '',
+    condition_pickup: '',
+    condition_return: '',
+    return_notes: '',
+  });
+
   useEffect(() => {
     if (reservation) {
       setEditForm({
@@ -72,6 +88,13 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         last_name: reservation.customers.last_name,
         email: reservation.customers.email,
         phone: reservation.customers.phone
+      });
+      setReturnInspection({
+        fuel_level_pickup: reservation.fuel_level_pickup || '',
+        fuel_level_return: reservation.fuel_level_return || '',
+        condition_pickup: reservation.condition_pickup || '',
+        condition_return: reservation.condition_return || '',
+        return_notes: reservation.return_notes || '',
       });
       fetchSignature();
     }
@@ -240,6 +263,84 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         description: "Nepavyko nukopijuoti nuorodos: " + error.message,
         variant: "destructive"
       });
+    }
+  };
+
+  const handleSavePickupInfo = async () => {
+    if (!reservation) return;
+    
+    setIsLoading(true);
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({
+          fuel_level_pickup: returnInspection.fuel_level_pickup,
+          condition_pickup: returnInspection.condition_pickup,
+        })
+        .eq('id', reservation.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Išsaugota",
+        description: "Paėmimo informacija sėkmingai išsaugota",
+      });
+      
+      onUpdate();
+    } catch (error: any) {
+      console.error('Error saving pickup info:', error);
+      toast({
+        title: "Klaida",
+        description: error.message || "Nepavyko išsaugoti paėmimo informacijos",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleMarkAsReturned = async () => {
+    if (!reservation) return;
+    
+    setIsLoading(true);
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({
+          fuel_level_return: returnInspection.fuel_level_return,
+          condition_return: returnInspection.condition_return,
+          return_notes: returnInspection.return_notes,
+          returned_at: new Date().toISOString(),
+          status: 'completed',
+        })
+        .eq('id', reservation.id);
+
+      if (error) throw error;
+
+      // Send status email
+      await supabase.functions.invoke('send-status-email', {
+        body: {
+          reservationId: reservation.id,
+          status: 'completed',
+        },
+      });
+
+      toast({
+        title: "Automobilis grąžintas",
+        description: "Grąžinimo informacija išsaugota ir klientui išsiųstas patvirtinimas",
+      });
+      
+      onUpdate();
+      onClose();
+    } catch (error: any) {
+      console.error('Error marking as returned:', error);
+      toast({
+        title: "Klaida",
+        description: error.message || "Nepavyko pažymėti automobilio kaip grąžinto",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -543,6 +644,148 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                 <LinkIcon className="h-4 w-4 mr-2" />
                 Nukopijuoti mokėjimo nuorodą
               </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Return Inspection Section */}
+        {(reservation.status === 'confirmed' || reservation.status === 'completed') && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Car className="h-5 w-5" />
+                  <CardTitle className="text-lg">Grąžinimo patikrinimas</CardTitle>
+                </div>
+                {reservation.returned_at && (
+                  <Badge variant="outline" className="bg-green-50">
+                    Grąžinta {format(new Date(reservation.returned_at), 'yyyy-MM-dd HH:mm')}
+                  </Badge>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Pickup Information */}
+                <div className="space-y-4 p-4 rounded-lg bg-muted/30">
+                  <h4 className="font-medium text-sm">Paėmimo metu</h4>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="fuel_level_pickup">Kuro lygis</Label>
+                    <Select
+                      value={returnInspection.fuel_level_pickup}
+                      onValueChange={(value) =>
+                        setReturnInspection({ ...returnInspection, fuel_level_pickup: value })
+                      }
+                      disabled={!!reservation.returned_at}
+                    >
+                      <SelectTrigger id="fuel_level_pickup">
+                        <SelectValue placeholder="Pasirinkite kuro lygį" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Full">Pilnas</SelectItem>
+                        <SelectItem value="3/4">3/4</SelectItem>
+                        <SelectItem value="1/2">1/2</SelectItem>
+                        <SelectItem value="1/4">1/4</SelectItem>
+                        <SelectItem value="Empty">Tuščias</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="condition_pickup">Automobilio būklė</Label>
+                    <Textarea
+                      id="condition_pickup"
+                      placeholder="Pastabos apie automobilio būklę paėmimo metu..."
+                      value={returnInspection.condition_pickup}
+                      onChange={(e) =>
+                        setReturnInspection({ ...returnInspection, condition_pickup: e.target.value })
+                      }
+                      disabled={!!reservation.returned_at}
+                      rows={3}
+                    />
+                  </div>
+
+                  {!reservation.returned_at && (
+                    <Button
+                      onClick={handleSavePickupInfo}
+                      disabled={isLoading || !returnInspection.fuel_level_pickup}
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                    >
+                      {isLoading ? "Išsaugoma..." : "Išsaugoti paėmimo informaciją"}
+                    </Button>
+                  )}
+                </div>
+
+                {/* Return Information */}
+                <div className="space-y-4 p-4 rounded-lg bg-muted/30">
+                  <h4 className="font-medium text-sm">Grąžinimo metu</h4>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="fuel_level_return">Kuro lygis</Label>
+                    <Select
+                      value={returnInspection.fuel_level_return}
+                      onValueChange={(value) =>
+                        setReturnInspection({ ...returnInspection, fuel_level_return: value })
+                      }
+                      disabled={!!reservation.returned_at}
+                    >
+                      <SelectTrigger id="fuel_level_return">
+                        <SelectValue placeholder="Pasirinkite kuro lygį" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Full">Pilnas</SelectItem>
+                        <SelectItem value="3/4">3/4</SelectItem>
+                        <SelectItem value="1/2">1/2</SelectItem>
+                        <SelectItem value="1/4">1/4</SelectItem>
+                        <SelectItem value="Empty">Tuščias</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="condition_return">Automobilio būklė</Label>
+                    <Textarea
+                      id="condition_return"
+                      placeholder="Pastabos apie automobilio būklę grąžinimo metu..."
+                      value={returnInspection.condition_return}
+                      onChange={(e) =>
+                        setReturnInspection({ ...returnInspection, condition_return: e.target.value })
+                      }
+                      disabled={!!reservation.returned_at}
+                      rows={3}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* General Return Notes */}
+              <div className="space-y-2">
+                <Label htmlFor="return_notes">Bendros pastabos apie grąžinimą</Label>
+                <Textarea
+                  id="return_notes"
+                  placeholder="Bendros pastabos, problemos, papildoma informacija..."
+                  value={returnInspection.return_notes}
+                  onChange={(e) =>
+                    setReturnInspection({ ...returnInspection, return_notes: e.target.value })
+                  }
+                  disabled={!!reservation.returned_at}
+                  rows={3}
+                />
+              </div>
+
+              {/* Mark as Returned Button */}
+              {!reservation.returned_at && (
+                <Button
+                  onClick={handleMarkAsReturned}
+                  disabled={isLoading || !returnInspection.fuel_level_return}
+                  className="w-full"
+                >
+                  {isLoading ? "Išsaugoma..." : "Pažymėti kaip grąžintą"}
+                </Button>
+              )}
             </CardContent>
           </Card>
         )}
