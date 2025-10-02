@@ -14,11 +14,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp, FileText, DollarSign, History } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarManagementModal from '@/components/admin/CarManagementModal';
-import { GoogleAnalytics } from '@/components/admin/GoogleAnalytics';
+
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
@@ -634,16 +634,11 @@ const Admin = () => {
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
           <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-5 gap-1 h-auto p-1 bg-muted rounded-lg">
+            <TabsList className="grid grid-cols-4 gap-1 h-auto p-1 bg-muted rounded-lg">
               <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Skydelis</span>
                 <span className="sm:hidden text-[10px]">Duomenys</span>
-              </TabsTrigger>
-              <TabsTrigger value="history" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <History className="h-4 w-4" />
-                <span className="hidden sm:inline">Istorija</span>
-                <span className="sm:hidden text-[10px]">Istorija</span>
               </TabsTrigger>
               <TabsTrigger value="in-person" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <Users className="h-4 w-4" />
@@ -655,10 +650,10 @@ const Admin = () => {
                 <span className="hidden sm:inline">Šiukšlinė</span>
                 <span className="sm:hidden text-[10px]">Šiukšlinė</span>
               </TabsTrigger>
-              <TabsTrigger value="analytics" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <TrendingUp className="h-4 w-4" />
-                <span className="hidden sm:inline">Google Analytics</span>
-                <span className="sm:hidden text-[10px]">Analitika</span>
+              <TabsTrigger value="history" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <History className="h-4 w-4" />
+                <span className="hidden sm:inline">Istorija</span>
+                <span className="sm:hidden text-[10px]">Istorija</span>
               </TabsTrigger>
             </TabsList>
 
@@ -1086,7 +1081,7 @@ const Admin = () => {
 
                 {/* Completed Reservations */}
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="flex flex-row items-center justify-between">
                     <div>
                       <CardTitle className="flex items-center gap-2">
                         <History className="h-5 w-5" />
@@ -1094,6 +1089,49 @@ const Admin = () => {
                       </CardTitle>
                       <CardDescription>Visos baigtos rezervacijos</CardDescription>
                     </div>
+                    {completedReservations.length > 0 && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => {
+                          setConfirmDialog({
+                            isOpen: true,
+                            title: "Ar tikrai norite ištrinti visas baigtas rezervacijas?",
+                            description: "Visos baigtos rezervacijos bus ištrinti iš sistemos. Šio veiksmo negalima atšaukti.",
+                            variant: "destructive",
+                            onConfirm: async () => {
+                              try {
+                                const completedIds = completedReservations.map(r => r.id);
+                                const { error } = await supabase
+                                  .from('reservations')
+                                  .delete()
+                                  .in('id', completedIds);
+
+                                if (error) throw error;
+
+                                toast({
+                                  title: "Ištrinta",
+                                  description: `${completedReservations.length} baigtos rezervacijos ištrinti.`,
+                                });
+
+                                fetchReservations();
+                              } catch (error: any) {
+                                toast({
+                                  title: "Klaida",
+                                  description: "Nepavyko ištrinti rezervacijų: " + error.message,
+                                  variant: "destructive",
+                                });
+                              } finally {
+                                setConfirmDialog({ ...confirmDialog, isOpen: false });
+                              }
+                            }
+                          });
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Ištrinti visas
+                      </Button>
+                    )}
                   </CardHeader>
                   
                   <CardContent>
@@ -1236,10 +1274,6 @@ const Admin = () => {
 
               <TabsContent value="recycle">
                 <RecycleBin />
-              </TabsContent>
-
-              <TabsContent value="analytics">
-                <GoogleAnalytics />
               </TabsContent>
             </Tabs>
         </div>
