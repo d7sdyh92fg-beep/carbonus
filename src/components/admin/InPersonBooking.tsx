@@ -528,19 +528,14 @@ export function InPersonBooking() {
                         <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm p-3">
                           <div className="flex items-center justify-between w-full">
                             <div className="flex flex-col gap-1">
-                              <span className="font-medium text-sm">{car.name}</span>
-                              <span className="text-xs text-muted-foreground">{car.year}</span>
+                              <span className="font-medium text-base">{car.name}</span>
+                              <span className="text-sm text-muted-foreground">{car.year}</span>
                             </div>
-                            <div className="flex flex-col items-end gap-1 ml-4">
-                              <div className="text-xs text-muted-foreground">
-                                Kaina priklauso nuo dienų skaičiaus
-                              </div>
-                              {car.available ? (
-                                <Badge variant="default" className="bg-green-500 text-xs">Laisvas</Badge>
-                              ) : (
-                                <Badge variant="destructive" className="text-xs">Užimtas</Badge>
-                              )}
-                            </div>
+                            {car.available ? (
+                              <Badge variant="default" className="bg-green-500 hover:bg-green-600 text-white">Laisvas</Badge>
+                            ) : (
+                              <Badge variant="destructive">Užimtas</Badge>
+                            )}
                           </div>
                         </SelectItem>
                       ))}
