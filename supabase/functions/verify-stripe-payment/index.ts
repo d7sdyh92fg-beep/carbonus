@@ -40,14 +40,56 @@ serve(async (req) => {
     console.log('Stripe session status:', session.payment_status);
 
     if (session.payment_status === 'paid') {
+      let depositPaymentIntentId = null;
+      
+      // Create deposit pre-authorization if deposit amount is specified
+      const depositAmount = session.metadata?.depositAmount ? parseFloat(session.metadata.depositAmount) : 0;
+      
+      if (depositAmount > 0 && session.payment_intent) {
+        try {
+          // Retrieve payment method from the successful payment
+          const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent as string);
+          
+          if (paymentIntent.payment_method) {
+            // Create a new payment intent with manual capture for deposit hold
+            const depositIntent = await stripe.paymentIntents.create({
+              amount: Math.round(depositAmount * 100), // Convert to cents
+              currency: 'eur',
+              customer: session.customer as string,
+              payment_method: paymentIntent.payment_method as string,
+              off_session: true,
+              confirm: true,
+              capture_method: 'manual', // Pre-authorization - won't be charged unless captured
+              description: `Deposit hold for reservation ${reservationId}`,
+              metadata: {
+                reservationId: reservationId,
+                type: 'deposit_hold'
+              }
+            });
+            
+            depositPaymentIntentId = depositIntent.id;
+            console.log('Deposit pre-authorization created:', depositPaymentIntentId);
+          }
+        } catch (depositError) {
+          console.error('Error creating deposit hold:', depositError);
+          // Continue even if deposit hold fails - we can handle manually
+        }
+      }
+
       // Update reservation status in database
+      const updateData: any = { 
+        status: session.metadata?.paymentType === 'full' ? 'confirmed' : 'awaiting_payment',
+        payment_transaction_id: session.payment_intent as string,
+        updated_at: new Date().toISOString()
+      };
+      
+      if (depositPaymentIntentId) {
+        updateData.deposit_payment_intent_id = depositPaymentIntentId;
+      }
+
       const { data, error } = await supabase
         .from('reservations')
-        .update({ 
-          status: session.metadata?.paymentType === 'full' ? 'confirmed' : 'awaiting_payment',
-          stripe_payment_intent_id: session.payment_intent as string,
-          updated_at: new Date().toISOString()
-        })
+        .update(updateData)
         .eq('id', reservationId)
         .select();
 
@@ -62,6 +104,7 @@ serve(async (req) => {
         success: true, 
         paymentStatus: 'paid',
         paymentType: session.metadata?.paymentType || 'unknown',
+        depositHoldCreated: !!depositPaymentIntentId,
         reservation: data?.[0]
       }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

@@ -270,11 +270,11 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between items-center text-lg">
-                    <span className="font-semibold">Bendra suma:</span>
+                    <span className="font-semibold">Suma:</span>
                     <span className="text-2xl font-bold text-primary">€{getTotalPrice()}</span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-2">
-                    * Be užstato
+                    + užstatas €200 (rezervuojamas, nemokami)
                   </p>
                 </div>
               </div>
@@ -288,8 +288,8 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
               </Button>
               
               <div className="text-xs text-muted-foreground text-center space-y-1">
-                <p>* Užstatas €200 grąžinamas po automobilio grąžinimo</p>
-                <p>* Bendra mokėtina suma: €{getTotalPrice() + 200}</p>
+                <p>Užstatas €200 bus rezervuotas jūsų kortelėje (pre-autorizacija), bet nebus nurašytas.</p>
+                <p>Rezervacija bus automatiškai atšaukta po automobilio grąžinimo.</p>
               </div>
             </>
           )}

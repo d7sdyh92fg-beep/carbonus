@@ -345,6 +345,7 @@ export type Database = {
           deleted_at: string | null
           deleted_by: string | null
           deposit_amount: number
+          deposit_payment_intent_id: string | null
           driver_license_back_url: string | null
           driver_license_url: string | null
           end_date: string
@@ -376,6 +377,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           deposit_amount?: number
+          deposit_payment_intent_id?: string | null
           driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date: string
@@ -407,6 +409,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           deposit_amount?: number
+          deposit_payment_intent_id?: string | null
           driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date?: string
