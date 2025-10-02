@@ -62,16 +62,10 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
   onUpdate
 }) => {
   const { toast } = useToast();
-  const [isEditing, setIsEditing] = useState(false);
+  
   const [signature, setSignature] = useState<ContractSignature | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
-  const [editForm, setEditForm] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: ''
-  });
 
   const [returnInspection, setReturnInspection] = useState({
     fuel_level_pickup: '',
@@ -83,12 +77,6 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
   useEffect(() => {
     if (reservation) {
-      setEditForm({
-        first_name: reservation.customers.first_name,
-        last_name: reservation.customers.last_name,
-        email: reservation.customers.email,
-        phone: reservation.customers.phone
-      });
       setReturnInspection({
         fuel_level_pickup: reservation.fuel_level_pickup || '',
         fuel_level_return: reservation.fuel_level_return || '',
@@ -115,53 +103,6 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     } catch (error: any) {
       console.error('Error fetching signature:', error);
     }
-  };
-
-  const handleSaveChanges = async () => {
-    if (!reservation) return;
-    
-    setIsLoading(true);
-    try {
-      const { error } = await supabase
-        .from('customers')
-        .update({
-          first_name: editForm.first_name,
-          last_name: editForm.last_name,
-          email: editForm.email,
-          phone: editForm.phone
-        })
-        .eq('id', reservation.customers.id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Sėkmingai atnaujinta",
-        description: "Kliento duomenys buvo atnaujinti."
-      });
-
-      setIsEditing(false);
-      onUpdate();
-    } catch (error: any) {
-      toast({
-        title: "Klaida",
-        description: "Nepavyko atnaujinti kliento duomenų: " + error.message,
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleCancel = () => {
-    if (reservation) {
-      setEditForm({
-        first_name: reservation.customers.first_name,
-        last_name: reservation.customers.last_name,
-        email: reservation.customers.email,
-        phone: reservation.customers.phone
-      });
-    }
-    setIsEditing(false);
   };
 
   const handleDepositAction = async (action: 'release' | 'capture-partial' | 'capture-full', amount?: number) => {
@@ -396,86 +337,30 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Customer Information */}
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader>
               <div className="flex items-center gap-2">
                 <User className="h-5 w-5" />
                 <CardTitle className="text-lg">Kliento duomenys</CardTitle>
               </div>
-              {!isEditing ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsEditing(true)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-              ) : (
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCancel}
-                    disabled={isLoading}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={handleSaveChanges}
-                    disabled={isLoading}
-                  >
-                    <Save className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Vardas</Label>
-                  {isEditing ? (
-                    <Input
-                      value={editForm.first_name}
-                      onChange={(e) => setEditForm({ ...editForm, first_name: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-sm font-medium">{reservation.customers.first_name}</p>
-                  )}
+                  <p className="text-sm font-medium">{reservation.customers.first_name}</p>
                 </div>
                 <div className="space-y-2">
                   <Label>Pavardė</Label>
-                  {isEditing ? (
-                    <Input
-                      value={editForm.last_name}
-                      onChange={(e) => setEditForm({ ...editForm, last_name: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-sm font-medium">{reservation.customers.last_name}</p>
-                  )}
+                  <p className="text-sm font-medium">{reservation.customers.last_name}</p>
                 </div>
               </div>
               <div className="space-y-2">
                 <Label>El. paštas</Label>
-                {isEditing ? (
-                  <Input
-                    type="email"
-                    value={editForm.email}
-                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                  />
-                ) : (
-                  <p className="text-sm font-medium">{reservation.customers.email}</p>
-                )}
+                <p className="text-sm font-medium">{reservation.customers.email}</p>
               </div>
               <div className="space-y-2">
                 <Label>Telefonas</Label>
-                {isEditing ? (
-                  <Input
-                    value={editForm.phone}
-                    onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
-                  />
-                ) : (
-                  <p className="text-sm font-medium">{reservation.customers.phone}</p>
-                )}
+                <p className="text-sm font-medium">{reservation.customers.phone}</p>
               </div>
             </CardContent>
           </Card>
