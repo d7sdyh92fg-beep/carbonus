@@ -65,7 +65,19 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
   
   const [signature, setSignature] = useState<ContractSignature | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [cars, setCars] = useState<any[]>([]);
   
+  const [editForm, setEditForm] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    start_date: '',
+    end_date: '',
+    status: '',
+    car_id: '',
+    car_name: '',
+  });
 
   const [returnInspection, setReturnInspection] = useState({
     fuel_level_pickup: '',
@@ -77,6 +89,17 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
   useEffect(() => {
     if (reservation) {
+      setEditForm({
+        first_name: reservation.customers.first_name,
+        last_name: reservation.customers.last_name,
+        email: reservation.customers.email,
+        phone: reservation.customers.phone,
+        start_date: reservation.start_date,
+        end_date: reservation.end_date,
+        status: reservation.status,
+        car_id: reservation.car_id,
+        car_name: reservation.car_name,
+      });
       setReturnInspection({
         fuel_level_pickup: reservation.fuel_level_pickup || '',
         fuel_level_return: reservation.fuel_level_return || '',
@@ -85,8 +108,78 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         return_notes: reservation.return_notes || '',
       });
       fetchSignature();
+      fetchCars();
     }
   }, [reservation]);
+
+  const fetchCars = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('cars')
+        .select('*')
+        .order('name');
+
+      if (error) throw error;
+      setCars(data || []);
+    } catch (error: any) {
+      console.error('Error fetching cars:', error);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    if (!reservation) return;
+    
+    setIsLoading(true);
+    try {
+      // Update customer information
+      const { error: customerError } = await supabase
+        .from('customers')
+        .update({
+          first_name: editForm.first_name.trim(),
+          last_name: editForm.last_name.trim(),
+          email: editForm.email.trim(),
+          phone: editForm.phone.trim(),
+        })
+        .eq('id', reservation.customers.id);
+
+      if (customerError) throw customerError;
+
+      // Calculate rental days
+      const startDate = new Date(editForm.start_date);
+      const endDate = new Date(editForm.end_date);
+      const rentalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      // Update reservation information
+      const { error: reservationError } = await supabase
+        .from('reservations')
+        .update({
+          start_date: editForm.start_date,
+          end_date: editForm.end_date,
+          rental_days: rentalDays,
+          status: editForm.status,
+          car_id: editForm.car_id,
+          car_name: editForm.car_name,
+        })
+        .eq('id', reservation.id);
+
+      if (reservationError) throw reservationError;
+
+      toast({
+        title: "Sėkmingai atnaujinta",
+        description: "Rezervacijos informacija buvo atnaujinta.",
+      });
+
+      onUpdate();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko atnaujinti: " + error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const fetchSignature = async () => {
     if (!reservation) return;
@@ -347,20 +440,33 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Vardas</Label>
-                  <p className="text-sm font-medium">{reservation.customers.first_name}</p>
+                  <Input
+                    value={editForm.first_name}
+                    onChange={(e) => setEditForm({ ...editForm, first_name: e.target.value })}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label>Pavardė</Label>
-                  <p className="text-sm font-medium">{reservation.customers.last_name}</p>
+                  <Input
+                    value={editForm.last_name}
+                    onChange={(e) => setEditForm({ ...editForm, last_name: e.target.value })}
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label>El. paštas</Label>
-                <p className="text-sm font-medium">{reservation.customers.email}</p>
+                <Input
+                  type="email"
+                  value={editForm.email}
+                  onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                />
               </div>
               <div className="space-y-2">
                 <Label>Telefonas</Label>
-                <p className="text-sm font-medium">{reservation.customers.phone}</p>
+                <Input
+                  value={editForm.phone}
+                  onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                />
               </div>
             </CardContent>
           </Card>
@@ -374,22 +480,68 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
+              <div className="space-y-2">
                 <Label>Statusas</Label>
-                {getStatusBadge(reservation.status)}
+                <Select 
+                  value={editForm.status} 
+                  onValueChange={(value) => setEditForm({ ...editForm, status: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="requested">Prašoma</SelectItem>
+                    <SelectItem value="confirmed">Patvirtinta</SelectItem>
+                    <SelectItem value="paid">Apmokėta</SelectItem>
+                    <SelectItem value="denied">Atmesta</SelectItem>
+                    <SelectItem value="cancelled">Atšaukta</SelectItem>
+                    <SelectItem value="completed">Baigta</SelectItem>
+                    <SelectItem value="pending">Laukiama</SelectItem>
+                    <SelectItem value="awaiting_payment">Laukiama apmokėjimo</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Automobilis</Label>
-                <p className="text-sm font-medium">{reservation.car_name}</p>
+                <Select 
+                  value={editForm.car_id} 
+                  onValueChange={(value) => {
+                    const selectedCar = cars.find(c => c.id === value);
+                    setEditForm({ 
+                      ...editForm, 
+                      car_id: value,
+                      car_name: selectedCar?.name || ''
+                    });
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={editForm.car_name} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cars.map((car) => (
+                      <SelectItem key={car.id} value={car.id}>
+                        {car.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div className="space-y-2">
                   <Label>Pradžios data</Label>
-                  <p className="text-sm font-medium">{format(new Date(reservation.start_date), 'yyyy-MM-dd')}</p>
+                  <Input
+                    type="date"
+                    value={editForm.start_date}
+                    onChange={(e) => setEditForm({ ...editForm, start_date: e.target.value })}
+                  />
                 </div>
-                <div>
+                <div className="space-y-2">
                   <Label>Pabaigos data</Label>
-                  <p className="text-sm font-medium">{format(new Date(reservation.end_date), 'yyyy-MM-dd')}</p>
+                  <Input
+                    type="date"
+                    value={editForm.end_date}
+                    onChange={(e) => setEditForm({ ...editForm, end_date: e.target.value })}
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -406,6 +558,9 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                 <Label>Sukurta</Label>
                 <p className="text-sm font-medium">{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</p>
               </div>
+              <Button onClick={handleSaveChanges} disabled={isLoading} className="w-full">
+                {isLoading ? "Išsaugoma..." : "Išsaugoti pakeitimus"}
+              </Button>
             </CardContent>
           </Card>
 
