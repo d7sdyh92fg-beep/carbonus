@@ -526,6 +526,17 @@ const Admin = () => {
 
   const handleStatusChange = async (reservationId: string, newStatus: string) => {
     try {
+      // Get reservation details for email
+      const { data: reservation } = await supabase
+        .from('reservations')
+        .select('*, customers(*)')
+        .eq('id', reservationId)
+        .single();
+
+      if (!reservation) {
+        throw new Error('Reservation not found');
+      }
+
       const { error } = await supabase
         .from('reservations')
         .update({ status: newStatus })
@@ -533,9 +544,25 @@ const Admin = () => {
 
       if (error) throw error;
 
+      // Send email notification for certain status changes
+      if (['confirmed', 'cancelled', 'completed'].includes(newStatus)) {
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: reservation.id,
+            customerEmail: reservation.customers.email,
+            customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+            carName: reservation.car_name,
+            startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+            endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+            totalAmount: reservation.total_amount,
+            status: newStatus
+          }
+        });
+      }
+
       toast({
         title: "Statusas atnaujintas",
-        description: "Rezervacijos statusas sėkmingai pakeistas.",
+        description: `Rezervacijos statusas pakeistas į "${newStatus}". ${['confirmed', 'cancelled', 'completed'].includes(newStatus) ? 'El. paštas išsiųstas klientui.' : ''}`,
       });
 
       fetchReservations();
