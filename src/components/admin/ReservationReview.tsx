@@ -321,6 +321,12 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       await supabase.functions.invoke('send-status-email', {
         body: {
           reservationId: reservation.id,
+          customerEmail: reservation.customers.email,
+          customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+          carName: reservation.car_name,
+          startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+          endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+          totalAmount: reservation.total_amount,
           status: 'completed',
         },
       });
