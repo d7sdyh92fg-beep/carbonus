@@ -524,7 +524,31 @@ const Admin = () => {
     setShowPricingOverride(true);
   };
 
-  const getStatusBadge = (status: string) => {
+  const handleStatusChange = async (reservationId: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({ status: newStatus })
+        .eq('id', reservationId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Statusas atnaujintas",
+        description: "Rezervacijos statusas sėkmingai pakeistas.",
+      });
+
+      fetchReservations();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko atnaujinti statuso: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getStatusBadge = (status: string, reservationId?: string, clickable: boolean = false) => {
     const variants = {
       pending: 'secondary',
       confirmed: 'default',
@@ -533,6 +557,7 @@ const Admin = () => {
       requested: 'outline',
       paid: 'default',
       denied: 'destructive',
+      awaiting_payment: 'secondary',
     } as const;
 
     const labels = {
@@ -543,6 +568,7 @@ const Admin = () => {
       requested: 'Prašoma',
       paid: 'Apmokėta',
       denied: 'Atmesta',
+      awaiting_payment: 'Laukiama apmokėjimo',
     } as const;
 
     const colors = {
@@ -553,7 +579,39 @@ const Admin = () => {
       denied: 'bg-red-100 text-red-800 border-red-300',
       completed: 'bg-gray-100 text-gray-800 border-gray-300',
       pending: 'bg-gray-100 text-gray-800 border-gray-300',
+      awaiting_payment: 'bg-orange-100 text-orange-800 border-orange-300',
     } as const;
+
+    const statusOptions = [
+      { value: 'awaiting_payment', label: 'Laukiama apmokėjimo' },
+      { value: 'confirmed', label: 'Patvirtinta' },
+      { value: 'cancelled', label: 'Atšaukta' },
+      { value: 'completed', label: 'Baigta' },
+    ];
+
+    if (clickable && reservationId) {
+      return (
+        <Select value={status} onValueChange={(value) => handleStatusChange(reservationId, value)}>
+          <SelectTrigger className="h-auto w-auto border-0 p-0 hover:bg-transparent">
+            <SelectValue asChild>
+              <Badge 
+                variant={variants[status as keyof typeof variants] || 'secondary'}
+                className={`${colors[status as keyof typeof colors] || ''} cursor-pointer hover:opacity-80`}
+              >
+                {labels[status as keyof typeof labels] || status}
+              </Badge>
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {statusOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    }
 
     return (
       <Badge 
@@ -798,7 +856,7 @@ const Admin = () => {
                                   )}
                                 </div>
                               </TableCell>
-                              <TableCell>{getStatusBadge(reservation.status)}</TableCell>
+                              <TableCell>{getStatusBadge(reservation.status, reservation.id, true)}</TableCell>
                              <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
                                <TableCell>
                                  <div className="flex gap-2 flex-wrap">
@@ -884,7 +942,7 @@ const Admin = () => {
                                </div>
                              </div>
                              <div className="flex-shrink-0 ml-2">
-                               {getStatusBadge(reservation.status)}
+                               {getStatusBadge(reservation.status, reservation.id, true)}
                              </div>
                            </div>
                            
