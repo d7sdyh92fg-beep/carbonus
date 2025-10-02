@@ -12,6 +12,8 @@ import { Edit, Save, X, FileText, Image, User, Calendar, Car, CreditCard, Link a
 import { format } from 'date-fns';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DriverLicenseUpload } from './DriverLicenseUpload';
+import { DigitalSignature } from './DigitalSignature';
 
 interface Customer {
   id: string;
@@ -32,6 +34,7 @@ interface Reservation {
   status: string;
   created_at: string;
   driver_license_url?: string;
+  driver_license_back_url?: string;
   customers: Customer;
   fuel_level_pickup?: string;
   fuel_level_return?: string;
@@ -66,6 +69,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
   const [signature, setSignature] = useState<ContractSignature | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState<any[]>([]);
+  const [driverLicenseUrls, setDriverLicenseUrls] = useState({ front: '', back: '' });
   
   const [editForm, setEditForm] = useState({
     first_name: '',
@@ -106,6 +110,10 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         condition_pickup: reservation.condition_pickup || '',
         condition_return: reservation.condition_return || '',
         return_notes: reservation.return_notes || '',
+      });
+      setDriverLicenseUrls({
+        front: reservation.driver_license_url || '',
+        back: reservation.driver_license_back_url || '',
       });
       fetchSignature();
       fetchCars();
@@ -195,6 +203,66 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       setSignature(data);
     } catch (error: any) {
       console.error('Error fetching signature:', error);
+    }
+  };
+
+  const handleDriverLicenseUpload = async (urls: { front: string; back: string }) => {
+    if (!reservation) return;
+    
+    try {
+      const { error } = await supabase
+        .from('reservations')
+        .update({
+          driver_license_url: urls.front,
+          driver_license_back_url: urls.back,
+        })
+        .eq('id', reservation.id);
+
+      if (error) throw error;
+
+      setDriverLicenseUrls(urls);
+      toast({
+        title: "Sėkmingai išsaugota",
+        description: "Vairuotojo pažymėjimo nuotraukos išsaugotos",
+      });
+
+      onUpdate();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko išsaugoti nuotraukų: " + error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSignature = async (signatureData: string) => {
+    if (!reservation) return;
+    
+    try {
+      const { error } = await supabase
+        .from('contract_signatures')
+        .insert({
+          reservation_id: reservation.id,
+          signature_data: signatureData,
+          signed_by: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Parašas išsaugotas",
+        description: "Skaitmeninis parašas sėkmingai išsaugotas",
+      });
+
+      fetchSignature();
+      onUpdate();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko išsaugoti parašo: " + error.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -564,58 +632,73 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
             </CardContent>
           </Card>
 
-          {/* Driver License */}
-          {reservation.driver_license_url && (
-            <Card>
+          {/* Documents and Signature */}
+          {(reservation.status === 'paid' || reservation.status === 'confirmed') && (
+            <Card className="lg:col-span-2">
               <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Image className="h-5 w-5" />
-                  <CardTitle className="text-lg">Vairuotojo pažymėjimas</CardTitle>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    <CardTitle className="text-lg">Dokumentai ir parašas</CardTitle>
+                  </div>
+                  <div className="flex gap-2">
+                    {driverLicenseUrls.front && driverLicenseUrls.back && (
+                      <Badge variant="outline" className="bg-green-50 text-green-700">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Pažymėjimas įkeltas
+                      </Badge>
+                    )}
+                    {signature && (
+                      <Badge variant="outline" className="bg-green-50 text-green-700">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Parašas gautas
+                      </Badge>
+                    )}
+                  </div>
                 </div>
+                <CardDescription>
+                  Įkelkite vairuotojo pažymėjimo abi puses ir gautus skaitmeninį parašą
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="w-full">
-                  <img
-                    src={reservation.driver_license_url}
-                    alt="Vairuotojo pažymėjimas"
-                    className="w-full max-w-md mx-auto rounded-lg border shadow-sm"
+              <CardContent className="space-y-6">
+                {/* Driver License Upload */}
+                <div className="space-y-3">
+                  <Label className="text-base font-semibold">Vairuotojo pažymėjimas</Label>
+                  <DriverLicenseUpload
+                    onUpload={handleDriverLicenseUpload}
+                    uploadedUrls={driverLicenseUrls}
                   />
+                </div>
+
+                <Separator />
+
+                {/* Digital Signature */}
+                <div className="space-y-3">
+                  <Label className="text-base font-semibold">Skaitmeninis parašas</Label>
+                  {signature ? (
+                    <div className="space-y-4">
+                      <div className="w-full border rounded-lg p-4 bg-background">
+                        <img
+                          src={signature.signature_data}
+                          alt="Skaitmeninis parašas"
+                          className="max-w-full h-auto mx-auto"
+                        />
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        <p><strong>Pasirašė:</strong> {signature.signed_by}</p>
+                        <p><strong>Data:</strong> {format(new Date(signature.signed_at), 'yyyy-MM-dd HH:mm')}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <DigitalSignature
+                      onSign={handleSignature}
+                      customerName={`${reservation.customers.first_name} ${reservation.customers.last_name}`}
+                    />
+                  )}
                 </div>
               </CardContent>
             </Card>
           )}
-
-          {/* Digital Signature */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                <CardTitle className="text-lg">Skaitmeninis parašas</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {signature ? (
-                <div className="space-y-4">
-                  <div className="w-full border rounded-lg p-4 bg-white">
-                    <img
-                      src={signature.signature_data}
-                      alt="Skaitmeninis parašas"
-                      className="max-w-full h-auto mx-auto"
-                    />
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    <p><strong>Pasirašė:</strong> {signature.signed_by}</p>
-                    <p><strong>Data:</strong> {format(new Date(signature.signed_at), 'yyyy-MM-dd HH:mm')}</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p>Parašas nerastas</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
         </div>
 
         {/* Payment Actions */}
