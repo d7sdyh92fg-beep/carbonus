@@ -10,6 +10,7 @@ const corsHeaders = {
 interface PaymentRequest {
   reservationId: string;
   amount: number;
+  depositAmount?: number;
   currency: string;
   customerEmail: string; 
   customerName: string;
@@ -27,6 +28,7 @@ serve(async (req) => {
     const { 
       reservationId, 
       amount, 
+      depositAmount = 0,
       currency = 'eur', 
       customerEmail, 
       customerName,
@@ -34,7 +36,7 @@ serve(async (req) => {
       paymentType 
     }: PaymentRequest = await req.json();
 
-    console.log('Creating Stripe payment session:', { reservationId, amount, paymentType });
+    console.log('Creating Stripe payment session:', { reservationId, amount, depositAmount, paymentType });
 
     // Initialize Stripe
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
@@ -60,30 +62,44 @@ serve(async (req) => {
       ? `Full payment for ${carName} rental`
       : `Advance payment for ${carName} rental`;
 
-    // Create a payment session
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      line_items: [
-        {
-          price_data: {
-            currency: currency,
-            product_data: { 
-              name: description,
-              description: `Reservation ID: ${reservationId}`,
-            },
-            unit_amount: Math.round(amount * 100), // Convert to cents
+    // Prepare line items
+    const lineItems = [
+      {
+        price_data: {
+          currency: currency,
+          product_data: { 
+            name: description,
+            description: `Reservation ID: ${reservationId}`,
           },
-          quantity: 1,
+          unit_amount: Math.round(amount * 100), // Convert to cents
         },
-      ],
+        quantity: 1,
+      },
+    ];
+
+    // Create a payment session with setup mode if deposit is required
+    const sessionConfig: any = {
+      customer: customerId,
+      line_items: lineItems,
       mode: "payment",
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&reservation_id=${reservationId}`,
       cancel_url: `${origin}/payment-canceled?reservation_id=${reservationId}`,
       metadata: {
         reservationId: reservationId,
         paymentType: paymentType,
+        depositAmount: depositAmount.toString(),
       },
-    });
+    };
+
+    // If deposit is required, add setup for future payment (pre-auth)
+    if (depositAmount > 0) {
+      sessionConfig.payment_intent_data = {
+        setup_future_usage: 'off_session',
+        description: `Rental payment + €${depositAmount} deposit hold for ${carName}`,
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     console.log('Stripe session created:', session.id);
 

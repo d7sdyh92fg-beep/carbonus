@@ -62,12 +62,13 @@ export default function ReservationReview() {
     setCorporateData(prev => ({ ...prev, [name]: value }));
   };
 
-  const processStripePayment = async (reservationId: string, amount: number) => {
+  const processStripePayment = async (reservationId: string, amount: number, depositAmount: number) => {
     try {
       const { data, error } = await supabase.functions.invoke('create-stripe-payment', {
         body: {
           reservationId,
           amount,
+          depositAmount,
           currency: 'eur',
           customerEmail: formData.email,
           customerName: `${formData.firstName} ${formData.lastName}`,
@@ -193,7 +194,7 @@ export default function ReservationReview() {
 
       // Process payment only if online payment
       if (paymentMethod === 'online') {
-        await processStripePayment(reservation.id, paymentAmount);
+        await processStripePayment(reservation.id, paymentAmount, depositAmount);
       } else {
         // For in-person payment, just show success and redirect
         toast({
@@ -243,7 +244,7 @@ export default function ReservationReview() {
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
   const depositAmount = 200;
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
-  const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : (totalPrice + depositAmount);
+  const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
   const remainingBalance = paymentMethod === 'pay_at_counter' ? totalPrice - dailyRate : 0;
 
   return (
@@ -506,25 +507,20 @@ export default function ReservationReview() {
 
               <Separator className="my-4" />
 
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span>Užstatas (grąžinamas)</span>
-                  <span>{depositAmount.toFixed(2)} €</span>
-                </div>
+              <div className="flex justify-between font-bold text-lg mb-2">
+                <span>Suma</span>
+                <span className="text-primary">{totalPrice.toFixed(2)} €</span>
               </div>
-
-              <Separator className="my-4" />
-
-              <div className="flex justify-between font-bold text-lg mb-6">
-                <span>Bendra suma</span>
-                <span className="text-primary">{(totalPrice + depositAmount).toFixed(2)} €</span>
-              </div>
+              
+              <p className="text-xs text-muted-foreground mb-6">
+                + užstatas €{depositAmount.toFixed(2)} (rezervuojamas, nemokami)
+              </p>
 
               {/* Additional Information */}
               <div className="space-y-4">
                 <div className="bg-muted/30 p-3 rounded-md">
                   <p className="text-xs text-muted-foreground">
-                    * Užstatas €200 grąžinamas po automobilio grąžinimo
+                    Užstatas €200 bus rezervuotas jūsų kortelėje (pre-autorizacija), bet nebus nurašytas. Rezervacija bus automatiškai atšaukta po automobilio grąžinimo.
                   </p>
                 </div>
                 
