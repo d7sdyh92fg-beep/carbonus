@@ -332,6 +332,7 @@ export type Database = {
       }
       reservations: {
         Row: {
+          additional_services: Json | null
           cancellation_deadline: string | null
           car_id: string
           car_name: string
@@ -370,6 +371,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          additional_services?: Json | null
           cancellation_deadline?: string | null
           car_id: string
           car_name: string
@@ -408,6 +410,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          additional_services?: Json | null
           cancellation_deadline?: string | null
           car_id?: string
           car_name?: string

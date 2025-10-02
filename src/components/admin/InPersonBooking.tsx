@@ -10,13 +10,15 @@ import { Calendar } from '@/components/ui/calendar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { lt } from 'date-fns/locale';
-import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle } from 'lucide-react';
+import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { DigitalSignature } from './DigitalSignature';
+import { AdditionalService } from '@/contexts/BookingContext';
 
 interface Customer {
   firstName: string;
@@ -87,8 +89,76 @@ const getPricingTier = (days: number): string => {
   return '1-3 dienos: €50/dieną';
 };
 
+const availableServices: AdditionalService[] = [
+  {
+    id: 'additional-driver',
+    title: 'Papildomas vairuotojas',
+    description: 'Galimybė nuomoti automobilį su papildomu vairuotoju',
+    price: 4.01,
+    unit: 'perDay',
+    icon: Users,
+  },
+  {
+    id: 'abroad-zone3',
+    title: 'Naudojimas užsienyje - Zona 3',
+    description: 'Rusija, Baltarusija, Ukraina, Moldavija',
+    price: 500,
+    unit: 'oneTime',
+    icon: Map,
+  },
+  {
+    id: 'abroad-zone2',
+    title: 'Naudojimas užsienyje - Zona 2',
+    description: 'Lenkija, Čekija, Slovakija, Vengrija, Rumunija',
+    price: 300,
+    unit: 'oneTime',
+    icon: Map,
+  },
+  {
+    id: 'abroad-zone1',
+    title: 'Naudojimas užsienyje - Zona 1',
+    description: 'Latvija, Estija',
+    price: 150,
+    unit: 'oneTime',
+    icon: Map,
+  },
+  {
+    id: 'roadside-assistance',
+    title: 'Pagalba kelyje 24/7',
+    description: 'Visą parą veikianti pagalba kelyje Lietuvoje',
+    price: 15,
+    unit: 'oneTime',
+    icon: Navigation,
+  },
+  {
+    id: 'tire-glass-protection',
+    title: 'Padangų ir stiklų apsauga',
+    description: 'Papildoma apsauga padangoms ir stiklams',
+    price: 5.5,
+    unit: 'perDay',
+    icon: Shield,
+  },
+  {
+    id: 'baby-seat',
+    title: 'Kūdikio kėdutė (0-13kg)',
+    description: 'Kūdikio kėdutė iki 13 kg svorio',
+    price: 3,
+    unit: 'perDay',
+    icon: Baby,
+  },
+  {
+    id: 'child-seat',
+    title: 'Vaikiška kėdutė (9-36kg)',
+    description: 'Vaikiška kėdutė nuo 9 iki 36 kg svorio',
+    price: 3,
+    unit: 'perDay',
+    icon: UserCircle,
+  },
+];
+
 export function InPersonBooking() {
-  const [step, setStep] = useState<'details' | 'documents' | 'payment' | 'complete'>('details');
+  const [step, setStep] = useState<'details' | 'services' | 'documents' | 'payment' | 'complete'>('details');
+  const [selectedServices, setSelectedServices] = useState<AdditionalService[]>([]);
   const [customer, setCustomer] = useState<Customer>({
     firstName: '',
     lastName: '',
@@ -125,15 +195,27 @@ export function InPersonBooking() {
   const calculateTotal = () => {
     if (!booking.startDate || !booking.endDate) return 0;
     
+    let total = 0;
+    
     if (useCustomPricing) {
-      const rental = parseFloat(customRentalPrice) || 0;
-      return rental;
+      total = parseFloat(customRentalPrice) || 0;
+    } else {
+      const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
+      const dailyRate = getDailyRate(days);
+      total = days * dailyRate;
     }
     
-    const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
-    const dailyRate = getDailyRate(days);
-    const rentalCost = days * dailyRate;
-    return rentalCost;
+    // Add services cost
+    const days = getRentalDays();
+    selectedServices.forEach(service => {
+      if (service.unit === 'perDay') {
+        total += service.price * days;
+      } else {
+        total += service.price;
+      }
+    });
+    
+    return total;
   };
   
   const getRentalCost = () => {
@@ -178,6 +260,8 @@ export function InPersonBooking() {
         toast.error('Prašome užpildyti visus privalomius laukus');
         return;
       }
+      setStep('services');
+    } else if (step === 'services') {
       setStep('documents');
     } else if (step === 'documents') {
       if (!driverLicenseUrls.front || !contractSigned) {
@@ -188,6 +272,17 @@ export function InPersonBooking() {
     } else if (step === 'payment') {
       handleCompleteBooking();
     }
+  };
+
+  const toggleService = (service: AdditionalService) => {
+    setSelectedServices(prev => {
+      const exists = prev.find(s => s.id === service.id);
+      if (exists) {
+        return prev.filter(s => s.id !== service.id);
+      } else {
+        return [...prev, service];
+      }
+    });
   };
 
   const handleCompleteBooking = async () => {
@@ -248,6 +343,7 @@ export function InPersonBooking() {
           custom_rental_price: useCustomPricing ? rentalCost : null,
           custom_deposit_amount: useCustomPricing ? depositAmount : null,
           pricing_notes: useCustomPricing ? pricingNotes : null,
+          additional_services: selectedServices.length > 0 ? JSON.stringify(selectedServices) : null,
         })
         .select()
         .single();
@@ -304,6 +400,7 @@ export function InPersonBooking() {
       representativeEmail: '',
     });
     setBooking({ carId: '', carName: '', startDate: null, endDate: null, dailyRate: 0 });
+    setSelectedServices([]);
     setDriverLicenseUrls({});
     setContractSigned(false);
     setSignatureData('');
@@ -348,14 +445,16 @@ export function InPersonBooking() {
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2">
           {[
             { key: 'details', label: 'Rezervacijos duomenys', shortLabel: 'Duomenys', icon: FileText },
+            { key: 'services', label: 'Paslaugos', shortLabel: 'Paslaugos', icon: Package },
             { key: 'documents', label: 'Dokumentai', shortLabel: 'Dokumentai', icon: Upload },
             { key: 'payment', label: 'Mokėjimas', shortLabel: 'Mokėjimas', icon: CreditCard }
           ].map(({ key, label, shortLabel, icon: Icon }, index) => (
             <div key={key} className="flex items-center flex-1">
               <div className={`rounded-full p-2 sm:p-3 lg:p-4 flex-shrink-0 ${
                 step === key ? 'bg-primary text-primary-foreground' : 
-                (step === 'documents' && key === 'details') ||
-                (step === 'payment' && (key === 'details' || key === 'documents'))
+                (step === 'services' && key === 'details') ||
+                (step === 'documents' && (key === 'details' || key === 'services')) ||
+                (step === 'payment' && (key === 'details' || key === 'services' || key === 'documents'))
                   ? 'bg-primary text-primary-foreground' :
                 'bg-muted text-muted-foreground'
               }`}>
@@ -365,7 +464,7 @@ export function InPersonBooking() {
                 <span className="sm:hidden">{shortLabel}</span>
                 <span className="hidden sm:inline">{label}</span>
               </span>
-              {index < 2 && (
+              {index < 3 && (
                 <div className="hidden sm:block w-8 lg:w-16 h-px bg-muted mx-3 lg:mx-6 flex-shrink-0" />
               )}
             </div>
@@ -716,6 +815,81 @@ export function InPersonBooking() {
         </div>
       )}
 
+      {step === 'services' && (
+        <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle className="text-lg sm:text-xl">Pasirinkite papildomas paslaugas</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-4">
+                {availableServices.map((service) => {
+                  const isSelected = selectedServices.find(s => s.id === service.id);
+                  const Icon = service.icon;
+                  const servicePrice = service.unit === 'perDay' 
+                    ? service.price * getRentalDays() 
+                    : service.price;
+                  
+                  return (
+                    <div key={service.id} className="flex items-start justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-start gap-3 flex-1">
+                        <div className="p-2 rounded-lg bg-primary/10">
+                          <Icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium text-base mb-1">{service.title}</div>
+                          <div className="text-sm text-muted-foreground mb-2">{service.description}</div>
+                          <div className="text-sm font-medium text-primary">
+                            €{servicePrice.toFixed(2)}
+                            {service.unit === 'perDay' && ` (€${service.price}/dieną × ${getRentalDays()} d.)`}
+                            {service.unit === 'oneTime' && ' (vienkartinis)'}
+                          </div>
+                        </div>
+                      </div>
+                      <Switch
+                        checked={!!isSelected}
+                        onCheckedChange={() => toggleService(service)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+
+              {selectedServices.length > 0 && (
+                <div className="mt-6 p-4 bg-muted rounded-lg border-2">
+                  <div className="space-y-2">
+                    <div className="font-medium text-base mb-3">Pasirinktos paslaugos:</div>
+                    {selectedServices.map((service) => {
+                      const servicePrice = service.unit === 'perDay' 
+                        ? service.price * getRentalDays() 
+                        : service.price;
+                      return (
+                        <div key={service.id} className="flex justify-between text-sm">
+                          <span>{service.title}</span>
+                          <span className="font-medium">€{servicePrice.toFixed(2)}</span>
+                        </div>
+                      );
+                    })}
+                    <Separator className="my-2" />
+                    <div className="flex justify-between font-bold text-base">
+                      <span>Paslaugų suma:</span>
+                      <span>
+                        €{selectedServices.reduce((total, service) => {
+                          const price = service.unit === 'perDay' 
+                            ? service.price * getRentalDays() 
+                            : service.price;
+                          return total + price;
+                        }, 0).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {step === 'documents' && (
         <div className="space-y-4 sm:space-y-6 lg:space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
@@ -774,6 +948,23 @@ export function InPersonBooking() {
                   <span>Nuomos kaina:</span>
                   <span className="font-medium">€{getRentalCost()}</span>
                 </div>
+                {selectedServices.length > 0 && (
+                  <>
+                    <Separator />
+                    <div className="text-sm font-medium">Papildomos paslaugos:</div>
+                    {selectedServices.map((service) => {
+                      const servicePrice = service.unit === 'perDay' 
+                        ? service.price * getRentalDays() 
+                        : service.price;
+                      return (
+                        <div key={service.id} className="flex justify-between text-sm text-muted-foreground">
+                          <span>{service.title}</span>
+                          <span>€{servicePrice.toFixed(2)}</span>
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
                 <Separator />
                 <div className="flex justify-between font-bold text-xl">
                   <span>Iš viso:</span>
@@ -821,7 +1012,8 @@ export function InPersonBooking() {
         <Button
           variant="outline"
           onClick={() => {
-            if (step === 'documents') setStep('details');
+            if (step === 'services') setStep('details');
+            else if (step === 'documents') setStep('services');
             else if (step === 'payment') setStep('documents');
           }}
           disabled={step === 'details'}
