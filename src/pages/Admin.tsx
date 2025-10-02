@@ -126,8 +126,6 @@ const Admin = () => {
   const { toast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [editingReservation, setEditingReservation] = useState<Reservation | null>(null);
   const [showCarCalendar, setShowCarCalendar] = useState(false);
   const [selectedCar, setSelectedCar] = useState<{id: string, name: string} | null>(null);
   const [showReservationReview, setShowReservationReview] = useState(false);
@@ -355,60 +353,6 @@ const Admin = () => {
     });
   };
 
-  const updateReservation = async () => {
-    if (!editingReservation) return;
-
-    try {
-      // Get current reservation to check if status changed
-      const { data: currentReservation } = await supabase
-        .from('reservations')
-        .select('status, *, customers(*)')
-        .eq('id', editingReservation.id)
-        .single();
-
-      const { error } = await supabase
-        .from('reservations')
-        .update({
-          start_date: editingReservation.start_date,
-          end_date: editingReservation.end_date,
-          status: editingReservation.status,
-        })
-        .eq('id', editingReservation.id);
-
-      if (error) throw error;
-
-      // Send email if status changed
-      if (currentReservation && currentReservation.status !== editingReservation.status) {
-        await supabase.functions.invoke('send-status-email', {
-          body: {
-            reservationId: editingReservation.id,
-            customerEmail: currentReservation.customers.email,
-            customerName: `${currentReservation.customers.first_name} ${currentReservation.customers.last_name}`,
-            carName: editingReservation.car_name,
-            startDate: format(new Date(editingReservation.start_date), 'yyyy-MM-dd'),
-            endDate: format(new Date(editingReservation.end_date), 'yyyy-MM-dd'),
-            totalAmount: editingReservation.total_amount,
-            status: editingReservation.status
-          }
-        });
-      }
-
-      toast({
-        title: "Sėkmingai atnaujinta",
-        description: "Rezervacija buvo atnaujinta.",
-      });
-
-      setShowEditDialog(false);
-      setEditingReservation(null);
-      fetchReservations();
-    } catch (error: any) {
-      toast({
-        title: "Klaida",
-        description: "Nepavyko atnaujinti rezervacijos: " + error.message,
-        variant: "destructive",
-      });
-    }
-  };
 
   const approveReservation = async (id: string) => {
     try {
@@ -504,10 +448,6 @@ const Admin = () => {
     }
   };
 
-  const handleEditReservation = (reservation: Reservation) => {
-    setEditingReservation(reservation);
-    setShowEditDialog(true);
-  };
 
   const handleCarClick = (car: { id: string; name: string }) => {
     setSelectedCar(car);
@@ -902,13 +842,6 @@ const Admin = () => {
                                    >
                                      <DollarSign className="h-4 w-4" />
                                    </Button>
-                                   <Button
-                                     variant="outline"
-                                     size="sm"
-                                     onClick={() => handleEditReservation(reservation)}
-                                   >
-                                     <Edit className="h-4 w-4" />
-                                   </Button>
                                   {reservation.status === 'requested' && (
                                     <>
                                       <Button
@@ -1021,15 +954,6 @@ const Admin = () => {
                                  <DollarSign className="h-3 w-3 mr-1" />
                                  Kaina
                                </Button>
-                               <Button
-                                 variant="outline"
-                                 size="sm"
-                                 onClick={() => handleEditReservation(reservation)}
-                                 className="text-xs"
-                               >
-                                 <Edit className="h-3 w-3 mr-1" />
-                                 Redaguoti
-                               </Button>
                               {reservation.status === 'requested' && (
                                 <>
                                   <Button
@@ -1101,70 +1025,6 @@ const Admin = () => {
         </div>
       </main>
       
-      {/* Edit Reservation Dialog */}
-      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="max-w-md mx-3 sm:mx-auto">
-          <DialogHeader>
-            <DialogTitle className="text-base sm:text-lg">Redaguoti rezervaciją</DialogTitle>
-            <DialogDescription className="text-sm">
-              Atnaujinkite rezervacijos informaciją.
-            </DialogDescription>
-          </DialogHeader>
-          
-          {editingReservation && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label className="text-sm">Statusas</Label>
-                <Select 
-                  value={editingReservation.status} 
-                  onValueChange={(value) => setEditingReservation({ ...editingReservation, status: value })}
-                >
-                  <SelectTrigger className="h-10">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="requested">Prašoma</SelectItem>
-                    <SelectItem value="confirmed">Patvirtinta</SelectItem>
-                    <SelectItem value="denied">Atmesta</SelectItem>
-                    <SelectItem value="pending">Laukiama</SelectItem>
-                    <SelectItem value="cancelled">Atšaukta</SelectItem>
-                    <SelectItem value="completed">Baigta</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label className="text-sm">Pradžios data</Label>
-                <Input
-                  type="date"
-                  value={editingReservation.start_date}
-                  onChange={(e) => setEditingReservation({ ...editingReservation, start_date: e.target.value })}
-                  className="h-10"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label className="text-sm">Pabaigos data</Label>
-                <Input
-                  type="date"
-                  value={editingReservation.end_date}
-                  onChange={(e) => setEditingReservation({ ...editingReservation, end_date: e.target.value })}
-                  className="h-10"
-                />
-              </div>
-            </div>
-          )}
-          
-          <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
-            <Button variant="outline" onClick={() => setShowEditDialog(false)} className="h-10">
-              Atšaukti
-            </Button>
-            <Button onClick={updateReservation} className="h-10">
-              Atnaujinti rezervaciją
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Car Management Modal */}
       {selectedCar && (
