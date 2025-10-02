@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp, FileText, DollarSign } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, TrendingUp, FileText, DollarSign, History } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarManagementModal from '@/components/admin/CarManagementModal';
@@ -111,6 +111,8 @@ interface Reservation {
   pricing_notes?: string;
   status: string;
   created_at: string;
+  updated_at: string;
+  returned_at?: string;
   driver_license_url?: string;
   customers: {
     id: string;
@@ -515,6 +517,15 @@ const Admin = () => {
     }
   };
 
+  // Filter reservations
+  const activeReservations = reservations.filter(r => 
+    ['pending', 'confirmed', 'paid', 'awaiting_payment', 'requested'].includes(r.status)
+  );
+  
+  const completedReservations = reservations.filter(r => 
+    r.status === 'completed'
+  );
+
   const getStatusBadge = (status: string, reservationId?: string, clickable: boolean = false) => {
     const variants = {
       pending: 'secondary',
@@ -623,11 +634,16 @@ const Admin = () => {
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
           <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-4 gap-1 h-auto p-1 bg-muted rounded-lg">
+            <TabsList className="grid grid-cols-5 gap-1 h-auto p-1 bg-muted rounded-lg">
               <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Skydelis</span>
                 <span className="sm:hidden text-[10px]">Duomenys</span>
+              </TabsTrigger>
+              <TabsTrigger value="history" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <History className="h-4 w-4" />
+                <span className="hidden sm:inline">Istorija</span>
+                <span className="sm:hidden text-[10px]">Istorija</span>
               </TabsTrigger>
               <TabsTrigger value="in-person" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <Users className="h-4 w-4" />
@@ -655,8 +671,8 @@ const Admin = () => {
                     <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-lg sm:text-2xl font-bold">{reservations.length}</div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">Visos rezervacijos</p>
+                    <div className="text-lg sm:text-2xl font-bold">{activeReservations.length}</div>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">Aktyvios rezervacijos</p>
                   </CardContent>
                 </Card>
                 
@@ -762,9 +778,9 @@ const Admin = () => {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <BarChart3 className="h-5 w-5" />
-                      Rezervacijų valdymas
+                      Aktyvios rezervacijos
                     </CardTitle>
-                    <CardDescription>Visos automobilių rezervacijos sistemoje</CardDescription>
+                    <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
                   </div>
                 </CardHeader>
                  
@@ -783,9 +799,16 @@ const Admin = () => {
                             <TableHead>Sukurta</TableHead>
                             <TableHead>Veiksmai</TableHead>
                          </TableRow>
-                       </TableHeader>
-                       <TableBody>
-                         {reservations.map((reservation) => (
+                        </TableHeader>
+                        <TableBody>
+                          {activeReservations.length === 0 ? (
+                            <TableRow>
+                              <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                                Nėra aktyvių rezervacijų
+                              </TableCell>
+                            </TableRow>
+                          ) : (
+                            activeReservations.map((reservation) => (
                            <TableRow key={reservation.id}>
                              <TableCell>
                                <div>
@@ -878,15 +901,21 @@ const Admin = () => {
                                   </Button>
                                 </div>
                               </TableCell>
-                           </TableRow>
-                         ))}
-                       </TableBody>
+                            </TableRow>
+                          ))
+                          )}
+                        </TableBody>
                      </Table>
                    </div>
 
-                   {/* Mobile Card View */}
-                   <div className="lg:hidden space-y-3">
-                     {reservations.map((reservation) => (
+                    {/* Mobile Card View */}
+                    <div className="lg:hidden space-y-3">
+                      {activeReservations.length === 0 ? (
+                        <div className="text-center py-8 text-muted-foreground">
+                          Nėra aktyvių rezervacijų
+                        </div>
+                      ) : (
+                        activeReservations.map((reservation) => (
                        <Card key={reservation.id} className="p-4">
                          <div className="space-y-3">
                            <div className="flex items-start justify-between">
@@ -997,18 +1026,209 @@ const Admin = () => {
                                 Ištrinti
                               </Button>
                             </div>
-                         </div>
-                       </Card>
-                      ))}
-                    </div>
-                   {reservations.length === 0 && (
-                     <div className="text-center py-8 text-muted-foreground">
-                       Rezervacijų nėra
+                          </div>
+                        </Card>
+                       ))
+                       )}
                      </div>
-                   )}
-                 </CardContent>
-               </Card>
-             </TabsContent>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* History Tab */}
+              <TabsContent value="history" className="space-y-4 sm:space-y-6 lg:space-y-8">
+                {/* History Stats Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Baigtos</CardTitle>
+                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-lg sm:text-2xl font-bold">{completedReservations.length}</div>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">Iš viso baigtų</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Pajamos</CardTitle>
+                      <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-lg sm:text-2xl font-bold text-green-600">
+                        €{completedReservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0).toFixed(2)}
+                      </div>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">Iš baigtų nuomų</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Populiariausias</CardTitle>
+                      <Car className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-lg sm:text-2xl font-bold truncate">
+                        {(() => {
+                          const carCounts = completedReservations.reduce((acc, r) => {
+                            acc[r.car_name] = (acc[r.car_name] || 0) + 1;
+                            return acc;
+                          }, {} as Record<string, number>);
+                          const topCar = Object.entries(carCounts).sort(([, a], [, b]) => b - a)[0];
+                          return topCar ? topCar[0] : 'N/A';
+                        })()}
+                      </div>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">Dažniausiai nuomojamas</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Completed Reservations */}
+                <Card>
+                  <CardHeader>
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <History className="h-5 w-5" />
+                        Rezervacijų istorija
+                      </CardTitle>
+                      <CardDescription>Visos baigtos rezervacijos</CardDescription>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    {/* Desktop Table View */}
+                    <div className="hidden lg:block">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Klientas</TableHead>
+                            <TableHead>Automobilis</TableHead>
+                            <TableHead>Datos</TableHead>
+                            <TableHead>Dienų</TableHead>
+                            <TableHead>Suma</TableHead>
+                            <TableHead>Baigta</TableHead>
+                            <TableHead>Veiksmai</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {completedReservations.length === 0 ? (
+                            <TableRow>
+                              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                                Nėra baigtų rezervacijų
+                              </TableCell>
+                            </TableRow>
+                          ) : (
+                            completedReservations.map((reservation) => (
+                              <TableRow key={reservation.id}>
+                                <TableCell>
+                                  <div>
+                                    <div className="font-medium">
+                                      {reservation.customers.first_name} {reservation.customers.last_name}
+                                    </div>
+                                    <div className="text-sm text-muted-foreground">
+                                      {reservation.customers.email}
+                                    </div>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="font-medium">{reservation.car_name}</TableCell>
+                                <TableCell>
+                                  <div className="text-sm">
+                                    <div>{reservation.start_date}</div>
+                                    <div>{reservation.end_date}</div>
+                                  </div>
+                                </TableCell>
+                                <TableCell>{reservation.rental_days}</TableCell>
+                                <TableCell>
+                                  <div className="font-semibold">€{reservation.total_amount}</div>
+                                </TableCell>
+                                <TableCell>
+                                  {reservation.returned_at 
+                                    ? format(new Date(reservation.returned_at), 'yyyy-MM-dd')
+                                    : format(new Date(reservation.updated_at), 'yyyy-MM-dd')
+                                  }
+                                </TableCell>
+                                <TableCell>
+                                  <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() => handleReviewReservation(reservation)}
+                                  >
+                                    <FileText className="h-4 w-4" />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          )}
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="lg:hidden space-y-3">
+                      {completedReservations.length === 0 ? (
+                        <div className="text-center py-8 text-muted-foreground">
+                          Nėra baigtų rezervacijų
+                        </div>
+                      ) : (
+                        completedReservations.map((reservation) => (
+                          <Card key={reservation.id} className="p-4">
+                            <div className="space-y-3">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-sm truncate">
+                                    {reservation.customers.first_name} {reservation.customers.last_name}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground truncate">
+                                    {reservation.customers.email}
+                                  </div>
+                                </div>
+                                {getStatusBadge(reservation.status)}
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-2 text-xs">
+                                <div>
+                                  <span className="text-muted-foreground">Automobilis:</span>
+                                  <div className="font-medium">{reservation.car_name}</div>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Dienų:</span>
+                                  <div className="font-medium">{reservation.rental_days}</div>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Suma:</span>
+                                  <div className="font-semibold">€{reservation.total_amount}</div>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Baigta:</span>
+                                  <div className="font-medium">
+                                    {reservation.returned_at 
+                                      ? format(new Date(reservation.returned_at), 'yyyy-MM-dd')
+                                      : format(new Date(reservation.updated_at), 'yyyy-MM-dd')
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex flex-wrap gap-2 pt-2 border-t">
+                                <Button
+                                  variant="secondary"
+                                  size="sm"
+                                  onClick={() => handleReviewReservation(reservation)}
+                                  className="text-xs flex-1"
+                                >
+                                  <FileText className="h-3 w-3 mr-1" />
+                                  Peržiūrėti
+                                </Button>
+                              </div>
+                            </div>
+                          </Card>
+                        ))
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
           <TabsContent value="in-person">
             <InPersonBooking />
