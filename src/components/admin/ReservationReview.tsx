@@ -629,7 +629,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
           </Card>
 
           {/* Documents and Signature */}
-          {(reservation.status === 'paid' || reservation.status === 'confirmed') && (
+          {(reservation.status === 'paid' || reservation.status === 'confirmed' || reservation.status === 'completed') && (
             <Card className="lg:col-span-2">
               <CardHeader>
                 <div className="flex items-center justify-between">
