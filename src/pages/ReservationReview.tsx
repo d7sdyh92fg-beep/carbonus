@@ -178,10 +178,22 @@ export default function ReservationReview() {
         status: paymentMethod === 'pay_at_counter' ? 'confirmed' : 'awaiting_payment',
         payment_method: paymentMethod,
         payment_provider: paymentProvider,
-        pricing_notes: JSON.stringify({
-          insurance: bookingData.insurance,
-          services: bookingData.services,
-        }),
+        pricing_notes: (() => {
+          const notes: string[] = [];
+          
+          if (bookingData.insurance) {
+            notes.push(`Draudimas: ${bookingData.insurance.title} (€${bookingData.insurance.pricePerDay}/diena, Išskaita €${bookingData.insurance.excess})`);
+          }
+          
+          if (bookingData.services && bookingData.services.length > 0) {
+            const servicesList = bookingData.services
+              .map(s => `${s.title} (€${s.price}${s.unit === 'perDay' ? '/diena' : ''})`)
+              .join(', ');
+            notes.push(`Papildomos paslaugos: ${servicesList}`);
+          }
+          
+          return notes.length > 0 ? notes.join('. ') : null;
+        })(),
       };
 
       const { data: reservation, error: reservationError } = await supabase
