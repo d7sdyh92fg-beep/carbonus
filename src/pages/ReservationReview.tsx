@@ -243,7 +243,7 @@ export default function ReservationReview() {
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
   const depositAmount = 200;
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
-  const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
+  const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : (totalPrice + depositAmount);
   const remainingBalance = paymentMethod === 'pay_at_counter' ? totalPrice - dailyRate : 0;
 
   return (
@@ -506,20 +506,25 @@ export default function ReservationReview() {
 
               <Separator className="my-4" />
 
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span>Užstatas (grąžinamas)</span>
+                  <span>{depositAmount.toFixed(2)} €</span>
+                </div>
+              </div>
+
+              <Separator className="my-4" />
+
               <div className="flex justify-between font-bold text-lg mb-6">
-                <span>Viso</span>
-                <span className="text-primary">{totalPrice.toFixed(2)} €</span>
+                <span>Bendra suma</span>
+                <span className="text-primary">{(totalPrice + depositAmount).toFixed(2)} €</span>
               </div>
 
               {/* Additional Information */}
               <div className="space-y-4">
                 <div className="bg-muted/30 p-3 rounded-md">
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-medium">Užstatas (grąžinamas)</span>
-                    <span className="font-medium">{depositAmount.toFixed(2)} €</span>
-                  </div>
                   <p className="text-xs text-muted-foreground">
-                    Papildomas 200€ užstatas bus įtrauktas ir grąžintas per kelias dienas po transporto priemonės grąžinimo.
+                    * Užstatas €200 grąžinamas po automobilio grąžinimo
                   </p>
                 </div>
                 
