@@ -62,12 +62,12 @@ export default function ReservationReview() {
     setCorporateData(prev => ({ ...prev, [name]: value }));
   };
 
-  const processStripePayment = async (reservationId: string, amount: number, depositAmount: number) => {
+  const processStripePayment = async (reservationId: string, rentalAmount: number, depositAmount: number) => {
     try {
       const { data, error } = await supabase.functions.invoke('create-stripe-payment', {
         body: {
           reservationId,
-          amount,
+          rentalAmount,
           depositAmount,
           currency: 'eur',
           customerEmail: formData.email,

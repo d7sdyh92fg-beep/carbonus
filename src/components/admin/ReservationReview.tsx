@@ -141,6 +141,39 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     setIsEditing(false);
   };
 
+  const handleDepositAction = async (action: 'release' | 'capture-partial' | 'capture-full', amount?: number) => {
+    if (!reservation) return;
+    
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('manage-deposit', {
+        body: {
+          reservationId: reservation.id,
+          action,
+          amount
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Sėkmė",
+        description: `Užstatas ${action === 'release' ? 'paleistas' : 'nuskaitytas'}`,
+      });
+      
+      onUpdate();
+      onClose();
+    } catch (error: any) {
+      toast({
+        title: "Klaida",
+        description: "Nepavyko atlikti operacijos: " + error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleMarkAsPaid = async () => {
     if (!reservation) return;
     
@@ -439,7 +472,50 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         </div>
 
         {/* Payment Actions */}
-        {(reservation.status === 'pending' || reservation.status === 'confirmed') && (
+        {reservation.status === 'confirmed' && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                <CardTitle className="text-lg">Užstato valdymas</CardTitle>
+              </div>
+              <CardDescription>
+                Valdykite užstato pre-autorizaciją po automobilio grąžinimo
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button 
+                onClick={() => handleDepositAction('release')} 
+                disabled={isLoading}
+                variant="outline"
+                className="w-full"
+              >
+                Paleisti užstatą (be žalos)
+              </Button>
+              <Button 
+                onClick={() => {
+                  const amount = prompt('Įveskite sumą (€):');
+                  if (amount) handleDepositAction('capture-partial', parseFloat(amount));
+                }}
+                disabled={isLoading}
+                variant="outline"
+                className="w-full"
+              >
+                Nuskaityti dalinai (žala/valymas)
+              </Button>
+              <Button 
+                onClick={() => handleDepositAction('capture-full')}
+                disabled={isLoading}
+                variant="destructive"
+                className="w-full"
+              >
+                Nuskaityti visą užstatą
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+        
+        {(reservation.status === 'pending') && (
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">

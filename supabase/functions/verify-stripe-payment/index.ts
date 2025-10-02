@@ -39,53 +39,46 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     console.log('Stripe session status:', session.payment_status);
 
-    if (session.payment_status === 'paid') {
-      let depositPaymentIntentId = null;
+    // Check if payment was authorized (not yet captured with manual capture)
+    const isAuthorized = session.payment_status === 'paid' || session.status === 'complete';
+    
+    if (isAuthorized && session.payment_intent) {
+      console.log('Payment authorized, processing capture...');
       
-      // Create deposit pre-authorization if deposit amount is specified
+      const rentalAmount = session.metadata?.rentalAmount ? parseFloat(session.metadata.rentalAmount) : 0;
       const depositAmount = session.metadata?.depositAmount ? parseFloat(session.metadata.depositAmount) : 0;
       
-      if (depositAmount > 0 && session.payment_intent) {
-        try {
-          // Retrieve payment method from the successful payment
-          const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent as string);
+      try {
+        // Retrieve the payment intent
+        const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent as string);
+        console.log('PaymentIntent status:', paymentIntent.status, 'Amount:', paymentIntent.amount);
+        
+        // Capture only the rental amount, leaving deposit as pre-authorized
+        if (paymentIntent.status === 'requires_capture') {
+          const captureAmount = Math.round(rentalAmount * 100); // Rental amount in cents
+          console.log('Capturing rental amount:', captureAmount, 'cents');
           
-          if (paymentIntent.payment_method) {
-            // Create a new payment intent with manual capture for deposit hold
-            const depositIntent = await stripe.paymentIntents.create({
-              amount: Math.round(depositAmount * 100), // Convert to cents
-              currency: 'eur',
-              customer: session.customer as string,
-              payment_method: paymentIntent.payment_method as string,
-              off_session: true,
-              confirm: true,
-              capture_method: 'manual', // Pre-authorization - won't be charged unless captured
-              description: `Deposit hold for reservation ${reservationId}`,
-              metadata: {
-                reservationId: reservationId,
-                type: 'deposit_hold'
-              }
-            });
-            
-            depositPaymentIntentId = depositIntent.id;
-            console.log('Deposit pre-authorization created:', depositPaymentIntentId);
-          }
-        } catch (depositError) {
-          console.error('Error creating deposit hold:', depositError);
-          // Continue even if deposit hold fails - we can handle manually
+          const capturedIntent = await stripe.paymentIntents.capture(paymentIntent.id, {
+            amount_to_capture: captureAmount,
+          });
+          
+          console.log('Rental amount captured successfully:', capturedIntent.id);
+          console.log('Remaining authorized (deposit):', depositAmount);
+        } else {
+          console.log('PaymentIntent not in capturable state:', paymentIntent.status);
         }
+      } catch (captureError) {
+        console.error('Error capturing rental amount:', captureError);
+        throw new Error(`Failed to capture rental payment: ${captureError.message}`);
       }
 
       // Update reservation status in database
       const updateData: any = { 
-        status: session.metadata?.paymentType === 'full' ? 'confirmed' : 'awaiting_payment',
+        status: 'confirmed', // Payment captured successfully
         payment_transaction_id: session.payment_intent as string,
+        deposit_payment_intent_id: session.payment_intent as string, // Same PaymentIntent holds the deposit
         updated_at: new Date().toISOString()
       };
-      
-      if (depositPaymentIntentId) {
-        updateData.deposit_payment_intent_id = depositPaymentIntentId;
-      }
 
       const { data, error } = await supabase
         .from('reservations')
@@ -100,11 +93,14 @@ serve(async (req) => {
 
       console.log('Reservation updated successfully:', data);
 
+      const rentalAmount = session.metadata?.rentalAmount ? parseFloat(session.metadata.rentalAmount) : 0;
+      const depositAmount = session.metadata?.depositAmount ? parseFloat(session.metadata.depositAmount) : 0;
+      
       return new Response(JSON.stringify({ 
         success: true, 
-        paymentStatus: 'paid',
-        paymentType: session.metadata?.paymentType || 'unknown',
-        depositHoldCreated: !!depositPaymentIntentId,
+        paymentStatus: 'captured',
+        rentalAmountCaptured: rentalAmount,
+        depositAmountHeld: depositAmount,
         reservation: data?.[0]
       }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

@@ -41,3 +41,6 @@ verify_jwt = false
 
 [functions.send-feedback-request]
 verify_jwt = false
+
+[functions.manage-deposit]
+verify_jwt = false

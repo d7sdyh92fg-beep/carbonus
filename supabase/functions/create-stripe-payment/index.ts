@@ -9,8 +9,8 @@ const corsHeaders = {
 
 interface PaymentRequest {
   reservationId: string;
-  amount: number;
-  depositAmount?: number;
+  rentalAmount: number;
+  depositAmount: number;
   currency: string;
   customerEmail: string; 
   customerName: string;
@@ -27,8 +27,8 @@ serve(async (req) => {
   try {
     const { 
       reservationId, 
-      amount, 
-      depositAmount = 0,
+      rentalAmount,
+      depositAmount,
       currency = 'eur', 
       customerEmail, 
       customerName,
@@ -36,7 +36,14 @@ serve(async (req) => {
       paymentType 
     }: PaymentRequest = await req.json();
 
-    console.log('Creating Stripe payment session:', { reservationId, amount, depositAmount, paymentType });
+    const totalAmount = rentalAmount + depositAmount;
+    console.log('Creating Stripe payment session:', { 
+      reservationId, 
+      rentalAmount, 
+      depositAmount, 
+      totalAmount, 
+      paymentType 
+    });
 
     // Initialize Stripe
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
@@ -58,46 +65,45 @@ serve(async (req) => {
     }
 
     const origin = req.headers.get("origin") || "https://carbonus.lt";
-    const description = paymentType === 'full' 
-      ? `Full payment for ${carName} rental`
-      : `Advance payment for ${carName} rental`;
 
-    // Prepare line items
+    // Create single line item for total amount (rental + deposit)
     const lineItems = [
       {
         price_data: {
           currency: currency,
           product_data: { 
-            name: description,
-            description: `Reservation ID: ${reservationId}`,
+            name: `Automobilių nuoma - ${carName}`,
+            description: `Nuomos kaina: €${rentalAmount.toFixed(2)}, Užstatas (rezervuojamas): €${depositAmount.toFixed(2)}`,
           },
-          unit_amount: Math.round(amount * 100), // Convert to cents
+          unit_amount: Math.round(totalAmount * 100), // Total amount in cents
         },
         quantity: 1,
       },
     ];
 
-    // Create a payment session with setup mode if deposit is required
+    // Create checkout session with manual capture for total amount
     const sessionConfig: any = {
       customer: customerId,
       line_items: lineItems,
       mode: "payment",
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&reservation_id=${reservationId}`,
       cancel_url: `${origin}/payment-canceled?reservation_id=${reservationId}`,
+      payment_intent_data: {
+        capture_method: 'manual', // Don't capture immediately - we'll capture only rental amount
+        metadata: {
+          reservationId: reservationId,
+          rentalAmount: rentalAmount.toString(),
+          depositAmount: depositAmount.toString(),
+          paymentType: paymentType,
+        },
+      },
       metadata: {
         reservationId: reservationId,
         paymentType: paymentType,
+        rentalAmount: rentalAmount.toString(),
         depositAmount: depositAmount.toString(),
       },
     };
-
-    // If deposit is required, add setup for future payment (pre-auth)
-    if (depositAmount > 0) {
-      sessionConfig.payment_intent_data = {
-        setup_future_usage: 'off_session',
-        description: `Rental payment + €${depositAmount} deposit hold for ${carName}`,
-      };
-    }
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
