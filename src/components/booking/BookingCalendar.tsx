@@ -273,9 +273,6 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                     <span className="font-semibold">Suma:</span>
                     <span className="text-2xl font-bold text-primary">€{getTotalPrice()}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    + užstatas €200 (rezervuojamas, nemokami)
-                  </p>
                 </div>
               </div>
 
