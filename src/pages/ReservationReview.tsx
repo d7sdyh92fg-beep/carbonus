@@ -519,14 +519,10 @@ export default function ReservationReview() {
 
               <Separator className="my-4" />
 
-              <div className="flex justify-between font-bold text-lg mb-2">
+              <div className="flex justify-between font-bold text-lg mb-6">
                 <span>Suma</span>
                 <span className="text-primary">{totalPrice.toFixed(2)} €</span>
               </div>
-              
-              <p className="text-xs text-muted-foreground mb-6">
-                + užstatas €{depositAmount.toFixed(2)} (rezervuojamas, nemokami)
-              </p>
 
               {/* Additional Information */}
               <div className="space-y-4">
