@@ -558,14 +558,10 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="requested">Prašoma</SelectItem>
+                    <SelectItem value="pending">Laukiama</SelectItem>
                     <SelectItem value="confirmed">Patvirtinta</SelectItem>
                     <SelectItem value="paid">Apmokėta</SelectItem>
-                    <SelectItem value="denied">Atmesta</SelectItem>
-                    <SelectItem value="cancelled">Atšaukta</SelectItem>
                     <SelectItem value="completed">Baigta</SelectItem>
-                    <SelectItem value="pending">Laukiama</SelectItem>
-                    <SelectItem value="awaiting_payment">Laukiama apmokėjimo</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
