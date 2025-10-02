@@ -60,6 +60,35 @@ const getCarImage = (car: any) => {
   const imageKey = nameToImageMap[car.name] || 'bmw3Clean';
   return imageMap[imageKey] || car.image_url || '';
 };
+
+// Function to parse pricing notes from JSON to readable text
+const parsePricingNotes = (notes: string | null | undefined): string => {
+  if (!notes) return '';
+  
+  // If it's already readable text (not JSON), return as-is
+  if (!notes.trim().startsWith('{')) return notes;
+  
+  try {
+    const parsed = JSON.parse(notes);
+    const notesList: string[] = [];
+    
+    if (parsed.insurance) {
+      notesList.push(`Draudimas: ${parsed.insurance.title} (€${parsed.insurance.pricePerDay}/d, Išskaita €${parsed.insurance.excess})`);
+    }
+    
+    if (parsed.services && Array.isArray(parsed.services) && parsed.services.length > 0) {
+      const servicesList = parsed.services
+        .map((s: any) => `${s.title} (€${s.price}${s.unit === 'perDay' ? '/d' : ''})`)
+        .join(', ');
+      notesList.push(`Paslaugos: ${servicesList}`);
+    }
+    
+    return notesList.join('. ');
+  } catch (e) {
+    console.error('Failed to parse pricing_notes:', e);
+    return notes; // Return original if parsing fails
+  }
+};
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
 import { InPersonBooking } from "@/components/admin/InPersonBooking";
 import { ReservationReview } from "@/components/admin/ReservationReview";
@@ -763,8 +792,8 @@ const Admin = () => {
                                     </Badge>
                                   )}
                                   {(reservation as any).pricing_notes && (
-                                    <div className="text-xs text-muted-foreground max-w-[150px] truncate">
-                                      {(reservation as any).pricing_notes}
+                                    <div className="text-xs text-muted-foreground max-w-[150px] truncate" title={parsePricingNotes((reservation as any).pricing_notes)}>
+                                      {parsePricingNotes((reservation as any).pricing_notes)}
                                     </div>
                                   )}
                                 </div>

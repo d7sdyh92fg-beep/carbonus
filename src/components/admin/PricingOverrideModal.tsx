@@ -56,7 +56,33 @@ export const PricingOverrideModal: React.FC<PricingOverrideModalProps> = ({
         reservation.deposit_amount?.toString() || 
         '200'
       );
-      setPricingNotes(reservation.pricing_notes || '');
+      
+      // Parse pricing_notes if it's JSON, otherwise use as-is
+      let notesText = reservation.pricing_notes || '';
+      if (notesText.trim().startsWith('{')) {
+        try {
+          const parsed = JSON.parse(notesText);
+          const notes: string[] = [];
+          
+          if (parsed.insurance) {
+            notes.push(`Draudimas: ${parsed.insurance.title} (€${parsed.insurance.pricePerDay}/diena, Išskaita €${parsed.insurance.excess})`);
+          }
+          
+          if (parsed.services && Array.isArray(parsed.services) && parsed.services.length > 0) {
+            const servicesList = parsed.services
+              .map((s: any) => `${s.title} (€${s.price}${s.unit === 'perDay' ? '/diena' : ''})`)
+              .join(', ');
+            notes.push(`Papildomos paslaugos: ${servicesList}`);
+          }
+          
+          notesText = notes.join('. ');
+        } catch (e) {
+          // If parsing fails, use the original text
+          console.error('Failed to parse pricing_notes:', e);
+        }
+      }
+      
+      setPricingNotes(notesText);
     }
   }, [reservation]);
 
