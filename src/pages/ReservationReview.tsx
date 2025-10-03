@@ -28,7 +28,6 @@ export default function ReservationReview() {
     lastName: '',
     email: '',
     phone: '',
-    refundAccount: '',
   });
 
   const [isCorporate, setIsCorporate] = useState(false);
@@ -121,7 +120,6 @@ export default function ReservationReview() {
             first_name: formData.firstName,
             last_name: formData.lastName,
             phone: formData.phone,
-            refund_account_number: formData.refundAccount || null,
             is_corporate: isCorporate,
             company_name: isCorporate ? corporateData.companyName : null,
             company_code: isCorporate ? corporateData.companyCode : null,
@@ -139,7 +137,6 @@ export default function ReservationReview() {
             last_name: formData.lastName,
             email: formData.email,
             phone: formData.phone,
-            refund_account_number: formData.refundAccount || null,
             is_corporate: isCorporate,
             company_name: isCorporate ? corporateData.companyName : null,
             company_code: isCorporate ? corporateData.companyCode : null,
@@ -161,7 +158,7 @@ export default function ReservationReview() {
         return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
       }, 0);
       const totalAmount = bookingData.basePrice + insuranceTotal + servicesTotal;
-      const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalAmount;
+      const depositAmount = 200;
 
       // Create reservation
       const reservationData = {
@@ -173,8 +170,8 @@ export default function ReservationReview() {
         rental_days: bookingData.rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
-        deposit_amount: 200,
-        total_amount: paymentAmount,
+        deposit_amount: depositAmount,
+        total_amount: totalAmount,
         status: paymentMethod === 'pay_at_counter' ? 'confirmed' : 'awaiting_payment',
         payment_method: paymentMethod,
         payment_provider: paymentProvider,
@@ -206,7 +203,7 @@ export default function ReservationReview() {
 
       // Process payment only if online payment
       if (paymentMethod === 'online') {
-        await processStripePayment(reservation.id, paymentAmount, depositAmount);
+        await processStripePayment(reservation.id, totalAmount, depositAmount);
       } else {
         // For in-person payment, just show success and redirect
         toast({
@@ -231,7 +228,7 @@ export default function ReservationReview() {
             rentalDays: bookingData.rentalDays,
             totalAmount: totalAmount,
             depositAmount: 200,
-            advancePayment: paymentAmount,
+            advancePayment: totalAmount,
           }
         });
       } catch (emailError) {
@@ -255,9 +252,6 @@ export default function ReservationReview() {
   }, 0);
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
   const depositAmount = 200;
-  const dailyRate = bookingData.basePrice / bookingData.rentalDays;
-  const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
-  const remainingBalance = paymentMethod === 'pay_at_counter' ? totalPrice - dailyRate : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -276,10 +270,10 @@ export default function ReservationReview() {
             </Button>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">
-                {paymentMethod === 'pay_at_counter' ? 'Rezervacijos mokestis' : 'Viso mokėti'}
+                Viso mokėti
               </p>
               <p className="text-2xl font-bold text-primary">
-                {paymentAmount.toFixed(2)} €
+                {totalPrice.toFixed(2)} €
               </p>
             </div>
           </div>
@@ -358,16 +352,6 @@ export default function ReservationReview() {
                       required
                     />
                   </div>
-                  <div className="col-span-2">
-                    <Label htmlFor="refundAccount">Sąskaitos numeris (grąžinimams)</Label>
-                    <Input
-                      id="refundAccount"
-                      name="refundAccount"
-                      value={formData.refundAccount}
-                      onChange={handleInputChange}
-                      placeholder="LT..."
-                    />
-                  </div>
                 </div>
                 
                 {/* Corporate Information - shown when checkbox is checked */}
@@ -436,7 +420,7 @@ export default function ReservationReview() {
                     <Label htmlFor="pay_at_counter" className="cursor-pointer">
                       <span className="font-medium">Mokėjimas vietoje</span>
                       <span className="text-sm text-muted-foreground block">
-                        Rezervacijos mokestis: {(bookingData.basePrice / bookingData.rentalDays).toFixed(2)} € (1 dienos kaina)
+                        Sumokėsite atsiėmimo metu
                       </span>
                     </Label>
                   </div>
@@ -470,7 +454,7 @@ export default function ReservationReview() {
                 size="lg"
                 disabled={isSubmitting || !agreementAccepted}
               >
-                {isSubmitting ? 'Vykdoma...' : paymentMethod === 'pay_at_counter' ? `Rezervuoti (${paymentAmount.toFixed(2)} €)` : `Mokėti ${paymentAmount.toFixed(2)} €`}
+                {isSubmitting ? 'Vykdoma...' : paymentMethod === 'pay_at_counter' ? 'Rezervuoti' : `Mokėti ${totalPrice.toFixed(2)} €`}
               </Button>
             </form>
           </div>
@@ -530,33 +514,7 @@ export default function ReservationReview() {
                   <p className="text-xs text-muted-foreground">
                     Užstatas €200 bus rezervuotas jūsų kortelėje (pre-autorizacija), bet nebus nurašytas. Rezervacija bus automatiškai atšaukta po automobilio grąžinimo.
                   </p>
-                </div>
-                
-                {paymentMethod === 'pay_at_counter' && (
-                  <div className="bg-primary/5 border border-primary/20 p-4 rounded-md space-y-3">
-                    <p className="text-sm font-semibold text-primary">Mokėjimas vietoje</p>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Iš viso:</span>
-                        <span className="font-medium">{totalPrice.toFixed(2)} €</span>
-                      </div>
-                      <div className="flex justify-between text-primary">
-                        <span>Rezervacijos mokestis (1 diena):</span>
-                        <span className="font-semibold">-{paymentAmount.toFixed(2)} €</span>
-                      </div>
-                      <Separator />
-                      <div className="flex justify-between font-semibold">
-                        <span>Mokėti atsiėmimo metu:</span>
-                        <span className="text-primary">{remainingBalance.toFixed(2)} €</span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-xs text-muted-foreground">
-                      Rezervacijos mokestis užskaitomas kaip 1 dienos nuoma ir atimamas iš pilnos sumos
-                    </p>
-                  </div>
-                )}
+              </div>
               </div>
             </Card>
           </div>

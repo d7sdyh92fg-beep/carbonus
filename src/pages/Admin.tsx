@@ -372,8 +372,42 @@ const Admin = () => {
 
       if (error) throw error;
 
-      // Send confirmation email
+      // Generate PDF if it doesn't exist, then send confirmation email
       if (reservation) {
+        let contractPdfUrl = reservation.contract_pdf_url;
+        
+        // Generate PDF if not already generated
+        if (!contractPdfUrl) {
+          try {
+            const { data: pdfData } = await supabase.functions.invoke('generate-contract-pdf', {
+              body: {
+                reservationId: reservation.id,
+                customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+                customerEmail: reservation.customers.email,
+                customerPhone: reservation.customers.phone,
+                carName: reservation.car_name,
+                startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+                endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+                totalAmount: reservation.total_amount,
+                depositAmount: reservation.deposit_amount,
+              }
+            });
+            
+            if (pdfData?.contractUrl) {
+              contractPdfUrl = pdfData.contractUrl;
+              // Update reservation with PDF URL
+              await supabase
+                .from('reservations')
+                .update({ contract_pdf_url: contractPdfUrl })
+                .eq('id', id);
+            }
+          } catch (pdfError) {
+            console.error('Error generating PDF:', pdfError);
+            // Continue without PDF if generation fails
+          }
+        }
+        
+        // Send confirmation email with PDF
         await supabase.functions.invoke('send-status-email', {
           body: {
             reservationId: reservation.id,
@@ -384,7 +418,7 @@ const Admin = () => {
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
             status: 'confirmed',
-            contractPdfUrl: reservation.contract_pdf_url
+            contractPdfUrl: contractPdfUrl
           }
         });
       }
@@ -487,8 +521,41 @@ const Admin = () => {
 
       if (error) throw error;
 
-      // Send email notification for certain status changes
+      // Generate PDF and send email for confirmed status, or just send email for other statuses
       if (['confirmed', 'cancelled', 'completed'].includes(newStatus)) {
+        let contractPdfUrl = reservation.contract_pdf_url;
+        
+        // Generate PDF if confirming and PDF doesn't exist
+        if (newStatus === 'confirmed' && !contractPdfUrl) {
+          try {
+            const { data: pdfData } = await supabase.functions.invoke('generate-contract-pdf', {
+              body: {
+                reservationId: reservation.id,
+                customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+                customerEmail: reservation.customers.email,
+                customerPhone: reservation.customers.phone,
+                carName: reservation.car_name,
+                startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+                endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+                totalAmount: reservation.total_amount,
+                depositAmount: reservation.deposit_amount,
+              }
+            });
+            
+            if (pdfData?.contractUrl) {
+              contractPdfUrl = pdfData.contractUrl;
+              // Update reservation with PDF URL
+              await supabase
+                .from('reservations')
+                .update({ contract_pdf_url: contractPdfUrl })
+                .eq('id', reservationId);
+            }
+          } catch (pdfError) {
+            console.error('Error generating PDF:', pdfError);
+            // Continue without PDF if generation fails
+          }
+        }
+        
         await supabase.functions.invoke('send-status-email', {
           body: {
             reservationId: reservation.id,
@@ -499,7 +566,7 @@ const Admin = () => {
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
             status: newStatus,
-            contractPdfUrl: newStatus === 'confirmed' ? reservation.contract_pdf_url : undefined
+            contractPdfUrl: newStatus === 'confirmed' ? contractPdfUrl : undefined
           }
         });
       }
