@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -18,6 +19,7 @@ interface StatusEmailRequest {
   totalAmount: number;
   status: string;
   paymentTransactionId?: string;
+  contractPdfUrl?: string;
 }
 
 const getEmailContent = (data: StatusEmailRequest) => {
@@ -257,12 +259,50 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const emailResponse = await resend.emails.send({
+    // Prepare email options
+    const emailOptions: any = {
       from: "Carbonus <info@carbonus.lt>",
       to: [data.customerEmail],
       subject: emailContent.subject,
       html: emailContent.html,
-    });
+    };
+
+    // If status is confirmed and there's a contract PDF, attach it
+    if (data.status === 'confirmed' && data.contractPdfUrl) {
+      try {
+        const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+        const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Extract the file path from the URL
+        const urlParts = data.contractPdfUrl.split('/');
+        const fileName = urlParts[urlParts.length - 1];
+        
+        // Download the PDF from Supabase storage
+        const { data: pdfData, error: downloadError } = await supabase.storage
+          .from('contracts')
+          .download(`${data.reservationId}/${fileName}`);
+
+        if (!downloadError && pdfData) {
+          // Convert blob to base64
+          const arrayBuffer = await pdfData.arrayBuffer();
+          const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+          
+          emailOptions.attachments = [{
+            filename: `nuomos_sutartis_${data.reservationId}.pdf`,
+            content: base64Pdf,
+          }];
+          console.log("Contract PDF attached to confirmation email");
+        } else {
+          console.error("Error downloading PDF:", downloadError);
+        }
+      } catch (pdfError) {
+        console.error("Error processing PDF attachment:", pdfError);
+        // Continue sending email without attachment if PDF fails
+      }
+    }
+
+    const emailResponse = await resend.emails.send(emailOptions);
 
     console.log("Status email sent successfully:", emailResponse);
 

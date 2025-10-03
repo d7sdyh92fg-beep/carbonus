@@ -383,7 +383,8 @@ const Admin = () => {
             startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
-            status: 'confirmed'
+            status: 'confirmed',
+            contractPdfUrl: reservation.contract_pdf_url
           }
         });
       }
@@ -497,7 +498,8 @@ const Admin = () => {
             startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
-            status: newStatus
+            status: newStatus,
+            contractPdfUrl: newStatus === 'confirmed' ? reservation.contract_pdf_url : undefined
           }
         });
       }
