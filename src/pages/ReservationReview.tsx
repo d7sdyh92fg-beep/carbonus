@@ -202,8 +202,10 @@ export default function ReservationReview() {
 
       if (reservationError) throw reservationError;
 
-      // Process Stripe payment
-      await processStripePayment(reservation.id, paymentAmount, depositAmount);
+      // Process Stripe payment - for pay_at_counter, only charge 1 day rate (no deposit)
+      const stripeRentalAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
+      const stripeDepositAmount = paymentMethod === 'pay_at_counter' ? 0 : depositAmount;
+      await processStripePayment(reservation.id, stripeRentalAmount, stripeDepositAmount);
 
       // Send notification email
       try {
@@ -511,8 +513,11 @@ export default function ReservationReview() {
                 {paymentMethod === 'pay_at_counter' && (
                   <div className="bg-primary/5 border border-primary/20 p-4 rounded-md">
                     <p className="text-sm font-semibold text-primary mb-2">Mokėjimas vietoje</p>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Dabar mokėsite {dailyRate.toFixed(2)} € rezervacijos mokestį (1 dienos kaina).
+                    </p>
                     <p className="text-xs text-muted-foreground">
-                      Dabar mokėsite {dailyRate.toFixed(2)} € rezervacijos mokestį. Likusi suma ({(totalPrice - dailyRate).toFixed(2)} €) bus mokama automobilio atsiėmimo metu.
+                      Automobilio atsiėmimo metu mokėsite: {(totalPrice - dailyRate + depositAmount).toFixed(2)} € (likusi nuomos suma + užstatas).
                     </p>
                   </div>
                 )}
