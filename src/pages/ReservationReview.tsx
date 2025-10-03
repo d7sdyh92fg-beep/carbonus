@@ -159,6 +159,7 @@ export default function ReservationReview() {
       }, 0);
       const totalAmount = bookingData.basePrice + insuranceTotal + servicesTotal;
       const depositAmount = 200;
+      const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalAmount;
 
       // Create reservation
       const reservationData = {
@@ -172,7 +173,7 @@ export default function ReservationReview() {
         total_rental_cost: totalAmount,
         deposit_amount: depositAmount,
         total_amount: totalAmount,
-        status: paymentMethod === 'pay_at_counter' ? 'confirmed' : 'awaiting_payment',
+        status: 'awaiting_payment',
         payment_method: paymentMethod,
         payment_provider: paymentProvider,
         pricing_notes: (() => {
@@ -201,19 +202,8 @@ export default function ReservationReview() {
 
       if (reservationError) throw reservationError;
 
-      // Process payment only if online payment
-      if (paymentMethod === 'online') {
-        await processStripePayment(reservation.id, totalAmount, depositAmount);
-      } else {
-        // For in-person payment, just show success and redirect
-        toast({
-          title: 'Sėkmingai',
-          description: 'Rezervacija sukurta. Sumokėkite rezervacijos mokestį atsiėmimo metu.',
-        });
-        clearBooking();
-        navigate('/automobiliai');
-        return;
-      }
+      // Process Stripe payment
+      await processStripePayment(reservation.id, paymentAmount, depositAmount);
 
       // Send notification email
       try {
@@ -252,6 +242,8 @@ export default function ReservationReview() {
   }, 0);
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
   const depositAmount = 200;
+  const dailyRate = bookingData.basePrice / bookingData.rentalDays;
+  const displayAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
 
   return (
     <div className="min-h-screen bg-background">
@@ -270,10 +262,10 @@ export default function ReservationReview() {
             </Button>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">
-                Viso mokėti
+                {paymentMethod === 'pay_at_counter' ? 'Rezervacijos mokestis' : 'Viso mokėti'}
               </p>
               <p className="text-2xl font-bold text-primary">
-                {totalPrice.toFixed(2)} €
+                {displayAmount.toFixed(2)} €
               </p>
             </div>
           </div>
@@ -420,7 +412,7 @@ export default function ReservationReview() {
                     <Label htmlFor="pay_at_counter" className="cursor-pointer">
                       <span className="font-medium">Mokėjimas vietoje</span>
                       <span className="text-sm text-muted-foreground block">
-                        Sumokėsite atsiėmimo metu
+                        Rezervacijos mokestis: {(bookingData.basePrice / bookingData.rentalDays).toFixed(2)} € (1 dienos kaina)
                       </span>
                     </Label>
                   </div>
@@ -454,7 +446,7 @@ export default function ReservationReview() {
                 size="lg"
                 disabled={isSubmitting || !agreementAccepted}
               >
-                {isSubmitting ? 'Vykdoma...' : paymentMethod === 'pay_at_counter' ? 'Rezervuoti' : `Mokėti ${totalPrice.toFixed(2)} €`}
+                {isSubmitting ? 'Vykdoma...' : `Mokėti ${displayAmount.toFixed(2)} €`}
               </Button>
             </form>
           </div>
@@ -514,7 +506,16 @@ export default function ReservationReview() {
                   <p className="text-xs text-muted-foreground">
                     Užstatas €200 bus rezervuotas jūsų kortelėje (pre-autorizacija), bet nebus nurašytas. Rezervacija bus automatiškai atšaukta po automobilio grąžinimo.
                   </p>
-              </div>
+                </div>
+                
+                {paymentMethod === 'pay_at_counter' && (
+                  <div className="bg-primary/5 border border-primary/20 p-4 rounded-md">
+                    <p className="text-sm font-semibold text-primary mb-2">Mokėjimas vietoje</p>
+                    <p className="text-xs text-muted-foreground">
+                      Dabar mokėsite {dailyRate.toFixed(2)} € rezervacijos mokestį. Likusi suma ({(totalPrice - dailyRate).toFixed(2)} €) bus mokama automobilio atsiėmimo metu.
+                    </p>
+                  </div>
+                )}
               </div>
             </Card>
           </div>
