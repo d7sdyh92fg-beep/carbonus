@@ -27,25 +27,25 @@ const getEmailContent = (data: StatusEmailRequest) => {
   
   const templates = {
     confirmed: {
-      subject: "Rezervacija patvirtinta - Carbonus nuoma",
+      subject: "Jūsų rezervacija patvirtinta! - Carbonus",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #22c55e;">Jūsų rezervacija patvirtinta!</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Džiaugiamės pranešti, kad jūsų automobilio nuomos rezervacija buvo patvirtinta.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #22c55e; margin-bottom: 10px;">Jūsų rezervacija patvirtinta!</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Džiaugiamės pranešti, kad jūsų automobilio nuomos rezervacija buvo patvirtinta.</p>
           
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
-            <p><strong>Bendra suma:</strong> €${totalAmount}</p>
-            <p><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Rezervacijos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p style="margin: 8px 0;"><strong>Bendra suma:</strong> €${totalAmount}</p>
+            <p style="margin: 8px 0;"><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
           </div>
           
-          <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>📋 Kas toliau?</strong></p>
-            <p style="margin: 10px 0 0 0;">
+          <div style="background: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <p style="margin: 0 0 10px 0;"><strong>📋 Kas toliau?</strong></p>
+            <p style="margin: 5px 0; line-height: 1.6;">
               • Prieš pasiėmimą su jumis susisieks mūsų darbuotojai<br>
               • Pasiruoškite vairuotojo pažymėjimą ir asmens dokumentą<br>
               • Automobilis bus paruoštas nurodytą dieną<br>
@@ -53,8 +53,11 @@ const getEmailContent = (data: StatusEmailRequest) => {
             </p>
           </div>
           
-          <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
+          <p style="margin: 20px 0 5px 0;">Jei turite klausimų, susisiekite su mumis:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -65,27 +68,30 @@ const getEmailContent = (data: StatusEmailRequest) => {
     partial_payment: {
       subject: "Išankstinis mokėjimas gautas - Carbonus",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #22c55e;">Išankstinis mokėjimas gautas!</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Gavome jūsų išankstinį mokėjimą. Jūsų rezervacija patvirtinta!</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #22c55e; margin-bottom: 10px;">Išankstinis mokėjimas gautas!</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Gavome jūsų išankstinį mokėjimą. Jūsų rezervacija patvirtinta!</p>
           
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
-            <p><strong>Bendra suma:</strong> €${totalAmount}</p>
-            <p><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Rezervacijos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p style="margin: 8px 0;"><strong>Bendra suma:</strong> €${totalAmount}</p>
+            <p style="margin: 8px 0;"><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
           </div>
           
-          <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
-            <p style="margin: 0;"><strong>💰 Likusi suma</strong></p>
-            <p style="margin: 10px 0 0 0;">Likusi suma bus apmokėta pasiimant automobilį. Galėsite mokėti kortele arba grynaisiais.</p>
+          <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <p style="margin: 0 0 10px 0;"><strong>💰 Likusi suma</strong></p>
+            <p style="margin: 5px 0; line-height: 1.6;">Likusi suma bus apmokėta pasiimant automobilį. Galėsite mokėti kortele arba grynaisiais.</p>
           </div>
           
-          <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
+          <p style="margin: 20px 0 5px 0;">Jei turite klausimų, susisiekite su mumis:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -96,22 +102,25 @@ const getEmailContent = (data: StatusEmailRequest) => {
     awaiting_payment: {
       subject: "Užbaikite rezervaciją - Carbonus",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #3b82f6;">Laukiame jūsų mokėjimo</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Jūsų rezervacija sukurta, bet laukiame mokėjimo patvirtinimo.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #3b82f6; margin-bottom: 10px;">Laukiame jūsų mokėjimo</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Jūsų rezervacija sukurta, bet laukiame mokėjimo patvirtinimo.</p>
           
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
-            <p><strong>Suma:</strong> €${totalAmount}</p>
-            <p><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Rezervacijos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p style="margin: 8px 0;"><strong>Suma:</strong> €${totalAmount}</p>
+            <p style="margin: 8px 0;"><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
           </div>
           
-          <p>Jei įvyko mokėjimo klaida arba norite pakeisti mokėjimo būdą, susisiekite su mumis:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
+          <p style="margin: 20px 0;">Jei įvyko mokėjimo klaida arba norite pakeisti mokėjimo būdą, susisiekite su mumis:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -122,21 +131,24 @@ const getEmailContent = (data: StatusEmailRequest) => {
     payment_failed: {
       subject: "Mokėjimo klaida - Carbonus",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #ef4444;">Mokėjimas nepavyko</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Deja, jūsų mokėjimas už rezervaciją nepavyko.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #ef4444; margin-bottom: 10px;">Mokėjimas nepavyko</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Deja, jūsų mokėjimas už rezervaciją nepavyko.</p>
           
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
-            <p><strong>Suma:</strong> €${totalAmount}</p>
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Rezervacijos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p style="margin: 8px 0;"><strong>Suma:</strong> €${totalAmount}</p>
           </div>
           
-          <p>Prašome susisiekti su mumis, kad galėtume padėti užbaigti rezervaciją:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 698 18 781</p>
+          <p style="margin: 20px 0;">Prašome susisiekti su mumis, kad galėtume padėti užbaigti rezervaciją:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -147,27 +159,30 @@ const getEmailContent = (data: StatusEmailRequest) => {
     paid: {
       subject: "Apmokėjimas gautas - Carbonus nuoma",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #22c55e;">Apmokėjimas sėkmingai gautas!</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Gavome jūsų apmokėjimą už automobilio nuomą. Dėkojame!</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #22c55e; margin-bottom: 10px;">Apmokėjimas sėkmingai gautas!</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Gavome jūsų apmokėjimą už automobilio nuomą. Dėkojame!</p>
           
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="margin-top: 0;">Rezervacijos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
-            <p><strong>Sumokėta:</strong> €${totalAmount}</p>
-            ${paymentTransactionId ? `<p><strong>Mokėjimo ID:</strong> ${paymentTransactionId}</p>` : ''}
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Rezervacijos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+            <p style="margin: 8px 0;"><strong>Sumokėta:</strong> €${totalAmount}</p>
+            ${paymentTransactionId ? `<p style="margin: 8px 0;"><strong>Mokėjimo ID:</strong> ${paymentTransactionId}</p>` : ''}
           </div>
           
-          <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Kas toliau?</strong></p>
-            <p style="margin: 10px 0 0 0;">Prieš nuomos pradžią su jumis susisieks mūsų darbuotojai ir suderins automobilio atsiėmimo detales.</p>
+          <div style="background: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <p style="margin: 0 0 10px 0;"><strong>📋 Kas toliau?</strong></p>
+            <p style="margin: 5px 0; line-height: 1.6;">Prieš nuomos pradžią su jumis susisieks mūsų darbuotojai ir suderins automobilio atsiėmimo detales.</p>
           </div>
           
-          <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
+          <p style="margin: 20px 0 5px 0;">Jei turite klausimų, susisiekite su mumis:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -178,23 +193,26 @@ const getEmailContent = (data: StatusEmailRequest) => {
     cancelled: {
       subject: "Rezervacija atšaukta - Carbonus nuoma",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #ef4444;">Jūsų rezervacija atšaukta</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Deja, jūsų automobilio nuomos rezervacija buvo atšaukta.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #ef4444; margin-bottom: 10px;">Jūsų rezervacija atšaukta</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Deja, jūsų automobilio nuomos rezervacija buvo atšaukta.</p>
           
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="margin-top: 0;">Atšauktos rezervacijos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Atšauktos rezervacijos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
           </div>
           
-          <p>Jei atšaukėte patys ir sumokėjote užstatą ar avansą, grąžinimo procesas bus pradėtas per 3-5 darbo dienas.</p>
-          <p>Jei rezervacija buvo atšaukta dėl mūsų administracijos sprendimo, su jumis susisieksime atskirai.</p>
+          <p style="margin: 20px 0; line-height: 1.6;">Jei atšaukėte patys ir sumokėjote užstatą ar avansą, grąžinimo procesas bus pradėtas per 3-5 darbo dienas.</p>
+          <p style="margin: 10px 0; line-height: 1.6;">Jei rezervacija buvo atšaukta dėl mūsų administracijos sprendimo, su jumis susisieksime atskirai.</p>
           
-          <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
+          <p style="margin: 20px 0 5px 0;">Jei turite klausimų, susisiekite su mumis:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
@@ -205,29 +223,31 @@ const getEmailContent = (data: StatusEmailRequest) => {
     completed: {
       subject: "Nuoma baigta - Dėkojame! - Carbonus",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #22c55e;">Dėkojame už pasirinktą Carbonus!</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Jūsų automobilio nuoma sėkmingai baigta. Tikimės, kad mūsų paslaugos patiko!</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #22c55e; margin-bottom: 10px;">Dėkojame už pasirinktą Carbonus!</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Jūsų automobilio nuoma sėkmingai baigta. Tikimės, kad mūsų paslaugos patiko!</p>
           
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="margin-top: 0;">Nuomos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos laikotarpis:</strong> ${startDate} - ${endDate}</p>
-            <p><strong>Bendra suma:</strong> €${totalAmount}</p>
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Nuomos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos laikotarpis:</strong> ${startDate} - ${endDate}</p>
+            <p style="margin: 8px 0;"><strong>Bendra suma:</strong> €${totalAmount}</p>
           </div>
           
-          <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Užstato grąžinimas</strong></p>
-            <p style="margin: 10px 0 0 0;">Jūsų užstatas bus grąžintas per 3-5 darbo dienas į jūsų nurodytą sąskaitą po automobilio apžiūros.</p>
+          <div style="background: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <p style="margin: 0 0 10px 0;"><strong>💳 Užstato grąžinimas</strong></p>
+            <p style="margin: 5px 0; line-height: 1.6;">Jūsų užstatas bus grąžintas per 3-5 darbo dienas į jūsų nurodytą sąskaitą po automobilio apžiūros.</p>
           </div>
           
-          <p>Būtume dėkingi už atsiliepimą apie mūsų paslaugas. Jūsų nuomonė mums labai svarbi!</p>
+          <p style="margin: 20px 0; line-height: 1.6;">Būtume dėkingi už atsiliepimą apie mūsų paslaugas. Jūsų nuomonė mums labai svarbi!</p>
+          <p style="margin: 10px 0; line-height: 1.6;">Tikimės vėl matyti jus tarp mūsų klientų!</p>
           
-          <p>Tikimės vėl matyti jus tarp mūsų klientų!</p>
-          
-          <p>Jei turite klausimų, susisiekite su mumis:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
+          <p style="margin: 20px 0 5px 0;">Jei turite klausimų, susisiekite su mumis:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Pagarbiai,<br>Carbonus komanda
