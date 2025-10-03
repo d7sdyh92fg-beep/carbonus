@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { PDFDocument, StandardFonts, rgb } from "npm:pdf-lib@1.17.1";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -52,15 +53,16 @@ const handler = async (req: Request): Promise<Response> => {
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     let signatureUrl: string | null = null;
+    let signatureBytes: Uint8Array | null = null;
     if (signatureData && signatureData.startsWith("data:image")) {
       try {
-        const bytes = dataUrlToUint8Array(signatureData);
+        signatureBytes = dataUrlToUint8Array(signatureData);
         const filePath = `signatures/${reservationId}.png`;
 
         // Upload signature PNG to private bucket 'contracts'
         const { error: uploadError } = await supabase.storage
           .from("contracts")
-          .upload(filePath, bytes, {
+          .upload(filePath, signatureBytes, {
             contentType: "image/png",
             upsert: true,
           });
@@ -152,6 +154,68 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
+    // Generate a simple PDF version of the contract and store it in Supabase Storage
+    let contractPath: string | null = null;
+    try {
+      const pdfDoc = await PDFDocument.create();
+      const page = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+      const title = 'CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS';
+      let y = 800;
+
+      page.drawText(title, { x: 40, y, size: 14, font: fontBold, color: rgb(0, 0, 0) });
+      y -= 24;
+      page.drawText(`Sutarties Nr.: ${reservationId}`, { x: 40, y, size: 11, font });
+      y -= 16;
+      page.drawText(`Data: ${new Date().toLocaleDateString('lt-LT')}`, { x: 40, y, size: 11, font });
+      y -= 28;
+
+      page.drawText('NUOMOS DUOMENYS', { x: 40, y, size: 12, font: fontBold });
+      y -= 18;
+      const rows = [
+        ['Klientas', customerName],
+        ['El. paštas', customerEmail],
+        ['Automobilis', carName],
+        ['Pradžios data', startDate],
+        ['Pabaigos data', endDate],
+        ['Bendra suma', `€${totalAmount}`],
+      ];
+      for (const [k, v] of rows) {
+        page.drawText(`${k}:`, { x: 40, y, size: 11, font: fontBold });
+        page.drawText(String(v), { x: 160, y, size: 11, font });
+        y -= 16;
+      }
+
+      y -= 12;
+      page.drawText('KLIENTO PARAŠAS', { x: 40, y, size: 12, font: fontBold });
+      y -= 18;
+      if (signatureBytes) {
+        try {
+          const png = await pdfDoc.embedPng(signatureBytes);
+          const pngDims = png.scale(0.5);
+          page.drawImage(png, { x: 40, y: y - pngDims.height, width: pngDims.width, height: pngDims.height });
+          y -= pngDims.height + 10;
+        } catch (_e) {
+          // continue without signature image
+        }
+      }
+
+      const pdfBytes = await pdfDoc.save();
+      const pdfFilePath = `${reservationId}/nuomos_sutartis_${reservationId}.pdf`;
+      const { error: pdfUploadError } = await supabase.storage
+        .from('contracts')
+        .upload(pdfFilePath, pdfBytes, { contentType: 'application/pdf', upsert: true });
+      if (!pdfUploadError) {
+        contractPath = pdfFilePath;
+      } else {
+        console.error('PDF upload failed:', pdfUploadError);
+      }
+    } catch (pdfErr) {
+      console.error('PDF generation failed:', pdfErr);
+    }
+
     // Emails in Lithuanian
     const emailPromises = [
       resend.emails.send({
@@ -208,7 +272,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Contract emails sent successfully");
 
     return new Response(
-      JSON.stringify({ success: true, message: "Contract generated and sent successfully" }),
+      JSON.stringify({ success: true, contractUrl: contractPath, message: "Contract generated and sent successfully" }),
       { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   } catch (error: any) {
