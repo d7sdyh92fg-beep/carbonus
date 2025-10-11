@@ -514,9 +514,18 @@ const Admin = () => {
         throw new Error('Reservation not found');
       }
 
+      // Prepare update data
+      const updateData: any = { status: newStatus };
+
+      // If status is being changed to cancelled, also mark as deleted (soft delete)
+      if (newStatus === 'cancelled') {
+        updateData.deleted_at = new Date().toISOString();
+        updateData.deleted_by = user?.id;
+      }
+
       const { error } = await supabase
         .from('reservations')
-        .update({ status: newStatus })
+        .update(updateData)
         .eq('id', reservationId);
 
       if (error) throw error;
@@ -573,7 +582,9 @@ const Admin = () => {
 
       toast({
         title: "Statusas atnaujintas",
-        description: `Rezervacijos statusas pakeistas į "${newStatus}". ${['confirmed', 'cancelled', 'completed'].includes(newStatus) ? 'El. paštas išsiųstas klientui.' : ''}`,
+        description: newStatus === 'cancelled' 
+          ? "Rezervacija atšaukta ir perkelta į šiukšlinę. El. paštas išsiųstas klientui."
+          : `Rezervacijos statusas pakeistas į "${newStatus}". ${['confirmed', 'completed'].includes(newStatus) ? 'El. paštas išsiųstas klientui.' : ''}`,
       });
 
       fetchReservations();
