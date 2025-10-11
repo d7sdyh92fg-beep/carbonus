@@ -18,7 +18,7 @@ export default function ReservationTerms() {
   const { toast } = useToast();
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
   const [hasAccepted, setHasAccepted] = useState(false);
-  const [showFullTerms, setShowFullTerms] = useState(false);
+  const [showFullTerms, setShowFullTerms] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -271,7 +271,7 @@ export default function ReservationTerms() {
                 id="terms-acceptance"
                 checked={hasAccepted}
                 onCheckedChange={(checked) => setHasAccepted(checked as boolean)}
-                disabled={!hasScrolledToBottom && showFullTerms}
+                disabled={!hasScrolledToBottom}
                 className="mt-1"
               />
               <div className="space-y-1 flex-1">
@@ -282,7 +282,7 @@ export default function ReservationTerms() {
                   Patvirtinu, kad susipažinau su nuomos sąlygomis ir sutartimi
                 </Label>
                 <p className="text-xs text-muted-foreground">
-                  {showFullTerms && !hasScrolledToBottom 
+                  {!hasScrolledToBottom 
                     ? 'Paskroluokite iki apačios, kad galėtumėte pažymėti šį laukelį'
                     : 'Pažymėkite šį laukelį, kad galėtumėte tęsti rezervaciją'}
                 </p>
@@ -333,7 +333,7 @@ export default function ReservationTerms() {
           <Button
             size="lg"
             onClick={handleContinue}
-            disabled={!hasAccepted || (showFullTerms && !hasScrolledToBottom)}
+            disabled={!hasAccepted || !hasScrolledToBottom}
             className="flex-1"
           >
             Sutinku ir tęsiu
