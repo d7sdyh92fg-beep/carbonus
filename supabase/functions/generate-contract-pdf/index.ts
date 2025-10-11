@@ -79,8 +79,7 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-    // Contract HTML (Lithuanian)
-    const contractHtml = `
+      const contractHtml = `
       <!DOCTYPE html>
       <html>
         <head>
@@ -110,8 +109,8 @@ const handler = async (req: Request): Promise<Response> => {
               <tr><th>Klientas</th><td>${customerName}</td></tr>
               <tr><th>El. paštas</th><td>${customerEmail}</td></tr>
               <tr><th>Automobilis</th><td>${carName}</td></tr>
-              <tr><th>Pradžios data</th><td>${startDate}</td></tr>
-              <tr><th>Pabaigos data</th><td>${endDate}</td></tr>
+              <tr><th>Paėmimo data ir laikas</th><td>${startDate} ${req.body?.pickupTime || '10:00'}</td></tr>
+              <tr><th>Grąžinimo data ir laikas</th><td>${endDate} ${req.body?.returnTime || '10:00'}</td></tr>
               <tr><th>Bendra suma</th><td>€${totalAmount}</td></tr>
             </table>
           </div>
@@ -178,8 +177,8 @@ const handler = async (req: Request): Promise<Response> => {
         ['Klientas', customerName],
         ['El. paštas', customerEmail],
         ['Automobilis', carName],
-        ['Pradžios data', startDate],
-        ['Pabaigos data', endDate],
+        ['Paėmimo data ir laikas', `${startDate} ${(req.body as any)?.pickupTime || '10:00'}`],
+        ['Grąžinimo data ir laikas', `${endDate} ${(req.body as any)?.returnTime || '10:00'}`],
         ['Bendra suma', `€${totalAmount}`],
       ];
       for (const [k, v] of rows) {

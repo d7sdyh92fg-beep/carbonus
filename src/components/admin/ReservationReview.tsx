@@ -29,6 +29,10 @@ interface Reservation {
   car_id: string;
   start_date: string;
   end_date: string;
+  pickup_date?: string;
+  pickup_time?: string;
+  return_date?: string;
+  return_time?: string;
   rental_days: number;
   total_amount: number;
   status: string;
@@ -78,6 +82,8 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     phone: '',
     start_date: '',
     end_date: '',
+    pickup_time: '',
+    return_time: '',
     status: '',
     car_id: '',
     car_name: '',
@@ -100,6 +106,8 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         phone: reservation.customers.phone,
         start_date: reservation.start_date,
         end_date: reservation.end_date,
+        pickup_time: reservation.pickup_time || '10:00:00',
+        return_time: reservation.return_time || '10:00:00',
         status: reservation.status,
         car_id: reservation.car_id,
         car_name: reservation.car_name,
@@ -163,6 +171,10 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         .update({
           start_date: editForm.start_date,
           end_date: editForm.end_date,
+          pickup_date: editForm.start_date,
+          pickup_time: editForm.pickup_time,
+          return_date: editForm.end_date,
+          return_time: editForm.return_time,
           rental_days: rentalDays,
           status: editForm.status,
           car_id: editForm.car_id,
@@ -600,11 +612,29 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label>Paėmimo laikas</Label>
+                  <Input
+                    type="time"
+                    value={editForm.pickup_time}
+                    onChange={(e) => setEditForm({ ...editForm, pickup_time: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
                   <Label>Pabaigos data</Label>
                   <Input
                     type="date"
                     value={editForm.end_date}
                     onChange={(e) => setEditForm({ ...editForm, end_date: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Grąžinimo laikas</Label>
+                  <Input
+                    type="time"
+                    value={editForm.return_time}
+                    onChange={(e) => setEditForm({ ...editForm, return_time: e.target.value })}
                   />
                 </div>
               </div>

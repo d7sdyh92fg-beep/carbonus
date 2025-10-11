@@ -34,6 +34,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
 }) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pickupTime, setPickupTime] = useState('10:00');
+  const [returnTime, setReturnTime] = useState('10:00');
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -169,6 +171,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
         car_id: normalizedCarId,
         start_date: startDate.toISOString().split('T')[0],
         end_date: endDate.toISOString().split('T')[0],
+        pickup_date: startDate.toISOString().split('T')[0],
+        pickup_time: pickupTime,
+        return_date: endDate.toISOString().split('T')[0],
+        return_time: returnTime,
         rental_days: rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
@@ -379,6 +385,33 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   <span>€{totalAmount - advancePayment}</span>
                 </div>
               )}
+            </div>
+          </div>
+          
+          {/* Time Selection */}
+          <div className="mt-4 pt-4 border-t">
+            <h5 className="font-medium mb-3 text-sm">Paėmimo ir grąžinimo laikas</h5>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="pickupTime" className="text-xs">Paėmimo laikas</Label>
+                <Input
+                  id="pickupTime"
+                  type="time"
+                  value={pickupTime}
+                  onChange={(e) => setPickupTime(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="returnTime" className="text-xs">Grąžinimo laikas</Label>
+                <Input
+                  id="returnTime"
+                  type="time"
+                  value={returnTime}
+                  onChange={(e) => setReturnTime(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
             </div>
           </div>
         </div>

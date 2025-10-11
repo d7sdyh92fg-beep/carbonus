@@ -363,9 +363,13 @@ export type Database = {
           payment_method: string | null
           payment_provider: string | null
           payment_transaction_id: string | null
+          pickup_date: string | null
+          pickup_time: string | null
           pricing_notes: string | null
           rental_days: number
+          return_date: string | null
           return_notes: string | null
+          return_time: string | null
           returned_at: string | null
           second_driver_license_back_url: string | null
           second_driver_license_url: string | null
@@ -404,9 +408,13 @@ export type Database = {
           payment_method?: string | null
           payment_provider?: string | null
           payment_transaction_id?: string | null
+          pickup_date?: string | null
+          pickup_time?: string | null
           pricing_notes?: string | null
           rental_days: number
+          return_date?: string | null
           return_notes?: string | null
+          return_time?: string | null
           returned_at?: string | null
           second_driver_license_back_url?: string | null
           second_driver_license_url?: string | null
@@ -445,9 +453,13 @@ export type Database = {
           payment_method?: string | null
           payment_provider?: string | null
           payment_transaction_id?: string | null
+          pickup_date?: string | null
+          pickup_time?: string | null
           pricing_notes?: string | null
           rental_days?: number
+          return_date?: string | null
           return_notes?: string | null
+          return_time?: string | null
           returned_at?: string | null
           second_driver_license_back_url?: string | null
           second_driver_license_url?: string | null

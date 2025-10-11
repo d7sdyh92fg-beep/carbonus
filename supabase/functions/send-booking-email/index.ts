@@ -16,6 +16,8 @@ interface BookingEmailRequest {
   carName: string;
   startDate: string;
   endDate: string;
+  pickupTime?: string;
+  returnTime?: string;
   rentalDays: number;
   totalAmount: number;
   depositAmount: number;
@@ -50,8 +52,8 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #555; margin-top: 0;">Rezervacijos detalės</h2>
             <p><strong>Automobilis:</strong> ${booking.carName}</p>
-            <p><strong>Pradžios data:</strong> ${booking.startDate}</p>
-            <p><strong>Pabaigos data:</strong> ${booking.endDate}</p>
+            <p><strong>Paėmimo data ir laikas:</strong> ${booking.startDate} ${booking.pickupTime || '10:00'}</p>
+            <p><strong>Grąžinimo data ir laikas:</strong> ${booking.endDate} ${booking.returnTime || '10:00'}</p>
             <p><strong>Dienų skaičius:</strong> ${booking.rentalDays}</p>
             <p><strong>Nuomos kaina:</strong> €${booking.totalAmount}</p>
             <p><strong>Užstatas:</strong> €${booking.depositAmount}</p>
@@ -82,8 +84,8 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #555; margin-top: 0;">Jūsų rezervacijos informacija</h2>
             <p><strong>Automobilis:</strong> ${booking.carName}</p>
-            <p><strong>Pradžios data:</strong> ${booking.startDate}</p>
-            <p><strong>Pabaigos data:</strong> ${booking.endDate}</p>
+            <p><strong>Paėmimo data ir laikas:</strong> ${booking.startDate} ${booking.pickupTime || '10:00'}</p>
+            <p><strong>Grąžinimo data ir laikas:</strong> ${booking.endDate} ${booking.returnTime || '10:00'}</p>
             <p><strong>Dienų skaičius:</strong> ${booking.rentalDays}</p>
             <p><strong>Nuomos kaina:</strong> €${booking.totalAmount}</p>
             <p><strong>Užstatas:</strong> €${booking.depositAmount}</p>

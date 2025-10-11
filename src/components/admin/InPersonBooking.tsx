@@ -41,6 +41,8 @@ interface BookingDetails {
   carName: string;
   startDate: Date | null;
   endDate: Date | null;
+  pickupTime: string;
+  returnTime: string;
   dailyRate: number;
 }
 
@@ -180,6 +182,8 @@ export function InPersonBooking() {
     carName: '',
     startDate: null,
     endDate: null,
+    pickupTime: '10:00',
+    returnTime: '10:00',
     dailyRate: 0
   });
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card_reader'>('cash');
@@ -415,7 +419,7 @@ export function InPersonBooking() {
       representativePhone: '',
       representativeEmail: '',
     });
-    setBooking({ carId: '', carName: '', startDate: null, endDate: null, dailyRate: 0 });
+    setBooking({ carId: '', carName: '', startDate: null, endDate: null, pickupTime: '10:00', returnTime: '10:00', dailyRate: 0 });
     setSelectedServices([]);
     setDriverLicenseUrls({});
     setSecondDriverLicenseUrls({});
