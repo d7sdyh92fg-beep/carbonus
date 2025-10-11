@@ -367,6 +367,8 @@ export type Database = {
           rental_days: number
           return_notes: string | null
           returned_at: string | null
+          second_driver_license_back_url: string | null
+          second_driver_license_url: string | null
           start_date: string
           status: string
           total_amount: number
@@ -406,6 +408,8 @@ export type Database = {
           rental_days: number
           return_notes?: string | null
           returned_at?: string | null
+          second_driver_license_back_url?: string | null
+          second_driver_license_url?: string | null
           start_date: string
           status?: string
           total_amount: number
@@ -445,6 +449,8 @@ export type Database = {
           rental_days?: number
           return_notes?: string | null
           returned_at?: string | null
+          second_driver_license_back_url?: string | null
+          second_driver_license_url?: string | null
           start_date?: string
           status?: string
           total_amount?: number

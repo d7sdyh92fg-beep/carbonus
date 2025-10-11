@@ -184,6 +184,7 @@ export function InPersonBooking() {
   });
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card_reader'>('cash');
   const [driverLicenseUrls, setDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
+  const [secondDriverLicenseUrls, setSecondDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
   const [contractSigned, setContractSigned] = useState(false);
   const [signatureData, setSignatureData] = useState<string>('');
   const [notes, setNotes] = useState('');
@@ -266,10 +267,18 @@ export function InPersonBooking() {
     } else if (step === 'services') {
       setStep('documents');
     } else if (step === 'documents') {
+      const hasAdditionalDriver = selectedServices.some(s => s.id === 'additional-driver');
+      
       if (!driverLicenseUrls.front || !contractSigned) {
         toast.error('Prašome įkelti vairuotojo pažymėjimo priekį ir pasirašyti sutartį');
         return;
       }
+      
+      if (hasAdditionalDriver && (!secondDriverLicenseUrls.front || !secondDriverLicenseUrls.back)) {
+        toast.error('Prašome įkelti antro vairuotojo pažymėjimo priekį ir galą');
+        return;
+      }
+      
       setStep('payment');
     } else if (step === 'payment') {
       handleCompleteBooking();
@@ -342,6 +351,8 @@ export function InPersonBooking() {
           payment_completed_at: new Date().toISOString(),
           driver_license_url: driverLicenseUrls.front || null,
           driver_license_back_url: driverLicenseUrls.back || null,
+          second_driver_license_url: secondDriverLicenseUrls.front || null,
+          second_driver_license_back_url: secondDriverLicenseUrls.back || null,
           contract_signed_at: new Date().toISOString(),
           notes: notes,
           custom_rental_price: useCustomPricing ? rentalCost : null,
@@ -407,6 +418,7 @@ export function InPersonBooking() {
     setBooking({ carId: '', carName: '', startDate: null, endDate: null, dailyRate: 0 });
     setSelectedServices([]);
     setDriverLicenseUrls({});
+    setSecondDriverLicenseUrls({});
     setContractSigned(false);
     setSignatureData('');
     setNotes('');
@@ -916,9 +928,10 @@ export function InPersonBooking() {
       {step === 'documents' && (
         <div className="space-y-4 sm:space-y-6 lg:space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+            {/* Main Driver License */}
             <Card className="w-full">
               <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Vairuotojo pažymėjimo įkėlimas</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Pagrindinis vairuotojas</CardTitle>
               </CardHeader>
               <CardContent>
                 <DriverLicenseUpload
@@ -943,6 +956,30 @@ export function InPersonBooking() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Second Driver License - shown only if additional driver service selected */}
+          {selectedServices.some(s => s.id === 'additional-driver') && (
+            <>
+              <Separator className="my-8" />
+              <Card className="w-full">
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Antras vairuotojas
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Įkelkite antro vairuotojo pažymėjimo priekį ir galą
+                  </p>
+                  <DriverLicenseUpload
+                    onUpload={(urls) => setSecondDriverLicenseUrls(urls)}
+                    uploadedUrls={secondDriverLicenseUrls}
+                  />
+                </CardContent>
+              </Card>
+            </>
+          )}
         </div>
       )}
 
