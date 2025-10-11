@@ -24,6 +24,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCanceled from "./pages/PaymentCanceled";
 import ReservationInsurance from "./pages/ReservationInsurance";
 import ReservationServices from "./pages/ReservationServices";
+import ReservationTerms from "./pages/ReservationTerms";
 import ReservationReview from "./pages/ReservationReview";
 
 const queryClient = new QueryClient();
@@ -49,8 +50,9 @@ const App = () => (
             <Route path="/nuomos-sutartis" element={<LeaseAgreement />} />
             <Route path="/automobiliai/:id" element={<CarDetail />} />
             <Route path="/rezervacija/:carId/atsakomybe" element={<ReservationInsurance />} />
-            <Route path="/rezervacija/:carId/paslaugos" element={<ReservationServices />} />
-            <Route path="/rezervacija/:carId/uzsakymas" element={<ReservationReview />} />
+              <Route path="/rezervacija/:carId/paslaugos" element={<ReservationServices />} />
+              <Route path="/rezervacija/:carId/salygos" element={<ReservationTerms />} />
+              <Route path="/rezervacija/:carId/uzsakymas" element={<ReservationReview />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-canceled" element={<PaymentCanceled />} />
             <Route path="/auth" element={<Auth />} />

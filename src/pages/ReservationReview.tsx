@@ -19,7 +19,6 @@ export default function ReservationReview() {
   const { bookingData, getTotalPrice, clearBooking } = useBooking();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
   const [paymentProvider, setPaymentProvider] = useState<'stripe'>('stripe');
   
@@ -90,15 +89,6 @@ export default function ReservationReview() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!agreementAccepted) {
-      toast({
-        title: 'Klaida',
-        description: 'Turite sutikti su nuomos taisyklėmis ir sąlygomis',
-        variant: 'destructive',
-      });
-      return;
-    }
     
     setIsSubmitting(true);
 
@@ -421,32 +411,11 @@ export default function ReservationReview() {
                 </RadioGroup>
               </Card>
 
-              {/* Terms & Conditions */}
-              <Card className="p-6">
-                <div className="flex items-start space-x-2">
-                  <Checkbox
-                    id="terms"
-                    checked={agreementAccepted}
-                    onCheckedChange={(checked) => setAgreementAccepted(checked as boolean)}
-                  />
-                  <Label htmlFor="terms" className="cursor-pointer">
-                    Sutinku su{' '}
-                    <a
-                      href="/nuomos-sutartis"
-                      target="_blank"
-                      className="text-primary underline"
-                    >
-                      nuomos taisyklėmis ir sąlygomis
-                    </a>
-                  </Label>
-                </div>
-              </Card>
-
               <Button
                 type="submit"
                 className="w-full"
                 size="lg"
-                disabled={isSubmitting || !agreementAccepted}
+                disabled={isSubmitting}
               >
                 {isSubmitting ? 'Vykdoma...' : `Mokėti ${displayAmount.toFixed(2)} €`}
               </Button>

@@ -248,7 +248,7 @@ export default function ReservationServices() {
               <Button
                 className="w-full"
                 size="lg"
-                onClick={() => navigate(`/rezervacija/${bookingData.carId}/uzsakymas`)}
+                onClick={() => navigate(`/rezervacija/${bookingData.carId}/salygos`)}
               >
                 Tęsti užsakymą
               </Button>
