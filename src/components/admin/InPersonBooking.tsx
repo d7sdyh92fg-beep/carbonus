@@ -743,25 +743,45 @@ export function InPersonBooking() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <Label htmlFor="pickupTime" className="text-sm sm:text-base">Paėmimo laikas *</Label>
-                      <Input
-                        id="pickupTime"
-                        type="time"
-                        value={booking.pickupTime}
-                        onChange={(e) => setBooking(prev => ({ ...prev, pickupTime: e.target.value }))}
-                        className="h-10 sm:h-12 text-sm sm:text-base"
-                        required
-                      />
+                      <Select value={booking.pickupTime} onValueChange={(value) => setBooking(prev => ({ ...prev, pickupTime: value }))}>
+                        <SelectTrigger id="pickupTime" className="h-10 sm:h-12 text-sm sm:text-base">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border z-50">
+                          {Array.from({ length: 25 }, (_, i) => {
+                            const hour = Math.floor(8 + i / 2);
+                            const minute = i % 2 === 0 ? '00' : '30';
+                            if (hour > 20) return null;
+                            const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                            return (
+                              <SelectItem key={time} value={time}>
+                                {time}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div>
                       <Label htmlFor="returnTime" className="text-sm sm:text-base">Grąžinimo laikas *</Label>
-                      <Input
-                        id="returnTime"
-                        type="time"
-                        value={booking.returnTime}
-                        onChange={(e) => setBooking(prev => ({ ...prev, returnTime: e.target.value }))}
-                        className="h-10 sm:h-12 text-sm sm:text-base"
-                        required
-                      />
+                      <Select value={booking.returnTime} onValueChange={(value) => setBooking(prev => ({ ...prev, returnTime: value }))}>
+                        <SelectTrigger id="returnTime" className="h-10 sm:h-12 text-sm sm:text-base">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border z-50">
+                          {Array.from({ length: 25 }, (_, i) => {
+                            const hour = Math.floor(8 + i / 2);
+                            const minute = i % 2 === 0 ? '00' : '30';
+                            if (hour > 20) return null;
+                            const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                            return (
+                              <SelectItem key={time} value={time}>
+                                {time}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                 </div>

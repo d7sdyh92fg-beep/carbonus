@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Mail, Phone, FileText } from "lucide-react";
@@ -404,23 +405,45 @@ const BookingForm: React.FC<BookingFormProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label htmlFor="pickupTime" className="text-xs">Paėmimo laikas</Label>
-                <Input
-                  id="pickupTime"
-                  type="time"
-                  value={pickupTime}
-                  onChange={(e) => setPickupTime(e.target.value)}
-                  className="mt-1"
-                />
+                <Select value={pickupTime} onValueChange={setPickupTime}>
+                  <SelectTrigger id="pickupTime" className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 25 }, (_, i) => {
+                      const hour = Math.floor(8 + i / 2);
+                      const minute = i % 2 === 0 ? '00' : '30';
+                      if (hour > 20) return null;
+                      const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                      return (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label htmlFor="returnTime" className="text-xs">Grąžinimo laikas</Label>
-                <Input
-                  id="returnTime"
-                  type="time"
-                  value={returnTime}
-                  onChange={(e) => setReturnTime(e.target.value)}
-                  className="mt-1"
-                />
+                <Select value={returnTime} onValueChange={setReturnTime}>
+                  <SelectTrigger id="returnTime" className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 25 }, (_, i) => {
+                      const hour = Math.floor(8 + i / 2);
+                      const minute = i % 2 === 0 ? '00' : '30';
+                      if (hour > 20) return null;
+                      const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                      return (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
