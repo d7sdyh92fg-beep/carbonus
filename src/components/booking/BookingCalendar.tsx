@@ -4,6 +4,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { CalendarIcon, Calculator, Clock } from "lucide-react";
 import { differenceInDays, format } from "date-fns";
 import { lt } from "date-fns/locale";
@@ -26,6 +28,8 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     to: Date | undefined;
   }>({ from: undefined, to: undefined });
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [pickupTime, setPickupTime] = useState('10:00');
+  const [returnTime, setReturnTime] = useState('10:00');
 
   // Fetch booked dates on component mount and set up real-time updates
   useEffect(() => {
@@ -143,6 +147,8 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       carImage,
       startDate: selectedRange.from.toISOString().split('T')[0],
       endDate: selectedRange.to.toISOString().split('T')[0],
+      pickupTime,
+      returnTime,
       rentalDays: getDaysCount(),
       basePrice: getTotalPrice(),
       services: [],
@@ -195,6 +201,55 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
             </div>
           </div>
           
+          {/* Time Selection */}
+          <div className="mt-6 p-4 border-2 border-primary/20 rounded-lg bg-card">
+            <h5 className="font-semibold mb-4 text-sm">Paėmimo ir grąžinimo laikas *</h5>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="pickupTime" className="text-xs">Paėmimo laikas</Label>
+                <Select value={pickupTime} onValueChange={setPickupTime}>
+                  <SelectTrigger id="pickupTime" className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 25 }, (_, i) => {
+                      const hour = Math.floor(8 + i / 2);
+                      const minute = i % 2 === 0 ? '00' : '30';
+                      if (hour > 20) return null;
+                      const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                      return (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="returnTime" className="text-xs">Grąžinimo laikas</Label>
+                <Select value={returnTime} onValueChange={setReturnTime}>
+                  <SelectTrigger id="returnTime" className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 25 }, (_, i) => {
+                      const hour = Math.floor(8 + i / 2);
+                      const minute = i % 2 === 0 ? '00' : '30';
+                      if (hour > 20) return null;
+                      const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                      return (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
           {selectedRange.from && selectedRange.to && (
             <div className="mt-4 p-4 bg-muted rounded-lg">
               <div className="text-sm text-muted-foreground mb-2">Pasirinktos datos:</div>
@@ -204,6 +259,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
               <div className="flex items-center gap-2 mt-2">
                 <Clock className="w-4 h-4" />
                 <span className="text-sm">{getDaysCount()} {getDaysCount() === 1 ? "diena" : "dienos"}</span>
+              </div>
+              <div className="flex items-center justify-between mt-2 text-sm">
+                <span className="text-muted-foreground">Paėmimas: {pickupTime}</span>
+                <span className="text-muted-foreground">Grąžinimas: {returnTime}</span>
               </div>
             </div>
           )}

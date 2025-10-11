@@ -23,6 +23,8 @@ export interface BookingData {
   carImage?: string;
   startDate: string;
   endDate: string;
+  pickupTime?: string;
+  returnTime?: string;
   rentalDays: number;
   basePrice: number;
   insurance?: InsuranceOption;
