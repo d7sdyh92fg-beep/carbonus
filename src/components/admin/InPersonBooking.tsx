@@ -263,7 +263,8 @@ export function InPersonBooking() {
     
     if (step === 'details') {
       if (!customer.firstName || !customer.lastName || !customer.email || !customer.phone || 
-          !customer.address || !booking.carId || !booking.startDate || !booking.endDate) {
+          !customer.address || !booking.carId || !booking.startDate || !booking.endDate ||
+          !booking.pickupTime || !booking.returnTime) {
         toast.error('Prašome užpildyti visus privalomius laukus');
         return;
       }
@@ -345,6 +346,10 @@ export function InPersonBooking() {
           car_name: booking.carName,
           start_date: format(booking.startDate!, 'yyyy-MM-dd'),
           end_date: format(booking.endDate!, 'yyyy-MM-dd'),
+          pickup_date: format(booking.startDate!, 'yyyy-MM-dd'),
+          pickup_time: booking.pickupTime,
+          return_date: format(booking.endDate!, 'yyyy-MM-dd'),
+          return_time: booking.returnTime,
           rental_days: rentalDays,
           daily_rate: useCustomPricing ? 0 : getDailyRate(rentalDays),
           total_rental_cost: rentalCost,
@@ -729,6 +734,32 @@ export function InPersonBooking() {
                         disabled={(date) => !booking.startDate || date <= booking.startDate}
                         locale={lt}
                         className="rounded-lg border-2 bg-card shadow-sm w-full"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Time Selection */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div>
+                      <Label htmlFor="pickupTime" className="text-sm sm:text-base">Paėmimo laikas *</Label>
+                      <Input
+                        id="pickupTime"
+                        type="time"
+                        value={booking.pickupTime}
+                        onChange={(e) => setBooking(prev => ({ ...prev, pickupTime: e.target.value }))}
+                        className="h-10 sm:h-12 text-sm sm:text-base"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="returnTime" className="text-sm sm:text-base">Grąžinimo laikas *</Label>
+                      <Input
+                        id="returnTime"
+                        type="time"
+                        value={booking.returnTime}
+                        onChange={(e) => setBooking(prev => ({ ...prev, returnTime: e.target.value }))}
+                        className="h-10 sm:h-12 text-sm sm:text-base"
+                        required
                       />
                     </div>
                   </div>
