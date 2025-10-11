@@ -777,6 +777,12 @@ export function InPersonBooking() {
                           if (compareDate < today) return true;
                           return isDateBooked(date);
                         }}
+                        modifiers={{
+                          booked: (date) => isDateBooked(date)
+                        }}
+                        modifiersClassNames={{
+                          booked: "bg-destructive/20 text-destructive font-semibold"
+                        }}
                         locale={lt}
                         className="rounded-lg border-2 bg-card shadow-sm w-full"
                       />
@@ -796,6 +802,12 @@ export function InPersonBooking() {
                           if (!booking.startDate) return true;
                           if (date <= booking.startDate) return true;
                           return isDateBooked(date);
+                        }}
+                        modifiers={{
+                          booked: (date) => isDateBooked(date)
+                        }}
+                        modifiersClassNames={{
+                          booked: "bg-destructive/20 text-destructive font-semibold"
                         }}
                         locale={lt}
                         className="rounded-lg border-2 bg-card shadow-sm w-full"
