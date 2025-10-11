@@ -52,6 +52,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
     representativePhone: "",
     representativeEmail: "",
   });
+  const [hasValidLicense, setHasValidLicense] = useState(false);
   const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"pay_now" | "pay_at_counter">("pay_now");
   const [paymentProvider, setPaymentProvider] = useState<"stripe" | "paysera">("paysera");
@@ -75,6 +76,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!hasValidLicense) {
+      toast({
+        title: "Klaida",
+        description: "Turite patvirtinti, kad turite galiojantį vairuotojo pažymėjimą",
+        variant: "destructive",
+      });
+      return;
+    }
     
     if (!agreementAccepted) {
       toast({
@@ -633,6 +643,32 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 className="pl-10"
                 required
               />
+            </div>
+          </div>
+
+          {/* Driver License Confirmation */}
+          <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
+            <div className="flex items-start space-x-3">
+              <Checkbox 
+                id="validLicense" 
+                checked={hasValidLicense}
+                onCheckedChange={(checked) => setHasValidLicense(checked as boolean)}
+                className="mt-1"
+              />
+              <Label 
+                htmlFor="validLicense" 
+                className="text-sm font-medium cursor-pointer"
+              >
+                Turiu galiojantį ES šalyje išduotą vairuotojo pažymėjimą (ne mažiau kaip 2 metų stažas) *
+              </Label>
+            </div>
+            <div className="flex items-start space-x-2 text-sm text-muted-foreground bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md border border-blue-200 dark:border-blue-900">
+              <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-blue-900 dark:text-blue-100">
+                Vairuotojo pažymėjimą reikės pateikti automobilio atsiėmimo metu.
+              </p>
             </div>
           </div>
 

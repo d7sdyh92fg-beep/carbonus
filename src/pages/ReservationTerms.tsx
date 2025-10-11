@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, FileText, Download, ExternalLink, CheckCircle2, Users } from 'lucide-react';
+import { ChevronLeft, FileText, Download, ExternalLink, CheckCircle2 } from 'lucide-react';
 import { useBooking } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,7 +9,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
-import { DriverLicenseUpload } from '@/components/admin/DriverLicenseUpload';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ReservationTerms() {
@@ -21,7 +20,6 @@ export default function ReservationTerms() {
   const [hasAccepted, setHasAccepted] = useState(false);
   const [showFullTerms, setShowFullTerms] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const [secondDriverLicenseUrls, setSecondDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,21 +43,8 @@ export default function ReservationTerms() {
   };
 
   const handleContinue = () => {
-    const hasAdditionalDriver = bookingData?.services?.some(s => s.id === 'additional-driver');
-    
-    if (hasAdditionalDriver && (!secondDriverLicenseUrls.front || !secondDriverLicenseUrls.back)) {
-      toast({
-        title: 'Klaida',
-        description: 'Prašome įkelti antro vairuotojo pažymėjimo priekį ir galą',
-        variant: 'destructive',
-      });
-      return;
-    }
-    
     if (hasAccepted && hasScrolledToBottom) {
-      navigate(`/rezervacija/${carId}/uzsakymas`, {
-        state: { secondDriverLicenseUrls }
-      });
+      navigate(`/rezervacija/${carId}/uzsakymas`);
     }
   };
 
@@ -274,26 +259,6 @@ export default function ReservationTerms() {
                   <span>Perskaitytas visas tekstas</span>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Second Driver License Upload - shown only if additional driver service selected */}
-        {bookingData?.services?.some(s => s.id === 'additional-driver') && (
-          <Card className="mb-6">
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Antro vairuotojo dokumentai
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Kadangi pasirinkote paslaugą "Papildomas vairuotojas", prašome įkelti antro vairuotojo pažymėjimo priekį ir galą
-              </p>
-              
-              <DriverLicenseUpload
-                onUpload={(urls) => setSecondDriverLicenseUrls(urls)}
-                uploadedUrls={secondDriverLicenseUrls}
-              />
             </CardContent>
           </Card>
         )}

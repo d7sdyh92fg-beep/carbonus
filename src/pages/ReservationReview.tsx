@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, User, Mail, Phone, FileText, CreditCard } from 'lucide-react';
 import { useBooking } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
@@ -16,13 +16,11 @@ import { lt } from 'date-fns/locale';
 
 export default function ReservationReview() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { bookingData, getTotalPrice, clearBooking } = useBooking();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
   const [paymentProvider, setPaymentProvider] = useState<'stripe'>('stripe');
-  const secondDriverLicenseUrls = location.state?.secondDriverLicenseUrls;
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -171,8 +169,6 @@ export default function ReservationReview() {
         status: 'awaiting_payment',
         payment_method: paymentMethod,
         payment_provider: paymentProvider,
-        second_driver_license_url: secondDriverLicenseUrls?.front || null,
-        second_driver_license_back_url: secondDriverLicenseUrls?.back || null,
         pricing_notes: (() => {
           const notes: string[] = [];
           
