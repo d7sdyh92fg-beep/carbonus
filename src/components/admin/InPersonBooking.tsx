@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -198,6 +198,52 @@ export function InPersonBooking() {
   const [customDeposit, setCustomDeposit] = useState<string>('200');
   const [pricingNotes, setPricingNotes] = useState('');
   const [isRetroactive, setIsRetroactive] = useState(false);
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
+
+  // Fetch booked dates when car is selected
+  useEffect(() => {
+    if (booking.carId) {
+      fetchBookedDates();
+    }
+  }, [booking.carId]);
+
+  const fetchBookedDates = async () => {
+    if (!booking.carId) return;
+    
+    try {
+      const { data: reservations, error } = await supabase
+        .from("reservations")
+        .select("start_date, end_date")
+        .eq("car_id", booking.carId)
+        .in("status", ["paid", "pending", "requested", "picked_up"])
+        .is("deleted_at", null);
+
+      if (error) {
+        console.error("Error fetching booked dates:", error);
+        return;
+      }
+
+      const dates: Date[] = [];
+      reservations?.forEach((reservation) => {
+        const start = new Date(reservation.start_date);
+        const end = new Date(reservation.end_date);
+        
+        for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+          dates.push(new Date(date));
+        }
+      });
+
+      setBookedDates(dates);
+    } catch (error) {
+      console.error("Error fetching booked dates:", error);
+    }
+  };
+
+  const isDateBooked = (date: Date) => {
+    return bookedDates.some(bookedDate => 
+      bookedDate.toDateString() === date.toDateString()
+    );
+  };
 
   const calculateTotal = () => {
     if (!booking.startDate || !booking.endDate) return 0;
@@ -718,7 +764,8 @@ export function InPersonBooking() {
                           today.setHours(0, 0, 0, 0);
                           const compareDate = new Date(date);
                           compareDate.setHours(0, 0, 0, 0);
-                          return compareDate < today;
+                          if (compareDate < today) return true;
+                          return isDateBooked(date);
                         }}
                         locale={lt}
                         className="rounded-lg border-2 bg-card shadow-sm w-full"
@@ -732,7 +779,14 @@ export function InPersonBooking() {
                         mode="single"
                         selected={booking.endDate || undefined}
                         onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
-                        disabled={(date) => !booking.startDate || date <= booking.startDate}
+                        disabled={isRetroactive ? (date) => {
+                          if (!booking.startDate) return true;
+                          return date <= booking.startDate;
+                        } : (date) => {
+                          if (!booking.startDate) return true;
+                          if (date <= booking.startDate) return true;
+                          return isDateBooked(date);
+                        }}
                         locale={lt}
                         className="rounded-lg border-2 bg-card shadow-sm w-full"
                       />
