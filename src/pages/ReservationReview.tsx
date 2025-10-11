@@ -291,7 +291,7 @@ export default function ReservationReview() {
                     checked={isCorporate}
                     onCheckedChange={(checked) => setIsCorporate(checked as boolean)}
                   />
-                  <Label htmlFor="corporate">Nuomoju kaip įmonę</Label>
+                  <Label htmlFor="corporate">Nuomoju kaip įmonė</Label>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
