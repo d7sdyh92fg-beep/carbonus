@@ -674,7 +674,13 @@ export function InPersonBooking() {
                         mode="single"
                         selected={booking.startDate || undefined}
                         onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
-                        disabled={isRetroactive ? undefined : (date) => date < new Date()}
+                        disabled={isRetroactive ? undefined : (date) => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          const compareDate = new Date(date);
+                          compareDate.setHours(0, 0, 0, 0);
+                          return compareDate < today;
+                        }}
                         locale={lt}
                         className="rounded-lg border-2 bg-card shadow-sm w-full"
                       />
