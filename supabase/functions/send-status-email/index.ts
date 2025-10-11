@@ -220,6 +220,42 @@ const getEmailContent = (data: StatusEmailRequest) => {
         </div>
       `
     },
+    picked_up: {
+      subject: "Automobilis atsiimtas - Carbonus nuoma",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #6366f1; margin-bottom: 10px;">Automobilis sėkmingai atsiimtas!</h1>
+          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
+          <p style="margin: 10px 0;">Patvirtinome, kad sėkmingai atsiėmėte automobilį.</p>
+          
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Nuomos detalės:</h2>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
+          </div>
+          
+          <div style="background: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <p style="margin: 0 0 10px 0;"><strong>🚗 Saugios kelionės!</strong></p>
+            <p style="margin: 5px 0; line-height: 1.6;">
+              • Nepamirškite grąžinti automobilį nurodytą dieną<br>
+              • Prieš grąžindami, prašome užpildyti degalų baką iki to paties lygio<br>
+              • Automobilį grąžinkite švaru ir tvarkingu
+            </p>
+          </div>
+          
+          <p style="margin: 20px 0 5px 0;">Kilus klausimams, susisiekite:</p>
+          <p style="margin: 5px 0;">
+            📧 <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
+            📞 <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
+          </p>
+          
+          <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+            Pagarbiai,<br>Carbonus komanda
+          </p>
+        </div>
+      `
+    },
     completed: {
       subject: "Nuoma baigta - Dėkojame! - Carbonus",
       html: `

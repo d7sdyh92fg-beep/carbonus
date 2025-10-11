@@ -457,6 +457,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       requested: 'bg-yellow-100 text-yellow-800 border-yellow-300',
       paid: 'bg-green-100 text-green-800 border-green-300',
       confirmed: 'bg-blue-100 text-blue-800 border-blue-300',
+      picked_up: 'bg-indigo-100 text-indigo-800 border-indigo-300',
       cancelled: 'bg-red-100 text-red-800 border-red-300',
       denied: 'bg-red-100 text-red-800 border-red-300',
       completed: 'bg-gray-100 text-gray-800 border-gray-300',
@@ -466,6 +467,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     const labels = {
       pending: 'Laukiama',
       confirmed: 'Patvirtinta',
+      picked_up: 'Atsiimta',
       cancelled: 'Atšaukta',
       completed: 'Baigta',
       requested: 'Prašoma',
@@ -561,6 +563,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                     <SelectItem value="pending">Laukiama</SelectItem>
                     <SelectItem value="confirmed">Patvirtinta</SelectItem>
                     <SelectItem value="paid">Apmokėta</SelectItem>
+                    <SelectItem value="picked_up">Atsiimta</SelectItem>
                     <SelectItem value="completed">Baigta</SelectItem>
                   </SelectContent>
                 </Select>
