@@ -210,18 +210,22 @@ export function InPersonBooking() {
   const fetchBookedDates = async () => {
     if (!booking.carId) return;
     
+    console.log('🔍 Fetching booked dates for car:', booking.carId);
+    
     try {
       const { data: reservations, error } = await supabase
         .from("reservations")
-        .select("start_date, end_date")
+        .select("start_date, end_date, car_id, status")
         .eq("car_id", booking.carId)
         .in("status", ["paid", "pending", "requested", "picked_up"])
         .is("deleted_at", null);
 
       if (error) {
-        console.error("Error fetching booked dates:", error);
+        console.error("❌ Error fetching booked dates:", error);
         return;
       }
+
+      console.log('📅 Found reservations:', reservations);
 
       const dates: Date[] = [];
       reservations?.forEach((reservation) => {
@@ -233,16 +237,21 @@ export function InPersonBooking() {
         }
       });
 
+      console.log('🚫 Booked dates count:', dates.length, dates);
       setBookedDates(dates);
     } catch (error) {
-      console.error("Error fetching booked dates:", error);
+      console.error("❌ Error fetching booked dates:", error);
     }
   };
 
   const isDateBooked = (date: Date) => {
-    return bookedDates.some(bookedDate => 
+    const isBooked = bookedDates.some(bookedDate => 
       bookedDate.toDateString() === date.toDateString()
     );
+    if (isBooked) {
+      console.log('🚫 Date is booked:', date.toDateString());
+    }
+    return isBooked;
   };
 
   const calculateTotal = () => {
@@ -292,6 +301,7 @@ export function InPersonBooking() {
   };
 
   const handleCarSelect = (carId: string) => {
+    console.log('🚗 Car selected:', carId);
     const selectedCar = cars.find(car => car.id === carId);
     if (selectedCar) {
       setBooking(prev => ({
