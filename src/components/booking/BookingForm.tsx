@@ -363,6 +363,55 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <CardTitle>Užbaigti rezervaciją</CardTitle>
       </CardHeader>
       <CardContent>
+        {/* Time Selection - Prominent section */}
+        <div className="mb-6 p-4 border-2 border-primary/20 rounded-lg bg-card">
+          <h4 className="font-semibold mb-4 text-base">Paėmimo ir grąžinimo laikas *</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="pickupTime" className="text-sm font-medium">Paėmimo laikas</Label>
+              <Select value={pickupTime} onValueChange={setPickupTime}>
+                <SelectTrigger id="pickupTime" className="mt-2">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 25 }, (_, i) => {
+                    const hour = Math.floor(8 + i / 2);
+                    const minute = i % 2 === 0 ? '00' : '30';
+                    if (hour > 20) return null;
+                    const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                    return (
+                      <SelectItem key={time} value={time}>
+                        {time}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="returnTime" className="text-sm font-medium">Grąžinimo laikas</Label>
+              <Select value={returnTime} onValueChange={setReturnTime}>
+                <SelectTrigger id="returnTime" className="mt-2">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 25 }, (_, i) => {
+                    const hour = Math.floor(8 + i / 2);
+                    const minute = i % 2 === 0 ? '00' : '30';
+                    if (hour > 20) return null;
+                    const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                    return (
+                      <SelectItem key={time} value={time}>
+                        {time}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+
         {/* Booking Summary */}
         <div className="mb-6 p-4 bg-muted rounded-lg">
           <h4 className="font-semibold mb-2">Rezervacijos santrauka</h4>
@@ -376,6 +425,14 @@ const BookingForm: React.FC<BookingFormProps> = ({
               <span className="font-medium">
                 {startDate.toLocaleDateString('lt-LT')} - {endDate.toLocaleDateString('lt-LT')}
               </span>
+            </div>
+            <div className="flex justify-between">
+              <span>Paėmimo laikas:</span>
+              <span className="font-medium">{pickupTime}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Grąžinimo laikas:</span>
+              <span className="font-medium">{returnTime}</span>
             </div>
             <div className="flex justify-between">
               <span>Dienų skaičius:</span>
@@ -396,55 +453,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   <span>€{totalAmount - advancePayment}</span>
                 </div>
               )}
-            </div>
-          </div>
-          
-          {/* Time Selection */}
-          <div className="mt-4 pt-4 border-t">
-            <h5 className="font-medium mb-3 text-sm">Paėmimo ir grąžinimo laikas</h5>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label htmlFor="pickupTime" className="text-xs">Paėmimo laikas</Label>
-                <Select value={pickupTime} onValueChange={setPickupTime}>
-                  <SelectTrigger id="pickupTime" className="mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 25 }, (_, i) => {
-                      const hour = Math.floor(8 + i / 2);
-                      const minute = i % 2 === 0 ? '00' : '30';
-                      if (hour > 20) return null;
-                      const time = `${hour.toString().padStart(2, '0')}:${minute}`;
-                      return (
-                        <SelectItem key={time} value={time}>
-                          {time}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="returnTime" className="text-xs">Grąžinimo laikas</Label>
-                <Select value={returnTime} onValueChange={setReturnTime}>
-                  <SelectTrigger id="returnTime" className="mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 25 }, (_, i) => {
-                      const hour = Math.floor(8 + i / 2);
-                      const minute = i % 2 === 0 ? '00' : '30';
-                      if (hour > 20) return null;
-                      const time = `${hour.toString().padStart(2, '0')}:${minute}`;
-                      return (
-                        <SelectItem key={time} value={time}>
-                          {time}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
           </div>
         </div>
