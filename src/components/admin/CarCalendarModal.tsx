@@ -53,7 +53,7 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
           )
         `)
         .eq('car_id', carId)
-        .in('status', ['confirmed', 'pending', 'requested'])
+        .in('status', ['paid', 'pending', 'requested', 'picked_up'])
         .is('deleted_at', null)
         .order('start_date', { ascending: true });
 
@@ -250,9 +250,9 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
               </div>
               <div>
                 <div className="text-2xl font-bold text-green-600">
-                  {reservations.filter(r => r.status === 'confirmed').length}
+                  {reservations.filter(r => r.status === 'paid').length}
                 </div>
-                <div className="text-sm text-muted-foreground">Patvirtintos</div>
+                <div className="text-sm text-muted-foreground">Apmokėtos</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-blue-600">

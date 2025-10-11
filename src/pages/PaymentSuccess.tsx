@@ -58,7 +58,7 @@ const PaymentSuccess: React.FC = () => {
             return;
           }
 
-          if (data.status === 'confirmed' || data.status === 'partial_payment') {
+          if (data.status === 'paid' || data.status === 'partial_payment') {
             setStatus('success');
             setReservationId(reservationIdParam);
           } else if (data.status === 'payment_failed') {

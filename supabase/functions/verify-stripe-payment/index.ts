@@ -74,7 +74,7 @@ serve(async (req) => {
 
       // Update reservation status in database
       const updateData: any = { 
-        status: 'confirmed', // Payment captured successfully
+        status: 'paid', // Payment captured successfully
         payment_transaction_id: session.payment_intent as string,
         deposit_payment_intent_id: session.payment_intent as string, // Same PaymentIntent holds the deposit
         updated_at: new Date().toISOString()

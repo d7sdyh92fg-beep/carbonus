@@ -139,7 +139,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
           )
         `)
         .eq('car_id', carId)
-        .in('status', ['confirmed', 'pending', 'requested'])
+        .in('status', ['paid', 'pending', 'requested', 'picked_up'])
         .is('deleted_at', null)
         .order('start_date', { ascending: true });
 
@@ -578,9 +578,9 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-green-600">
-                      {reservations.filter(r => r.status === 'confirmed').length}
+                      {reservations.filter(r => r.status === 'paid').length}
                     </div>
-                    <div className="text-sm text-muted-foreground">Patvirtintos</div>
+                    <div className="text-sm text-muted-foreground">Apmokėtos</div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-blue-600">
@@ -1139,7 +1139,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       <div className="flex justify-between text-sm">
                         <span>Aktyvios rezervacijos:</span>
                         <Badge variant="default">
-                          {reservations.filter(r => r.status === 'confirmed').length}
+                          {reservations.filter(r => r.status === 'paid').length}
                         </Badge>
                       </div>
                       <div className="flex justify-between text-sm">

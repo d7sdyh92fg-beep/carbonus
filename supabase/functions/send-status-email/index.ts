@@ -26,45 +26,6 @@ const getEmailContent = (data: StatusEmailRequest) => {
   const { customerName, carName, startDate, endDate, totalAmount, status, paymentTransactionId } = data;
   
   const templates = {
-    confirmed: {
-      subject: "Jūsų rezervacija patvirtinta! - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #22c55e; margin-bottom: 10px;">Jūsų rezervacija patvirtinta!</h1>
-          <p style="margin: 10px 0;">Sveiki, ${customerName}!</p>
-          <p style="margin: 10px 0;">Džiaugiamės pranešti, kad jūsų automobilio nuomos rezervacija buvo patvirtinta.</p>
-          
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-            <h2 style="margin: 0 0 15px 0; font-size: 18px;">Rezervacijos detalės:</h2>
-            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
-            <p style="margin: 8px 0;"><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p style="margin: 8px 0;"><strong>Nuomos pabaiga:</strong> ${endDate}</p>
-            <p style="margin: 8px 0;"><strong>Bendra suma:</strong> €${totalAmount}</p>
-            <p style="margin: 8px 0;"><strong>Rezervacijos numeris:</strong> ${data.reservationId}</p>
-          </div>
-          
-          <div style="background: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-            <p style="margin: 0 0 10px 0;"><strong>📋 Kas toliau?</strong></p>
-            <p style="margin: 5px 0; line-height: 1.6;">
-              • Prieš pasiėmimą su jumis susisieks mūsų darbuotojai<br>
-              • Pasiruoškite vairuotojo pažymėjimą ir asmens dokumentą<br>
-              • Automobilis bus paruoštas nurodytą dieną<br>
-              • Atšaukti galite iki 3 dienų prieš nuomos pradžią
-            </p>
-          </div>
-          
-          <p style="margin: 20px 0 5px 0;">Jei turite klausimų, susisiekite su mumis:</p>
-          <p style="margin: 5px 0;">
-            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6; text-decoration: none;">info@carbonus.lt</a><br>
-            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6; text-decoration: none;">+370 698 18 781</a>
-          </p>
-          
-          <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
-            Pagarbiai,<br>Carbonus komanda
-          </p>
-        </div>
-      `
-    },
     partial_payment: {
       subject: "Išankstinis mokėjimas gautas - Carbonus",
       html: `
@@ -323,8 +284,8 @@ const handler = async (req: Request): Promise<Response> => {
       html: emailContent.html,
     };
 
-    // If status is confirmed and there's a contract PDF, attach it
-    if (data.status === 'confirmed' && data.contractPdfUrl) {
+    // If status is paid and there's a contract PDF, attach it
+    if (data.status === 'paid' && data.contractPdfUrl) {
       try {
         const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
         const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;

@@ -346,7 +346,7 @@ export function InPersonBooking() {
           total_rental_cost: rentalCost,
           deposit_amount: depositAmount,
           total_amount: totalAmount,
-          status: 'confirmed',
+          status: 'paid',
           payment_method: paymentMethod,
           payment_completed_at: new Date().toISOString(),
           driver_license_url: driverLicenseUrls.front || null,

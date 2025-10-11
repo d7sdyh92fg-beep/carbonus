@@ -456,7 +456,6 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     const colors = {
       requested: 'bg-yellow-100 text-yellow-800 border-yellow-300',
       paid: 'bg-green-100 text-green-800 border-green-300',
-      confirmed: 'bg-blue-100 text-blue-800 border-blue-300',
       picked_up: 'bg-indigo-100 text-indigo-800 border-indigo-300',
       cancelled: 'bg-red-100 text-red-800 border-red-300',
       denied: 'bg-red-100 text-red-800 border-red-300',
@@ -466,7 +465,6 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
     const labels = {
       pending: 'Laukiama',
-      confirmed: 'Patvirtinta',
       picked_up: 'Atsiimta',
       cancelled: 'Atšaukta',
       completed: 'Baigta',
@@ -561,7 +559,6 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="pending">Laukiama</SelectItem>
-                    <SelectItem value="confirmed">Patvirtinta</SelectItem>
                     <SelectItem value="paid">Apmokėta</SelectItem>
                     <SelectItem value="picked_up">Atsiimta</SelectItem>
                     <SelectItem value="completed">Baigta</SelectItem>
@@ -632,7 +629,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
           </Card>
 
           {/* Documents and Signature */}
-          {(reservation.status === 'paid' || reservation.status === 'confirmed' || reservation.status === 'completed') && (
+          {(reservation.status === 'paid' || reservation.status === 'picked_up' || reservation.status === 'completed') && (
             <Card className="lg:col-span-2">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -701,7 +698,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         </div>
 
         {/* Payment Actions */}
-        {reservation.status === 'confirmed' && (
+        {reservation.status === 'paid' && (
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
@@ -777,7 +774,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         )}
 
         {/* Return Inspection Section */}
-        {(reservation.status === 'confirmed' || reservation.status === 'completed') && (
+        {(reservation.status === 'paid' || reservation.status === 'picked_up' || reservation.status === 'completed') && (
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">

@@ -60,7 +60,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
         .from("reservations")
         .select("start_date, end_date")
         .eq("car_id", carId)
-        .in("status", ["confirmed", "pending", "requested"])
+        .in("status", ["paid", "pending", "requested", "picked_up"])
         .is("deleted_at", null);
 
       if (error) {

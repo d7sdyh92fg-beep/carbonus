@@ -367,7 +367,7 @@ const Admin = () => {
 
       const { error } = await supabase
         .from('reservations')
-        .update({ status: 'confirmed' })
+        .update({ status: 'paid' })
         .eq('id', id);
 
       if (error) throw error;
@@ -417,7 +417,7 @@ const Admin = () => {
             startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
-            status: 'confirmed',
+            status: 'paid',
             contractPdfUrl: contractPdfUrl
           }
         });
@@ -530,12 +530,12 @@ const Admin = () => {
 
       if (error) throw error;
 
-      // Generate PDF and send email for confirmed status, or just send email for other statuses
-      if (['confirmed', 'cancelled', 'completed'].includes(newStatus)) {
+      // Generate PDF and send email for paid status, or just send email for other statuses
+      if (['paid', 'cancelled', 'completed', 'picked_up'].includes(newStatus)) {
         let contractPdfUrl = reservation.contract_pdf_url;
         
-        // Generate PDF if confirming and PDF doesn't exist
-        if (newStatus === 'confirmed' && !contractPdfUrl) {
+        // Generate PDF if status is paid and PDF doesn't exist
+        if (newStatus === 'paid' && !contractPdfUrl) {
           try {
             const { data: pdfData } = await supabase.functions.invoke('generate-contract-pdf', {
               body: {
@@ -575,7 +575,7 @@ const Admin = () => {
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
             status: newStatus,
-            contractPdfUrl: newStatus === 'confirmed' ? contractPdfUrl : undefined
+            contractPdfUrl: newStatus === 'paid' ? contractPdfUrl : undefined
           }
         });
       }
@@ -584,7 +584,7 @@ const Admin = () => {
         title: "Statusas atnaujintas",
         description: newStatus === 'cancelled' 
           ? "Rezervacija atšaukta ir perkelta į šiukšlinę. El. paštas išsiųstas klientui."
-          : `Rezervacijos statusas pakeistas į "${newStatus}". ${['confirmed', 'completed'].includes(newStatus) ? 'El. paštas išsiųstas klientui.' : ''}`,
+          : `Rezervacijos statusas pakeistas į "${newStatus}". ${['paid', 'completed', 'picked_up'].includes(newStatus) ? 'El. paštas išsiųstas klientui.' : ''}`,
       });
 
       fetchReservations();
@@ -599,7 +599,7 @@ const Admin = () => {
 
   // Filter reservations
   const activeReservations = reservations.filter(r => 
-    ['pending', 'confirmed', 'paid', 'awaiting_payment', 'requested', 'picked_up'].includes(r.status)
+    ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up'].includes(r.status)
   );
   
   const completedReservations = reservations.filter(r => 
@@ -609,7 +609,6 @@ const Admin = () => {
   const getStatusBadge = (status: string, reservationId?: string, clickable: boolean = false) => {
     const variants = {
       pending: 'secondary',
-      confirmed: 'default',
       cancelled: 'destructive',
       completed: 'outline',
       requested: 'outline',
@@ -621,7 +620,6 @@ const Admin = () => {
 
     const labels = {
       pending: 'Laukiama',
-      confirmed: 'Patvirtinta',
       cancelled: 'Atšaukta',
       completed: 'Baigta',
       requested: 'Prašoma',
@@ -634,7 +632,6 @@ const Admin = () => {
     const colors = {
       requested: 'bg-yellow-100 text-yellow-800 border-yellow-300',
       paid: 'bg-green-100 text-green-800 border-green-300',
-      confirmed: 'bg-blue-100 text-blue-800 border-blue-300',
       picked_up: 'bg-indigo-100 text-indigo-800 border-indigo-300',
       cancelled: 'bg-red-100 text-red-800 border-red-300',
       denied: 'bg-red-100 text-red-800 border-red-300',
@@ -645,7 +642,6 @@ const Admin = () => {
 
     const statusOptions = [
       { value: 'awaiting_payment', label: 'Laukiama apmokėjimo' },
-      { value: 'confirmed', label: 'Patvirtinta' },
       { value: 'paid', label: 'Apmokėta' },
       { value: 'picked_up', label: 'Atsiimta' },
       { value: 'cancelled', label: 'Atšaukta' },
@@ -776,7 +772,7 @@ const Admin = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-lg sm:text-2xl font-bold text-green-600">
-                      {reservations.filter(r => r.status === 'confirmed').length}
+                      {reservations.filter(r => r.status === 'paid').length}
                     </div>
                     <p className="text-[10px] sm:text-xs text-muted-foreground">Apmokėtos</p>
                   </CardContent>
@@ -963,7 +959,7 @@ const Admin = () => {
                                       </Button>
                                     </>
                                   )}
-                                  {reservation.status === 'confirmed' && (
+                                  {reservation.status === 'paid' && (
                                     <Button
                                       variant="outline"
                                       size="sm"
@@ -1085,7 +1081,7 @@ const Admin = () => {
                                   </Button>
                                 </>
                               )}
-                              {reservation.status === 'confirmed' && (
+                              {reservation.status === 'paid' && (
                                 <Button
                                   variant="outline"
                                   size="sm"

@@ -94,7 +94,7 @@ serve(async (req) => {
       const { error } = await supabase
         .from('reservations')
         .update({
-          status: isFull ? 'confirmed' : 'awaiting_payment',
+          status: isFull ? 'paid' : 'awaiting_payment',
           payment_completed_at: isFull ? new Date().toISOString() : null,
           payment_transaction_id: reservationId,
           payment_provider: 'paysera'
