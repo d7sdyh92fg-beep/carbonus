@@ -200,6 +200,7 @@ export type Database = {
       }
       customers: {
         Row: {
+          address: string | null
           company_code: string | null
           company_name: string | null
           created_at: string
@@ -216,6 +217,7 @@ export type Database = {
           vat_code: string | null
         }
         Insert: {
+          address?: string | null
           company_code?: string | null
           company_name?: string | null
           created_at?: string
@@ -232,6 +234,7 @@ export type Database = {
           vat_code?: string | null
         }
         Update: {
+          address?: string | null
           company_code?: string | null
           company_name?: string | null
           created_at?: string
@@ -510,12 +513,20 @@ export type Database = {
         Returns: undefined
       }
       create_or_get_customer: {
-        Args: {
-          p_email: string
-          p_first_name: string
-          p_last_name: string
-          p_phone: string
-        }
+        Args:
+          | {
+              p_address?: string
+              p_email: string
+              p_first_name: string
+              p_last_name: string
+              p_phone: string
+            }
+          | {
+              p_email: string
+              p_first_name: string
+              p_last_name: string
+              p_phone: string
+            }
         Returns: string
       }
       has_role: {

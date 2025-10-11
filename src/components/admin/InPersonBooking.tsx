@@ -25,6 +25,7 @@ interface Customer {
   lastName: string;
   email: string;
   phone: string;
+  address: string;
   refundAccount: string;
   isCorporate: boolean;
   companyName: string;
@@ -164,6 +165,7 @@ export function InPersonBooking() {
     lastName: '',
     email: '',
     phone: '',
+    address: '',
     refundAccount: '',
     isCorporate: false,
     companyName: '',
@@ -256,7 +258,7 @@ export function InPersonBooking() {
     
     if (step === 'details') {
       if (!customer.firstName || !customer.lastName || !customer.email || !customer.phone || 
-          !booking.carId || !booking.startDate || !booking.endDate) {
+          !customer.address || !booking.carId || !booking.startDate || !booking.endDate) {
         toast.error('Prašome užpildyti visus privalomius laukus');
         return;
       }
@@ -294,7 +296,8 @@ export function InPersonBooking() {
           p_email: customer.email,
           p_first_name: customer.firstName,
           p_last_name: customer.lastName,
-          p_phone: customer.phone
+          p_phone: customer.phone,
+          p_address: customer.address
         });
 
       if (customerError) throw customerError;
@@ -303,6 +306,7 @@ export function InPersonBooking() {
       await supabase
         .from('customers')
         .update({
+          address: customer.address,
           refund_account_number: customer.refundAccount || null,
           is_corporate: customer.isCorporate,
           company_name: customer.isCorporate ? customer.companyName : null,
@@ -390,6 +394,7 @@ export function InPersonBooking() {
       lastName: '', 
       email: '', 
       phone: '',
+      address: '',
       refundAccount: '',
       isCorporate: false,
       companyName: '',
@@ -523,6 +528,18 @@ export function InPersonBooking() {
                     required
                     className="h-10 sm:h-12 text-sm sm:text-base"
                     placeholder="+370..."
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="address" className="text-sm sm:text-base">Gyvenamasis adresas *</Label>
+                  <Input
+                    id="address"
+                    value={customer.address}
+                    onChange={(e) => setCustomer(prev => ({ ...prev, address: e.target.value }))}
+                    required
+                    className="h-10 sm:h-12 text-sm sm:text-base"
+                    placeholder="Gatvė, namo nr., miestas"
                   />
                 </div>
                 

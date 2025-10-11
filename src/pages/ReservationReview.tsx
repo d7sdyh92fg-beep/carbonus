@@ -27,6 +27,7 @@ export default function ReservationReview() {
     lastName: '',
     email: '',
     phone: '',
+    address: '',
   });
 
   const [isCorporate, setIsCorporate] = useState(false);
@@ -110,6 +111,7 @@ export default function ReservationReview() {
             first_name: formData.firstName,
             last_name: formData.lastName,
             phone: formData.phone,
+            address: formData.address,
             is_corporate: isCorporate,
             company_name: isCorporate ? corporateData.companyName : null,
             company_code: isCorporate ? corporateData.companyCode : null,
@@ -127,6 +129,7 @@ export default function ReservationReview() {
             last_name: formData.lastName,
             email: formData.email,
             phone: formData.phone,
+            address: formData.address,
             is_corporate: isCorporate,
             company_name: isCorporate ? corporateData.companyName : null,
             company_code: isCorporate ? corporateData.companyCode : null,
@@ -334,6 +337,18 @@ export default function ReservationReview() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
+                    />
+                  </div>
+
+                  <div className="col-span-2">
+                    <Label htmlFor="address">Gyvenamasis adresas *</Label>
+                    <Input
+                      id="address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Gatvė, namo nr., miestas"
                     />
                   </div>
                 </div>
