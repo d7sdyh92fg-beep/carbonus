@@ -79,75 +79,61 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-      const contractHtml = `
+    // Simplified email content (contract will be attached as PDF)
+    const emailSummary = `
       <!DOCTYPE html>
       <html>
         <head>
           <meta charset="utf-8">
-          <title>Automobilių nuomos sutartis</title>
           <style>
-            body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
-            .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
-            .section { margin-bottom: 20px; }
-            .signature-section { border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px; }
-            .signature-image { max-width: 300px; height: auto; border: 1px solid #ddd; padding: 10px; }
-            table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-            th { background-color: #f5f5f5; }
+            body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; }
+            .header { text-align: center; border-bottom: 2px solid #22c55e; padding-bottom: 20px; margin-bottom: 30px; }
+            .info-box { background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6; }
+            .details { background: #f9fafb; padding: 15px; border-radius: 8px; margin: 15px 0; }
+            .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 14px; }
           </style>
         </head>
         <body>
           <div class="header">
-            <h1>CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS</h1>
-            <p>Sutarties Nr.: ${reservationId}</p>
-            <p>Data: ${new Date().toLocaleDateString('lt-LT')}</p>
+            <h1 style="color: #22c55e; margin: 0;">✅ Nuomos sutartis patvirtinta</h1>
           </div>
 
-          <div class="section">
-            <h2>NUOMOS DUOMENYS</h2>
-            <table>
-              <tr><th>Klientas</th><td>${customerName}</td></tr>
-              <tr><th>El. paštas</th><td>${customerEmail}</td></tr>
-              <tr><th>Automobilis</th><td>${carName}</td></tr>
-              <tr><th>Paėmimo data ir laikas</th><td>${startDate} ${req.body?.pickupTime || '10:00'}</td></tr>
-              <tr><th>Grąžinimo data ir laikas</th><td>${endDate} ${req.body?.returnTime || '10:00'}</td></tr>
-              <tr><th>Bendra suma</th><td>€${totalAmount}</td></tr>
-            </table>
+          <p>Gerb. <strong>${customerName}</strong>,</p>
+          <p>Dėkojame, kad pasirinkote CARBONUS automobilių nuomą!</p>
+          <p>Jūsų nuomos sutartis buvo sėkmingai sukurta ir pasirašyta.</p>
+
+          <div class="details">
+            <h3 style="margin-top: 0; color: #374151;">Rezervacijos informacija:</h3>
+            <p style="margin: 8px 0;"><strong>Automobilis:</strong> ${carName}</p>
+            <p style="margin: 8px 0;"><strong>Paėmimo data ir laikas:</strong> ${startDate} ${(req.body as any)?.pickupTime || '10:00'}</p>
+            <p style="margin: 8px 0;"><strong>Grąžinimo data ir laikas:</strong> ${endDate} ${(req.body as any)?.returnTime || '10:00'}</p>
+            <p style="margin: 8px 0;"><strong>Bendra suma:</strong> €${totalAmount}</p>
+            <p style="margin: 8px 0;"><strong>Sutarties Nr.:</strong> ${reservationId}</p>
           </div>
 
-          <div class="section">
-            <h2>TAISYKLĖS IR SĄLYGOS</h2>
-            <ol>
-              <li><strong>Vairuotojo reikalavimai:</strong> Privalomas galiojantis vairuotojo pažymėjimas, amžius nuo 21 m.</li>
-              <li><strong>Transporto priemonė:</strong> Automobilis perduodamas tvarkingas ir turi būti grąžintas tokios pat būklės.</li>
-              <li><strong>Draudimas:</strong> Į kainą įskaičiuotas bazinis draudimas. Papildomas draudimas – už papildomą mokestį.</li>
-              <li><strong>Kuro politika:</strong> Grąžinti su tokiu pačiu kuro lygiu.</li>
-              <li><strong>Vėlavimas:</strong> Už vėlavimą gali būti taikomi papildomi mokesčiai.</li>
-              <li><strong>Žala:</strong> Klientas atsako už žalą, kurios nedengia draudimas.</li>
-              <li><strong>Atšaukimas:</strong> Nemokamas atšaukimas likus ≥ 3 d. iki nuomos pradžios.</li>
-              <li><strong>Draudžiama:</strong> Varžybos, bekelė, neteisėta veikla ir pan.</li>
-            </ol>
+          <div class="info-box">
+            <p style="margin: 0 0 10px 0;"><strong>📎 Nuomos sutartis</strong></p>
+            <p style="margin: 0;">Nuomos sutartis pridėta prie šio laiško kaip PDF failas. Prašome ją išsaugoti ir pasiimti atsiimant automobilį.</p>
           </div>
 
-          <div class="signature-section">
-            <h2>KLIENTO PARAŠAS</h2>
-            <p>Pasirašydamas(-a) patvirtinu, kad perskaičiau ir sutinku su visomis sutarties sąlygomis.</p>
-            <div style="margin: 20px 0;">
-              <p><strong>Klientas:</strong> ${customerName}</p>
-              <p><strong>Data:</strong> ${new Date().toLocaleDateString('lt-LT')}</p>
-            </div>
-            ${signatureUrl ? `
-              <div style="margin: 20px 0;">
-                <p><strong>Skaitmeninis parašas:</strong></p>
-                <img src="${signatureUrl}" class="signature-image" alt="Kliento parašas" />
-              </div>
-            ` : ''}
+          <div class="info-box" style="background: #fef3c7; border-left-color: #f59e0b;">
+            <p style="margin: 0 0 10px 0;"><strong>📋 Prieš pasiimant automobilį:</strong></p>
+            <ul style="margin: 5px 0; padding-left: 20px;">
+              <li>Pasiimkite galiojantį vairuotojo pažymėjimą</li>
+              <li>Pasiruoškite asmens dokumentą (paso ar asmens kortelės)</li>
+              <li>Turite turėti sutartyje nurodytą sumą mokėjimui</li>
+            </ul>
           </div>
 
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; color: #666;">
-            <p>CARBONUS automobilių nuoma</p>
-            <p>El. paštas: info@carbonus.lt | Tel.: +370 698 18 781</p>
-            <p>Ši sutartis yra teisiškai privaloma.</p>
+          <p style="margin-top: 25px;">Jei turite klausimų, mielai atsakysime:</p>
+          <p style="margin: 5px 0;">
+            📧 El. paštas: <a href="mailto:info@carbonus.lt" style="color: #3b82f6;">info@carbonus.lt</a><br>
+            📞 Telefonas: <a href="tel:+37069818781" style="color: #3b82f6;">+370 698 18 781</a>
+          </p>
+
+          <div class="footer">
+            <p><strong>CARBONUS automobilių nuoma</strong></p>
+            <p>Ačiū, kad pasirinkote mus!</p>
           </div>
         </body>
       </html>
@@ -215,29 +201,35 @@ const handler = async (req: Request): Promise<Response> => {
       console.error('PDF generation failed:', pdfErr);
     }
 
+    // Download PDF from storage to attach to emails
+    let pdfAttachment = null;
+    if (contractPath) {
+      try {
+        const { data: pdfData, error: downloadError } = await supabase.storage
+          .from('contracts')
+          .download(contractPath);
+        
+        if (!downloadError && pdfData) {
+          const arrayBuffer = await pdfData.arrayBuffer();
+          const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+          pdfAttachment = {
+            filename: `nuomos_sutartis_${reservationId}.pdf`,
+            content: base64Pdf,
+          };
+        }
+      } catch (pdfError) {
+        console.error('Failed to download PDF for attachment:', pdfError);
+      }
+    }
+
     // Emails in Lithuanian
     const emailPromises = [
       resend.emails.send({
         from: "CARBONUS <info@carbonus.lt>",
         to: [customerEmail],
         subject: "Jūsų automobilių nuomos sutartis – CARBONUS",
-        html: `
-          <h2>Ačiū, kad pasirinkote CARBONUS!</h2>
-          <p>Gerb. ${customerName},</p>
-          <p>Jūsų rezervacija patvirtinta. Žemiau pateikiama pasirašyta nuomos sutartis.</p>
-          <h3>Rezervacijos duomenys:</h3>
-          <ul>
-            <li><strong>Automobilis:</strong> ${carName}</li>
-            <li><strong>Laikotarpis:</strong> ${startDate} – ${endDate}</li>
-            <li><strong>Bendra suma:</strong> €${totalAmount}</li>
-            <li><strong>Sutarties Nr.:</strong> ${reservationId}</li>
-          </ul>
-          ${signatureUrl ? `<p><strong>Kliento parašas:</strong><br/><img src="${signatureUrl}" alt="Parašas" style="max-width:280px;border:1px solid #ddd;padding:8px;"/></p>` : ''}
-          <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
-            ${contractHtml}
-          </div>
-          <p>Pagarbiai,<br>CARBONUS komanda</p>
-        `,
+        html: emailSummary,
+        ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
       }),
       
       resend.emails.send({
@@ -245,24 +237,37 @@ const handler = async (req: Request): Promise<Response> => {
         to: ["info@carbonus.lt"],
         subject: `Nauja vietoje atlikta rezervacija – ${customerName}`,
         html: `
-          <h2>Nauja rezervacija (vietoje)</h2>
-          <h3>Klientas:</h3>
-          <ul>
-            <li><strong>Vardas, pavardė:</strong> ${customerName}</li>
-            <li><strong>El. paštas:</strong> ${customerEmail}</li>
-          </ul>
-          <h3>Rezervacijos duomenys:</h3>
-          <ul>
-            <li><strong>Sutarties Nr.:</strong> ${reservationId}</li>
-            <li><strong>Automobilis:</strong> ${carName}</li>
-            <li><strong>Laikotarpis:</strong> ${startDate} – ${endDate}</li>
-            <li><strong>Bendra suma:</strong> €${totalAmount}</li>
-          </ul>
-          ${signatureUrl ? `<p><strong>Parašas:</strong><br/><img src="${signatureUrl}" alt="Parašas" style="max-width:280px;border:1px solid #ddd;padding:8px;"/></p>` : ''}
-          <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
-            ${contractHtml}
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #333; border-bottom: 2px solid #22c55e; padding-bottom: 10px;">Nauja rezervacija (vietoje)</h2>
+            
+            <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #374151;">Klientas:</h3>
+              <p><strong>Vardas, pavardė:</strong> ${customerName}</p>
+              <p><strong>El. paštas:</strong> ${customerEmail}</p>
+            </div>
+            
+            <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #374151;">Rezervacijos duomenys:</h3>
+              <p><strong>Sutarties Nr.:</strong> ${reservationId}</p>
+              <p><strong>Automobilis:</strong> ${carName}</p>
+              <p><strong>Paėmimo:</strong> ${startDate} ${(req.body as any)?.pickupTime || '10:00'}</p>
+              <p><strong>Grąžinimas:</strong> ${endDate} ${(req.body as any)?.returnTime || '10:00'}</p>
+              <p><strong>Bendra suma:</strong> €${totalAmount}</p>
+            </div>
+            
+            ${signatureUrl ? `
+              <div style="margin: 20px 0;">
+                <p><strong>Kliento parašas:</strong></p>
+                <img src="${signatureUrl}" alt="Parašas" style="max-width:280px;border:1px solid #ddd;padding:8px;"/>
+              </div>
+            ` : ''}
+            
+            <p style="margin-top: 20px; color: #6b7280; font-size: 14px;">
+              Sutartis pridėta kaip PDF failas.
+            </p>
           </div>
         `,
+        ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
       })
     ];
 
