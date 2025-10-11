@@ -662,16 +662,16 @@ export function InPersonBooking() {
                     </SelectTrigger>
                     <SelectContent className="bg-background border z-50">
                       {cars.map((car) => (
-                        <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm p-4">
-                          <div className="flex items-center justify-between w-full gap-8">
-                            <div className="flex flex-col gap-1.5">
-                              <span className="font-medium text-base">{car.name}</span>
-                              <span className="text-sm text-muted-foreground">{car.year}</span>
+                        <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm p-3 sm:p-4">
+                          <div className="flex items-center justify-between w-full gap-2 sm:gap-4">
+                            <div className="flex flex-col gap-1 min-w-0 flex-1">
+                              <span className="font-medium text-sm sm:text-base truncate">{car.name}</span>
+                              <span className="text-xs sm:text-sm text-muted-foreground">{car.year}</span>
                             </div>
                             {car.available ? (
-                              <Badge variant="default" className="bg-green-500 hover:bg-green-600 text-white shrink-0">Laisvas</Badge>
+                              <Badge variant="default" className="bg-green-500 hover:bg-green-600 text-white shrink-0 text-xs">Laisvas</Badge>
                             ) : (
-                              <Badge variant="destructive" className="shrink-0">Užimtas</Badge>
+                              <Badge variant="destructive" className="shrink-0 text-xs">Užimtas</Badge>
                             )}
                           </div>
                         </SelectItem>
@@ -683,7 +683,7 @@ export function InPersonBooking() {
                 <div className="space-y-4 sm:space-y-6">
                   {/* Retroactive Booking Toggle */}
                   <div className="p-3 sm:p-4 border rounded-lg bg-amber-50 border-amber-200">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-start gap-2 sm:gap-3">
                       <Checkbox 
                         id="isRetroactive" 
                         checked={isRetroactive} 
@@ -693,13 +693,14 @@ export function InPersonBooking() {
                             setBooking(prev => ({ ...prev, startDate: null, endDate: null }));
                           }
                         }}
+                        className="mt-1"
                       />
-                      <Label htmlFor="isRetroactive" className="cursor-pointer font-medium text-sm sm:text-base">
+                      <Label htmlFor="isRetroactive" className="cursor-pointer font-medium text-xs sm:text-sm leading-tight flex-1">
                         Atgalinė rezervacija (leisti praeities datas)
                       </Label>
                     </div>
                     {isRetroactive && (
-                      <p className="text-xs text-amber-700 mt-2">
+                      <p className="text-xs text-amber-700 mt-2 ml-6 sm:ml-7">
                         Įjungtas režimas praeities datoms. Galite sukurti rezervaciją už automobilio, kuris jau grąžintas.
                       </p>
                     )}
