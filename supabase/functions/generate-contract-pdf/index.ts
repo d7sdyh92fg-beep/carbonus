@@ -222,16 +222,8 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-    // Emails in Lithuanian
+    // Emails in Lithuanian - only send to admin
     const emailPromises = [
-      resend.emails.send({
-        from: "CARBONUS <info@carbonus.lt>",
-        to: [customerEmail],
-        subject: "Jūsų automobilių nuomos sutartis – CARBONUS",
-        html: emailSummary,
-        ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
-      }),
-      
       resend.emails.send({
         from: "CARBONUS <info@carbonus.lt>",
         to: ["info@carbonus.lt"],
