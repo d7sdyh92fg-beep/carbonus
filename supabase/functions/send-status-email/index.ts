@@ -296,25 +296,32 @@ const handler = async (req: Request): Promise<Response> => {
         const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        console.log('Attempting to download PDF from:', data.contractPdfUrl);
+        console.log('Contract PDF URL received:', data.contractPdfUrl);
         
-        // Download the PDF from Supabase storage using the full path
+        // Remove 'contracts/' prefix if it exists since we're already using .from('contracts')
+        const filePath = data.contractPdfUrl.replace(/^contracts\//, '');
+        console.log('Downloading PDF from path:', filePath);
+        
+        // Download the PDF from Supabase storage
         const { data: pdfData, error: downloadError } = await supabase.storage
           .from('contracts')
-          .download(data.contractPdfUrl);
+          .download(filePath);
 
         if (!downloadError && pdfData) {
           // Convert blob to base64
           const arrayBuffer = await pdfData.arrayBuffer();
+          const pdfSize = arrayBuffer.byteLength;
+          console.log(`PDF downloaded successfully. Size: ${pdfSize} bytes`);
+          
           const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
           
           emailOptions.attachments = [{
             filename: `nuomos_sutartis_${data.reservationId}.pdf`,
             content: base64Pdf,
           }];
-          console.log("Contract PDF successfully attached to confirmation email");
+          console.log(`Contract PDF successfully attached to email (${pdfSize} bytes, base64 length: ${base64Pdf.length})`);
         } else {
-          console.error("Error downloading PDF:", downloadError);
+          console.error("Error downloading PDF from storage:", downloadError);
         }
       } catch (pdfError) {
         console.error("Error processing PDF attachment:", pdfError);
