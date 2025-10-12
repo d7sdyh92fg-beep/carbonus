@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { PDFDocument, StandardFonts, rgb } from "npm:pdf-lib@1.17.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -93,6 +94,116 @@ serve(async (req) => {
 
       console.log('Reservation updated successfully:', data);
 
+      // Generate contract PDF
+      const reservation = data?.[0];
+      let contractPdfUrl = null;
+      
+      if (reservation) {
+        try {
+          // Fetch customer details
+          const { data: customer } = await supabase
+            .from('customers')
+            .select('*')
+            .eq('id', reservation.customer_id)
+            .single();
+
+          if (customer) {
+            // Generate PDF
+            const pdfDoc = await PDFDocument.create();
+            const page = pdfDoc.addPage([595.28, 841.89]); // A4
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+            let y = 800;
+            page.drawText('CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS', { x: 40, y, size: 14, font: fontBold });
+            y -= 24;
+            page.drawText(`Sutarties Nr.: ${reservation.id}`, { x: 40, y, size: 11, font });
+            y -= 16;
+            page.drawText(`Data: ${new Date().toLocaleDateString('lt-LT')}`, { x: 40, y, size: 11, font });
+            y -= 28;
+
+            page.drawText('NUOMOS DUOMENYS', { x: 40, y, size: 12, font: fontBold });
+            y -= 18;
+            
+            const rows = [
+              ['Klientas', `${customer.first_name} ${customer.last_name}`],
+              ['El. paštas', customer.email],
+              ['Telefonas', customer.phone],
+              ['Automobilis', reservation.car_name],
+              ['Paėmimo data', `${reservation.start_date}${reservation.pickup_time ? ' ' + reservation.pickup_time : ''}`],
+              ['Grąžinimo data', `${reservation.end_date}${reservation.return_time ? ' ' + reservation.return_time : ''}`],
+              ['Nuomos kaina', `€${reservation.total_rental_cost}`],
+              ['Užstatas', `€${reservation.deposit_amount}`],
+              ['Bendra suma', `€${reservation.total_amount}`],
+            ];
+            
+            for (const [k, v] of rows) {
+              page.drawText(`${k}:`, { x: 40, y, size: 11, font: fontBold });
+              page.drawText(String(v), { x: 160, y, size: 11, font });
+              y -= 16;
+            }
+
+            y -= 20;
+            page.drawText('SUTARTIES SĄLYGOS', { x: 40, y, size: 12, font: fontBold });
+            y -= 18;
+            const terms = [
+              '1. Automobilis turi būti grąžintas švarus ir tokiu pačiu degalų lygio kaip buvo atsiimtas.',
+              '2. Už pavėluotą grąžinimą taikomas 20 EUR/val. mokestis.',
+              '3. Užstatas bus grąžintas per 3-5 darbo dienas po automobilio apžiūros.',
+              '4. Nuomotojas neatsako už asmeninius daiktus, paliktus automobilyje.'
+            ];
+            
+            for (const term of terms) {
+              page.drawText(term, { x: 40, y, size: 10, font, maxWidth: 500 });
+              y -= 14;
+            }
+
+            // Save PDF
+            const pdfBytes = await pdfDoc.save();
+            const pdfFilePath = `${reservation.id}/nuomos_sutartis_${reservation.id}.pdf`;
+            
+            const { error: uploadError } = await supabase.storage
+              .from('contracts')
+              .upload(pdfFilePath, pdfBytes, { contentType: 'application/pdf', upsert: true });
+
+            if (!uploadError) {
+              contractPdfUrl = pdfFilePath;
+              
+              // Update reservation with contract PDF URL
+              await supabase
+                .from('reservations')
+                .update({ contract_pdf_url: contractPdfUrl })
+                .eq('id', reservation.id);
+              
+              console.log('Contract PDF generated and saved:', contractPdfUrl);
+            }
+          }
+        } catch (pdfError) {
+          console.error('Error generating contract PDF:', pdfError);
+        }
+
+        // Send confirmation email with PDF attachment
+        try {
+          await supabase.functions.invoke('send-status-email', {
+            body: {
+              reservationId: reservation.id,
+              customerEmail: customer?.email,
+              customerName: `${customer?.first_name} ${customer?.last_name}`,
+              carName: reservation.car_name,
+              startDate: reservation.start_date,
+              endDate: reservation.end_date,
+              totalAmount: reservation.total_amount,
+              status: 'paid',
+              paymentTransactionId: session.payment_intent as string,
+              contractPdfUrl: contractPdfUrl
+            }
+          });
+          console.log('Confirmation email sent with PDF attachment');
+        } catch (emailError) {
+          console.error('Error sending confirmation email:', emailError);
+        }
+      }
+
       const rentalAmount = session.metadata?.rentalAmount ? parseFloat(session.metadata.rentalAmount) : 0;
       const depositAmount = session.metadata?.depositAmount ? parseFloat(session.metadata.depositAmount) : 0;
       
@@ -101,7 +212,8 @@ serve(async (req) => {
         paymentStatus: 'captured',
         rentalAmountCaptured: rentalAmount,
         depositAmountHeld: depositAmount,
-        reservation: data?.[0]
+        reservation: data?.[0],
+        contractPdfUrl: contractPdfUrl
       }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
