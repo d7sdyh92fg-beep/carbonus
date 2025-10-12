@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-import { PDFDocument, StandardFonts, rgb } from "npm:pdf-lib@1.17.1";
+import { PDFDocument, rgb } from "npm:pdf-lib@1.17.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -111,8 +111,18 @@ serve(async (req) => {
             // Generate PDF
             const pdfDoc = await PDFDocument.create();
             const page = pdfDoc.addPage([595.28, 841.89]); // A4
-            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-            const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            // Fetch and embed Unicode fonts that support Lithuanian characters
+            console.log('Fetching Noto Sans fonts...');
+            const fontRegularResponse = await fetch('https://github.com/google/fonts/raw/main/ofl/notosans/NotoSans-Regular.ttf');
+            const fontBoldResponse = await fetch('https://github.com/google/fonts/raw/main/ofl/notosans/NotoSans-Bold.ttf');
+            
+            const fontRegularBytes = new Uint8Array(await fontRegularResponse.arrayBuffer());
+            const fontBoldBytes = new Uint8Array(await fontBoldResponse.arrayBuffer());
+            
+            const font = await pdfDoc.embedFont(fontRegularBytes);
+            const fontBold = await pdfDoc.embedFont(fontBoldBytes);
+            console.log('Fonts embedded successfully');
 
             let y = 800;
             page.drawText('CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS', { x: 40, y, size: 14, font: fontBold });
