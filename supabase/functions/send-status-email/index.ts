@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { PDFDocument, rgb } from "npm:pdf-lib@1.17.1";
+import fontkit from "npm:@pdf-lib/fontkit@1.1.1";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -289,43 +291,159 @@ const handler = async (req: Request): Promise<Response> => {
       html: emailContent.html,
     };
 
-    // If status is paid and there's a contract PDF, attach it
-    if (data.status === 'paid' && data.contractPdfUrl) {
+    // If status is paid, handle contract PDF attachment
+    if (data.status === 'paid') {
       try {
         const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
         const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        console.log('Contract PDF URL received:', data.contractPdfUrl);
+        let contractPdfUrl = data.contractPdfUrl;
         
-        // Remove 'contracts/' prefix if it exists since we're already using .from('contracts')
-        const filePath = data.contractPdfUrl.replace(/^contracts\//, '');
-        console.log('Downloading PDF from path:', filePath);
-        
-        // Download the PDF from Supabase storage
-        const { data: pdfData, error: downloadError } = await supabase.storage
-          .from('contracts')
-          .download(filePath);
+        // If no PDF URL provided, check if one exists in DB or generate new one
+        if (!contractPdfUrl) {
+          console.log('No contract PDF URL provided, checking database...');
+          
+          const { data: reservation, error: fetchError } = await supabase
+            .from('reservations')
+            .select('*, customers(*)')
+            .eq('id', data.reservationId)
+            .single();
+          
+          if (fetchError) {
+            console.error('Error fetching reservation:', fetchError);
+          } else if (reservation) {
+            contractPdfUrl = reservation.contract_pdf_url;
+            
+            // If still no PDF, generate one
+            if (!contractPdfUrl && reservation.customers) {
+              console.log('Generating contract PDF on-the-fly...');
+              const customer = reservation.customers;
+              
+              const pdfDoc = await PDFDocument.create();
+              pdfDoc.registerFontkit(fontkit);
+              
+              const page = pdfDoc.addPage([595.28, 841.89]);
+              
+              // Fetch fonts
+              const fontRegularResponse = await fetch('https://github.com/google/fonts/raw/main/ofl/notosans/NotoSans-Regular.ttf');
+              const fontBoldResponse = await fetch('https://github.com/google/fonts/raw/main/ofl/notosans/NotoSans-Bold.ttf');
+              
+              const fontRegularBytes = new Uint8Array(await fontRegularResponse.arrayBuffer());
+              const fontBoldBytes = new Uint8Array(await fontBoldResponse.arrayBuffer());
+              
+              const font = await pdfDoc.embedFont(fontRegularBytes);
+              const fontBold = await pdfDoc.embedFont(fontBoldBytes);
+              
+              let y = 800;
+              page.drawText('CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS', { x: 40, y, size: 14, font: fontBold });
+              y -= 24;
+              page.drawText(`Sutarties Nr.: ${reservation.id}`, { x: 40, y, size: 11, font });
+              y -= 16;
+              page.drawText(`Data: ${new Date().toLocaleDateString('lt-LT')}`, { x: 40, y, size: 11, font });
+              y -= 28;
 
-        if (!downloadError && pdfData) {
-          // Convert blob to base64
-          const arrayBuffer = await pdfData.arrayBuffer();
-          const pdfSize = arrayBuffer.byteLength;
-          console.log(`PDF downloaded successfully. Size: ${pdfSize} bytes`);
+              page.drawText('NUOMOS DUOMENYS', { x: 40, y, size: 12, font: fontBold });
+              y -= 18;
+              
+              const rows = [
+                ['Klientas', `${customer.first_name} ${customer.last_name}`],
+                ['El. paštas', customer.email],
+                ['Telefonas', customer.phone],
+                ['Automobilis', reservation.car_name],
+                ['Paėmimo data', `${reservation.start_date}${reservation.pickup_time ? ' ' + reservation.pickup_time : ''}`],
+                ['Grąžinimo data', `${reservation.end_date}${reservation.return_time ? ' ' + reservation.return_time : ''}`],
+                ['Nuomos kaina', `€${reservation.total_rental_cost}`],
+                ['Užstatas', `€${reservation.deposit_amount}`],
+                ['Bendra suma', `€${reservation.total_amount}`],
+              ];
+              
+              for (const [k, v] of rows) {
+                page.drawText(`${k}:`, { x: 40, y, size: 11, font: fontBold });
+                page.drawText(String(v), { x: 160, y, size: 11, font });
+                y -= 16;
+              }
+
+              y -= 20;
+              page.drawText('SUTARTIES SĄLYGOS', { x: 40, y, size: 12, font: fontBold });
+              y -= 18;
+              const terms = [
+                '1. Automobilis turi būti grąžintas švarus ir tokiu pačiu degalų lygio kaip buvo atsiimtas.',
+                '2. Už pavėluotą grąžinimą taikomas 20 EUR/val. mokestis.',
+                '3. Užstatas bus grąžintas per 3-5 darbo dienas po automobilio apžiūros.',
+                '4. Nuomotojas neatsako už asmeninius daiktus, paliktus automobilyje.'
+              ];
+              
+              for (const term of terms) {
+                page.drawText(term, { x: 40, y, size: 10, font, maxWidth: 500 });
+                y -= 14;
+              }
+
+              const pdfBytes = await pdfDoc.save();
+              const pdfFilePath = `${reservation.id}/nuomos_sutartis_${reservation.id}.pdf`;
+              
+              const { error: uploadError } = await supabase.storage
+                .from('contracts')
+                .upload(pdfFilePath, pdfBytes, { contentType: 'application/pdf', upsert: true });
+
+              if (!uploadError) {
+                contractPdfUrl = pdfFilePath;
+                
+                // Update reservation with contract PDF URL
+                await supabase
+                  .from('reservations')
+                  .update({ contract_pdf_url: contractPdfUrl })
+                  .eq('id', reservation.id);
+                
+                console.log('Contract PDF generated and saved:', contractPdfUrl);
+              } else {
+                console.error('PDF upload error:', uploadError);
+              }
+            }
+          }
+        }
+        
+        // Download and attach PDF if we have a URL
+        if (contractPdfUrl) {
+          console.log('Contract PDF URL:', contractPdfUrl);
           
-          const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+          const filePath = contractPdfUrl.replace(/^contracts\//, '');
+          console.log('Downloading PDF from path:', filePath);
           
-          emailOptions.attachments = [{
-            filename: `nuomos_sutartis_${data.reservationId}.pdf`,
-            content: base64Pdf,
-          }];
-          console.log(`Contract PDF successfully attached to email (${pdfSize} bytes, base64 length: ${base64Pdf.length})`);
+          const { data: pdfData, error: downloadError } = await supabase.storage
+            .from('contracts')
+            .download(filePath);
+
+          if (!downloadError && pdfData) {
+            const arrayBuffer = await pdfData.arrayBuffer();
+            const pdfSize = arrayBuffer.byteLength;
+            console.log(`PDF downloaded successfully. Size: ${pdfSize} bytes`);
+            
+            const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+            
+            emailOptions.attachments = [{
+              filename: `nuomos_sutartis_${data.reservationId}.pdf`,
+              content: base64Pdf,
+              contentType: 'application/pdf'
+            }];
+            console.log(`Contract PDF attached to email (${pdfSize} bytes)`);
+          } else {
+            console.error("Error downloading PDF:", downloadError);
+            
+            // Fallback: try to use signed URL
+            const { data: signedData } = await supabase.storage
+              .from('contracts')
+              .createSignedUrl(filePath, 3600);
+            
+            if (signedData?.signedUrl) {
+              console.log('Using signed URL as fallback:', signedData.signedUrl);
+            }
+          }
         } else {
-          console.error("Error downloading PDF from storage:", downloadError);
+          console.log('No contract PDF available to attach');
         }
       } catch (pdfError) {
         console.error("Error processing PDF attachment:", pdfError);
-        // Continue sending email without attachment if PDF fails
       }
     }
 

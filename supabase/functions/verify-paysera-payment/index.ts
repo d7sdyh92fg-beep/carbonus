@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import CryptoJS from "https://esm.sh/crypto-js@4.1.1"
 import { PDFDocument, rgb } from "npm:pdf-lib@1.17.1"
+import fontkit from "npm:@pdf-lib/fontkit@1.1.1"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -124,6 +125,10 @@ serve(async (req) => {
             
             // Generate PDF
             const pdfDoc = await PDFDocument.create();
+            
+            // Register fontkit for custom font support
+            pdfDoc.registerFontkit(fontkit);
+            
             const page = pdfDoc.addPage([595.28, 841.89]); // A4
             
             // Fetch and embed Unicode fonts that support Lithuanian characters

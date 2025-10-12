@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument, rgb } from "npm:pdf-lib@1.17.1";
+import fontkit from "npm:@pdf-lib/fontkit@1.1.1";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -143,6 +144,10 @@ const handler = async (req: Request): Promise<Response> => {
     let contractPath: string | null = null;
     try {
       const pdfDoc = await PDFDocument.create();
+      
+      // Register fontkit for custom font support
+      pdfDoc.registerFontkit(fontkit);
+      
       const page = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
       
       // Fetch and embed Unicode fonts that support Lithuanian characters
