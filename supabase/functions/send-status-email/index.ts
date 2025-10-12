@@ -134,6 +134,11 @@ const getEmailContent = (data: StatusEmailRequest) => {
             ${paymentTransactionId ? `<p style="margin: 8px 0;"><strong>Mokėjimo ID:</strong> ${paymentTransactionId}</p>` : ''}
           </div>
           
+          <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <p style="margin: 0 0 10px 0;"><strong>📎 Nuomos sutartis</strong></p>
+            <p style="margin: 5px 0; line-height: 1.6;">Nuomos sutartis pridėta prie šio laiško kaip PDF failas. Prašome ją išsaugoti ir pasiimti atsiimant automobilį.</p>
+          </div>
+          
           <div style="background: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
             <p style="margin: 0 0 10px 0;"><strong>📋 Kas toliau?</strong></p>
             <p style="margin: 5px 0; line-height: 1.6;">Prieš nuomos pradžią su jumis susisieks mūsų darbuotojai ir suderins automobilio atsiėmimo detales.</p>
@@ -291,14 +296,12 @@ const handler = async (req: Request): Promise<Response> => {
         const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // Extract the file path from the URL
-        const urlParts = data.contractPdfUrl.split('/');
-        const fileName = urlParts[urlParts.length - 1];
+        console.log('Attempting to download PDF from:', data.contractPdfUrl);
         
-        // Download the PDF from Supabase storage
+        // Download the PDF from Supabase storage using the full path
         const { data: pdfData, error: downloadError } = await supabase.storage
           .from('contracts')
-          .download(`${data.reservationId}/${fileName}`);
+          .download(data.contractPdfUrl);
 
         if (!downloadError && pdfData) {
           // Convert blob to base64
@@ -309,7 +312,7 @@ const handler = async (req: Request): Promise<Response> => {
             filename: `nuomos_sutartis_${data.reservationId}.pdf`,
             content: base64Pdf,
           }];
-          console.log("Contract PDF attached to confirmation email");
+          console.log("Contract PDF successfully attached to confirmation email");
         } else {
           console.error("Error downloading PDF:", downloadError);
         }
