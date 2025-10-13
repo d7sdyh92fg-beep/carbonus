@@ -119,8 +119,8 @@ serve(async (req) => {
             
             // Fetch and embed Unicode fonts that support Lithuanian characters
             console.log('Fetching Noto Sans fonts...');
-            const fontRegularResponse = await fetch('https://github.com/google/fonts/raw/main/ofl/notosans/NotoSans-Regular.ttf');
-            const fontBoldResponse = await fetch('https://github.com/google/fonts/raw/main/ofl/notosans/NotoSans-Bold.ttf');
+            const fontRegularResponse = await fetch('https://raw.githubusercontent.com/googlefonts/noto-fonts/main/hinted/ttf/NotoSans/NotoSans-Regular.ttf');
+            const fontBoldResponse = await fetch('https://raw.githubusercontent.com/googlefonts/noto-fonts/main/hinted/ttf/NotoSans/NotoSans-Bold.ttf');
             
             const fontRegularBytes = new Uint8Array(await fontRegularResponse.arrayBuffer());
             const fontBoldBytes = new Uint8Array(await fontBoldResponse.arrayBuffer());
