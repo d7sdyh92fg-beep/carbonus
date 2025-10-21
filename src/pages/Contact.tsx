@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslations } from "@/hooks/use-translations";
 import { 
   Phone, 
   Mail, 
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 
 const Contact = () => {
+  const { t } = useTranslations();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -67,8 +69,8 @@ const Contact = () => {
       // Validate required fields
       if (!formData.firstName || !formData.lastName || !formData.email || !formData.subject || !formData.message) {
         toast({
-          title: "Klaida",
-          description: "Prašome užpildyti visus privalomus laukus (*)",
+          title: t('contact.errorTitle'),
+          description: t('contact.errorDesc'),
           variant: "destructive",
         });
         return;
@@ -85,8 +87,8 @@ const Contact = () => {
 
       // Success
       toast({
-        title: "Žinutė išsiųsta!",
-        description: "Ačiū už jūsų žinutę. Susisieksime su jumis kuo greičiau.",
+        title: t('contact.successTitle'),
+        description: t('contact.successDesc'),
       });
 
       // Reset form
@@ -102,8 +104,8 @@ const Contact = () => {
     } catch (error: any) {
       console.error("Error submitting contact form:", error);
       toast({
-        title: "Klaida",
-        description: error.message || "Nepavyko išsiųsti žinutės. Bandykite dar kartą arba susisiekite telefonu.",
+        title: t('contact.errorTitle'),
+        description: error.message || t('contact.errorNetwork'),
         variant: "destructive",
       });
     } finally {
@@ -121,54 +123,54 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: Phone,
-      title: "Telefonas",
+      title: t('contact.info.phone.title'),
       details: ["+370 698 18 781"],
-      description: "8:00-17:00 klientų aptarnavimas"
+      description: t('contact.info.phone.description')
     },
     {
       icon: Mail,
-      title: "El. paštas",
+      title: t('contact.info.email.title'),
       details: ["info@carbonus.lt"],
-      description: "24/7 atsakysime per 2 valandas"
+      description: t('contact.info.email.description')
     },
     {
       icon: MapPin,
-      title: "Adresas",
-      details: ["Druskininkai"],
-      description: "Centrinė būstinė"
+      title: t('contact.info.address.title'),
+      details: [t('contact.info.address.location')],
+      description: t('contact.info.address.description')
     },
     {
       icon: Clock,
-      title: "Darbo laikas",
-      details: ["Pr-Pk: 8:00-20:00", "Š-S: 9:00-18:00"],
-      description: "Automobilio atsiėmimas 24/7"
+      title: t('contact.info.hours.title'),
+      details: Array.isArray(t('contact.info.hours.schedule')) ? t('contact.info.hours.schedule') as string[] : [t('contact.info.hours.schedule')],
+      description: t('contact.info.hours.description')
     }
   ];
 
   const locations = [
     {
-      city: "Druskininkai",
-      address: "Druskininkai",
+      city: t('contact.locations.city'),
+      address: t('contact.info.address.location'),
       phone: "+370 698 18 781",
-      hours: "Pr-Pk: 8:00-20:00, Š-S: 9:00-18:00"
+      hours: Array.isArray(t('contact.info.hours.schedule')) ? (t('contact.info.hours.schedule') as string[]).join(', ') : t('contact.info.hours.schedule')
     }
   ];
 
   const services = [
     {
       icon: Car,
-      title: "Automobilio rezervacija",
-      description: "Rezervuokite automobilį telefonu arba užpildykite žemiau esančią formą"
+      title: t('contact.services.booking.title'),
+      description: t('contact.services.booking.description')
     },
     {
       icon: Headphones,
-      title: "Klientų aptarnavimas",
-      description: "Mūsų specialistai padės išspręsti visus klausimus 24/7"
+      title: t('contact.services.support.title'),
+      description: t('contact.services.support.description')
     },
     {
       icon: Calendar,
-      title: "Konsultacijos",
-      description: "Gaukite individualų pasiūlymą pagal jūsų poreikius"
+      title: t('contact.services.consultation.title'),
+      description: t('contact.services.consultation.description')
     }
   ];
 
@@ -179,17 +181,15 @@ const Contact = () => {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+        <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">
-              SUSISIEKITE SU MUMIS
+              {t('contact.badge')}
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-              Kontaktai
+              {t('contact.title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Turite klausimų? Norite rezervuoti automobilį? Mūsų komanda 
-              visada pasiruošusi jums padėti. Susisiekite bet kuriuo jums 
-              patogiu būdu.
+              {t('contact.subtitle')}
             </p>
           </div>
 
@@ -233,20 +233,19 @@ const Contact = () => {
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <MessageSquare className="w-6 h-6 text-primary" />
-                  <h2 className="text-3xl font-bold text-foreground">Parašykite mums</h2>
+                  <h2 className="text-3xl font-bold text-foreground">{t('contact.form.title')}</h2>
                 </div>
                 <p className="text-muted-foreground mb-8">
-                  Užpildykite formą ir mes susisieksime su jumis kuo greičiau. 
-                  Taip pat galite tiesiogiai skambinti arba rašyti el. paštu.
+                  {t('contact.form.description')}
                 </p>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName">Vardas *</Label>
+                      <Label htmlFor="firstName">{t('contact.form.firstName')}</Label>
                       <Input 
                         id="firstName" 
-                        placeholder="Jūsų vardas"
+                        placeholder={t('contact.form.placeholders.firstName')}
                         required
                         className="mt-1"
                         value={formData.firstName}
@@ -254,10 +253,10 @@ const Contact = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="lastName">Pavardė *</Label>
+                      <Label htmlFor="lastName">{t('contact.form.lastName')}</Label>
                       <Input 
                         id="lastName" 
-                        placeholder="Jūsų pavardė"
+                        placeholder={t('contact.form.placeholders.lastName')}
                         required
                         className="mt-1"
                         value={formData.lastName}
@@ -268,11 +267,11 @@ const Contact = () => {
                   
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="email">El. paštas *</Label>
+                      <Label htmlFor="email">{t('contact.form.email')}</Label>
                       <Input 
                         id="email" 
                         type="email"
-                        placeholder="jusu@email.lt"
+                        placeholder={t('contact.form.placeholders.email')}
                         required
                         className="mt-1"
                         value={formData.email}
@@ -280,11 +279,11 @@ const Contact = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="phone">Telefono numeris</Label>
+                      <Label htmlFor="phone">{t('contact.form.phone')}</Label>
                       <Input 
                         id="phone" 
                         type="tel"
-                        placeholder="+370 612 34 567"
+                        placeholder={t('contact.form.placeholders.phone')}
                         className="mt-1"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
@@ -293,10 +292,10 @@ const Contact = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="subject">Tema *</Label>
+                    <Label htmlFor="subject">{t('contact.form.subject')}</Label>
                     <Input 
                       id="subject" 
-                      placeholder="Automobilio rezervacija"
+                      placeholder={t('contact.form.placeholders.subject')}
                       required
                       className="mt-1"
                       value={formData.subject}
@@ -305,10 +304,10 @@ const Contact = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="message">Žinutė *</Label>
+                    <Label htmlFor="message">{t('contact.form.message')}</Label>
                     <Textarea 
                       id="message" 
-                      placeholder="Parašykite savo klausimą arba prašymą..."
+                      placeholder={t('contact.form.placeholders.message')}
                       required
                       rows={6}
                       className="mt-1"
@@ -323,7 +322,7 @@ const Contact = () => {
                     className="w-full"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Siunčiama...' : 'Siųsti žinutę'}
+                    {isSubmitting ? t('contact.form.sending') : t('contact.form.submit')}
                   </Button>
                 </form>
               </CardContent>
@@ -335,7 +334,7 @@ const Contact = () => {
               <Card className="shadow-lg">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold text-foreground mb-6">
-                    Kaip galime padėti?
+                    {t('contact.services.title')}
                   </h3>
                   <div className="space-y-6">
                     {services.map((service, index) => {
@@ -366,18 +365,18 @@ const Contact = () => {
                   <div className="flex items-center gap-3 mb-4">
                     <Phone className="w-6 h-6 text-red-600" />
                     <h3 className="text-xl font-bold text-red-800">
-                      Skubūs atvejai
+                      {t('contact.emergency.title')}
                     </h3>
                   </div>
                   <p className="text-red-700 mb-4">
-                    Avarijų, gedimų ar kitų skubių situacijų atveju:
+                    {t('contact.emergency.description')}
                   </p>
                     <div className="space-y-2">
                       <p className="font-bold text-red-800 text-lg">
                         📞 +370 698 18 781
                       </p>
                     <p className="text-red-700 text-sm">
-                      Veikia 24/7 • Atsakysime per 5 minutes
+                      {t('contact.emergency.availability')}
                     </p>
                   </div>
                 </CardContent>
@@ -392,10 +391,10 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
             <Badge variant="outline" className="mb-4">
-              MŪSŲ BIURAI
+              {t('contact.locations.badge')}
             </Badge>
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-12">
-              Mūsų biuras randasi
+              {t('contact.locations.title')}
             </h2>
           </div>
 
@@ -412,20 +411,20 @@ const Contact = () => {
                     </div>
                     <div className="space-y-3 text-muted-foreground">
                       <p>
-                        <strong>Adresas:</strong><br />
+                        <strong>{t('contact.locations.addressLabel')}</strong><br />
                         {location.address}
                       </p>
                       <p>
-                        <strong>Telefonas:</strong><br />
+                        <strong>{t('contact.locations.phoneLabel')}</strong><br />
                         {location.phone}
                       </p>
                       <p>
-                        <strong>Darbo laikas:</strong><br />
+                        <strong>{t('contact.locations.hoursLabel')}</strong><br />
                         {location.hours}
                       </p>
                     </div>
                     <Button variant="outline" className="w-full mt-6">
-                      Maršrutas
+                      {t('contact.locations.routeButton')}
                     </Button>
                   </CardContent>
                 </Card>
