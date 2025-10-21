@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { XCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslations } from '@/hooks/use-translations';
 
 const PaymentCanceled: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { t } = useTranslations();
 
   const provider = searchParams.get('provider');
   const reservationId = searchParams.get('reservation_id');
@@ -38,30 +40,30 @@ const PaymentCanceled: React.FC = () => {
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-center">
-            Mokėjimas atšauktas
+            {t('payment.canceledTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center">
             <XCircle className="h-12 w-12 mx-auto mb-4 text-orange-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-orange-700">Mokėjimas atšauktas</h2>
+            <h2 className="text-2xl font-semibold mb-2 text-orange-700">{t('payment.canceledTitle')}</h2>
             <p className="text-muted-foreground mb-4">
-              Jūs atšaukėte mokėjimo procesą. Jūsų rezervacija nebuvo patvirtinta.
+              {t('payment.canceledDesc')}
             </p>
             
             <div className="bg-muted/50 p-4 rounded-lg mb-4">
-              <h3 className="font-semibold mb-2">Kas toliau?</h3>
+              <h3 className="font-semibold mb-2">{t('payment.whatNext')}</h3>
               <div className="space-y-2 text-sm text-muted-foreground text-left">
-                <p>• Galite bandyti mokėti dar kartą</p>
-                <p>• Susisiekite su mumis telefonu dėl pagalbos</p>
-                <p>• Pasirinkite kitą mokėjimo būdą</p>
+                <p>{t('payment.option1')}</p>
+                <p>{t('payment.option2')}</p>
+                <p>{t('payment.option3')}</p>
               </div>
             </div>
 
             <div className="text-sm text-muted-foreground">
-              <p><strong>Susisiekite su mumis:</strong></p>
-              <p>📞 Telefonas: +370 698 18 781</p>
-              <p>📧 El. paštas: info@carbonus.lt</p>
+              <p><strong>{t('payment.contactUs')}</strong></p>
+              <p>{t('payment.phone')}</p>
+              <p>{t('payment.email')}</p>
             </div>
           </div>
           
@@ -71,12 +73,10 @@ const PaymentCanceled: React.FC = () => {
               variant="outline"
               className="flex-1"
             >
-              Grįžti į pradžią
+              {t('payment.backHome')}
             </Button>
             <Button
               onClick={() => {
-                // If we have a reservation ID, navigate to cars with that reservation
-                // to allow re-attempting payment
                 if (reservationId) {
                   navigate(`/cars?retry_reservation=${reservationId}`);
                 } else {
@@ -85,7 +85,7 @@ const PaymentCanceled: React.FC = () => {
               }}
               className="flex-1"
             >
-              Bandyti mokėti dar kartą
+              {t('payment.retryPayment')}
             </Button>
           </div>
         </CardContent>

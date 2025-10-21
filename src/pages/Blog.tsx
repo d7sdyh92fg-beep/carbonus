@@ -28,6 +28,7 @@ interface BlogPost {
 
 const Blog = () => {
   const navigate = useNavigate();
+  const { t } = useTranslations();
 
   useEffect(() => {
     // Set page title and meta tags
@@ -60,73 +61,73 @@ const Blog = () => {
   const blogPosts: BlogPost[] = [
     {
       id: "1",
-      title: "10 patarimų, kaip sutaupyti nuomojant automobilį Lietuvoje",
-      excerpt: "Sužinokite 10 praktiškų patarimų, kaip pigiau išsinuomoti automobilį Lietuvoje. Lyginkite kainas, pasirinkite tinkamą draudimą ir venkite paslėptų mokesčių.",
+      title: t('blog.posts.savings.title'),
+      excerpt: t('blog.posts.savings.excerpt'),
       content: "",
-      author: "Carbonus komanda",
+      author: t('blog.author'),
       publishDate: "2024-12-15",
-      readTime: "5 min",
-      category: "Patarimai",
+      readTime: "5 " + t('blog.readTime'),
+      category: t('blog.posts.savings.category'),
       image: blogSavingsTips,
       slug: "10-patarimu-kaip-sutaupyti-nuomojant-automobili"
     },
     {
       id: "2", 
-      title: "Kelionių po Lietuvą gidas: geriausi maršrutai su nuomotu automobiliu",
-      excerpt: "Atraskite nuostabiausius Lietuvos kampus su mūsų sudarytu kelionių gidu. Nuo Kuršių nerijos iki Aukštaitijos nacionalinio parko.",
+      title: t('blog.posts.travel.title'),
+      excerpt: t('blog.posts.travel.excerpt'),
       content: "",
-      author: "Carbonus komanda", 
+      author: t('blog.author'), 
       publishDate: "2024-12-10",
-      readTime: "8 min",
-      category: "Kelionės",
+      readTime: "8 " + t('blog.readTime'),
+      category: t('blog.posts.travel.category'),
       image: blogLithuaniaTravel,
       slug: "kelioniu-po-lietuva-gidas-geriausi-marsrutai"
     },
     {
       id: "3",
-      title: "Automobilių nuomos draudimas: ką reikia žinoti?",
-      excerpt: "Sužinokite, kokie yra automobilių nuomos draudimo tipai, kokių papildomų apsaugų jums gali prireikti ir kaip išvengti paslėptų mokesčių nuomojant automobilį Lietuvoje ar užsienyje.",
+      title: t('blog.posts.insurance.title'),
+      excerpt: t('blog.posts.insurance.excerpt'),
       content: "",
-      author: "Carbonus komanda",
+      author: t('blog.author'),
       publishDate: "2024-12-05", 
-      readTime: "6 min",
-      category: "Draudimas",
+      readTime: "6 " + t('blog.readTime'),
+      category: t('blog.posts.insurance.category'),
       image: blogCarInsurance,
       slug: "automobiliu-nuomos-draudimas-kas-reikia-zinoti"
     },
     {
       id: "4",
-      title: "Verslo kelionės: kaip išsirinkti tinkamą automobilį?",
-      excerpt: "Sužinokite, į ką atkreipti dėmesį renkantis automobilį verslo kelionėms Lietuvoje ar užsienyje. Komfortas, patikimumas ir reprezentatyvumas – svarbiausi kriterijai.",
+      title: t('blog.posts.business.title'),
+      excerpt: t('blog.posts.business.excerpt'),
       content: "",
-      author: "Carbonus komanda",
+      author: t('blog.author'),
       publishDate: "2024-11-30",
-      readTime: "4 min", 
-      category: "Verslas",
+      readTime: "4 " + t('blog.readTime'), 
+      category: t('blog.posts.business.category'),
       image: blogBusinessTravel,
       slug: "verslo-keliones-kaip-issirinkti-tinkama-automobili"
     },
     {
       id: "5",
-      title: "Žiemos vairavimas: saugumas kelyje su nuomotu automobiliu",
-      excerpt: "Sužinokite, kaip saugiai vairuoti nuomotą automobilį žiemą Lietuvoje. Padangų pasirinkimas, draudimas ir vairavimo įpročiai, kurie padės išvengti nelaimių kelyje.",
+      title: t('blog.posts.winter.title'),
+      excerpt: t('blog.posts.winter.excerpt'),
       content: "",
-      author: "Carbonus komanda", 
+      author: t('blog.author'), 
       publishDate: "2024-11-25",
-      readTime: "7 min",
-      category: "Saugumas",
+      readTime: "7 " + t('blog.readTime'),
+      category: t('blog.posts.winter.category'),
       image: blogWinterDriving,
       slug: "ziemos-vairavimas-saugumas-kelyje"
     },
     {
       id: "6", 
-      title: "Šeimos kelionė: kaip pasirinkti idealų automobilį vaikams",
-      excerpt: "Sužinokite, kokį automobilį geriausia rinktis šeimos kelionei su vaikais. Patogumas, saugumas, vieta bagažui ir papildomi priedai – viskas, kas svarbiausia.",
+      title: t('blog.posts.family.title'),
+      excerpt: t('blog.posts.family.excerpt'),
       content: "",
-      author: "Carbonus komanda",
+      author: t('blog.author'),
       publishDate: "2024-11-20",
-      readTime: "5 min",
-      category: "Šeima", 
+      readTime: "5 " + t('blog.readTime'),
+      category: t('blog.posts.family.category'), 
       image: blogFamilyTravel,
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili"
     }
@@ -143,14 +144,13 @@ const Blog = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">
-              CARBONUS GIDAS
+              {t('blog.badge')}
             </Badge>
             <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-              Patarimai ir gidas
+              {t('blog.title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Naudingi patarimai, kelionių gidai ir praktinės žinios. 
-              Visa, kas reikia žinoti apie automobilių nuomą ir keliones Lietuvoje.
+              {t('blog.subtitle')}
             </p>
           </div>
         </div>
@@ -211,7 +211,7 @@ const Blog = () => {
                         size="sm"
                         className="group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
                       >
-                        Skaityti <ArrowRight className="w-4 h-4 ml-1" />
+                        {t('blog.readButton')} <ArrowRight className="w-4 h-4 ml-1" />
                       </Button>
                     </div>
                   </div>
