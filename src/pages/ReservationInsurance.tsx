@@ -4,26 +4,27 @@ import { ChevronLeft, Check, Shield } from 'lucide-react';
 import { useBooking, InsuranceOption } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslations } from '@/hooks/use-translations';
 
-const insuranceOptions: InsuranceOption[] = [
+const getInsuranceOptions = (t: (key: string) => string): InsuranceOption[] => [
   {
     id: 'max-liability',
-    title: 'Maksimali atsakomybė',
-    description: 'Standartinė draudimo apsauga. Atsakomybė iki 1500 €',
+    title: t('insurance.options.basic.title'),
+    description: t('insurance.options.basic.description'),
     pricePerDay: 0,
     excess: 1500,
   },
   {
     id: 'ldw-with-liability',
-    title: 'LDW apsauga su atsakomybe',
-    description: 'Sumažinta atsakomybė iki 500 €. Rekomenduojama.',
+    title: t('insurance.options.standard.title'),
+    description: t('insurance.options.standard.description'),
     pricePerDay: 10,
     excess: 500,
   },
   {
     id: 'ldw-no-liability',
-    title: 'LDW apsauga be atsakomybės',
-    description: 'Maksimali apsauga. Jokios atsakomybės įvykus avarijai.',
+    title: t('insurance.options.full.title'),
+    description: t('insurance.options.full.description'),
     pricePerDay: 20,
     excess: 0,
   },
@@ -31,7 +32,9 @@ const insuranceOptions: InsuranceOption[] = [
 
 export default function ReservationInsurance() {
   const navigate = useNavigate();
+  const { t } = useTranslations();
   const { bookingData, updateInsurance } = useBooking();
+  const insuranceOptions = getInsuranceOptions(t);
 
   useEffect(() => {
     // Scroll to top on page load
@@ -62,10 +65,10 @@ export default function ReservationInsurance() {
               className="gap-2"
             >
               <ChevronLeft className="h-4 w-4" />
-              Grįžti
+              {t('insurance.back')}
             </Button>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Nuo</p>
+              <p className="text-sm text-muted-foreground">{t('insurance.from')}</p>
               <p className="text-2xl font-bold text-primary">
                 {bookingData.basePrice.toFixed(2)} €
               </p>
@@ -79,10 +82,10 @@ export default function ReservationInsurance() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <Shield className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">Pasirinkite atsakomybę</h1>
+            <h1 className="text-3xl font-bold">{t('insurance.title')}</h1>
           </div>
           <p className="text-muted-foreground">
-            Pasirinkite jums tinkančią draudimo apsaugą kelionės metu
+            {t('insurance.subtitle')}
           </p>
         </div>
 
@@ -106,7 +109,7 @@ export default function ReservationInsurance() {
                       <h3 className="text-xl font-semibold">{option.title}</h3>
                       {option.id === 'ldw-with-liability' && (
                         <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full">
-                          Rekomenduojama
+                          {t('insurance.recommended')}
                         </span>
                       )}
                     </div>
@@ -114,9 +117,9 @@ export default function ReservationInsurance() {
                       {option.description}
                     </p>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="font-medium">Atsakomybė:</span>
+                      <span className="font-medium">{t('insurance.liability')}:</span>
                       <span className="text-muted-foreground">
-                        {option.excess === 0 ? 'Nėra' : `${option.excess} €`}
+                        {option.excess === 0 ? t('insurance.none') : `${option.excess} €`}
                       </span>
                     </div>
                   </div>
@@ -124,12 +127,12 @@ export default function ReservationInsurance() {
                   <div className="flex flex-col items-end gap-2">
                     {dailyPrice === 0 ? (
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-primary">Įskaičiuota</p>
+                        <p className="text-2xl font-bold text-primary">{t('insurance.included')}</p>
                       </div>
                     ) : (
                       <div className="text-right">
                         <p className="text-sm text-muted-foreground">
-                          +{dailyPrice.toFixed(2)} € / diena
+                          +{dailyPrice.toFixed(2)} € / {t('insurance.perDay')}
                         </p>
                         <p className="text-2xl font-bold text-primary">
                           +{totalPrice.toFixed(2)} €
@@ -150,12 +153,12 @@ export default function ReservationInsurance() {
 
         {/* Important Info */}
         <Card className="mt-8 p-6 bg-muted/50">
-          <h3 className="font-semibold mb-3">Svarbu žinoti:</h3>
+          <h3 className="font-semibold mb-3">{t('insurance.importantInfo.title')}</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>• Draudimas galioja tik Lietuvos teritorijoje, nebent pasirinkta papildoma paslauga "Naudojimas užsienyje"</li>
-            <li>• Atsakomybė taikoma kiekvienu žalos atveju atskirai</li>
-            <li>• Pilna kasko draudimo apsauga taikoma tik laikantis nuomos sąlygų</li>
-            <li>• Už važiavimą neblaiviam, padangų, ratlankių ir apatinės dalies pažeidimus draudimas netaikomas</li>
+            <li>• {t('insurance.importantInfo.liability')}</li>
+            <li>• {t('insurance.importantInfo.cdw')}</li>
+            <li>• {t('insurance.importantInfo.full')}</li>
+            <li>• {t('insurance.importantInfo.change')}</li>
           </ul>
         </Card>
       </div>

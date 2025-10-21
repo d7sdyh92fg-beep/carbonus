@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Mail, Phone, FileText } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 
 interface BookingFormProps {
   carId: string;
@@ -34,6 +35,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   onCancel,
 }) => {
   const { toast } = useToast();
+  const { t } = useTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pickupTime, setPickupTime] = useState('10:00');
   const [returnTime, setReturnTime] = useState('10:00');
@@ -80,8 +82,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
     
     if (!hasValidLicense) {
       toast({
-        title: "Klaida",
-        description: "Turite patvirtinti, kad turite galiojantį vairuotojo pažymėjimą",
+        title: t('booking.errors.title'),
+        description: t('booking.errors.licenseRequired'),
         variant: "destructive",
       });
       return;
@@ -89,8 +91,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
     
     if (!agreementAccepted) {
       toast({
-        title: "Klaida",
-        description: "Turite sutikti su nuomos taisyklėmis ir sąlygomis",
+        title: t('booking.errors.title'),
+        description: t('booking.errors.termsRequired'),
         variant: "destructive",
       });
       return;
@@ -254,8 +256,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
     } catch (error) {
       console.error("Booking error:", error);
       toast({
-        title: "Klaida",
-        description: `Nepavyko sukurti rezervacijos: ${error.message}. Bandykite dar kartą arba susisiekite telefonu.`,
+        title: t('booking.errors.title'),
+        description: `${t('booking.errors.bookingFailed')} ${error.message}. ${t('booking.errors.tryAgain')}`,
         variant: "destructive",
       });
     } finally {
@@ -311,8 +313,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
     } catch (error) {
       console.error('Error processing Paysera payment:', error);
       toast({
-        title: "Mokėjimo klaida",
-        description: 'Klaida apdorojant Paysera mokėjimą. Bandykite dar kartą.',
+        title: t('booking.errors.paymentError'),
+        description: t('booking.errors.paymentErrorDesc'),
         variant: "destructive",
       });
       throw error;
@@ -349,8 +351,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
     } catch (error) {
       console.error('Error processing payment:', error);
       toast({
-        title: "Mokėjimo klaida",
-        description: 'Klaida apdorojant mokėjimą. Bandykite dar kartą.',
+        title: t('booking.errors.paymentError'),
+        description: t('booking.errors.paymentErrorDesc'),
         variant: "destructive",
       });
       throw error;
@@ -360,15 +362,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Užbaigti rezervaciją</CardTitle>
+        <CardTitle>{t('booking.title')}</CardTitle>
       </CardHeader>
       <CardContent>
         {/* Time Selection - Prominent section */}
         <div className="mb-6 p-4 border-2 border-primary/20 rounded-lg bg-card">
-          <h4 className="font-semibold mb-4 text-base">Paėmimo ir grąžinimo laikas *</h4>
+          <h4 className="font-semibold mb-4 text-base">{t('booking.timeSelection.title')}</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="pickupTime" className="text-sm font-medium">Paėmimo laikas</Label>
+              <Label htmlFor="pickupTime" className="text-sm font-medium">{t('booking.timeSelection.pickupTime')}</Label>
               <Select value={pickupTime} onValueChange={setPickupTime}>
                 <SelectTrigger id="pickupTime" className="mt-2">
                   <SelectValue />
@@ -389,7 +391,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               </Select>
             </div>
             <div>
-              <Label htmlFor="returnTime" className="text-sm font-medium">Grąžinimo laikas</Label>
+              <Label htmlFor="returnTime" className="text-sm font-medium">{t('booking.timeSelection.returnTime')}</Label>
               <Select value={returnTime} onValueChange={setReturnTime}>
                 <SelectTrigger id="returnTime" className="mt-2">
                   <SelectValue />
@@ -414,42 +416,42 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
         {/* Booking Summary */}
         <div className="mb-6 p-4 bg-muted rounded-lg">
-          <h4 className="font-semibold mb-2">Rezervacijos santrauka</h4>
+          <h4 className="font-semibold mb-2">{t('booking.summary.title')}</h4>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span>Automobilis:</span>
+              <span>{t('booking.summary.car')}</span>
               <span className="font-medium">{carName}</span>
             </div>
             <div className="flex justify-between">
-              <span>Datos:</span>
+              <span>{t('booking.summary.dates')}</span>
               <span className="font-medium">
                 {startDate.toLocaleDateString('lt-LT')} - {endDate.toLocaleDateString('lt-LT')}
               </span>
             </div>
             <div className="flex justify-between">
-              <span>Paėmimo laikas:</span>
+              <span>{t('booking.summary.pickupTime')}</span>
               <span className="font-medium">{pickupTime}</span>
             </div>
             <div className="flex justify-between">
-              <span>Grąžinimo laikas:</span>
+              <span>{t('booking.summary.returnTime')}</span>
               <span className="font-medium">{returnTime}</span>
             </div>
             <div className="flex justify-between">
-              <span>Dienų skaičius:</span>
+              <span>{t('booking.summary.days')}</span>
               <span className="font-medium">{rentalDays}</span>
             </div>
             <div className="flex justify-between">
-              <span>Nuomos kaina:</span>
+              <span>{t('booking.summary.rentalPrice')}</span>
               <span className="font-medium">€{totalAmount}</span>
             </div>
             <div className="border-t pt-2 mt-2">
               <div className="flex justify-between font-semibold text-lg">
-                <span>Iš viso:</span>
+                <span>{t('booking.summary.total')}</span>
                 <span>€{totalAmount}</span>
               </div>
               {paymentMethod === "pay_at_counter" && (
                 <div className="flex justify-between text-sm text-muted-foreground mt-1">
-                  <span>Mokėti vietoje:</span>
+                  <span>{t('booking.summary.payAtCounter')}</span>
                   <span>€{totalAmount - advancePayment}</span>
                 </div>
               )}
@@ -459,17 +461,17 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
         {/* Payment Method Selection */}
         <div className="mb-6 p-4 border rounded-lg">
-          <h4 className="font-semibold mb-3">Mokėjimo būdas</h4>
+          <h4 className="font-semibold mb-3">{t('booking.payment.title')}</h4>
           <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as "pay_now" | "pay_at_counter")}>
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="pay_now" id="pay_now" />
-                <Label htmlFor="pay_now">Mokėti dabar (pilną sumą)</Label>
+                <Label htmlFor="pay_now">{t('booking.payment.payNow')}</Label>
               </div>
               
               {paymentMethod === "pay_now" && (
                 <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
-                  <p className="text-sm font-medium">Pasirinkite mokėjimo būdą:</p>
+                  <p className="text-sm font-medium">{t('booking.payment.selectMethod')}</p>
                   <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
                     <div className="hidden flex items-center space-x-2">
                       <RadioGroupItem value="paysera" id="paysera" />
@@ -491,12 +493,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
               
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
-                <Label htmlFor="pay_at_counter">Mokėti vietoje (išankstinis mokėjimas €{advancePayment})</Label>
+                <Label htmlFor="pay_at_counter">{t('booking.payment.payAtCounter')} (€{advancePayment})</Label>
               </div>
               
               {paymentMethod === "pay_at_counter" && (
                 <div className="ml-6 space-y-3 p-3 bg-muted/50 rounded-lg">
-                  <p className="text-sm font-medium">Išankstinio mokėjimo būdas:</p>
+                  <p className="text-sm font-medium">{t('booking.payment.selectMethod')}</p>
                   <RadioGroup value={paymentProvider} onValueChange={(value) => setPaymentProvider(value as "stripe" | "paysera")}>
                     <div className="hidden flex items-center space-x-2">
                       <RadioGroupItem value="paysera" id="paysera_advance" />
@@ -544,7 +546,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               onCheckedChange={(checked) => setIsCorporate(checked as boolean)}
             />
             <Label htmlFor="isCorporate" className="cursor-pointer font-medium">
-              Įmonės rezervacija
+              {t('booking.corporateInfo.title')}
             </Label>
           </div>
         </div>
@@ -553,10 +555,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {isCorporate && (
             <div className="p-4 border rounded-lg space-y-4 bg-muted/30">
-              <h4 className="font-semibold">Įmonės duomenys</h4>
+              <h4 className="font-semibold">{t('booking.corporateInfo.companyDetails')}</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="companyName">Įmonės pavadinimas *</Label>
+                  <Label htmlFor="companyName">{t('booking.corporateInfo.companyName')} *</Label>
                   <Input
                     id="companyName"
                     value={corporateData.companyName}
@@ -565,7 +567,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   />
                 </div>
                 <div>
-                  <Label htmlFor="companyCode">Įmonės kodas *</Label>
+                  <Label htmlFor="companyCode">{t('booking.corporateInfo.companyCode')} *</Label>
                   <Input
                     id="companyCode"
                     value={corporateData.companyCode}
@@ -574,7 +576,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   />
                 </div>
                 <div>
-                  <Label htmlFor="vatCode">PVM mokėtojo kodas</Label>
+                  <Label htmlFor="vatCode">{t('booking.corporateInfo.vatCode')}</Label>
                   <Input
                     id="vatCode"
                     value={corporateData.vatCode}
@@ -582,7 +584,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   />
                 </div>
                 <div>
-                  <Label htmlFor="representativeName">Atstovas *</Label>
+                  <Label htmlFor="representativeName">{t('booking.corporateInfo.representativeName')} *</Label>
                   <Input
                     id="representativeName"
                     value={corporateData.representativeName}
@@ -591,7 +593,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   />
                 </div>
                 <div>
-                  <Label htmlFor="representativePhone">Atstovo telefonas *</Label>
+                  <Label htmlFor="representativePhone">{t('booking.corporateInfo.representativePhone')} *</Label>
                   <Input
                     id="representativePhone"
                     value={corporateData.representativePhone}
@@ -600,7 +602,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   />
                 </div>
                 <div>
-                  <Label htmlFor="representativeEmail">Atstovo el. paštas *</Label>
+                  <Label htmlFor="representativeEmail">{t('booking.corporateInfo.representativeEmail')} *</Label>
                   <Input
                     id="representativeEmail"
                     type="email"
@@ -613,10 +615,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
             </div>
           )}
 
-          <h4 className="font-semibold mt-6">Kontaktinė informacija</h4>
+          <h4 className="font-semibold mt-6">{t('booking.personalInfo.title')}</h4>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="firstName">Vardas *</Label>
+              <Label htmlFor="firstName">{t('booking.personalInfo.firstName')} *</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -630,7 +632,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               </div>
             </div>
             <div>
-              <Label htmlFor="lastName">Pavardė *</Label>
+              <Label htmlFor="lastName">{t('booking.personalInfo.lastName')} *</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -646,7 +648,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </div>
 
           <div>
-            <Label htmlFor="email">El. paštas *</Label>
+            <Label htmlFor="email">{t('booking.personalInfo.email')} *</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
@@ -662,7 +664,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </div>
 
           <div>
-            <Label htmlFor="phone">Telefono numeris *</Label>
+            <Label htmlFor="phone">{t('booking.personalInfo.phone')} *</Label>
             <div className="relative">
               <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
@@ -690,7 +692,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 htmlFor="validLicense" 
                 className="text-sm font-medium cursor-pointer"
               >
-                Turiu galiojantį ES šalyje išduotą vairuotojo pažymėjimą (ne mažiau kaip 2 metų stažas) *
+                {t('booking.validation.license')}
               </Label>
             </div>
             <div className="flex items-start space-x-2 text-sm text-muted-foreground bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md border border-blue-200 dark:border-blue-900">
@@ -698,7 +700,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <p className="text-blue-900 dark:text-blue-100">
-                Vairuotojo pažymėjimą reikės pateikti automobilio atsiėmimo metu.
+                {t('booking.validation.licenseInfo')}
               </p>
             </div>
           </div>
@@ -717,7 +719,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   htmlFor="agreement" 
                   className="text-sm font-medium cursor-pointer"
                 >
-                  Susipažinau ir patvirtinu, kad sutinku su nuomos taisyklėmis ir sąlygomis *
+                  {t('booking.validation.terms')} <a href="/rezervacija/sutartis" className="text-primary hover:underline">{t('booking.validation.termsLink')}</a> *
                 </Label>
                 <div className="flex items-center gap-2 text-sm">
                   <FileText className="w-4 h-4 text-muted-foreground" />
@@ -727,7 +729,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                     rel="noopener noreferrer"
                     className="text-primary hover:underline"
                   >
-                    Peržiūrėti nuomos sutartį
+                    {t('booking.validation.viewContract')}
                   </a>
                 </div>
               </div>
@@ -742,21 +744,21 @@ const BookingForm: React.FC<BookingFormProps> = ({
               className="flex-1"
               disabled={isSubmitting}
             >
-              Atšaukti
+              {t('booking.buttons.cancel')}
             </Button>
             <Button
               type="submit"
               className="flex-1"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Kuriama rezervacija..." : (paymentMethod === "pay_now" ? "Mokėti dabar" : "Užbaigti rezervaciją")}
+              {isSubmitting ? t('booking.buttons.processing') : (paymentMethod === "pay_now" ? t('booking.buttons.payNow') : t('booking.buttons.confirm'))}
             </Button>
           </div>
         </form>
 
         <div className="mt-4 text-xs text-muted-foreground space-y-1">
-          <p>* Rezervacija bus patvirtinta po to, kai susisieksime su jumis dėl mokėjimo ir automobilio perdavimo detalių.</p>
-          <p>* Atšaukimams kreipkitės: <strong>info@carbonus.lt</strong></p>
+          <p>* {t('booking.notes.confirmation')}</p>
+          <p>* {t('booking.notes.cancellation')}</p>
         </div>
       </CardContent>
     </Card>

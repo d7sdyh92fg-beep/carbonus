@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslations } from '@/hooks/use-translations';
 
 const PaymentSuccess: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { t } = useTranslations();
   const [status, setStatus] = useState<'loading' | 'success' | 'processing' | 'error'>('loading');
   const [reservationId, setReservationId] = useState<string>('');
 
@@ -88,8 +90,8 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <Clock className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-spin" />
-            <h2 className="text-2xl font-semibold mb-2">Tikrinamas mokėjimas...</h2>
-            <p className="text-muted-foreground">Prašome palaukti, kol patvirtinsime jūsų mokėjimą.</p>
+            <h2 className="text-2xl font-semibold mb-2">{t('payment.success.checking')}</h2>
+            <p className="text-muted-foreground">{t('payment.success.pleaseWait')}</p>
           </div>
         );
       
@@ -97,12 +99,12 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <Clock className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
-            <h2 className="text-2xl font-semibold mb-2">Mokėjimas apdorojamas</h2>
+            <h2 className="text-2xl font-semibold mb-2">{t('payment.success.processing')}</h2>
             <p className="text-muted-foreground mb-4">
-              Jūsų mokėjimas vis dar apdorojamas. Tai gali užtrukti kelias minutes.
+              {t('payment.success.processingMessage')}
             </p>
             <p className="text-sm text-muted-foreground">
-              Jei mokėjimas nebus patvirtintas per 10 minučių, susisiekite su mumis telefonu +370 698 18 781
+              {t('payment.success.processingTime')}
             </p>
           </div>
         );
@@ -111,19 +113,19 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-green-700">Mokėjimas sėkmingas!</h2>
+            <h2 className="text-2xl font-semibold mb-2 text-green-700">{t('payment.success.title')}</h2>
             <p className="text-muted-foreground mb-4">
-              Jūsų rezervacija buvo sėkmingai apmokėta ir patvirtinta.
+              {t('payment.success.message')}
             </p>
             {reservationId && (
               <p className="text-sm text-muted-foreground mb-4">
-                Rezervacijos numeris: <strong>{reservationId}</strong>
+                {t('payment.success.reservationNumber')} <strong>{reservationId}</strong>
               </p>
             )}
             <div className="space-y-2 text-sm text-muted-foreground">
-              <p>📧 Patvirtinimo laiškas išsiųstas į jūsų el. paštą</p>
-              <p>📞 Susisieksime su jumis dėl automobilio atsiėmimo detalių</p>
-              <p>🚗 Automobilis bus paruoštas nurodytą dieną</p>
+              <p>📧 {t('payment.success.emailSent')}</p>
+              <p>📞 {t('payment.success.contactDetails')}</p>
+              <p>🚗 {t('payment.success.carReady')}</p>
             </div>
           </div>
         );
@@ -133,13 +135,13 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-red-700">Mokėjimo klaida</h2>
+            <h2 className="text-2xl font-semibold mb-2 text-red-700">{t('payment.success.error')}</h2>
             <p className="text-muted-foreground mb-4">
-              Nepavyko patvirtinti jūsų mokėjimo. Prašome susisiekti su mumis.
+              {t('payment.success.errorMessage')}
             </p>
             <div className="text-sm text-muted-foreground">
-              <p>📞 Telefonas: +370 698 18 781</p>
-              <p>📧 El. paštas: info@carbonus.lt</p>
+              <p>📞 {t('payment.success.phone')}</p>
+              <p>📧 {t('payment.success.email')}</p>
             </div>
           </div>
         );
@@ -151,7 +153,7 @@ const PaymentSuccess: React.FC = () => {
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-center">
-            {provider === 'stripe' ? 'Stripe' : 'Paysera'} Mokėjimas
+            {provider === 'stripe' ? 'Stripe' : 'Paysera'} {t('payment.success.paymentTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -163,14 +165,14 @@ const PaymentSuccess: React.FC = () => {
               variant="outline"
               className="flex-1"
             >
-              Grįžti į pradžią
+              {t('payment.success.backHome')}
             </Button>
             {status === 'success' && (
               <Button
                 onClick={() => navigate('/cars')}
                 className="flex-1"
               >
-                Žiūrėti automobilius
+                {t('payment.success.viewCars')}
               </Button>
             )}
           </div>
