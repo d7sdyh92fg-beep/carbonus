@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type Language = 'lt' | 'en' | 'ru';
+type Language = 'lt' | 'en';
 
 interface LanguageContextType {
   language: Language;
@@ -10,7 +10,16 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('lt');
+  const [language, setLanguage] = useState<Language>(() => {
+    // Get saved language from localStorage or default to 'lt'
+    const saved = localStorage.getItem('carbonus-language');
+    return (saved === 'en' || saved === 'lt') ? saved : 'lt';
+  });
+
+  useEffect(() => {
+    // Save language preference to localStorage
+    localStorage.setItem('carbonus-language', language);
+  }, [language]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>

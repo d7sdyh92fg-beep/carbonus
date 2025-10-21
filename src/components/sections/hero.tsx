@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useTranslations } from "@/hooks/use-translations";
 
 interface HeroProps {
   carImage?: string;
@@ -7,6 +8,7 @@ interface HeroProps {
 
 export function Hero({ carImage }: HeroProps) {
   const navigate = useNavigate();
+  const { t } = useTranslations();
 
   const handleNavigateToCars = () => {
     navigate('/automobiliai');
@@ -27,23 +29,23 @@ export function Hero({ carImage }: HeroProps) {
           <div className="space-y-4 md:space-y-8">
             <div className="space-y-6 md:space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4 md:mb-6">
-                📍 Nuoma Druskininkuose • Vairuokite visoje Lietuvoje
+                📍 {t('hero.badge')}
               </div>
               <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-muted-foreground leading-relaxed">
-                Kurkime prisiminimus kartu:
+                {t('hero.subtitle')}
               </h1>
               <div className="space-y-3 md:space-y-4 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
-                <div className="text-primary">Jūsų planai,</div>
-                <div className="text-foreground">Mūsų automobilis Jūsų poreikiams</div>
+                <div className="text-primary">{t('hero.title1')}</div>
+                <div className="text-foreground">{t('hero.title2')}</div>
                 <div className="text-primary">
-                  Jūsų kelionės, nuotykiai<br />
-                  ir patirtys.
+                  {t('hero.title3')}<br />
+                  {t('hero.title3Line2')}
                 </div>
               </div>
             </div>
             
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed mt-6 md:mt-8">
-              Patirkite pasirinkimo laisvę su Carbonus Druskininkuose - nuomokite kokybišką automobilį ir vykite į bet kurį Lietuvos kampelį saugiai ir patogiai.
+              {t('hero.description')}
             </p>
           </div>
 
@@ -54,7 +56,7 @@ export function Hero({ carImage }: HeroProps) {
               className="animate-scale-in"
               onClick={handleNavigateToCars}
             >
-              Pradėti
+              {t('hero.cta')}
             </Button>
           </div>
         </div>

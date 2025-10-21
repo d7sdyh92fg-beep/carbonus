@@ -4,6 +4,7 @@ import { Button } from "./button";
 import { Menu, X, User, LogOut, Shield } from "lucide-react";
 import { LanguageSwitcher } from "./language-switcher";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslations } from "@/hooks/use-translations";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +22,7 @@ export function Navigation({ logo }: NavigationProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
+  const { t } = useTranslations();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -30,12 +32,12 @@ export function Navigation({ logo }: NavigationProps) {
   };
 
   const navItems = [
-    { name: "Pradžia", href: "/" },
-    { name: "Automobiliai", href: "/automobiliai" },
-    { name: "Apie mus", href: "/apie-mus" },
-    { name: "Kontaktai", href: "/kontaktai" },
-    { name: "DUK", href: "/duk" },
-    { name: "Patarimai ir gidas", href: "/naujienos" },
+    { name: t('nav.home'), href: "/" },
+    { name: t('nav.cars'), href: "/automobiliai" },
+    { name: t('nav.about'), href: "/apie-mus" },
+    { name: t('nav.contact'), href: "/kontaktai" },
+    { name: t('nav.faq'), href: "/duk" },
+    { name: t('nav.blog'), href: "/naujienos" },
   ];
 
   return (
@@ -81,7 +83,7 @@ export function Navigation({ logo }: NavigationProps) {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm">
                     <Shield className="h-4 w-4 mr-2" />
-                    Admin
+                    {t('nav.admin')}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -90,12 +92,12 @@ export function Navigation({ logo }: NavigationProps) {
                     navigate('/admin');
                   }}>
                     <Shield className="mr-2 h-4 w-4" />
-                    Skydelis
+                    {t('nav.adminDashboard')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={signOut}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    Atsijungti
+                    {t('nav.logout')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
