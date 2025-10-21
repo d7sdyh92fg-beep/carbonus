@@ -172,7 +172,7 @@ export function Footer() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Company Details */}
             <div>
-              <h4 className="font-semibold mb-3 text-primary">UAB „Carbonus"</h4>
+              <h4 className="font-semibold mb-3 text-primary">MB Carbonus</h4>
               <div className="text-muted-foreground text-sm space-y-1">
                 <p>Įmonės kodas: 307196558</p>
                 <p>Telefonas: +370 6 98 18 781</p>
