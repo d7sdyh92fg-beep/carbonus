@@ -1,52 +1,54 @@
 import { Hand, CalendarCheck, Car, RotateCcw } from "lucide-react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-
-const steps = [
-  {
-    id: 1,
-    title: "Pasirinkti",
-    icon: Hand,
-    description: "Išsirinkite norimą automobilį iš mūsų parko",
-    side: "right",
-    hoverSide: "left",
-  },
-  {
-    id: 2,
-    title: "Užsakyti",
-    icon: CalendarCheck,
-    description: "Rezervuokite automobilį internetu vos per kelias minutes",
-    side: "left",
-    hoverSide: "right",
-  },
-  {
-    id: 3,
-    title: "Vairuoti",
-    icon: Car,
-    description: "Pasiimkite automobilį ir mėgaukitės kelione",
-    side: "right",
-    hoverSide: "left",
-  },
-  {
-    id: 4,
-    title: "Grąžinti",
-    icon: RotateCcw,
-    description: "Grąžinkite automobilį sutartu laiku",
-    side: "left",
-    hoverSide: "right",
-  },
-];
+import { useTranslations } from "@/hooks/use-translations";
 
 export function HowItWorks() {
+  const { t } = useTranslations();
+
+  const steps = [
+    {
+      id: 1,
+      title: t('howItWorks.steps.choose.title'),
+      icon: Hand,
+      description: t('howItWorks.steps.choose.description'),
+      side: "right",
+      hoverSide: "left",
+    },
+    {
+      id: 2,
+      title: t('howItWorks.steps.book.title'),
+      icon: CalendarCheck,
+      description: t('howItWorks.steps.book.description'),
+      side: "left",
+      hoverSide: "right",
+    },
+    {
+      id: 3,
+      title: t('howItWorks.steps.drive.title'),
+      icon: Car,
+      description: t('howItWorks.steps.drive.description'),
+      side: "right",
+      hoverSide: "left",
+    },
+    {
+      id: 4,
+      title: t('howItWorks.steps.return.title'),
+      icon: RotateCcw,
+      description: t('howItWorks.steps.return.description'),
+      side: "left",
+      hoverSide: "right",
+    },
+  ];
   return (
     <section className="py-20 bg-background">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Header */}
         <div className="mb-16">
           <p className="text-sm font-semibold text-primary mb-2 tracking-wider uppercase">
-            KAIP TAI VEIKIA
+            {t('howItWorks.badge')}
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            Paprasti žingsniai automobilio gavimui
+            {t('howItWorks.title')}
           </h2>
         </div>
 

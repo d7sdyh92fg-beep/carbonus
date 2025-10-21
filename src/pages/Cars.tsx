@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
+import { useTranslations } from "@/hooks/use-translations";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -36,6 +37,7 @@ interface Car {
 
 const Cars = () => {
   const navigate = useNavigate();
+  const { t } = useTranslations();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -169,10 +171,10 @@ const Cars = () => {
       <section className="pt-32 md:pt-40 pb-12 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Automobilių nuoma
+            {t('cars.title')}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Raskite tobulą automobilį savo kelionei. Turime platų pasirinkimą aukščiausios kokybės automobilių.
+            {t('cars.subtitle')}
           </p>
           
           {/* Search and Filter Controls */}
@@ -181,7 +183,7 @@ const Cars = () => {
               {/* Search Input */}
               <div className="w-full md:w-96">
                 <Input
-                  placeholder="Ieškoti automobilio..."
+                  placeholder={t('cars.search')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="h-12 text-lg"
@@ -192,10 +194,10 @@ const Cars = () => {
               <div className="w-full md:w-64">
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger className="h-12 text-lg">
-                    <SelectValue placeholder="Kategorija" />
+                    <SelectValue placeholder={t('cars.category')} />
                   </SelectTrigger>
                   <SelectContent className="bg-background border border-border shadow-lg z-50">
-                    <SelectItem value="all">Visos kategorijos</SelectItem>
+                    <SelectItem value="all">{t('car.categories.all')}</SelectItem>
                     {categories.filter(cat => cat !== "all").map((category) => (
                       <SelectItem key={category} value={category}>
                         {category}

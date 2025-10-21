@@ -1,22 +1,24 @@
 import { CheckCircle, Car, DollarSign } from "lucide-react";
 import carInterior from "@/assets/car-interior.jpg";
+import { useTranslations } from "@/hooks/use-translations";
 
 export function Features() {
+  const { t } = useTranslations();
   const features = [
     {
       icon: CheckCircle,
-      title: "Lengvas užsakymas",
-      description: "Paprastas, greitas ir lankstus užsakymo procesas, su momentiniu rezervacijos patvirtinimu."
+      title: t('features.easy.title'),
+      description: t('features.easy.description')
     },
     {
       icon: Car,
-      title: "Kokybė ir įvairovė", 
-      description: "Aukščiausios klasės ir patikimumo automobilių parkas, atitinkantis kiekvieno poreikį ir lūkesčius."
+      title: t('features.quality.title'), 
+      description: t('features.quality.description')
     },
     {
       icon: DollarSign,
-      title: "Prieinamos kainos",
-      description: "Konkurencingi tarifai su skaidriomis sąlygomis ir be paslėptų mokesčių"
+      title: t('features.prices.title'),
+      description: t('features.prices.description')
     }
   ];
 
@@ -26,10 +28,10 @@ export function Features() {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Kodėl verta rinktis Carbonus?!
+            {t('features.title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Prisijunkite prie mūsų patenkintų klientų, kurie jau patikėjo savo keliones ir planus mums bei pasirinko savo kelionių automobilius iš mūsų automobilių parko. Pasirinkite ir Jūs, nes Jūs mums rūpite.
+            {t('features.subtitle')}
           </p>
         </div>
 

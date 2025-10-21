@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import carMustang from "@/assets/car-mustang.jpg";
+import { useTranslations } from "@/hooks/use-translations";
 
 export function CTA() {
   const navigate = useNavigate();
+  const { t } = useTranslations();
 
   const handleNavigateToCars = () => {
     navigate('/automobiliai');
@@ -35,11 +37,11 @@ export function CTA() {
           <div className="relative z-10 w-full flex justify-center md:justify-end">
             <div className="w-full md:w-1/2 lg:w-2/5 p-6 md:p-8 lg:p-12 text-white text-center md:text-left">
               <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4">
-                Pasiruošę kelionei?
+                {t('cta.title')}
               </h2>
               
               <p className="text-sm md:text-base lg:text-lg mb-6 md:mb-8 leading-relaxed">
-                Užsisakykite automobilį jau dabar.
+                {t('cta.description')}
               </p>
               
               <Button 
@@ -47,7 +49,7 @@ export function CTA() {
                 className="bg-black hover:bg-gray-800 text-white font-semibold px-6 md:px-8 py-3 rounded-full transition-all duration-300"
                 onClick={handleNavigateToCars}
               >
-                Užsakyti dabar
+                {t('cta.button')}
               </Button>
             </div>
           </div>

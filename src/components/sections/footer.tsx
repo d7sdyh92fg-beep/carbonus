@@ -4,10 +4,12 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslations } from "@/hooks/use-translations";
 
 export function Footer() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslations();
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
 
@@ -16,7 +18,7 @@ export function Footer() {
     
     if (!email || !email.includes('@')) {
       toast({
-        title: "Klaida",
+        title: t('common.messages.error'),
         description: "Prašome įvesti teisingą el. pašto adresą",
         variant: "destructive",
       });
@@ -36,13 +38,13 @@ export function Footer() {
 
       if (data.success) {
         toast({
-          title: "Sėkmingai užsiprenumeravote!",
-          description: data.message || "Patikrinkite savo el. paštą dėl patvirtinimo.",
+          title: t('common.messages.newsletterSuccess'),
+          description: data.message || t('common.messages.newsletterCheck'),
         });
         setEmail(''); // Clear the input
       } else {
         toast({
-          title: "Klaida",
+          title: t('common.messages.error'),
           description: data.error || "Nepavyko užsiprenumeruoti.",
           variant: "destructive",
         });
@@ -51,7 +53,7 @@ export function Footer() {
     } catch (error: any) {
       console.error("Newsletter subscription error:", error);
       toast({
-        title: "Klaida",
+        title: t('common.messages.error'),
         description: "Nepavyko užsiprenumeruoti. Bandykite dar kartą.",
         variant: "destructive",
       });
@@ -104,17 +106,16 @@ export function Footer() {
               className="h-16 md:h-24 lg:h-36 mb-6"
             />
             <p className="text-muted-foreground mb-6 max-w-md">
-              Patirkite aukščiausią pasirinkimo laisvę su premium automobilių nuoma Druskininkuose. 
-              Nuomokite vietoje, vairuokite visoje Lietuvoje - jūsų kelionė, jūsų automobilis, jūsų būdas.
+              {t('footer.brand.description')}
             </p>
             <div className="mt-4 max-w-sm">
               <p className="text-muted-foreground text-sm mb-3">
-                Prenumeruoti naujienlaiškį
+                {t('footer.newsletter.title')}
               </p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input 
                   type="email" 
-                  placeholder="Įveskite el. paštą"
+                  placeholder={t('footer.newsletter.placeholder')}
                   className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -126,7 +127,7 @@ export function Footer() {
                   className="bg-primary text-primary-foreground hover:bg-primary/90 border-0 whitespace-nowrap"
                   disabled={isSubscribing}
                 >
-                  {isSubscribing ? 'Siunčiama...' : 'Prenumeruoti'}
+                  {isSubscribing ? t('common.buttons.sending') : t('footer.newsletter.subscribe')}
                 </Button>
               </form>
             </div>
@@ -134,35 +135,55 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4 text-primary">Nuorodos</h4>
+            <h4 className="font-semibold mb-4 text-primary">{t('footer.quickLinks.title')}</h4>
             <ul className="space-y-2">
-              {["Pradžia", "Automobiliai", "Apie mus", "Kontaktai", "DUK", "Patarimai ir gidas"].map((link) => (
-                <li key={link}>
-                  <button
-                    onClick={() => handleLinkClick(link)}
-                    className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left"
-                  >
-                    {link}
-                  </button>
-                </li>
-              ))}
+              <li>
+                <button onClick={() => handleLinkClick("Pradžia")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.quickLinks.home')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleLinkClick("Automobiliai")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.quickLinks.cars')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleLinkClick("Apie mus")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.quickLinks.about')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleLinkClick("Kontaktai")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.quickLinks.contact')}
+                </button>
+              </li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold mb-4 text-primary">Pagalba</h4>
+            <h4 className="font-semibold mb-4 text-primary">{t('footer.support.title')}</h4>
             <ul className="space-y-2">
-              {["Privatumo politika", "Nuomos sutartis"].map((link) => (
-                <li key={link}>
-                  <button
-                    onClick={() => handleLinkClick(link)}
-                    className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left"
-                  >
-                    {link}
-                  </button>
-                </li>
-              ))}
+              <li>
+                <button onClick={() => handleLinkClick("DUK")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.support.faq')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleLinkClick("Privatumo politika")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.support.privacy')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleLinkClick("Nuomos sutartis")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.support.terms')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleLinkClick("Patarimai ir gidas")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                  {t('footer.support.blog')}
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -172,18 +193,18 @@ export function Footer() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Company Details */}
             <div>
-              <h4 className="font-semibold mb-3 text-primary">MB Carbonus</h4>
+              <h4 className="font-semibold mb-3 text-primary">{t('footer.company.name')}</h4>
               <div className="text-muted-foreground text-sm space-y-1">
-                <p>Įmonės kodas: 307196558</p>
-                <p>Telefonas: +370 6 98 18 781</p>
-                <p>El. paštas: info@carbonus.lt</p>
+                <p>{t('footer.company.code')}</p>
+                <p>{t('footer.company.phone')}</p>
+                <p>{t('footer.company.email')}</p>
               </div>
             </div>
             
             {/* Copyright */}
             <div className="flex items-end">
               <p className="text-muted-foreground text-sm">
-                © 2024 Carbonus. Visos teisės saugomos.
+                {t('footer.copyright')}
               </p>
             </div>
           </div>

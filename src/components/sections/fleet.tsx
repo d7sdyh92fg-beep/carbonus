@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -34,6 +35,7 @@ const imageMap: { [key: string]: string } = {
 
 export function Fleet() {
   const navigate = useNavigate();
+  const { t } = useTranslations();
   const cars: Car[] = [
     {
       id: "1",
@@ -108,10 +110,10 @@ export function Fleet() {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
           <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-2">
-            AUTOMOBILIAI
+            {t('fleet.badge')}
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Automobilių nuoma
+            {t('fleet.title')}
           </h2>
         </div>
 
@@ -183,9 +185,9 @@ export function Fleet() {
                   
                   <div className="flex items-center justify-between pt-4">
                     <div>
-                      <p className="text-sm text-muted-foreground">Kaina nuo</p>
+                      <p className="text-sm text-muted-foreground">{t('fleet.priceFrom')}</p>
                       <p className="text-2xl font-bold text-primary">{car.price}</p>
-                      <p className="text-xs text-muted-foreground">per dieną</p>
+                      <p className="text-xs text-muted-foreground">{t('fleet.perDay')}</p>
                     </div>
                     <Button 
                       className="bg-primary hover:bg-primary/90 text-primary-foreground"
@@ -194,7 +196,7 @@ export function Fleet() {
                         setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
                       }}
                     >
-                      Žiūrėti
+                      {t('fleet.viewButton')}
                     </Button>
                   </div>
                 </div>
@@ -213,7 +215,7 @@ export function Fleet() {
               setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
             }}
           >
-            Žiūrėti daugiau automobilių
+            {t('fleet.viewMore')}
           </Button>
         </div>
       </div>
