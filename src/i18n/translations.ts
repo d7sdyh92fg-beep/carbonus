@@ -219,7 +219,8 @@ export const translations = {
         },
         hours: {
           title: "Darbo laikas",
-          schedule: ["Pr-Pk: 8:00-20:00", "Š-S: 9:00-18:00"],
+          weekdays: "Pr-Pk: 8:00-20:00",
+          weekends: "Š-S: 9:00-18:00",
           description: "Automobilio atsiėmimas 24/7",
         },
       },
@@ -683,7 +684,8 @@ export const translations = {
         },
         hours: {
           title: "Working Hours",
-          schedule: ["Mon-Fri: 8:00-20:00", "Sat-Sun: 9:00-18:00"],
+          weekdays: "Mon-Fri: 8:00-20:00",
+          weekends: "Sat-Sun: 9:00-18:00",
           description: "Car pickup 24/7",
         },
       },

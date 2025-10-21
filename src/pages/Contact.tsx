@@ -142,7 +142,10 @@ const Contact = () => {
     {
       icon: Clock,
       title: t('contact.info.hours.title'),
-      details: Array.isArray(t('contact.info.hours.schedule')) ? t('contact.info.hours.schedule') as string[] : [t('contact.info.hours.schedule')],
+      details: [
+        t('contact.info.hours.weekdays'),
+        t('contact.info.hours.weekends')
+      ],
       description: t('contact.info.hours.description')
     }
   ];
@@ -152,7 +155,7 @@ const Contact = () => {
       city: t('contact.locations.city'),
       address: t('contact.info.address.location'),
       phone: "+370 698 18 781",
-      hours: Array.isArray(t('contact.info.hours.schedule')) ? (t('contact.info.hours.schedule') as string[]).join(', ') : t('contact.info.hours.schedule')
+      hours: `${t('contact.info.hours.weekdays')}, ${t('contact.info.hours.weekends')}`
     }
   ];
 
