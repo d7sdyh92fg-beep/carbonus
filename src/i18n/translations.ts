@@ -746,37 +746,37 @@ export const translations = {
           <p>Automobilių nuoma gali būti patogu ir lankstu, tačiau kai kurie žmonės vengia šios paslaugos dėl tariamo brangimo. Tiesą sakant, yra daug būdų sutaupyti nuomojant automobilį Lietuvoje. Šiame straipsnyje pasidalinsime 10 praktiškų patarimų, kurie padės jums gauti geriausią pasiūlymą.</p>
 
           <h2>1. Rezervuokite iš anksto</h2>
-          <p>Vienas paprasčiausių būdų sutaupyti – rezervuoti automobilį iš anksto. Kuo anksčiau užsisakysite, tuo didesnė tikimybė gauti geresnę kainą. Paskutinės minutės rezervacijos dažnai būna brangesnės, ypač vasaros ar švenčių sezono metu.</p>
+          <p><strong>Vienas paprasčiausių būdų sutaupyti – rezervuoti automobilį iš anksto.</strong> Kuo anksčiau užsisakysite, tuo didesnė tikimybė gauti geresnę kainą. Paskutinės minutės rezervacijos dažnai būna brangesnės, ypač vasaros ar švenčių sezono metu.</p>
 
           <h2>2. Lyginkite kainas</h2>
-          <p>Neverta rinktis pirmo pasitaikiusio nuomotojo. Skirkite laiko palyginti įvairių įmonių kainas ir paslaugas. Atkreipkite dėmesį ne tik į kainą, bet ir į tai, kas įskaičiuota į pasiūlymą – draudimas, papildomos paslaugos, kilometražo limitas.</p>
+          <p><strong>Neverta rinktis pirmo pasitaikiusio nuomotojo.</strong> Skirkite laiko palyginti įvairių įmonių kainas ir paslaugas. Atkreipkite dėmesį ne tik į kainą, bet ir į tai, kas įskaičiuota į pasiūlymą – draudimas, papildomos paslaugos, kilometražo limitas.</p>
 
           <h2>3. Pasirinkite tinkamą automobilio klasę</h2>
-          <p>Ne visada reikia nuomotis didžiausią ar įspūdingiausią automobilį. Pagalvokite, kokiam tikslui jums reikia transporto priemonės. Jei keliaujate vienas ar su partneru po miestą, kompaktiškas automobilis puikiai tiks ir kainuos mažiau nei didelis SUV.</p>
+          <p><strong>Ne visada reikia nuomotis didžiausią ar įspūdingiausią automobilį.</strong> Pagalvokite, kokiam tikslui jums reikia transporto priemonės. Jei keliaujate vienas ar su partneru po miestą, kompaktiškas automobilis puikiai tiks ir kainuos mažiau nei didelis SUV.</p>
 
           <h2>4. Venkite oro uosto nuomos punktų</h2>
-          <p>Automobilių nuomos punktai oro uostuose dažnai taiko didesnius tarifus dėl patogios vietos ir papildomų mokesčių. Jei galite, rinkitės nuomos punktus mieste – tai gali sutaupyti nemaža dalis pinigų.</p>
+          <p><strong>Automobilių nuomos punktai oro uostuose dažnai taiko didesnius tarifus dėl patogios vietos ir papildomų mokesčių.</strong> Jei galite, rinkitės nuomos punktus mieste – tai gali sutaupyti nemaža dalis pinigų.</p>
 
           <h2>5. Atsisakykite nereikalingų papildomų paslaugų</h2>
-          <p>GPS navigacija, vaiko kėdutė, papildomas vairuotojas – visos šios paslaugos padidina bendrą kainą. Įvertinkite, ar tikrai jų reikia. Pavyzdžiui, navigacijai galite naudoti savo išmanųjį telefoną su Google Maps.</p>
+          <p><strong>GPS navigacija, vaiko kėdutė, papildomas vairuotojas – visos šios paslaugos padidina bendrą kainą.</strong> Įvertinkite, ar tikrai jų reikia. Pavyzdžiui, navigacijai galite naudoti savo išmanųjį telefoną su Google Maps.</p>
 
           <h2>6. Pasirinkite tinkamą draudimą</h2>
-          <p>Draudimas yra būtinas, tačiau neverta permokėti. Įsigilinkite, kokią apsaugą siūlo nuomotoja bazinėje kainoje. Kartais jūsų asmeninė automobilio draudimo polisas ar kreditinės kortelės draudimas jau padengė nuomos automobilį.</p>
+          <p><strong>Draudimas yra būtinas, tačiau neverta permokėti.</strong> Įsigilinkite, kokią apsaugą siūlo nuomotoja bazinėje kainoje. Kartais jūsų asmeninė automobilio draudimo polisas ar kreditinės kortelės draudimas jau padengė nuomos automobilį.</p>
 
           <h2>7. Grąžinkite automobilį laiku</h2>
-          <p>Vėlavimas grąžinant automobilį gali brangiai kainuoti. Dažnai nuomotojai taiko papildomus mokesčius už kiekvieną pavėluotą valandą. Planuokite savo laiką taip, kad grąžintumėte automobilį sutartu laiku.</p>
+          <p><strong>Vėlavimas grąžinant automobilį gali brangiai kainuoti.</strong> Dažnai nuomotojai taiko papildomus mokesčius už kiekvieną pavėluotą valandą. Planuokite savo laiką taip, kad grąžintumėte automobilį sutartu laiku.</p>
 
           <h2>8. Pripildykite degalų baką prieš grąžindami</h2>
-          <p>Dauguma nuomos įmonių reikalauja grąžinti automobilį su pilnu degalų baku. Jei to nepadarysite, jums bus taikomas papildomas mokestis už degalus, kuris paprastai yra daug didesnis nei degalinės kainos.</p>
+          <p><strong>Dauguma nuomos įmonių reikalauja grąžinti automobilį su pilnu degalų baku.</strong> Jei to nepadarysite, jums bus taikomas papildomas mokestis už degalus, kuris paprastai yra daug didesnis nei degalinės kainos.</p>
 
           <h2>9. Tikrinkite nuolaidas ir akcijas</h2>
-          <p>Daugelis nuomos įmonių siūlo nuolaidas tam tikroms grupėms – studentams, vyresnio amžiaus žmonėms, įmonėms. Taip pat verta tikrinti, ar nėra sezoninių akcijų ar specialių pasiūlymų.</p>
+          <p><strong>Daugelis nuomos įmonių siūlo nuolaidas tam tikroms grupėms – studentams, vyresnio amžiaus žmonėms, įmonėms.</strong> Taip pat verta tikrinti, ar nėra sezoninių akcijų ar specialių pasiūlymų.</p>
 
           <h2>10. Nuomokitės ilgesniam laikotarpiui</h2>
-          <p>Jei planuojate naudoti automobilį kelias dienas ar savaites, dažnai verta nuomotis ilgesniam laikotarpiui. Daugelis įmonių siūlo geresnius tarifus savaitinei ar mėnesinei nuomai, nei skaičiuojant diena po dienos.</p>
+          <p><strong>Jei planuojate naudoti automobilį kelias dienas ar savaites, dažnai verta nuomotis ilgesniam laikotarpiui.</strong> Daugelis įmonių siūlo geresnius tarifus savaitinei ar mėnesinei nuomai, nei skaičiuojant diena po dienos.</p>
 
           <h2>Išvada</h2>
-          <p>Automobilių nuoma ne visuomet turi būti brangi. Laikydamiesi šių 10 patarimų, galite sutaupyti nemažai pinigų ir gauti kokybišką paslaugą. Svarbiausia – planuoti iš anksto, lyginti pasiūlymus ir atidžiai skaityti nuomos sąlygas.</p>
+          <p><strong>Automobilių nuoma ne visuomet turi būti brangi.</strong> Laikydamiesi šių 10 patarimų, galite sutaupyti nemažai pinigų ir gauti kokybišką paslaugą. Svarbiausia – planuoti iš anksto, lyginti pasiūlymus ir atidžiai skaityti nuomos sąlygas.</p>
 
           <p><strong>Carbonus</strong> siūlo skaidrias kainas be paslėptų mokesčių ir lankstų rezervacijos procesą. Aplankykite mūsų svetainę ir sužinokite, kaip galite sutaupyti nuomojantis automobilį Druskininkuose.</p>
         `,
@@ -784,25 +784,25 @@ export const translations = {
           <p>Lietuva – šalis su turtinga istorija, nuostabiais gamtos kampeliaisir svetingais žmonėmis. Nors nedidelė teritorija, ji slepia daugybę įspūdingų vietų, kurias verta aplankyti. Kelionė automobiliu suteikia laisvę ir galimybę atrasti net ir tuos kampus, kurie yra nutolę nuo pagrindinių kelių.</p>
 
           <h2>Kuršių nerija – UNESCO pasaulio paveldas</h2>
-          <p>Pradėkite savo kelionę nuo vieno gražiausių Lietuvos kampų – Kuršių nerijos. Ši unikali smėlio kopos juosta tarp Baltijos jūros ir Kuršių marių žavi savo gamtos grožiu. Aplanykite Nidos miestelį, užlipkite ant Parnidžio kopos, kur atsiveria panoraminis vaizdas į jūrą ir marias. Nepamirškite sustoti prie Raganos kalno ir Mizgirių galerijoje.</p>
+          <p><strong>Pradėkite savo kelionę nuo vieno gražiausių Lietuvos kampų – Kuršių nerijos.</strong> Ši unikali smėlio kopos juosta tarp Baltijos jūros ir Kuršių marių žavi savo gamtos grožiu. Aplanykite Nidos miestelį, užlipkite ant Parnidžio kopos, kur atsiveria panoraminis vaizdas į jūrą ir marias. Nepamirškite sustoti prie Raganos kalno ir Mizgirių galerijoje.</p>
 
           <h2>Trakų istorinis nacionalinis parkas</h2>
-          <p>Vos 30 km nuo Vilniaus rasite Trakų pilį – vieną žinomiausių Lietuvos paminklų. Pilis, stūksanti saloje Galvės ežero viduryje, atrodo tarsi iš pasakos. Vasarą galite pasiplaukioti valtimi, o žiemą, kai ežeras užšąla, pasivaikščioti ledu. Trakai taip pat garsūs kibinais – tradiciniais karaimų pyragais, kuriuos būtina paragauti.</p>
+          <p><strong>Vos 30 km nuo Vilniaus rasite Trakų pilį – vieną žinomiausių Lietuvos paminklų.</strong> Pilis, stūksanti saloje Galvės ežero viduryje, atrodo tarsi iš pasakos. Vasarą galite pasiplaukioti valtimi, o žiemą, kai ežeras užšąla, pasivaikščioti ledu. Trakai taip pat garsūs kibinais – tradiciniais karaimų pyragais, kuriuos būtina paragauti.</p>
 
           <h2>Aukštaitijos nacionalinis parkas</h2>
-          <p>Gamtos mylėtojams Aukštaitijos nacionalinis parkas – tikras rojus. Tai seniausias ir vienas gražiausių nacionalinių parkų Lietuvoje. Čia rasite daugiau nei 100 ežerų, tankius miškus ir įdomias kultūros vertybes. Rekomenduojame aplankyti Ladakalnius, Šuminų apžvalgos bokštą ir Ginučių vandens malūną. Idealus maršrutas dviračiais ar pėsčiomis.</p>
+          <p><strong>Gamtos mylėtojams Aukštaitijos nacionalinis parkas – tikras rojus.</strong> Tai seniausias ir vienas gražiausių nacionalinių parkų Lietuvoje. Čia rasite daugiau nei 100 ežerų, tankius miškus ir įdomias kultūros vertybes. Rekomenduojame aplankyti Ladakalnius, Šuminų apžvalgos bokštą ir Ginučių vandens malūną. Idealus maršrutas dviračiais ar pėsčiomis.</p>
 
           <h2>Kauno senamiestis ir Pažaislio vienuolynas</h2>
-          <p>Kaunas – antrasis pagal dydį Lietuvos miestas, turintis unikalų architektūrinį paveldą. Pasivaikščiokite Laisvės alėja, aplanykite Kauno pilį ir Rotušę. Nepamirškite užsukti į Pažaislio vienuolyną – vieną gražiausių baroko ansamblio Baltijos šalyse. Iš čia atsiveria nuostabus vaizdas į Kauno marias.</p>
+          <p><strong>Kaunas – antrasis pagal dydį Lietuvos miestas, turintis unikalų architektūrinį paveldą.</strong> Pasivaikščiokite Laisvės alėja, aplanykite Kauno pilį ir Rotušę. Nepamirškite užsukti į Pažaislio vienuolyną – vieną gražiausių baroko ansamblio Baltijos šalyse. Iš čia atsiveria nuostabus vaizdas į Kauno marias.</p>
 
           <h2>Kryžių kalnas – dvasingumo simbolis</h2>
-          <p>Netoli Šiaulių rasite unikalų piligrimystės objektą – Kryžių kalną. Čia ant nedidelio kalnelio sukrauta daugiau nei 100 000 kryžių, kryželių ir koplytėlių. Tai vieta, kurioje jaučiamas ypatingas dvasingumas ir ramybė. Ypač įspūdinga vakare, kai laida saulė apšviečia visą kalną.</p>
+          <p><strong>Netoli Šiaulių rasite unikalų piligrimystės objektą – Kryžių kalną.</strong> Čia ant nedidelio kalnelio sukrauta daugiau nei 100 000 kryžių, kryželių ir koplytėlių. Tai vieta, kurioje jaučiamas ypatingas dvasingumas ir ramybė. Ypač įspūdinga vakare, kai laida saulė apšviečia visą kalną.</p>
 
           <h2>Palangos pajūris ir Botanikos parkas</h2>
-          <p>Palanga – populiariausias pajūrio kurortas Lietuvoje. Be paplūdimių ir vakarinės Basanavičiaus gatvės, verta aplankyti Palangos Botanikos parką ir Gintaro muziejų Tiškevičių rūmuose. Pasivaikščiokite ilguoju tiltui, kuris driekiasi 470 metrų į jūrą.</p>
+          <p><strong>Palanga – populiariausias pajūrio kurortas Lietuvoje.</strong> Be paplūdimių ir vakarinės Basanavičiaus gatvės, verta aplankyti Palangos Botanikos parką ir Gintaro muziejų Tiškevičių rūmuose. Pasivaikščiokite ilguoju tiltui, kuris driekiasi 470 metrų į jūrą.</p>
 
           <h2>Dzūkijos nacionalinis parkas ir Merkinė</h2>
-          <p>Pietų Lietuvoje galite atrasti Dzūkijos nacionalinio parko grožį – neišbaigtus pušynus, pilna grybų ir uogų miškus. Aplanykite seną Merkinės miestelį, kuris įsikūręs ant Nemuno ir Merkio santakos. Čia rasite Merkinės piliakalnius ir nuostabias gamtos trasos pėsčiųjų ir dviratininkų takams.</p>
+          <p><strong>Pietų Lietuvoje galite atrasti Dzūkijos nacionalinio parko grožį – neišbaigtus pušynus, pilna grybų ir uogų miškus.</strong> Aplanykite seną Merkinės miestelį, kuris įsikūręs ant Nemuno ir Merkio santakos. Čia rasite Merkinės piliakalnius ir nuostabias gamtos trasos pėsčiųjų ir dviratininkų takams.</p>
 
           <h2>Praktiniai patarimai kelionei po Lietuvą</h2>
           <ul>
@@ -830,16 +830,16 @@ export const translations = {
           <h2>Pagrindiniai draudimo tipai automobilių nuomoje</h2>
           
           <h3>CDW (Collision Damage Waiver) – susidūrimo žalos atsisakymas</h3>
-          <p>CDW yra vienas populiariausių draudimo tipų. Jis sumažina jūsų atsakomybę, jei nuomojamas automobilis būtų pažeistas per avariją ar susidūrimą. Tačiau svarbu žinoti, kad CDW paprastai apima tik tam tikrus pažeidimus ir vis tiek lieka „savitaka" – suma, kurią turėsite sumokėti žalos atveju.</p>
+          <p><strong>CDW yra vienas populiariausių draudimo tipų.</strong> Jis sumažina jūsų atsakomybę, jei nuomojamas automobilis būtų pažeistas per avariją ar susidūrimą. Tačiau svarbu žinoti, kad CDW paprastai apima tik tam tikrus pažeidimus ir vis tiek lieka „savitaka" – suma, kurią turėsite sumokėti žalos atveju.</p>
 
           <h3>LDW (Loss Damage Waiver) – nuostolių žalos atsisakymas</h3>
-          <p>LDW yra platesnė apsauga nei CDW. Ji apima ne tik susidūrimo žalą, bet ir automobilio vagystę ar vandalizmo atvejus. Tai rekomenduojama apsauga tiems, kurie nori maksimaliai sumažinti savo finansinę riziką.</p>
+          <p><strong>LDW yra platesnė apsauga nei CDW.</strong> Ji apima ne tik susidūrimo žalą, bet ir automobilio vagystę ar vandalizmo atvejus. Tai rekomenduojama apsauga tiems, kurie nori maksimaliai sumažinti savo finansinę riziką.</p>
 
           <h3>TP (Theft Protection) – vagystės apsauga</h3>
-          <p>Ši apsauga padengė nuostolius, jei nuomojamas automobilis būtų pavogtas. Dažnai ši apsauga jau įtraukta į LDW paketą, tačiau kai kuriose šalyse ar nuomos įmonėse gali būti siūloma atskirai.</p>
+          <p><strong>Ši apsauga padengė nuostolius, jei nuomojamas automobilis būtų pavogtas.</strong> Dažnai ši apsauga jau įtraukta į LDW paketą, tačiau kai kuriose šalyse ar nuomos įmonėse gali būti siūloma atskirai.</p>
 
           <h3>PAI (Personal Accident Insurance) – asmeninio draudimo draudimas</h3>
-          <p>PAI dengė medicinos išlaidas, jei patirtumėte sužalojimus per avariją nuomojamu automobiliu. Prieš perkant šį draudimą, patikrinkite, ar jau neturite panašios apsaugos per savo kelionių draudimą ar sveikatos draudimą.</p>
+          <p><strong>PAI dengė medicinos išlaidas, jei patirtumėte sužalojimus per avariją nuomojamu automobiliu.</strong> Prieš perkant šį draudimą, patikrinkite, ar jau neturite panašios apsaugos per savo kelionių draudimą ar sveikatos draudimą.</p>
 
           <h2>Kas dažnai NEĮSKAIČIUOTA į bazinį draudimą?</h2>
           <ul>
@@ -852,11 +852,12 @@ export const translations = {
           </ul>
 
           <h2>Savitaka (Deductible) – kas tai?</h2>
-          <p>Savitaka yra suma, kurią jūs privalote sumokėti žalos atveju, net jei turite draudimą. Pavyzdžiui, jei savitaka yra 500 € ir žala automobiliui sudaro 2000 €, jūs mokėsite 500 €, o likusi 1500 € padengė draudimas.</p>
+          <p><strong>Savitaka yra suma, kurią jūs privalote sumokėti žalos atveju, net jei turite draudimą.</strong> Pavyzdžiui, jei savitaka yra 500 € ir žala automobiliui sudaro 2000 €, jūs mokėsite 500 €, o likusi 1500 € padengė draudimas.</p>
+          
           <p>Galite pasirinkti didesnę ar mažesnę savitaką – kuo mažesnė savitaka, tuo brangesnė bus draudimo kaina per dieną, bet mažesnė rizika jums.</p>
 
           <h2>Papildoma apsauga – ar verta?</h2>
-          <p>Daugelis nuomos įmonių siūlo „pilną apsaugą" arba „super draudimą", kuris sumažina jūsų savitaką iki 0 €. Ar verta mokėti papildomai? Tai priklauso nuo kelių veiksnių:</p>
+          <p><strong>Daugelis nuomos įmonių siūlo „pilną apsaugą" arba „super draudimą", kuris sumažina jūsų savitaką iki 0 €.</strong> Ar verta mokėti papildomai? Tai priklauso nuo kelių veiksnių:</p>
           <ul>
             <li>Jūsų vairavimo patyrimas ir pasitikėjimas savimi</li>
             <li>Kur planuojate vairuoti – mieste ar kaimo keliukais</li>
@@ -884,7 +885,7 @@ export const translations = {
           </ul>
 
           <h2>Draudimas užsienyje</h2>
-          <p>Jei planuojate keliauti su nuomotu automobiliu į kitas šalis, įsitikinkite, kad jūsų draudimas galioja ir ten. Kai kuriuose šalyse reikia papildomos apsaugos arba „žaliosios kortelės". Visada informuokite nuomos įmonę apie planus vykti už Lietuvos ribų.</p>
+          <p><strong>Jei planuojate keliauti su nuomotu automobiliu į kitas šalis, įsitikinkite, kad jūsų draudimas galioja ir ten.</strong> Kai kuriuose šalyse reikia papildomos apsaugos arba „žaliosios kortelės". Visada informuokite nuomos įmonę apie planus vykti už Lietuvos ribų.</p>
 
           <p><strong>Carbonus</strong> siūlo skaidrią draudimo politiką su keliomis apsaugos parinktimis. Mūsų komanda visada pasirengusi paaiškinti kiekvieną draudimo aspektą ir padėti pasirinkti tinkamiausią apsaugą jūsų kelionei.</p>
         `,
@@ -892,12 +893,12 @@ export const translations = {
           <p>Verslo kelionės reikalauja ne tik profesionalumo, bet ir tinkamo transporto, kuris atitiktų jūsų įvaizdį ir užtikrintų komfortą bei patikimumą. Pasirinkti tinkamą automobilį verslo kelionei nėra paprasta – reikia atsižvelgti į daugelį aspektų. Šiame straipsnyje pasidalinsime patarimais, kaip išsirinkti idealų automobilį verslo reikmėms.</p>
 
           <h2>Kodėl automobilio pasirinkimas svarbus versle?</h2>
-          <p>Jūsų automobilis yra dalis jūsų profesinio įvaizdžio. Atvykęs į svarbų susitikimą su klientu ar partneriu švariu, reprezentatyviu automobiliu, palikat gerą pirmąjį įspūdį. Tai rodo, kad rūpinatės detalėmis ir vertinate kokybę – savybės, kurios svarbios ir versle.</p>
+          <p><strong>Jūsų automobilis yra dalis jūsų profesinio įvaizdžio.</strong> Atvykęs į svarbų susitikimą su klientu ar partneriu švariu, reprezentatyviu automobiliu, palikat gerą pirmąjį įspūdį. Tai rodo, kad rūpinatės detalėmis ir vertinate kokybę – savybės, kurios svarbios ir versle.</p>
 
           <h2>Pagrindiniai kriterijai renkantis automobilį verslo kelionei</h2>
 
           <h3>1. Reprezentatyvumas</h3>
-          <p>Verslo kelionei rinkitės automobilius, kurie atspindi profesionalumą:</p>
+          <p><strong>Verslo kelionei rinkitės automobilius, kurie atspindi profesionalumą:</strong></p>
           <ul>
             <li><strong>Sedanai</strong> – klasikinis pasirinkimas verslo kelionėms. BMW 3 serija, Audi A4, Mercedes-Benz C klasė yra populiarūs pasirinkimai.</li>
             <li><strong>Verslo klasė</strong> – automobilis turėtų būti švarūs, modernūs ir geros būklės</li>
@@ -905,7 +906,7 @@ export const translations = {
           </ul>
 
           <h3>2. Komfortas</h3>
-          <p>Verslo kelionės dažnai būna ilgos, todėl komfortas yra esminis:</p>
+          <p><strong>Verslo kelionės dažnai būna ilgos, todėl komfortas yra esminis:</strong></p>
           <ul>
             <li><strong>Patogios sėdynės</strong> – idealiu atveju odos arba kokybiškai dirbtinės odos</li>
             <li><strong>Klimato kontrolė</strong> – galimybė reguliuoti temperatūrą pagal poreikius</li>
@@ -914,7 +915,7 @@ export const translations = {
           </ul>
 
           <h3>3. Technologijos ir funkcionalumas</h3>
-          <p>Modernūs automobiliai siūlo technologijas, kurios palengvina verslininko gyvenimą:</p>
+          <p><strong>Modernūs automobiliai siūlo technologijas, kurios palengvina verslininko gyvenimą:</strong></p>
           <ul>
             <li><strong>GPS navigacija</strong> – padeda rasti kelią į nežinomas vietas</li>
             <li><strong>Bluetooth</strong> – leidžia atlikti skambučius nepakėlus rankų nuo vairo</li>
@@ -923,7 +924,7 @@ export const translations = {
           </ul>
 
           <h3>4. Patikimumas</h3>
-          <p>Nieko blogo nėra, jei automobilys sugenda verslo kelionės metu:</p>
+          <p><strong>Nieko blogo nėra, jei automobilys sugenda verslo kelionės metu:</strong></p>
           <ul>
             <li>Rinkitės patikimus gamintojus ir naujesnių metų automobilius</li>
             <li>Patikrinkite, ar nuomos įmonė siūlo 24/7 pagalbos kelyje paslaugą</li>
@@ -931,7 +932,7 @@ export const translations = {
           </ul>
 
           <h3>5. Degalų ekonomiškumas</h3>
-          <p>Nors verslo kelionėje svarbu atrodyti profesionaliai, neverta permokėti už degalus:</p>
+          <p><strong>Nors verslo kelionėje svarbu atrodyti profesionaliai, neverta permokėti už degalus:</strong></p>
           <ul>
             <li>Dyzeliniai varikliai dažnai ekonomiškesni ilgoms kelionėms</li>
             <li>Hibridiniai automobiliai gali sutaupyti degalų mieste</li>
@@ -941,19 +942,19 @@ export const translations = {
           <h2>Populiarūs automobiliai verslo kelionėms</h2>
 
           <h3>BMW 3 serija</h3>
-          <p>Puikus balansas tarp sportinio dizaino ir verslo elegancijos. Dinamiška vairavimo patirtis ir kokybiška apdaila.</p>
+          <p><strong>Puikus balansas tarp sportinio dizaino ir verslo elegancijos.</strong> Dinamiška vairavimo patirtis ir kokybiška apdaila.</p>
 
           <h3>Audi A4</h3>
-          <p>Modernus dizainas, aukštos klasės technologijos ir patogūs salonas. Idealus pasirinkimas verslo susitikimams.</p>
+          <p><strong>Modernus dizainas, aukštos klasės technologijos ir patogūs salonas.</strong> Idealus pasirinkimas verslo susitikimams.</p>
 
           <h3>Mercedes-Benz C klasė</h3>
-          <p>Prestižas ir komfortas. Mercedes vardo pačiu pakanka, kad paliktumėte gerą įspūdį.</p>
+          <p><strong>Prestižas ir komfortas.</strong> Mercedes vardo pačiu pakanka, kad paliktumėte gerą įspūdį.</p>
 
           <h3>Volkswagen Passat</h3>
-          <p>Praktiškas, patikimas ir erdvus. Geras pasirinkimas tiems, kurie vertina kokybę be pernelyg didelio išgyveno.</p>
+          <p><strong>Praktiškas, patikimas ir erdvus.</strong> Geras pasirinkimas tiems, kurie vertina kokybę be pernelyg didelio išgyveno.</p>
 
           <h2>Papildomos paslaugos verslo klientams</h2>
-          <p>Kai kurios nuomos įmonės siūlo specialias paslaugas verslo klientams:</p>
+          <p><strong>Kai kurios nuomos įmonės siūlo specialias paslaugas verslo klientams:</strong></p>
           <ul>
             <li><strong>Pristatymas į viešbutį ar oro uostą</strong> – sutaupykite laiko</li>
             <li><strong>Lankstūs grąžinimo laikai</strong> – pritaikyta jūsų grafikui</li>
@@ -971,7 +972,7 @@ export const translations = {
           </ul>
 
           <h2>Kaip sutaupyti verslo kelionėje?</h2>
-          <p>Net verslo kelionėje galima sutaupyti be profesionalumo aukojimo:</p>
+          <p><strong>Net verslo kelionėje galima sutaupyti be profesionalumo aukojimo:</strong></p>
           <ul>
             <li>Rezervuokite iš anksto – dažnai gausite geresnę kainą</li>
             <li>Rinkitės savaitinę ar mėnesinę nuomą, jei keliaujate dažnai</li>
@@ -980,7 +981,7 @@ export const translations = {
           </ul>
 
           <h2>Išvada</h2>
-          <p>Tinkamas automobilis verslo kelionei gali padaryti didelę įtaką jūsų profesinio įvaizdžiui ir kelionės komfortui. Rinkdamiesi automobilį, atsižvelgkite į reprezentatyvumą, komfortą, technologijas ir patikimumą. Nėra vienareikšmio atsakymo, koks automobilis geriausias – viskas priklauso nuo jūsų poreikių ir biudžeto.</p>
+          <p><strong>Tinkamas automobilis verslo kelionei gali padaryti didelę įtaką jūsų profesinio įvaizdžiui ir kelionės komfortui.</strong> Rinkdamiesi automobilį, atsižvelgkite į reprezentatyvumą, komfortą, technologijas ir patikimumą. Nėra vienareikšmio atsakymo, koks automobilis geriausias – viskas priklauso nuo jūsų poreikių ir biudžeto.</p>
 
           <p><strong>Carbonus</strong> supranta verslo klientų poreikius ir siūlo platų verslo klasės automobilių pasirinkimą. Mūsų automobiliai yra visuomet švarūs, gerai prižiūrimi ir pasirengę jūsų profesionalioms kelionėms.</p>
         `,
@@ -988,12 +989,13 @@ export const translations = {
           <p>Žiema Lietuvoje gali būti iššūkis net patyrusiems vairuotojams – sniegas, plikledis, trumpa diena ir žemos temperatūros reikalauja ypatingos atsargumo. Jei nuomojatės automobilį žiemos sezonu, svarbu žinoti, kaip vairuoti saugiai ir ką daryti nelaimingų situacijų atveju.</p>
 
           <h2>Žieminės padangos – būtina sąlyga</h2>
-          <p>Lietuva yra viena iš šalių, kur žieminės padangos yra privalomas reikalavimas nuo lapkričio 10 d. iki kovo 31 d. (arba nuo pirmojo sniego). Nuomojantis automobilį, įsitikinkite, kad jis turi žiemines padangas:</p>
+          <p><strong>Lietuva yra viena iš šalių, kur žieminės padangos yra privalomas reikalavimas nuo lapkričio 10 d. iki kovo 31 d. (arba nuo pirmojo sniego).</strong> Nuomojantis automobilį, įsitikinkite, kad jis turi žiemines padangas:</p>
           <ul>
             <li><strong>Protektoriaus gylis</strong> – turi būti ne mažesnis nei 3 mm (rekomenduojama 4 mm)</li>
             <li><strong>M+S ženklas</strong> – rodo, kad padangos skirtos žiemai</li>
             <li><strong>Smailesnio kalnagubrio simbolis</strong> – užtikrina geresnę trauką sniego</li>
           </ul>
+          
           <p>Žieminės padangos sumažina stabdymo atstumą, pagerina trauką ir padeda išvengti slydimo.</p>
 
           <h2>Pasiruošimas žiemos kelionei</h2>
@@ -1049,7 +1051,7 @@ export const translations = {
           </ol>
 
           <h2>Matom yra svarbu</h2>
-          <p>Žiemą diena trumpa, o oras dažnai miglotas ar sninga:</p>
+          <p><strong>Žiemą diena trumpa, o oras dažnai miglotas ar sninga:</strong></p>
           <ul>
             <li><strong>Švarios lauko</strong> – reguliariai valykite visus stiklus, veidrodėlius ir žibintus</li>
             <li><strong>Palikti žibintus įjungtūs</strong> – net dienos metu, jei oras blogas</li>
@@ -1058,7 +1060,7 @@ export const translations = {
           </ul>
 
           <h2>Draudimas žiemos sezonu</h2>
-          <p>Žiema didina avarijų riziką, todėl svarbu turėti tinkamą draudimą:</p>
+          <p><strong>Žiema didina avarijų riziką, todėl svarbu turėti tinkamą draudimą:</strong></p>
           <ul>
             <li><strong>LDW apsauga</strong> – rekomenduojama žiemos sezonu dėl didesnės rizikos</li>
             <li><strong>Pagalba kelyje</strong> – užtikrinkite, kad turite 24/7 pagalbos paslaugą</li>
@@ -1082,7 +1084,7 @@ export const translations = {
           </ul>
 
           <h2>Patarimai pradedantiesiems</h2>
-          <p>Jei turite mažai patirties vairuojant žiemą:</p>
+          <p><strong>Jei turite mažai patirties vairuojant žiemą:</strong></p>
           <ul>
             <li>Praktikuokitės tuščioje aikštelėje – išmokite jausti, kaip automobilis elgiasi ant ledo</li>
             <li>Vairuokite lėčiau – geriau vėluoti nei patekti į avariją</li>
@@ -1091,7 +1093,7 @@ export const translations = {
           </ul>
 
           <h2>Išvada</h2>
-          <p>Žiemos vairavimas reikalauja daugiau atsargumo ir pasirengimo nei vasarą. Svarbiausia – neperskaičiuoti savo galimybių ir visada būti pasiruošiam netikėtumams. Tinkamos padangos, atidus vairavimas ir geras pasiruošimas padės jums saugiai pasiekti tikslą net ir sudėtingiausiomis žiemos sąlygomis.</p>
+          <p><strong>Žiemos vairavimas reikalauja daugiau atsargumo ir pasirengimo nei vasarą.</strong> Svarbiausia – neperskaičiuoti savo galimybių ir visada būti pasiruošiam netikėtumams. Tinkamos padangos, atidus vairavimas ir geras pasiruošimas padės jums saugiai pasiekti tikslą net ir sudėtingiausiomis žiemos sąlygomis.</p>
 
           <p><strong>Carbonus</strong> visi automobiliai žiemos sezonu yra aprūpinti kokybiškomis žieminėmis padangomis ir reguliariai tikrinami. Mūsų komanda visada pasirengusi suteikti pagalbą ir patarimus, kad jūsų žiemos kelionė būtų saugi ir patogi.</p>
         `,
