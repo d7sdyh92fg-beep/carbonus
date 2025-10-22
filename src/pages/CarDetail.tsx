@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import BookingCalendar from "@/components/booking/BookingCalendar";
+import { useTranslations } from "@/hooks/use-translations";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced-no-plate.png";
 import kiaCeedRearEnhanced from "@/assets/kia-ceed-rear-enhanced-no-plate.png";
@@ -45,19 +46,22 @@ const CarDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { t, language } = useTranslations();
 
   useEffect(() => {
     // Scroll to top when navigating to car detail page
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
     // Set page title and meta tags dynamically based on car
-    const carName = carDetails[id || ""]?.name || "Automobilis";
-    document.title = `${carName} - Carbonus | Premium automobilio nuoma nuo 30€/dieną`;
+    const carName = carDetails[id || ""]?.name || t('carDetail.notFound');
+    const metaTitle = t('carDetail.metaTitle').replace('{carName}', carName);
+    const metaDescription = t('carDetail.metaDescription').replace('{carName}', carName);
+    document.title = metaTitle;
     
     // Update meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', `${carName} nuomai Carbonus automobilių parke. Premium klasės automobilis su visais patogumais. Rezervuokite online ir užsisakykite šiandien.`);
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', metaDescription);
     }
     
     // Update canonical URL
@@ -69,14 +73,14 @@ const CarDetail = () => {
     // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', `${carName} - Carbonus`);
+      ogTitle.setAttribute('content', metaTitle);
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
       ogUrl.setAttribute('content', `https://carbonus.lt/automobiliai/${id}`);
     }
-  }, [id]);
+  }, [id, t, language]);
 
   const carDetails: { [key: string]: CarDetail } = {
     "1": {
@@ -281,9 +285,9 @@ const CarDetail = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Automobilis nerastas</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-4">{t('carDetail.notFound')}</h2>
           <Button onClick={() => navigate("/automobiliai")}>
-            Grįžti į automobilių sąrašą
+            {t('carDetail.backToCars')}
           </Button>
         </div>
       </div>
@@ -300,11 +304,11 @@ const CarDetail = () => {
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm">
             <a href="/" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase">
-              pradžia
+              {t('carDetail.breadcrumbHome')}
             </a>
             <span className="text-muted-foreground">/</span>
             <a href="/automobiliai" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase">
-              automobiliai
+              {t('carDetail.breadcrumbCars')}
             </a>
             <span className="text-muted-foreground">/</span>
             <span className="text-primary font-medium uppercase">{car.name}</span>
@@ -380,9 +384,9 @@ const CarDetail = () => {
                 </h2>
                 
                 <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-sm text-muted-foreground">Pradedant nuo</span>
+                  <span className="text-sm text-muted-foreground">{t('carDetail.startingFrom')}</span>
                   <span className="text-4xl font-bold text-primary">30-50€</span>
-                  <span className="text-lg text-muted-foreground">per dieną</span>
+                  <span className="text-lg text-muted-foreground">{t('carDetail.perDay')}</span>
                 </div>
 
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
@@ -394,22 +398,22 @@ const CarDetail = () => {
                   <div className="text-center">
                     <Users className="w-5 h-5 mx-auto mb-1 text-primary" />
                     <div className="text-base font-bold text-foreground">{car.passengers}</div>
-                    <div className="text-xs text-muted-foreground">Keleiviai</div>
+                    <div className="text-xs text-muted-foreground">{t('carDetail.passengers')}</div>
                   </div>
                   <div className="text-center">
                     <Fuel className="w-5 h-5 mx-auto mb-1 text-primary" />
                     <div className="text-base font-bold text-foreground">{car.fuel}</div>
-                    <div className="text-xs text-muted-foreground">Kuras</div>
+                    <div className="text-xs text-muted-foreground">{t('carDetail.fuel')}</div>
                   </div>
                   <div className="text-center">
                     <Settings className="w-5 h-5 mx-auto mb-1 text-primary" />
                     <div className="text-base font-bold text-foreground">{car.transmission}</div>
-                    <div className="text-xs text-muted-foreground">Pavarų dėžė</div>
+                    <div className="text-xs text-muted-foreground">{t('carDetail.transmission')}</div>
                   </div>
                 </div>
 
                 <div className="text-sm text-muted-foreground mb-6">
-                  * Galutinė kaina priklauso nuo nuomos trukmės
+                  {t('carDetail.priceNote')}
                 </div>
 
                 <Button 
@@ -420,7 +424,7 @@ const CarDetail = () => {
                   }}
                   className="bg-primary hover:bg-primary/90 text-primary-foreground px-8"
                 >
-                  Užsakyti
+                  {t('carDetail.orderButton')}
                 </Button>
               </div>
             </div>
@@ -431,7 +435,7 @@ const CarDetail = () => {
             {/* Features */}
             <Card>
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold text-foreground mb-6">Įranga ir savybės</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-6">{t('carDetail.featuresTitle')}</h3>
                 <div className="grid gap-3">
                   {car.features.map((feature, index) => (
                     <div key={index} className="flex items-center gap-3">
@@ -446,7 +450,7 @@ const CarDetail = () => {
             {/* Specifications */}
             <Card>
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold text-foreground mb-6">Specifikacijos</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-6">{t('carDetail.specsTitle')}</h3>
                 <div className="space-y-4">
                   {Object.entries(car.specifications).map(([key, value]) => (
                     <div key={key} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
