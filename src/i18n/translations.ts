@@ -141,6 +141,22 @@ export const translations = {
         universalas: "Universalas",
         hecbekas: "Hečbekas",
       },
+      featuresList: {
+        airConditioning: "Kondicionierius",
+        bluetooth: "Bluetooth",
+        gpsNavigation: "GPS navigacija",
+        sevenSeats: "7 vietos",
+        trunk: "Bagažinė",
+        familyCar: "Šeimos automobilis",
+        economical: "Ekonomiškas",
+        comfortable: "Patogus",
+        largeTrunk: "Didelis bagažas",
+        economicalDriving: "Ekonomiškas vairavimas",
+        spaciousWagon: "Erdvus universalas",
+        reliable: "Patikimas automobilis",
+        economicalDiesel: "Ekonomiškas dyzelinis variklis",
+        modernLED: "Modernus LED apšvietimas"
+      }
     },
 
     // Cars Page
@@ -151,6 +167,19 @@ export const translations = {
       category: "Kategorija",
       noResults: "Nerasta automobilių pagal paieškos kriterijus.",
       tryAgain: "Pabandykite pakeisti paieškos filtrą arba išvalyti paiešką.",
+      resultsCount: "Rasta",
+      totalCount: "Iš viso",
+      carSingular: "automobilis",
+      carPlural: "automobiliai", 
+      carPluralMany: "automobilių",
+      priceFrom: "Kaina nuo",
+      perDay: "per dieną",
+      viewButton: "Žiūrėti",
+      from: "nuo",
+      meta: {
+        title: "Automobiliai - Carbonus | BMW, Audi ir kiti premium automobiliai nuomai",
+        description: "Peržiūrėkite mūsų premium automobilių parką. BMW 3 serijos, Chrysler ir kiti naujausių modelių automobiliai nuomai Lietuvoje. Rezervuokite online."
+      }
     },
 
     // About Page
@@ -1509,6 +1538,22 @@ export const translations = {
         universalas: "Estate",
         hecbekas: "Hatchback",
       },
+      featuresList: {
+        airConditioning: "Air Conditioning",
+        bluetooth: "Bluetooth",
+        gpsNavigation: "GPS Navigation",
+        sevenSeats: "7 Seats",
+        trunk: "Trunk",
+        familyCar: "Family Car",
+        economical: "Economical",
+        comfortable: "Comfortable",
+        largeTrunk: "Large Trunk",
+        economicalDriving: "Economical Driving",
+        spaciousWagon: "Spacious Estate",
+        reliable: "Reliable Car",
+        economicalDiesel: "Economical Diesel Engine",
+        modernLED: "Modern LED Lighting"
+      }
     },
 
     // Cars Page
@@ -1519,6 +1564,19 @@ export const translations = {
       category: "Category",
       noResults: "No cars found matching your search criteria.",
       tryAgain: "Try changing the search filter or clear the search.",
+      resultsCount: "Found",
+      totalCount: "Total",
+      carSingular: "car",
+      carPlural: "cars",
+      carPluralMany: "cars",
+      priceFrom: "Price from",
+      perDay: "per day",
+      viewButton: "View",
+      from: "from",
+      meta: {
+        title: "Cars - Carbonus | BMW, Audi and Other Premium Cars for Rent",
+        description: "Browse our premium car fleet. BMW 3 Series, Chrysler and other latest model cars for rent in Lithuania. Reserve online."
+      }
     },
 
     // About Page

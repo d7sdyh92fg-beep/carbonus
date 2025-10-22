@@ -36,6 +36,28 @@ const imageMap: { [key: string]: string } = {
 export function Fleet() {
   const navigate = useNavigate();
   const { t } = useTranslations();
+
+  // Feature key mapping for translation
+  const getFeatureKey = (feature: string): string => {
+    const featureMap: { [key: string]: string } = {
+      'Kondicionierius': 'car.featuresList.airConditioning',
+      'Bluetooth': 'car.featuresList.bluetooth',
+      'GPS navigacija': 'car.featuresList.gpsNavigation',
+      '7 vietos': 'car.featuresList.sevenSeats',
+      'Bagažinė': 'car.featuresList.trunk',
+      'Šeimos automobilis': 'car.featuresList.familyCar',
+      'Ekonomiškas': 'car.featuresList.economical',
+      'Patogus': 'car.featuresList.comfortable',
+      'Didelis bagažas': 'car.featuresList.largeTrunk',
+      'Ekonomiškas vairavimas': 'car.featuresList.economicalDriving',
+      'Erdvus universalas': 'car.featuresList.spaciousWagon',
+      'Patikimas automobilis': 'car.featuresList.reliable',
+      'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED'
+    };
+    return featureMap[feature] || feature;
+  };
+
   const cars: Car[] = [
     {
       id: "1",
@@ -138,7 +160,7 @@ export function Fleet() {
                   />
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                      {car.category}
+                      {t(`car.categories.${car.category.toLowerCase()}`)}
                     </Badge>
                   </div>
                   <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
@@ -162,11 +184,11 @@ export function Fleet() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Fuel className="w-4 h-4" />
-                      <span>{car.fuel}</span>
+                      <span>{t(`car.${car.fuel.toLowerCase()}`)}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Settings className="w-4 h-4" />
-                      <span>{car.transmission}</span>
+                      <span>{t(`car.${car.transmission.toLowerCase()}`)}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
@@ -178,7 +200,7 @@ export function Fleet() {
                   <div className="space-y-1">
                     {car.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="text-sm text-muted-foreground">
-                        • {feature}
+                        • {t(getFeatureKey(feature))}
                       </div>
                     ))}
                   </div>

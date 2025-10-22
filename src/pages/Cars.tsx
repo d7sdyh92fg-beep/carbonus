@@ -37,19 +37,18 @@ interface Car {
 
 const Cars = () => {
   const navigate = useNavigate();
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
-
     // Set page title and meta tags
-    document.title = "Automobiliai - Carbonus | BMW, Audi ir kiti premium automobiliai nuomai";
+    document.title = t('cars.meta.title');
     
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Peržiūrėkite mūsų premium automobilių parką. BMW 3 serijos, Chrysler ir kiti naujausių modelių automobiliai nuomai Lietuvoje. Rezervuokite online.');
+      metaDescription.setAttribute('content', t('cars.meta.description'));
     }
     
     // Update canonical URL
@@ -61,14 +60,45 @@ const Cars = () => {
     // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Automobiliai - Carbonus');
+      ogTitle.setAttribute('content', t('cars.meta.title'));
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
       ogUrl.setAttribute('content', 'https://carbonus.lt/automobiliai');
     }
-  }, []);
+  }, [t, language]);
+
+  // Feature key mapping for translation
+  const getFeatureKey = (feature: string): string => {
+    const featureMap: { [key: string]: string } = {
+      'Kondicionierius': 'car.featuresList.airConditioning',
+      'Bluetooth': 'car.featuresList.bluetooth',
+      'GPS navigacija': 'car.featuresList.gpsNavigation',
+      '7 vietos': 'car.featuresList.sevenSeats',
+      'Bagažinė': 'car.featuresList.trunk',
+      'Šeimos automobilis': 'car.featuresList.familyCar',
+      'Ekonomiškas': 'car.featuresList.economical',
+      'Patogus': 'car.featuresList.comfortable',
+      'Didelis bagažas': 'car.featuresList.largeTrunk',
+      'Ekonomiškas vairavimas': 'car.featuresList.economicalDriving',
+      'Erdvus universalas': 'car.featuresList.spaciousWagon',
+      'Patikimas automobilis': 'car.featuresList.reliable',
+      'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED'
+    };
+    return featureMap[feature] || feature;
+  };
+
+  // Helper for plural forms
+  const getCarPluralForm = (count: number): string => {
+    if (language === 'lt') {
+      if (count === 1) return t('cars.carSingular');
+      if (count < 10) return t('cars.carPlural');
+      return t('cars.carPluralMany');
+    }
+    return t('cars.carPlural');
+  };
 
   const handleCarSelect = (carId: string) => {
     navigate(`/automobiliai/${carId}`);
@@ -200,7 +230,7 @@ const Cars = () => {
                     <SelectItem value="all">{t('car.categories.all')}</SelectItem>
                     {categories.filter(cat => cat !== "all").map((category) => (
                       <SelectItem key={category} value={category}>
-                        {category}
+                        {t(`car.categories.${category.toLowerCase()}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -211,9 +241,9 @@ const Cars = () => {
             {/* Results Counter */}
             <div className="mt-4 text-sm text-muted-foreground">
               {searchTerm || selectedCategory !== "all" ? (
-                <span>Rasta {filteredCars.length} automobil{filteredCars.length === 1 ? 'is' : filteredCars.length < 10 ? 'iai' : 'ių'}</span>
+                <span>{t('cars.resultsCount')} {filteredCars.length} {getCarPluralForm(filteredCars.length)}</span>
               ) : (
-                <span>Iš viso {cars.length} automobil{cars.length < 10 ? 'iai' : 'ių'}</span>
+                <span>{t('cars.totalCount')} {cars.length} {getCarPluralForm(cars.length)}</span>
               )}
             </div>
           </div>
@@ -243,7 +273,7 @@ const Cars = () => {
                     />
                     <div className="absolute top-4 left-4">
                       <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                        {car.category}
+                        {t(`car.categories.${car.category.toLowerCase()}`)}
                       </Badge>
                     </div>
                     <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
@@ -267,11 +297,11 @@ const Cars = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Fuel className="w-4 h-4" />
-                        <span>{car.fuel}</span>
+                        <span>{t(`car.${car.fuel.toLowerCase()}`)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Settings className="w-4 h-4" />
-                        <span>{car.transmission}</span>
+                        <span>{t(`car.${car.transmission.toLowerCase()}`)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
@@ -283,22 +313,22 @@ const Cars = () => {
                     <div className="space-y-1">
                       {car.features.map((feature, index) => (
                         <div key={index} className="text-sm text-muted-foreground">
-                          • {feature}
+                          • {t(getFeatureKey(feature))}
                         </div>
                       ))}
                     </div>
                     
                     <div className="flex items-center justify-between pt-4">
                       <div>
-                        <p className="text-sm text-muted-foreground">Kaina nuo</p>
-                        <p className="text-2xl font-bold text-primary">{car.price}</p>
-                        <p className="text-xs text-muted-foreground">per dieną</p>
+                        <p className="text-sm text-muted-foreground">{t('cars.priceFrom')}</p>
+                        <p className="text-2xl font-bold text-primary">{t('cars.from')} 30 EUR</p>
+                        <p className="text-xs text-muted-foreground">{t('cars.perDay')}</p>
                       </div>
                       <Button 
                         className="bg-primary hover:bg-primary/90 text-primary-foreground"
                         onClick={() => handleCarSelect(car.id)}
                       >
-                        Žiūrėti
+                        {t('cars.viewButton')}
                       </Button>
                     </div>
                   </div>
@@ -310,7 +340,7 @@ const Cars = () => {
           {filteredCars.length === 0 && (
             <div className="text-center py-12">
               <p className="text-lg text-muted-foreground">
-                Nerasta automobilių pagal jūsų paieškos kriterijus.
+                {t('cars.noResults')}
               </p>
             </div>
           )}
