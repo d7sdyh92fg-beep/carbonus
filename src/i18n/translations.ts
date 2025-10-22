@@ -558,6 +558,78 @@ export const translations = {
       orderButton: "Užsakyti",
       featuresTitle: "Įranga ir savybės",
       specsTitle: "Specifikacijos",
+      bookingTitle: "Užsakyti automobilį",
+      bookingSubtitle: "Pasirinkite datas ir pamatykite tikslią kainą",
+      metaTitle: "{carName} - Carbonus | Premium automobilio nuoma nuo 30€/dieną",
+      metaDescription: "{carName} nuomai Carbonus automobilių parke. Premium klasės automobilis su visais patogumais. Rezervuokite online ir užsisakykite šiandien.",
+      specs: {
+        year: "Metai",
+        fuelType: "Kuras",
+        gearbox: "Pavarų dėžė",
+        passengers: "Keleivių skaičius",
+        doors: "Durų skaičius",
+        trunk: "Bagažinės talpa",
+        engineType: "Variklio tipas"
+      }
+    },
+
+    // Car Data for Detail Pages
+    carData: {
+      "1": {
+        description: "Patirkite aukščiausią vairavimo malonumą su BMW 3 serijos sedanu. Šis automobilis sujungia sportinį charakterį su kasdienės praktikos patogumais, siūlydamas nepakartojamą vairavimo patirtį.",
+        feature1: "Kondicionierius",
+        feature2: "Bluetooth ryšys",
+        feature3: "GPS navigacija",
+        feature4: "Odos salonai",
+        feature5: "Elektrinis rankinio stabdžio valdymas",
+        feature6: "LED žibintai",
+        feature7: "Sportinio stiliaus sėdynės",
+        feature8: "Išplėstinis saugumas"
+      },
+      "2": {
+        description: "Idealus pasirinkimas šeimoms ir grupėms. Chrysler Town & Country siūlo erdvų saloną, patogias sėdynes ir visus reikalingus patogumą užtikrinančius sprendimus ilgoms kelionėms.",
+        feature1: "7 keleivių vietos",
+        feature2: "Erdus bagažinės skyrius",
+        feature3: "Šeimos automobilis",
+        feature4: "Kondicionierius visoms eilėms",
+        feature5: "DVD pramogų sistema",
+        feature6: "Elektriniai slankiojantys durys",
+        feature7: "Atverčiamos sėdynės",
+        feature8: "Saugos sistemos"
+      },
+      "3": {
+        description: "Volkswagen Passat 2012 - patikimas ir ekonomiškas sedanas, puikiai tinkantis verslo kelionėms ir kasdieniam naudojimui. Dyzelinis variklis užtikrina mažą kuro sąnaudą.",
+        feature1: "Ekonomiškas dyzelinis variklis",
+        feature2: "Mechaninė pavarų dėžė",
+        feature3: "Kondicionierius",
+        feature4: "Elektriniai langai",
+        feature5: "Centrinis užraktas",
+        feature6: "ABS stabdžių sistema",
+        feature7: "Patogios sėdynės",
+        feature8: "Didelis bagažas"
+      },
+      "4": {
+        description: "KIA CEED 2013 universalas - praktiškas ir erdvus automobilis, idealus kelionėms ir kasdieniam naudojimui. Tamsiai pilkos spalvos automobilis su 1.4 litro benzininiu varikliu. Puikiai tvarkytas automobilis su visais reikalingais patogumais.",
+        feature1: "Ekonomiškas benzininis variklis",
+        feature2: "Erdvus universalo bagažas",
+        feature3: "Patikimas kasdieniam naudojimui",
+        feature4: "Mechaninė pavarų dėžė",
+        feature5: "Kondicionierius",
+        feature6: "Patogus 5 vietų salonas",
+        feature7: "Didelis bagažinės skyrius",
+        feature8: "Praktiškas miesto automobilis"
+      },
+      "5": {
+        description: "KIA CEED 2020 hečbekas - modernaus dizaino automobilis su ekonomišku dyzeliniu varikliu. Ideali kombinacija sportiškumo ir praktišumo kasdieniam naudojimui. Patikimas ir stilingas automobilis miesto gatvėms.",
+        feature1: "Ekonomiškas dyzelinis variklis",
+        feature2: "Modernus LED apšvietimas",
+        feature3: "Patikimas mechaninis perdavimas",
+        feature4: "Kondicionierius",
+        feature5: "Elektrinis langų valdymas",
+        feature6: "Centrinis užraktas",
+        feature7: "Šiuolaikiškas salono dizainas",
+        feature8: "Saugos sistemos"
+      }
     },
 
     // Insurance Page
@@ -1880,6 +1952,78 @@ export const translations = {
       orderButton: "Order",
       featuresTitle: "Equipment and Features",
       specsTitle: "Specifications",
+      bookingTitle: "Order Car",
+      bookingSubtitle: "Select dates and see the exact price",
+      metaTitle: "{carName} - Carbonus | Premium Car Rental from €30/day",
+      metaDescription: "{carName} for rent in Carbonus car fleet. Premium class car with all amenities. Reserve online and order today.",
+      specs: {
+        year: "Year",
+        fuelType: "Fuel",
+        gearbox: "Gearbox",
+        passengers: "Passengers",
+        doors: "Doors",
+        trunk: "Trunk Capacity",
+        engineType: "Engine Type"
+      }
+    },
+
+    // Car Data for Detail Pages
+    carData: {
+      "1": {
+        description: "Experience the ultimate driving pleasure with the BMW 3 Series sedan. This car combines sporty character with everyday practicality, offering an incomparable driving experience.",
+        feature1: "Air conditioning",
+        feature2: "Bluetooth connectivity",
+        feature3: "GPS navigation",
+        feature4: "Leather interior",
+        feature5: "Electronic handbrake control",
+        feature6: "LED lights",
+        feature7: "Sport-style seats",
+        feature8: "Advanced safety"
+      },
+      "2": {
+        description: "Ideal choice for families and groups. Chrysler Town & Country offers a spacious cabin, comfortable seats and all the necessary comfort solutions for long trips.",
+        feature1: "7 passenger seats",
+        feature2: "Spacious trunk compartment",
+        feature3: "Family car",
+        feature4: "Air conditioning for all rows",
+        feature5: "DVD entertainment system",
+        feature6: "Electric sliding doors",
+        feature7: "Folding seats",
+        feature8: "Safety systems"
+      },
+      "3": {
+        description: "Volkswagen Passat 2012 - reliable and economical sedan, perfect for business trips and everyday use. Diesel engine ensures low fuel consumption.",
+        feature1: "Economical diesel engine",
+        feature2: "Manual transmission",
+        feature3: "Air conditioning",
+        feature4: "Electric windows",
+        feature5: "Central locking",
+        feature6: "ABS braking system",
+        feature7: "Comfortable seats",
+        feature8: "Large trunk"
+      },
+      "4": {
+        description: "KIA CEED 2013 wagon - practical and spacious car, ideal for trips and everyday use. Dark gray car with a 1.4 liter petrol engine. Well-maintained car with all necessary amenities.",
+        feature1: "Economical petrol engine",
+        feature2: "Spacious wagon trunk",
+        feature3: "Reliable for everyday use",
+        feature4: "Manual transmission",
+        feature5: "Air conditioning",
+        feature6: "Comfortable 5-seat cabin",
+        feature7: "Large trunk compartment",
+        feature8: "Practical city car"
+      },
+      "5": {
+        description: "KIA CEED 2020 hatchback - modern design car with economical diesel engine. Ideal combination of sportiness and practicality for everyday use. Reliable and stylish car for city streets.",
+        feature1: "Economical diesel engine",
+        feature2: "Modern LED lighting",
+        feature3: "Reliable manual transmission",
+        feature4: "Air conditioning",
+        feature5: "Electric window control",
+        feature6: "Central locking",
+        feature7: "Modern cabin design",
+        feature8: "Safety systems"
+      }
     },
 
     // Insurance Page

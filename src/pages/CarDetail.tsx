@@ -48,6 +48,19 @@ const CarDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { t, language } = useTranslations();
 
+  // Normalize Lithuanian characters for translation keys
+  const normalizeForTranslation = (text: string): string => {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/ė/g, 'e')
+      .replace(/ų/g, 'u')
+      .replace(/č/g, 'c')
+      .replace(/š/g, 's')
+      .replace(/ž/g, 'z');
+  };
+
   useEffect(() => {
     // Scroll to top when navigating to car detail page
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -370,9 +383,9 @@ const CarDetail = () => {
             <div className="space-y-8">
               <div>
                 <div className="flex items-center gap-4 mb-4">
-                  <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                    {car.category}
-                  </Badge>
+                <Badge variant="secondary" className="bg-primary text-primary-foreground">
+                  {t('car.categories.' + normalizeForTranslation(car.category))}
+                </Badge>
                   <div className="flex items-center gap-1">
                     <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                     <span className="font-semibold">{car.rating}</span>
@@ -390,7 +403,7 @@ const CarDetail = () => {
                 </div>
 
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                  {car.description}
+                  {t('carData.' + car.id + '.description')}
                 </p>
 
                 {/* Car Specifications with Icons */}
@@ -402,12 +415,12 @@ const CarDetail = () => {
                   </div>
                   <div className="text-center">
                     <Fuel className="w-5 h-5 mx-auto mb-1 text-primary" />
-                    <div className="text-base font-bold text-foreground">{car.fuel}</div>
+                    <div className="text-base font-bold text-foreground">{t('car.' + normalizeForTranslation(car.fuel))}</div>
                     <div className="text-xs text-muted-foreground">{t('carDetail.fuel')}</div>
                   </div>
                   <div className="text-center">
                     <Settings className="w-5 h-5 mx-auto mb-1 text-primary" />
-                    <div className="text-base font-bold text-foreground">{car.transmission}</div>
+                    <div className="text-base font-bold text-foreground">{t('car.' + normalizeForTranslation(car.transmission))}</div>
                     <div className="text-xs text-muted-foreground">{t('carDetail.transmission')}</div>
                   </div>
                 </div>
@@ -440,7 +453,7 @@ const CarDetail = () => {
                   {car.features.map((feature, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-muted-foreground">{feature}</span>
+                      <span className="text-muted-foreground">{t('carData.' + car.id + '.feature' + (index + 1))}</span>
                     </div>
                   ))}
                 </div>
@@ -452,12 +465,24 @@ const CarDetail = () => {
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold text-foreground mb-6">{t('carDetail.specsTitle')}</h3>
                 <div className="space-y-4">
-                  {Object.entries(car.specifications).map(([key, value]) => (
-                    <div key={key} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                      <span className="text-muted-foreground">{key}</span>
-                      <span className="font-semibold text-foreground">{value}</span>
-                    </div>
-                  ))}
+                  {Object.entries(car.specifications).map(([key, value], index) => {
+                    // Translate specification values for fuel and transmission
+                    let translatedValue = value;
+                    if (index === 1) { // Fuel
+                      translatedValue = t('car.' + normalizeForTranslation(value));
+                    } else if (index === 2) { // Transmission
+                      translatedValue = t('car.' + normalizeForTranslation(value));
+                    }
+                    
+                    return (
+                      <div key={key} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                        <span className="text-muted-foreground">{t('carDetail.specs.' + Object.keys({
+                          year: 0, fuelType: 1, gearbox: 2, passengers: 3, doors: 4, trunk: 5, engineType: 6
+                        })[index])}</span>
+                        <span className="font-semibold text-foreground">{translatedValue}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
@@ -469,9 +494,9 @@ const CarDetail = () => {
       <section className="py-20 bg-gray-50" id="booking-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-foreground mb-4">Užsakyti automobilį</h3>
+            <h3 className="text-3xl font-bold text-foreground mb-4">{t('carDetail.bookingTitle')}</h3>
             <p className="text-lg text-muted-foreground">
-              Pasirinkite datas ir pamatykite tikslią kainą
+              {t('carDetail.bookingSubtitle')}
             </p>
           </div>
           <BookingCalendar carId={car.id} carName={car.name} carImage={car.image} />
