@@ -7,62 +7,66 @@ import { Badge } from "@/components/ui/badge";
 import { Car, Users, Clock, Shield, Award, CheckCircle2, Star, Calendar, MapPin } from "lucide-react";
 import carInterior from "@/assets/car-interior.jpg";
 import fleetCars from "@/assets/fleet-cars.jpg";
+import { useTranslations } from "@/hooks/use-translations";
 
 const About = () => {
+  const { t, language } = useTranslations();
+  
   useEffect(() => {
     // Set page title and meta tags
-    document.title = "Apie mus - Carbonus | Automobilių nuoma Druskininkuose ir visoje Lietuvoje";
+    document.title = t('about.meta.title');
     
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Carbonus - moderni automobilių nuomos įmonė Druskininkuose, siūlanti paslaugas visoje Lietuvoje. Aukščiausios kokybės automobiliai ir išskirtinis aptarnavimas.');
+      metaDescription.setAttribute('content', t('about.meta.description'));
     }
     
     // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      canonical.setAttribute('href', 'https://carbonus.lt/apie-mus');
+      canonical.setAttribute('href', `https://carbonus.lt/${language === 'en' ? 'about-us' : 'apie-mus'}`);
     }
     
     // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Apie mus - Carbonus');
+      ogTitle.setAttribute('content', t('about.meta.title'));
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://carbonus.lt/apie-mus');
+      ogUrl.setAttribute('content', `https://carbonus.lt/${language === 'en' ? 'about-us' : 'apie-mus'}`);
     }
-  }, []);
+  }, [t, language]);
+  
   const stats = [
-    { number: "2025", label: "Įkūrimo metai", icon: Calendar },
-    { number: "200+", label: "Automobilių", icon: Car },
-    { number: "1000+", label: "Klientų", icon: Users },
-    { number: "98%", label: "Pasitenkinimas", icon: Star }
+    { number: "2025", label: t('about.stats.foundingYear'), icon: Calendar },
+    { number: "200+", label: t('about.stats.cars'), icon: Car },
+    { number: "1000+", label: t('about.stats.clients'), icon: Users },
+    { number: "98%", label: t('about.stats.satisfaction'), icon: Star }
   ];
 
   const values = [
     {
       icon: Shield,
-      title: "Saugumas",
-      description: "Visi mūsų automobiliai reguliariai tikrinami ir atitinka aukščiausius saugumo standartus."
+      title: t('about.values.safety.title'),
+      description: t('about.values.safety.description')
     },
     {
       icon: Award,
-      title: "Kokybė",
-      description: "Siūlome tik aukščiausios klasės automobilius, kurie užtikrins komfortą ir patikimumą."
+      title: t('about.values.quality.title'),
+      description: t('about.values.quality.description')
     },
     {
       icon: Clock,
-      title: "Patikimumas",
-      description: "24/7 klientų aptarnavimas ir greitas reagavimas į visus jūsų poreikius."
+      title: t('about.values.reliability.title'),
+      description: t('about.values.reliability.description')
     },
     {
       icon: CheckCircle2,
-      title: "Skaidrumas",
-      description: "Jokių paslėptų mokesčių - visa informacija apie kainas yra aiški ir suprantama."
+      title: t('about.values.transparency.title'),
+      description: t('about.values.transparency.description')
     }
   ];
 
@@ -77,17 +81,17 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <Badge variant="outline" className="mb-4">
-                MŪSŲ ISTORIJA
+                {t('about.badge')}
               </Badge>
               <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-                Naujas žingsnis automobilių nuomos srityje
+                {t('about.title')}
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Carbonus - tai jauna, veržli ir nuolat auganti bei tobulėjanti automobilių nuomos įmonė su bazė Druskininkuose, teikianti paslaugas visoje Lietuvoje. Mūsų tikslas - suteikti jums ne tik kokybišką transportą, bet ir išskirtinę aptarnavimo patirtį, naudojant naujausias technologijas ir inovacijas.
+                {t('about.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" variant="default" onClick={() => window.location.href = '/automobiliai'}>
-                  Peržiūrėti automobilius
+                  {t('about.viewCars')}
                 </Button>
               </div>
             </div>
@@ -99,7 +103,7 @@ const About = () => {
               />
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-2xl shadow-lg">
                 <div className="text-3xl font-bold">2025</div>
-                <div className="text-sm opacity-90">Įkūrimo metai</div>
+                <div className="text-sm opacity-90">{t('about.foundingYear')}</div>
               </div>
             </div>
           </div>
@@ -112,13 +116,13 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">
-              MŪSŲ VERTYBĖS
+              {t('about.valuesBadge')}
             </Badge>
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Kodėl pasirinkti Carbonus?
+              {t('about.valuesTitle')}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Nors esame jauna įmonė, tačiau ne naujokai šioje srityje. Kartu su partneriais nuolat palaikome reikiamą automobilių parko būklę, rūpinamės kiekvienu klientu ir jo poreikiais, diegiame ir taikome naujus ir modernius aptarnavimo bei paslaugų suteikimo būdus, metodus ir technologines priemones.
+              {t('about.valuesSubtitle')}
             </p>
           </div>
           
@@ -152,15 +156,13 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <Badge variant="outline" className="mb-4">
-                MŪSŲ VIZIJA
+                {t('about.visionBadge')}
               </Badge>
               <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-                Patikimų automobilių ir modernių paslaugų sintezė
+                {t('about.visionTitle')}
               </h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Mes tikime, kad automobilių nuoma turėtų būti paprasta, skaidri ir maloni. 
-                Todėl kuriame paslaugą, kurioje technologijos tarnauja žmogui, 
-                o ne atvirkščiai.
+                {t('about.visionDescription')}
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
@@ -168,8 +170,8 @@ const About = () => {
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Modernios ir nuolat vystomos paslaugų technologijos</div>
-                    <div className="text-muted-foreground">Investuojame į naujausias technologijas ir inovacijas</div>
+                    <div className="font-semibold text-foreground">{t('about.visionPoints.technology.title')}</div>
+                    <div className="text-muted-foreground">{t('about.visionPoints.technology.description')}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -177,8 +179,8 @@ const About = () => {
                     <Award className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Saugumas, patikimumas ir aukščiausia kokybė</div>
-                    <div className="text-muted-foreground">Kiekvienas automobilis atitinka aukščiausius standartus</div>
+                    <div className="font-semibold text-foreground">{t('about.visionPoints.safety.title')}</div>
+                    <div className="text-muted-foreground">{t('about.visionPoints.safety.description')}</div>
                   </div>
                 </div>
               </div>
@@ -213,7 +215,7 @@ const About = () => {
             <div className="relative z-10 w-full flex justify-center md:justify-end">
               <div className="w-full md:w-1/2 lg:w-2/5 p-6 md:p-8 lg:p-12 text-white text-center md:text-left">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold mb-6 leading-tight">
-                  Rezervuokite savo svajonių automobilį šiandien ir pajuskite geriausią kelionės patirtį
+                  {t('about.ctaTitle')}
                 </h2>
                 
                 <Button 
@@ -221,7 +223,7 @@ const About = () => {
                   className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 md:px-8 py-4 rounded-full transition-all duration-300"
                   onClick={() => window.location.href = '/automobiliai'}
                 >
-                  Rezervuoti dabar
+                  {t('about.ctaButton')}
                 </Button>
               </div>
             </div>

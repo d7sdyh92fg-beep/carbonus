@@ -196,6 +196,16 @@ export const translations = {
       },
       ctaTitle: "Rezervuokite savo svajonių automobilį šiandien ir pajuskite geriausią kelionės patirtį",
       ctaButton: "Rezervuoti dabar",
+      stats: {
+        foundingYear: "Įkūrimo metai",
+        cars: "Automobilių",
+        clients: "Klientų",
+        satisfaction: "Pasitenkinimas"
+      },
+      meta: {
+        title: "Apie mus - Carbonus | Automobilių nuoma Druskininkuose ir visoje Lietuvoje",
+        description: "Carbonus - moderni automobilių nuomos įmonė Druskininkuose, siūlanti paslaugas visoje Lietuvoje. Aukščiausios kokybės automobiliai ir išskirtinis aptarnavimas."
+      }
     },
 
     // Contact Page
@@ -1554,6 +1564,16 @@ export const translations = {
       },
       ctaTitle: "Book your dream car today and experience the best travel experience",
       ctaButton: "Book Now",
+      stats: {
+        foundingYear: "Year Founded",
+        cars: "Cars",
+        clients: "Clients",
+        satisfaction: "Satisfaction"
+      },
+      meta: {
+        title: "About Us - Carbonus | Car Rental in Druskininkai and Throughout Lithuania",
+        description: "Carbonus - a modern car rental company in Druskininkai, offering services throughout Lithuania. Highest quality cars and exceptional service."
+      }
     },
 
     // Contact Page
