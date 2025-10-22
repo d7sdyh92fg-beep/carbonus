@@ -100,6 +100,19 @@ const Cars = () => {
     return t('cars.carPlural');
   };
 
+  // Normalize Lithuanian characters for translation keys
+  const normalizeForTranslation = (text: string): string => {
+    return text.toLowerCase()
+      .replace(/ė/g, 'e')
+      .replace(/ą/g, 'a')
+      .replace(/į/g, 'i')
+      .replace(/ų/g, 'u')
+      .replace(/ū/g, 'u')
+      .replace(/č/g, 'c')
+      .replace(/š/g, 's')
+      .replace(/ž/g, 'z');
+  };
+
   const handleCarSelect = (carId: string) => {
     navigate(`/automobiliai/${carId}`);
   };
@@ -297,11 +310,11 @@ const Cars = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Fuel className="w-4 h-4" />
-                        <span>{t(`car.${car.fuel.toLowerCase()}`)}</span>
+                        <span>{t(`car.${normalizeForTranslation(car.fuel)}`)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Settings className="w-4 h-4" />
-                        <span>{t(`car.${car.transmission.toLowerCase()}`)}</span>
+                        <span>{t(`car.${normalizeForTranslation(car.transmission)}`)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
