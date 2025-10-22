@@ -116,6 +116,7 @@ export const translations = {
     fleet: {
       badge: "AUTOMOBILIAI",
       title: "Automobilių nuoma",
+      price: "Kaina",
       priceFrom: "Kaina nuo",
       perDay: "per dieną",
       viewButton: "Žiūrėti",
@@ -172,6 +173,7 @@ export const translations = {
       carSingular: "automobilis",
       carPlural: "automobiliai", 
       carPluralMany: "automobilių",
+      price: "Kaina",
       priceFrom: "Kaina nuo",
       perDay: "per dieną",
       viewButton: "Žiūrėti",
@@ -1513,6 +1515,7 @@ export const translations = {
     fleet: {
       badge: "CARS",
       title: "Car Rental",
+      price: "Price",
       priceFrom: "Price from",
       perDay: "per day",
       viewButton: "View",
@@ -1569,6 +1572,7 @@ export const translations = {
       carSingular: "car",
       carPlural: "cars",
       carPluralMany: "cars",
+      price: "Price",
       priceFrom: "Price from",
       perDay: "per day",
       viewButton: "View",
