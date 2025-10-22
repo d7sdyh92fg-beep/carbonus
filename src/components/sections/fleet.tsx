@@ -75,7 +75,7 @@ export function Fleet() {
     {
       id: "1",
       name: "BMW 3 series",
-      price: "nuo 30 EUR",
+      price: "30 EUR",
       image: bmw3Clean,
       category: "Sedanas",
       passengers: 5,
@@ -88,7 +88,7 @@ export function Fleet() {
     {
       id: "2",
       name: "Chrysler Town & Country",
-      price: "nuo 30 EUR",
+      price: "30 EUR",
       image: chryslerTownCountrySide,
       category: "Miniautobusas",
       passengers: 7,
@@ -101,7 +101,7 @@ export function Fleet() {
     {
       id: "3",
       name: "Volkswagen Passat",
-      price: "nuo 30 EUR",
+      price: "30 EUR",
       image: vwPassatSideClean,
       category: "Sedanas",
       passengers: 5,
@@ -114,7 +114,7 @@ export function Fleet() {
     {
       id: "4",
       name: "KIA CEED",
-      price: "nuo 30 EUR",
+      price: "30 EUR",
       image: kiaCeedSideDarkGray,
       category: "Universalas",
       passengers: 5,
@@ -127,7 +127,7 @@ export function Fleet() {
     {
       id: "5",
       name: "KIA CEED",
-      price: "nuo 30 EUR",
+      price: "30 EUR",
       image: kiaCeedHatchbackSideGrayBrown,
       category: "Hečbekas",
       passengers: 5,
@@ -221,7 +221,7 @@ export function Fleet() {
                   <div className="flex items-center justify-between pt-4">
                     <div>
                       <p className="text-sm text-muted-foreground">{t('fleet.price')}</p>
-                      <p className="text-2xl font-bold text-primary">{car.price}</p>
+                      <p className="text-2xl font-bold text-primary">{t('fleet.from')} {car.price}</p>
                       <p className="text-xs text-muted-foreground">{t('fleet.perDay')}</p>
                     </div>
                     <Button 
