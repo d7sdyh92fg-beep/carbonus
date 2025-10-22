@@ -727,6 +727,9 @@ export const translations = {
 
     blogPost: {
       backButton: "Grįžti į straipsnius",
+      articleInfo: "Straipsnio informacija",
+      category: "Kategorija",
+      published: "Paskelbta",
       author: "Autorius:",
       publishedDate: "Publikuota:",
       readTime: "Skaitymo laikas:",
@@ -745,37 +748,37 @@ export const translations = {
         savings: `
           <p>Automobilių nuoma gali būti patogu ir lankstu, tačiau kai kurie žmonės vengia šios paslaugos dėl tariamo brangimo. Tiesą sakant, yra daug būdų sutaupyti nuomojant automobilį Lietuvoje. Šiame straipsnyje pasidalinsime 10 praktiškų patarimų, kurie padės jums gauti geriausią pasiūlymą.</p>
 
-          <h2>1. Rezervuokite iš anksto</h2>
+          <h3><strong>1. Rezervuokite iš anksto</strong></h3>
           <p><strong>Vienas paprasčiausių būdų sutaupyti – rezervuoti automobilį iš anksto.</strong> Kuo anksčiau užsisakysite, tuo didesnė tikimybė gauti geresnę kainą. Paskutinės minutės rezervacijos dažnai būna brangesnės, ypač vasaros ar švenčių sezono metu.</p>
 
-          <h2>2. Lyginkite kainas</h2>
+          <h3><strong>2. Lyginkite kainas</strong></h3>
           <p><strong>Neverta rinktis pirmo pasitaikiusio nuomotojo.</strong> Skirkite laiko palyginti įvairių įmonių kainas ir paslaugas. Atkreipkite dėmesį ne tik į kainą, bet ir į tai, kas įskaičiuota į pasiūlymą – draudimas, papildomos paslaugos, kilometražo limitas.</p>
 
-          <h2>3. Pasirinkite tinkamą automobilio klasę</h2>
+          <h3><strong>3. Pasirinkite tinkamą automobilio klasę</strong></h3>
           <p><strong>Ne visada reikia nuomotis didžiausią ar įspūdingiausią automobilį.</strong> Pagalvokite, kokiam tikslui jums reikia transporto priemonės. Jei keliaujate vienas ar su partneru po miestą, kompaktiškas automobilis puikiai tiks ir kainuos mažiau nei didelis SUV.</p>
 
-          <h2>4. Venkite oro uosto nuomos punktų</h2>
+          <h3><strong>4. Venkite oro uosto nuomos punktų</strong></h3>
           <p><strong>Automobilių nuomos punktai oro uostuose dažnai taiko didesnius tarifus dėl patogios vietos ir papildomų mokesčių.</strong> Jei galite, rinkitės nuomos punktus mieste – tai gali sutaupyti nemaža dalis pinigų.</p>
 
-          <h2>5. Atsisakykite nereikalingų papildomų paslaugų</h2>
+          <h3><strong>5. Atsisakykite nereikalingų papildomų paslaugų</strong></h3>
           <p><strong>GPS navigacija, vaiko kėdutė, papildomas vairuotojas – visos šios paslaugos padidina bendrą kainą.</strong> Įvertinkite, ar tikrai jų reikia. Pavyzdžiui, navigacijai galite naudoti savo išmanųjį telefoną su Google Maps.</p>
 
-          <h2>6. Pasirinkite tinkamą draudimą</h2>
+          <h3><strong>6. Pasirinkite tinkamą draudimą</strong></h3>
           <p><strong>Draudimas yra būtinas, tačiau neverta permokėti.</strong> Įsigilinkite, kokią apsaugą siūlo nuomotoja bazinėje kainoje. Kartais jūsų asmeninė automobilio draudimo polisas ar kreditinės kortelės draudimas jau padengė nuomos automobilį.</p>
 
-          <h2>7. Grąžinkite automobilį laiku</h2>
+          <h3><strong>7. Grąžinkite automobilį laiku</strong></h3>
           <p><strong>Vėlavimas grąžinant automobilį gali brangiai kainuoti.</strong> Dažnai nuomotojai taiko papildomus mokesčius už kiekvieną pavėluotą valandą. Planuokite savo laiką taip, kad grąžintumėte automobilį sutartu laiku.</p>
 
-          <h2>8. Pripildykite degalų baką prieš grąžindami</h2>
+          <h3><strong>8. Pripildykite degalų baką prieš grąžindami</strong></h3>
           <p><strong>Dauguma nuomos įmonių reikalauja grąžinti automobilį su pilnu degalų baku.</strong> Jei to nepadarysite, jums bus taikomas papildomas mokestis už degalus, kuris paprastai yra daug didesnis nei degalinės kainos.</p>
 
-          <h2>9. Tikrinkite nuolaidas ir akcijas</h2>
+          <h3><strong>9. Tikrinkite nuolaidas ir akcijas</strong></h3>
           <p><strong>Daugelis nuomos įmonių siūlo nuolaidas tam tikroms grupėms – studentams, vyresnio amžiaus žmonėms, įmonėms.</strong> Taip pat verta tikrinti, ar nėra sezoninių akcijų ar specialių pasiūlymų.</p>
 
-          <h2>10. Nuomokitės ilgesniam laikotarpiui</h2>
+          <h3><strong>10. Nuomokitės ilgesniam laikotarpiui</strong></h3>
           <p><strong>Jei planuojate naudoti automobilį kelias dienas ar savaites, dažnai verta nuomotis ilgesniam laikotarpiui.</strong> Daugelis įmonių siūlo geresnius tarifus savaitinei ar mėnesinei nuomai, nei skaičiuojant diena po dienos.</p>
 
-          <h2>Išvada</h2>
+          <h3><strong>Išvada</strong></h3>
           <p><strong>Automobilių nuoma ne visuomet turi būti brangi.</strong> Laikydamiesi šių 10 patarimų, galite sutaupyti nemažai pinigų ir gauti kokybišką paslaugą. Svarbiausia – planuoti iš anksto, lyginti pasiūlymus ir atidžiai skaityti nuomos sąlygas.</p>
 
           <p><strong>Carbonus</strong> siūlo skaidrias kainas be paslėptų mokesčių ir lankstų rezervacijos procesą. Aplankykite mūsų svetainę ir sužinokite, kaip galite sutaupyti nuomojantis automobilį Druskininkuose.</p>
@@ -1982,6 +1985,9 @@ export const translations = {
     // Blog Post
     blogPost: {
       backButton: "Back to Articles",
+      articleInfo: "Article Info",
+      category: "Category",
+      published: "Published",
       author: "Author:",
       publishedDate: "Published:",
       readTime: "Reading time:",
@@ -2000,38 +2006,38 @@ export const translations = {
         savings: `
           <p>Car rental can be convenient and flexible, but some people avoid this service due to perceived high costs. In fact, there are many ways to save money when renting a car in Lithuania. In this article, we'll share 10 practical tips to help you get the best deal.</p>
 
-          <h2>1. Book in Advance</h2>
-          <p>One of the simplest ways to save is to book your car well in advance. The earlier you reserve, the better chance you have of securing a lower price. Last-minute bookings are often more expensive, especially during summer or holiday seasons.</p>
+          <h3><strong>1. Book in Advance</strong></h3>
+          <p><strong>One of the simplest ways to save is to book your car well in advance.</strong> The earlier you reserve, the better chance you have of securing a lower price. Last-minute bookings are often more expensive, especially during summer or holiday seasons.</p>
 
-          <h2>2. Compare Prices</h2>
-          <p>Don't settle for the first rental company you find. Take time to compare prices and services from different companies. Pay attention not only to the price, but also to what's included in the offer – insurance, additional services, mileage limits.</p>
+          <h3><strong>2. Compare Prices</strong></h3>
+          <p><strong>Don't settle for the first rental company you find.</strong> Take time to compare prices and services from different companies. Pay attention not only to the price, but also to what's included in the offer – insurance, additional services, mileage limits.</p>
 
-          <h2>3. Choose the Right Car Class</h2>
-          <p>You don't always need to rent the biggest or most impressive car. Think about what you actually need the vehicle for. If you're traveling alone or with a partner around the city, a compact car will do perfectly and cost less than a large SUV.</p>
+          <h3><strong>3. Choose the Right Car Class</strong></h3>
+          <p><strong>You don't always need to rent the biggest or most impressive car.</strong> Think about what you actually need the vehicle for. If you're traveling alone or with a partner around the city, a compact car will do perfectly and cost less than a large SUV.</p>
 
-          <h2>4. Avoid Airport Rental Locations</h2>
-          <p>Car rental locations at airports often charge higher rates due to convenience and additional fees. If possible, choose city locations – this can save you a significant amount of money.</p>
+          <h3><strong>4. Avoid Airport Rental Locations</strong></h3>
+          <p><strong>Car rental locations at airports often charge higher rates due to convenience and additional fees.</strong> If possible, choose city locations – this can save you a significant amount of money.</p>
 
-          <h2>5. Decline Unnecessary Extras</h2>
-          <p>GPS navigation, child seats, additional drivers – all these services increase the total cost. Consider whether you really need them. For example, you can use your smartphone with Google Maps for navigation.</p>
+          <h3><strong>5. Decline Unnecessary Extras</strong></h3>
+          <p><strong>GPS navigation, child seats, additional drivers – all these services increase the total cost.</strong> Consider whether you really need them. For example, you can use your smartphone with Google Maps for navigation.</p>
 
-          <h2>6. Choose the Right Insurance</h2>
-          <p>Insurance is necessary, but you shouldn't overpay. Understand what coverage the rental company offers in the base price. Sometimes your personal car insurance policy or credit card insurance already covers rental cars.</p>
+          <h3><strong>6. Choose the Right Insurance</strong></h3>
+          <p><strong>Insurance is necessary, but you shouldn't overpay.</strong> Understand what coverage the rental company offers in the base price. Sometimes your personal car insurance policy or credit card insurance already covers rental cars.</p>
 
-          <h2>7. Return the Car on Time</h2>
-          <p>Late returns can be costly. Rental companies often charge extra fees for every late hour. Plan your time so you return the car at the agreed time.</p>
+          <h3><strong>7. Return the Car on Time</strong></h3>
+          <p><strong>Late returns can be costly.</strong> Rental companies often charge extra fees for every late hour. Plan your time so you return the car at the agreed time.</p>
 
-          <h2>8. Fill Up the Tank Before Returning</h2>
-          <p>Most rental companies require you to return the car with a full tank. If you don't, you'll be charged an additional fuel fee, which is usually much higher than gas station prices.</p>
+          <h3><strong>8. Fill Up the Tank Before Returning</strong></h3>
+          <p><strong>Most rental companies require you to return the car with a full tank.</strong> If you don't, you'll be charged an additional fuel fee, which is usually much higher than gas station prices.</p>
 
-          <h2>9. Check for Discounts and Promotions</h2>
-          <p>Many rental companies offer discounts to certain groups – students, seniors, corporate clients. It's also worth checking for seasonal promotions or special offers.</p>
+          <h3><strong>9. Check for Discounts and Promotions</strong></h3>
+          <p><strong>Many rental companies offer discounts to certain groups – students, seniors, corporate clients.</strong> It's also worth checking for seasonal promotions or special offers.</p>
 
-          <h2>10. Rent for Longer Periods</h2>
-          <p>If you plan to use the car for several days or weeks, it's often worth renting for a longer period. Many companies offer better rates for weekly or monthly rentals than calculating day by day.</p>
+          <h3><strong>10. Rent for Longer Periods</strong></h3>
+          <p><strong>If you plan to use the car for several days or weeks, it's often worth renting for a longer period.</strong> Many companies offer better rates for weekly or monthly rentals than calculating day by day.</p>
 
-          <h2>Conclusion</h2>
-          <p>Car rental doesn't have to be expensive. By following these 10 tips, you can save a significant amount of money while getting quality service. The key is to plan ahead, compare offers, and carefully read the rental terms.</p>
+          <h3><strong>Conclusion</strong></h3>
+          <p><strong>Car rental doesn't have to be expensive.</strong> By following these 10 tips, you can save a significant amount of money while getting quality service. The key is to plan ahead, compare offers, and carefully read the rental terms.</p>
 
           <p><strong>Carbonus</strong> offers transparent pricing with no hidden fees and a flexible booking process. Visit our website to learn how you can save when renting a car in Druskininkai.</p>
         `,
