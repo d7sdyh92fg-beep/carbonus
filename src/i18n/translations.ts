@@ -1633,39 +1633,6 @@ export const translations = {
       },
     },
 
-    // FAQ Page
-    faq: {
-      badge: "HELP",
-      title: "Frequently Asked Questions",
-      subtitle: "Here you will find answers to the most common questions about car rental. Can't find an answer? Contact us directly.",
-      contactButton: "Contact Us",
-      categories: {
-        booking: "Booking and Ordering",
-        documents: "Documents and Requirements",
-        payment: "Payment and Prices",
-        insurance: "Insurance and Safety",
-        usage: "Car Usage",
-        return: "Car Return",
-      },
-      notFound: {
-        title: "Didn't find an answer?",
-        subtitle: "Our team is always ready to help. Contact us in any way convenient for you.",
-        phone: {
-          title: "By Phone",
-          description: "8:00-17:00 customer service",
-        },
-        email: {
-          title: "By Email",
-          description: "24/7 we will respond within 2 hours",
-        },
-        emergency: {
-          title: "Emergency Cases",
-          description: "Emergency line 24/7",
-        },
-        button: "Go to contacts page",
-      },
-    },
-
     // Footer
     footer: {
       brand: {
