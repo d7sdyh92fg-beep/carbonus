@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Clock, User, ArrowLeft, BookOpen } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 import blogSavingsTips from "@/assets/blog-savings-tips-final.jpg";
 import blogLithuaniaTravel from "/lovable-uploads/1d2b0b23-8949-459d-a4e5-1178e658608a.png";
 import blogCarInsurance from "@/assets/blog-car-insurance-new.jpg";
@@ -29,456 +31,115 @@ interface BlogPostData {
 const BlogPost = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslations();
 
   const blogPosts: { [key: string]: BlogPostData } = {
     "10-patarimu-kaip-sutaupyti-nuomojant-automobili": {
       id: "1",
-      title: "10 patarimų, kaip sutaupyti nuomojant automobilį Lietuvoje",
-      excerpt: "Sužinokite 10 praktiškų patarimų, kaip pigiau išsinuomoti automobilį Lietuvoje. Lyginkite kainas, pasirinkite tinkamą draudimą ir venkite paslėptų mokesčių.",
-      author: "Carbonus komanda",
+      title: t('blog.posts.savings.title'),
+      excerpt: t('blog.posts.savings.excerpt'),
+      author: t('blog.posts.savings.author'),
       publishDate: "2024-12-15",
-      readTime: "5 min",
-      category: "Patarimai",
+      readTime: t('blog.posts.savings.readTime'),
+      category: t('blog.posts.savings.category'),
       image: blogSavingsTips,
       slug: "10-patarimu-kaip-sutaupyti-nuomojant-automobili",
-      content: `
-        <p>Automobilio nuoma Lietuvoje tampa vis populiaresnė tiek keliautojams, tiek vietiniams gyventojams, kuriems reikia laikino transporto. Tačiau neretai nuomos kaina būna didesnė, nei tikėtasi. Laimei, yra būdų, kaip išvengti permokų ir keliauti pigiau. Štai 10 patarimų, kurie padės sutaupyti.</p>
-
-        <br>
-
-        <h2><strong>1.</strong> Lyginkite automobilių nuomos kainas</h2>
-        <p>Prieš priimdami sprendimą, peržiūrėkite kelias skirtingas nuomos įmones. Dažnai už tą patį automobilį vienoje vietoje mokėsite ženkliai pigiau.</p>
-
-        <br>
-
-        <h2><strong>2.</strong> Rezervuokite iš anksto</h2>
-        <p>Ankstyva rezervacija užtikrina mažesnę kainą ir didesnį automobilių pasirinkimą, ypač sezono metu.</p>
-
-        <br>
-
-        <h2><strong>3.</strong> Rinkitės ekonomišką automobilio klasę</h2>
-        <p>Kompaktiški automobiliai ne tik pigesni nuomai, bet ir sunaudoja mažiau degalų, todėl sutaupysite dvigubai.</p>
-
-        <br>
-
-        <h2><strong>4.</strong> Patikrinkite draudimo sąlygas</h2>
-        <p>Dažnai nuomos įmonės siūlo papildomus draudimus. Įsitikinkite, ar jų tikrai reikia – galbūt jūsų kelionių draudimas ar kreditinė kortelė jau apima automobilio nuomą.</p>
-
-        <br>
-
-        <h2><strong>5.</strong> Venkite nuomos punktų oro uostuose</h2>
-        <p>Oro uostuose taikomi papildomi mokesčiai. Kartais pigiau išsinuomoti automobilį miesto centre.</p>
-
-        <br>
-
-        <h2><strong>6.</strong> Atkreipkite dėmesį į užstatą</h2>
-        <p>Kiekviena nuomos įmonė taiko skirtingą užstato dydį. Įvertinkite, ar tai nebus papildoma našta jūsų biudžetui.</p>
-
-        <br>
-
-        <h2><strong>7.</strong> Pasirinkite tinkamą degalų politiką</h2>
-        <p>Geriausias pasirinkimas – „pilnas–pilnas". Pasiimate automobilį su pilnu baku ir grąžinate pilną, todėl mokate tik už realiai sunaudotus degalus.</p>
-
-        <br>
-
-        <h2><strong>8.</strong> Patikrinkite kilometražo limitą</h2>
-        <p>Jei planuojate ilgas keliones, rinkitės pasiūlymus su neribotu kilometražu – taip išvengsite papildomų mokesčių.</p>
-
-        <br>
-
-        <h2><strong>9.</strong> Priedus turėkite savo</h2>
-        <p>GPS navigacija ar vaikiška kėdutė iš nuomos įmonės gali kainuoti brangiai. Dažnai pigiau atsivežti savus priedus arba naudotis telefono navigacija.</p>
-
-        <br>
-
-        <h2><strong>10.</strong> Perskaitykite sutartį iki galo</h2>
-        <p>Smulkios sąlygos gali slėpti papildomus mokesčius už automobilio švarą, vėlavimą ar grąžinimą už darbo valandų ribų. Visada perskaitykite sutartį prieš pasirašydami.</p>
-
-        <br>
-
-        <h3><strong>Išvada</strong></h3>
-        <p>Automobilio nuoma Lietuvoje nebūtinai turi būti brangi. Planuokite iš anksto, rinkitės ekonomiškus variantus ir pasitikrinkite visas sąlygas. Taip sutaupysite pinigų ir galėsite ramiai mėgautis kelione.</p>
-        
-        <p>Carbonus siūlo skaidrias automobilių nuomos kainas be paslėptų mokesčių, todėl galite būti tikri, kad mokėsite tik už tai, kas sutarta. Mūsų automobiliai tinkami bet kokiai kelionei - nuo verslo susitikimų iki šeimos atostogų po Lietuvą.</p>
-      `
+      content: t('blogPost.content.savings')
     },
     "kelioniu-po-lietuva-gidas-geriausi-marsrutai": {
       id: "2",
-      title: "Kelionių po Lietuvą gidas: geriausi maršrutai su nuomotu automobiliu",
-      excerpt: "Atraskite nuostabiausius Lietuvos kampus su mūsų sudarytu kelionių gidu.",
-      author: "Carbonus komanda",
+      title: t('blog.posts.travel.title'),
+      excerpt: t('blog.posts.travel.excerpt'),
+      author: t('blog.posts.travel.author'),
       publishDate: "2024-12-10", 
-      readTime: "8 min",
-      category: "Kelionės",
+      readTime: t('blog.posts.travel.readTime'),
+      category: t('blog.posts.travel.category'),
       image: blogLithuaniaTravel,
       slug: "kelioniu-po-lietuva-gidas-geriausi-marsrutai",
-      content: `
-        <p>Automobilio nuoma Lietuvoje suteikia visišką laisvę keliauti – galite atrasti tiek populiarius turistinius objektus, tiek paslėptus kampelius, kurių nepasieksite viešuoju transportu. Šis gidas padės suplanuoti įsimintinas keliones po Lietuvą su nuomotu automobiliu.</p>
-
-        <br>
-
-        <h2><strong>1.</strong> Neringa ir Kuršių nerija</h2>
-        <p><strong>Maršrutas:</strong> Klaipėda – Smiltynė – Juodkrantė – Nida</p>
-        <p>Pasiplaukite keltu iš Klaipėdos į Smiltynę.</p>
-        <p>Sustokite Juodkrantėje ir aplankykite Raganų kalną.</p>
-        <p>Toliau važiuokite iki Nidos, kur laukia kopos, Parnidžio saulės laikrodis ir žvejų tradicijos.</p>
-        <p><strong>Patariama:</strong> užsisakykite automobilį iš anksto vasaros sezonu – paklausa didelė.</p>
-
-        <br>
-
-        <h2><strong>2.</strong> Žemaitijos nacionalinis parkas</h2>
-        <p><strong>Maršrutas:</strong> Telšiai – Plateliai – Šatrijos kalnas</p>
-        <p>Pasivaikščiokite aplink Platelių ežerą.</p>
-        <p>Užlipkite ant Šatrijos kalno – legenda sako, kad čia rinkdavosi raganos.</p>
-        <p>Aplankykite Žemaičių muziejų „Alka" Telšiuose.</p>
-        <p><strong>Patariama:</strong> rinkitės kompaktišką automobilį – keliai siauri ir vingiuoti.</p>
-
-        <br>
-
-        <h2><strong>3.</strong> Aukštaitijos ežerų kelias</h2>
-        <p><strong>Maršrutas:</strong> Vilnius – Palūšė – Ladakalnis – Ginučiai</p>
-        <p>Kelionę pradėkite nuo Palūšės bažnyčios.</p>
-        <p>Užlipkite į Ladakalnį, iš kur atsiveria šešių ežerų panorama.</p>
-        <p>Sustokite Ginučiuose, kur yra malūnas ir autentiškas kaimas.</p>
-        <p><strong>Patariama:</strong> pasirinkite automobilį su neribotu kilometražu – maršrutas ilgas.</p>
-
-        <br>
-
-        <h2><strong>4.</strong> Dzūkijos gamtos perlai</h2>
-        <p><strong>Maršrutas:</strong> Druskininkai – Merkinė – Čepkeliai</p>
-        <p>Pradėkite nuo Druskininkų SPA ir Lynų kelio.</p>
-        <p>Merkinės apžvalgos bokštas leis pamatyti Nemuno vingius.</p>
-        <p>Čepkelių raisto takai patiks gamtos mylėtojams.</p>
-        <p><strong>Patariama:</strong> pasirinkite automobilį su oro kondicionieriumi – vasarą čia labai karšta.</p>
-
-        <br>
-
-        <h2><strong>5.</strong> Istorinė kelionė po Aukštaitiją</h2>
-        <p><strong>Maršrutas:</strong> Kaunas – Kernavė – Trakai – Vilnius</p>
-        <p>Kaune aplankykite Senamiestį ir Pažaislio vienuolyną.</p>
-        <p>Kernavėje susipažinkite su pirmąją Lietuvos sostine.</p>
-        <p>Trakuose nepamirškite užsukti į pilį ir paragauti kibinų.</p>
-        <p>Kelionę užbaikite Vilniaus Senamiestyje.</p>
-        <p><strong>Patariama:</strong> nuomos punktą rinkitės didesniame mieste – pasirinkimas platesnis ir kaina mažesnė.</p>
-
-        <br>
-
-        <h3><strong>Išvada</strong></h3>
-        <p>Keliauti po Lietuvą nuomotu automobiliu – patogus ir įdomus būdas pažinti šalį. Nuo pajūrio kopų iki ežerų bei miškų – kiekvienas maršrutas turi savo žavesį. Suplanuokite kelionę iš anksto, pasirinkite tinkamą automobilį ir mėgaukitės Lietuvos grožiu be rūpesčių.</p>
-        
-        <p>Carbonus automobiliai puikiai tinka kelionėms po Lietuvą – mūsų flotą sudaro patikimi ir ekonomiški automobiliai, kurie padės pasiekti bet kurį šalies kampelį. Su 24/7 palaikymu galite keliauti ramiai, žinodami, kad esate gerose rankose.</p>
-      `
+      content: t('blogPost.content.travel')
     },
     "automobiliu-nuomos-draudimas-kas-reikia-zinoti": {
       id: "3",
-      title: "Automobilių nuomos draudimas: ką reikia žinoti?",
-      excerpt: "Sužinokite, kokie yra automobilių nuomos draudimo tipai, kokių papildomų apsaugų jums gali prireikti ir kaip išvengti paslėptų mokesčių nuomojant automobilį Lietuvoje ar užsienyje.",
-      author: "Carbonus komanda", 
+      title: t('blog.posts.insurance.title'),
+      excerpt: t('blog.posts.insurance.excerpt'),
+      author: t('blog.posts.insurance.author'), 
       publishDate: "2024-12-05",
-      readTime: "6 min",
-      category: "Draudimas",
+      readTime: t('blog.posts.insurance.readTime'),
+      category: t('blog.posts.insurance.category'),
       image: blogCarInsurance,
       slug: "automobiliu-nuomos-draudimas-kas-reikia-zinoti",
-      content: `
-        <p>Nuomojant automobilį, vienas svarbiausių klausimų – draudimas. Dažnai jis sudaro nemažą dalį bendros nuomos kainos, todėl svarbu žinoti, kokios draudimo rūšys egzistuoja, kas jau įskaičiuota į kainą ir kada verta rinktis papildomas paslaugas.</p>
-
-        <br>
-
-        <h2><strong>Pagrindinės automobilių nuomos draudimo rūšys</strong></h2>
-
-        <br>
-
-        <h3><strong>1.</strong> Civilinės atsakomybės draudimas (TPL, Third Party Liability)</h3>
-        <p>Tai privalomas draudimas, kuris apmoka žalą kitiems asmenims ar jų turtui, jei sukelsite avariją. Lietuvoje šis draudimas įskaičiuotas pagal įstatymą.</p>
-
-        <br>
-
-        <h3><strong>2.</strong> Kasko arba žalos atlyginimo draudimas (CDW, Collision Damage Waiver)</h3>
-        <p>Padengia žalą jūsų nuomojamam automobiliui avarijos atveju. Dažnai turi frančizę (savąją riziką), kurią teks sumokėti patiems.</p>
-
-        <br>
-
-        <h3><strong>3.</strong> Vagystės draudimas (TP, Theft Protection)</h3>
-        <p>Apsaugo nuo finansinės atsakomybės, jei automobilis bus pavogtas. Taip pat paprastai taikoma frančizė.</p>
-
-        <br>
-
-        <h2><strong>Papildomi draudimai, kuriuos siūlo nuomos įmonės</strong></h2>
-
-        <br>
-
-        <h3><strong>Super CDW arba „Zero Excess"</strong></h3>
-        <p>Sumažina arba visai panaikina jūsų atsakomybę už žalą (be frančizės).</p>
-
-        <h3><strong>Asmeninis nelaimingų atsitikimų draudimas (PAI)</strong></h3>
-        <p>Apima keleivių ir vairuotojo sveikatos išlaidas.</p>
-
-        <h3><strong>Padangų, stiklų ir veidrodėlių draudimas</strong></h3>
-        <p>Nes šios dalys dažnai neįtrauktos į standartinį CDW.</p>
-
-        <br>
-
-        <h2><strong>Į ką atkreipti dėmesį renkantis draudimą?</strong></h2>
-
-        <br>
-
-        <h3><strong>Frančizė (sava rizika)</strong></h3>
-        <p>Pasitikrinkite, kokia suma teks padengti iš savo kišenės. Ji gali siekti nuo kelių šimtų iki kelių tūkstančių eurų.</p>
-
-        <h3><strong>Kas jau įskaičiuota į nuomos kainą</strong></h3>
-        <p>Dažnai bazinis draudimas yra įtrauktas, bet tik su didele frančize.</p>
-
-        <h3><strong>Kreditinės kortelės draudimas</strong></h3>
-        <p>Kai kurios banko kortelės jau apima nuomos automobilio draudimą. Tai gali padėti sutaupyti.</p>
-
-        <h3><strong>Smulkių raidžių skaitymas</strong></h3>
-        <p>Patikrinkite, ar draudimas apima stiklų, padangų, dugno ir stogo žalą.</p>
-
-        <h3><strong>Nuomos vieta</strong></h3>
-        <p>Oro uostuose draudimai gali kainuoti brangiau.</p>
-
-        <br>
-
-        <h2><strong>Patarimai, kaip sutaupyti</strong></h2>
-
-        <br>
-
-        <p>Palyginkite draudimo kainas iš anksto, ne tik atvykę į nuomos punktą.</p>
-        <p>Įvertinkite riziką – jei keliaujate tik mieste, gal pakaks bazinio draudimo, bet kalnuose ar ilguose maršrutuose verta rinktis pilnesnę apsaugą.</p>
-        <p>Fotografuokite automobilį prieš ir po nuomos – taip išvengsite ginčų dėl žalos.</p>
-
-        <br>
-
-        <h3><strong>Išvada</strong></h3>
-        <p>Automobilių nuomos draudimas gali atrodyti painus, tačiau žinant pagrindinius terminus ir sąlygas, galima išvengti permokų ir keliauti ramiai. Visada pasidomėkite, kas įskaičiuota į kainą, kokia frančizė taikoma ir ar verta rinktis papildomą apsaugą.</p>
-        
-        <p>Carbonus siūlo skaidrias draudimo sąlygas be paslėptų mokesčių. Mūsų komanda visada paaiškina visas draudimo galimybes ir padės pasirinkti tinkamą apsaugą jūsų kelionei. Su mumis galite keliauti ramiai, žinodami, kad esate tinkamai apsaugoti.</p>
-      `
+      content: t('blogPost.content.insurance')
     },
     "verslo-keliones-kaip-issirinkti-tinkama-automobili": {
       id: "4",
-      title: "Verslo kelionės: kaip išsirinkti tinkamą automobilį?",
-      excerpt: "Sužinokite, į ką atkreipti dėmesį renkantis automobilį verslo kelionėms Lietuvoje ar užsienyje. Komfortas, patikimumas ir reprezentatyvumas – svarbiausi kriterijai.",
-      author: "Carbonus komanda",
+      title: t('blog.posts.business.title'),
+      excerpt: t('blog.posts.business.excerpt'),
+      author: t('blog.posts.business.author'),
       publishDate: "2024-11-30",
-      readTime: "4 min",
-      category: "Verslas",
+      readTime: t('blog.posts.business.readTime'),
+      category: t('blog.posts.business.category'),
       image: blogBusinessTravel,
       slug: "verslo-keliones-kaip-issirinkti-tinkama-automobili",
-      content: `
-        <p>Verslo kelionės reikalauja ne tik tikslaus planavimo, bet ir tinkamo transporto pasirinkimo. Automobilis tokiose kelionėse tampa ne tik susisiekimo priemone, bet ir įvaizdžio dalimi. Tinkamai pasirinktas automobilis padės sutaupyti laiko, keliauti patogiai ir sudaryti gerą įspūdį partneriams.</p>
-
-        <br>
-
-        <h2><strong>1.</strong> Patogumas ir komfortas</h2>
-        <p>Ilgos kelionės, susitikimai keliuose miestuose ar net šalyse reiškia daug valandų už vairo. Patogios sėdynės, erdvus salonas ir tylus variklis užtikrins produktyvesnę kelionę ir mažiau nuovargio.</p>
-
-        <br>
-
-        <h2><strong>2.</strong> Automobilio klasė ir įvaizdis</h2>
-        <p>Verslo aplinkoje svarbus ne tik funkcionalumas, bet ir reprezentatyvumas.</p>
-        <p><strong>Ekonominė klasė</strong> – tinkama trumpoms kelionėms mieste.</p>
-        <p><strong>Vidutinė klasė</strong> – patogesnė ilgesniems maršrutams.</p>
-        <p><strong>Premium klasė</strong> – idealiai tinka susitikimams su klientais ar partneriais, kai svarbus pirmas įspūdis.</p>
-
-        <br>
-
-        <h2><strong>3.</strong> Degalų sąnaudos ir ekologija</h2>
-        <p>Šiuolaikiniai verslo keliautojai vis dažniau atsižvelgia į išlaidas ir tvarumą. Rinkitės ekonomiškus hibridinius ar dyzelinius automobilius, o miestuose – net ir elektromobilius, jei nuomos punktas siūlo tokią galimybę.</p>
-
-        <br>
-
-        <h2><strong>4.</strong> Technologijos ir įranga</h2>
-        <p>Verslo kelionėse itin praverčia:</p>
-        <p>GPS navigacija arba integruota multimedijos sistema.</p>
-        <p>Bluetooth ryšys laisvoms rankoms.</p>
-        <p>USB ar bevieliai įkrovikliai įrenginiams.</p>
-        <p>Kruizo kontrolė ilgiems atstumams.</p>
-
-        <br>
-
-        <h2><strong>5.</strong> Draudimas ir pagalba kelyje</h2>
-        <p>Net ir atsakingai vairuojant, nenumatytų situacijų išvengti nepavyksta. Verslo kelionėse verta rinktis pilnesnį draudimą ir paslaugas, kurios užtikrina pagalbą kelyje visą parą. Taip būsite tikri, kad susitikimų grafikas nesugrius dėl techninių problemų.</p>
-
-        <br>
-
-        <h2><strong>6.</strong> Automobilio dydis ir lagaminų vieta</h2>
-        <p>Jeigu keliaujate vienas, pakaks kompaktiško automobilio. Tačiau komandinei kelionei verta rinktis erdvesnį modelį arba net miniveną, kad visiems būtų patogu, o bagažui užtektų vietos.</p>
-
-        <br>
-
-        <h3><strong>Išvada</strong></h3>
-        <p>Renkantis automobilį verslo kelionėms, svarbiausia suderinti komfortą, įvaizdį ir ekonomiškumą. Įvertinkite kelionės tikslą, dalyvių skaičių ir maršrutą – tuomet nuomojamas automobilis taps patikimu pagalbininku, o ne papildomu rūpesčiu.</p>
-        
-        <p>Carbonus siūlo platų verslo automobilių parką – nuo ekonomiškų sedanų iki premium klasės modelių. Mūsų komanda padės išsirinkti idealų automobilį jūsų verslo poreikiams ir užtikrins sklandžią kelionę be rūpesčių.</p>
-      `
+      content: t('blogPost.content.business')
     },
     "ziemos-vairavimas-saugumas-kelyje": {
       id: "5",
-      title: "Žiemos vairavimas: saugumas kelyje su nuomotu automobiliu",
-      excerpt: "Sužinokite, kaip saugiai vairuoti nuomotą automobilį žiemą Lietuvoje. Padangų pasirinkimas, draudimas ir vairavimo įpročiai, kurie padės išvengti nelaimių kelyje.",
-      author: "Carbonus komanda",
+      title: t('blog.posts.winter.title'),
+      excerpt: t('blog.posts.winter.excerpt'),
+      author: t('blog.posts.winter.author'),
       publishDate: "2024-11-25",
-      readTime: "7 min",
-      category: "Saugumas",
+      readTime: t('blog.posts.winter.readTime'),
+      category: t('blog.posts.winter.category'),
       image: blogWinterDriving,
       slug: "ziemos-vairavimas-saugumas-kelyje",
-      content: `
-        <p>Žiema Lietuvoje gali būti itin permaininga – nuo šlapdribos iki apledėjusių kelių. Nuomojantis automobilį šaltuoju sezonu, svarbu ne tik pasirūpinti tinkama transporto priemone, bet ir laikytis saugaus vairavimo taisyklių. Štai keli patarimai, kurie padės keliauti žiemą be streso.</p>
-
-        <br>
-
-        <h2><strong>1.</strong> Pasirūpinkite tinkamomis padangomis</h2>
-        <p>Įsitikinkite, kad nuomojamas automobilis turi žiemines padangas, atitinkančias Lietuvos kelių eismo taisykles. Geriausia rinktis padangas su giliu protektoriumi arba dygliuotas, jei planuojate keliones į mažiau valomus regionus.</p>
-
-        <br>
-
-        <h2><strong>2.</strong> Patikrinkite draudimo sąlygas</h2>
-        <p>Žiemą eismo įvykių rizika didesnė, todėl verta pasidomėti, ar nuomos įmonės siūlomas draudimas apima žalą nuo slydimo ar susidūrimų. Kartais pravartu rinktis papildomą CDW ar „Zero Excess" draudimą.</p>
-
-        <br>
-
-        <h2><strong>3.</strong> Vairuokite atsargiau nei įprastai</h2>
-        <p>Laikykitės didesnio atstumo iki priekyje važiuojančios transporto priemonės.</p>
-        <p>Staigiai nestabdykite – vietoje to lėtinkite greitį palaipsniui.</p>
-        <p>Sukite vairą švelniai, kad išvengtumėte slydimo.</p>
-
-        <br>
-
-        <h2><strong>4.</strong> Turėkite būtinus žiemos aksesuarus</h2>
-        <p>Nuomojant automobilį, paklauskite, ar yra:</p>
-        <p>Ledo grandiklis ir sniego šepetys.</p>
-        <p>Langų plovimo skystis atsparus šalčiui.</p>
-        <p>Atsarginis ratas ir įrankiai jo pakeitimui.</p>
-
-        <br>
-
-        <h2><strong>5.</strong> Rinkitės tinkamą automobilį pagal kelionės maršrutą</h2>
-        <p>Miestui tiks kompaktiškas automobilis su geromis žieminėmis padangomis.</p>
-        <p>Ilgesniems maršrutams ar kaimo keliams pravartu rinktis visureigį (SUV) arba automobilį su keturių varančiųjų ratų sistema (4x4).</p>
-
-        <br>
-
-        <h2><strong>6.</strong> Planuokite keliones iš anksto</h2>
-        <p>Žiemos metu kelionės gali užtrukti ilgiau dėl oro sąlygų ar valomų kelių. Planuokite laiko rezervą ir sekite kelių priežiūros tarnybų informaciją.</p>
-
-        <br>
-
-        <h3><strong>Išvada</strong></h3>
-        <p>Nuomotas automobilis žiemą gali būti puikus pasirinkimas, jei pasirūpinsite tinkamomis padangomis, draudimu ir laikysitės saugaus vairavimo taisyklių. Atsakingas pasiruošimas leis mėgautis kelionėmis net ir pačiomis sudėtingiausiomis oro sąlygomis.</p>
-        
-        <p>Carbonus automobiliai visada aprūpinti žieminėmis padangomis ir būtinais žiemos aksesuariais. Mūsų komanda pasirūpins, kad jūsų automobilys būtų paruoštas žiemos kelionėms, o 24/7 pagalba kelyje užtikrins ramybę net ir sudėtingiausiose situacijose.</p>
-      `
+      content: t('blogPost.content.winter')
     },
     "seimos-kelione-kaip-pasirinkti-idealu-automobili": {
       id: "6",
-      title: "Šeimos kelionė: kaip pasirinkti idealų automobilį vaikams",
-      excerpt: "Sužinokite, kokį automobilį geriausia rinktis šeimos kelionei su vaikais. Patogumas, saugumas, vieta bagažui ir papildomi priedai – viskas, kas svarbiausia.",
-      author: "Carbonus komanda",
+      title: t('blog.posts.family.title'),
+      excerpt: t('blog.posts.family.excerpt'),
+      author: t('blog.posts.family.author'),
       publishDate: "2024-11-20",
-      readTime: "5 min",
-      category: "Šeima",
+      readTime: t('blog.posts.family.readTime'),
+      category: t('blog.posts.family.category'),
       image: blogFamilyTravel,
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili",
-      content: `
-        <p>Kelionės su šeima – tai nuotykiai, atradimai ir kartu praleistas laikas. Tačiau norint, kad kelionė būtų patogi ir saugi, svarbu išsirinkti tinkamą automobilį. Netinkamai pasirinkta transporto priemonė gali greitai sugadinti nuotaiką tiek vaikams, tiek tėvams.</p>
-
-        <br>
-
-        <h2><strong>1.</strong> Automobilio dydis ir erdvė</h2>
-        <p>Vaikams reikia vietos – tiek sėdint patogiai, tiek laikyti žaislus, užkandžius ar kelionės daiktus.</p>
-        <p><strong>Sedanas</strong> tiks trumpoms kelionėms mieste.</p>
-        <p><strong>Universalas arba SUV</strong> suteiks daugiau erdvės ilgesnėms išvykoms.</p>
-        <p><strong>Minivenas</strong> – geriausias pasirinkimas, jei keliauja didesnė šeima ar vežatės daug bagažo.</p>
-
-        <br>
-
-        <h2><strong>2.</strong> Saugumas – svarbiausias kriterijus</h2>
-        <p>Patikrinkite, ar automobilis turi ISOFIX vaikiškų kėdučių tvirtinimo sistemas.</p>
-        <p>Rinkitės modelius su šoninėmis oro pagalvėmis ir stabdžių pagalbos sistemomis (ABS, ESP).</p>
-        <p>Įsitikinkite, kad visi keleiviai turi saugos diržus.</p>
-
-        <br>
-
-        <h2><strong>3.</strong> Patogumas vaikams kelionės metu</h2>
-        <p>Ilgose kelionėse smulkios detalės daro didelę įtaką:</p>
-        <p>Klimato kontrolė galinėje sėdynių eilėje.</p>
-        <p>Langų užuolaidėlės nuo saulės.</p>
-        <p>USB jungtys ar įkrovikliai įrenginiams.</p>
-        <p>Erdvesnės durys, kad vaikai lengviau įliptų ir išliptų.</p>
-
-        <br>
-
-        <h2><strong>4.</strong> Bagažo vieta ir papildomi daiktai</h2>
-        <p>Šeimos kelionė reiškia daug lagaminų, vežimėlių, sporto ar laisvalaikio įrangos. Todėl rinkitės automobilį su:</p>
-        <p>Dideliu bagažo skyriumi.</p>
-        <p>Galimybe nulenkti galines sėdynes.</p>
-        <p>Stogo bagažinės opcija, jei kelionė ilgesnė.</p>
-
-        <br>
-
-        <h2><strong>5.</strong> Ekonomiškumas ir praktiškumas</h2>
-        <p>Kelionė su šeima dažnai reiškia nemažus atstumus, todėl svarbu atsižvelgti į:</p>
-        <p><strong>Degalų sąnaudas</strong> – ekonomiškas dyzelinis ar hibridinis automobilis padės sutaupyti.</p>
-        <p><strong>Papildomas draudimas</strong> – verta pagalvoti apie „Zero Excess" apsaugą, kad išvengtumėte streso netikėtose situacijose.</p>
-
-        <br>
-
-        <h3><strong>Išvada</strong></h3>
-        <p>Renkantis automobilį šeimos kelionei, pirmiausia pagalvokite apie saugumą, erdvę ir patogumą vaikams. Idealiausias pasirinkimas – erdvus ir patikimas modelis, kuris leis mėgautis kelione, o ne rūpesčiais. Su tinkamu automobiliu šeimos išvyka taps maloniu nuotykiu visiems!</p>
-        
-        <p>Carbonus siūlo platų šeimoms skirtų automobilių pasirinkimą – nuo erdvių universalų iki minivenų su visomis reikiamomis saugos sistemomis. Mūsų komanda padės pasirinkti idealų automobilį jūsų šeimos poreikiams ir užtikrins saugią kelionę su mažiaisiais.</p>
-      `
+      content: t('blogPost.content.family')
     }
   };
 
   const post = blogPosts[slug || ""];
 
-  useEffect(() => {
-    if (post) {
-      // Set page title and meta tags dynamically
-      document.title = `${post.title} - Carbonus blogas`;
-      
-      // Update meta description
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute('content', post.excerpt);
-      }
-      
-      // Update canonical URL
-      const canonical = document.querySelector('link[rel="canonical"]');
-      if (canonical) {
-        canonical.setAttribute('href', `https://carbonus.lt/naujienos/${post.slug}`);
-      }
-      
-      // Update Open Graph tags
-      const ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) {
-        ogTitle.setAttribute('content', post.title);
-      }
-      
-      const ogUrl = document.querySelector('meta[property="og:url"]');
-      if (ogUrl) {
-        ogUrl.setAttribute('content', `https://carbonus.lt/naujienos/${post.slug}`);
-      }
-    }
-  }, [post]);
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Straipsnis nerastas</h2>
-          <Button onClick={() => navigate("/naujienos")}>
-            Grįžti į naujienas
-          </Button>
+      <>
+        <Helmet>
+          <title>{t('blogPost.notFound')} - Carbonus</title>
+        </Helmet>
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-foreground mb-4">{t('blogPost.notFound')}</h2>
+            <Button onClick={() => navigate("/naujienos")}>
+              {t('blogPost.backToNews')}
+            </Button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{post.title} - Carbonus</title>
+        <meta name="description" content={post.excerpt} />
+        <link rel="canonical" href={`https://carbonus.lt/naujienos/${post.slug}`} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:url" content={`https://carbonus.lt/naujienos/${post.slug}`} />
+        <meta property="og:image" content={post.image} />
+      </Helmet>
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Breadcrumb */}
@@ -492,7 +153,7 @@ const BlogPost = () => {
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="w-4 h-4" />
-              Grįžti į naujienas
+              {t('blogPost.backToNews')}
             </Button>
           </div>
         </div>
@@ -557,19 +218,19 @@ const BlogPost = () => {
                 <CardContent className="p-6">
                   <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
                     <BookOpen className="w-5 h-5" />
-                    Straipsnio info
+                    {t('blogPost.articleInfo')}
                   </h3>
                   <div className="space-y-3 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Kategorija:</span>
+                      <span className="text-muted-foreground">{t('blogPost.category')}</span>
                       <div className="font-semibold text-foreground">{post.category}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Skaitymo laikas:</span>
+                      <span className="text-muted-foreground">{t('blogPost.readTime')}</span>
                       <div className="font-semibold text-foreground">{post.readTime}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Publikuota:</span>
+                      <span className="text-muted-foreground">{t('blogPost.published')}</span>
                       <div className="font-semibold text-foreground">
                         {new Date(post.publishDate).toLocaleDateString('lt-LT')}
                       </div>
