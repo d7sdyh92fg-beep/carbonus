@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/hooks/use-translations";
+import { translations } from "@/i18n/translations";
 import { 
   HelpCircle, 
   Car, 
@@ -62,36 +63,39 @@ const FAQ = () => {
     );
   };
 
+  // Access translations directly for complex data structures
+  const currentTranslations = translations[language];
+  
   const faqCategories = [
     {
       title: t('faq.categories.booking'),
       icon: Calendar,
-      questions: (t('faq.questions.booking') as any) || []
+      questions: currentTranslations.faq.questions.booking
     },
     {
       title: t('faq.categories.documents'),
       icon: FileText,
-      questions: (t('faq.questions.documents') as any) || []
+      questions: currentTranslations.faq.questions.documents
     },
     {
       title: t('faq.categories.payment'),
       icon: CreditCard,
-      questions: (t('faq.questions.payment') as any) || []
+      questions: currentTranslations.faq.questions.payment
     },
     {
       title: t('faq.categories.insurance'),
       icon: Shield,
-      questions: (t('faq.questions.insurance') as any) || []
+      questions: currentTranslations.faq.questions.insurance
     },
     {
       title: t('faq.categories.usage'),
       icon: Car,
-      questions: (t('faq.questions.usage') as any) || []
+      questions: currentTranslations.faq.questions.usage
     },
     {
       title: t('faq.categories.return'),
       icon: Clock,
-      questions: (t('faq.questions.return') as any) || []
+      questions: currentTranslations.faq.questions.return
     }
   ];
 
