@@ -275,38 +275,142 @@ export const translations = {
       },
     },
 
-    // FAQ Page
-    faq: {
-      badge: "PAGALBA",
-      title: "Dažnai užduodami klausimai",
-      subtitle: "Čia rasite atsakymus į dažniausius klausimus apie automobilių nuomą. Nerandate atsakymo? Susisiekite su mumis tiesiogiai.",
-      contactButton: "Susisiekti su mumis",
-      categories: {
-        booking: "Rezervacija ir užsakymas",
-        documents: "Dokumentai ir reikalavimai",
-        payment: "Apmokėjimas ir kainos",
-        insurance: "Draudimas ir saugumas",
-        usage: "Automobilio naudojimas",
-        return: "Automobilio grąžinimas",
-      },
-      notFound: {
-        title: "Neradote atsakymo?",
-        subtitle: "Mūsų komanda visada pasiruošusi padėti. Susisiekite su mumis bet kuriuo jums patogiu būdu.",
-        phone: {
-          title: "Telefonu",
-          description: "8:00-17:00 klientų aptarnavimas",
-        },
-        email: {
-          title: "El. paštu",
-          description: "24/7 atsakysime per 2 val.",
-        },
-        emergency: {
-          title: "Skubūs atvejai",
-          description: "Avarijų linija 24/7",
-        },
-        button: "Eiti į kontaktų puslapį",
-      },
+  faq: {
+    badge: 'PAGALBA',
+    title: 'Dažnai užduodami klausimai',
+    subtitle: 'Čia rasite atsakymus į dažniausius klausimus apie automobilių nuomą. Nerandate atsakymo? Susisiekite su mumis tiesiogiai.',
+    contactButton: 'Susisiekti su mumis',
+    categories: {
+      booking: 'Rezervacija ir užsakymas',
+      documents: 'Dokumentai ir reikalavimai',
+      payment: 'Apmokėjimas ir kainos',
+      insurance: 'Draudimas ir saugumas',
+      usage: 'Automobilio naudojimas',
+      return: 'Automobilio grąžinimas'
     },
+    questions: {
+      booking: [
+        {
+          question: 'Kaip rezervuoti automobilį?',
+          answer: 'Automobilį galite rezervuoti trimis būdais: mūsų internetinėje svetainėje www.carbonus.lt (rezervacija veikia 24/7), paskambinę telefonu +370 698 18 781, el. paštu info@carbonus.lt, arba atvykę į automobilio atsiėmimo vietą.'
+        },
+        {
+          question: 'Ar galiu atšaukti rezervaciją?',
+          answer: 'Taip, rezervaciją galite atšaukti nemokamai, jei liko daugiau nei 24 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau, taikomas 20% mokestis nuo bendros užsakymo sumos. Jei neatvykstate neatšaukę rezervacijos ("no-show"), imamas mokestis už pirmąją nuomos dieną.'
+        },
+        {
+          question: 'Ar galiu pakeisti rezervacijos detales?',
+          answer: 'Taip, rezervacijos detales galite keisti iki 24 val. prieš automobilio atsiėmimą. Susisiekite telefonu arba el. paštu.'
+        }
+      ],
+      documents: [
+        {
+          question: 'Kokius dokumentus reikia automobilio nuomai?',
+          answer: 'Reikalinga: ES šalyje išduotas ir galiojantis vairuotojo pažymėjimas (ne mažiau kaip 2 metų vairavimo stažas), asmens dokumentas (pasas arba ID kortelė), kreditinė kortelė užstato rezervavimui (jei užstatas nėra sumokėtas iš anksto kartu su nuomos mokesčiu).'
+        },
+        {
+          question: 'Koks minimalus amžius automobilio nuomai?',
+          answer: 'Ekonominės ir kompaktinės klasės automobiliams – nuo 21 m. Premium ir Luxury klasės automobiliams – nuo 25 m.'
+        },
+        {
+          question: 'Ar priimami užsienio vairuotojo pažymėjimai?',
+          answer: 'Taip, priimami ES šalių ir tarptautiniai vairuotojo pažymėjimai. Pažymėjimas turi būti galiojantis ir išduotas ne mažiau kaip prieš 2 metus.'
+        },
+        {
+          question: 'Ar galiu nuomotis automobilį be kreditinės kortelės?',
+          answer: 'Deja, kreditinė kortelė būtina užstato rezervavimui. Debetinės kortelės nepriimamos, išskyrus atvejus, kai rezervacijos mokestis ir nuomos mokestis sumokami iš anksto arba atsiimant automobilį.'
+        }
+      ],
+      payment: [
+        {
+          question: 'Kokie apmokėjimo būdai priimami?',
+          answer: 'Priimame: grynuosius, banko korteles (vietoje), el. bankininkystės pervedimus, internetinius mokėjimus kortele.'
+        },
+        {
+          question: 'Ar kainos apima visus mokesčius?',
+          answer: 'Taip, visos nurodytos kainos apima pagrindinius mokesčius. Papildomi mokesčiai taikomi už: vėlavimą grąžinti automobilį, kuro papildymą (jei grąžinama ne pilnu baku), automobilio plovimą ar salono valymą, rūkymą automobilyje (50 € bauda), kelių rinkliavas, KET pažeidimus, kitas eksploatacines išlaidas (pvz., langų skystis, siurbimas).'
+        },
+        {
+          question: 'Koks užstato dydis?',
+          answer: 'Užstato dydis – 200 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais.'
+        },
+        {
+          question: 'Ar yra paslėptų mokesčių?',
+          answer: 'Ne, mes netaikome jokių paslėptų mokesčių. Visi papildomi mokesčiai aiškiai nurodyti sąlygose ir sutartyje.'
+        }
+      ],
+      insurance: [
+        {
+          question: 'Ar automobiliai apdrausti?',
+          answer: 'Taip, visi automobiliai apdrausti KASKO ir OCTA draudimu. Nuomininko atsakomybės riba priklauso nuo automobilio klasės ir gali būti sumažinta įsigijus papildomą draudimą.'
+        },
+        {
+          question: 'Ką daryti avarijos atveju?',
+          answer: 'Nedelsiant skambinkite: mums – +370 698 18 781 (24/7), policijai – 112. Neatidėkite įvykio vietos, kol neatvyks policija.'
+        },
+        {
+          question: 'Ką apima automobilio draudimas?',
+          answer: 'Draudimas dengia avarijas, vagystes, gaisrus, gamtos stichijų padarinius. Nedengiama: tyčiniai pažeidimai, vairavimas apsvaigus, dalyvavimas lenktynėse.'
+        },
+        {
+          question: 'Ar galiu sumažinti atsakomybės ribą?',
+          answer: 'Taip, galite įsigyti papildomą draudimą, kuris sumažina atsakomybę iki 0 €. Kaina priklauso nuo automobilio klasės ir nuomos trukmės.'
+        }
+      ],
+      usage: [
+        {
+          question: 'Ar galiu išvykti už Lietuvos ribų?',
+          answer: 'Taip, bet reikalingas išankstinis sutikimas. ES šalims – 25 €/diena, kitoms šalims – individualus susitarimas.'
+        },
+        {
+          question: 'Kiek kilometrų galiu nuvažiuoti?',
+          answer: 'Kilometražas neribojamas visoms automobilių klasėms.'
+        },
+        {
+          question: 'Ar galiu rūkyti automobilyje?',
+          answer: 'Ne, rūkymas draudžiamas. Pažeidimo atveju taikoma 50 € bauda.'
+        },
+        {
+          question: 'Ar galiu vežti gyvūnus?',
+          answer: 'Taip, bet reikia pranešti iš anksto. Gyvūnas turi būti vežamas specialioje pernešimo priemonėje.'
+        }
+      ],
+      return: [
+        {
+          question: 'Kada reikia grąžinti automobilį?',
+          answer: 'Automobilį reikia grąžinti sutartyje nurodytu laiku. Už grąžinimą po darbo valandų ar savaitgalį – papildomas 20 € mokestis. Jei vėluojama ilgiau nei 3 val., skaičiuojama papildoma nuomos diena.'
+        },
+        {
+          question: 'Su kiek kuro reikia grąžinti automobilį?',
+          answer: 'Su tokiu pačiu kiekiu, koks buvo atsiėmimo metu (dažniausiai – pilnu baku). Už trūkstamą kurą mokama 1,50 €/l.'
+        },
+        {
+          question: 'Ar reikia valyti automobilį prieš grąžinant?',
+          answer: 'Automobilis turi būti švarus. Jei stipriai užterštas – taikomas 20 € valymo ir 20 € plovimo mokestis.'
+        }
+      ]
+    },
+    notFound: {
+      title: 'Neradote atsakymo?',
+      subtitle: 'Mūsų komanda visada pasiruošusi padėti. Susisiekite su mumis bet kuriuo jums patogiu būdu.',
+      phone: {
+        title: 'Telefonu',
+        number: '+370 698 18 781',
+        hours: '8:00-17:00 klientų aptarnavimas'
+      },
+      email: {
+        title: 'El. paštu',
+        address: 'info@carbonus.lt',
+        response: '24/7 atsakysime per 2 val.'
+      },
+      emergency: {
+        title: 'Skubūs atvejai',
+        number: '+370 698 18 781',
+        availability: 'Avarijų linija 24/7'
+      },
+      contactPageButton: 'Eiti į kontaktų puslapį'
+    }
+  },
 
     // Footer
     footer: {
@@ -1597,7 +1701,66 @@ export const translations = {
       copyright: "© 2025 Carbonus. All rights reserved.",
     },
 
-    // Blog Page
+    // FAQ Page
+    faq: {
+      badge: 'HELP',
+      title: 'Frequently Asked Questions',
+      subtitle: 'Here you will find answers to the most frequently asked questions about car rental. Can\'t find an answer? Contact us directly.',
+      contactButton: 'Contact us',
+      categories: {
+        booking: 'Booking and Ordering',
+        documents: 'Documents and Requirements',
+        payment: 'Payment and Prices',
+        insurance: 'Insurance and Safety',
+        usage: 'Car Usage',
+        return: 'Car Return'
+      },
+      questions: {
+        booking: [
+          { question: 'How to book a car?', answer: 'You can book a car in three ways: on our website www.carbonus.lt (booking works 24/7), by calling +370 698 18 781, by email info@carbonus.lt, or by visiting the car pick-up location.' },
+          { question: 'Can I cancel my reservation?', answer: 'Yes, you can cancel your reservation free of charge if there are more than 24 hours left until car pick-up. If you cancel later, a 20% fee of the total order amount applies. If you do not show up without canceling the reservation ("no-show"), a fee for the first rental day is charged.' },
+          { question: 'Can I change reservation details?', answer: 'Yes, you can change reservation details up to 24 hours before car pick-up. Contact us by phone or email.' }
+        ],
+        documents: [
+          { question: 'What documents are needed for car rental?', answer: 'Required: A valid driver\'s license issued in an EU country (at least 2 years of driving experience), identity document (passport or ID card), credit card for deposit reservation (if deposit is not paid in advance with rental fee).' },
+          { question: 'What is the minimum age for car rental?', answer: 'For economy and compact class cars – from 21 years. For Premium and Luxury class cars – from 25 years.' },
+          { question: 'Are foreign driver\'s licenses accepted?', answer: 'Yes, EU country and international driver\'s licenses are accepted. The license must be valid and issued at least 2 years ago.' },
+          { question: 'Can I rent a car without a credit card?', answer: 'Unfortunately, a credit card is required for deposit reservation. Debit cards are not accepted, except when the reservation fee and rental fee are paid in advance or when picking up the car.' }
+        ],
+        payment: [
+          { question: 'What payment methods are accepted?', answer: 'We accept: cash, bank cards (on-site), online banking transfers, online card payments.' },
+          { question: 'Do prices include all fees?', answer: 'Yes, all listed prices include basic fees. Additional fees apply for: late car return, fuel refill (if returned not with full tank), car washing or interior cleaning, smoking in the car (€50 fine), road tolls, traffic violations, other operating expenses (e.g., windshield fluid, vacuuming).' },
+          { question: 'What is the deposit amount?', answer: 'The deposit amount is €200. The deposit is refunded within 7 business days after car return, or on the same day if paid in cash.' },
+          { question: 'Are there hidden fees?', answer: 'No, we do not charge any hidden fees. All additional fees are clearly stated in the terms and contract.' }
+        ],
+        insurance: [
+          { question: 'Are cars insured?', answer: 'Yes, all cars are insured with CASCO and MTPL insurance. The renter\'s liability limit depends on the car class and can be reduced by purchasing additional insurance.' },
+          { question: 'What to do in case of an accident?', answer: 'Call immediately: us – +370 698 18 781 (24/7), police – 112. Do not leave the scene until the police arrive.' },
+          { question: 'What does car insurance cover?', answer: 'Insurance covers accidents, theft, fires, natural disasters. Not covered: intentional damage, driving under the influence, participating in races.' },
+          { question: 'Can I reduce the liability limit?', answer: 'Yes, you can purchase additional insurance that reduces liability to €0. The price depends on the car class and rental duration.' }
+        ],
+        usage: [
+          { question: 'Can I travel outside Lithuania?', answer: 'Yes, but prior approval is required. For EU countries – €25/day, for other countries – individual agreement.' },
+          { question: 'How many kilometers can I drive?', answer: 'Mileage is unlimited for all car classes.' },
+          { question: 'Can I smoke in the car?', answer: 'No, smoking is prohibited. In case of violation, a €50 fine applies.' },
+          { question: 'Can I transport pets?', answer: 'Yes, but you must notify in advance. The animal must be transported in a special carrier.' }
+        ],
+        return: [
+          { question: 'When should I return the car?', answer: 'The car must be returned at the time specified in the contract. For return after business hours or on weekends – an additional €20 fee. If delayed more than 3 hours, an additional rental day is charged.' },
+          { question: 'How much fuel should the car have when returned?', answer: 'The same amount as at pick-up (usually – full tank). For missing fuel, €1.50/l is charged.' },
+          { question: 'Do I need to clean the car before returning?', answer: 'The car must be clean. If heavily soiled – a €20 cleaning and €20 washing fee applies.' }
+        ]
+      },
+      notFound: {
+        title: 'Didn\'t find an answer?',
+        subtitle: 'Our team is always ready to help. Contact us in any way that is convenient for you.',
+        phone: { title: 'By Phone', number: '+370 698 18 781', hours: '8:00-17:00 customer service' },
+        email: { title: 'By Email', address: 'info@carbonus.lt', response: '24/7 we will respond within 2 hours' },
+        emergency: { title: 'Emergencies', number: '+370 698 18 781', availability: 'Emergency line 24/7' },
+        contactPageButton: 'Go to contact page'
+      }
+    },
+
     blog: {
       badge: "CARBONUS GUIDE",
       title: "Tips & Guide",
