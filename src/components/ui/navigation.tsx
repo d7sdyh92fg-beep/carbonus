@@ -34,13 +34,19 @@ export function Navigation({ logo }: NavigationProps) {
   };
 
   const navItems = [
-    { name: t('nav.home'), href: getRoute('home', language) },
-    { name: t('nav.cars'), href: getRoute('cars', language) },
-    { name: t('nav.about'), href: getRoute('about', language) },
-    { name: t('nav.contact'), href: getRoute('contact', language) },
-    { name: t('nav.faq'), href: getRoute('faq', language) },
-    { name: t('nav.blog'), href: getRoute('blog', language) },
+    { name: t('nav.home'), href: getRoute('home', language), key: 'home' as const },
+    { name: t('nav.cars'), href: getRoute('cars', language), key: 'cars' as const },
+    { name: t('nav.about'), href: getRoute('about', language), key: 'about' as const },
+    { name: t('nav.contact'), href: getRoute('contact', language), key: 'contact' as const },
+    { name: t('nav.faq'), href: getRoute('faq', language), key: 'faq' as const },
+    { name: t('nav.blog'), href: getRoute('blog', language), key: 'blog' as const },
   ];
+
+  const isActiveRoute = (key: string) => {
+    const ltPath = getRoute(key as any, 'lt');
+    const enPath = getRoute(key as any, 'en');
+    return location.pathname === ltPath || location.pathname === enPath;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent lg:bg-background/80 backdrop-blur-md border-b-0 lg:border-b">
@@ -66,7 +72,7 @@ export function Navigation({ logo }: NavigationProps) {
                   to={item.href}
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
-                    location.pathname === item.href
+                    isActiveRoute(item.key)
                       ? "text-primary border-b-2 border-primary pb-1"
                       : "text-foreground"
                   }`}
@@ -127,7 +133,7 @@ export function Navigation({ logo }: NavigationProps) {
                   key={item.name}
                   to={item.href}
                   className={`text-sm font-medium transition-colors hover:text-primary block px-3 py-2 ${
-                    location.pathname === item.href ? "text-primary" : "text-foreground"
+                    isActiveRoute(item.key) ? "text-primary" : "text-foreground"
                   }`}
                   onClick={() => {
                     setIsOpen(false);
@@ -152,7 +158,7 @@ export function Navigation({ logo }: NavigationProps) {
                       }}
                     >
                       <Shield className="h-4 w-4 inline mr-2" />
-                      Admin Skydelis
+                      {t('nav.adminDashboard')}
                     </Link>
                     <Button
                       variant="ghost"
@@ -164,7 +170,7 @@ export function Navigation({ logo }: NavigationProps) {
                       className="w-full"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
-                      Atsijungti
+                      {t('nav.logout')}
                     </Button>
                   </div>
                 )}
