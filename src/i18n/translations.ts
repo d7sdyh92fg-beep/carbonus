@@ -467,7 +467,7 @@ export const translations = {
         contact: "Kontaktai",
       },
       support: {
-        title: "Palaikymas",
+        title: "Pagalba",
         faq: "DUK",
         privacy: "Privatumo politika",
         terms: "Nuomos sutartis",
