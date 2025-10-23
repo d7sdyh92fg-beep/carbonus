@@ -240,10 +240,10 @@ const LeaseAgreement = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.payment.prices.title')}</h3>
-                    <p>{t('leaseAgreement.sections.payment.prices.text')}</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.payment.structure.title')}</h3>
+                    <p>{t('leaseAgreement.sections.payment.structure.text')}</p>
                     <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-                      {(t('leaseAgreement.sections.payment.prices.items') as unknown as string[]).map((item, i) => (
+                      {(t('leaseAgreement.sections.payment.structure.items') as unknown as string[]).map((item, i) => (
                         <li key={i}>{item}</li>
                       ))}
                     </ul>
@@ -283,6 +283,12 @@ const LeaseAgreement = () => {
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.insurance.accident.title')}</h3>
                     <p>{t('leaseAgreement.sections.insurance.accident.text')}</p>
+                    <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
+                      {(t('leaseAgreement.sections.insurance.accident.items') as unknown as string[]).map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                    <p className="mt-2 italic">{t('leaseAgreement.sections.insurance.accident.note')}</p>
                   </div>
                   
                   <div>
@@ -322,8 +328,8 @@ const LeaseAgreement = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.km.title')}</h3>
-                    <p>{t('leaseAgreement.sections.usage.km.text')}</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.mileage.title')}</h3>
+                    <p>{t('leaseAgreement.sections.usage.mileage.text')}</p>
                   </div>
                   
                   <div>
@@ -332,8 +338,8 @@ const LeaseAgreement = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.animals.title')}</h3>
-                    <p>{t('leaseAgreement.sections.usage.animals.text')}</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.pets.title')}</h3>
+                    <p>{t('leaseAgreement.sections.usage.pets.text')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -363,8 +369,8 @@ const LeaseAgreement = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.return.clean.title')}</h3>
-                    <p>{t('leaseAgreement.sections.return.clean.text')}</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.return.cleanliness.title')}</h3>
+                    <p>{t('leaseAgreement.sections.return.cleanliness.text')}</p>
                   </div>
                 </div>
               </CardContent>
