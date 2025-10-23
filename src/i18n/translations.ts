@@ -910,54 +910,60 @@ export const translations = {
     },
 
     privacyPolicy: {
+      badge: "DUOMENŲ APSAUGA",
       title: "Privatumo politika",
-      metaDescription: "Carbonus privatumo politika - kaip tvarkome ir saugome jūsų asmens duomenis",
-      lastUpdated: "Paskutinį kartą atnaujinta:",
-      intro: "MB Carbonus gerbia jūsų privatumą ir įsipareigoja saugoti jūsų asmens duomenis. Ši privatumo politika aprašo, kaip renkame, naudojame ir saugome jūsų informaciją.",
+      subtitle: "Carbonus gerbia jūsų privatumą ir saugo asmens duomenis pagal galiojančius teisės aktus",
+      metaTitle: "Privatumo politika - Carbonus | Asmens duomenų apsauga",
+      metaDescription: "Carbonus privatumo politika - kaip renkame, tvarkome ir saugome jūsų asmens duomenis pagal BDAR reikalavimus. Skaidrumas ir duomenų apsauga.",
+      intro: "Mes, Carbonus, gerbdami jūsų privatumą, įsipareigojame saugoti jį vadovaudamiesi šia privatumo politika. Šiame dokumente rasite išsamią informaciją apie jūsų asmens duomenų tvarkymą mūsų paslaugų teikimo procese. Svarbu, kad atidžiai susipažintumėte su šiais principais, nes naudodamiesi mūsų automobilių nuomos paslaugomis, jūs sutinkate su šioje politikoje aprašytomis sąlygomis.",
       sections: {
         dataProcessed: {
-          title: "Kokie duomenys tvarkomi",
-          content: "Tvarkome šiuos asmens duomenis: vardas, pavardė, el. pašto adresas, telefono numeris, vairuotojo pažymėjimo duomenys, apmokėjimo informacija.",
+          title: "Kokie asmens duomenys tvarkomi?",
+          paragraph1: "Rezervuodami automobilį mūsų platformoje, jūs pateikiate asmens duomenis: vardą, pavardę, telefono numerį, elektroninio pašto adresą, dokumentų duomenis, adreso informaciją ir kitus nuomos paslaugai teikti būtinus duomenis.",
+          paragraph2: "Šie duomenys tvarkomi teisėtai ir naudojami jūsų automobilio nuomos užsakymo vykdymui, rezervacijos patvirtinimams siųsti, nuomos sutarčiai sudaryti bei saugiam paslaugų teikimui užtikrinti. Pateikdami duomenis, patvirtinate jų tikslumą ir teisingumą."
         },
         collection: {
           title: "Duomenų rinkimo būdai",
-          content: "Duomenys renkami tiesiogiai iš jūsų užsakymo formoje, telefonu arba el. paštu bendraujant.",
-        },
-        purpose: {
-          title: "Duomenų tvarkymo tikslai",
-          content: "Jūsų duomenys tvarkomi automobilių nuomos paslaugų teikimui, sutarčių sudarymui ir vykdymui.",
+          paragraph1: "Jūsų asmens duomenis renkame tiesiogiai iš jūsų: užpildant rezervacijos formas, susisiekiant su klientų aptarnavimo komanda, registruojantis mūsų platformoje arba naudojantis kitomis mūsų teikiamomis paslaugomis."
         },
         disclosure: {
           title: "Duomenų atskleidimas tretiesiems asmenims",
-          content: "Jūsų asmens duomenys nėra perduodami tretiesiems asmenims, išskyrus atvejus, kai to reikalauja įstatymai.",
+          paragraph1: "Carbonus neteikia jūsų asmens duomenų tretiesiems asmenims komerciniams tikslams. Duomenys gali būti perduoti tik įstatymų numatytais atvejais valstybės institucijoms, teismams, teisėsaugos organams arba kitiems teisėtą interesą turintiems subjektams, taip pat paslaugų teikėjams, reikalingiems užsakymo vykdymui."
         },
         security: {
           title: "Duomenų saugumas",
-          content: "Taikome tinkamas technines ir organizacines priemones siekdami apsaugoti jūsų duomenis nuo neteisėtos prieigos.",
+          paragraph1: "Mes rimtai žiūrime į jūsų duomenų saugumą. Visa informacija saugoma naudojant šiuolaikinius saugumo sprendimus ir prieinami tik įgaliotiems darbuotojams. Taikome technines ir organizacines priemones duomenų apsaugai nuo praradimo, neteisėto naudojimo ir pakeitimų.",
+          paragraph2: "Visi mūsų darbuotojai yra pasirašę konfidencialumo sutartis ir įsipareigoja nesklaidyti kliento informacijos tretiesiems asmenims."
         },
         retention: {
-          title: "Duomenų saugojimo laikotarpis",
-          content: "Asmens duomenys saugomi tiek, kiek būtina nuomos paslaugų teikimui ir teisės aktų reikalavimams vykdyti.",
+          title: "Duomenų saugojimo trukmė",
+          paragraph1: "Jūsų asmens duomenis saugome tiek, kiek reikalinga sutarties vykdymui ir teisės aktų numatytoms prievolėms įvykdyti, bet ne ilgiau nei 7 metus po paskutinio paslaugos naudojimo, išskyrus atvejus, kai ilgesnis saugojimas reikalingas dėl teisinių prievolių."
         },
         rights: {
           title: "Jūsų teisės",
-          content: "Turite teisę susipažinti su savo duomenimis, juos ištaisyti, ištrinti, apriboti tvarkymą ar atšaukti sutikimą.",
+          paragraph1: "Turite teisę prašyti prieigos prie savo duomenų, jų ištaisymo, ištrynimo, apriboti duomenų tvarkymą ar nesutikti su jų tvarkymu. Taip pat turite teisę į duomenų perkeliamumą ir pateikti skundą duomenų apsaugos institucijai."
         },
         cookies: {
-          title: "Slapukai (cookies)",
-          content: "Naudojame slapukus tinklapio funkcionalumui užtikrinti ir paslaugoms gerinti.",
+          title: "Slapukai ir analizės įrankiai",
+          paragraph1: "Mūsų svetainėje naudojami slapukai (cookies) svetainės veikimo gerinimui, statistikos rinkimui ir jūsų patirties personalizavimui. Galite bet kada pakeisti slapukų nustatymus savo naršyklėje."
+        },
+        newsletter: {
+          title: "Naujienlaiškai",
+          paragraph1: "Jei sutikote gauti mūsų naujienlaiškį, naudosime jūsų elektroninio pašto adresą informacijai apie pasiūlymus, nuolaidas, naujienas ir kitus mums svarbius pranešimus siųsti. Galite bet kada atsisakyti prenumeratos paspausdami nuorodą laiške arba susisiekę su mumis."
         },
         changes: {
-          title: "Privatumo politikos keitimas",
-          content: "Pasiliekame teisę keisti šią privatumo politiką. Apie pakeitimus informuosime šiame puslapyje.",
+          title: "Politikos pakeitimai",
+          paragraph1: "Pasiliekame teisę atnaujinti šią privatumo politiką. Apie svarbius pakeitimus informuosime el. paštu arba paskelbdami pranešimą mūsų svetainėje. Pakeitimai įsigalioja nuo jų paskelbimo dienos."
         },
         contact: {
           title: "Kontaktai",
-          content: "Klausimais dėl asmens duomenų tvarkymo kreipkitės:",
+          paragraph1: "Jei turite klausimų dėl šios privatumo politikos ar duomenų tvarkymo, susisiekite su mumis:",
           email: "El. paštas: info@carbonus.lt",
           phone: "Telefonas: +370 698 18 781",
-        },
+          address: "Adresas: Druskininkai, Lietuva"
+        }
       },
+      lastUpdated: "Paskutinį kartą atnaujinta: 2024 m. sausio 15 d."
     },
 
     leaseAgreement: {
@@ -2345,54 +2351,61 @@ export const translations = {
 
     // Privacy Policy
     privacyPolicy: {
+      badge: "DATA PROTECTION",
       title: "Privacy Policy",
-      metaDescription: "Carbonus privacy policy - how we manage and protect your personal data",
-      lastUpdated: "Last updated:",
-      intro: "MB Carbonus respects your privacy and is committed to protecting your personal data. This privacy policy describes how we collect, use and protect your information.",
+      subtitle: "Carbonus respects your privacy and protects personal data in accordance with applicable laws",
+      metaTitle: "Privacy Policy - Carbonus | Personal Data Protection",
+      metaDescription: "Carbonus privacy policy - how we collect, process and protect your personal data in accordance with GDPR requirements. Transparency and data protection.",
+      intro: "We, Carbonus, respecting your privacy, are committed to protecting it in accordance with this privacy policy. This document provides detailed information about the processing of your personal data in the process of providing our services. It is important that you carefully familiarize yourself with these principles, as by using our car rental services, you agree to the terms described in this policy.",
       sections: {
         dataProcessed: {
-          title: "What data is processed",
-          content: "We process the following personal data: name, surname, email address, phone number, driver's license details, payment information.",
+          title: "What personal data is processed?",
+          paragraph1: "When booking a car on our platform, you provide personal data: name, surname, phone number, email address, document data, address information and other data necessary for providing the rental service.",
+          paragraph2: "This data is processed legally and used to fulfill your car rental order, send booking confirmations, enter into a rental agreement and ensure safe service delivery. By providing data, you confirm its accuracy and correctness."
         },
         collection: {
           title: "Data collection methods",
-          content: "Data is collected directly from you through the order form, by phone or email communication.",
-        },
-        purpose: {
-          title: "Data processing purposes",
-          content: "Your data is processed to provide car rental services, conclude and execute contracts.",
+          paragraph1: "We collect your personal data directly from you: by filling out booking forms, contacting our customer service team, registering on our platform or using other services we provide."
         },
         disclosure: {
-          title: "Disclosure to third parties",
-          content: "Your personal data is not transferred to third parties, except when required by law.",
+          title: "Disclosure of data to third parties",
+          paragraph1: "Carbonus does not provide your personal data to third parties for commercial purposes. Data may only be transferred in cases provided by law to state institutions, courts, law enforcement agencies or other entities with a legitimate interest, as well as to service providers necessary for order fulfillment."
         },
         security: {
           title: "Data security",
-          content: "We apply appropriate technical and organizational measures to protect your data from unauthorized access.",
+          paragraph1: "We take your data security seriously. All information is stored using modern security solutions and is accessible only to authorized employees. We apply technical and organizational measures to protect data from loss, unauthorized use and alteration.",
+          paragraph2: "All our employees have signed confidentiality agreements and undertake not to disclose customer information to third parties."
         },
         retention: {
           title: "Data retention period",
-          content: "Personal data is stored as long as necessary to provide rental services and comply with legal requirements.",
+          paragraph1: "We store your personal data for as long as necessary to fulfill the contract and meet legal obligations, but not longer than 7 years after the last use of the service, except in cases where longer retention is required due to legal obligations."
         },
         rights: {
           title: "Your rights",
-          content: "You have the right to access your data, correct it, delete it, restrict processing or withdraw consent.",
+          paragraph1: "You have the right to request access to your data, its correction, deletion, restriction of data processing or object to its processing. You also have the right to data portability and to file a complaint with the data protection authority."
         },
         cookies: {
-          title: "Cookies",
-          content: "We use cookies to ensure website functionality and improve services.",
+          title: "Cookies and analytics tools",
+          paragraph1: "Our website uses cookies to improve the website's operation, collect statistics and personalize your experience. You can change cookie settings in your browser at any time."
+        },
+        newsletter: {
+          title: "Newsletters",
+          paragraph1: "If you have agreed to receive our newsletter, we will use your email address to send information about offers, discounts, news and other important messages. You can unsubscribe at any time by clicking the link in the email or by contacting us."
         },
         changes: {
-          title: "Privacy policy changes",
-          content: "We reserve the right to change this privacy policy. We will inform about changes on this page.",
+          title: "Policy changes",
+          paragraph1: "We reserve the right to update this privacy policy. We will inform you about significant changes by email or by posting a notice on our website. Changes take effect from the date of their publication."
         },
         contact: {
           title: "Contact",
-          content: "For questions about personal data processing, contact:",
+          paragraph1: "If you have any questions about this privacy policy or data processing, contact us:",
           email: "Email: info@carbonus.lt",
           phone: "Phone: +370 698 18 781",
-        },
+          address: "Address: Druskininkai, Lithuania"
+        }
       },
+      lastUpdated: "Last updated: January 15, 2024"
+    },
     },
 
     // Lease Agreement
