@@ -115,13 +115,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     const days = getDaysCount();
     if (days === 0) return 0;
     
-    const dailyRate = PRICING.getDailyRate(days);
+    const dailyRate = PRICING.getDailyRate(days, carId);
     return dailyRate * days;
   };
 
   const getPriceCategory = (): string => {
     const days = getDaysCount();
-    return t(PRICING.getPricingTier(days).labelKey);
+    return t(PRICING.getPricingTier(days, carId).labelKey);
   };
 
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
@@ -325,7 +325,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{t('booking.dailyRate')}</span>
-                    <span className="font-semibold">€{PRICING.getDailyRate(getDaysCount())}</span>
+                    <span className="font-semibold">€{PRICING.getDailyRate(getDaysCount(), carId)}</span>
                   </div>
                 </div>
               </div>

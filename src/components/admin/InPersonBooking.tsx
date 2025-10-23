@@ -252,7 +252,7 @@ export function InPersonBooking() {
       total = parseFloat(customRentalPrice) || 0;
     } else {
       const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
-      const dailyRate = PRICING.getDailyRate(days);
+      const dailyRate = PRICING.getDailyRate(days, booking.carId);
       total = days * dailyRate;
     }
     
@@ -277,7 +277,7 @@ export function InPersonBooking() {
     }
     
     const days = getRentalDays();
-    return days * PRICING.getDailyRate(days);
+    return days * PRICING.getDailyRate(days, booking.carId);
   };
   
   const getDepositAmount = () => {
@@ -396,7 +396,7 @@ export function InPersonBooking() {
           return_date: format(booking.endDate!, 'yyyy-MM-dd'),
           return_time: booking.returnTime,
           rental_days: rentalDays,
-          daily_rate: useCustomPricing ? 0 : PRICING.getDailyRate(rentalDays),
+          daily_rate: useCustomPricing ? 0 : PRICING.getDailyRate(rentalDays, booking.carId),
           total_rental_cost: rentalCost,
           deposit_amount: depositAmount,
           total_amount: totalAmount,
@@ -874,11 +874,11 @@ export function InPersonBooking() {
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Kainų kategorija:</span>
-                          <span className="font-medium text-primary">{PRICING.getPricingTier(getRentalDays()).labelKey}</span>
+                          <span className="font-medium text-primary">{PRICING.getPricingTier(getRentalDays(), booking.carId).labelKey}</span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Dienos kaina:</span>
-                          <span className="font-medium">€{PRICING.getDailyRate(getRentalDays())}</span>
+                          <span className="font-medium">€{PRICING.getDailyRate(getRentalDays(), booking.carId)}</span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Nuomos kaina:</span>
@@ -1122,7 +1122,7 @@ export function InPersonBooking() {
                 {!useCustomPricing && (
                   <div className="flex justify-between text-base">
                     <span>Dienos kaina:</span>
-                    <span className="font-medium">€{PRICING.getDailyRate(getRentalDays())}</span>
+                    <span className="font-medium">€{PRICING.getDailyRate(getRentalDays(), booking.carId)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-base">

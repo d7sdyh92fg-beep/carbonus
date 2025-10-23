@@ -24,6 +24,7 @@ export const translations = {
       tier1: "1-3 dienų: €50/dieną",
       tier2: "3-7 dienos: €40/dieną",
       tier3: "7+ dienų: €30/dieną",
+      fixedRate: "Fiksuota kaina",
     },
 
     // Common part continues
@@ -1863,6 +1864,14 @@ export const translations = {
         newsletterSuccess: "Successfully subscribed!",
         newsletterCheck: "Please check your email for confirmation.",
       },
+    },
+
+    // Pricing
+    pricing: {
+      tier1: "1-3 days: €50/day",
+      tier2: "3-7 days: €40/day",
+      tier3: "7+ days: €30/day",
+      fixedRate: "Fixed rate",
     },
 
     // Navigation
