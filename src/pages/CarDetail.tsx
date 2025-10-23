@@ -23,6 +23,8 @@ import chryslerEnhanced2WithPlate from "@/assets/chrysler-enhanced-2-no-plate.pn
 import vwPassatEnhanced1 from "@/assets/vw-passat-enhanced-1-no-plate.png";
 import vwPassatEnhanced2 from "@/assets/vw-passat-enhanced-2-no-plate.png";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { PRICING } from "@/config/pricing";
 
 interface CarDetail {
   id: string;
@@ -250,13 +252,19 @@ const CarDetail = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm">
-            <a href="/" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase">
+            <Link 
+              to="/" 
+              className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase"
+            >
               {t('carDetail.breadcrumbHome')}
-            </a>
+            </Link>
             <span className="text-muted-foreground">/</span>
-            <a href="/automobiliai" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase">
+            <Link 
+              to="/automobiliai" 
+              className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase"
+            >
               {t('carDetail.breadcrumbCars')}
-            </a>
+            </Link>
             <span className="text-muted-foreground">/</span>
             <span className="text-primary font-medium uppercase">{car.name}</span>
           </div>
@@ -332,7 +340,7 @@ const CarDetail = () => {
                 
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-sm text-muted-foreground">{t('carDetail.startingFrom')}</span>
-                  <span className="text-4xl font-bold text-primary">30-50€</span>
+                  <span className="text-4xl font-bold text-primary">{PRICING.priceRange}</span>
                   <span className="text-lg text-muted-foreground">{t('carDetail.perDay')}</span>
                 </div>
 

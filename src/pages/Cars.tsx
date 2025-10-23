@@ -20,6 +20,7 @@ import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
+import { PRICING } from "@/config/pricing";
 
 interface Car {
   id: string;
@@ -121,7 +122,7 @@ const Cars = () => {
     {
       id: "1",
       name: "BMW 3 series",
-      price: "nuo 30 EUR",
+      price: PRICING.priceFrom,
       image: bmw3Clean,
       category: "Sedanas",
       passengers: 5,
@@ -134,7 +135,7 @@ const Cars = () => {
     {
       id: "2",
       name: "Chrysler Town & Country",
-      price: "nuo 30 EUR",
+      price: PRICING.priceFrom,
       image: chryslerTownCountrySide,
       category: "Miniautobusas",
       passengers: 7,
@@ -147,7 +148,7 @@ const Cars = () => {
     {
       id: "3",
       name: "Volkswagen Passat",
-      price: "nuo 30 EUR",
+      price: PRICING.priceFrom,
       image: vwPassatSideClean,
       category: "Sedanas",
       passengers: 5,
@@ -160,7 +161,7 @@ const Cars = () => {
     {
       id: "4",
       name: "KIA CEED",
-      price: "nuo 30 EUR",
+      price: PRICING.priceFrom,
       image: kiaCeedSideDarkGray,
       category: "Universalas",
       passengers: 5,
@@ -177,7 +178,7 @@ const Cars = () => {
     {
       id: "5",
       name: "KIA CEED",
-      price: "nuo 30 EUR",
+      price: PRICING.priceFrom,
       image: kiaCeedHatchbackSideGrayBrown,
       category: "Hecbekas",
       passengers: 5,

@@ -17,7 +17,18 @@ export const translations = {
         sendMessage: "Siųsti žinutę",
         sending: "Siunčiama...",
       },
-      labels: {
+    },
+
+    // Pricing
+    pricing: {
+      tier1: "1-3 dienų: €50/dieną",
+      tier2: "3-7 dienos: €40/dieną",
+      tier3: "7+ dienų: €30/dieną",
+    },
+
+    // Common part continues
+    commonLabels: {
+    commonLabels: {
         name: "Vardas",
         lastName: "Pavardė",
         email: "El. paštas",
@@ -27,7 +38,7 @@ export const translations = {
         required: "*",
         optional: "(neprivaloma)",
       },
-      messages: {
+    commonMessages: {
         success: "Sėkmingai!",
         error: "Klaida",
         loading: "Kraunama...",
@@ -35,6 +46,14 @@ export const translations = {
         contactSuccess: "Ačiū už jūsų žinutę. Susisieksime su jumis kuo greičiau.",
         newsletterSuccess: "Sėkmingai užsiprenumeravote!",
         newsletterCheck: "Patikrinkite savo el. paštą dėl patvirtinimo.",
+        emailWarningTitle: "El. pašto įspėjimas",
+        emailWarningDescription: "Užsakymas sukurtas sėkmingai, bet patvirtinimo laiškas nebuvo išsiųstas. Susisieksime su jumis kitu būdu.",
+        loadingDates: "Kraunami užimti datos...",
+        errorLoadingDates: "Nepavyko užkrauti užimtų datų. Bandykite dar kartą.",
+        corporateFieldsRequired: "Prašome užpildyti privalomus įmonės laukus",
+        invalidCompanyCode: "Neteisingas įmonės kodo formatas (turi būti 9 skaitmenys)",
+        invalidPhoneFormat: "Neteisingas telefono numerio formatas",
+        phoneFormatHelper: "Formatas: +370 XXX XXXXX arba 8 XXX XXXXX",
       },
     },
 

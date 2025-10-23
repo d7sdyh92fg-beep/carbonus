@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useBooking } from "@/contexts/BookingContext";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/hooks/use-translations";
+import { PRICING } from "@/config/pricing";
 
 interface BookingCalendarProps {
   carId: string;
@@ -30,6 +31,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     to: Date | undefined;
   }>({ from: undefined, to: undefined });
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [isLoadingDates, setIsLoadingDates] = useState(true);
   const [pickupTime, setPickupTime] = useState('10:00');
   const [returnTime, setReturnTime] = useState('10:00');
 
@@ -61,6 +63,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   }, [carId]);
 
   const fetchBookedDates = async () => {
+    setIsLoadingDates(true);
     try {
       const { data: reservations, error } = await supabase
         .from("reservations")
@@ -71,6 +74,11 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
       if (error) {
         console.error("Error fetching booked dates:", error);
+        toast({
+          title: t('booking.errorTitle'),
+          description: t('commonMessages.errorLoadingDates'),
+          variant: "destructive",
+        });
         return;
       }
 
@@ -87,18 +95,16 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       setBookedDates(dates);
     } catch (error) {
       console.error("Error fetching booked dates:", error);
+      toast({
+        title: t('booking.errorTitle'),
+        description: t('commonMessages.errorLoadingDates'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoadingDates(false);
     }
   };
 
-  const calculatePrice = (days: number, isSecondVehicle: boolean): number => {
-    if (days <= 3) {
-      return 50;
-    } else if (days <= 7) {
-      return 40;
-    } else {
-      return 30;
-    }
-  };
 
   const getDaysCount = (): number => {
     if (!selectedRange.from || !selectedRange.to) return 0;
@@ -109,15 +115,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     const days = getDaysCount();
     if (days === 0) return 0;
     
-    const dailyRate = calculatePrice(days, false);
+    const dailyRate = PRICING.getDailyRate(days);
     return dailyRate * days;
   };
 
   const getPriceCategory = (): string => {
     const days = getDaysCount();
-    if (days <= 3) return t('booking.category1to3');
-    if (days <= 7) return t('booking.category3to7');
-    return t('booking.category7plus');
+    return t(PRICING.getPricingTier(days).labelKey);
   };
 
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
@@ -169,7 +173,15 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
             {t('booking.selectDates')}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="relative">
+          {isLoadingDates && (
+            <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-10 rounded-lg">
+              <div className="flex flex-col items-center gap-2">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <p className="text-sm text-muted-foreground">{t('commonMessages.loadingDates')}</p>
+              </div>
+            </div>
+          )}
           <Calendar
             mode="range"
             selected={selectedRange}
@@ -313,7 +325,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{t('booking.dailyRate')}</span>
-                    <span className="font-semibold">€{calculatePrice(getDaysCount(), false)}</span>
+                    <span className="font-semibold">€{PRICING.getDailyRate(getDaysCount())}</span>
                   </div>
                 </div>
               </div>
@@ -323,10 +335,6 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{t('booking.rentalPrice')}</span>
                     <span className="font-semibold">€{getTotalPrice()}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{t('booking.deposit')}</span>
-                    <span className="font-semibold">€200</span>
                   </div>
                 </div>
                 <div className="border-t pt-2">
@@ -344,11 +352,6 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
               >
                 {t('booking.bookFor')} €{getTotalPrice()}
               </Button>
-              
-              <div className="text-xs text-muted-foreground text-center space-y-1">
-                <p>{t('booking.depositInfo1')}</p>
-                <p>{t('booking.depositInfo2')}</p>
-              </div>
             </>
           )}
 

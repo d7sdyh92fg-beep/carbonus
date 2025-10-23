@@ -19,6 +19,7 @@ import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, B
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { DigitalSignature } from './DigitalSignature';
 import { AdditionalService } from '@/contexts/BookingContext';
+import { PRICING } from '@/config/pricing';
 
 interface Customer {
   firstName: string;
@@ -79,18 +80,6 @@ const cars = [
   },
 ];
 
-// Tiered pricing function
-const getDailyRate = (days: number): number => {
-  if (days >= 7) return 30;
-  if (days >= 3) return 40;
-  return 50; // 1-3 days
-};
-
-const getPricingTier = (days: number): string => {
-  if (days >= 7) return '7+ dienų: €30/dieną';
-  if (days >= 3) return '3-7 dienos: €40/dieną';
-  return '1-3 dienos: €50/dieną';
-};
 
 const availableServices: AdditionalService[] = [
   {
@@ -263,7 +252,7 @@ export function InPersonBooking() {
       total = parseFloat(customRentalPrice) || 0;
     } else {
       const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
-      const dailyRate = getDailyRate(days);
+      const dailyRate = PRICING.getDailyRate(days);
       total = days * dailyRate;
     }
     
@@ -288,7 +277,7 @@ export function InPersonBooking() {
     }
     
     const days = getRentalDays();
-    return days * getDailyRate(days);
+    return days * PRICING.getDailyRate(days);
   };
   
   const getDepositAmount = () => {
@@ -407,7 +396,7 @@ export function InPersonBooking() {
           return_date: format(booking.endDate!, 'yyyy-MM-dd'),
           return_time: booking.returnTime,
           rental_days: rentalDays,
-          daily_rate: useCustomPricing ? 0 : getDailyRate(rentalDays),
+          daily_rate: useCustomPricing ? 0 : PRICING.getDailyRate(rentalDays),
           total_rental_cost: rentalCost,
           deposit_amount: depositAmount,
           total_amount: totalAmount,
@@ -885,11 +874,11 @@ export function InPersonBooking() {
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Kainų kategorija:</span>
-                          <span className="font-medium text-primary">{getPricingTier(getRentalDays())}</span>
+                          <span className="font-medium text-primary">{PRICING.getPricingTier(getRentalDays()).labelKey}</span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Dienos kaina:</span>
-                          <span className="font-medium">€{getDailyRate(getRentalDays())}</span>
+                          <span className="font-medium">€{PRICING.getDailyRate(getRentalDays())}</span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Nuomos kaina:</span>
@@ -1133,7 +1122,7 @@ export function InPersonBooking() {
                 {!useCustomPricing && (
                   <div className="flex justify-between text-base">
                     <span>Dienos kaina:</span>
-                    <span className="font-medium">€{getDailyRate(getRentalDays())}</span>
+                    <span className="font-medium">€{PRICING.getDailyRate(getRentalDays())}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-base">

@@ -23,7 +23,6 @@ export default function ReservationReview() {
   const { t, language } = useTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
-  const [paymentProvider, setPaymentProvider] = useState<'stripe'>('stripe');
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -94,6 +93,39 @@ export default function ReservationReview() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate phone format
+    const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{3,9}$/;
+    if (!phoneRegex.test(formData.phone)) {
+      toast({
+        title: t('review.errorTitle'),
+        description: t('commonMessages.invalidPhoneFormat'),
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Validate corporate fields if corporate booking
+    if (isCorporate) {
+      if (!corporateData.companyName || !corporateData.companyCode) {
+        toast({
+          title: t('review.errorTitle'),
+          description: t('commonMessages.corporateFieldsRequired'),
+          variant: 'destructive',
+        });
+        return;
+      }
+      
+      // Validate company code format (Lithuanian format: 9 digits)
+      if (!/^\d{9}$/.test(corporateData.companyCode)) {
+        toast({
+          title: t('review.errorTitle'),
+          description: t('commonMessages.invalidCompanyCode'),
+          variant: 'destructive',
+        });
+        return;
+      }
+    }
     
     setIsSubmitting(true);
 
@@ -155,7 +187,6 @@ export default function ReservationReview() {
         return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
       }, 0);
       const totalAmount = bookingData.basePrice + insuranceTotal + servicesTotal;
-      const depositAmount = 200;
       const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalAmount;
 
       // Create reservation
@@ -172,11 +203,11 @@ export default function ReservationReview() {
         rental_days: bookingData.rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
-        deposit_amount: depositAmount,
+        deposit_amount: 0,
         total_amount: totalAmount,
         status: 'awaiting_payment',
         payment_method: paymentMethod,
-        payment_provider: paymentProvider,
+        payment_provider: 'stripe',
         pricing_notes: (() => {
           const notes: string[] = [];
           
@@ -207,9 +238,9 @@ export default function ReservationReview() {
 
       if (reservationError) throw reservationError;
 
-      // Process Stripe payment - for pay_at_counter, only charge 1 day rate (no deposit)
+      // Process Stripe payment - for pay_at_counter, only charge 1 day rate
       const stripeRentalAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
-      const stripeDepositAmount = paymentMethod === 'pay_at_counter' ? 0 : depositAmount;
+      const stripeDepositAmount = 0;
       await processStripePayment(reservation.id, stripeRentalAmount, stripeDepositAmount);
 
       // Send notification email
@@ -224,12 +255,19 @@ export default function ReservationReview() {
             endDate: format(new Date(bookingData.endDate), 'yyyy-MM-dd'),
             rentalDays: bookingData.rentalDays,
             totalAmount: totalAmount,
-            depositAmount: 200,
+            depositAmount: 0,
             advancePayment: totalAmount,
           }
         });
       } catch (emailError) {
-        console.warn('Email sending failed:', emailError);
+        console.error('Email sending failed:', emailError);
+        
+        // Show warning toast but don't block booking
+        toast({
+          title: t('commonMessages.emailWarningTitle'),
+          description: t('commonMessages.emailWarningDescription'),
+          variant: 'default',
+        });
       }
     } catch (error: any) {
       console.error('Booking error:', error);
@@ -248,7 +286,6 @@ export default function ReservationReview() {
     return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
   }, 0);
   const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
-  const depositAmount = 200;
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
   const displayAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
   const dateLocale = language === 'en' ? enUS : lt;
@@ -349,8 +386,13 @@ export default function ReservationReview() {
                       type="tel"
                       value={formData.phone}
                       onChange={handleInputChange}
+                      pattern="^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{3,9}$"
+                      placeholder="+370 XXX XXXXX"
                       required
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {t('commonMessages.phoneFormatHelper')}
+                    </p>
                   </div>
 
                   <div className="col-span-2">
@@ -377,23 +419,31 @@ export default function ReservationReview() {
                       </h4>
                       <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
-                      <Label htmlFor="companyName">{t('review.corporateInfo.name')}</Label>
+                      <Label htmlFor="companyName">
+                        {t('review.corporateInfo.name')} <span className="text-destructive">*</span>
+                      </Label>
                       <Input
                         id="companyName"
                         name="companyName"
                         value={corporateData.companyName}
                         onChange={handleCorporateChange}
                         required={isCorporate}
+                        className={isCorporate && !corporateData.companyName ? 'border-destructive' : ''}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="companyCode">{t('review.corporateInfo.code')}</Label>
+                      <Label htmlFor="companyCode">
+                        {t('review.corporateInfo.code')} <span className="text-destructive">*</span>
+                      </Label>
                       <Input
                         id="companyCode"
                         name="companyCode"
                         value={corporateData.companyCode}
                         onChange={handleCorporateChange}
                         required={isCorporate}
+                        pattern="\d{9}"
+                        placeholder="123456789"
+                        className={isCorporate && !corporateData.companyCode ? 'border-destructive' : ''}
                       />
                     </div>
                     <div>
