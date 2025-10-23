@@ -1544,7 +1544,7 @@ export const translations = {
       about: "About Us",
       contact: "Contact",
       faq: "FAQ",
-      blog: "Tips & Guide",
+      blog: "Tips & Guides",
       admin: "Admin",
       adminDashboard: "Dashboard",
       logout: "Logout",
@@ -1833,7 +1833,7 @@ export const translations = {
         faq: "FAQ",
         privacy: "Privacy Policy",
         terms: "Rental Agreement",
-        blog: "Tips & Guide",
+        blog: "Tips & Guides",
       },
       newsletter: {
         title: "Newsletter",
@@ -1913,7 +1913,7 @@ export const translations = {
 
     blog: {
       badge: "CARBONUS GUIDE",
-      title: "Tips & Guide",
+      title: "Tips & Guides",
       subtitle: "Useful tips, travel guides and practical knowledge. Everything you need to know about car rental and travel in Lithuania.",
       readButton: "Read",
       author: "Carbonus team",
