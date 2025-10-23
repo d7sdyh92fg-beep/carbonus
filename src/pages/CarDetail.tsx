@@ -35,11 +35,10 @@ interface CarDetail {
   fuel: string;
   transmission: string;
   rating: number;
-  description: string;
-  features: string[];
-  specifications: {
-    [key: string]: string;
-  };
+  year: string;
+  doors: string;
+  trunk: string;
+  engineType: string;
 }
 
 const CarDetail = () => {
@@ -110,26 +109,10 @@ const CarDetail = () => {
       fuel: "Benzinas",
       transmission: "Automatinė",
       rating: 4.8,
-      description: "Patirkite aukščiausią vairavimo malonumą su BMW 3 serijos sedanu. Šis automobilis sujungia sportinį charakterį su kasdienės praktikos patogumais, siūlydamas nepakartojamą vairavimo patirtį.",
-      features: [
-        "Kondicionierius",
-        "Bluetooth ryšys",
-        "GPS navigacija",
-        "Odos salonai",
-        "Elektrinis rankinio stabdžio valdymas",
-        "LED žibintai",
-        "Sportinio stiliaus sėdynės",
-        "Išplėstinis saugumas"
-      ],
-      specifications: {
-        "Metai": "2015",
-        "Kuras": "Benzinas",
-        "Pavarų dėžė": "Automatinė",
-        "Keleivių skaičius": "5",
-        "Durų skaičius": "4",
-        "Bagažinės talpa": "480 L",
-        "Variklio tipas": "2.0L Turbo"
-      }
+      year: "2015",
+      doors: "4",
+      trunk: "480 L",
+      engineType: "2.0L Turbo"
     },
     "2": {
       id: "2",
@@ -145,26 +128,10 @@ const CarDetail = () => {
       fuel: "Benzinas",
       transmission: "Automatinė",
       rating: 4.6,
-      description: "Idealus pasirinkimas šeimoms ir grupėms. Chrysler Town & Country siūlo erdvų saloną, patogias sėdynes ir visus reikalingus patogumą užtikrinančius sprendimus ilgoms kelionėms.",
-      features: [
-        "7 keleivių vietos",
-        "Erdus bagažinės skyrius",
-        "Šeimos automobilis",
-        "Kondicionierius visoms eilėms",
-        "DVD pramogų sistema",
-        "Elektriniai slankiojantys durys",
-        "Atverčiamos sėdynės",
-        "Saugos sistemos"
-      ],
-      specifications: {
-        "Metai": "2016",
-        "Kuras": "Benzinas",
-        "Pavarų dėžė": "Automatinė",
-        "Keleivių skaičius": "7",
-        "Durų skaičius": "5",
-        "Bagažinės talpa": "2000 L",
-        "Variklio tipas": "3.6L V6"
-      }
+      year: "2016",
+      doors: "5",
+      trunk: "2000 L",
+      engineType: "3.6L V6"
     },
     "3": {
       id: "3",
@@ -180,26 +147,10 @@ const CarDetail = () => {
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
       rating: 4.7,
-      description: "Volkswagen Passat 2012 - patikimas ir ekonomiškas sedanas, puikiai tinkantis verslo kelionėms ir kasdieniam naudojimui. Dyzelinis variklis užtikrina mažą kuro sąnaudą.",
-      features: [
-        "Ekonomiškas dyzelinis variklis",
-        "Mechaninė pavarų dėžė",
-        "Kondicionierius",
-        "Elektriniai langai",
-        "Centrinis užraktas",
-        "ABS stabdžių sistema",
-        "Patogios sėdynės",
-        "Didelis bagažas"
-      ],
-      specifications: {
-        "Metai": "2012",
-        "Kuras": "Dyzelinas",
-        "Pavarų dėžė": "Mechaninė",
-        "Keleivių skaičius": "5",
-        "Durų skaičius": "4",
-        "Bagažinės talpa": "565 L",
-        "Variklio tipas": "2.0L TDI"
-      }
+      year: "2012",
+      doors: "4",
+      trunk: "565 L",
+      engineType: "2.0L TDI"
     },
     "4": {
       id: "4",
@@ -215,26 +166,10 @@ const CarDetail = () => {
       fuel: "Benzinas",
       transmission: "Mechaninė",
       rating: 4.5,
-      description: "KIA CEED 2013 universalas - praktiškas ir erdvus automobilis, idealus kelionėms ir kasdieniam naudojimui. Tamsiai pilkos spalvos automobilis su 1.4 litro benzininiu varikliu. Puikiai tvarkytas automobilis su visais reikalingais patogumais.",
-      features: [
-        "Ekonomiškas benzininis variklis",
-        "Erdvus universalo bagažas", 
-        "Patikimas kasdieniam naudojimui",
-        "Mechaninė pavarų dėžė",
-        "Kondicionierius",
-        "Patogus 5 vietų salons",
-        "Didelis bagažinės skyrius",
-        "Praktiškas miesto automobilis"
-      ],
-      specifications: {
-        "Metai": "2013",
-        "Kuras": "Benzinas",
-        "Pavarų dėžė": "Mechaninė", 
-        "Keleivių skaičius": "5",
-        "Durų skaičius": "5",
-        "Bagažinės talpa": "528 L",
-        "Variklio tipas": "1.4L"
-      }
+      year: "2013",
+      doors: "5",
+      trunk: "528 L",
+      engineType: "1.4L"
     },
     "5": {
       id: "5",
@@ -250,27 +185,26 @@ const CarDetail = () => {
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
       rating: 4.6,
-      description: "KIA CEED 2020 hečbekas - modernaus dizaino automobilis su ekonomišku dyzeliniu varikliu. Ideali kombinacija sportiškumo ir praktišumo kasdieniam naudojimui. Patikimas ir stilingas automobilis miesto gatvėms.",
-      features: [
-        "Ekonomiškas dyzelinis variklis",
-        "Modernus LED apšvietimas",
-        "Patikimas mechaninis perdavimas",
-        "Kondicionierius",
-        "Elektrinis langų valdymas",
-        "Centrinis užraktas",
-        "Šiuolaikiškas salono dizainas",
-        "Saugos sistemos"
-      ],
-      specifications: {
-        "Metai": "2020",
-        "Kuras": "Dyzelinas",
-        "Pavarų dėžė": "Mechaninė",
-        "Keleivių skaičius": "5",
-        "Durų skaičius": "5",
-        "Bagažinės talpa": "395 L",
-        "Variklio tipas": "1.6L CRDi"
-      }
+      year: "2020",
+      doors: "5",
+      trunk: "395 L",
+      engineType: "1.6L CRDi"
     }
+  };
+
+  const getCarSpecifications = (carId: string) => {
+    const staticData = carDetails[carId];
+    if (!staticData) return [];
+    
+    return [
+      { key: t('carDetail.specs.year'), value: staticData.year },
+      { key: t('carDetail.specs.fuelType'), value: t('car.' + normalizeForTranslation(staticData.fuel)) },
+      { key: t('carDetail.specs.gearbox'), value: t('car.' + normalizeForTranslation(staticData.transmission)) },
+      { key: t('carDetail.specs.passengers'), value: staticData.passengers.toString() },
+      { key: t('carDetail.specs.doors'), value: staticData.doors },
+      { key: t('carDetail.specs.trunk'), value: staticData.trunk },
+      { key: t('carDetail.specs.engineType'), value: staticData.engineType }
+    ];
   };
 
   const car = carDetails[id || ""];
@@ -450,10 +384,10 @@ const CarDetail = () => {
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold text-foreground mb-6">{t('carDetail.featuresTitle')}</h3>
                 <div className="grid gap-3">
-                  {car.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3">
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map((featureNum) => (
+                    <div key={featureNum} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-muted-foreground">{t('carData.' + car.id + '.feature' + (index + 1))}</span>
+                      <span className="text-muted-foreground">{t('carData.' + car.id + '.feature' + featureNum)}</span>
                     </div>
                   ))}
                 </div>
@@ -465,24 +399,12 @@ const CarDetail = () => {
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold text-foreground mb-6">{t('carDetail.specsTitle')}</h3>
                 <div className="space-y-4">
-                  {Object.entries(car.specifications).map(([key, value], index) => {
-                    // Translate specification values for fuel and transmission
-                    let translatedValue = value;
-                    if (index === 1) { // Fuel
-                      translatedValue = t('car.' + normalizeForTranslation(value));
-                    } else if (index === 2) { // Transmission
-                      translatedValue = t('car.' + normalizeForTranslation(value));
-                    }
-                    
-                    return (
-                      <div key={key} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                        <span className="text-muted-foreground">{t('carDetail.specs.' + Object.keys({
-                          year: 0, fuelType: 1, gearbox: 2, passengers: 3, doors: 4, trunk: 5, engineType: 6
-                        })[index])}</span>
-                        <span className="font-semibold text-foreground">{translatedValue}</span>
-                      </div>
-                    );
-                  })}
+                  {getCarSpecifications(car.id).map((spec, index) => (
+                    <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                      <span className="text-muted-foreground">{spec.key}</span>
+                      <span className="font-semibold text-foreground">{spec.value}</span>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
