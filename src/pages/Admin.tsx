@@ -900,12 +900,26 @@ const Admin = () => {
                                </div>
                              </TableCell>
                              <TableCell className="font-medium">{reservation.car_name}</TableCell>
-                             <TableCell>
-                               <div className="text-sm">
-                                 <div>{reservation.start_date}</div>
-                                 <div>{reservation.end_date}</div>
-                               </div>
-                             </TableCell>
+                              <TableCell>
+                                <div className="text-sm space-y-1">
+                                  <div className="flex items-center gap-1">
+                                    <span>{reservation.start_date}</span>
+                                    {(reservation as any).pickup_time && (
+                                      <span className="text-xs text-muted-foreground">
+                                        {(reservation as any).pickup_time.substring(0, 5)}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <span>{reservation.end_date}</span>
+                                    {(reservation as any).return_time && (
+                                      <span className="text-xs text-muted-foreground">
+                                        {(reservation as any).return_time.substring(0, 5)}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </TableCell>
                               <TableCell>{reservation.rental_days}</TableCell>
                               <TableCell>
                                 <div className="space-y-1">
@@ -1027,12 +1041,13 @@ const Admin = () => {
                                   )}
                                 </div>
                               </div>
-                             <div>
-                               <div className="text-muted-foreground">Datos</div>
-                               <div className="font-medium">
-                                 {reservation.start_date} - {reservation.end_date}
-                               </div>
-                             </div>
+                              <div>
+                                <div className="text-muted-foreground">Datos</div>
+                                <div className="font-medium space-y-1">
+                                  <div>{reservation.start_date} {(reservation as any).pickup_time?.substring(0, 5)}</div>
+                                  <div>{reservation.end_date} {(reservation as any).return_time?.substring(0, 5)}</div>
+                                </div>
+                              </div>
                              <div>
                                <div className="text-muted-foreground">Dienų / Sukurta</div>
                                <div className="font-medium">{reservation.rental_days} d. / {format(new Date(reservation.created_at), 'MM-dd')}</div>
