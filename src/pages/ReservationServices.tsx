@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Plus, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
 import { useBooking, AdditionalService } from '@/contexts/BookingContext';
@@ -7,89 +7,93 @@ import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
-import { lt } from 'date-fns/locale';
-
-const availableServices: AdditionalService[] = [
-  {
-    id: 'additional-driver',
-    title: 'Papildomas vairuotojas',
-    description: 'Galimybė nuomoti automobilį su papildomu vairuotoju',
-    price: 4.01,
-    unit: 'perDay',
-    icon: Users,
-  },
-  {
-    id: 'abroad-zone3',
-    title: 'Naudojimas užsienyje - Zona 3',
-    description: 'Rusija, Baltarusija, Ukraina, Moldavija',
-    price: 500,
-    unit: 'oneTime',
-    icon: Map,
-  },
-  {
-    id: 'abroad-zone2',
-    title: 'Naudojimas užsienyje - Zona 2',
-    description: 'Lenkija, Čekija, Slovakija, Vengrija, Rumunija',
-    price: 300,
-    unit: 'oneTime',
-    icon: Map,
-  },
-  {
-    id: 'abroad-zone1',
-    title: 'Naudojimas užsienyje - Zona 1',
-    description: 'Latvija, Estija',
-    price: 150,
-    unit: 'oneTime',
-    icon: Map,
-  },
-  {
-    id: 'roadside-assistance',
-    title: 'Pagalba kelyje 24/7',
-    description: 'Visą parą veikianti pagalba kelyje Lietuvoje',
-    price: 15,
-    unit: 'oneTime',
-    icon: Navigation,
-  },
-  {
-    id: 'tire-glass-protection',
-    title: 'Padangų ir stiklų apsauga',
-    description: 'Papildoma apsauga padangoms ir stiklams',
-    price: 5.5,
-    unit: 'perDay',
-    icon: Shield,
-  },
-  {
-    id: 'baby-seat',
-    title: 'Kūdikio kėdutė (0-13kg)',
-    description: 'Kūdikio kėdutė iki 13 kg svorio',
-    price: 3,
-    unit: 'perDay',
-    icon: Baby,
-  },
-  {
-    id: 'child-seat',
-    title: 'Vaikiška kėdutė (9-36kg)',
-    description: 'Vaikiška kėdutė nuo 9 iki 36 kg svorio',
-    price: 3,
-    unit: 'perDay',
-    icon: UserCircle,
-  },
-];
+import { lt, enUS } from 'date-fns/locale';
+import { useTranslations } from '@/hooks/use-translations';
+import { getRoute } from '@/utils/routes';
 
 export default function ReservationServices() {
   const navigate = useNavigate();
   const { bookingData, toggleService, getTotalPrice } = useBooking();
+  const { t, language } = useTranslations();
+
+  const availableServices: AdditionalService[] = [
+    {
+      id: 'additional-driver',
+      title: t('services.items.additionalDriver.title'),
+      description: t('services.items.additionalDriver.description'),
+      price: 4.01,
+      unit: 'perDay',
+      icon: Users,
+    },
+    {
+      id: 'abroad-zone3',
+      title: t('services.items.abroadZone3.title'),
+      description: t('services.items.abroadZone3.description'),
+      price: 500,
+      unit: 'oneTime',
+      icon: Map,
+    },
+    {
+      id: 'abroad-zone2',
+      title: t('services.items.abroadZone2.title'),
+      description: t('services.items.abroadZone2.description'),
+      price: 300,
+      unit: 'oneTime',
+      icon: Map,
+    },
+    {
+      id: 'abroad-zone1',
+      title: t('services.items.abroadZone1.title'),
+      description: t('services.items.abroadZone1.description'),
+      price: 150,
+      unit: 'oneTime',
+      icon: Map,
+    },
+    {
+      id: 'roadside-assistance',
+      title: t('services.items.roadsideAssistance.title'),
+      description: t('services.items.roadsideAssistance.description'),
+      price: 15,
+      unit: 'oneTime',
+      icon: Navigation,
+    },
+    {
+      id: 'tire-glass-protection',
+      title: t('services.items.tireGlassProtection.title'),
+      description: t('services.items.tireGlassProtection.description'),
+      price: 5.5,
+      unit: 'perDay',
+      icon: Shield,
+    },
+    {
+      id: 'baby-seat',
+      title: t('services.items.babySeat.title'),
+      description: t('services.items.babySeat.description'),
+      price: 3,
+      unit: 'perDay',
+      icon: Baby,
+    },
+    {
+      id: 'child-seat',
+      title: t('services.items.childSeat.title'),
+      description: t('services.items.childSeat.description'),
+      price: 3,
+      unit: 'perDay',
+      icon: UserCircle,
+    },
+  ];
 
   useEffect(() => {
-    // Scroll to top on page load
     window.scrollTo(0, 0);
     
     if (!bookingData) {
-      navigate('/automobiliai');
+      navigate(getRoute('cars', language));
     }
-  }, [bookingData, navigate]);
+  }, [bookingData, navigate, language]);
 
   if (!bookingData) return null;
+
+  const dateLocale = language === 'en' ? enUS : lt;
 
   const isServiceSelected = (serviceId: string) => {
     return bookingData.services.some(s => s.id === serviceId);
@@ -119,10 +123,10 @@ export default function ReservationServices() {
               className="gap-2"
             >
               <ChevronLeft className="h-4 w-4" />
-              Grįžti
+              {t('services.back')}
             </Button>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Viso</p>
+              <p className="text-sm text-muted-foreground">{t('services.totalPrice')}</p>
               <p className="text-2xl font-bold text-primary">
                 {getTotalPrice().toFixed(2)} €
               </p>
@@ -139,10 +143,10 @@ export default function ReservationServices() {
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
                 <Package className="h-8 w-8 text-primary" />
-                <h1 className="text-3xl font-bold">Papildomos paslaugos</h1>
+                <h1 className="text-3xl font-bold">{t('services.title')}</h1>
               </div>
               <p className="text-muted-foreground">
-                Pasirinkite papildomas paslaugas, kurios pagerintų jūsų kelionę
+                {t('services.subtitle')}
               </p>
             </div>
 
@@ -175,7 +179,7 @@ export default function ReservationServices() {
                             {service.price.toFixed(2)} €
                           </span>
                           <span className="text-muted-foreground">
-                            / {service.unit === 'perDay' ? 'diena' : 'vienkartinis'}
+                            / {service.unit === 'perDay' ? t('services.perDay') : t('services.oneTime')}
                           </span>
                         </div>
                       </div>
@@ -199,7 +203,7 @@ export default function ReservationServices() {
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-24">
-              <h3 className="font-semibold text-lg mb-4">Jūsų užsakymas</h3>
+              <h3 className="font-semibold text-lg mb-4">{t('services.summary.title')}</h3>
               
               {/* Car Image */}
               {bookingData.carImage && (
@@ -215,10 +219,10 @@ export default function ReservationServices() {
               <div className="space-y-1 mb-4">
                 <p className="font-medium text-base">{bookingData.carName}</p>
                 <p className="text-sm text-muted-foreground">
-                  {format(new Date(bookingData.startDate), 'MMM d', { locale: lt })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
+                  {format(new Date(bookingData.startDate), 'MMM d', { locale: dateLocale })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: dateLocale })}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
+                  {bookingData.rentalDays} {bookingData.rentalDays === 1 ? t('services.day') : t('services.days')}
                 </p>
               </div>
 
@@ -226,13 +230,13 @@ export default function ReservationServices() {
 
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
-                  <span>Nuomos kaina</span>
+                  <span>{t('services.summary.rentalPrice')}</span>
                   <span>{bookingData.basePrice.toFixed(2)} €</span>
                 </div>
                 
                 {servicesTotal > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span>Papildomos paslaugos</span>
+                    <span>{t('services.summary.additionalServices')}</span>
                     <span>{servicesTotal.toFixed(2)} €</span>
                   </div>
                 )}
@@ -241,16 +245,21 @@ export default function ReservationServices() {
               <Separator className="my-4" />
 
               <div className="flex justify-between font-bold text-lg mb-6">
-                <span>Viso</span>
+                <span>{t('services.summary.total')}</span>
                 <span className="text-primary">{getTotalPrice().toFixed(2)} €</span>
               </div>
 
               <Button
                 className="w-full"
                 size="lg"
-                onClick={() => navigate(`/rezervacija/${bookingData.carId}/salygos`)}
+                onClick={() => {
+                  const termsPath = language === 'en' 
+                    ? `/reservation/${bookingData.carId}/terms`
+                    : `/rezervacija/${bookingData.carId}/salygos`;
+                  navigate(termsPath);
+                }}
               >
-                Tęsti užsakymą
+                {t('services.continueButton')}
               </Button>
             </Card>
           </div>

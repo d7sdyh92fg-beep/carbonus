@@ -767,20 +767,53 @@ export const translations = {
     // Reservation Services Page
     services: {
       title: "Papildomos paslaugos",
-      subtitle: "Pasirinkite papildomas paslaugas savo kelionei",
+      subtitle: "Pasirinkite papildomas paslaugas, kurios pagerintų jūsų kelionę",
       back: "Grįžti",
       totalPrice: "Viso",
       continueButton: "Tęsti užsakymą",
-      perDay: "diena",
+      perDay: "už dieną",
       oneTime: "vienkartinis",
+      day: "diena",
+      days: "dienos",
       summary: {
         title: "Jūsų užsakymas",
-        car: "Automobilis",
-        period: "Laikotarpis",
-        days: "dienos",
         rentalPrice: "Nuomos kaina",
         additionalServices: "Papildomos paslaugos",
         total: "Viso",
+      },
+      items: {
+        additionalDriver: {
+          title: "Papildomas vairuotojas",
+          description: "Galimybė nuomoti automobilį su papildomu vairuotoju",
+        },
+        abroadZone3: {
+          title: "Naudojimas užsienyje - Zona 3",
+          description: "Rusija, Baltarusija, Ukraina, Moldavija",
+        },
+        abroadZone2: {
+          title: "Naudojimas užsienyje - Zona 2",
+          description: "Lenkija, Čekija, Slovakija, Vengrija, Rumunija",
+        },
+        abroadZone1: {
+          title: "Naudojimas užsienyje - Zona 1",
+          description: "Latvija, Estija",
+        },
+        roadsideAssistance: {
+          title: "Pagalba kelyje 24/7",
+          description: "Visą parą veikianti pagalba kelyje Lietuvoje",
+        },
+        tireGlassProtection: {
+          title: "Padangų ir stiklų apsauga",
+          description: "Papildoma apsauga padangoms ir stiklams",
+        },
+        babySeat: {
+          title: "Kūdikio kėdutė (0-13kg)",
+          description: "Kūdikio kėdutė iki 13 kg svorio",
+        },
+        childSeat: {
+          title: "Vaikiška kėdutė (9-36kg)",
+          description: "Vaikiška kėdutė nuo 9 iki 36 kg svorio",
+        },
       },
     },
 
@@ -2360,57 +2393,52 @@ export const translations = {
     // Reservation Services
     services: {
       title: "Additional Services",
-      subtitle: "Choose additional services for your trip",
+      subtitle: "Select additional services to enhance your trip",
       back: "Back",
-      totalPrice: "Total Price:",
+      totalPrice: "Total",
       continueButton: "Continue Order",
-      perDay: "/ day",
-      oneTime: "One-time",
+      perDay: "per day",
+      oneTime: "one-time",
+      day: "day",
+      days: "days",
       summary: {
-        title: "Reservation Summary",
-        car: "Car:",
-        period: "Period:",
-        days: "Days:",
-        rentalPrice: "Rental:",
-        services: "Services:",
-        total: "Total:",
+        title: "Your Order",
+        rentalPrice: "Rental Price",
+        additionalServices: "Additional Services",
+        total: "Total",
       },
       items: {
-        childSeat: {
-          title: "Child Seat",
-          description: "Safe and comfortable child seat meeting EU standards",
-        },
-        gps: {
-          title: "GPS Navigation",
-          description: "Modern navigation system with updated maps",
-        },
-        winterTires: {
-          title: "Winter Tires",
-          description: "Quality winter tires for safe travel",
-        },
         additionalDriver: {
           title: "Additional Driver",
-          description: "Allow multiple people to drive the car",
+          description: "Ability to rent the car with an additional driver",
         },
-        unlimited: {
-          title: "Unlimited Mileage",
-          description: "Drive without limits - unlimited mileage",
+        abroadZone3: {
+          title: "Cross-Border Use - Zone 3",
+          description: "Russia, Belarus, Ukraine, Moldova",
         },
-        crossBorder: {
-          title: "Cross-Border Use",
-          description: "Ability to drive the car in Latvia and Estonia",
+        abroadZone2: {
+          title: "Cross-Border Use - Zone 2",
+          description: "Poland, Czech Republic, Slovakia, Hungary, Romania",
         },
-        delivery: {
-          title: "Delivery/Pickup",
-          description: "Car delivery and pickup at your convenient time and location",
+        abroadZone1: {
+          title: "Cross-Border Use - Zone 1",
+          description: "Latvia, Estonia",
         },
-        fullProtection: {
-          title: "Full Protection",
-          description: "Maximum insurance coverage with no excess",
+        roadsideAssistance: {
+          title: "24/7 Roadside Assistance",
+          description: "Round-the-clock roadside assistance in Lithuania",
         },
-        cleaning: {
-          title: "Additional Cleaning",
-          description: "Professional car cleaning before return",
+        tireGlassProtection: {
+          title: "Tire & Glass Protection",
+          description: "Additional protection for tires and glass",
+        },
+        babySeat: {
+          title: "Baby Seat (0-13kg)",
+          description: "Baby seat for up to 13 kg weight",
+        },
+        childSeat: {
+          title: "Child Seat (9-36kg)",
+          description: "Child seat for 9 to 36 kg weight",
         },
       },
     },
