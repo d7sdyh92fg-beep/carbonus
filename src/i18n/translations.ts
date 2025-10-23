@@ -822,26 +822,100 @@ export const translations = {
       title: "Nuomos sąlygos ir sutartis",
       subtitle: "Prieš tęsiant rezervaciją, prašome susipažinti su nuomos sąlygomis",
       back: "Grįžti",
+      downloadPdf: "Atsisiųsti PDF",
+      acceptanceLabel: "Patvirtinu, kad susipažinau su nuomos sąlygomis ir sutartimi",
+      continueButton: "Sutinku ir tęsiu",
       step: "Žingsnis",
       of: "iš",
-      progress: "Viso mokėti",
+      totalToPay: "Viso mokėti",
       noticeTitle: "Privaloma susipažinti",
       noticeDescription: "Prieš rezervuojant automobilį, privaloma susipažinti su nuomos sąlygomis ir jas patvirtinti. Galite skaityti žemiau arba atsidaryti pilną sutartį naujame lange.",
-      downloadPdf: "Atsisiųsti PDF",
-      openFull: "Atidaryti pilną sutartį",
-      hideTerms: "Slėpti sąlygas",
+      openFullContract: "Atidaryti pilną sutartį",
       readHere: "Skaityti čia",
+      hideTerms: "Slėpti sąlygas",
       scrollToBottom: "Prašome paskroluoti iki apačios",
-      readComplete: "Perskaitytas visas tekstas",
-      acceptCheckbox: "Patvirtinu, kad susipažinau su nuomos sąlygomis ir sutartimi",
+      allRead: "Perskaitytas visas tekstas",
       checkboxHintScroll: "Paskroluokite iki apačios, kad galėtumėte pažymėti šį laukelį",
       checkboxHintCheck: "Pažymėkite šį laukelį, kad galėtumėte tęsti rezervaciją",
       summaryTitle: "Rezervacijos santrauka",
-      summaryDuration: "Nuomos trukmė",
-      summaryInsurance: "Draudimas",
-      summaryServices: "Papildomos paslaugos",
-      backButton: "Grįžti",
-      continueButton: "Sutinku ir tęsiu",
+      summaryCar: "Automobilis:",
+      summaryDuration: "Nuomos trukmė:",
+      summaryInsurance: "Draudimas:",
+      summaryServices: "Papildomos paslaugos:",
+      summaryDays: "d.",
+      agreeAndContinue: "Sutinku ir tęsiu",
+      termsContent: {
+        section1: {
+          title: "1. Rezervacija ir užsakymas",
+          subsection1: {
+            title: "1.1 Rezervacijos būdai",
+            intro: "Automobilį galite rezervuoti:",
+            methods: [
+              "Mūsų internetinėje svetainėje www.carbonus.lt (veikia 24/7)",
+              "Paskambinę telefonu +370 698 18 781",
+              "El. paštu info@carbonus.lt",
+              "Atvykę į automobilio atsiėmimo vietą"
+            ]
+          },
+          subsection2: {
+            title: "1.2 Rezervacijos atšaukimas",
+            text: "Rezervaciją galite atšaukti nemokamai, jei liko daugiau nei 24 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau, taikomas mokestis. Jei neatvykstate neatšaukę rezervacijos (\"no-show\"), imamas mokestis už pirmąją nuomos dieną."
+          }
+        },
+        section2: {
+          title: "2. Dokumentai ir reikalavimai",
+          subsection1: {
+            title: "2.1 Reikalingi dokumentai",
+            items: [
+              "ES šalyje išduotas vairuotojo pažymėjimas (ne mažiau kaip 2 metų stažas)",
+              "Asmens dokumentas (pasas arba ID kortelė)",
+              "Kreditinė kortelė užstato rezervavimui"
+            ]
+          },
+          subsection2: {
+            title: "2.2 Amžiaus reikalavimai",
+            items: [
+              "Ekonominės ir kompaktinės klasės automobiliams – nuo 21 m.",
+              "Premium ir Luxury klasės automobiliams – nuo 25 m."
+            ]
+          }
+        },
+        section3: {
+          title: "3. Apmokėjimas ir kainos",
+          subsection1: {
+            title: "3.1 Kainų sudėtis",
+            intro: "Visos nurodytos kainos apima pagrindinius mokesčius. Papildomi mokesčiai taikomi už:",
+            items: [
+              "Vėlavimą grąžinti automobilį",
+              "Kuro papildymą (jei grąžinama ne pilnu baku)",
+              "Rūkymą automobilyje (50 € bauda)",
+              "KET pažeidimus"
+            ]
+          },
+          subsection2: {
+            title: "3.2 Užstatas",
+            text: "Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, jei nėra pažeidimų.",
+            highlight: "Užstato dydis – 200 €."
+          }
+        },
+        section4: {
+          title: "4. Draudimas ir saugumas",
+          text: "Visi automobiliai apdrausti KASKO ir OCTA draudimu. Avarijos atveju nedelsiant skambinkite mums +370 698 18 781 ir policijai 112."
+        },
+        section5: {
+          title: "5. Svarbiausios taisyklės",
+          items: [
+            "Rūkymas automobilyje draudžiamas (50 € bauda)",
+            "Kilometražas neribojamas",
+            "Kelionės už Lietuvos ribų reikalauja išankstinio sutikimo",
+            "Automobilis turi būti grąžintas švariu ir su pilnu kuro baku"
+          ]
+        },
+        finalNote: {
+          title: "Pilną sutartį",
+          text: "galite perskaityti PDF faile arba mūsų svetainėje. Paspaudę \"Sutinku\", patvirtinate, kad susipažinote su visomis sąlygomis."
+        }
+      }
     },
 
     // Payment Pages
@@ -2445,37 +2519,103 @@ export const translations = {
 
     // Reservation Terms
     terms: {
-      title: "Rental Terms",
-      subtitle: "Please read and agree to the rental terms",
+      title: "Rental Terms and Agreement",
+      subtitle: "Please review the rental terms before proceeding with your reservation",
       back: "Back",
-      progress: {
-        services: "Services",
-        terms: "Terms",
-        review: "Review",
-        payment: "Payment",
-      },
-      scrollMessage: "Please read all terms",
-      acceptance: "I agree to the rental terms",
       downloadPdf: "Download PDF",
-      viewFull: "View full contract",
+      acceptanceLabel: "I confirm that I have read and agree to the rental terms and agreement",
       continueButton: "Agree and Continue",
-      backButton: "Go Back",
-      summary: {
-        title: "Your Reservation",
-        car: "Car:",
-        period: "Period:",
-        pickupTime: "Pickup:",
-        returnTime: "Return:",
-        total: "Total:",
-      },
-      termsPreview: {
-        section1: "1. Car rental is provided only to persons with a valid driver's license",
-        section2: "2. The renter must return the car in the condition and time specified in the contract",
-        section3: "3. The renter is liable for damage, theft or loss of the car according to Lithuanian laws",
-        section4: "4. Driving under the influence of alcohol, drugs, toxic or psychotropic substances is prohibited",
-        section5: "5. The car may be used only in Lithuania, except when an additional service is selected",
-        more: "...and more",
-      },
+      step: "Step",
+      of: "of",
+      totalToPay: "Total to Pay",
+      noticeTitle: "Required Reading",
+      noticeDescription: "Before booking a vehicle, you must review and agree to the rental terms. You can read them below or open the full agreement in a new window.",
+      openFullContract: "Open Full Agreement",
+      readHere: "Read Here",
+      hideTerms: "Hide Terms",
+      scrollToBottom: "Please scroll to the bottom",
+      allRead: "All text has been read",
+      checkboxHintScroll: "Scroll to the bottom to enable this checkbox",
+      checkboxHintCheck: "Check this box to continue with your reservation",
+      summaryTitle: "Reservation Summary",
+      summaryCar: "Vehicle:",
+      summaryDuration: "Rental Duration:",
+      summaryInsurance: "Insurance:",
+      summaryServices: "Additional Services:",
+      summaryDays: "d.",
+      agreeAndContinue: "Agree and Continue",
+      termsContent: {
+        section1: {
+          title: "1. Reservation and Booking",
+          subsection1: {
+            title: "1.1 Booking Methods",
+            intro: "You can book a vehicle:",
+            methods: [
+              "On our website www.carbonus.lt (available 24/7)",
+              "By phone at +370 698 18 781",
+              "By email at info@carbonus.lt",
+              "In person at the pickup location"
+            ]
+          },
+          subsection2: {
+            title: "1.2 Cancellation Policy",
+            text: "You can cancel your reservation free of charge if there are more than 24 hours until vehicle pickup. If you cancel later, a fee applies. If you don't show up without canceling (\"no-show\"), you will be charged for the first rental day."
+          }
+        },
+        section2: {
+          title: "2. Documents and Requirements",
+          subsection1: {
+            title: "2.1 Required Documents",
+            items: [
+              "Valid EU driver's license (minimum 2 years driving experience)",
+              "Identity document (passport or ID card)",
+              "Credit card for deposit hold"
+            ]
+          },
+          subsection2: {
+            title: "2.2 Age Requirements",
+            items: [
+              "Economy and compact class vehicles – minimum 21 years old",
+              "Premium and Luxury class vehicles – minimum 25 years old"
+            ]
+          }
+        },
+        section3: {
+          title: "3. Payment and Pricing",
+          subsection1: {
+            title: "3.1 Price Components",
+            intro: "All listed prices include basic charges. Additional fees apply for:",
+            items: [
+              "Late vehicle return",
+              "Fuel refill (if not returned with full tank)",
+              "Smoking in the vehicle (€50 fine)",
+              "Traffic violations"
+            ]
+          },
+          subsection2: {
+            title: "3.2 Deposit",
+            text: "The deposit will be refunded within 7 business days after vehicle return, provided there are no damages.",
+            highlight: "Deposit amount – €200."
+          }
+        },
+        section4: {
+          title: "4. Insurance and Safety",
+          text: "All vehicles are insured with comprehensive (KASKO) and liability (OCTA) insurance. In case of an accident, immediately call us at +370 698 18 781 and police at 112."
+        },
+        section5: {
+          title: "5. Key Rules",
+          items: [
+            "Smoking in the vehicle is prohibited (€50 fine)",
+            "Unlimited mileage",
+            "Travel outside Lithuania requires prior approval",
+            "Vehicle must be returned clean and with a full fuel tank"
+          ]
+        },
+        finalNote: {
+          title: "The full agreement",
+          text: "can be read in the PDF file or on our website. By clicking \"Agree\", you confirm that you have reviewed all terms and conditions."
+        }
+      }
     },
 
     // Reservation Review

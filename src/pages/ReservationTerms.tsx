@@ -6,16 +6,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslations } from '@/hooks/use-translations';
+import { getRoute } from '@/utils/routes';
 
 export default function ReservationTerms() {
   const navigate = useNavigate();
   const { carId } = useParams();
   const { bookingData, getTotalPrice } = useBooking();
   const { toast } = useToast();
+  const { t, language } = useTranslations();
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
   const [hasAccepted, setHasAccepted] = useState(false);
   const [showFullTerms, setShowFullTerms] = useState(true);
@@ -24,9 +26,10 @@ export default function ReservationTerms() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (!bookingData) {
-      navigate('/automobiliai');
+      const carsRoute = getRoute('cars', language);
+      navigate(carsRoute);
     }
-  }, [bookingData, navigate]);
+  }, [bookingData, navigate, language]);
 
   if (!bookingData) return null;
 
@@ -44,16 +47,23 @@ export default function ReservationTerms() {
 
   const handleContinue = () => {
     if (hasAccepted && hasScrolledToBottom) {
-      navigate(`/rezervacija/${carId}/uzsakymas`);
+      const nextRoute = language === 'en' 
+        ? `/reservation/${carId}/review`
+        : `/rezervacija/${carId}/uzsakymas`;
+      navigate(nextRoute);
     }
   };
 
   const openPDF = () => {
-    window.open('/carbonus-nuomos-sutartis.pdf', '_blank');
+    const pdfFileName = language === 'en' 
+      ? '/carbonus-rental-agreement.pdf' 
+      : '/carbonus-nuomos-sutartis.pdf';
+    window.open(pdfFileName, '_blank');
   };
 
   const openFullTermsPage = () => {
-    window.open('/nuomos-sutartis', '_blank');
+    const route = getRoute('leaseAgreement', language);
+    window.open(route, '_blank');
   };
 
   const totalPrice = getTotalPrice();
@@ -71,10 +81,10 @@ export default function ReservationTerms() {
               className="gap-2"
             >
               <ChevronLeft className="h-4 w-4" />
-              Grįžti
+              {t('terms.back')}
             </Button>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Viso mokėti</p>
+              <p className="text-sm text-muted-foreground">{t('terms.totalToPay')}</p>
               <p className="text-2xl font-bold text-primary">
                 {totalPrice.toFixed(2)} €
               </p>
@@ -88,7 +98,7 @@ export default function ReservationTerms() {
         {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-muted-foreground">Žingsnis 3 iš 4</span>
+            <span className="text-sm text-muted-foreground">{t('terms.step')} 3 {t('terms.of')} 4</span>
             <span className="text-sm font-medium">75%</span>
           </div>
           <Progress value={75} className="h-2" />
@@ -98,10 +108,10 @@ export default function ReservationTerms() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
             <FileText className="h-8 w-8" />
-            Nuomos sąlygos ir sutartis
+            {t('terms.title')}
           </h1>
           <p className="text-muted-foreground">
-            Prieš tęsiant rezervaciją, prašome susipažinti su nuomos sąlygomis
+            {t('terms.subtitle')}
           </p>
         </div>
 
@@ -111,10 +121,9 @@ export default function ReservationTerms() {
             <div className="flex items-start gap-3">
               <FileText className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-1 flex-shrink-0" />
               <div>
-                <h3 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">Privaloma susipažinti</h3>
+                <h3 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">{t('terms.noticeTitle')}</h3>
                 <p className="text-amber-700 dark:text-amber-300 text-sm">
-                  Prieš rezervuojant automobilį, privaloma susipažinti su nuomos sąlygomis ir jas patvirtinti. 
-                  Galite skaityti žemiau arba atsidaryti pilną sutartį naujame lange.
+                  {t('terms.noticeDescription')}
                 </p>
               </div>
             </div>
@@ -125,11 +134,11 @@ export default function ReservationTerms() {
         <div className="flex flex-wrap gap-3 mb-6">
           <Button variant="outline" size="sm" onClick={openPDF}>
             <Download className="w-4 h-4 mr-2" />
-            Atsisiųsti PDF
+            {t('terms.downloadPdf')}
           </Button>
           <Button variant="outline" size="sm" onClick={openFullTermsPage}>
             <ExternalLink className="w-4 h-4 mr-2" />
-            Atidaryti pilną sutartį
+            {t('terms.openFullContract')}
           </Button>
           <Button 
             variant={showFullTerms ? "default" : "outline"} 
@@ -137,7 +146,7 @@ export default function ReservationTerms() {
             onClick={() => setShowFullTerms(!showFullTerms)}
           >
             <FileText className="w-4 h-4 mr-2" />
-            {showFullTerms ? 'Slėpti sąlygas' : 'Skaityti čia'}
+            {showFullTerms ? t('terms.hideTerms') : t('terms.readHere')}
           </Button>
         </div>
 
@@ -150,93 +159,106 @@ export default function ReservationTerms() {
                 onScrollCapture={handleScroll}
               >
                 <div className="space-y-6 text-sm">
+                  {/* Section 1 */}
                   <div>
-                    <h3 className="font-semibold text-lg mb-3">1. Rezervacija ir užsakymas</h3>
+                    <h3 className="font-semibold text-lg mb-3">
+                      {t('terms.termsContent.section1.title')}
+                    </h3>
                     
                     <div className="space-y-3">
                       <div>
-                        <h4 className="font-medium mb-2">1.1 Rezervacijos būdai</h4>
-                        <p>Automobilį galite rezervuoti:</p>
+                        <h4 className="font-medium mb-2">{t('terms.termsContent.section1.subsection1.title')}</h4>
+                        <p>{t('terms.termsContent.section1.subsection1.intro')}</p>
                         <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
-                          <li>Mūsų internetinėje svetainėje www.carbonus.lt (veikia 24/7)</li>
-                          <li>Paskambinę telefonu +370 698 18 781</li>
-                          <li>El. paštu info@carbonus.lt</li>
-                          <li>Atvykę į automobilio atsiėmimo vietą</li>
+                          {t('terms.termsContent.section1.subsection1.methods').map((method: string, index: number) => (
+                            <li key={index}>{method}</li>
+                          ))}
                         </ul>
                       </div>
                       
                       <div>
-                        <h4 className="font-medium mb-2">1.2 Rezervacijos atšaukimas</h4>
-                        <p>Rezervaciją galite atšaukti nemokamai, jei liko daugiau nei 24 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau, taikomas mokestis. Jei neatvykstate neatšaukę rezervacijos („no-show"), imamas mokestis už pirmąją nuomos dieną.</p>
+                        <h4 className="font-medium mb-2">{t('terms.termsContent.section1.subsection2.title')}</h4>
+                        <p>{t('terms.termsContent.section1.subsection2.text')}</p>
                       </div>
                     </div>
                   </div>
 
+                  {/* Section 2 */}
                   <div>
-                    <h3 className="font-semibold text-lg mb-3">2. Dokumentai ir reikalavimai</h3>
+                    <h3 className="font-semibold text-lg mb-3">
+                      {t('terms.termsContent.section2.title')}
+                    </h3>
                     
                     <div className="space-y-3">
                       <div>
-                        <h4 className="font-medium mb-2">2.1 Reikalingi dokumentai</h4>
+                        <h4 className="font-medium mb-2">{t('terms.termsContent.section2.subsection1.title')}</h4>
                         <ul className="list-disc list-inside ml-4 space-y-1">
-                          <li>ES šalyje išduotas vairuotojo pažymėjimas (ne mažiau kaip 2 metų stažas)</li>
-                          <li>Asmens dokumentas (pasas arba ID kortelė)</li>
-                          <li>Kreditinė kortelė užstato rezervavimui</li>
+                          {t('terms.termsContent.section2.subsection1.items').map((item: string, index: number) => (
+                            <li key={index}>{item}</li>
+                          ))}
                         </ul>
                       </div>
                       
                       <div>
-                        <h4 className="font-medium mb-2">2.2 Amžiaus reikalavimai</h4>
+                        <h4 className="font-medium mb-2">{t('terms.termsContent.section2.subsection2.title')}</h4>
                         <ul className="list-disc list-inside ml-4 space-y-1">
-                          <li>Ekonominės ir kompaktinės klasės automobiliams – nuo 21 m.</li>
-                          <li>Premium ir Luxury klasės automobiliams – nuo 25 m.</li>
+                          {t('terms.termsContent.section2.subsection2.items').map((item: string, index: number) => (
+                            <li key={index}>{item}</li>
+                          ))}
                         </ul>
                       </div>
                     </div>
                   </div>
 
+                  {/* Section 3 */}
                   <div>
-                    <h3 className="font-semibold text-lg mb-3">3. Apmokėjimas ir kainos</h3>
+                    <h3 className="font-semibold text-lg mb-3">
+                      {t('terms.termsContent.section3.title')}
+                    </h3>
                     
                     <div className="space-y-3">
                       <div>
-                        <h4 className="font-medium mb-2">3.1 Kainų sudėtis</h4>
-                        <p>Visos nurodytos kainos apima pagrindinius mokesčius. Papildomi mokesčiai taikomi už:</p>
+                        <h4 className="font-medium mb-2">{t('terms.termsContent.section3.subsection1.title')}</h4>
+                        <p>{t('terms.termsContent.section3.subsection1.intro')}</p>
                         <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-                          <li>Vėlavimą grąžinti automobilį</li>
-                          <li>Kuro papildymą (jei grąžinama ne pilnu baku)</li>
-                          <li>Rūkymą automobilyje (50 € bauda)</li>
-                          <li>KET pažeidimus</li>
+                          {t('terms.termsContent.section3.subsection1.items').map((item: string, index: number) => (
+                            <li key={index}>{item}</li>
+                          ))}
                         </ul>
                       </div>
                       
                       <div>
-                        <h4 className="font-medium mb-2">3.2 Užstatas</h4>
-                        <p><strong>Užstato dydis – 200 €.</strong> Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, jei nėra pažeidimų.</p>
+                        <h4 className="font-medium mb-2">{t('terms.termsContent.section3.subsection2.title')}</h4>
+                        <p><strong>{t('terms.termsContent.section3.subsection2.highlight')}</strong> {t('terms.termsContent.section3.subsection2.text').replace(t('terms.termsContent.section3.subsection2.highlight'), '').trim()}</p>
                       </div>
                     </div>
                   </div>
 
+                  {/* Section 4 */}
                   <div>
-                    <h3 className="font-semibold text-lg mb-3">4. Draudimas ir saugumas</h3>
-                    <p>Visi automobiliai apdrausti KASKO ir OCTA draudimu. Avarijos atveju nedelsiant skambinkite mums +370 698 18 781 ir policijai 112.</p>
+                    <h3 className="font-semibold text-lg mb-3">
+                      {t('terms.termsContent.section4.title')}
+                    </h3>
+                    <p>{t('terms.termsContent.section4.text')}</p>
                   </div>
 
+                  {/* Section 5 */}
                   <div>
-                    <h3 className="font-semibold text-lg mb-3">5. Svarbiausios taisyklės</h3>
+                    <h3 className="font-semibold text-lg mb-3">
+                      {t('terms.termsContent.section5.title')}
+                    </h3>
                     <ul className="list-disc list-inside space-y-1">
-                      <li>Rūkymas automobilyje draudžiamas (50 € bauda)</li>
-                      <li>Kilometražas neribojamas</li>
-                      <li>Kelionės už Lietuvos ribų reikalauja išankstinio sutikimo</li>
-                      <li>Automobilis turi būti grąžintas švariu ir su pilnu kuro baku</li>
+                      {t('terms.termsContent.section5.items').map((item: string, index: number) => (
+                        <li key={index}>{item}</li>
+                      ))}
                     </ul>
                   </div>
 
+                  {/* Final Note */}
                   <Card className="bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
                     <CardContent className="p-4">
                       <p className="text-blue-800 dark:text-blue-200 text-sm">
-                        <strong>Pilną sutartį</strong> galite perskaityti PDF faile arba mūsų svetainėje. 
-                        Paspaudę "Sutinku", patvirtinate, kad susipažinote su visomis sąlygomis.
+                        <strong>{t('terms.termsContent.finalNote.title')}</strong> {t('terms.termsContent.finalNote.text')}
                       </p>
                     </CardContent>
                   </Card>
@@ -246,7 +268,7 @@ export default function ReservationTerms() {
               {/* Scroll indicator */}
               {showFullTerms && !hasScrolledToBottom && (
                 <div className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-bounce">
-                  <span>Prašome paskroluoti iki apačios</span>
+                  <span>{t('terms.scrollToBottom')}</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
@@ -256,7 +278,7 @@ export default function ReservationTerms() {
               {hasScrolledToBottom && (
                 <div className="mt-4 flex items-center justify-center gap-2 text-sm text-green-600 dark:text-green-400">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Perskaitytas visas tekstas</span>
+                  <span>{t('terms.allRead')}</span>
                 </div>
               )}
             </CardContent>
@@ -279,12 +301,12 @@ export default function ReservationTerms() {
                   htmlFor="terms-acceptance" 
                   className="text-sm font-medium cursor-pointer"
                 >
-                  Patvirtinu, kad susipažinau su nuomos sąlygomis ir sutartimi
+                  {t('terms.acceptanceLabel')}
                 </Label>
                 <p className="text-xs text-muted-foreground">
                   {!hasScrolledToBottom 
-                    ? 'Paskroluokite iki apačios, kad galėtumėte pažymėti šį laukelį'
-                    : 'Pažymėkite šį laukelį, kad galėtumėte tęsti rezervaciją'}
+                    ? t('terms.checkboxHintScroll')
+                    : t('terms.checkboxHintCheck')}
                 </p>
               </div>
             </div>
@@ -294,25 +316,25 @@ export default function ReservationTerms() {
         {/* Summary card */}
         <Card className="mb-6">
           <CardContent className="p-6">
-            <h3 className="font-semibold mb-4">Rezervacijos santrauka</h3>
+            <h3 className="font-semibold mb-4">{t('terms.summaryTitle')}</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Automobilis:</span>
+                <span className="text-muted-foreground">{t('terms.summaryCar')}</span>
                 <span className="font-medium">{bookingData.carName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Nuomos trukmė:</span>
-                <span className="font-medium">{bookingData.rentalDays} d.</span>
+                <span className="text-muted-foreground">{t('terms.summaryDuration')}</span>
+                <span className="font-medium">{bookingData.rentalDays} {t('terms.summaryDays')}</span>
               </div>
               {bookingData.insurance && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Draudimas:</span>
+                  <span className="text-muted-foreground">{t('terms.summaryInsurance')}</span>
                   <span className="font-medium">{bookingData.insurance.title}</span>
                 </div>
               )}
               {bookingData.services.length > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Papildomos paslaugos:</span>
+                  <span className="text-muted-foreground">{t('terms.summaryServices')}</span>
                   <span className="font-medium">{bookingData.services.length}</span>
                 </div>
               )}
@@ -328,7 +350,7 @@ export default function ReservationTerms() {
             onClick={() => navigate(-1)}
             className="flex-1"
           >
-            Grįžti
+            {t('terms.back')}
           </Button>
           <Button
             size="lg"
@@ -336,7 +358,7 @@ export default function ReservationTerms() {
             disabled={!hasAccepted || !hasScrolledToBottom}
             className="flex-1"
           >
-            Sutinku ir tęsiu
+            {t('terms.agreeAndContinue')}
           </Button>
         </div>
       </div>
