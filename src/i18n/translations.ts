@@ -963,7 +963,7 @@ export const translations = {
           address: "Adresas: Druskininkai, Lietuva"
         }
       },
-      lastUpdated: "Paskutinį kartą atnaujinta: 2025 m. sausio 15 d."
+      lastUpdated: "Paskutinį kartą atnaujinta: 2025 m. rugsėjo 1 d."
     },
 
     leaseAgreement: {
@@ -2404,7 +2404,7 @@ export const translations = {
           address: "Address: Druskininkai, Lithuania"
         }
       },
-      lastUpdated: "Last updated: January 15, 2025"
+      lastUpdated: "Last updated: September 1, 2025"
     },
 
     // Lease Agreement
