@@ -518,7 +518,7 @@ export default function ReservationReview() {
                       {t('review.payAtCounterNow').replace('{amount}', dailyRate.toFixed(2))}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {t('review.payAtCounterLater').replace('{amount}', (totalPrice - dailyRate + depositAmount).toFixed(2))}
+                      {t('review.payAtCounterLater').replace('{amount}', (totalPrice - dailyRate).toFixed(2))}
                     </p>
                   </div>
                 )}
