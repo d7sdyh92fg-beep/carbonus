@@ -2406,7 +2406,6 @@ export const translations = {
       },
       lastUpdated: "Last updated: January 15, 2024"
     },
-    },
 
     // Lease Agreement
     leaseAgreement: {
