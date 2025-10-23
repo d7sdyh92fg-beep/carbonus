@@ -69,9 +69,9 @@ const PrivacyPolicy = () => {
 
                 <div className="space-y-8">
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Shield className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.dataProcessed.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Shield className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.dataProcessed.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed mb-4">
                       {t('privacyPolicy.sections.dataProcessed.paragraph1')}
@@ -82,9 +82,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Mail className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.collection.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Mail className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.collection.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed">
                       {t('privacyPolicy.sections.collection.paragraph1')}
@@ -92,9 +92,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Phone className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.disclosure.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Phone className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.disclosure.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed">
                       {t('privacyPolicy.sections.disclosure.paragraph1')}
@@ -102,9 +102,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Shield className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.security.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Shield className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.security.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed mb-4">
                       {t('privacyPolicy.sections.security.paragraph1')}
@@ -115,9 +115,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Calendar className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.retention.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Calendar className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.retention.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed">
                       {t('privacyPolicy.sections.retention.paragraph1')}
@@ -125,9 +125,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <MapPin className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.rights.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <MapPin className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.rights.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed">
                       {t('privacyPolicy.sections.rights.paragraph1')}
@@ -135,9 +135,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Shield className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.cookies.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Shield className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.cookies.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed">
                       {t('privacyPolicy.sections.cookies.paragraph1')}
@@ -145,9 +145,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Mail className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.newsletter.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Mail className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.newsletter.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed">
                       {t('privacyPolicy.sections.newsletter.paragraph1')}
@@ -155,9 +155,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-start gap-3 mb-4">
-                      <Calendar className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.changes.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Calendar className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.changes.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed">
                       {t('privacyPolicy.sections.changes.paragraph1')}
@@ -165,9 +165,9 @@ const PrivacyPolicy = () => {
                   </div>
 
                   <div className="pt-8 border-t border-border">
-                    <div className="flex items-start gap-3 mb-4">
-                      <Phone className="w-6 h-6 text-primary mt-1.5" />
-                      <h2 className="text-2xl font-bold text-foreground">{t('privacyPolicy.sections.contact.title')}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Phone className="w-6 h-6 text-primary" />
+                      <h2 className="text-2xl font-bold leading-none text-foreground">{t('privacyPolicy.sections.contact.title')}</h2>
                     </div>
                     <p className="text-muted-foreground leading-relaxed mb-4">
                       {t('privacyPolicy.sections.contact.paragraph1')}
