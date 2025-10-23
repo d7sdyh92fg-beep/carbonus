@@ -39,26 +39,58 @@ const App = () => (
           <CookieBanner />
           <BrowserRouter>
           <Routes>
+            {/* Home */}
             <Route path="/" element={<Index />} />
+            
+            {/* Cars - Lithuanian & English */}
             <Route path="/automobiliai" element={<Cars />} />
+            <Route path="/cars" element={<Cars />} />
+            <Route path="/automobiliai/:id" element={<CarDetail />} />
+            <Route path="/cars/:id" element={<CarDetail />} />
+            
+            {/* About - Lithuanian & English */}
             <Route path="/apie-mus" element={<About />} />
+            <Route path="/about" element={<About />} />
+            
+            {/* Contact - Lithuanian & English */}
             <Route path="/kontaktai" element={<Contact />} />
+            <Route path="/contact" element={<Contact />} />
+            
+            {/* Blog - Lithuanian & English */}
             <Route path="/naujienos" element={<Blog />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/naujienos/:slug" element={<BlogPost />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            
+            {/* FAQ - Lithuanian & English */}
             <Route path="/duk" element={<FAQ />} />
+            <Route path="/faq" element={<FAQ />} />
+            
+            {/* Privacy Policy - Lithuanian & English */}
             <Route path="/privatumo-politika" element={<PrivacyPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            
+            {/* Lease Agreement - Lithuanian & English */}
             <Route path="/nuomos-sutartis" element={<LeaseAgreement />} />
             <Route path="/rental-agreement" element={<LeaseAgreement />} />
             <Route path="/lease-agreement" element={<LeaseAgreement />} />
-            <Route path="/automobiliai/:id" element={<CarDetail />} />
+            
+            {/* Reservation - Lithuanian & English */}
             <Route path="/rezervacija/:carId/atsakomybe" element={<ReservationInsurance />} />
-              <Route path="/rezervacija/:carId/paslaugos" element={<ReservationServices />} />
-              <Route path="/rezervacija/:carId/salygos" element={<ReservationTerms />} />
-              <Route path="/rezervacija/:carId/uzsakymas" element={<ReservationReview />} />
+            <Route path="/reservation/:carId/insurance" element={<ReservationInsurance />} />
+            <Route path="/rezervacija/:carId/paslaugos" element={<ReservationServices />} />
+            <Route path="/reservation/:carId/services" element={<ReservationServices />} />
+            <Route path="/rezervacija/:carId/salygos" element={<ReservationTerms />} />
+            <Route path="/reservation/:carId/terms" element={<ReservationTerms />} />
+            <Route path="/rezervacija/:carId/uzsakymas" element={<ReservationReview />} />
+            <Route path="/reservation/:carId/review" element={<ReservationReview />} />
+            
+            {/* Payment & Auth - Same for both languages */}
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-canceled" element={<PaymentCanceled />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,4 +1,5 @@
 import { useLanguage } from "@/hooks/use-language";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "./button";
 import { ChevronDown } from "lucide-react";
 import {
@@ -7,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
+import { getEquivalentPath } from "@/utils/routes";
 
 const languages = [
   { code: 'lt', name: 'LT', flag: '🇱🇹' },
@@ -15,8 +17,20 @@ const languages = [
 
 export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
   
   const currentLanguage = languages.find(lang => lang.code === language);
+
+  const handleLanguageChange = (newLanguage: 'lt' | 'en') => {
+    setLanguage(newLanguage);
+    
+    // Navigate to the equivalent path in the new language
+    const newPath = getEquivalentPath(location.pathname, newLanguage);
+    if (newPath !== location.pathname) {
+      navigate(newPath);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -31,7 +45,7 @@ export function LanguageSwitcher() {
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => setLanguage(lang.code as any)}
+            onClick={() => handleLanguageChange(lang.code as any)}
             className="flex items-center gap-2 cursor-pointer"
           >
             <span>{lang.flag}</span>

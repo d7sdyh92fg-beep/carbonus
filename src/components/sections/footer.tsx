@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslations } from "@/hooks/use-translations";
+import { getRoute } from "@/utils/routes";
 
 export function Footer() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
 
@@ -62,35 +63,10 @@ export function Footer() {
     }
   };
 
-  const handleLinkClick = (link: string) => {
-    if (link === "Automobiliai") {
-      navigate('/automobiliai');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "Pradžia") {
-      navigate('/');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "Apie mus") {
-      navigate('/apie-mus');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "Kontaktai") {
-      navigate('/kontaktai');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "DUK") {
-      navigate('/duk');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "Privatumo politika") {
-      navigate('/privatumo-politika');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "Nuomos sutartis") {
-      navigate('/nuomos-sutartis');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (link === "Patarimai ir gidas") {
-      navigate('/naujienos');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      // For other links, scroll to sections or handle as needed
-      console.log(`Navigate to: ${link}`);
-    }
+  const handleLinkClick = (routeKey: keyof typeof import('@/utils/routes').routes) => {
+    const path = getRoute(routeKey, language);
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -138,22 +114,22 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-primary">{t('footer.quickLinks.title')}</h4>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleLinkClick("Pradžia")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("home")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.home')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("Automobiliai")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("cars")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.cars')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("Apie mus")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("about")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.about')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("Kontaktai")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("contact")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.contact')}
                 </button>
               </li>
@@ -165,22 +141,22 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-primary">{t('footer.support.title')}</h4>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleLinkClick("DUK")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("faq")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.faq')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("Privatumo politika")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("privacy")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.privacy')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("Nuomos sutartis")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("leaseAgreement")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.terms')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("Patarimai ir gidas")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("blog")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.blog')}
                 </button>
               </li>

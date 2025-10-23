@@ -5,6 +5,7 @@ import { Menu, X, User, LogOut, Shield } from "lucide-react";
 import { LanguageSwitcher } from "./language-switcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "@/hooks/use-translations";
+import { getRoute } from "@/utils/routes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,9 +23,10 @@ export function Navigation({ logo }: NavigationProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (ltPath: string, enPath: string) => 
+    location.pathname === ltPath || location.pathname === enPath;
 
   const handleNavigate = (href: string) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -32,12 +34,12 @@ export function Navigation({ logo }: NavigationProps) {
   };
 
   const navItems = [
-    { name: t('nav.home'), href: "/" },
-    { name: t('nav.cars'), href: "/automobiliai" },
-    { name: t('nav.about'), href: "/apie-mus" },
-    { name: t('nav.contact'), href: "/kontaktai" },
-    { name: t('nav.faq'), href: "/duk" },
-    { name: t('nav.blog'), href: "/naujienos" },
+    { name: t('nav.home'), href: getRoute('home', language) },
+    { name: t('nav.cars'), href: getRoute('cars', language) },
+    { name: t('nav.about'), href: getRoute('about', language) },
+    { name: t('nav.contact'), href: getRoute('contact', language) },
+    { name: t('nav.faq'), href: getRoute('faq', language) },
+    { name: t('nav.blog'), href: getRoute('blog', language) },
   ];
 
   return (
@@ -64,7 +66,7 @@ export function Navigation({ logo }: NavigationProps) {
                   to={item.href}
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActive(item.href)
+                    location.pathname === item.href
                       ? "text-primary border-b-2 border-primary pb-1"
                       : "text-foreground"
                   }`}
@@ -125,7 +127,7 @@ export function Navigation({ logo }: NavigationProps) {
                   key={item.name}
                   to={item.href}
                   className={`text-sm font-medium transition-colors hover:text-primary block px-3 py-2 ${
-                    isActive(item.href) ? "text-primary" : "text-foreground"
+                    location.pathname === item.href ? "text-primary" : "text-foreground"
                   }`}
                   onClick={() => {
                     setIsOpen(false);
