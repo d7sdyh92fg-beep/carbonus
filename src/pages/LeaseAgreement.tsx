@@ -18,7 +18,22 @@ import {
 import { useTranslations } from "@/hooks/use-translations";
 
 const LeaseAgreement = () => {
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
+
+  // Dynamic PDF selection based on language
+  const pdfFileName = language === 'en' 
+    ? '/carbonus-rental-agreement.pdf' 
+    : '/carbonus-nuomos-sutartis.pdf';
+
+  const pdfDisplayName = language === 'en'
+    ? 'Carbonus-Rental-Agreement.pdf'
+    : 'Carbonus-Nuomos-Sutartis.pdf';
+
+  // Dynamic URL based on language
+  const baseUrl = 'https://carbonus.lt';
+  const pageUrl = language === 'en' 
+    ? `${baseUrl}/rental-agreement`
+    : `${baseUrl}/nuomos-sutartis`;
 
   useEffect(() => {
     document.title = t('leaseAgreement.meta.title');
@@ -28,10 +43,12 @@ const LeaseAgreement = () => {
       metaDescription.setAttribute('content', t('leaseAgreement.meta.description'));
     }
     
-    const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      canonical.setAttribute('href', 'https://carbonus.lt/nuomos-sutartis');
+    const canonical = document.querySelector('link[rel="canonical"]') || document.createElement('link');
+    if (!canonical.parentNode) {
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
     }
+    canonical.setAttribute('href', pageUrl);
     
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
@@ -40,9 +57,34 @@ const LeaseAgreement = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://carbonus.lt/nuomos-sutartis');
+      ogUrl.setAttribute('content', pageUrl);
     }
-  }, [t]);
+
+    // Add hreflang tags for SEO
+    const hreflangLt = document.querySelector('link[hreflang="lt"]') || document.createElement('link');
+    if (!hreflangLt.parentNode) {
+      hreflangLt.setAttribute('rel', 'alternate');
+      hreflangLt.setAttribute('hreflang', 'lt');
+      document.head.appendChild(hreflangLt);
+    }
+    hreflangLt.setAttribute('href', `${baseUrl}/nuomos-sutartis`);
+
+    const hreflangEn = document.querySelector('link[hreflang="en"]') || document.createElement('link');
+    if (!hreflangEn.parentNode) {
+      hreflangEn.setAttribute('rel', 'alternate');
+      hreflangEn.setAttribute('hreflang', 'en');
+      document.head.appendChild(hreflangEn);
+    }
+    hreflangEn.setAttribute('href', `${baseUrl}/rental-agreement`);
+
+    const hreflangDefault = document.querySelector('link[hreflang="x-default"]') || document.createElement('link');
+    if (!hreflangDefault.parentNode) {
+      hreflangDefault.setAttribute('rel', 'alternate');
+      hreflangDefault.setAttribute('hreflang', 'x-default');
+      document.head.appendChild(hreflangDefault);
+    }
+    hreflangDefault.setAttribute('href', `${baseUrl}/nuomos-sutartis`);
+  }, [t, language, pageUrl]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -63,8 +105,8 @@ const LeaseAgreement = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => {
               const link = document.createElement('a');
-              link.href = '/carbonus-nuomos-sutartis.pdf';
-              link.download = 'Carbonus-Nuomos-Sutartis.pdf';
+              link.href = pdfFileName;
+              link.download = pdfDisplayName;
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
@@ -73,7 +115,7 @@ const LeaseAgreement = () => {
               {t('leaseAgreement.hero.downloadPdf')}
             </Button>
             <Button variant="outline" size="lg" onClick={() => {
-              const printWindow = window.open('/carbonus-nuomos-sutartis.pdf', '_blank');
+              const printWindow = window.open(pdfFileName, '_blank');
               if (printWindow) {
                 printWindow.onload = () => {
                   printWindow.print();

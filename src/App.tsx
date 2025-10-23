@@ -48,6 +48,8 @@ const App = () => (
             <Route path="/duk" element={<FAQ />} />
             <Route path="/privatumo-politika" element={<PrivacyPolicy />} />
             <Route path="/nuomos-sutartis" element={<LeaseAgreement />} />
+            <Route path="/rental-agreement" element={<LeaseAgreement />} />
+            <Route path="/lease-agreement" element={<LeaseAgreement />} />
             <Route path="/automobiliai/:id" element={<CarDetail />} />
             <Route path="/rezervacija/:carId/atsakomybe" element={<ReservationInsurance />} />
               <Route path="/rezervacija/:carId/paslaugos" element={<ReservationServices />} />
