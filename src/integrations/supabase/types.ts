@@ -544,6 +544,29 @@ export type Database = {
             }
             Returns: string
           }
+      create_reservation: {
+        Args: {
+          p_car_id: string
+          p_car_name: string
+          p_customer_id: string
+          p_daily_rate: number
+          p_deposit_amount: number
+          p_end_date: string
+          p_payment_method: string
+          p_payment_provider: string
+          p_pickup_date: string
+          p_pickup_time: string
+          p_pricing_notes: string
+          p_rental_days: number
+          p_return_date: string
+          p_return_time: string
+          p_start_date: string
+          p_status: string
+          p_total_amount: number
+          p_total_rental_cost: number
+        }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

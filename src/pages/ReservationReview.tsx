@@ -218,18 +218,36 @@ export default function ReservationReview() {
         })(),
       };
 
-      const { data: reservation, error: reservationError } = await supabase
-        .from('reservations')
-        .insert([reservationData])
-        .select()
-        .single();
+      // Use RPC to create reservation (bypasses RLS SELECT restriction)
+      const { data: reservationId, error: reservationError } = await supabase.rpc('create_reservation', {
+        p_customer_id: customerId,
+        p_car_name: bookingData.carName,
+        p_car_id: bookingData.carId,
+        p_start_date: bookingData.startDate,
+        p_end_date: bookingData.endDate,
+        p_pickup_date: bookingData.startDate,
+        p_pickup_time: bookingData.pickupTime || '10:00',
+        p_return_date: bookingData.endDate,
+        p_return_time: bookingData.returnTime || '10:00',
+        p_rental_days: bookingData.rentalDays,
+        p_daily_rate: dailyRate,
+        p_total_rental_cost: totalAmount,
+        p_deposit_amount: 0,
+        p_total_amount: totalAmount,
+        p_status: 'awaiting_payment',
+        p_payment_method: paymentMethod,
+        p_payment_provider: 'stripe',
+        p_pricing_notes: reservationData.pricing_notes,
+      });
 
-      if (reservationError) throw reservationError;
+      if (reservationError || !reservationId) {
+        throw reservationError || new Error('No reservation ID returned');
+      }
 
       // Process Stripe payment - for pay_at_counter, only charge 1 day rate
       const stripeRentalAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
       const stripeDepositAmount = 0;
-      await processStripePayment(reservation.id, stripeRentalAmount, stripeDepositAmount);
+      await processStripePayment(reservationId, stripeRentalAmount, stripeDepositAmount);
 
       // Send notification email
       try {
