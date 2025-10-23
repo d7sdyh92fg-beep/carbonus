@@ -12,12 +12,15 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
-import { lt } from 'date-fns/locale';
+import { lt, enUS } from 'date-fns/locale';
+import { useTranslations } from '@/hooks/use-translations';
+import { getRoute } from '@/utils/routes';
 
 export default function ReservationReview() {
   const navigate = useNavigate();
   const { bookingData, getTotalPrice, clearBooking } = useBooking();
   const { toast } = useToast();
+  const { t, language } = useTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
   const [paymentProvider, setPaymentProvider] = useState<'stripe'>('stripe');
@@ -45,9 +48,10 @@ export default function ReservationReview() {
     window.scrollTo(0, 0);
     
     if (!bookingData) {
-      navigate('/automobiliai');
+      const carsRoute = language === 'en' ? '/cars' : '/automobiliai';
+      navigate(carsRoute);
     }
-  }, [bookingData, navigate]);
+  }, [bookingData, navigate, language]);
 
   if (!bookingData) return null;
 
@@ -173,14 +177,18 @@ export default function ReservationReview() {
           const notes: string[] = [];
           
           if (bookingData.insurance) {
-            notes.push(`Draudimas: ${bookingData.insurance.title} (€${bookingData.insurance.pricePerDay}/diena, Išskaita €${bookingData.insurance.excess})`);
+            notes.push(t('review.pricingNoteInsurance')
+              .replace('{title}', bookingData.insurance.title)
+              .replace('{pricePerDay}', bookingData.insurance.pricePerDay.toString())
+              .replace('{excess}', bookingData.insurance.excess.toString())
+            );
           }
           
           if (bookingData.services && bookingData.services.length > 0) {
             const servicesList = bookingData.services
-              .map(s => `${s.title} (€${s.price}${s.unit === 'perDay' ? '/diena' : ''})`)
+              .map(s => `${s.title} (€${s.price}${s.unit === 'perDay' ? t('review.perDay') : ''})`)
               .join(', ');
-            notes.push(`Papildomos paslaugos: ${servicesList}`);
+            notes.push(t('review.pricingNoteServices').replace('{services}', servicesList));
           }
           
           return notes.length > 0 ? notes.join('. ') : null;
@@ -222,8 +230,8 @@ export default function ReservationReview() {
     } catch (error: any) {
       console.error('Booking error:', error);
       toast({
-        title: 'Klaida',
-        description: `Nepavyko sukurti rezervacijos: ${error.message}`,
+        title: t('review.errorTitle'),
+        description: t('review.errorDescription').replace('{error}', error.message),
         variant: 'destructive',
       });
     } finally {
@@ -239,6 +247,7 @@ export default function ReservationReview() {
   const depositAmount = 200;
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
   const displayAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
+  const dateLocale = language === 'en' ? enUS : lt;
 
   return (
     <div className="min-h-screen bg-background">
@@ -253,11 +262,11 @@ export default function ReservationReview() {
               className="gap-2"
             >
               <ChevronLeft className="h-4 w-4" />
-              Grįžti
+              {t('review.back')}
             </Button>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">
-                {paymentMethod === 'pay_at_counter' ? 'Rezervacijos mokestis' : 'Viso mokėti'}
+                {paymentMethod === 'pay_at_counter' ? t('review.reservationFee') : t('review.totalToPay')}
               </p>
               <p className="text-2xl font-bold text-primary">
                 {displayAmount.toFixed(2)} €
@@ -273,9 +282,9 @@ export default function ReservationReview() {
           {/* Form */}
           <div className="lg:col-span-2">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-4">Peržiūrėkite užsakymą</h1>
+              <h1 className="text-3xl font-bold mb-4">{t('review.reviewTitle')}</h1>
               <p className="text-muted-foreground">
-                Užpildykite informaciją ir užbaikite užsakymą
+                {t('review.reviewSubtitle')}
               </p>
             </div>
 
@@ -284,7 +293,7 @@ export default function ReservationReview() {
               <Card className="p-6">
                 <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
                   <User className="h-5 w-5" />
-                  Asmeninė informacija
+                  {t('review.personalInfo.title')}
                 </h3>
                 
                 {/* Corporate checkbox */}
@@ -294,11 +303,11 @@ export default function ReservationReview() {
                     checked={isCorporate}
                     onCheckedChange={(checked) => setIsCorporate(checked as boolean)}
                   />
-                  <Label htmlFor="corporate">Nuomoju kaip įmonė</Label>
+                  <Label htmlFor="corporate">{t('review.corporateLabel')}</Label>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="firstName">Vardas *</Label>
+                    <Label htmlFor="firstName">{t('review.personalInfo.firstName')}</Label>
                     <Input
                       id="firstName"
                       name="firstName"
@@ -308,7 +317,7 @@ export default function ReservationReview() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="lastName">Pavardė *</Label>
+                    <Label htmlFor="lastName">{t('review.personalInfo.lastName')}</Label>
                     <Input
                       id="lastName"
                       name="lastName"
@@ -318,7 +327,7 @@ export default function ReservationReview() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">El. paštas *</Label>
+                    <Label htmlFor="email">{t('review.personalInfo.email')}</Label>
                     <Input
                       id="email"
                       name="email"
@@ -329,7 +338,7 @@ export default function ReservationReview() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone">Telefonas *</Label>
+                    <Label htmlFor="phone">{t('review.personalInfo.phone')}</Label>
                     <Input
                       id="phone"
                       name="phone"
@@ -341,14 +350,14 @@ export default function ReservationReview() {
                   </div>
 
                   <div className="col-span-2">
-                    <Label htmlFor="address">Gyvenamasis adresas *</Label>
+                    <Label htmlFor="address">{t('review.personalInfo.residentialAddress')}</Label>
                     <Input
                       id="address"
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
                       required
-                      placeholder="Gatvė, namo nr., miestas"
+                      placeholder={t('review.personalInfo.residentialAddressPlaceholder')}
                     />
                   </div>
                 </div>
@@ -360,11 +369,11 @@ export default function ReservationReview() {
                     <div>
                       <h4 className="font-semibold text-base mb-4 flex items-center gap-2">
                         <FileText className="h-5 w-5" />
-                        Įmonės informacija
+                        {t('review.corporateInfo.title')}
                       </h4>
                       <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
-                      <Label htmlFor="companyName">Įmonės pavadinimas *</Label>
+                      <Label htmlFor="companyName">{t('review.corporateInfo.name')}</Label>
                       <Input
                         id="companyName"
                         name="companyName"
@@ -374,7 +383,7 @@ export default function ReservationReview() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="companyCode">Įmonės kodas *</Label>
+                      <Label htmlFor="companyCode">{t('review.corporateInfo.code')}</Label>
                       <Input
                         id="companyCode"
                         name="companyCode"
@@ -384,7 +393,7 @@ export default function ReservationReview() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="vatCode">PVM kodas</Label>
+                      <Label htmlFor="vatCode">{t('review.corporateInfo.vat')}</Label>
                       <Input
                         id="vatCode"
                         name="vatCode"
@@ -402,24 +411,24 @@ export default function ReservationReview() {
               <Card className="p-6">
                 <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
                   <CreditCard className="h-5 w-5" />
-                  Mokėjimo būdas
+                  {t('review.paymentMethod.title')}
                 </h3>
                 <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'online' | 'pay_at_counter')}>
                   <div className="flex items-center space-x-2 mb-4">
                     <RadioGroupItem value="online" id="online" />
                     <Label htmlFor="online" className="cursor-pointer">
-                      <span className="font-medium">Mokėjimas internetu</span>
+                      <span className="font-medium">{t('review.onlinePayment')}</span>
                       <span className="text-sm text-muted-foreground block">
-                        Visa, Mastercard, Apple Pay, Google Pay
+                        {t('review.paymentDescription')}
                       </span>
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
                     <Label htmlFor="pay_at_counter" className="cursor-pointer">
-                      <span className="font-medium">Mokėjimas vietoje</span>
+                      <span className="font-medium">{t('review.payAtCounter')}</span>
                       <span className="text-sm text-muted-foreground block">
-                        Rezervacijos mokestis: {(bookingData.basePrice / bookingData.rentalDays).toFixed(2)} € (1 dienos kaina)
+                        {t('review.reservationFeeAmount').replace('{amount}', (bookingData.basePrice / bookingData.rentalDays).toFixed(2))}
                       </span>
                     </Label>
                   </div>
@@ -432,7 +441,7 @@ export default function ReservationReview() {
                 size="lg"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Vykdoma...' : `Mokėti ${displayAmount.toFixed(2)} €`}
+                {isSubmitting ? t('review.processing') : t('review.payButton').replace('{amount}', displayAmount.toFixed(2))}
               </Button>
             </form>
           </div>
@@ -440,7 +449,7 @@ export default function ReservationReview() {
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-24">
-              <h3 className="font-semibold text-lg mb-4">Jūsų užsakymas</h3>
+              <h3 className="font-semibold text-lg mb-4">{t('review.summary.title')}</h3>
               
               {/* Car Image */}
               {bookingData.carImage && (
@@ -456,10 +465,10 @@ export default function ReservationReview() {
               <div className="space-y-1 mb-4">
                 <p className="font-medium text-base">{bookingData.carName}</p>
                 <p className="text-sm text-muted-foreground">
-                  {format(new Date(bookingData.startDate), 'MMM d', { locale: lt })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: lt })}
+                  {format(new Date(bookingData.startDate), 'MMM d', { locale: dateLocale })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: dateLocale })}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {bookingData.rentalDays} {bookingData.rentalDays === 1 ? 'diena' : 'dienos'}
+                  {bookingData.rentalDays} {bookingData.rentalDays === 1 ? t('review.day') : t('review.days')}
                 </p>
               </div>
 
@@ -467,13 +476,13 @@ export default function ReservationReview() {
 
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
-                  <span>Nuomos kaina</span>
+                  <span>{t('review.summary.rental')}</span>
                   <span>{bookingData.basePrice.toFixed(2)} €</span>
                 </div>
                 
                 {servicesTotal > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span>Papildomos paslaugos</span>
+                    <span>{t('review.summary.services')}</span>
                     <span>{servicesTotal.toFixed(2)} €</span>
                   </div>
                 )}
@@ -482,7 +491,7 @@ export default function ReservationReview() {
               <Separator className="my-4" />
 
               <div className="flex justify-between font-bold text-lg mb-6">
-                <span>Suma</span>
+                <span>{t('review.summary.total')}</span>
                 <span className="text-primary">{totalPrice.toFixed(2)} €</span>
               </div>
 
@@ -490,18 +499,18 @@ export default function ReservationReview() {
               <div className="space-y-4">
                 <div className="bg-muted/30 p-3 rounded-md">
                   <p className="text-xs text-muted-foreground">
-                    Užstatas €200 bus rezervuotas jūsų kortelėje (pre-autorizacija), bet nebus nurašytas. Rezervacija bus automatiškai atšaukta po automobilio grąžinimo.
+                    {t('review.depositInfo')}
                   </p>
                 </div>
                 
                 {paymentMethod === 'pay_at_counter' && (
                   <div className="bg-primary/5 border border-primary/20 p-4 rounded-md">
-                    <p className="text-sm font-semibold text-primary mb-2">Mokėjimas vietoje</p>
+                    <p className="text-sm font-semibold text-primary mb-2">{t('review.payAtCounterTitle')}</p>
                     <p className="text-xs text-muted-foreground mb-2">
-                      Dabar mokėsite {dailyRate.toFixed(2)} € rezervacijos mokestį (1 dienos kaina).
+                      {t('review.payAtCounterNow').replace('{amount}', dailyRate.toFixed(2))}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Automobilio atsiėmimo metu mokėsite: {(totalPrice - dailyRate + depositAmount).toFixed(2)} € (likusi nuomos suma + užstatas).
+                      {t('review.payAtCounterLater').replace('{amount}', (totalPrice - dailyRate + depositAmount).toFixed(2))}
                     </p>
                   </div>
                 )}
