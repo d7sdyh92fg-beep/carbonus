@@ -218,9 +218,17 @@ export default function ReservationServices() {
               
               <div className="space-y-1 mb-4">
                 <p className="font-medium text-base">{bookingData.carName}</p>
-                <p className="text-sm text-muted-foreground">
-                  {format(new Date(bookingData.startDate), 'MMM d', { locale: dateLocale })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: dateLocale })}
-                </p>
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">
+                    {format(new Date(bookingData.startDate), 'MMM d', { locale: dateLocale })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: dateLocale })}
+                  </p>
+                  {bookingData.pickupTime && bookingData.returnTime && (
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{t('services.pickupLabel')} {bookingData.pickupTime}</span>
+                      <span>{t('services.returnLabel')} {bookingData.returnTime}</span>
+                    </div>
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">
                   {bookingData.rentalDays} {bookingData.rentalDays === 1 ? t('services.day') : t('services.days')}
                 </p>

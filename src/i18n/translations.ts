@@ -775,6 +775,8 @@ export const translations = {
       oneTime: "vienkartinis",
       day: "diena",
       days: "dienos",
+      pickupLabel: "Paėmimas:",
+      returnLabel: "Grąžinimas:",
       summary: {
         title: "Jūsų užsakymas",
         rentalPrice: "Nuomos kaina",
@@ -1011,6 +1013,8 @@ export const translations = {
       pricingNoteInsurance: "Draudimas: {title} (€{pricePerDay}/diena, Išskaita €{excess})",
       pricingNoteServices: "Papildomos paslaugos: {services}",
       perDay: "/diena",
+      pickupLabel: "Paėmimas:",
+      returnLabel: "Grąžinimas:",
       summary: {
         title: "Užsakymo santrauka",
         car: "Automobilis:",
@@ -2501,6 +2505,8 @@ export const translations = {
       oneTime: "one-time",
       day: "day",
       days: "days",
+      pickupLabel: "Pickup:",
+      returnLabel: "Return:",
       summary: {
         title: "Your Order",
         rentalPrice: "Rental Price",
@@ -2703,6 +2709,8 @@ export const translations = {
       pricingNoteInsurance: "Insurance: {title} (€{pricePerDay}/day, Excess €{excess})",
       pricingNoteServices: "Additional Services: {services}",
       perDay: "/day",
+      pickupLabel: "Pickup:",
+      returnLabel: "Return:",
       summary: {
         title: "Order Summary",
         car: "Car:",

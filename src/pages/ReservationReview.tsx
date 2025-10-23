@@ -464,9 +464,17 @@ export default function ReservationReview() {
               
               <div className="space-y-1 mb-4">
                 <p className="font-medium text-base">{bookingData.carName}</p>
-                <p className="text-sm text-muted-foreground">
-                  {format(new Date(bookingData.startDate), 'MMM d', { locale: dateLocale })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: dateLocale })}
-                </p>
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">
+                    {format(new Date(bookingData.startDate), 'MMM d', { locale: dateLocale })} - {format(new Date(bookingData.endDate), 'MMM d, yyyy', { locale: dateLocale })}
+                  </p>
+                  {bookingData.pickupTime && bookingData.returnTime && (
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{t('review.pickupLabel')} {bookingData.pickupTime}</span>
+                      <span>{t('review.returnLabel')} {bookingData.returnTime}</span>
+                    </div>
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">
                   {bookingData.rentalDays} {bookingData.rentalDays === 1 ? t('review.day') : t('review.days')}
                 </p>
