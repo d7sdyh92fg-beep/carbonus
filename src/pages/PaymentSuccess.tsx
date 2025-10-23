@@ -90,8 +90,8 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <Clock className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-spin" />
-            <h2 className="text-2xl font-semibold mb-2">{t('payment.success.checking')}</h2>
-            <p className="text-muted-foreground">{t('payment.success.pleaseWait')}</p>
+            <h2 className="text-2xl font-semibold mb-2">{t('payment.loadingTitle')}</h2>
+            <p className="text-muted-foreground">{t('payment.loadingDesc')}</p>
           </div>
         );
       
@@ -99,12 +99,12 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <Clock className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
-            <h2 className="text-2xl font-semibold mb-2">{t('payment.success.processing')}</h2>
+            <h2 className="text-2xl font-semibold mb-2">{t('payment.processingTitle')}</h2>
             <p className="text-muted-foreground mb-4">
-              {t('payment.success.processingMessage')}
+              {t('payment.processingDesc')}
             </p>
             <p className="text-sm text-muted-foreground">
-              {t('payment.success.processingTime')}
+              {t('payment.processingNote')}
             </p>
           </div>
         );
@@ -113,19 +113,19 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-green-700">{t('payment.success.title')}</h2>
+            <h2 className="text-2xl font-semibold mb-2 text-green-700">{t('payment.successTitle')}</h2>
             <p className="text-muted-foreground mb-4">
-              {t('payment.success.message')}
+              {t('payment.successDesc')}
             </p>
             {reservationId && (
               <p className="text-sm text-muted-foreground mb-4">
-                {t('payment.success.reservationNumber')} <strong>{reservationId}</strong>
+                {t('payment.reservationId')} <strong>{reservationId}</strong>
               </p>
             )}
             <div className="space-y-2 text-sm text-muted-foreground">
-              <p>📧 {t('payment.success.emailSent')}</p>
-              <p>📞 {t('payment.success.contactDetails')}</p>
-              <p>🚗 {t('payment.success.carReady')}</p>
+              <p>📧 {t('payment.confirmEmail')}</p>
+              <p>📞 {t('payment.willContact')}</p>
+              <p>🚗 {t('payment.carReady')}</p>
             </div>
           </div>
         );
@@ -135,13 +135,13 @@ const PaymentSuccess: React.FC = () => {
         return (
           <div className="text-center">
             <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-red-700">{t('payment.success.error')}</h2>
+            <h2 className="text-2xl font-semibold mb-2 text-red-700">{t('payment.errorTitle')}</h2>
             <p className="text-muted-foreground mb-4">
-              {t('payment.success.errorMessage')}
+              {t('payment.errorDesc')}
             </p>
             <div className="text-sm text-muted-foreground">
-              <p>📞 {t('payment.success.phone')}</p>
-              <p>📧 {t('payment.success.email')}</p>
+              <p>📞 {t('payment.phone')}</p>
+              <p>📧 {t('payment.email')}</p>
             </div>
           </div>
         );
@@ -153,7 +153,7 @@ const PaymentSuccess: React.FC = () => {
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-center">
-            {provider === 'stripe' ? 'Stripe' : 'Paysera'} {t('payment.success.paymentTitle')}
+            {provider === 'stripe' ? 'Stripe' : 'Paysera'} {t('payment.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -165,14 +165,14 @@ const PaymentSuccess: React.FC = () => {
               variant="outline"
               className="flex-1"
             >
-              {t('payment.success.backHome')}
+              {t('payment.backHome')}
             </Button>
             {status === 'success' && (
               <Button
                 onClick={() => navigate('/cars')}
                 className="flex-1"
               >
-                {t('payment.success.viewCars')}
+                {t('payment.viewCars')}
               </Button>
             )}
           </div>
