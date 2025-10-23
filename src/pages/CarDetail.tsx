@@ -180,7 +180,7 @@ const CarDetail = () => {
         kiaCeedNewFrontEnhanced,
         kiaCeedNewRearEnhanced
       ],
-      category: "Hečbekas",
+      category: "Hecbekas",
       passengers: 5,
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
