@@ -179,7 +179,7 @@ const Cars = () => {
       name: "KIA CEED",
       price: "nuo 30 EUR",
       image: kiaCeedHatchbackSideGrayBrown,
-      category: "Hečbekas",
+      category: "Hecbekas",
       passengers: 5,
       fuel: "Dyzelinas",
       transmission: "Mechaninė",
@@ -193,7 +193,7 @@ const Cars = () => {
     }
   ];
 
-  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hečbekas"];
+  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas"];
 
   // Filter cars based on search term and selected category
   const filteredCars = cars.filter(car => {
@@ -243,7 +243,7 @@ const Cars = () => {
                     <SelectItem value="all">{t('car.categories.all')}</SelectItem>
                     {categories.filter(cat => cat !== "all").map((category) => (
                       <SelectItem key={category} value={category}>
-                        {t(`car.categories.${category.toLowerCase()}`)}
+                        {t(`car.categories.${normalizeForTranslation(category)}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -286,7 +286,7 @@ const Cars = () => {
                     />
                     <div className="absolute top-4 left-4">
                       <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                        {t(`car.categories.${car.category.toLowerCase()}`)}
+                        {t(`car.categories.${normalizeForTranslation(car.category)}`)}
                       </Badge>
                     </div>
                     <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
