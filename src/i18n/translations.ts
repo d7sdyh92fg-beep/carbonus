@@ -968,24 +968,190 @@ export const translations = {
 
     leaseAgreement: {
       title: "Nuomos sutartis",
-      metaDescription: "Carbonus automobilių nuomos sutarties sąlygos ir taisyklės",
-      downloadButton: "Atsisiųsti PDF",
-      printButton: "Spausdinti",
+      meta: {
+        title: "Nuomos sutartis | Carbonus automobilių nuoma",
+        description: "Carbonus automobilių nuomos sutarties sąlygos. Susipažinkite su nuomos taisyklėmis, draudimo sąlygomis ir atsakomybėmis.",
+        ogTitle: "Nuomos sutartis - Carbonus"
+      },
+      hero: {
+        badge: "SUTARTIS",
+        title: "Automobilių nuomos sutartis",
+        description: "Susipažinkite su mūsų nuomos sąlygomis ir taisyklėmis. Galite atsisiųsti PDF formatą arba skaityti žemiau.",
+        downloadPdf: "Atsisiųsti PDF",
+        print: "Spausdinti"
+      },
       notice: {
         title: "Svarbi informacija",
-        content: "Prieš rezervuojant automobilį, būtina susipažinti su nuomos sąlygomis. Rezervacijos metu patvirtinsite, kad sutinkate su šiomis sąlygomis.",
+        text: "Prieš rezervuojant automobilį, būtina susipažinti su nuomos sąlygomis. Rezervacijos metu patvirtinsite, kad sutinkate su šiomis sąlygomis."
+      },
+      navigation: {
+        title: "Sutarties turinys"
       },
       sections: {
-        title: "Sutarties turinys",
-        reservation: "Rezervacija ir užsakymas",
-        documents: "Dokumentai ir reikalavimai",
-        payment: "Apmokėjimas ir kainos",
-        insurance: "Draudimas ir saugumas",
-        usage: "Automobilio naudojimas",
-        return: "Automobilio grąžinimas",
-        penalties: "Pažeidimai ir baudos",
-        contact: "Kontaktai",
-      },
+        reservation: {
+          title: "1. Rezervacija ir užsakymas",
+          ways: {
+            title: "1.1 Rezervacijos būdai",
+            text: "Automobilį galite rezervuoti trimis būdais:",
+            items: [
+              "Mūsų internetinėje svetainėje www.carbonus.lt (rezervacija veikia 24/7)",
+              "Paskambinę telefonu +370 698 18 781",
+              "El. paštu info@carbonus.lt",
+              "Atvykę į automobilio atsiėmimo vietą"
+            ]
+          },
+          cancellation: {
+            title: "1.2 Rezervacijos atšaukimas",
+            text: "Rezervaciją galite atšaukti nemokamai, jei liko daugiau nei 24 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau, taikomas 20% mokestis nuo bendros užsakymo sumos. Jei neatvykstate neatšaukę rezervacijos (\"no-show\"), imamas mokestis už pirmąją nuomos dieną."
+          },
+          validity: {
+            title: "1.3 Rezervacijos galiojimas",
+            text: "Rezervacija galioja 24 val. nuo jos atlikimo momento. Po šio laikotarpio ji automatiškai anuliuojama."
+          },
+          changes: {
+            title: "1.4 Rezervacijos keitimas",
+            text: "Rezervacijos detales galite keisti iki 24 val. prieš automobilio atsiėmimą. Susisiekite telefonu arba el. paštu."
+          }
+        },
+        documents: {
+          title: "2. Dokumentai ir reikalavimai",
+          required: {
+            title: "2.1 Reikalingi dokumentai",
+            items: [
+              "ES šalyje išduotas ir galiojantis vairuotojo pažymėjimas (ne mažiau kaip 2 metų vairavimo stažas)",
+              "Asmens dokumentas (pasas arba ID kortelė)",
+              "Kreditinė kortelė užstato rezervavimui (jei užstatas nėra sumokėtas iš anksto kartu su nuomos mokesčiu)"
+            ]
+          },
+          age: {
+            title: "2.2 Amžiaus reikalavimai",
+            items: [
+              "Ekonominės ir kompaktinės klasės automobiliams – nuo 21 m.",
+              "Premium ir Luxury klasės automobiliams – nuo 25 m."
+            ]
+          },
+          foreign: {
+            title: "2.3 Užsienio pažymėjimai",
+            text: "Priimami ES šalių ir tarptautiniai vairuotojo pažymėjimai. Pažymėjimas turi būti galiojantis ir išduotas ne mažiau kaip prieš 2 metus."
+          },
+          card: {
+            title: "2.4 Kreditinė kortelė",
+            text: "Kreditinė kortelė būtina užstato rezervavimui. Debetinės kortelės nepriimamos, išskyrus atvejus, kai rezervacijos mokestis ir nuomos mokestis sumokami iš anksto arba atsiimant automobilį."
+          }
+        },
+        payment: {
+          title: "3. Apmokėjimas ir kainos",
+          methods: {
+            title: "3.1 Apmokėjimo būdai",
+            items: [
+              "Grynieji pinigai",
+              "Banko kortelės (vietoje)",
+              "El. bankininkystės pervedimai",
+              "Internetiniai mokėjimai kortele"
+            ]
+          },
+          structure: {
+            title: "3.2 Kainų sudėtis",
+            text: "Visos nurodytos kainos apima pagrindinius mokesčius. Papildomi mokesčiai taikomi už:",
+            items: [
+              "Vėlavimą grąžinti automobilį",
+              "Kuro papildymą (jei grąžinama ne pilnu baku)",
+              "Automobilio plovimą ar salono valymą",
+              "Rūkymą automobilyje (50 € bauda)",
+              "Kelių rinkliavas",
+              "KET pažeidimus",
+              "Kitas eksploatacines išlaidas (pvz., langų skystis, siurbimas)"
+            ]
+          },
+          deposit: {
+            title: "3.3 Užstatas",
+            text: "Užstato dydis – 200 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais."
+          },
+          hidden: {
+            title: "3.4 Paslėpti mokesčiai",
+            text: "Mes netaikome jokių paslėptų mokesčių. Visi papildomi mokesčiai aiškiai nurodyti sąlygose ir sutartyje."
+          }
+        },
+        insurance: {
+          title: "4. Draudimas ir saugumas",
+          coverage: {
+            title: "4.1 Draudimo aprėptis",
+            text: "Visi automobiliai apdrausti KASKO ir OCTA draudimu. Nuomininko atsakomybės riba priklauso nuo automobilio klasės ir gali būti sumažinta įsigijus papildomą draudimą."
+          },
+          accident: {
+            title: "4.2 Avarijos atveju",
+            text: "Nedelsiant skambinkite:",
+            items: [
+              "Mums – +370 698 18 781 (24/7)",
+              "Policijai – 112"
+            ],
+            note: "Neatidėkite įvykio vietos, kol neatvyks policija."
+          },
+          covered: {
+            title: "4.3 Draudimo dengiama",
+            text: "Draudimas dengia avarijas, vagystes, gaisrus, gamtos stichijų padarinius. Nedengiama: tyčiniai pažeidimai, vairavimas apsvaigus, dalyvavimas lenktynėse."
+          },
+          additional: {
+            title: "4.4 Papildomas draudimas",
+            text: "Galite įsigyti papildomą draudimą, kuris sumažina atsakomybę iki 0 €. Kaina priklauso nuo automobilio klasės ir nuomos trukmės."
+          }
+        },
+        usage: {
+          title: "5. Automobilio naudojimas",
+          abroad: {
+            title: "5.1 Kelionės už Lietuvos ribų",
+            text: "Galite išvykti už Lietuvos ribų, bet reikalingas išankstinis sutikimas:",
+            items: [
+              "ES šalims – 25 €/diena",
+              "Kitoms šalims – individualus susitarimas"
+            ]
+          },
+          mileage: {
+            title: "5.2 Kilometražas",
+            text: "Kilometražas neribojamas visoms automobilių klasėms."
+          },
+          smoking: {
+            title: "5.3 Rūkymas",
+            text: "Rūkymas draudžiamas. Pažeidimo atveju taikoma 50 € bauda."
+          },
+          pets: {
+            title: "5.4 Gyvūnai",
+            text: "Galite vežti gyvūnus, bet reikia pranešti iš anksto. Gyvūnas turi būti vežamas specialioje pernešimo priemonėje."
+          }
+        },
+        return: {
+          title: "6. Automobilio grąžinimas",
+          time: {
+            title: "6.1 Grąžinimo laikas",
+            text: "Automobilį reikia grąžinti sutartyje nurodytu laiku. Už grąžinimą po darbo valandų ar savaitgalį – papildomas 20 € mokestis. Jei vėluojama ilgiau nei 3 val., skaičiuojama papildoma nuomos diena."
+          },
+          fuel: {
+            title: "6.2 Kuras",
+            text: "Su tokiu pačiu kiekiu, koks buvo atsiėmimo metu (dažniausiai – pilnu baku). Už trūkstamą kurą mokama 1,50 €/l."
+          },
+          cleanliness: {
+            title: "6.3 Švara",
+            text: "Automobilis turi būti švarus. Jei stipriai užterštas – taikomas 20 € valymo ir 20 € plovimo mokestis."
+          }
+        },
+        contact: {
+          title: "7. Kontaktai",
+          general: {
+            title: "Bendras kontaktas",
+            phone: "Telefonas:",
+            email: "El. paštas:",
+            hours: "Darbo laikas:",
+            hoursValue: "8:00-17:00 (klientų aptarnavimas)"
+          },
+          emergency: {
+            title: "Avarijų linija",
+            phone: "Telefonas:",
+            availability: "Veikia:",
+            availabilityValue: "24/7",
+            police: "Policija:"
+          }
+        }
+      }
     },
 
     blogPost: {
@@ -2409,25 +2575,191 @@ export const translations = {
 
     // Lease Agreement
     leaseAgreement: {
-      title: "Rental Agreement",
-      metaDescription: "Carbonus car rental agreement terms and conditions",
-      downloadButton: "Download PDF",
-      printButton: "Print",
+      title: "Lease Agreement",
+      meta: {
+        title: "Lease Agreement | Carbonus Car Rental",
+        description: "Carbonus car rental agreement terms. Review rental rules, insurance conditions, and responsibilities.",
+        ogTitle: "Lease Agreement - Carbonus"
+      },
+      hero: {
+        badge: "AGREEMENT",
+        title: "Car Rental Agreement",
+        description: "Review our rental terms and conditions. You can download the PDF format or read below.",
+        downloadPdf: "Download PDF",
+        print: "Print"
+      },
       notice: {
         title: "Important Information",
-        content: "Before booking a car, you must familiarize yourself with the rental terms. When booking, you confirm that you agree with these terms.",
+        text: "Before booking a car, it is essential to review the rental terms. During booking, you will confirm that you agree to these terms."
+      },
+      navigation: {
+        title: "Agreement Contents"
       },
       sections: {
-        title: "Agreement Contents",
-        reservation: "Reservation and Order",
-        documents: "Documents and Requirements",
-        payment: "Payment and Prices",
-        insurance: "Insurance and Security",
-        usage: "Car Usage",
-        return: "Car Return",
-        penalties: "Violations and Penalties",
-        contact: "Contact",
-      },
+        reservation: {
+          title: "1. Reservation and Order",
+          ways: {
+            title: "1.1 Reservation Methods",
+            text: "You can reserve a car in three ways:",
+            items: [
+              "On our website www.carbonus.lt (reservation works 24/7)",
+              "By calling +370 698 18 781",
+              "By email info@carbonus.lt",
+              "By visiting the car pickup location"
+            ]
+          },
+          cancellation: {
+            title: "1.2 Reservation Cancellation",
+            text: "You can cancel the reservation free of charge if more than 24 hours remain until car pickup. If you cancel later, a 20% fee of the total order amount applies. If you don't show up without canceling the reservation (\"no-show\"), a fee for the first rental day is charged."
+          },
+          validity: {
+            title: "1.3 Reservation Validity",
+            text: "The reservation is valid for 24 hours from the moment it is made. After this period, it is automatically canceled."
+          },
+          changes: {
+            title: "1.4 Reservation Changes",
+            text: "You can change reservation details up to 24 hours before car pickup. Contact us by phone or email."
+          }
+        },
+        documents: {
+          title: "2. Documents and Requirements",
+          required: {
+            title: "2.1 Required Documents",
+            items: [
+              "Valid EU driver's license (at least 2 years of driving experience)",
+              "Identity document (passport or ID card)",
+              "Credit card for deposit reservation (if deposit is not paid in advance with rental fee)"
+            ]
+          },
+          age: {
+            title: "2.2 Age Requirements",
+            items: [
+              "Economy and compact class cars – from 21 years old",
+              "Premium and Luxury class cars – from 25 years old"
+            ]
+          },
+          foreign: {
+            title: "2.3 Foreign Licenses",
+            text: "EU country and international driver's licenses are accepted. The license must be valid and issued at least 2 years ago."
+          },
+          card: {
+            title: "2.4 Credit Card",
+            text: "A credit card is required for deposit reservation. Debit cards are not accepted, except when the booking fee and rental fee are paid in advance or upon car pickup."
+          }
+        },
+        payment: {
+          title: "3. Payment and Prices",
+          methods: {
+            title: "3.1 Payment Methods",
+            items: [
+              "Cash",
+              "Bank cards (on-site)",
+              "Electronic banking transfers",
+              "Online card payments"
+            ]
+          },
+          structure: {
+            title: "3.2 Price Structure",
+            text: "All listed prices include basic fees. Additional fees apply for:",
+            items: [
+              "Late car return",
+              "Fuel refill (if not returned with a full tank)",
+              "Car washing or interior cleaning",
+              "Smoking in the car (€50 fine)",
+              "Road tolls",
+              "Traffic violations",
+              "Other operational costs (e.g., windshield fluid, vacuuming)"
+            ]
+          },
+          deposit: {
+            title: "3.3 Deposit",
+            text: "Deposit amount – €200. The deposit is returned within 7 business days after car return, or the same day if paid in cash."
+          },
+          hidden: {
+            title: "3.4 Hidden Fees",
+            text: "We do not charge any hidden fees. All additional fees are clearly stated in the terms and agreement."
+          }
+        },
+        insurance: {
+          title: "4. Insurance and Safety",
+          coverage: {
+            title: "4.1 Insurance Coverage",
+            text: "All cars are insured with KASKO and OCTA insurance. The renter's liability limit depends on the car class and can be reduced by purchasing additional insurance."
+          },
+          accident: {
+            title: "4.2 In Case of Accident",
+            text: "Call immediately:",
+            items: [
+              "Us – +370 698 18 781 (24/7)",
+              "Police – 112"
+            ],
+            note: "Do not leave the accident scene until the police arrive."
+          },
+          covered: {
+            title: "4.3 Insurance Covers",
+            text: "Insurance covers accidents, theft, fire, and natural disasters. Not covered: intentional damage, driving under the influence, participation in races."
+          },
+          additional: {
+            title: "4.4 Additional Insurance",
+            text: "You can purchase additional insurance that reduces liability to €0. The price depends on the car class and rental duration."
+          }
+        },
+        usage: {
+          title: "5. Car Usage",
+          abroad: {
+            title: "5.1 Travel Outside Lithuania",
+            text: "You can travel outside Lithuania, but prior consent is required:",
+            items: [
+              "EU countries – €25/day",
+              "Other countries – individual agreement"
+            ]
+          },
+          mileage: {
+            title: "5.2 Mileage",
+            text: "Unlimited mileage for all car classes."
+          },
+          smoking: {
+            title: "5.3 Smoking",
+            text: "Smoking is prohibited. A €50 fine applies in case of violation."
+          },
+          pets: {
+            title: "5.4 Pets",
+            text: "You can transport pets, but you must inform us in advance. The pet must be transported in a special carrier."
+          }
+        },
+        return: {
+          title: "6. Car Return",
+          time: {
+            title: "6.1 Return Time",
+            text: "The car must be returned at the time specified in the agreement. For returns after business hours or on weekends – an additional €20 fee. If delayed more than 3 hours, an additional rental day is charged."
+          },
+          fuel: {
+            title: "6.2 Fuel",
+            text: "With the same amount as at pickup (usually – full tank). Missing fuel is charged at €1.50/L."
+          },
+          cleanliness: {
+            title: "6.3 Cleanliness",
+            text: "The car must be clean. If heavily soiled – a €20 cleaning and €20 washing fee applies."
+          }
+        },
+        contact: {
+          title: "7. Contact",
+          general: {
+            title: "General Contact",
+            phone: "Phone:",
+            email: "Email:",
+            hours: "Working hours:",
+            hoursValue: "8:00-17:00 (customer service)"
+          },
+          emergency: {
+            title: "Emergency Line",
+            phone: "Phone:",
+            availability: "Available:",
+            availabilityValue: "24/7",
+            police: "Police:"
+          }
+        }
+      }
     },
 
     // Blog Post

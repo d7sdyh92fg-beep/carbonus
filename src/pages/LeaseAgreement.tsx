@@ -15,35 +15,34 @@ import {
   Phone,
   AlertTriangle
 } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 
 const LeaseAgreement = () => {
+  const { t } = useTranslations();
+
   useEffect(() => {
-    // Set page title and meta tags
-    document.title = "Nuomos sutartis | Carbonus automobilių nuoma";
+    document.title = t('leaseAgreement.meta.title');
     
-    // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Carbonus automobilių nuomos sutarties sąlygos. Susipažinkite su nuomos taisyklėmis, draudimo sąlygomis ir atsakomybėmis.');
+      metaDescription.setAttribute('content', t('leaseAgreement.meta.description'));
     }
     
-    // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
       canonical.setAttribute('href', 'https://carbonus.lt/nuomos-sutartis');
     }
     
-    // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Nuomos sutartis - Carbonus');
+      ogTitle.setAttribute('content', t('leaseAgreement.meta.ogTitle'));
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
       ogUrl.setAttribute('content', 'https://carbonus.lt/nuomos-sutartis');
     }
-  }, []);
+  }, [t]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,18 +52,16 @@ const LeaseAgreement = () => {
       <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <Badge variant="outline" className="mb-4">
-            SUTARTIS
+            {t('leaseAgreement.hero.badge')}
           </Badge>
           <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-            Automobilių nuomos sutartis
+            {t('leaseAgreement.hero.title')}
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
-            Susipažinkite su mūsų nuomos sąlygomis ir taisyklėmis. 
-            Galite atsisiųsti PDF formatą arba skaityti žemiau.
+            {t('leaseAgreement.hero.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => {
-              // Create a link element and trigger download
               const link = document.createElement('a');
               link.href = '/carbonus-nuomos-sutartis.pdf';
               link.download = 'Carbonus-Nuomos-Sutartis.pdf';
@@ -73,10 +70,9 @@ const LeaseAgreement = () => {
               document.body.removeChild(link);
             }}>
               <Download className="w-5 h-5 mr-2" />
-              Atsisiųsti PDF
+              {t('leaseAgreement.hero.downloadPdf')}
             </Button>
             <Button variant="outline" size="lg" onClick={() => {
-              // Open PDF in new window and trigger print
               const printWindow = window.open('/carbonus-nuomos-sutartis.pdf', '_blank');
               if (printWindow) {
                 printWindow.onload = () => {
@@ -85,7 +81,7 @@ const LeaseAgreement = () => {
               }
             }}>
               <FileText className="w-5 h-5 mr-2" />
-              Spausdinti
+              {t('leaseAgreement.hero.print')}
             </Button>
           </div>
         </div>
@@ -101,10 +97,9 @@ const LeaseAgreement = () => {
               <div className="flex items-start gap-3">
                 <AlertTriangle className="w-6 h-6 text-amber-600 mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-amber-800 mb-2">Svarbi informacija</h3>
+                  <h3 className="font-semibold text-amber-800 mb-2">{t('leaseAgreement.notice.title')}</h3>
                   <p className="text-amber-700">
-                    Prieš rezervuojant automobilį, būtina susipažinti su nuomos sąlygomis. 
-                    Rezervacijos metu patvirtinsite, kad sutinkate su šiomis sąlygomis.
+                    {t('leaseAgreement.notice.text')}
                   </p>
                 </div>
               </div>
@@ -116,20 +111,19 @@ const LeaseAgreement = () => {
             <CardContent className="p-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5" />
-                Sutarties turinys
+                {t('leaseAgreement.navigation.title')}
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#reservation" className="text-primary hover:underline">1. Rezervacija ir užsakymas</a></li>
-                  <li><a href="#documents" className="text-primary hover:underline">2. Dokumentai ir reikalavimai</a></li>
-                  <li><a href="#payment" className="text-primary hover:underline">3. Apmokėjimas ir kainos</a></li>
-                  <li><a href="#insurance" className="text-primary hover:underline">4. Draudimas ir saugumas</a></li>
+                  <li><a href="#reservation" className="text-primary hover:underline">{t('leaseAgreement.sections.reservation.title')}</a></li>
+                  <li><a href="#documents" className="text-primary hover:underline">{t('leaseAgreement.sections.documents.title')}</a></li>
+                  <li><a href="#payment" className="text-primary hover:underline">{t('leaseAgreement.sections.payment.title')}</a></li>
+                  <li><a href="#insurance" className="text-primary hover:underline">{t('leaseAgreement.sections.insurance.title')}</a></li>
                 </ul>
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#usage" className="text-primary hover:underline">5. Automobilio naudojimas</a></li>
-                  <li><a href="#return" className="text-primary hover:underline">6. Automobilio grąžinimas</a></li>
-                  <li><a href="#penalties" className="text-primary hover:underline">7. Pažeidimai ir baudos</a></li>
-                  <li><a href="#contact" className="text-primary hover:underline">8. Kontaktai</a></li>
+                  <li><a href="#usage" className="text-primary hover:underline">{t('leaseAgreement.sections.usage.title')}</a></li>
+                  <li><a href="#return" className="text-primary hover:underline">{t('leaseAgreement.sections.return.title')}</a></li>
+                  <li><a href="#contact" className="text-primary hover:underline">{t('leaseAgreement.sections.contact.title')}</a></li>
                 </ul>
               </div>
             </CardContent>
@@ -146,35 +140,34 @@ const LeaseAgreement = () => {
                     <Calendar className="w-6 h-6" />
                   </div>
                   <h2 className="text-2xl font-bold text-foreground">
-                    1. Rezervacija ir užsakymas
+                    {t('leaseAgreement.sections.reservation.title')}
                   </h2>
                 </div>
                 
                 <div className="space-y-4 text-muted-foreground">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">1.1 Rezervacijos būdai</h3>
-                    <p>Automobilį galite rezervuoti trimis būdais:</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.reservation.ways.title')}</h3>
+                    <p>{t('leaseAgreement.sections.reservation.ways.text')}</p>
                     <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-                      <li>Mūsų internetinėje svetainėje www.carbonus.lt (rezervacija veikia 24/7)</li>
-                      <li>Paskambinę telefonu +370 698 18 781</li>
-                      <li>El. paštu info@carbonus.lt</li>
-                      <li>Atvykę į automobilio atsiėmimo vietą</li>
+                      {(t('leaseAgreement.sections.reservation.ways.items') as unknown as string[]).map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
                     </ul>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">1.2 Rezervacijos atšaukimas</h3>
-                    <p>Rezervaciją galite atšaukti nemokamai, jei liko daugiau nei 24 val. iki automobilio atsiėmimo. Jei atšaukiate vėliau, taikomas 20% mokestis nuo bendros užsakymo sumos. Jei neatvykstate neatšaukę rezervacijos („no-show"), imamas mokestis už pirmąją nuomos dieną.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.reservation.cancellation.title')}</h3>
+                    <p>{t('leaseAgreement.sections.reservation.cancellation.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">1.3 Rezervacijos galiojimas</h3>
-                    <p>Rezervacija galioja 24 val. nuo jos atlikimo momento. Po šio laikotarpio ji automatiškai anuliuojama.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.reservation.validity.title')}</h3>
+                    <p>{t('leaseAgreement.sections.reservation.validity.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">1.4 Rezervacijos keitimas</h3>
-                    <p>Rezervacijos detales galite keisti iki 24 val. prieš automobilio atsiėmimą. Susisiekite telefonu arba el. paštu.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.reservation.changes.title')}</h3>
+                    <p>{t('leaseAgreement.sections.reservation.changes.text')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -188,36 +181,37 @@ const LeaseAgreement = () => {
                     <FileText className="w-6 h-6" />
                   </div>
                   <h2 className="text-2xl font-bold text-foreground">
-                    2. Dokumentai ir reikalavimai
+                    {t('leaseAgreement.sections.documents.title')}
                   </h2>
                 </div>
                 
                 <div className="space-y-4 text-muted-foreground">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">2.1 Reikalingi dokumentai</h3>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.documents.required.title')}</h3>
                     <ul className="list-disc list-inside ml-4 space-y-1">
-                      <li>ES šalyje išduotas ir galiojantis vairuotojo pažymėjimas (ne mažiau kaip 2 metų vairavimo stažas)</li>
-                      <li>Asmens dokumentas (pasas arba ID kortelė)</li>
-                      <li>Kreditinė kortelė užstato rezervavimui (jei užstatas nėra sumokėtas iš anksto kartu su nuomos mokesčiu)</li>
+                      {(t('leaseAgreement.sections.documents.required.items') as unknown as string[]).map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
                     </ul>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">2.2 Amžiaus reikalavimai</h3>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.documents.age.title')}</h3>
                     <ul className="list-disc list-inside ml-4 space-y-1">
-                      <li>Ekonominės ir kompaktinės klasės automobiliams – nuo 21 m.</li>
-                      <li>Premium ir Luxury klasės automobiliams – nuo 25 m.</li>
+                      {(t('leaseAgreement.sections.documents.age.items') as unknown as string[]).map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
                     </ul>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">2.3 Užsienio pažymėjimai</h3>
-                    <p>Priimami ES šalių ir tarptautiniai vairuotojo pažymėjimai. Pažymėjimas turi būti galiojantis ir išduotas ne mažiau kaip prieš 2 metus.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.documents.foreign.title')}</h3>
+                    <p>{t('leaseAgreement.sections.documents.foreign.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">2.4 Kreditinė kortelė</h3>
-                    <p>Kreditinė kortelė būtina užstato rezervavimui. Debetinės kortelės nepriimamos, išskyrus atvejus, kai rezervacijos mokestis ir nuomos mokestis sumokami iš anksto arba atsiimant automobilį.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.documents.card.title')}</h3>
+                    <p>{t('leaseAgreement.sections.documents.card.text')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -231,43 +225,38 @@ const LeaseAgreement = () => {
                     <CreditCard className="w-6 h-6" />
                   </div>
                   <h2 className="text-2xl font-bold text-foreground">
-                    3. Apmokėjimas ir kainos
+                    {t('leaseAgreement.sections.payment.title')}
                   </h2>
                 </div>
                 
                 <div className="space-y-4 text-muted-foreground">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">3.1 Apmokėjimo būdai</h3>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.payment.methods.title')}</h3>
                     <ul className="list-disc list-inside ml-4 space-y-1">
-                      <li>Grynieji pinigai</li>
-                      <li>Banko kortelės (vietoje)</li>
-                      <li>El. bankininkystės pervedimai</li>
-                      <li>Internetiniai mokėjimai kortele</li>
+                      {(t('leaseAgreement.sections.payment.methods.items') as unknown as string[]).map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
                     </ul>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">3.2 Kainų sudėtis</h3>
-                    <p>Visos nurodytos kainos apima pagrindinius mokesčius. Papildomi mokesčiai taikomi už:</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.payment.prices.title')}</h3>
+                    <p>{t('leaseAgreement.sections.payment.prices.text')}</p>
                     <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-                      <li>Vėlavimą grąžinti automobilį</li>
-                      <li>Kuro papildymą (jei grąžinama ne pilnu baku)</li>
-                      <li>Automobilio plovimą ar salono valymą</li>
-                      <li>Rūkymą automobilyje (50 € bauda)</li>
-                      <li>Kelių rinkliavas</li>
-                      <li>KET pažeidimus</li>
-                      <li>Kitas eksploatacines išlaidas (pvz., langų skystis, siurbimas)</li>
+                      {(t('leaseAgreement.sections.payment.prices.items') as unknown as string[]).map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
                     </ul>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">3.3 Užstatas</h3>
-                    <p>Užstato dydis – 200 €. Užstatas grąžinamas per 7 d. d. po automobilio grąžinimo, arba tą pačią dieną, jei sumokėtas grynaisiais.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.payment.deposit.title')}</h3>
+                    <p>{t('leaseAgreement.sections.payment.deposit.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">3.4 Paslėpti mokesčiai</h3>
-                    <p>Mes netaikome jokių paslėptų mokesčių. Visi papildomi mokesčiai aiškiai nurodyti sąlygose ir sutartyje.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.payment.hidden.title')}</h3>
+                    <p>{t('leaseAgreement.sections.payment.hidden.text')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -281,34 +270,29 @@ const LeaseAgreement = () => {
                     <Shield className="w-6 h-6" />
                   </div>
                   <h2 className="text-2xl font-bold text-foreground">
-                    4. Draudimas ir saugumas
+                    {t('leaseAgreement.sections.insurance.title')}
                   </h2>
                 </div>
                 
                 <div className="space-y-4 text-muted-foreground">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">4.1 Draudimo aprėptis</h3>
-                    <p>Visi automobiliai apdrausti KASKO ir OCTA draudimu. Nuomininko atsakomybės riba priklauso nuo automobilio klasės ir gali būti sumažinta įsigijus papildomą draudimą.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.insurance.coverage.title')}</h3>
+                    <p>{t('leaseAgreement.sections.insurance.coverage.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">4.2 Avarijos atveju</h3>
-                    <p>Nedelsiant skambinkite:</p>
-                    <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-                      <li>Mums – +370 698 18 781 (24/7)</li>
-                      <li>Policijai – 112</li>
-                    </ul>
-                    <p className="mt-2">Neatidėkite įvykio vietos, kol neatvyks policija.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.insurance.accident.title')}</h3>
+                    <p>{t('leaseAgreement.sections.insurance.accident.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">4.3 Draudimo dengiama</h3>
-                    <p>Draudimas dengia avarijas, vagystes, gaisrus, gamtos stichijų padarinius. Nedengiama: tyčiniai pažeidimai, vairavimas apsvaigus, dalyvavimas lenktynėse.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.insurance.covered.title')}</h3>
+                    <p>{t('leaseAgreement.sections.insurance.covered.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">4.4 Papildomas draudimas</h3>
-                    <p>Galite įsigyti papildomą draudimą, kuris sumažina atsakomybę iki 0 €. Kaina priklauso nuo automobilio klasės ir nuomos trukmės.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.insurance.additional.title')}</h3>
+                    <p>{t('leaseAgreement.sections.insurance.additional.text')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -322,33 +306,34 @@ const LeaseAgreement = () => {
                     <Car className="w-6 h-6" />
                   </div>
                   <h2 className="text-2xl font-bold text-foreground">
-                    5. Automobilio naudojimas
+                    {t('leaseAgreement.sections.usage.title')}
                   </h2>
                 </div>
                 
                 <div className="space-y-4 text-muted-foreground">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">5.1 Kelionės už Lietuvos ribų</h3>
-                    <p>Galite išvykti už Lietuvos ribų, bet reikalingas išankstinis sutikimas:</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.abroad.title')}</h3>
+                    <p>{t('leaseAgreement.sections.usage.abroad.text')}</p>
                     <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-                      <li>ES šalims – 25 €/diena</li>
-                      <li>Kitoms šalims – individualus susitarimas</li>
+                      {(t('leaseAgreement.sections.usage.abroad.items') as unknown as string[]).map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
                     </ul>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">5.2 Kilometražas</h3>
-                    <p>Kilometražas neribojamas visoms automobilių klasėms.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.km.title')}</h3>
+                    <p>{t('leaseAgreement.sections.usage.km.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">5.3 Rūkymas</h3>
-                    <p>Rūkymas draudžiamas. Pažeidimo atveju taikoma 50 € bauda.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.smoking.title')}</h3>
+                    <p>{t('leaseAgreement.sections.usage.smoking.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">5.4 Gyvūnai</h3>
-                    <p>Galite vežti gyvūnus, bet reikia pranešti iš anksto. Gyvūnas turi būti vežamas specialioje pernešimo priemonėje.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.usage.animals.title')}</h3>
+                    <p>{t('leaseAgreement.sections.usage.animals.text')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -362,24 +347,24 @@ const LeaseAgreement = () => {
                     <Users className="w-6 h-6" />
                   </div>
                   <h2 className="text-2xl font-bold text-foreground">
-                    6. Automobilio grąžinimas
+                    {t('leaseAgreement.sections.return.title')}
                   </h2>
                 </div>
                 
                 <div className="space-y-4 text-muted-foreground">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">6.1 Grąžinimo laikas</h3>
-                    <p>Automobilį reikia grąžinti sutartyje nurodytu laiku. Už grąžinimą po darbo valandų ar savaitgalį – papildomas 20 € mokestis. Jei vėluojama ilgiau nei 3 val., skaičiuojama papildoma nuomos diena.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.return.time.title')}</h3>
+                    <p>{t('leaseAgreement.sections.return.time.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">6.2 Kuras</h3>
-                    <p>Su tokiu pačiu kiekiu, koks buvo atsiėmimo metu (dažniausiai – pilnu baku). Už trūkstamą kurą mokama 1,50 €/l.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.return.fuel.title')}</h3>
+                    <p>{t('leaseAgreement.sections.return.fuel.text')}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">6.3 Švara</h3>
-                    <p>Automobilis turi būti švarus. Jei stipriai užterštas – taikomas 20 € valymo ir 20 € plovimo mokestis.</p>
+                    <h3 className="font-semibold text-foreground mb-2">{t('leaseAgreement.sections.return.clean.title')}</h3>
+                    <p>{t('leaseAgreement.sections.return.clean.text')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -393,26 +378,26 @@ const LeaseAgreement = () => {
                     <Phone className="w-6 h-6" />
                   </div>
                   <h2 className="text-2xl font-bold text-foreground">
-                    7. Kontaktai
+                    {t('leaseAgreement.sections.contact.title')}
                   </h2>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-3">Bendras kontaktas</h3>
+                    <h3 className="font-semibold text-foreground mb-3">{t('leaseAgreement.sections.contact.general.title')}</h3>
                     <div className="space-y-2 text-muted-foreground">
-                      <p><strong>Telefonas:</strong> +370 698 18 781</p>
-                      <p><strong>El. paštas:</strong> info@carbonus.lt</p>
-                      <p><strong>Darbo laikas:</strong> 8:00-17:00 (klientų aptarnavimas)</p>
+                      <p><strong>{t('leaseAgreement.sections.contact.general.phone')}</strong> +370 698 18 781</p>
+                      <p><strong>{t('leaseAgreement.sections.contact.general.email')}</strong> info@carbonus.lt</p>
+                      <p><strong>{t('leaseAgreement.sections.contact.general.hours')}</strong> {t('leaseAgreement.sections.contact.general.hoursValue')}</p>
                     </div>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground mb-3">Avarijų linija</h3>
+                    <h3 className="font-semibold text-foreground mb-3">{t('leaseAgreement.sections.contact.emergency.title')}</h3>
                     <div className="space-y-2 text-muted-foreground">
-                      <p><strong>Telefonas:</strong> +370 698 18 781</p>
-                      <p><strong>Veikia:</strong> 24/7</p>
-                      <p><strong>Policija:</strong> 112</p>
+                      <p><strong>{t('leaseAgreement.sections.contact.emergency.phone')}</strong> +370 698 18 781</p>
+                      <p><strong>{t('leaseAgreement.sections.contact.emergency.availability')}</strong> {t('leaseAgreement.sections.contact.emergency.availabilityValue')}</p>
+                      <p><strong>{t('leaseAgreement.sections.contact.emergency.police')}</strong> 112</p>
                     </div>
                   </div>
                 </div>
