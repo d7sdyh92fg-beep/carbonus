@@ -130,55 +130,43 @@ export default function ReservationReview() {
     setIsSubmitting(true);
 
     try {
-      // Create or get customer
-      const { data: existingCustomer } = await supabase
-        .from('customers')
-        .select('id')
-        .eq('email', formData.email)
-        .maybeSingle();
+      // Use RPC to create or get customer (bypasses RLS for public users)
+      const { data: customerId, error: customerError } = await supabase.rpc('create_or_get_customer', {
+        p_email: formData.email.trim(),
+        p_first_name: formData.firstName.trim(),
+        p_last_name: formData.lastName.trim(),
+        p_phone: formData.phone.trim(),
+        p_address: formData.address?.trim() || null,
+      });
 
-      let customerId;
+      if (customerError) {
+        console.error('Customer creation error:', customerError);
+        throw new Error(`Failed to create customer: ${customerError.message}`);
+      }
 
-      if (existingCustomer) {
-        customerId = existingCustomer.id;
-        await supabase
+      if (!customerId) {
+        throw new Error('No customer ID returned from database');
+      }
+
+      // Update corporate information if applicable
+      if (isCorporate) {
+        const { error: corporateError } = await supabase
           .from('customers')
           .update({
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            phone: formData.phone,
-            address: formData.address,
-            is_corporate: isCorporate,
-            company_name: isCorporate ? corporateData.companyName : null,
-            company_code: isCorporate ? corporateData.companyCode : null,
-            vat_code: isCorporate ? corporateData.vatCode : null,
-            representative_name: isCorporate ? corporateData.representativeName : null,
-            representative_phone: isCorporate ? corporateData.representativePhone : null,
-            representative_email: isCorporate ? corporateData.representativeEmail : null,
+            is_corporate: true,
+            company_name: corporateData.companyName,
+            company_code: corporateData.companyCode,
+            vat_code: corporateData.vatCode || null,
+            representative_name: corporateData.representativeName || null,
+            representative_phone: corporateData.representativePhone || null,
+            representative_email: corporateData.representativeEmail || null,
           })
           .eq('id', customerId);
-      } else {
-        const { data: newCustomer, error: customerError } = await supabase
-          .from('customers')
-          .insert([{
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            email: formData.email,
-            phone: formData.phone,
-            address: formData.address,
-            is_corporate: isCorporate,
-            company_name: isCorporate ? corporateData.companyName : null,
-            company_code: isCorporate ? corporateData.companyCode : null,
-            vat_code: isCorporate ? corporateData.vatCode : null,
-            representative_name: isCorporate ? corporateData.representativeName : null,
-            representative_phone: isCorporate ? corporateData.representativePhone : null,
-            representative_email: isCorporate ? corporateData.representativeEmail : null,
-          }])
-          .select('id')
-          .single();
 
-        if (customerError) throw customerError;
-        customerId = newCustomer.id;
+        if (corporateError) {
+          console.error('Corporate data update error:', corporateError);
+          // Don't throw - reservation can continue even if corporate update fails
+        }
       }
 
       const dailyRate = bookingData.basePrice / bookingData.rentalDays;

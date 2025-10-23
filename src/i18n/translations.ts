@@ -1874,6 +1874,37 @@ export const translations = {
       fixedRate: "Fixed rate",
     },
 
+    // Common Labels
+    commonLabels: {
+      name: "Name",
+      lastName: "Last Name",
+      email: "Email",
+      phone: "Phone",
+      message: "Message",
+      subject: "Subject",
+      required: "*",
+      optional: "(optional)",
+    },
+
+    // Common Messages
+    commonMessages: {
+      success: "Success!",
+      error: "Error",
+      loading: "Loading...",
+      noResults: "No results found",
+      contactSuccess: "Thank you for your message. We will contact you as soon as possible.",
+      newsletterSuccess: "Successfully subscribed!",
+      newsletterCheck: "Please check your email for confirmation.",
+      emailWarningTitle: "Email Warning",
+      emailWarningDescription: "Booking created successfully, but confirmation email was not sent. We will contact you another way.",
+      loadingDates: "Loading booked dates...",
+      errorLoadingDates: "Failed to load booked dates. Please try again.",
+      corporateFieldsRequired: "Please fill in required company fields",
+      invalidCompanyCode: "Invalid company code format (must be 9 digits)",
+      invalidPhoneFormat: "Invalid phone number format",
+      phoneFormatHelper: "Format: +370 XXX XXXXX or 8 XXX XXXXX",
+    },
+
     // Navigation
     nav: {
       home: "Home",
