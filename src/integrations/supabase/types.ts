@@ -164,7 +164,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           reservation_id: string
           signature_data: string
           signed_at: string
@@ -173,7 +173,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           reservation_id: string
           signature_data: string
           signed_at?: string
@@ -182,7 +182,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           reservation_id?: string
           signature_data?: string
           signed_at?: string
@@ -522,31 +522,28 @@ export type Database = {
       }
     }
     Functions: {
-      check_user_is_admin: {
-        Args: { user_email: string }
-        Returns: boolean
-      }
-      cleanup_old_rate_limits: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      create_or_get_customer: {
-        Args:
-          | {
+      check_user_is_admin: { Args: { user_email: string }; Returns: boolean }
+      cleanup_old_rate_limits: { Args: never; Returns: undefined }
+      create_or_get_customer:
+        | {
+            Args: {
+              p_email: string
+              p_first_name: string
+              p_last_name: string
+              p_phone: string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
               p_address?: string
               p_email: string
               p_first_name: string
               p_last_name: string
               p_phone: string
             }
-          | {
-              p_email: string
-              p_first_name: string
-              p_last_name: string
-              p_phone: string
-            }
-        Returns: string
-      }
+            Returns: string
+          }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -554,10 +551,7 @@ export type Database = {
         }
         Returns: boolean
       }
-      is_current_user_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      is_current_user_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "user"
