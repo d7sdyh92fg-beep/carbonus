@@ -1,9 +1,7 @@
 // Centralized pricing configuration
 export const PRICING = {
   // Car-specific pricing overrides (bypasses tiered pricing)
-  carSpecificRates: {
-    '5': 30, // KIA CEED 2020 - Fixed €30/day for testing
-  } as Record<string, number>,
+  carSpecificRates: {} as Record<string, number>,
   
   // Tiered daily rates based on rental duration
   dailyRates: {
