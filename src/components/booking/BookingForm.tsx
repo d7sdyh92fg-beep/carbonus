@@ -35,7 +35,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   onCancel,
 }) => {
   const { toast } = useToast();
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pickupTime, setPickupTime] = useState('10:00');
   const [returnTime, setReturnTime] = useState('10:00');
@@ -724,7 +724,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 <div className="flex items-center gap-2 text-sm">
                   <FileText className="w-4 h-4 text-muted-foreground" />
                   <a 
-                    href="/carbonus-nuomos-sutartis.pdf" 
+                    href={language === 'en' ? '/carbonus-rental-agreement.pdf' : '/carbonus-nuomos-sutartis.pdf'}
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-primary hover:underline"

@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { FileText, Download, ExternalLink } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useTranslations } from '@/hooks/use-translations';
 
 interface TermsAcceptanceModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ interface TermsAcceptanceModalProps {
 export function TermsAcceptanceModal({ isOpen, onAccept, onDecline }: TermsAcceptanceModalProps) {
   const [hasReadTerms, setHasReadTerms] = useState(false);
   const [showFullTerms, setShowFullTerms] = useState(false);
+  const { language } = useTranslations();
 
   const handleAccept = () => {
     if (!hasReadTerms) {
@@ -25,11 +27,17 @@ export function TermsAcceptanceModal({ isOpen, onAccept, onDecline }: TermsAccep
   };
 
   const openPDF = () => {
-    window.open('/carbonus-nuomos-sutartis.pdf', '_blank');
+    const pdfFileName = language === 'en' 
+      ? '/carbonus-rental-agreement.pdf' 
+      : '/carbonus-nuomos-sutartis.pdf';
+    window.open(pdfFileName, '_blank');
   };
 
   const openFullTermsPage = () => {
-    window.open('/nuomos-sutartis', '_blank');
+    const route = language === 'en' 
+      ? '/rental-agreement' 
+      : '/nuomos-sutartis';
+    window.open(route, '_blank');
   };
 
   return (
