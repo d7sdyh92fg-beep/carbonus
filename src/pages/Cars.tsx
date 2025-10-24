@@ -54,8 +54,9 @@ const Cars = () => {
     
     // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
+    const carsPath = language === 'en' ? '/cars' : '/automobiliai';
     if (canonical) {
-      canonical.setAttribute('href', 'https://carbonus.lt/automobiliai');
+      canonical.setAttribute('href', `https://carbonus.lt${carsPath}`);
     }
     
     // Update Open Graph tags
@@ -66,7 +67,7 @@ const Cars = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://carbonus.lt/automobiliai');
+      ogUrl.setAttribute('content', `https://carbonus.lt${carsPath}`);
     }
   }, [t, language]);
 
@@ -115,7 +116,8 @@ const Cars = () => {
   };
 
   const handleCarSelect = (carId: string) => {
-    navigate(`/automobiliai/${carId}`);
+    const route = language === 'en' ? `/cars/${carId}` : `/automobiliai/${carId}`;
+    navigate(route);
   };
 
   const cars: Car[] = [

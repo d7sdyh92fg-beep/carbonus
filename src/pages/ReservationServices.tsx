@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
 import { lt, enUS } from 'date-fns/locale';
 import { useTranslations } from '@/hooks/use-translations';
-import { getRoute } from '@/utils/routes';
+import { getRoute, getReservationRoute } from '@/utils/routes';
 
 export default function ReservationServices() {
   const navigate = useNavigate();
@@ -260,12 +260,7 @@ export default function ReservationServices() {
               <Button
                 className="w-full"
                 size="lg"
-                onClick={() => {
-                  const termsPath = language === 'en' 
-                    ? `/reservation/${bookingData.carId}/terms`
-                    : `/rezervacija/${bookingData.carId}/salygos`;
-                  navigate(termsPath);
-                }}
+                onClick={() => navigate(getReservationRoute(bookingData.carId, 'terms', language))}
               >
                 {t('services.continueButton')}
               </Button>

@@ -160,7 +160,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       services: [],
     });
 
-    navigate(`/rezervacija/${carId}/paslaugos`);
+    const servicesRoute = language === 'en' 
+      ? `/reservation/${carId}/services` 
+      : `/rezervacija/${carId}/paslaugos`;
+    navigate(servicesRoute);
   };
 
   return (

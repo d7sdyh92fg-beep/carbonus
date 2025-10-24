@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslations } from '@/hooks/use-translations';
-import { getRoute } from '@/utils/routes';
+import { getRoute, getReservationRoute } from '@/utils/routes';
 
 export default function ReservationTerms() {
   const navigate = useNavigate();
@@ -47,10 +47,7 @@ export default function ReservationTerms() {
 
   const handleContinue = () => {
     if (hasAccepted && hasScrolledToBottom) {
-      const nextRoute = language === 'en' 
-        ? `/reservation/${carId}/review`
-        : `/rezervacija/${carId}/uzsakymas`;
-      navigate(nextRoute);
+      navigate(getReservationRoute(carId!, 'review', language));
     }
   };
 

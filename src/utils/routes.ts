@@ -30,6 +30,24 @@ export const getRouteKey = (path: string): keyof typeof routes | null => {
 };
 
 // Get the equivalent path in another language
+// Get the car detail route for a specific language
+export const getCarDetailRoute = (carId: string, language: Language): string => {
+  const base = language === 'en' ? '/cars' : '/automobiliai';
+  return `${base}/${carId}`;
+};
+
+// Get the reservation route for a specific step and language
+export const getReservationRoute = (carId: string, step: 'insurance' | 'services' | 'terms' | 'review', language: Language): string => {
+  const base = language === 'en' ? 'reservation' : 'rezervacija';
+  const stepMap = {
+    insurance: language === 'en' ? 'insurance' : 'atsakomybe',
+    services: language === 'en' ? 'services' : 'paslaugos',
+    terms: language === 'en' ? 'terms' : 'salygos',
+    review: language === 'en' ? 'review' : 'uzsakymas',
+  };
+  return `/${base}/${carId}/${stepMap[step]}`;
+};
+
 export const getEquivalentPath = (currentPath: string, targetLanguage: Language): string => {
   // Handle dynamic routes like /automobiliai/:id or /cars/:id
   const carDetailMatch = currentPath.match(/^\/(automobiliai|cars)\/(.+)$/);

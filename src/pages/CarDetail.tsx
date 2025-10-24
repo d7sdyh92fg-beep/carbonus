@@ -81,8 +81,9 @@ const CarDetail = () => {
     
     // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
+    const carDetailPath = language === 'en' ? `/cars/${id}` : `/automobiliai/${id}`;
     if (canonical) {
-      canonical.setAttribute('href', `https://carbonus.lt/automobiliai/${id}`);
+      canonical.setAttribute('href', `https://carbonus.lt${carDetailPath}`);
     }
     
     // Update Open Graph tags
@@ -93,7 +94,7 @@ const CarDetail = () => {
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', `https://carbonus.lt/automobiliai/${id}`);
+      ogUrl.setAttribute('content', `https://carbonus.lt${carDetailPath}`);
     }
   }, [id, t, language]);
 
@@ -236,7 +237,7 @@ const CarDetail = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-foreground mb-4">{t('carDetail.notFound')}</h2>
-          <Button onClick={() => navigate("/automobiliai")}>
+          <Button onClick={() => navigate(language === 'en' ? '/cars' : '/automobiliai')}>
             {t('carDetail.backToCars')}
           </Button>
         </div>
@@ -261,7 +262,7 @@ const CarDetail = () => {
             </Link>
             <span className="text-muted-foreground">/</span>
             <Link 
-              to="/automobiliai" 
+              to={language === 'en' ? '/cars' : '/automobiliai'} 
               className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer uppercase"
             >
               {t('carDetail.breadcrumbCars')}

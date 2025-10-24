@@ -5,6 +5,7 @@ import { useBooking, InsuranceOption } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/use-translations';
+import { getRoute, getReservationRoute } from '@/utils/routes';
 
 const getInsuranceOptions = (t: (key: string) => string): InsuranceOption[] => [
   {
@@ -32,7 +33,7 @@ const getInsuranceOptions = (t: (key: string) => string): InsuranceOption[] => [
 
 export default function ReservationInsurance() {
   const navigate = useNavigate();
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
   const { bookingData, updateInsurance } = useBooking();
   const insuranceOptions = getInsuranceOptions(t);
 
@@ -41,15 +42,15 @@ export default function ReservationInsurance() {
     window.scrollTo(0, 0);
     
     if (!bookingData) {
-      navigate('/automobiliai');
+      navigate(getRoute('cars', language));
     }
-  }, [bookingData, navigate]);
+  }, [bookingData, navigate, language]);
 
   if (!bookingData) return null;
 
   const handleSelectInsurance = (insurance: InsuranceOption) => {
     updateInsurance(insurance);
-    navigate(`/rezervacija/${bookingData.carId}/paslaugos`);
+    navigate(getReservationRoute(bookingData.carId, 'services', language));
   };
 
   return (

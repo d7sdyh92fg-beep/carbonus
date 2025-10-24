@@ -47,8 +47,7 @@ export default function ReservationReview() {
     window.scrollTo(0, 0);
     
     if (!bookingData) {
-      const carsRoute = language === 'en' ? '/cars' : '/automobiliai';
-      navigate(carsRoute);
+      navigate(getRoute('cars', language));
     }
   }, [bookingData, navigate, language]);
 
