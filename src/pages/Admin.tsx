@@ -94,6 +94,7 @@ import { InPersonBooking } from "@/components/admin/InPersonBooking";
 import { ReservationReview } from "@/components/admin/ReservationReview";
 import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
+import { CarImageEditor } from "@/components/admin/CarImageEditor";
 
 interface Reservation {
   id: string;
@@ -715,7 +716,7 @@ const Admin = () => {
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
           <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-4 gap-1 h-auto p-1 bg-muted rounded-lg">
+            <TabsList className="grid grid-cols-5 gap-1 h-auto p-1 bg-muted rounded-lg">
               <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Skydelis</span>
@@ -735,6 +736,11 @@ const Admin = () => {
                 <History className="h-4 w-4" />
                 <span className="hidden sm:inline">Istorija</span>
                 <span className="sm:hidden text-[10px]">Istorija</span>
+              </TabsTrigger>
+              <TabsTrigger value="image-editor" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <Edit className="h-4 w-4" />
+                <span className="hidden sm:inline">Vaizdų redaktorius</span>
+                <span className="sm:hidden text-[10px] text-center leading-3">Vaizdai</span>
               </TabsTrigger>
             </TabsList>
 
@@ -1370,6 +1376,10 @@ const Admin = () => {
 
               <TabsContent value="recycle">
                 <RecycleBin />
+              </TabsContent>
+
+              <TabsContent value="image-editor" className="space-y-4">
+                <CarImageEditor />
               </TabsContent>
             </Tabs>
         </div>
