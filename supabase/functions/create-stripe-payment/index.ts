@@ -9,8 +9,7 @@ const corsHeaders = {
 
 interface PaymentRequest {
   reservationId: string;
-  rentalAmount: number;
-  depositAmount: number;
+  amount: number;
   currency: string;
   customerEmail: string; 
   customerName: string;
@@ -27,8 +26,7 @@ serve(async (req) => {
   try {
     const { 
       reservationId, 
-      rentalAmount,
-      depositAmount,
+      amount,
       currency = 'eur', 
       customerEmail, 
       customerName,
@@ -36,12 +34,9 @@ serve(async (req) => {
       paymentType 
     }: PaymentRequest = await req.json();
 
-    const totalAmount = rentalAmount + depositAmount;
     console.log('Creating Stripe payment session:', { 
       reservationId, 
-      rentalAmount, 
-      depositAmount, 
-      totalAmount, 
+      amount, 
       paymentType 
     });
 
@@ -66,42 +61,39 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "https://carbonus.lt";
 
-    // Create single line item for total amount (rental + deposit)
+    // Create line item for payment amount
     const lineItems = [
       {
         price_data: {
           currency: currency,
           product_data: { 
             name: `Automobilių nuoma - ${carName}`,
-            description: `Nuomos kaina: €${rentalAmount.toFixed(2)}, Užstatas (rezervuojamas): €${depositAmount.toFixed(2)}`,
+            description: paymentType === 'full' ? 'Pilna nuomos suma' : 'Avansas',
           },
-          unit_amount: Math.round(totalAmount * 100), // Total amount in cents
+          unit_amount: Math.round(amount * 100), // Amount in cents
         },
         quantity: 1,
       },
     ];
 
-    // Create checkout session with manual capture for total amount
+    // Create checkout session with automatic capture
     const sessionConfig: any = {
       customer: customerId,
       line_items: lineItems,
       mode: "payment",
-      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&reservation_id=${reservationId}`,
+      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&reservation_id=${reservationId}&provider=stripe`,
       cancel_url: `${origin}/payment-canceled?reservation_id=${reservationId}`,
       payment_intent_data: {
-        capture_method: 'manual', // Don't capture immediately - we'll capture only rental amount
         metadata: {
           reservationId: reservationId,
-          rentalAmount: rentalAmount.toString(),
-          depositAmount: depositAmount.toString(),
+          amount: amount.toString(),
           paymentType: paymentType,
         },
       },
       metadata: {
         reservationId: reservationId,
         paymentType: paymentType,
-        rentalAmount: rentalAmount.toString(),
-        depositAmount: depositAmount.toString(),
+        amount: amount.toString(),
       },
     };
 

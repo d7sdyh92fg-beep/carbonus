@@ -41,44 +41,17 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     console.log('Stripe session status:', session.payment_status);
 
-    // Check if payment was authorized (not yet captured with manual capture)
-    const isAuthorized = session.payment_status === 'paid' || session.status === 'complete';
+    // Check if payment was completed (automatic capture)
+    const isCompleted = session.payment_status === 'paid' || session.status === 'complete';
     
-    if (isAuthorized && session.payment_intent) {
-      console.log('Payment authorized, processing capture...');
-      
-      const rentalAmount = session.metadata?.rentalAmount ? parseFloat(session.metadata.rentalAmount) : 0;
-      const depositAmount = session.metadata?.depositAmount ? parseFloat(session.metadata.depositAmount) : 0;
-      
-      try {
-        // Retrieve the payment intent
-        const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent as string);
-        console.log('PaymentIntent status:', paymentIntent.status, 'Amount:', paymentIntent.amount);
-        
-        // Capture only the rental amount, leaving deposit as pre-authorized
-        if (paymentIntent.status === 'requires_capture') {
-          const captureAmount = Math.round(rentalAmount * 100); // Rental amount in cents
-          console.log('Capturing rental amount:', captureAmount, 'cents');
-          
-          const capturedIntent = await stripe.paymentIntents.capture(paymentIntent.id, {
-            amount_to_capture: captureAmount,
-          });
-          
-          console.log('Rental amount captured successfully:', capturedIntent.id);
-          console.log('Remaining authorized (deposit):', depositAmount);
-        } else {
-          console.log('PaymentIntent not in capturable state:', paymentIntent.status);
-        }
-      } catch (captureError) {
-        console.error('Error capturing rental amount:', captureError);
-        throw new Error(`Failed to capture rental payment: ${captureError.message}`);
-      }
+    if (isCompleted && session.payment_intent) {
+      console.log('Payment completed successfully');
 
       // Update reservation status in database
       const updateData: any = { 
-        status: 'paid', // Payment captured successfully
+        status: 'paid',
         payment_transaction_id: session.payment_intent as string,
-        deposit_payment_intent_id: session.payment_intent as string, // Same PaymentIntent holds the deposit
+        payment_provider: 'stripe',
         updated_at: new Date().toISOString()
       };
 
@@ -219,14 +192,12 @@ serve(async (req) => {
         }
       }
 
-      const rentalAmount = session.metadata?.rentalAmount ? parseFloat(session.metadata.rentalAmount) : 0;
-      const depositAmount = session.metadata?.depositAmount ? parseFloat(session.metadata.depositAmount) : 0;
+      const amount = session.metadata?.amount ? parseFloat(session.metadata.amount) : 0;
       
       return new Response(JSON.stringify({ 
         success: true, 
-        paymentStatus: 'captured',
-        rentalAmountCaptured: rentalAmount,
-        depositAmountHeld: depositAmount,
+        paymentStatus: 'paid',
+        amount: amount,
         reservation: data?.[0],
         contractPdfUrl: contractPdfUrl
       }), {
