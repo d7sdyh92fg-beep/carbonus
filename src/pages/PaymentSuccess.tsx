@@ -15,7 +15,7 @@ const PaymentSuccess: React.FC = () => {
 
   const provider = searchParams.get('provider');
   const sessionId = searchParams.get('session_id'); // Stripe
-  const reservationIdParam = searchParams.get('reservation_id'); // Paysera
+  const reservationIdParam = searchParams.get('reservation_id'); // Paysera & Montonio
 
   useEffect(() => {
     let retryCount = 0;
@@ -41,8 +41,8 @@ const PaymentSuccess: React.FC = () => {
           } else {
             setStatus('processing');
           }
-        } else if (provider === 'paysera' && reservationIdParam) {
-          // For Paysera, check reservation status in database
+        } else if ((provider === 'paysera' || provider === 'montonio') && reservationIdParam) {
+          // For Paysera and Montonio, check reservation status in database
           const { data, error } = await supabase
             .from('reservations')
             .select('status, payment_completed_at')
@@ -153,7 +153,7 @@ const PaymentSuccess: React.FC = () => {
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-center">
-            {provider === 'stripe' ? 'Stripe' : 'Paysera'} {t('payment.title')}
+            {provider === 'stripe' ? 'Stripe' : provider === 'montonio' ? 'Montonio' : 'Paysera'} {t('payment.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">

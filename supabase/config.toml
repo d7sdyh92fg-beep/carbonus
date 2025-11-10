@@ -47,3 +47,9 @@ verify_jwt = false
 
 [functions.manage-deposit]
 verify_jwt = false
+
+[functions.create-montonio-payment]
+verify_jwt = false
+
+[functions.verify-montonio-payment]
+verify_jwt = false
