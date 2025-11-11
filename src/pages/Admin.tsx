@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarManagementModal from '@/components/admin/CarManagementModal';
@@ -94,7 +94,7 @@ import { InPersonBooking } from "@/components/admin/InPersonBooking";
 import { ReservationReview } from "@/components/admin/ReservationReview";
 import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
-import { CarImageEditor } from "@/components/admin/CarImageEditor";
+import { EmailTester } from "@/components/admin/EmailTester";
 
 interface Reservation {
   id: string;
@@ -737,10 +737,10 @@ const Admin = () => {
                 <span className="hidden sm:inline">Istorija</span>
                 <span className="sm:hidden text-[10px]">Istorija</span>
               </TabsTrigger>
-              <TabsTrigger value="image-editor" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <Edit className="h-4 w-4" />
-                <span className="hidden sm:inline">Vaizdų redaktorius</span>
-                <span className="sm:hidden text-[10px] text-center leading-3">Vaizdai</span>
+              <TabsTrigger value="email-tester" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <Mail className="h-4 w-4" />
+                <span className="hidden sm:inline">El. pašto testai</span>
+                <span className="sm:hidden text-[10px] text-center leading-3">El. paštas</span>
               </TabsTrigger>
             </TabsList>
 
@@ -1378,8 +1378,8 @@ const Admin = () => {
                 <RecycleBin />
               </TabsContent>
 
-              <TabsContent value="image-editor" className="space-y-4">
-                <CarImageEditor />
+              <TabsContent value="email-tester" className="space-y-4">
+                <EmailTester />
               </TabsContent>
             </Tabs>
         </div>
