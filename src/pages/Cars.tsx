@@ -12,6 +12,7 @@ import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
 import { useTranslations } from "@/hooks/use-translations";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { trackViewCarList, trackSearch, trackFilterCars, trackViewCar } from "@/lib/analytics";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -71,7 +72,27 @@ const Cars = () => {
     if (ogUrl) {
       ogUrl.setAttribute('content', `https://carbonus.lt${carsPath}`);
     }
+    
+    // Track view car list
+    trackViewCarList(cars);
   }, [t, language]);
+
+  // Track search
+  useEffect(() => {
+    if (searchTerm) {
+      const timeoutId = setTimeout(() => {
+        trackSearch(searchTerm, 'cars_page');
+      }, 500); // Debounce search tracking
+      return () => clearTimeout(timeoutId);
+    }
+  }, [searchTerm]);
+
+  // Track filter
+  useEffect(() => {
+    if (selectedCategory !== 'all') {
+      trackFilterCars('category', selectedCategory);
+    }
+  }, [selectedCategory]);
 
   // Feature key mapping for translation
   const getFeatureKey = (feature: string): string => {
@@ -118,6 +139,16 @@ const Cars = () => {
   };
 
   const handleCarSelect = (carId: string) => {
+    const selectedCar = cars.find(c => c.id === carId);
+    if (selectedCar) {
+      trackViewCar({
+        id: selectedCar.id,
+        name: selectedCar.name,
+        category: selectedCar.category,
+        price: selectedCar.price,
+        year: selectedCar.year?.toString()
+      });
+    }
     const route = language === 'en' ? `/cars/${carId}` : `/automobiliai/${carId}`;
     navigate(route);
   };

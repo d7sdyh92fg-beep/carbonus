@@ -20,6 +20,12 @@ import {
   Calendar,
   Headphones
 } from "lucide-react";
+import { 
+  trackPhoneCall, 
+  trackWhatsAppClick, 
+  trackEmailClick, 
+  trackContactForm 
+} from "@/lib/analytics";
 
 const Contact = () => {
   const { t } = useTranslations();
@@ -89,6 +95,14 @@ const Contact = () => {
       toast({
         title: t('contact.successTitle'),
         description: t('contact.successDesc'),
+      });
+      
+      // Track contact form submission
+      trackContactForm({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        subject: formData.subject
       });
 
       // Reset form
@@ -409,7 +423,10 @@ const Contact = () => {
                   variant="outline"
                   size="lg"
                   className="h-16 text-base font-medium"
-                  onClick={() => window.open('https://wa.me/37069818781', '_blank')}
+                  onClick={() => {
+                    trackWhatsAppClick('+37069818781');
+                    window.open('https://wa.me/37069818781', '_blank');
+                  }}
                 >
                   <MessageSquare className="h-5 w-5 mr-2 text-green-600" />
                   WhatsApp žinutė
@@ -418,7 +435,10 @@ const Contact = () => {
                   variant="outline"
                   size="lg"
                   className="h-16 text-base font-medium"
-                  onClick={() => window.open('tel:+37069818781')}
+                  onClick={() => {
+                    trackPhoneCall('+37069818781');
+                    window.open('tel:+37069818781');
+                  }}
                 >
                   <Phone className="h-5 w-5 mr-2 text-blue-600" />
                   Skambinti dabar
@@ -427,7 +447,10 @@ const Contact = () => {
                   variant="outline"
                   size="lg"
                   className="h-16 text-base font-medium"
-                  onClick={() => window.open('mailto:info@carbonus.lt')}
+                  onClick={() => {
+                    trackEmailClick('info@carbonus.lt');
+                    window.open('mailto:info@carbonus.lt');
+                  }}
                 >
                   <Mail className="h-5 w-5 mr-2 text-orange-600" />
                   El. paštas
