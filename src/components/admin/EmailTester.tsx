@@ -14,6 +14,7 @@ export const EmailTester: React.FC = () => {
   const [isSending, setIsSending] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewEmailType, setPreviewEmailType] = useState('');
+  const [language, setLanguage] = useState<'lt' | 'en'>('lt');
 
   const sendTestEmail = async (emailType: string) => {
     if (!testEmail) {
@@ -34,13 +35,13 @@ export const EmailTester: React.FC = () => {
       const testData = {
         reservationId: 'test-' + Date.now(),
         customerEmail: testEmail,
-        customerName: 'Testas Testavicius',
+        customerName: language === 'lt' ? 'Testas Testavicius' : 'John Testman',
         carName: 'BMW 3 serija',
         startDate: new Date().toISOString().split('T')[0],
         endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         totalAmount: 350,
         depositAmount: 300,
-        language: 'lt', // Default to Lithuanian for testing
+        language: language,
       };
 
       switch (emailType) {
@@ -156,13 +157,14 @@ export const EmailTester: React.FC = () => {
   };
 
   const testData = {
-    customerName: 'Testas Testavicius',
+    customerName: language === 'lt' ? 'Testas Testavicius' : 'John Testman',
     carName: 'BMW 3 serija',
     startDate: new Date().toISOString().split('T')[0],
     endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     totalAmount: 350,
     depositAmount: 300,
     reservationId: 'test-' + Date.now(),
+    language: language,
   };
 
   const handlePreview = (emailType: string) => {
@@ -195,18 +197,36 @@ export const EmailTester: React.FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="test-email">Testuojamo el. pašto adresas</Label>
-          <Input
-            id="test-email"
-            type="email"
-            placeholder="jusu@pastas.lt"
-            value={testEmail}
-            onChange={(e) => setTestEmail(e.target.value)}
-          />
-          <p className="text-xs text-muted-foreground">
-            Įveskite el. pašto adresą, į kurį norite siųsti testinius laiškus
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="test-email">Testuojamo el. pašto adresas</Label>
+            <Input
+              id="test-email"
+              type="email"
+              placeholder="jusu@pastas.lt"
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Įveskite el. pašto adresą, į kurį norite siųsti testinius laiškus
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="language">Kalba / Language</Label>
+            <select
+              id="language"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as 'lt' | 'en')}
+              className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+            >
+              <option value="lt">🇱🇹 Lietuvių kalba</option>
+              <option value="en">🇬🇧 English</option>
+            </select>
+            <p className="text-xs text-muted-foreground">
+              Pasirinkite testavimo el. laiškų kalbą
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
