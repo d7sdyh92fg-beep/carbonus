@@ -6,12 +6,6 @@ verify_jwt = false
 [functions.verify-stripe-payment]
 verify_jwt = false
 
-[functions.create-paysera-payment]
-verify_jwt = false
-
-[functions.verify-paysera-payment]
-verify_jwt = false
-
 [functions.send-booking-email]
 verify_jwt = false
 
@@ -46,10 +40,4 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.manage-deposit]
-verify_jwt = false
-
-[functions.create-montonio-payment]
-verify_jwt = false
-
-[functions.verify-montonio-payment]
 verify_jwt = false

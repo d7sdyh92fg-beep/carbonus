@@ -41,7 +41,7 @@ const PaymentSuccess: React.FC = () => {
           } else {
             setStatus('processing');
           }
-        } else if ((provider === 'paysera' || provider === 'montonio') && reservationIdParam) {
+        } else if (provider === 'paysera' && reservationIdParam) {
           // For Paysera and Montonio, check reservation status in database
           const { data, error } = await supabase
             .from('reservations')
@@ -153,7 +153,7 @@ const PaymentSuccess: React.FC = () => {
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-center">
-            {provider === 'stripe' ? 'Stripe' : provider === 'montonio' ? 'Montonio' : 'Paysera'} {t('payment.title')}
+            {provider === 'stripe' ? 'Stripe' : 'Paysera'} {t('payment.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">

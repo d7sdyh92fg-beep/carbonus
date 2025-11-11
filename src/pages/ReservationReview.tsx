@@ -63,28 +63,28 @@ export default function ReservationReview() {
     setCorporateData(prev => ({ ...prev, [name]: value }));
   };
 
-  const processMontonioPayment = async (reservationId: string, totalAmount: number) => {
+  const processStripePayment = async (reservationId: string, amount: number, paymentType: 'full' | 'advance') => {
     try {
-      const { data, error } = await supabase.functions.invoke('create-montonio-payment', {
+      const { data, error } = await supabase.functions.invoke('create-stripe-payment', {
         body: {
           reservationId,
-          amount: totalAmount,
+          amount,
           currency: 'eur',
           customerEmail: formData.email,
           customerName: `${formData.firstName} ${formData.lastName}`,
           carName: bookingData.carName,
-          paymentType: paymentMethod === 'pay_at_counter' ? 'advance' : 'full'
+          paymentType
         }
       });
 
       if (error) throw error;
-      if (data?.paymentUrl) {
-        window.location.href = data.paymentUrl;
+      if (data?.url) {
+        window.location.href = data.url;
       } else {
         throw new Error('No payment URL received');
       }
     } catch (error) {
-      console.error('Error processing payment:', error);
+      console.error('Error processing Stripe payment:', error);
       throw error;
     }
   };
@@ -193,7 +193,7 @@ export default function ReservationReview() {
         total_amount: totalAmount,
         status: 'awaiting_payment',
         payment_method: paymentMethod,
-        payment_provider: 'montonio',
+        payment_provider: 'stripe',
         pricing_notes: (() => {
           const notes: string[] = [];
           
@@ -234,7 +234,7 @@ export default function ReservationReview() {
         p_total_amount: totalAmount,
         p_status: 'awaiting_payment',
         p_payment_method: paymentMethod,
-        p_payment_provider: 'montonio',
+        p_payment_provider: 'stripe',
         p_pricing_notes: reservationData.pricing_notes,
         p_language: language,
       });
@@ -243,9 +243,9 @@ export default function ReservationReview() {
         throw reservationError || new Error('No reservation ID returned');
       }
 
-      // Process Montonio payment - for pay_at_counter, only charge 1 day rate
-      const montonioAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
-      await processMontonioPayment(reservationId, montonioAmount);
+      // Process Stripe payment
+      const stripeAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
+      await processStripePayment(reservationId, stripeAmount, paymentMethod === 'pay_at_counter' ? 'advance' : 'full');
 
       // Send notification email
       try {
