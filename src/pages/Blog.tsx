@@ -44,18 +44,18 @@ const Blog = () => {
     // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      canonical.setAttribute('href', 'https://carbonus.lt/patarimai-ir-gidas');
+      canonical.setAttribute('href', 'https://carbonus.lt/naujienos');
     }
     
     // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Patarimai ir gidas - Carbonus');
+      ogTitle.setAttribute('content', 'Naujienos - Carbonus');
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://carbonus.lt/patarimai-ir-gidas');
+      ogUrl.setAttribute('content', 'https://carbonus.lt/naujienos');
     }
   }, []);
 

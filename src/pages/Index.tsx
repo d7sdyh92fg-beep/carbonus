@@ -10,7 +10,6 @@ import { LanguageLinks } from "@/components/seo/LanguageLinks";
 const Index = () => {
   return (
     <div className="min-h-screen bg-transparent md:bg-background">
-      <LanguageLinks ltPath="/" enPath="/" />
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       <Hero />
       <Fleet />
