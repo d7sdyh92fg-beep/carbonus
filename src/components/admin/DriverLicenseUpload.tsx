@@ -29,6 +29,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -315,12 +316,24 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
             </Button>
             <Button
               variant="outline"
-              onClick={() => startCamera('front')}
+              onClick={() => {
+                setUploadingSide('front');
+                cameraInputRef.current?.click();
+              }}
               className="h-32 flex flex-col gap-3 text-base"
               disabled={uploading || processing || cameraActive}
             >
-              <Camera className="h-8 w-8" />
-              Daryti nuotrauką
+              {(uploading || processing) && uploadingSide === 'front' ? (
+                <>
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                  {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                </>
+              ) : (
+                <>
+                  <Camera className="h-8 w-8" />
+                  Daryti nuotrauką
+                </>
+              )}
             </Button>
           </div>
         ) : (
@@ -387,12 +400,24 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
             </Button>
             <Button
               variant="outline"
-              onClick={() => startCamera('back')}
+              onClick={() => {
+                setUploadingSide('back');
+                cameraInputRef.current?.click();
+              }}
               className="h-32 flex flex-col gap-3 text-base"
               disabled={uploading || processing || cameraActive}
             >
-              <Camera className="h-8 w-8" />
-              Daryti nuotrauką
+              {(uploading || processing) && uploadingSide === 'back' ? (
+                <>
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                  {processing ? 'Apdorojama...' : 'Įkeliama...'}
+                </>
+              ) : (
+                <>
+                  <Camera className="h-8 w-8" />
+                  Daryti nuotrauką
+                </>
+              )}
             </Button>
           </div>
         ) : (
@@ -432,11 +457,21 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
         )}
       </div>
 
-      {/* Hidden file input */}
+      {/* Hidden file input for gallery */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*,image/heic,image/heif"
+        onChange={(e) => handleFileSelect(e, uploadingSide)}
+        className="hidden"
+      />
+      
+      {/* Hidden file input for camera - opens native camera on Android */}
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
         onChange={(e) => handleFileSelect(e, uploadingSide)}
         className="hidden"
       />
