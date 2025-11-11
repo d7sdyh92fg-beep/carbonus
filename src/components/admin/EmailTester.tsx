@@ -5,12 +5,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Mail, Send } from 'lucide-react';
+import { Mail, Send, Eye } from 'lucide-react';
+import { EmailPreview } from './EmailPreview';
 
 export const EmailTester: React.FC = () => {
   const { toast } = useToast();
   const [testEmail, setTestEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewEmailType, setPreviewEmailType] = useState('');
 
   const sendTestEmail = async (emailType: string) => {
     if (!testEmail) {
@@ -151,6 +154,21 @@ export const EmailTester: React.FC = () => {
     }
   };
 
+  const testData = {
+    customerName: 'Testas Testavicius',
+    carName: 'BMW 3 serija',
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    totalAmount: 350,
+    depositAmount: 300,
+    reservationId: 'test-' + Date.now(),
+  };
+
+  const handlePreview = (emailType: string) => {
+    setPreviewEmailType(emailType);
+    setShowPreview(true);
+  };
+
   const emailTypes = [
     { id: 'booking', label: 'Rezervacijos patvirtinimas', description: 'Pirminis rezervacijos el. paštas' },
     { id: 'paid', label: 'Apmokėta', description: 'Kai rezervacija apmokėta' },
@@ -197,22 +215,40 @@ export const EmailTester: React.FC = () => {
                 <div className="space-y-2">
                   <h4 className="font-semibold text-sm">{type.label}</h4>
                   <p className="text-xs text-muted-foreground">{type.description}</p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    onClick={() => sendTestEmail(type.id)}
-                    disabled={isSending || !testEmail}
-                  >
-                    <Send className="h-3 w-3 mr-2" />
-                    Siųsti testą
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => handlePreview(type.id)}
+                    >
+                      <Eye className="h-3 w-3 mr-2" />
+                      Peržiūra
+                    </Button>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => sendTestEmail(type.id)}
+                      disabled={isSending || !testEmail}
+                    >
+                      <Send className="h-3 w-3 mr-2" />
+                      Siųsti
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
       </CardContent>
+
+      <EmailPreview
+        isOpen={showPreview}
+        onClose={() => setShowPreview(false)}
+        emailType={previewEmailType}
+        emailData={testData}
+      />
     </Card>
   );
 };
