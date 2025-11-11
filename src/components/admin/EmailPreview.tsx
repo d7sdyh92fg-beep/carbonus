@@ -73,6 +73,13 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
       border-radius: 8px 8px 0 0;
     `;
 
+    const logoStyles = `
+      max-width: 180px;
+      height: auto;
+      margin: 0 auto 15px auto;
+      display: block;
+    `;
+
     const contentStyles = `
       padding: 30px 20px;
       line-height: 1.6;
@@ -112,6 +119,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         booking: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">Carbonus</h1>
               <p style="margin: 10px 0 0 0; font-size: 16px;">Automobilių nuoma</p>
             </div>
@@ -140,6 +148,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         paid: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">✓ Apmokėjimas patvirtintas</h1>
             </div>
             <div style="${contentStyles}">
@@ -168,6 +177,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         picked_up: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">🚗 Geros kelionės!</h1>
             </div>
             <div style="${contentStyles}">
@@ -198,6 +208,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         completed: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">✓ Nuoma užbaigta</h1>
             </div>
             <div style="${contentStyles}">
@@ -225,6 +236,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         cancelled: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">Rezervacija atšaukta</h1>
             </div>
             <div style="${contentStyles}">
@@ -252,6 +264,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'payment-reminder': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">⏰ Apmokėjimo priminimas</h1>
             </div>
             <div style="${contentStyles}">
@@ -277,6 +290,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'pickup-reminder': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">🚗 Atsiėmimo priminimas</h1>
             </div>
             <div style="${contentStyles}">
@@ -305,6 +319,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'return-reminder': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">🔄 Grąžinimo priminimas</h1>
             </div>
             <div style="${contentStyles}">
@@ -333,6 +348,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'contract-confirmation': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">📄 Sutartis pasirašyta</h1>
             </div>
             <div style="${contentStyles}">
@@ -357,6 +373,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         feedback: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">⭐ Pasidalinkite savo patirtimi</h1>
             </div>
             <div style="${contentStyles}">
@@ -386,6 +403,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         booking: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">Carbonus</h1>
               <p style="margin: 10px 0 0 0; font-size: 16px;">Car Rental</p>
             </div>
@@ -414,6 +432,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         paid: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">✓ Payment Confirmed</h1>
             </div>
             <div style="${contentStyles}">
@@ -442,6 +461,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         picked_up: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">🚗 Safe Travels!</h1>
             </div>
             <div style="${contentStyles}">
@@ -472,6 +492,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         completed: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">✓ Rental Completed</h1>
             </div>
             <div style="${contentStyles}">
@@ -499,6 +520,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         cancelled: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">Booking Cancelled</h1>
             </div>
             <div style="${contentStyles}">
@@ -526,6 +548,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'payment-reminder': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">⏰ Payment Reminder</h1>
             </div>
             <div style="${contentStyles}">
@@ -551,6 +574,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'pickup-reminder': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">🚗 Pickup Reminder</h1>
             </div>
             <div style="${contentStyles}">
@@ -579,6 +603,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'return-reminder': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">🔄 Return Reminder</h1>
             </div>
             <div style="${contentStyles}">
@@ -607,6 +632,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         'contract-confirmation': `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">📄 Contract Signed</h1>
             </div>
             <div style="${contentStyles}">
@@ -631,6 +657,7 @@ export const EmailPreview: React.FC<EmailPreviewProps> = ({
         feedback: `
           <div style="${commonStyles}">
             <div style="${headerStyles}">
+              <img src="https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" alt="Carbonus" style="${logoStyles}" />
               <h1 style="margin: 0; font-size: 28px;">⭐ Share Your Experience</h1>
             </div>
             <div style="${contentStyles}">
