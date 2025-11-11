@@ -111,6 +111,12 @@ export const ProductSchema = ({
   reviewCount,
   category
 }: ProductSchemaProps) => {
+  // Extract numeric price - handle formats like "nuo 30 EUR", "30-40 EUR", "30 EUR"
+  const extractPrice = (priceStr: string): string => {
+    const match = priceStr.match(/\d+/);
+    return match ? match[0] : '30'; // Default to 30 if no number found
+  };
+
   const schemaData: any = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -123,10 +129,11 @@ export const ProductSchema = ({
     },
     "offers": {
       "@type": "Offer",
-      "url": typeof window !== 'undefined' ? window.location.href : '',
+      "url": typeof window !== 'undefined' ? window.location.href : 'https://carbonus.lt',
       "priceCurrency": currency,
-      "price": price.replace(/[^0-9]/g, ''),
+      "price": extractPrice(price),
       "availability": availability,
+      "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
       "seller": {
         "@type": "Organization",
         "name": "Carbonus"
