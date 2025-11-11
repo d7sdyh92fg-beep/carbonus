@@ -24,12 +24,15 @@ interface StatusEmailRequest {
   status: StatusType;
   paymentTransactionId?: string;
   contractPdfUrl?: string;
+  language?: string;
 }
 
 // Minimal, clean email templates
 function getEmailContent(data: StatusEmailRequest) {
-  const { customerName, carName, startDate, endDate, totalAmount, status, paymentTransactionId, reservationId } = data;
-  const templates: Record<StatusType, { subject: string; html: string }> = {
+  const { customerName, carName, startDate, endDate, totalAmount, status, paymentTransactionId, reservationId, language } = data;
+  const isLT = (language || 'lt') === 'lt';
+  
+  const templatesLT: Record<StatusType, { subject: string; html: string }> = {
     awaiting_payment: {
       subject: "Užbaikite rezervaciją - Carbonus",
       html: `
@@ -117,7 +120,97 @@ function getEmailContent(data: StatusEmailRequest) {
       `
     }
   };
-  return templates[status as StatusType];
+  
+  const templatesEN: Record<StatusType, { subject: string; html: string }> = {
+    awaiting_payment: {
+      subject: "Complete Your Booking - Carbonus",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h1 style="color:#3b82f6;margin:0 0 12px;">Awaiting Payment</h1>
+          <p>Hello, ${customerName}! Your booking has been created, but we are waiting for payment confirmation.</p>
+          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+            <p><strong>Car:</strong> ${carName}</p>
+            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
+            <p><strong>Amount:</strong> €${totalAmount}</p>
+            <p><strong>Booking ID:</strong> ${reservationId}</p>
+          </div>
+        </div>
+      `
+    },
+    partial_payment: {
+      subject: "Advance Payment Received - Carbonus",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h1 style="color:#22c55e;margin:0 0 12px;">Advance Payment Received</h1>
+          <p>Hello, ${customerName}! We received your advance payment. Booking confirmed.</p>
+          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+            <p><strong>Car:</strong> ${carName}</p>
+            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
+            <p><strong>Total Amount:</strong> €${totalAmount}</p>
+            <p><strong>Booking ID:</strong> ${reservationId}</p>
+          </div>
+        </div>
+      `
+    },
+    payment_failed: {
+      subject: "Payment Error - Carbonus",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h1 style="color:#ef4444;margin:0 0 12px;">Payment Failed</h1>
+          <p>Hello, ${customerName}! Unfortunately, your payment has failed. If you need help, please contact us.</p>
+          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+            <p><strong>Car:</strong> ${carName}</p>
+            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
+            <p><strong>Amount:</strong> €${totalAmount}</p>
+          </div>
+        </div>
+      `
+    },
+    paid: {
+      subject: "Payment Received - Carbonus Rental",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h1 style="color:#22c55e;margin:0 0 12px;">Payment Successfully Received!</h1>
+          <p>Hello, ${customerName}! We received your payment. Please find the rental agreement (PDF) attached.</p>
+          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+            <p><strong>Car:</strong> ${carName}</p>
+            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
+            <p><strong>Paid:</strong> €${totalAmount}</p>
+            ${paymentTransactionId ? `<p><strong>Payment ID:</strong> ${paymentTransactionId}</p>` : ''}
+          </div>
+        </div>
+      `
+    },
+    cancelled: {
+      subject: "Booking Cancelled - Carbonus Rental",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h1 style="color:#ef4444;margin:0 0 12px;">Your Booking Has Been Cancelled</h1>
+          <p>Hello, ${customerName}! Your booking has been cancelled.</p>
+        </div>
+      `
+    },
+    picked_up: {
+      subject: "Car Picked Up - Carbonus Rental",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h1 style="color:#6366f1;margin:0 0 12px;">Car Successfully Picked Up</h1>
+          <p>Hello, ${customerName}! We confirm that you have successfully picked up the car.</p>
+        </div>
+      `
+    },
+    completed: {
+      subject: "Rental Completed - Thank You! - Carbonus",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h1 style="color:#22c55e;margin:0 0 12px;">Thank You for Choosing Carbonus!</h1>
+          <p>Hello, ${customerName}! Your rental has been successfully completed.</p>
+        </div>
+      `
+    }
+  };
+  
+  return isLT ? templatesLT[status as StatusType] : templatesEN[status as StatusType];
 }
 
 async function fetchNotoFonts() {

@@ -338,7 +338,8 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
           startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
           endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
           totalAmount: reservation.total_amount,
-          status: 'paid'
+          status: 'paid',
+          language: (reservation as any).language || 'lt'
         }
       });
 
@@ -442,6 +443,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
           endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
           totalAmount: reservation.total_amount,
           status: 'completed',
+          language: (reservation as any).language || 'lt'
         },
       });
 

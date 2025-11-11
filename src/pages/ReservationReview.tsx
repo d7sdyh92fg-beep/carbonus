@@ -236,6 +236,7 @@ export default function ReservationReview() {
         p_payment_method: paymentMethod,
         p_payment_provider: 'montonio',
         p_pricing_notes: reservationData.pricing_notes,
+        p_language: language,
       });
 
       if (reservationError || !reservationId) {
@@ -260,6 +261,7 @@ export default function ReservationReview() {
             totalAmount: totalAmount,
             depositAmount: 0,
             advancePayment: totalAmount,
+            language: language,
           }
         });
       } catch (emailError) {

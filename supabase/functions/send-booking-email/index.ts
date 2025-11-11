@@ -21,6 +21,7 @@ interface BookingEmailRequest {
   rentalDays: number;
   totalAmount: number;
   depositAmount: number;
+  language?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -32,8 +33,10 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const booking: BookingEmailRequest = await req.json();
     console.log("Received booking request:", booking);
+    const lang = booking.language || 'lt';
+    const isLT = lang === 'lt';
 
-    // Email to admin (info@carbonus.lt)
+    // Email to admin (info@carbonus.lt) - always in Lithuanian
     const adminEmailResponse = await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
       to: ["info@carbonus.lt"],
@@ -47,6 +50,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Vardas:</strong> ${booking.customerName}</p>
             <p><strong>El. paštas:</strong> ${booking.customerEmail}</p>
             <p><strong>Telefonas:</strong> ${booking.customerPhone}</p>
+            <p><strong>Kalba:</strong> ${isLT ? 'Lietuvių' : 'English'}</p>
           </div>
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -69,12 +73,12 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Admin email sent:", adminEmailResponse);
 
-    // Email to customer
+    // Email to customer - in their preferred language
     const customerEmailResponse = await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
       to: [booking.customerEmail],
-      subject: `Rezervacijos patvirtinimas - ${booking.carName}`,
-      html: `
+      subject: isLT ? `Rezervacijos patvirtinimas - ${booking.carName}` : `Booking Confirmation - ${booking.carName}`,
+      html: isLT ? `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Rezervacija atlikta!</h1>
           
@@ -106,6 +110,40 @@ const handler = async (req: Request): Promise<Response> => {
           <p style="color: #666; font-size: 14px; margin-top: 30px;">
             Ačiū, kad pasirinkote CARBONUS!<br>
             CARBONUS komanda
+          </p>
+        </div>
+      ` : `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Booking Confirmed!</h1>
+          
+          <p>Hello, ${booking.customerName}!</p>
+          <p>Your booking has been successfully received. We will contact you shortly regarding payment and car pickup details.</p>
+
+          <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="color: #555; margin-top: 0;">Your Booking Information</h2>
+            <p><strong>Car:</strong> ${booking.carName}</p>
+            <p><strong>Pick-up date and time:</strong> ${booking.startDate} ${booking.pickupTime || '10:00'}</p>
+            <p><strong>Return date and time:</strong> ${booking.endDate} ${booking.returnTime || '10:00'}</p>
+            <p><strong>Number of days:</strong> ${booking.rentalDays}</p>
+            <p><strong>Rental price:</strong> €${booking.totalAmount}</p>
+            <p><strong>Deposit:</strong> €${booking.depositAmount}</p>
+            <p style="font-size: 18px;"><strong>Total to pay:</strong> €${booking.totalAmount + booking.depositAmount}</p>
+          </div>
+
+          <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
+            <h3 style="color: #856404; margin-top: 0;">Important Information:</h3>
+            <ul style="color: #856404; margin: 0; padding-left: 20px;">
+              <li>Deposit (€200) will be refunded after car return</li>
+              <li>Cancellation is possible no later than 3 days before pick-up date</li>
+              <li>If cancelled later, one day rental fee is non-refundable</li>
+            </ul>
+          </div>
+
+          <p>If you have any questions, contact us: <strong>info@carbonus.lt</strong></p>
+          
+          <p style="color: #666; font-size: 14px; margin-top: 30px;">
+            Thank you for choosing CARBONUS!<br>
+            CARBONUS Team
           </p>
         </div>
       `,

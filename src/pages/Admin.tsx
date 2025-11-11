@@ -332,7 +332,8 @@ const Admin = () => {
                 startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
                 endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
                 totalAmount: reservation.total_amount,
-                status: 'cancelled'
+                status: 'cancelled',
+                language: (reservation as any).language || 'lt'
               }
             });
           }
@@ -419,7 +420,8 @@ const Admin = () => {
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
             status: 'paid',
-            contractPdfUrl: contractPdfUrl
+            contractPdfUrl: contractPdfUrl,
+            language: (reservation as any).language || 'lt'
           }
         });
       }
@@ -466,7 +468,8 @@ const Admin = () => {
             startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
-            status: 'cancelled' // Using cancelled template for denied status
+            status: 'cancelled', // Using cancelled template for denied status
+            language: (reservation as any).language || 'lt'
           }
         });
       }
@@ -576,7 +579,8 @@ const Admin = () => {
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
             status: newStatus,
-            contractPdfUrl: newStatus === 'paid' ? contractPdfUrl : undefined
+            contractPdfUrl: newStatus === 'paid' ? contractPdfUrl : undefined,
+            language: (reservation as any).language || 'lt'
           }
         });
       }

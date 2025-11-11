@@ -16,6 +16,7 @@ interface PickupReminderRequest {
   startDate: string;
   endDate: string;
   pickupLocation?: string;
+  language?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -26,14 +27,15 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const data: PickupReminderRequest = await req.json();
     console.log("Sending pickup reminder for reservation:", data.reservationId);
+    const isLT = (data.language || 'lt') === 'lt';
 
-    const pickupLocation = data.pickupLocation || "mūsų biure (adresas bus suderintas atskirai)";
+    const pickupLocation = data.pickupLocation || (isLT ? "mūsų biure (adresas bus suderintas atskirai)" : "our office (address will be coordinated separately)");
 
     const emailResponse = await resend.emails.send({
       from: "Carbonus <info@carbonus.lt>",
       to: [data.customerEmail],
-      subject: "🚗 Primename - rytoj pasiimate automobilį!",
-      html: `
+      subject: isLT ? "🚗 Primename - rytoj pasiimate automobilį!" : "🚗 Reminder - Pick up your car tomorrow!",
+      html: isLT ? `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #3b82f6;">🚗 Automobilio pasiėmimas jau rytoj!</h1>
           <p>Sveiki, ${data.customerName}!</p>
@@ -84,6 +86,59 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Geros kelionės!<br>Carbonus komanda
+          </p>
+        </div>
+      ` : `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #3b82f6;">🚗 Car Pickup Tomorrow!</h1>
+          <p>Hello, ${data.customerName}!</p>
+          <p>We remind you that your car rental period starts tomorrow.</p>
+          
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="margin-top: 0;">Your Booking:</h2>
+            <p><strong>Car:</strong> ${data.carName}</p>
+            <p><strong>Pickup Date:</strong> ${data.startDate}</p>
+            <p><strong>Return Date:</strong> ${data.endDate}</p>
+            <p><strong>Location:</strong> ${pickupLocation}</p>
+          </div>
+          
+          <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0;"><strong>✅ Preparation Checklist:</strong></p>
+            <p style="margin: 10px 0 0 0;">
+              Please have with you:<br><br>
+              📋 <strong>Documents:</strong><br>
+              • Valid driver's license<br>
+              • Personal ID (ID card or passport)<br>
+              • Signed contract copy (if you have it)<br><br>
+              
+              💳 <strong>Payment:</strong><br>
+              • Bank card (if payment remaining)<br>
+              • Deposit amount: €300 (will be refunded after rental)<br><br>
+              
+              📱 <strong>Contact:</strong><br>
+              • Make sure we can reach you by phone
+            </p>
+          </div>
+          
+          <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+            <p style="margin: 0;"><strong>☀️ Travel Tips:</strong></p>
+            <p style="margin: 10px 0 0 0;">
+              • Check weather forecast for your trip<br>
+              • Familiarize yourself with car features before leaving<br>
+              • Inspect car condition together with us<br>
+              • Take photos of the car before departure
+            </p>
+          </div>
+          
+          <p><strong>Important:</strong> If your plans changed or you can't arrive at the specified time, please let us know immediately.</p>
+          
+          <p>Looking forward to seeing you!</p>
+          
+          <p>If you have questions, contact us:</p>
+          <p>📧 Email: info@carbonus.lt<br>📞 Phone: +370 6 98 18 781</p>
+          
+          <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+            Safe travels!<br>Carbonus Team
           </p>
         </div>
       `,

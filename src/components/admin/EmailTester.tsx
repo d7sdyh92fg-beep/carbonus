@@ -40,6 +40,7 @@ export const EmailTester: React.FC = () => {
         endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         totalAmount: 350,
         depositAmount: 300,
+        language: 'lt', // Default to Lithuanian for testing
       };
 
       switch (emailType) {
