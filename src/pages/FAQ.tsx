@@ -6,6 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/hooks/use-translations";
 import { translations } from "@/i18n/translations";
+import { FAQSchema } from "@/components/seo/StructuredData";
+import { LanguageLinks } from "@/components/seo/LanguageLinks";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { 
   HelpCircle, 
   Car, 
@@ -99,8 +102,30 @@ const FAQ = () => {
     }
   ];
 
+  // Flatten all FAQs for schema
+  const allFAQs = faqCategories.flatMap(category => 
+    category.questions.map(q => ({
+      question: q.question,
+      answer: q.answer
+    }))
+  );
+
   return (
     <div className="min-h-screen bg-background">
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title={language === 'lt' ? "DUK - Dažnai užduodami klausimai" : "FAQ - Frequently Asked Questions"}
+        description={t('faq.subtitle')}
+        canonical={`https://carbonus.lt/${language === 'en' ? 'faq' : 'duk'}`}
+        keywords="automobilių nuoma duk, car rental faq, klausimai, nuomos sąlygos, draudimas, rezervacija"
+      />
+      
+      {/* Language Links */}
+      <LanguageLinks ltPath="/duk" enPath="/faq" />
+      
+      {/* FAQ Schema */}
+      <FAQSchema faqs={allFAQs} />
+      
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Hero Section */}

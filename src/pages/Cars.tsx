@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
 import { useTranslations } from "@/hooks/use-translations";
+import { LanguageLinks } from "@/components/seo/LanguageLinks";
+import { SEOHead } from "@/components/seo/SEOHead";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -211,6 +213,17 @@ const Cars = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title={t('cars.meta.title')}
+        description={t('cars.meta.description')}
+        canonical={`https://carbonus.lt/${language === 'en' ? 'cars' : 'automobiliai'}`}
+        keywords="automobilių nuoma, car rental, BMW, KIA, VW Passat, premium cars, nuoma Lietuvoje"
+      />
+      
+      {/* Language Links */}
+      <LanguageLinks ltPath="/automobiliai" enPath="/cars" />
+      
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Hero Section */}

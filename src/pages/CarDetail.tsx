@@ -8,6 +8,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import { useTranslations } from "@/hooks/use-translations";
+import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
+import { LanguageLinks } from "@/components/seo/LanguageLinks";
+import { SEOHead } from "@/components/seo/SEOHead";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced-no-plate.png";
 import kiaCeedRearEnhanced from "@/assets/kia-ceed-rear-enhanced-no-plate.png";
@@ -247,6 +250,44 @@ const CarDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title={t('carDetail.metaTitle').replace('{carName}', car.name)}
+        description={t('carDetail.metaDescription').replace('{carName}', car.name)}
+        canonical={`https://carbonus.lt${language === 'en' ? '/cars/' + id : '/automobiliai/' + id}`}
+        ogImage={`https://carbonus.lt${car.image}`}
+        ogType="product"
+        keywords={`${car.name} nuoma, ${car.name} rent, car rental ${car.name}, ${car.category.toLowerCase()}, carbonus`}
+      />
+      
+      {/* Language Links */}
+      <LanguageLinks 
+        ltPath={`/automobiliai/${id}`}
+        enPath={`/cars/${id}`}
+      />
+      
+      {/* Product Schema */}
+      <ProductSchema
+        name={car.name}
+        description={t('carData.' + car.id + '.description')}
+        image={car.image}
+        brand={car.name.split(' ')[0]}
+        price={car.price}
+        currency="EUR"
+        rating={car.rating}
+        reviewCount={127}
+        category={car.category}
+      />
+      
+      {/* Breadcrumb Schema */}
+      <BreadcrumbSchema
+        items={[
+          { name: t('carDetail.breadcrumbHome'), url: '/' },
+          { name: t('carDetail.breadcrumbCars'), url: language === 'en' ? '/cars' : '/automobiliai' },
+          { name: car.name, url: `${language === 'en' ? '/cars/' : '/automobiliai/'}${id}` }
+        ]}
+      />
+      
       <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Simple Breadcrumb Section */}
@@ -282,7 +323,7 @@ const CarDetail = () => {
               <div className="text-center">
                 <img
                   src={getCurrentImage()}
-                  alt={`${car.name} - ${currentImageIndex + 1}`}
+                  alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
                   className="w-full max-w-2xl mx-auto object-contain rounded-lg"
                 />
               </div>
