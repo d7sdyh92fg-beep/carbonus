@@ -386,9 +386,26 @@ const CarDetail = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Features and Specifications */}
-          <div className="grid lg:grid-cols-2 gap-12 mt-12">
+      {/* Booking Calendar */}
+      <section className="py-20 bg-gray-50" id="booking-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-foreground mb-4">{t('carDetail.bookingTitle')}</h3>
+            <p className="text-lg text-muted-foreground">
+              {t('carDetail.bookingSubtitle')}
+            </p>
+          </div>
+          <BookingCalendar carId={car.id} carName={car.name} carImage={car.image} />
+        </div>
+      </section>
+
+      {/* Features and Specifications */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12">
             {/* Features */}
             <Card>
               <CardContent className="p-8">
@@ -419,19 +436,6 @@ const CarDetail = () => {
               </CardContent>
             </Card>
           </div>
-        </div>
-      </section>
-
-      {/* Booking Calendar */}
-      <section className="py-20 bg-gray-50" id="booking-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-foreground mb-4">{t('carDetail.bookingTitle')}</h3>
-            <p className="text-lg text-muted-foreground">
-              {t('carDetail.bookingSubtitle')}
-            </p>
-          </div>
-          <BookingCalendar carId={car.id} carName={car.name} carImage={car.image} />
         </div>
       </section>
 
