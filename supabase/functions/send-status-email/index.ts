@@ -86,14 +86,44 @@ function getEmailContent(data: StatusEmailRequest) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
           <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">Apmokėjimas sėkmingai gautas!</h1>
-          <p>Sveiki, ${customerName}! Gavome jūsų apmokėjimą. Pridedame nuomos sutartį (PDF).</p>
+          <h1 style="color:#22c55e;margin:0 0 12px;">✅ Apmokėjimas sėkmingai gautas!</h1>
+          <p>Sveiki, ${customerName}!</p>
+          <p>Dėkojame už apmokėjimą! Jūsų rezervacija patvirtinta ir nuomos sutartis pridėta prie šio el. laiško (PDF formatu).</p>
+          
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+            <h2 style="margin-top:0;font-size:18px;">Rezervacijos detalės:</h2>
             <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Laikotarpis:</strong> ${startDate} – ${endDate}</p>
+            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
+            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
             <p><strong>Sumokėta:</strong> €${totalAmount}</p>
             ${paymentTransactionId ? `<p><strong>Mokėjimo ID:</strong> ${paymentTransactionId}</p>` : ''}
+            <p><strong>Rezervacijos Nr.:</strong> ${reservationId}</p>
           </div>
+          
+          <div style="background:#dbeafe;padding:16px;border-radius:8px;margin:16px 0;">
+            <p style="margin:0;"><strong>📋 Kas toliau?</strong></p>
+            <p style="margin:10px 0 0 0;">
+              1. Pasiruoškite automobilio pasiėmimui nustatytą dieną<br>
+              2. Turėkite su savimi galiojantį vairuotojo pažymėjimą<br>
+              3. Automobilis bus paruoštas atsiėmimui nuo ${startDate} 9:00 val.
+            </p>
+          </div>
+          
+          <div style="background:#fef3c7;padding:16px;border-radius:8px;margin:16px 0;border-left:4px solid #f59e0b;">
+            <p style="margin:0;"><strong>⚠️ Svarbu prisiminti:</strong></p>
+            <p style="margin:10px 0 0 0;">
+              • Automobilis bus paruoštas atsiėmimui nuo ${startDate} 9:00 val.<br>
+              • Prašome atvykti laiku<br>
+              • Automobilio būklė bus patikrinta kartu su jumis
+            </p>
+          </div>
+          
+          <p>Jei turite klausimų ar reikia pakeisti atsiėmimo laiką, susisiekite su mumis:</p>
+          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
+          
+          <p style="margin-top:30px;color:#6b7280;font-size:14px;">
+            Laukiame susitikimo!<br>Carbonus komanda
+          </p>
         </div>
       `
     },
@@ -182,14 +212,44 @@ function getEmailContent(data: StatusEmailRequest) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
           <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">Payment Successfully Received!</h1>
-          <p>Hello, ${customerName}! We received your payment. Please find the rental agreement (PDF) attached.</p>
+          <h1 style="color:#22c55e;margin:0 0 12px;">✅ Payment Successfully Received!</h1>
+          <p>Hello, ${customerName}!</p>
+          <p>Thank you for your payment! Your booking is confirmed and the rental agreement is attached to this email (PDF format).</p>
+          
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+            <h2 style="margin-top:0;font-size:18px;">Booking Details:</h2>
             <p><strong>Car:</strong> ${carName}</p>
-            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
+            <p><strong>Rental Start:</strong> ${startDate}</p>
+            <p><strong>Rental End:</strong> ${endDate}</p>
             <p><strong>Paid:</strong> €${totalAmount}</p>
             ${paymentTransactionId ? `<p><strong>Payment ID:</strong> ${paymentTransactionId}</p>` : ''}
+            <p><strong>Booking ID:</strong> ${reservationId}</p>
           </div>
+          
+          <div style="background:#dbeafe;padding:16px;border-radius:8px;margin:16px 0;">
+            <p style="margin:0;"><strong>📋 What's Next?</strong></p>
+            <p style="margin:10px 0 0 0;">
+              1. Prepare for car pickup on the scheduled date<br>
+              2. Have your valid driver's license with you<br>
+              3. Car will be ready for pickup from ${startDate} 9:00 AM
+            </p>
+          </div>
+          
+          <div style="background:#fef3c7;padding:16px;border-radius:8px;margin:16px 0;border-left:4px solid #f59e0b;">
+            <p style="margin:0;"><strong>⚠️ Important to Remember:</strong></p>
+            <p style="margin:10px 0 0 0;">
+              • Car will be ready for pickup from ${startDate} 9:00 AM<br>
+              • Please arrive on time<br>
+              • Car condition will be inspected together with you
+            </p>
+          </div>
+          
+          <p>If you have questions or need to change the pickup time, contact us:</p>
+          <p>📧 Email: info@carbonus.lt<br>📞 Phone: +370 6 98 18 781</p>
+          
+          <p style="margin-top:30px;color:#6b7280;font-size:14px;">
+            Looking forward to seeing you!<br>Carbonus Team
+          </p>
         </div>
       `
     },

@@ -123,15 +123,6 @@ export const EmailTester: React.FC = () => {
           });
           break;
           
-        case 'contract-confirmation':
-          response = await supabase.functions.invoke('send-contract-confirmation', {
-            body: {
-              ...testData,
-              contractPdfUrl: 'https://example.com/contract.pdf',
-            }
-          });
-          break;
-          
         default:
           throw new Error('Unknown email type');
       }
@@ -181,7 +172,6 @@ export const EmailTester: React.FC = () => {
     { id: 'payment-reminder', label: 'Mokėjimo priminimas', description: 'Priminimas apmokėti' },
     { id: 'pickup-reminder', label: 'Atsiėmimo priminimas', description: 'Priminimas atsiimti automobilį' },
     { id: 'return-reminder', label: 'Grąžinimo priminimas', description: 'Priminimas grąžinti automobilį' },
-    { id: 'contract-confirmation', label: 'Sutarties patvirtinimas', description: 'Su sutarties PDF' },
     { id: 'feedback', label: 'Atsiliepimo prašymas', description: 'Po nuomos pabaigos' },
   ];
 
