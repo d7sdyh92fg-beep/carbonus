@@ -1,8 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-import { PDFDocument, rgb } from "npm:pdf-lib@1.17.1";
-import fontkit from "npm:@pdf-lib/fontkit@1.1.1";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -230,129 +228,25 @@ function getEmailContent(data: StatusEmailRequest) {
   return isLT ? templatesLT[status as StatusType] : templatesEN[status as StatusType];
 }
 
-async function fetchNotoFonts() {
-  const regular = await fetch('https://raw.githubusercontent.com/googlefonts/noto-fonts/main/hinted/ttf/NotoSans/NotoSans-Regular.ttf');
-  const bold = await fetch('https://raw.githubusercontent.com/googlefonts/noto-fonts/main/hinted/ttf/NotoSans/NotoSans-Bold.ttf');
-  return {
-    regular: new Uint8Array(await regular.arrayBuffer()),
-    bold: new Uint8Array(await bold.arrayBuffer()),
-  };
+// Helper function to get the static PDF URL based on language
+function getStaticPdfUrl(language: string = 'lt'): string {
+  const baseUrl = 'https://carbonus.lt';
+  if (language === 'en') {
+    return `${baseUrl}/carbonus-rental-agreement.pdf`;
+  }
+  return `${baseUrl}/carbonus-nuomos-sutartis.pdf`;
 }
 
-async function ensureContractAndGetPath(supabase: ReturnType<typeof createClient>, reservationId: string, language: string = 'lt'): Promise<string | null> {
-  const isLT = language === 'lt';
+// Helper function to download PDF from URL as base64
+async function downloadPdfAsBase64(url: string): Promise<string> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to download PDF: ${response.statusText}`);
+  }
   
-  // Try existing
-  const { data: reservation } = await supabase
-    .from('reservations')
-    .select('*')
-    .eq('id', reservationId)
-    .single();
-
-  let contractPath = reservation?.contract_pdf_url ?? null;
-  if (contractPath) return contractPath;
-
-  // Generate on-the-fly
-  console.log(`Generating ${language.toUpperCase()} contract PDF on-the-fly...`);
-  const pdfDoc = await PDFDocument.create();
-  pdfDoc.registerFontkit(fontkit);
-
-  const page = pdfDoc.addPage([595.28, 841.89]);
-  const { regular, bold } = await fetchNotoFonts();
-  const font = await pdfDoc.embedFont(regular);
-  const fontBold = await pdfDoc.embedFont(bold);
-
-  // Fetch data for content
-  const { data: full } = await supabase
-    .from('reservations')
-    .select('*, customers(*)')
-    .eq('id', reservationId)
-    .single();
-
-  if (!full) return null;
-
-  // Language-specific text
-  const text = isLT ? {
-    title: 'CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS',
-    contractNo: 'Sutarties Nr.',
-    date: 'Data',
-    sectionTitle: 'NUOMOS DUOMENYS',
-    client: 'Klientas',
-    email: 'El. paštas',
-    phone: 'Telefonas',
-    car: 'Automobilis',
-    pickupDate: 'Paėmimo data',
-    returnDate: 'Grąžinimo data',
-    rentalPrice: 'Nuomos kaina',
-    deposit: 'Užstatas',
-    totalAmount: 'Bendra suma',
-    filename: `nuomos_sutartis_${reservationId}.pdf`
-  } : {
-    title: 'CARBONUS CAR RENTAL AGREEMENT',
-    contractNo: 'Contract No.',
-    date: 'Date',
-    sectionTitle: 'RENTAL INFORMATION',
-    client: 'Client',
-    email: 'Email',
-    phone: 'Phone',
-    car: 'Car',
-    pickupDate: 'Pick-up Date',
-    returnDate: 'Return Date',
-    rentalPrice: 'Rental Price',
-    deposit: 'Deposit',
-    totalAmount: 'Total Amount',
-    filename: `rental_agreement_${reservationId}.pdf`
-  };
-
-  let y = 800;
-  page.drawText(text.title, { x: 40, y, size: 14, font: fontBold, color: rgb(0,0,0) });
-  y -= 24;
-  page.drawText(`${text.contractNo}: ${full.id}`, { x: 40, y, size: 11, font });
-  y -= 16;
-  const locale = isLT ? 'lt-LT' : 'en-US';
-  page.drawText(`${text.date}: ${new Date().toLocaleDateString(locale)}`, { x: 40, y, size: 11, font });
-  y -= 28;
-
-  page.drawText(text.sectionTitle, { x: 40, y, size: 12, font: fontBold });
-  y -= 18;
-  const rows: [string, string][] = [
-    [text.client, `${full.customers?.first_name ?? ''} ${full.customers?.last_name ?? ''}`.trim()],
-    [text.email, full.customers?.email ?? ''],
-    [text.phone, full.customers?.phone ?? ''],
-    [text.car, full.car_name],
-    [text.pickupDate, `${full.start_date}${full.pickup_time ? ' ' + full.pickup_time : ''}`],
-    [text.returnDate, `${full.end_date}${full.return_time ? ' ' + full.return_time : ''}`],
-    [text.rentalPrice, `€${full.total_rental_cost}`],
-    [text.deposit, `€${full.deposit_amount}`],
-    [text.totalAmount, `€${full.total_amount}`],
-  ];
-  for (const [k, v] of rows) {
-    page.drawText(`${k}:`, { x: 40, y, size: 11, font: fontBold });
-    page.drawText(String(v), { x: 160, y, size: 11, font });
-    y -= 16;
-  }
-
-  const pdfBytes = await pdfDoc.save();
-  const path = `${reservationId}/${text.filename}`;
-  const { error: uploadError } = await supabase.storage
-    .from('contracts')
-    .upload(path, pdfBytes, { contentType: 'application/pdf', upsert: true });
-  if (uploadError) {
-    console.error('PDF upload error:', uploadError);
-    return null;
-  }
-  await supabase.from('reservations').update({ contract_pdf_url: path }).eq('id', reservationId);
-  console.log('Contract PDF generated and saved:', path);
-  return path;
-}
-
-async function downloadAsBase64(supabase: ReturnType<typeof createClient>, path: string) {
-  const filePath = path.replace(/^contracts\//, '');
-  const { data, error } = await supabase.storage.from('contracts').download(filePath);
-  if (error || !data) throw error ?? new Error('File not found');
-  const buf = await data.arrayBuffer();
-  const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
-  return { base64: b64, size: buf.byteLength };
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = new Uint8Array(arrayBuffer);
+  return btoa(String.fromCharCode.apply(null, Array.from(buffer)));
 }
 
 serve(async (req) => {
@@ -376,25 +270,28 @@ serve(async (req) => {
       html: tmpl.html,
     };
 
-    // When marked as paid manually or via provider, guarantee contract attachment
+    // When marked as paid, attach the static contract PDF
     if (data.status === 'paid') {
-      const language = data.language || 'lt';
-      const isLT = language === 'lt';
-      const filename = isLT ? `nuomos_sutartis_${data.reservationId}.pdf` : `rental_agreement_${data.reservationId}.pdf`;
-      
-      let path = data.contractPdfUrl ?? null;
-      if (!path) path = await ensureContractAndGetPath(supabase, data.reservationId, language);
-
-      if (path) {
-        try {
-          const { base64, size } = await downloadAsBase64(supabase, path);
-          emailOptions.attachments = [{ filename, content: base64, contentType: 'application/pdf' }];
-          console.log(`Attached ${language.toUpperCase()} contract PDF (${size} bytes)`);
-        } catch (e) {
-          console.error('Attachment download failed:', e);
-        }
-      } else {
-        console.warn('No contract PDF path available');
+      try {
+        const language = data.language || 'lt';
+        const pdfUrl = getStaticPdfUrl(language);
+        console.log('Downloading static PDF from:', pdfUrl);
+        
+        const base64Content = await downloadPdfAsBase64(pdfUrl);
+        
+        const pdfFilename = language === 'en' 
+          ? 'carbonus-rental-agreement.pdf'
+          : 'carbonus-nuomos-sutartis.pdf';
+        
+        emailOptions.attachments = [{
+          filename: pdfFilename,
+          content: base64Content,
+          contentType: 'application/pdf'
+        }];
+        console.log(`Attached static ${language.toUpperCase()} PDF:`, pdfFilename);
+      } catch (error) {
+        console.error('Error preparing PDF attachment:', error);
+        // Continue without attachment if there's an error
       }
     }
 
