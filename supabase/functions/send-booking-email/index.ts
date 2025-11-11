@@ -35,6 +35,9 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Received booking request:", booking);
     const lang = booking.language || 'lt';
     const isLT = lang === 'lt';
+    
+    const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
+    const logoStyles = 'max-width: 180px; height: auto; margin-bottom: 24px;';
 
     // Email to admin (info@carbonus.lt) - always in Lithuanian
     const adminEmailResponse = await resend.emails.send({
@@ -43,6 +46,7 @@ const handler = async (req: Request): Promise<Response> => {
       subject: `Nauja rezervacija - ${booking.carName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Nauja rezervacija</h1>
           
           <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -80,6 +84,7 @@ const handler = async (req: Request): Promise<Response> => {
       subject: isLT ? `Rezervacijos patvirtinimas - ${booking.carName}` : `Booking Confirmation - ${booking.carName}`,
       html: isLT ? `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Rezervacija atlikta!</h1>
           
           <p>Sveiki, ${booking.customerName}!</p>
@@ -114,6 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
         </div>
       ` : `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Booking Confirmed!</h1>
           
           <p>Hello, ${booking.customerName}!</p>

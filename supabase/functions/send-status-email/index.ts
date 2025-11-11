@@ -32,11 +32,15 @@ function getEmailContent(data: StatusEmailRequest) {
   const { customerName, carName, startDate, endDate, totalAmount, status, paymentTransactionId, reservationId, language } = data;
   const isLT = (language || 'lt') === 'lt';
   
+  const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
+  const logoStyles = 'max-width: 180px; height: auto; margin-bottom: 24px;';
+  
   const templatesLT: Record<StatusType, { subject: string; html: string }> = {
     awaiting_payment: {
       subject: "Užbaikite rezervaciją - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#3b82f6;margin:0 0 12px;">Laukiame mokėjimo</h1>
           <p>Sveiki, ${customerName}! Jūsų rezervacija sukurta, bet laukiame mokėjimo patvirtinimo.</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -52,6 +56,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Išankstinis mokėjimas gautas - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#22c55e;margin:0 0 12px;">Išankstinis mokėjimas gautas</h1>
           <p>Sveiki, ${customerName}! Gavome jūsų išankstinį mokėjimą. Rezervacija patvirtinta.</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -67,6 +72,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Mokėjimo klaida - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#ef4444;margin:0 0 12px;">Mokėjimas nepavyko</h1>
           <p>Sveiki, ${customerName}! Deja, jūsų mokėjimas nepavyko. Jei reikia pagalbos – parašykite mums.</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -81,6 +87,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Apmokėjimas gautas - Carbonus nuoma",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#22c55e;margin:0 0 12px;">Apmokėjimas sėkmingai gautas!</h1>
           <p>Sveiki, ${customerName}! Gavome jūsų apmokėjimą. Pridedame nuomos sutartį (PDF).</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -96,6 +103,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Rezervacija atšaukta - Carbonus nuoma",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#ef4444;margin:0 0 12px;">Jūsų rezervacija atšaukta</h1>
           <p>Sveiki, ${customerName}! Jūsų rezervacija atšaukta.</p>
         </div>
@@ -105,6 +113,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Automobilis atsiimtas - Carbonus nuoma",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#6366f1;margin:0 0 12px;">Automobilis sėkmingai atsiimtas</h1>
           <p>Sveiki, ${customerName}! Patvirtiname, kad sėkmingai atsiėmėte automobilį.</p>
         </div>
@@ -114,6 +123,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Nuoma baigta - Dėkojame! - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#22c55e;margin:0 0 12px;">Ačiū, kad pasirinkote Carbonus!</h1>
           <p>Sveiki, ${customerName}! Jūsų nuoma sėkmingai baigta.</p>
         </div>
@@ -126,6 +136,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Complete Your Booking - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#3b82f6;margin:0 0 12px;">Awaiting Payment</h1>
           <p>Hello, ${customerName}! Your booking has been created, but we are waiting for payment confirmation.</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -141,6 +152,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Advance Payment Received - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#22c55e;margin:0 0 12px;">Advance Payment Received</h1>
           <p>Hello, ${customerName}! We received your advance payment. Booking confirmed.</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -156,6 +168,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Payment Error - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#ef4444;margin:0 0 12px;">Payment Failed</h1>
           <p>Hello, ${customerName}! Unfortunately, your payment has failed. If you need help, please contact us.</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -170,6 +183,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Payment Received - Carbonus Rental",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#22c55e;margin:0 0 12px;">Payment Successfully Received!</h1>
           <p>Hello, ${customerName}! We received your payment. Please find the rental agreement (PDF) attached.</p>
           <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
@@ -185,6 +199,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Booking Cancelled - Carbonus Rental",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#ef4444;margin:0 0 12px;">Your Booking Has Been Cancelled</h1>
           <p>Hello, ${customerName}! Your booking has been cancelled.</p>
         </div>
@@ -194,6 +209,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Car Picked Up - Carbonus Rental",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#6366f1;margin:0 0 12px;">Car Successfully Picked Up</h1>
           <p>Hello, ${customerName}! We confirm that you have successfully picked up the car.</p>
         </div>
@@ -203,6 +219,7 @@ function getEmailContent(data: StatusEmailRequest) {
       subject: "Rental Completed - Thank You! - Carbonus",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color:#22c55e;margin:0 0 12px;">Thank You for Choosing Carbonus!</h1>
           <p>Hello, ${customerName}! Your rental has been successfully completed.</p>
         </div>
