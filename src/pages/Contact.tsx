@@ -402,33 +402,88 @@ const Contact = () => {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-4xl space-y-6">
+              {/* Quick Contact Buttons */}
+              <div className="grid md:grid-cols-3 gap-4 mb-8">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-16 text-base font-medium"
+                  onClick={() => window.open('https://wa.me/37069818781', '_blank')}
+                >
+                  <MessageSquare className="h-5 w-5 mr-2 text-green-600" />
+                  WhatsApp žinutė
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-16 text-base font-medium"
+                  onClick={() => window.open('tel:+37069818781')}
+                >
+                  <Phone className="h-5 w-5 mr-2 text-blue-600" />
+                  Skambinti dabar
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-16 text-base font-medium"
+                  onClick={() => window.open('mailto:info@carbonus.lt')}
+                >
+                  <Mail className="h-5 w-5 mr-2 text-orange-600" />
+                  El. paštas
+                </Button>
+              </div>
+              
+              {/* Location Card */}
               {locations.map((location, index) => (
                 <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <CardContent className="p-8 text-center">
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                      <MapPin className="w-6 h-6 text-primary" />
-                      <h3 className="text-2xl font-bold text-foreground">
-                        {location.city}
-                      </h3>
+                  <CardContent className="p-0">
+                    {/* Google Maps Embed */}
+                    <div className="w-full h-96 rounded-t-lg overflow-hidden">
+                      <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d148840.77893341!2d23.7739!3d54.0165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e0243f0ebefebf%3A0x71e8f0c8a6c6a6a!2sDruskininkai!5e0!3m2!1sen!2slt!4v1234567890123!5m2!1sen!2slt"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Carbonus Druskininkai Location"
+                      />
                     </div>
-                    <div className="space-y-3 text-muted-foreground">
-                      <p>
-                        <strong>{t('contact.locations.addressLabel')}</strong><br />
-                        {location.address}
-                      </p>
-                      <p>
-                        <strong>{t('contact.locations.phoneLabel')}</strong><br />
-                        {location.phone}
-                      </p>
-                      <p>
-                        <strong>{t('contact.locations.hoursLabel')}</strong><br />
-                        {location.hours}
-                      </p>
+                    
+                    {/* Location Info */}
+                    <div className="p-8 text-center">
+                      <div className="flex items-center justify-center gap-3 mb-4">
+                        <MapPin className="w-6 h-6 text-primary" />
+                        <h3 className="text-2xl font-bold text-foreground">
+                          {location.city}
+                        </h3>
+                      </div>
+                      <div className="space-y-3 text-muted-foreground mb-6">
+                        <p>
+                          <strong>{t('contact.locations.addressLabel')}</strong><br />
+                          {location.address}
+                        </p>
+                        <p>
+                          <strong>{t('contact.locations.phoneLabel')}</strong><br />
+                          <a href="tel:+37069818781" className="text-primary hover:underline">
+                            {location.phone}
+                          </a>
+                        </p>
+                        <p>
+                          <strong>{t('contact.locations.hoursLabel')}</strong><br />
+                          {location.hours}
+                        </p>
+                      </div>
+                      <Button 
+                        className="w-full"
+                        onClick={() => window.open('https://www.google.com/maps/dir//Druskininkai', '_blank')}
+                      >
+                        <MapPin className="h-4 w-4 mr-2" />
+                        {t('contact.locations.routeButton')}
+                      </Button>
                     </div>
-                    <Button variant="outline" className="w-full mt-6">
-                      {t('contact.locations.routeButton')}
-                    </Button>
                   </CardContent>
                 </Card>
               ))}

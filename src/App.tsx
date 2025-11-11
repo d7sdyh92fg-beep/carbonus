@@ -26,6 +26,7 @@ import ReservationInsurance from "./pages/ReservationInsurance";
 import ReservationServices from "./pages/ReservationServices";
 import ReservationTerms from "./pages/ReservationTerms";
 import ReservationReview from "./pages/ReservationReview";
+import SEOChecklist from "./pages/SEOChecklist";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,9 @@ const App = () => (
             <Route path="/payment-canceled" element={<PaymentCanceled />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
+            
+            {/* SEO Checklist */}
+            <Route path="/seo-checklist" element={<SEOChecklist />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
