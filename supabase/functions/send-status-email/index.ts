@@ -222,7 +222,9 @@ async function fetchNotoFonts() {
   };
 }
 
-async function ensureContractAndGetPath(supabase: ReturnType<typeof createClient>, reservationId: string): Promise<string | null> {
+async function ensureContractAndGetPath(supabase: ReturnType<typeof createClient>, reservationId: string, language: string = 'lt'): Promise<string | null> {
+  const isLT = language === 'lt';
+  
   // Try existing
   const { data: reservation } = await supabase
     .from('reservations')
@@ -234,7 +236,7 @@ async function ensureContractAndGetPath(supabase: ReturnType<typeof createClient
   if (contractPath) return contractPath;
 
   // Generate on-the-fly
-  console.log('Generating contract PDF on-the-fly...');
+  console.log(`Generating ${language.toUpperCase()} contract PDF on-the-fly...`);
   const pdfDoc = await PDFDocument.create();
   pdfDoc.registerFontkit(fontkit);
 
@@ -252,26 +254,60 @@ async function ensureContractAndGetPath(supabase: ReturnType<typeof createClient
 
   if (!full) return null;
 
+  // Language-specific text
+  const text = isLT ? {
+    title: 'CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS',
+    contractNo: 'Sutarties Nr.',
+    date: 'Data',
+    sectionTitle: 'NUOMOS DUOMENYS',
+    client: 'Klientas',
+    email: 'El. paštas',
+    phone: 'Telefonas',
+    car: 'Automobilis',
+    pickupDate: 'Paėmimo data',
+    returnDate: 'Grąžinimo data',
+    rentalPrice: 'Nuomos kaina',
+    deposit: 'Užstatas',
+    totalAmount: 'Bendra suma',
+    filename: `nuomos_sutartis_${reservationId}.pdf`
+  } : {
+    title: 'CARBONUS CAR RENTAL AGREEMENT',
+    contractNo: 'Contract No.',
+    date: 'Date',
+    sectionTitle: 'RENTAL INFORMATION',
+    client: 'Client',
+    email: 'Email',
+    phone: 'Phone',
+    car: 'Car',
+    pickupDate: 'Pick-up Date',
+    returnDate: 'Return Date',
+    rentalPrice: 'Rental Price',
+    deposit: 'Deposit',
+    totalAmount: 'Total Amount',
+    filename: `rental_agreement_${reservationId}.pdf`
+  };
+
   let y = 800;
-  page.drawText('CARBONUS AUTOMOBILIŲ NUOMOS SUTARTIS', { x: 40, y, size: 14, font: fontBold, color: rgb(0,0,0) });
+  page.drawText(text.title, { x: 40, y, size: 14, font: fontBold, color: rgb(0,0,0) });
   y -= 24;
-  page.drawText(`Sutarties Nr.: ${full.id}`, { x: 40, y, size: 11, font });
+  page.drawText(`${text.contractNo}: ${full.id}`, { x: 40, y, size: 11, font });
   y -= 16;
-  page.drawText(`Data: ${new Date().toLocaleDateString('lt-LT')}`, { x: 40, y, size: 11, font });
+  const locale = isLT ? 'lt-LT' : 'en-US';
+  page.drawText(`${text.date}: ${new Date().toLocaleDateString(locale)}`, { x: 40, y, size: 11, font });
   y -= 28;
 
-  page.drawText('NUOMOS DUOMENYS', { x: 40, y, size: 12, font: fontBold });
+  page.drawText(text.sectionTitle, { x: 40, y, size: 12, font: fontBold });
   y -= 18;
   const rows: [string, string][] = [
-    ['Klientas', `${full.customers?.first_name ?? ''} ${full.customers?.last_name ?? ''}`.trim()],
-    ['El. paštas', full.customers?.email ?? ''],
-    ['Telefonas', full.customers?.phone ?? ''],
-    ['Automobilis', full.car_name],
-    ['Paėmimo data', `${full.start_date}${full.pickup_time ? ' ' + full.pickup_time : ''}`],
-    ['Grąžinimo data', `${full.end_date}${full.return_time ? ' ' + full.return_time : ''}`],
-    ['Nuomos kaina', `€${full.total_rental_cost}`],
-    ['Užstatas', `€${full.deposit_amount}`],
-    ['Bendra suma', `€${full.total_amount}`],
+    [text.client, `${full.customers?.first_name ?? ''} ${full.customers?.last_name ?? ''}`.trim()],
+    [text.email, full.customers?.email ?? ''],
+    [text.phone, full.customers?.phone ?? ''],
+    [text.car, full.car_name],
+    [text.pickupDate, `${full.start_date}${full.pickup_time ? ' ' + full.pickup_time : ''}`],
+    [text.returnDate, `${full.end_date}${full.return_time ? ' ' + full.return_time : ''}`],
+    [text.rentalPrice, `€${full.total_rental_cost}`],
+    [text.deposit, `€${full.deposit_amount}`],
+    [text.totalAmount, `€${full.total_amount}`],
   ];
   for (const [k, v] of rows) {
     page.drawText(`${k}:`, { x: 40, y, size: 11, font: fontBold });
@@ -280,7 +316,7 @@ async function ensureContractAndGetPath(supabase: ReturnType<typeof createClient
   }
 
   const pdfBytes = await pdfDoc.save();
-  const path = `${reservationId}/nuomos_sutartis_${reservationId}.pdf`;
+  const path = `${reservationId}/${text.filename}`;
   const { error: uploadError } = await supabase.storage
     .from('contracts')
     .upload(path, pdfBytes, { contentType: 'application/pdf', upsert: true });
@@ -325,14 +361,18 @@ serve(async (req) => {
 
     // When marked as paid manually or via provider, guarantee contract attachment
     if (data.status === 'paid') {
+      const language = data.language || 'lt';
+      const isLT = language === 'lt';
+      const filename = isLT ? `nuomos_sutartis_${data.reservationId}.pdf` : `rental_agreement_${data.reservationId}.pdf`;
+      
       let path = data.contractPdfUrl ?? null;
-      if (!path) path = await ensureContractAndGetPath(supabase, data.reservationId);
+      if (!path) path = await ensureContractAndGetPath(supabase, data.reservationId, language);
 
       if (path) {
         try {
           const { base64, size } = await downloadAsBase64(supabase, path);
-          emailOptions.attachments = [{ filename: `nuomos_sutartis_${data.reservationId}.pdf`, content: base64, contentType: 'application/pdf' }];
-          console.log(`Attached contract PDF (${size} bytes)`);
+          emailOptions.attachments = [{ filename, content: base64, contentType: 'application/pdf' }];
+          console.log(`Attached ${language.toUpperCase()} contract PDF (${size} bytes)`);
         } catch (e) {
           console.error('Attachment download failed:', e);
         }
