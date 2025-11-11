@@ -15,6 +15,7 @@ interface ReturnReminderRequest {
   carName: string;
   endDate: string;
   returnLocation?: string;
+  language?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -25,14 +26,15 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const data: ReturnReminderRequest = await req.json();
     console.log("Sending return reminder for reservation:", data.reservationId);
+    const isLT = (data.language || 'lt') === 'lt';
 
-    const returnLocation = data.returnLocation || "toje pačioje vietoje, kur pasiėmėte";
+    const returnLocation = data.returnLocation || (isLT ? "toje pačioje vietoje, kur pasiėmėte" : "the same location where you picked up");
 
     const emailResponse = await resend.emails.send({
       from: "Carbonus <info@carbonus.lt>",
       to: [data.customerEmail],
-      subject: "⏰ Automobilio grąžinimas - rytoj",
-      html: `
+      subject: isLT ? "⏰ Automobilio grąžinimas - rytoj" : "⏰ Car Return - Tomorrow",
+      html: isLT ? `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #f59e0b;">⏰ Automobilio grąžinimas jau rytoj!</h1>
           <p>Sveiki, ${data.customerName}!</p>
@@ -88,6 +90,64 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             Dėkojame už pasirinktą Carbonus!<br>Carbonus komanda
+          </p>
+        </div>
+      ` : `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #f59e0b;">⏰ Car Return Tomorrow!</h1>
+          <p>Hello, ${data.customerName}!</p>
+          <p>We remind you that your car rental period ends tomorrow.</p>
+          
+          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="margin-top: 0;">Return Information:</h2>
+            <p><strong>Car:</strong> ${data.carName}</p>
+            <p><strong>Return Date:</strong> ${data.endDate}</p>
+            <p><strong>Return Location:</strong> ${returnLocation}</p>
+            <p><strong>Recommended Time:</strong> by 6:00 PM</p>
+          </div>
+          
+          <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+            <p style="margin: 0;"><strong>✅ Before Returning the Car:</strong></p>
+            <p style="margin: 10px 0 0 0;">
+              <strong>1. Fuel:</strong><br>
+              • Refill fuel to the same level as received<br>
+              • If fuel tank not full, €1.50/L fee applies<br><br>
+              
+              <strong>2. Cleaning:</strong><br>
+              • Remove trash from interior<br>
+              • Car interior must be in tidy condition<br>
+              • If very dirty, we recommend washing<br><br>
+              
+              <strong>3. Inspection:</strong><br>
+              • Check you haven't left personal belongings<br>
+              • Ensure all documents and equipment are present<br>
+              • Document car condition with photos
+            </p>
+          </div>
+          
+          <div style="background: #fee2e2; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ef4444;">
+            <p style="margin: 0;"><strong>⚠️ Late Return Fee:</strong></p>
+            <p style="margin: 10px 0 0 0;">
+              Additional fee applies for each late hour.<br>
+              If you know you'll be late, please notify us in advance:<br>
+              📞 +370 6 98 18 781
+            </p>
+          </div>
+          
+          <div style="background: #dcfce7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #22c55e;">
+            <p style="margin: 0;"><strong>💰 Deposit Refund:</strong></p>
+            <p style="margin: 10px 0 0 0;">
+              After car inspection, your deposit (€200) will be refunded to your specified account within 3-5 business days.
+            </p>
+          </div>
+          
+          <p><strong>Important:</strong> If you can't return the car at the specified time, please let us know immediately.</p>
+          
+          <p>If you have questions, contact us:</p>
+          <p>📧 Email: info@carbonus.lt<br>📞 Phone: +370 6 98 18 781</p>
+          
+          <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+            Thank you for choosing Carbonus!<br>Carbonus Team
           </p>
         </div>
       `,
