@@ -15,7 +15,7 @@ const PaymentSuccess: React.FC = () => {
 
   const provider = searchParams.get('provider');
   const sessionId = searchParams.get('session_id'); // Stripe
-  const reservationIdParam = searchParams.get('reservation_id'); // Paysera & Montonio
+  const reservationIdParam = searchParams.get('reservation_id'); // Stripe
 
   useEffect(() => {
     let retryCount = 0;
@@ -41,38 +41,8 @@ const PaymentSuccess: React.FC = () => {
           } else {
             setStatus('processing');
           }
-        } else if (provider === 'paysera' && reservationIdParam) {
-          // For Paysera and Montonio, check reservation status in database
-          const { data, error } = await supabase
-            .from('reservations')
-            .select('status, payment_completed_at')
-            .eq('id', reservationIdParam)
-            .maybeSingle();
-
-          if (error) {
-            console.error('Paysera verification error:', error);
-            setStatus('error');
-            return;
-          }
-
-          if (!data) {
-            setStatus('error');
-            return;
-          }
-
-          if (data.status === 'paid' || data.status === 'partial_payment') {
-            setStatus('success');
-            setReservationId(reservationIdParam);
-          } else if (data.status === 'payment_failed') {
-            setStatus('error');
-          } else if (retryCount < maxRetries) {
-            setStatus('processing');
-            retryCount++;
-            setTimeout(verifyPayment, 3000);
-          } else {
-            setStatus('error');
-          }
         } else {
+          console.error('Invalid payment provider or missing session ID');
           setStatus('error');
         }
       } catch (error) {
@@ -153,7 +123,7 @@ const PaymentSuccess: React.FC = () => {
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-center">
-            {provider === 'stripe' ? 'Stripe' : 'Paysera'} {t('payment.title')}
+            {t('payment.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
