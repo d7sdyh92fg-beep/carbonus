@@ -269,6 +269,7 @@ export const EmailTester: React.FC = () => {
         onClose={() => setShowPreview(false)}
         emailType={previewEmailType}
         emailData={testData}
+        language={language}
       />
     </Card>
   );
