@@ -3,10 +3,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CookieBanner } from "@/components/cookies/CookieBanner";
 import { LanguageProvider } from "@/hooks/use-language";
 import { BookingProvider } from "@/contexts/BookingContext";
+import { getCarSlugFromId } from "@/utils/carSlugs";
 import Index from "./pages/Index";
 import Cars from "./pages/Cars";
 import About from "./pages/About";
@@ -30,6 +31,14 @@ import SEOChecklist from "./pages/SEOChecklist";
 
 const queryClient = new QueryClient();
 
+// Redirect component for old numeric car URLs to new slug URLs
+const CarIdRedirect = ({ id, language }: { id: string; language: 'lt' | 'en' }) => {
+  const slug = getCarSlugFromId(id, language);
+  if (!slug) return <Navigate to="/404" replace />;
+  const path = language === 'en' ? `/cars/${slug}` : `/automobiliai/${slug}`;
+  return <Navigate to={path} replace />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
@@ -46,8 +55,24 @@ const App = () => (
             {/* Cars - Lithuanian & English */}
             <Route path="/automobiliai" element={<Cars />} />
             <Route path="/cars" element={<Cars />} />
-            <Route path="/automobiliai/:id" element={<CarDetail />} />
-            <Route path="/cars/:id" element={<CarDetail />} />
+            
+            {/* New slug-based car routes */}
+            <Route path="/automobiliai/:slug" element={<CarDetail />} />
+            <Route path="/cars/:slug" element={<CarDetail />} />
+            
+            {/* 301 Redirects: Old numeric IDs to new slugs (keep these AFTER slug routes) */}
+            {['1', '2', '3', '4', '5'].map(id => (
+              <React.Fragment key={id}>
+                <Route 
+                  path={`/automobiliai/${id}`} 
+                  element={<CarIdRedirect id={id} language="lt" />} 
+                />
+                <Route 
+                  path={`/cars/${id}`} 
+                  element={<CarIdRedirect id={id} language="en" />} 
+                />
+              </React.Fragment>
+            ))}
             
             {/* About - Lithuanian & English */}
             <Route path="/apie-mus" element={<About />} />

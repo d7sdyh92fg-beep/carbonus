@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import { useTranslations } from "@/hooks/use-translations";
+import { getCarSlugFromId } from "@/utils/carSlugs";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -227,8 +228,11 @@ export function Fleet() {
                     <Button 
                       className="bg-primary hover:bg-primary/90 text-primary-foreground"
                       onClick={() => {
-                        navigate(`/automobiliai/${car.id}`);
-                        setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+                        const slug = getCarSlugFromId(car.id, 'lt');
+                        if (slug) {
+                          navigate(`/automobiliai/${slug}`);
+                          setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+                        }
                       }}
                     >
                       {t('fleet.viewButton')}

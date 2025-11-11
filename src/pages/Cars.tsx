@@ -13,6 +13,7 @@ import { useTranslations } from "@/hooks/use-translations";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { trackViewCarList, trackSearch, trackFilterCars, trackViewCar } from "@/lib/analytics";
+import { getCarSlugFromId } from "@/utils/carSlugs";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
@@ -149,8 +150,12 @@ const Cars = () => {
         year: selectedCar.year?.toString()
       });
     }
-    const route = language === 'en' ? `/cars/${carId}` : `/automobiliai/${carId}`;
-    navigate(route);
+    
+    const slug = getCarSlugFromId(carId, language as 'lt' | 'en');
+    if (slug) {
+      const route = language === 'en' ? `/cars/${slug}` : `/automobiliai/${slug}`;
+      navigate(route);
+    }
   };
 
   const cars: Car[] = [

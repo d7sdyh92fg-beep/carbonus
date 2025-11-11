@@ -28,8 +28,8 @@ export const LanguageLinks = ({ ltPath, enPath }: LanguageLinksProps) => {
     Object.entries(pathMap).map(([lt, en]) => [en, lt])
   );
   
-  // Handle car detail pages
-  const carDetailMatch = currentPath.match(/\/(automobiliai|cars)\/(\d+)/);
+  // Handle car detail pages (now with slugs, not numeric IDs)
+  const carDetailMatch = currentPath.match(/\/(automobiliai|cars)\/([a-z0-9-]+)/);
   const blogPostMatch = currentPath.match(/\/(naujienos|blog)\/(.+)/);
   
   let ltUrl = ltPath;
@@ -37,9 +37,11 @@ export const LanguageLinks = ({ ltPath, enPath }: LanguageLinksProps) => {
   
   if (!ltUrl && !enUrl) {
     if (carDetailMatch) {
-      const carId = carDetailMatch[2];
-      ltUrl = `/automobiliai/${carId}`;
-      enUrl = `/cars/${carId}`;
+      const slug = carDetailMatch[2];
+      // Slugs already contain language-specific versions
+      // For now, keep same slug structure for both languages
+      ltUrl = `/automobiliai/${slug}`;
+      enUrl = `/cars/${slug}`;
     } else if (blogPostMatch) {
       const slug = blogPostMatch[2];
       ltUrl = `/naujienos/${slug}`;

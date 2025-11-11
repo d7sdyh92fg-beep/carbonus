@@ -11,6 +11,7 @@ import { useTranslations } from "@/hooks/use-translations";
 import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { getCarIdFromSlug, getCarSlugFromId } from "@/utils/carSlugs";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced-no-plate.png";
 import kiaCeedRearEnhanced from "@/assets/kia-ceed-rear-enhanced-no-plate.png";
@@ -48,10 +49,20 @@ interface CarDetail {
 }
 
 const CarDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { t, language } = useTranslations();
+  
+  // Convert slug to ID for backward compatibility with existing car data structure
+  const id = slug ? getCarIdFromSlug(slug) : null;
+  
+  // Redirect to 404 if slug is invalid
+  useEffect(() => {
+    if (slug && !id) {
+      navigate('/404', { replace: true });
+    }
+  }, [slug, id, navigate]);
 
   // Normalize Lithuanian characters for translation keys
   const normalizeForTranslation = (text: string): string => {
@@ -82,9 +93,12 @@ const CarDetail = () => {
       metaDesc.setAttribute('content', metaDescription);
     }
     
-    // Update canonical URL
+    // Update canonical URL with slug
     const canonical = document.querySelector('link[rel="canonical"]');
-    const carDetailPath = language === 'en' ? `/cars/${id}` : `/automobiliai/${id}`;
+    const carSlug = id ? getCarSlugFromId(id, language as 'lt' | 'en') : null;
+    const carDetailPath = carSlug 
+      ? (language === 'en' ? `/cars/${carSlug}` : `/automobiliai/${carSlug}`)
+      : '/404';
     if (canonical) {
       canonical.setAttribute('href', `https://carbonus.lt${carDetailPath}`);
     }
