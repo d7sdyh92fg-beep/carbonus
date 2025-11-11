@@ -54,9 +54,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 10px 0 0 0;">
               Prašome turėti su savimi:<br><br>
               📋 <strong>Dokumentai:</strong><br>
-              • Galiojantį vairuotojo pažymėjimą<br>
-              • Asmens dokumentą (ID kortelę ar pasą)<br>
-              • Pasirašytos sutarties kopiją (jei turite)<br><br>
+              • Galiojantį vairuotojo pažymėjimą<br><br>
               
               💳 <strong>Mokėjimas:</strong><br>
               • Banko kortelę (jei dar likę apmokėti)<br>
@@ -107,9 +105,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 10px 0 0 0;">
               Please have with you:<br><br>
               📋 <strong>Documents:</strong><br>
-              • Valid driver's license<br>
-              • Personal ID (ID card or passport)<br>
-              • Signed contract copy (if you have it)<br><br>
+              • Valid driver's license<br><br>
               
               💳 <strong>Payment:</strong><br>
               • Bank card (if payment remaining)<br>

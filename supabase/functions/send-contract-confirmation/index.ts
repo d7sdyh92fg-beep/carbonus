@@ -51,10 +51,8 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 0;"><strong>📋 Kas toliau?</strong></p>
             <p style="margin: 10px 0 0 0;">
               1. Pasiruoškite automobilio pasiėmimui nustatytą dieną<br>
-              2. Turėkite su savimi:<br>
-              &nbsp;&nbsp;&nbsp;• Galiojantį vairuotojo pažymėjimą<br>
-              &nbsp;&nbsp;&nbsp;• Asmens dokumentą (ID kortelę ar pasą)<br>
-              3. Sutarties kopiją gausite automobilio pasiėmimo metu
+              2. Turėkite su savimi galiojantį vairuotojo pažymėjimą<br>
+              3. Automobilis bus paruoštas atsiėmimui nuo ${data.startDate} 9:00 val.
             </p>
           </div>
           
@@ -92,10 +90,8 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 0;"><strong>📋 What's Next?</strong></p>
             <p style="margin: 10px 0 0 0;">
               1. Prepare for car pickup on the scheduled date<br>
-              2. Have with you:<br>
-              &nbsp;&nbsp;&nbsp;• Valid driver's license<br>
-              &nbsp;&nbsp;&nbsp;• Personal ID (ID card or passport)<br>
-              3. You will receive a copy of the contract during car pickup
+              2. Have your valid driver's license with you<br>
+              3. Car will be ready for pickup from ${data.startDate} 9:00 AM
             </p>
           </div>
           

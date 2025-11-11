@@ -121,7 +121,6 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 0 0 10px 0;"><strong>📋 Prieš pasiimant automobilį:</strong></p>
             <ul style="margin: 5px 0; padding-left: 20px;">
               <li>Pasiimkite galiojantį vairuotojo pažymėjimą</li>
-              <li>Pasiruoškite asmens dokumentą (paso ar asmens kortelės)</li>
               <li>Turite turėti sutartyje nurodytą sumą mokėjimui</li>
             </ul>
           </div>
