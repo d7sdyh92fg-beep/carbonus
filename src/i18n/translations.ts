@@ -29,16 +29,15 @@ export const translations = {
 
     // Common part continues
     commonLabels: {
-    commonLabels: {
-        name: "Vardas",
-        lastName: "Pavardė",
-        email: "El. paštas",
-        phone: "Telefonas",
-        message: "Žinutė",
-        subject: "Tema",
-        required: "*",
-        optional: "(neprivaloma)",
-      },
+      name: "Vardas",
+      lastName: "Pavardė",
+      email: "El. paštas",
+      phone: "Telefonas",
+      message: "Žinutė",
+      subject: "Tema",
+      required: "*",
+      optional: "(neprivaloma)",
+    },
     commonMessages: {
         success: "Sėkmingai!",
         error: "Klaida",
@@ -56,7 +55,6 @@ export const translations = {
         invalidPhoneFormat: "Neteisingas telefono numerio formatas",
         phoneFormatHelper: "Formatas: +370 XXX XXXXX arba 8 XXX XXXXX",
       },
-    },
 
     // Navigation
     nav: {
