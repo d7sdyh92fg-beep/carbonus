@@ -20,6 +20,7 @@ import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
 import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
 import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
+import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
@@ -204,7 +205,7 @@ const Cars = () => {
       id: "4",
       name: "KIA CEED",
       price: PRICING.priceFrom,
-      image: kiaCeedSideDarkGray,
+      image: kiaCeedWagonSideClean,
       category: "Universalas",
       passengers: 5,
       fuel: "Benzinas",
