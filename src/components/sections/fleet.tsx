@@ -11,6 +11,7 @@ import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
+import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
 
 interface Car {
   id: string;
@@ -34,6 +35,7 @@ const imageMap: { [key: string]: string } = {
   kiaCeedSideDarkGray,
   kiaCeedHatchbackSideGrayBrown,
   kiaCeedHatchbackFrontClean,
+  kiaCeedHatchbackSideCleanGray,
 };
 
 export function Fleet() {
@@ -131,7 +133,7 @@ export function Fleet() {
       id: "5",
       name: "KIA CEED",
       price: "30 EUR",
-      image: kiaCeedHatchbackSideGrayBrown,
+      image: kiaCeedHatchbackSideCleanGray,
       category: "Hečbekas",
       passengers: 5,
       fuel: "Dyzelinas",
