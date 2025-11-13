@@ -24,6 +24,7 @@ import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
+import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import { PRICING } from "@/config/pricing";
 
 interface Car {
@@ -219,7 +220,7 @@ const Cars = () => {
       id: "5",
       name: "KIA CEED",
       price: PRICING.priceFrom,
-      image: kiaCeedHatchbackSideGrayBrown,
+      image: kiaCeedHatchbackFrontClean,
       category: "Hecbekas",
       passengers: 5,
       fuel: "Dyzelinas",
