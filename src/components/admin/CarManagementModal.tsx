@@ -38,6 +38,7 @@ interface Reservation {
 interface CarDetails {
   id: string;
   name: string;
+  license_plate: string | null;
   category: string;
   price_per_day: number;
   year: number;
@@ -628,6 +629,19 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       />
                     ) : (
                       <p className="text-sm font-medium">{carDetails.name}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Numerio lentelė</Label>
+                    {isEditing ? (
+                      <Input
+                        value={editForm.license_plate || ''}
+                        onChange={(e) => setEditForm({ ...editForm, license_plate: e.target.value })}
+                        placeholder="ABC123"
+                      />
+                    ) : (
+                      <p className="text-sm font-medium">{carDetails.license_plate || '-'}</p>
                     )}
                   </div>
 
