@@ -131,7 +131,7 @@ export function Fleet() {
       id: "5",
       name: "KIA CEED",
       price: "30 EUR",
-      image: kiaCeedHatchbackFrontClean,
+      image: kiaCeedHatchbackSideGrayBrown,
       category: "Hečbekas",
       passengers: 5,
       fuel: "Dyzelinas",
