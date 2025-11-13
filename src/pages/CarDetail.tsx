@@ -21,6 +21,8 @@ import kiaCeed2020RearEnhanced from "@/assets/kia-ceed-2020-rear-enhanced.png";
 import kiaCeedNewFrontEnhanced from "@/assets/kia-ceed-new-front-enhanced.png";
 import kiaCeedNewRearEnhanced from "@/assets/kia-ceed-new-rear-enhanced.png";
 import kiaCeedRear5 from "@/assets/kia-ceed-rear-5.png";
+import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
+import kiaCeedHatchbackRearClean from "@/assets/kia-ceed-hatchback-rear-clean.png";
 import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
 import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
 import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
@@ -196,10 +198,10 @@ const CarDetail = () => {
       id: "5",
       name: "KIA CEED",
       price: "nuo 30 EUR",
-      image: kiaCeedNewFrontEnhanced,
+      image: kiaCeedHatchbackFrontClean,
       images: [
-        kiaCeedNewFrontEnhanced,
-        kiaCeedRear5
+        kiaCeedHatchbackFrontClean,
+        kiaCeedHatchbackRearClean
       ],
       category: "Hecbekas",
       passengers: 5,
