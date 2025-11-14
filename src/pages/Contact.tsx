@@ -417,46 +417,6 @@ const Contact = () => {
 
           <div className="flex justify-center">
             <div className="w-full max-w-4xl space-y-6">
-              {/* Quick Contact Buttons */}
-              <div className="grid md:grid-cols-3 gap-4 mb-8">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="h-16 text-base font-medium"
-                  onClick={() => {
-                    trackWhatsAppClick('+37069818781');
-                    window.open('https://wa.me/37069818781', '_blank');
-                  }}
-                >
-                  <MessageSquare className="h-5 w-5 mr-2 text-green-600" />
-                  WhatsApp žinutė
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="h-16 text-base font-medium"
-                  onClick={() => {
-                    trackPhoneCall('+37069818781');
-                    window.open('tel:+37069818781');
-                  }}
-                >
-                  <Phone className="h-5 w-5 mr-2 text-blue-600" />
-                  Skambinti dabar
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="h-16 text-base font-medium"
-                  onClick={() => {
-                    trackEmailClick('info@carbonus.lt');
-                    window.open('mailto:info@carbonus.lt');
-                  }}
-                >
-                  <Mail className="h-5 w-5 mr-2 text-orange-600" />
-                  El. paštas
-                </Button>
-              </div>
-              
               {/* Location Card */}
               {locations.map((location, index) => (
                 <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
