@@ -22,6 +22,7 @@ import kiaCeedNewFrontEnhanced from "@/assets/kia-ceed-new-front-enhanced.png";
 import kiaCeedNewRearEnhanced from "@/assets/kia-ceed-new-rear-enhanced-no-plate.png";
 import kiaCeedRear5 from "@/assets/kia-ceed-rear-5.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
+import kiaCeedHatchbackRearClean from "@/assets/kia-ceed-hatchback-rear-clean.png";
 import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
 import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
 import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
@@ -200,7 +201,7 @@ const CarDetail = () => {
       image: kiaCeedNewFrontEnhanced,
       images: [
         kiaCeedNewFrontEnhanced,
-        kiaCeedNewRearEnhanced
+        kiaCeedHatchbackRearClean
       ],
       category: "Hecbekas",
       passengers: 5,
@@ -335,11 +336,13 @@ const CarDetail = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Car Image Carousel */}
             <div className="bg-gray-50 rounded-2xl p-8 relative">
-              <div className="text-center">
+              <div className="text-center overflow-hidden">
                 <img
                   src={getCurrentImage()}
                   alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
-                  className="w-full max-w-2xl mx-auto object-contain rounded-lg"
+                  className={`w-full max-w-2xl mx-auto object-contain rounded-lg ${
+                    car.id === "5" && currentImageIndex === 1 ? "scale-150" : ""
+                  }`}
                 />
               </div>
               
