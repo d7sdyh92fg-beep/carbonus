@@ -8,10 +8,7 @@ import { getCarSlugFromId } from "@/utils/carSlugs";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
-import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
 
 interface Car {
@@ -33,10 +30,7 @@ const imageMap: { [key: string]: string } = {
   bmw3Clean,
   chryslerTownCountrySide,
   vwPassatSideClean,
-  kiaCeedSideDarkGray,
   kiaCeedWagonSideClean,
-  kiaCeedHatchbackSideGrayBrown,
-  kiaCeedHatchbackFrontClean,
   kiaCeedHatchbackSideCleanGray,
 };
 

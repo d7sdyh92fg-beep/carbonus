@@ -23,26 +23,16 @@ import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
-import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
-import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
-import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
-import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
-import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
-import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
+import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
+import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
 
 // Image mapping object for car images
 const imageMap: { [key: string]: string } = {
   bmw3Clean,
   chryslerTownCountrySide,
   vwPassatSideClean,
-  kiaCeedSideClean,
-  kiaCeedSideDarkGray,
-  kiaCeedWagonSide,
-  kiaCeedHatchbackSide,
-  kiaCeedHatchbackSideFlipped,
-  kiaCeedHatchbackSideBrown,
-  kiaCeedHatchbackSideGrayBrown,
+  kiaCeedWagonSideClean,
+  kiaCeedHatchbackSideCleanGray,
 };
 
 // Function to get the correct image for a car
@@ -52,9 +42,7 @@ const getCarImage = (car: any) => {
     'BMW 3 series': 'bmw3Clean',
     'Chrysler Town & Country': 'chryslerTownCountrySide',
     'Volkswagen Passat': 'vwPassatSideClean',
-    'KIA CEED': car.category === 'Universalas' ? 'kiaCeedSideDarkGray' : 
-               car.category === 'Hečbekas' && car.year >= 2018 ? 'kiaCeedHatchbackSideGrayBrown' :
-               'kiaCeedHatchbackSide',
+    'KIA CEED': car.category === 'Universalas' ? 'kiaCeedWagonSideClean' : 'kiaCeedHatchbackSideCleanGray',
   };
   
   const imageKey = nameToImageMap[car.name] || 'bmw3Clean';
