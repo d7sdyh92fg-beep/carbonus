@@ -198,9 +198,9 @@ const CarDetail = () => {
       id: "5",
       name: "KIA CEED",
       price: "nuo 30 EUR",
-      image: kiaCeedHatchbackFrontClean,
+      image: kiaCeedNewFrontEnhanced,
       images: [
-        kiaCeedHatchbackFrontClean,
+        kiaCeedNewFrontEnhanced,
         kiaCeedHatchbackRearClean
       ],
       category: "Hecbekas",
