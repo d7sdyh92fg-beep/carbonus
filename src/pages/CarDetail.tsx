@@ -201,7 +201,7 @@ const CarDetail = () => {
       image: kiaCeedNewFrontEnhanced,
       images: [
         kiaCeedNewFrontEnhanced,
-        kiaCeedHatchbackRearClean
+        kiaCeedNewRearEnhanced
       ],
       category: "Hecbekas",
       passengers: 5,
