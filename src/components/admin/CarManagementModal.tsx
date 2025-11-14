@@ -120,8 +120,8 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
         .single();
 
       if (error) throw error;
-      setCarDetails(data);
-      setEditForm(data);
+      setCarDetails({ ...data, license_plate: (data as any).license_plate || null });
+      setEditForm({ ...data, license_plate: (data as any).license_plate || null });
     } catch (error) {
       console.error('Error fetching car details:', error);
     }
