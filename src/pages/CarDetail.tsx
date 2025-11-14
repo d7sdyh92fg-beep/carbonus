@@ -19,10 +19,9 @@ import kiaCeed2020SideClean from "@/assets/kia-ceed-2020-side-clean.png";
 import kiaCeed2020FrontEnhanced from "@/assets/kia-ceed-2020-front-enhanced.png";
 import kiaCeed2020RearEnhanced from "@/assets/kia-ceed-2020-rear-enhanced.png";
 import kiaCeedNewFrontEnhanced from "@/assets/kia-ceed-new-front-enhanced.png";
-import kiaCeedNewRearEnhanced from "@/assets/kia-ceed-new-rear-enhanced.png";
+import kiaCeedNewRearEnhanced from "@/assets/kia-ceed-new-rear-enhanced-no-plate.png";
 import kiaCeedRear5 from "@/assets/kia-ceed-rear-5.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
-import kiaCeedHatchbackRearClean from "@/assets/kia-ceed-hatchback-rear-clean.png";
 import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
 import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
 import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
@@ -201,7 +200,7 @@ const CarDetail = () => {
       image: kiaCeedNewFrontEnhanced,
       images: [
         kiaCeedNewFrontEnhanced,
-        kiaCeedHatchbackRearClean
+        kiaCeedNewRearEnhanced
       ],
       category: "Hecbekas",
       passengers: 5,
