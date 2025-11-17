@@ -108,6 +108,7 @@ export type Database = {
           image_url: string | null
           is_available: boolean | null
           last_service_date: string | null
+          license_plate: string | null
           name: string
           next_service_date: string | null
           notes: string | null
@@ -128,6 +129,7 @@ export type Database = {
           image_url?: string | null
           is_available?: boolean | null
           last_service_date?: string | null
+          license_plate?: string | null
           name: string
           next_service_date?: string | null
           notes?: string | null
@@ -148,6 +150,7 @@ export type Database = {
           image_url?: string | null
           is_available?: boolean | null
           last_service_date?: string | null
+          license_plate?: string | null
           name?: string
           next_service_date?: string | null
           notes?: string | null
