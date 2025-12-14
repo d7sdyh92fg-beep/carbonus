@@ -442,6 +442,21 @@ export function InPersonBooking() {
         }
       });
 
+      // Send status email with "paid" status to trigger the confirmation email with PDF
+      await supabase.functions.invoke('send-status-email', {
+        body: {
+          reservationId: reservation.id,
+          customerEmail: customer.email,
+          customerName: `${customer.firstName} ${customer.lastName}`,
+          carName: booking.carName,
+          startDate: format(booking.startDate!, 'yyyy-MM-dd'),
+          endDate: format(booking.endDate!, 'yyyy-MM-dd'),
+          totalAmount: totalAmount,
+          status: 'paid',
+          language: 'lt'
+        }
+      });
+
       toast.success('Rezervacija sėkmingai užbaigta!');
       setStep('complete');
     } catch (error) {

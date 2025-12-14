@@ -559,7 +559,6 @@ export type Database = {
               p_daily_rate: number
               p_deposit_amount: number
               p_end_date: string
-              p_language?: string
               p_payment_method: string
               p_payment_provider: string
               p_pickup_date: string
@@ -583,6 +582,7 @@ export type Database = {
               p_daily_rate: number
               p_deposit_amount: number
               p_end_date: string
+              p_language?: string
               p_payment_method: string
               p_payment_provider: string
               p_pickup_date: string
