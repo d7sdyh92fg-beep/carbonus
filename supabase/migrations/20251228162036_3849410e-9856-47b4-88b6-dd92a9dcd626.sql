@@ -1,0 +1,1 @@
+UPDATE cars SET year = 2013 WHERE name ILIKE '%KIA CEED%' AND year = 2018;
