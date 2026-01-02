@@ -147,12 +147,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     }
 
     // Set booking data and navigate to services
+    // Use format with 'yyyy-MM-dd' to avoid timezone issues (toISOString converts to UTC)
     setBookingData({
       carId,
       carName,
       carImage,
-      startDate: selectedRange.from.toISOString().split('T')[0],
-      endDate: selectedRange.to.toISOString().split('T')[0],
+      startDate: format(selectedRange.from, 'yyyy-MM-dd'),
+      endDate: format(selectedRange.to, 'yyyy-MM-dd'),
       pickupTime,
       returnTime,
       rentalDays: getDaysCount(),
