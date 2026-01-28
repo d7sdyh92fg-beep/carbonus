@@ -47,19 +47,8 @@ interface BookingDetails {
   dailyRate: number;
 }
 
+// Only show available cars (BMW and Chrysler are sold)
 const cars = [
-  { 
-    id: '1', 
-    name: 'BMW 3 series', 
-    year: '2017', 
-    available: true
-  },
-  { 
-    id: '2', 
-    name: 'Chrysler Town & Country', 
-    year: '2008', 
-    available: true
-  },
   { 
     id: '3', 
     name: 'Volkswagen Passat', 
@@ -69,13 +58,13 @@ const cars = [
   { 
     id: '4', 
     name: 'KIA CEED', 
-    year: '2020', 
+    year: '2013', 
     available: true
   },
   { 
     id: '5', 
     name: 'KIA CEED', 
-    year: '2018', 
+    year: '2020', 
     available: true
   },
 ];
