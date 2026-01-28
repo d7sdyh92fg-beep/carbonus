@@ -239,8 +239,14 @@ const Cars = () => {
 
   const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas"];
 
-  // Filter cars based on search term and selected category
+  // IDs of sold cars to hide from public view
+  const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
+
+  // Filter cars based on search term and selected category (excluding sold cars)
   const filteredCars = cars.filter(car => {
+    // Hide sold cars
+    if (hiddenCarIds.includes(car.id)) return false;
+    
     const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          car.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          car.features.some(feature => feature.toLowerCase().includes(searchTerm.toLowerCase()));
