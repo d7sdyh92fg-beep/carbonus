@@ -140,6 +140,9 @@ const Admin = () => {
   const [cars, setCars] = useState<any[]>([]);
   const [isLoadingCars, setIsLoadingCars] = useState(true);
 
+  // IDs of sold cars to hide from admin panel
+  const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
+
   const fetchCars = async () => {
     try {
       setIsLoadingCars(true);
@@ -149,7 +152,9 @@ const Admin = () => {
         .order('name');
 
       if (error) throw error;
-      setCars(data || []);
+      // Filter out sold cars
+      const visibleCars = (data || []).filter(car => !hiddenCarIds.includes(car.id));
+      setCars(visibleCars);
     } catch (error: any) {
       toast({
         title: "Klaida",

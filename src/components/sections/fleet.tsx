@@ -72,33 +72,8 @@ export function Fleet() {
       .replace(/ž/g, 'z');
   };
 
+  // Only show available cars (BMW and Chrysler are sold)
   const cars: Car[] = [
-    {
-      id: "1",
-      name: "BMW 3 series",
-      price: "30 EUR",
-      image: bmw3Clean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.8,
-      year: 2017,
-      features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
-    },
-    {
-      id: "2",
-      name: "Chrysler Town & Country",
-      price: "30 EUR",
-      image: chryslerTownCountrySide,
-      category: "Miniautobusas",
-      passengers: 7,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.6,
-      year: 2014,
-      features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
-    },
     {
       id: "3",
       name: "Volkswagen Passat",
