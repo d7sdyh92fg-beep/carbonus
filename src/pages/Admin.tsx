@@ -228,7 +228,8 @@ const Admin = () => {
             first_name,
             last_name,
             email,
-            phone
+            phone,
+            address
           )
         `)
         .is('deleted_at', null)
