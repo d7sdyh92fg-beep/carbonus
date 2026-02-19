@@ -21,6 +21,7 @@ interface Customer {
   last_name: string;
   email: string;
   phone: string;
+  address?: string;
 }
 
 interface Reservation {
@@ -80,6 +81,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     last_name: '',
     email: '',
     phone: '',
+    address: '',
     start_date: '',
     end_date: '',
     pickup_time: '',
@@ -104,6 +106,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         last_name: reservation.customers.last_name,
         email: reservation.customers.email,
         phone: reservation.customers.phone,
+        address: reservation.customers.address || '',
         start_date: reservation.start_date,
         end_date: reservation.end_date,
         pickup_time: reservation.pickup_time || '10:00:00',
@@ -155,6 +158,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
           last_name: editForm.last_name.trim(),
           email: editForm.email.trim(),
           phone: editForm.phone.trim(),
+          address: editForm.address.trim() || null,
         })
         .eq('id', reservation.customers.id);
 
@@ -548,6 +552,14 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                 <Input
                   value={editForm.phone}
                   onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Adresas</Label>
+                <Input
+                  value={editForm.address}
+                  onChange={(e) => setEditForm({ ...editForm, address: e.target.value })}
+                  placeholder="Gatvė, miestas"
                 />
               </div>
             </CardContent>
