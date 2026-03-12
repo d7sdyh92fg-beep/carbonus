@@ -291,16 +291,20 @@ export function InPersonBooking() {
     }
   };
 
-  // Check if any booked date falls between start and end
-  const hasBookedDateInRange = (start: Date, end: Date): boolean => {
-    return bookedDates.some(bookedDate => {
-      const bd = new Date(bookedDate);
-      bd.setHours(0, 0, 0, 0);
-      const s = new Date(start);
-      s.setHours(0, 0, 0, 0);
-      const e = new Date(end);
-      e.setHours(0, 0, 0, 0);
-      return bd > s && bd < e;
+  const normalizeDate = (date: Date) => {
+    const normalized = new Date(date);
+    normalized.setHours(0, 0, 0, 0);
+    return normalized;
+  };
+
+  // Check if any booked date falls within selected range
+  const hasBookedDateInRange = (start: Date, end: Date, includeBoundaries = false): boolean => {
+    const s = normalizeDate(start);
+    const e = normalizeDate(end);
+
+    return bookedDates.some((bookedDate) => {
+      const bd = normalizeDate(bookedDate);
+      return includeBoundaries ? bd >= s && bd <= e : bd > s && bd < e;
     });
   };
 
@@ -779,14 +783,36 @@ export function InPersonBooking() {
                       <Calendar
                         mode="single"
                         selected={booking.startDate || undefined}
-                        onSelect={(date) => setBooking(prev => ({ ...prev, startDate: date || null }))}
-                        disabled={isRetroactive ? undefined : (date) => {
-                          const today = new Date();
-                          today.setHours(0, 0, 0, 0);
-                          const compareDate = new Date(date);
-                          compareDate.setHours(0, 0, 0, 0);
-                          if (compareDate < today) return true;
-                          return isDateBooked(date);
+                        onSelect={(date) => {
+                          setBooking((prev) => {
+                            if (!date) {
+                              return { ...prev, startDate: null, endDate: null };
+                            }
+
+                            const nextStart = normalizeDate(date);
+                            const currentEnd = prev.endDate ? normalizeDate(prev.endDate) : null;
+                            const shouldClearEnd =
+                              !currentEnd ||
+                              currentEnd <= nextStart ||
+                              hasBookedDateInRange(nextStart, currentEnd);
+
+                            return {
+                              ...prev,
+                              startDate: date,
+                              endDate: shouldClearEnd ? null : prev.endDate,
+                            };
+                          });
+                        }}
+                        disabled={(date) => {
+                          if (isDateBooked(date)) return true;
+
+                          if (isRetroactive) {
+                            return false;
+                          }
+
+                          const today = normalizeDate(new Date());
+                          const compareDate = normalizeDate(date);
+                          return compareDate < today;
                         }}
                         modifiers={{
                           booked: (date) => isDateBooked(date)
@@ -805,14 +831,34 @@ export function InPersonBooking() {
                       <Calendar
                         mode="single"
                         selected={booking.endDate || undefined}
-                        onSelect={(date) => setBooking(prev => ({ ...prev, endDate: date || null }))}
-                        disabled={isRetroactive ? (date) => {
+                        onSelect={(date) => {
+                          if (!date) {
+                            setBooking((prev) => ({ ...prev, endDate: null }));
+                            return;
+                          }
+
+                          if (!booking.startDate) {
+                            return;
+                          }
+
+                          if (hasBookedDateInRange(booking.startDate, date)) {
+                            toast.error('Pasirinktas laikotarpis apima užimtas datas. Pasirinkite kitą pabaigos datą.');
+                            setBooking((prev) => ({ ...prev, endDate: null }));
+                            return;
+                          }
+
+                          setBooking((prev) => ({ ...prev, endDate: date }));
+                        }}
+                        disabled={(date) => {
                           if (!booking.startDate) return true;
-                          return date <= booking.startDate;
-                        } : (date) => {
-                          if (!booking.startDate) return true;
-                          if (date <= booking.startDate) return true;
-                          return isDateBooked(date);
+
+                          const startDate = normalizeDate(booking.startDate);
+                          const endDate = normalizeDate(date);
+
+                          if (endDate <= startDate) return true;
+                          if (isDateBooked(date)) return true;
+
+                          return hasBookedDateInRange(startDate, endDate);
                         }}
                         modifiers={{
                           booked: (date) => isDateBooked(date)
