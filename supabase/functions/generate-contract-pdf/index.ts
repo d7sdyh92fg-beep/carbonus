@@ -396,8 +396,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   y -= 6;
 
   // Embed lessor signature
-  const lessorSig = await loadLessorSignature(pdfDoc);
-  if (lessorSig) {
+  const lessorSig = data.lessorSignatureImage;
     const scale = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
     const w = lessorSig.width * scale;
     const h = lessorSig.height * scale;
