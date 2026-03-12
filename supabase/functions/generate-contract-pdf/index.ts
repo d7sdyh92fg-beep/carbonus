@@ -335,6 +335,17 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
     page.drawImage(lessorSig, { x: LEFT + 5, y: y + 5, width: w, height: h });
   }
 
+  // Embed customer digital signature above the ____ line (right column)
+  if (data.signatureBytes) {
+    try {
+      const custSig = await pdfDoc.embedPng(data.signatureBytes);
+      const scale = Math.min(120 / custSig.width, 40 / custSig.height);
+      const w = custSig.width * scale;
+      const h = custSig.height * scale;
+      page.drawImage(custSig, { x: 345, y: y + 5, width: w, height: h });
+    } catch (_e) { /* continue */ }
+  }
+
   // Signature area with gap for actual signatures
   page.drawText('______________', { x: LEFT, y, size: 10, font });
   page.drawText('______________', { x: 340, y, size: 10, font });
