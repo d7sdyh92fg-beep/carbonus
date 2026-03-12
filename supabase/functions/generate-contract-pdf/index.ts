@@ -356,12 +356,14 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   let y = MARGIN_TOP;
   let r: any;
 
-  // Title (right-aligned like DOCX)
+  // Title (centered)
   const appTitle1 = 'Transporto priemonės nuomos sutarties Nr.';
-  page.drawText(appTitle1, { x: 280, y, size: 10, font: fontBold });
+  const appTitle1Width = fontBold.widthOfTextAtSize(appTitle1, 10);
+  page.drawText(appTitle1, { x: (PAGE_WIDTH - appTitle1Width) / 2, y, size: 10, font: fontBold });
   y -= 14;
   const appTitle2 = `${reservationId.substring(0, 8).toUpperCase()}    PRIEDAS Nr.1`;
-  page.drawText(appTitle2, { x: 280, y, size: 10, font: fontBold });
+  const appTitle2Width = fontBold.widthOfTextAtSize(appTitle2, 10);
+  page.drawText(appTitle2, { x: (PAGE_WIDTH - appTitle2Width) / 2, y, size: 10, font: fontBold });
   y -= 24;
 
   // ===== NUOMOTOJAS =====
