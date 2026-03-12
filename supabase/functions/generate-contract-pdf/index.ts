@@ -429,48 +429,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   page.drawText('Perduodamas techniškai tvarkingas automobilis, su pilnu kuro baku, švarus.', { x: TEXT_LEFT, y, size: 9, font });
   y -= 18;
 
-  // ===== KOMPLEKTACIJA TABLE =====
-  page.drawText('Su automobiliu perduodami:', { x: LEFT, y, size: 10, font: fontBold });
-  y -= 16;
-
-  const komplektacija = [
-    'Komplektacija*',
-    'Rakteliai',
-    'Dokumentai (tech. pasas, draudimai, techninės apžiūros talonas)',
-    'Tvarkingas atsarginis ratas',
-    'Automobilio keltuvas ir raktas ratui pakeisti',
-    'Gesintuvas',
-    'Pirmosios pagalbos rinkinys',
-    'Automagnetola',
-    'Vaikiška kėdutė',
-    'Kita (įrašyti)',
-  ];
-
-  const tableLeft = TEXT_LEFT;
-  const tableRight = 420;
-  const checkboxRight = 440;
-  const rowHeight = 16;
-
-  // Draw table
-  for (let i = 0; i < komplektacija.length; i++) {
-    const rowY = y - (i * rowHeight);
-    // Row borders
-    page.drawLine({ start: { x: tableLeft, y: rowY + 12 }, end: { x: checkboxRight, y: rowY + 12 }, thickness: 0.5, color: rgb(0, 0, 0) });
-    page.drawLine({ start: { x: tableLeft, y: rowY - 4 }, end: { x: checkboxRight, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
-    // Left border
-    page.drawLine({ start: { x: tableLeft, y: rowY + 12 }, end: { x: tableLeft, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
-    // Right border (text col)
-    page.drawLine({ start: { x: tableRight, y: rowY + 12 }, end: { x: tableRight, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
-    // Right border (checkbox col)
-    page.drawLine({ start: { x: checkboxRight, y: rowY + 12 }, end: { x: checkboxRight, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
-
-    const isHeader = i === 0;
-    page.drawText(komplektacija[i], { x: tableLeft + 5, y: rowY, size: isHeader ? 9 : 8, font: isHeader ? fontBold : font });
-  }
-
-  y -= komplektacija.length * rowHeight + 4;
-  page.drawText('*reikiamą pažymėti varnele', { x: TEXT_LEFT, y, size: 7, font, color: rgb(0.4, 0.4, 0.4) });
-  y -= 18;
+  y -= 6;
 
   // Check if we need a new page for the rest
   r = ensureSpace(pdfDoc, page, y, 280, font, fontBold);
