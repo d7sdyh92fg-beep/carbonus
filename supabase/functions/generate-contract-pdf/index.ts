@@ -34,33 +34,8 @@ function dataUrlToUint8Array(dataUrl: string): Uint8Array {
   return bytes;
 }
 
-// Helper to draw wrapped text and return new Y position
-function drawWrappedText(page: any, text: string, x: number, y: number, font: any, size: number, maxWidth: number): number {
-  const words = text.split(' ');
-  let line = '';
-  let currentY = y;
-  
-  for (const word of words) {
-    const testLine = line ? `${line} ${word}` : word;
-    const width = font.widthOfTextAtSize(testLine, size);
-    if (width > maxWidth && line) {
-      page.drawText(line, { x, y: currentY, size, font });
-      currentY -= size + 3;
-      line = word;
-    } else {
-      line = testLine;
-    }
-  }
-  if (line) {
-    page.drawText(line, { x, y: currentY, size, font });
-    currentY -= size + 3;
-  }
-  return currentY;
-}
-
 async function loadFonts(pdfDoc: any) {
   pdfDoc.registerFontkit(fontkit);
-  console.log('Fetching Noto Sans fonts...');
   const [fontRegularResponse, fontBoldResponse] = await Promise.all([
     fetch('https://raw.githubusercontent.com/googlefonts/noto-fonts/main/hinted/ttf/NotoSans/NotoSans-Regular.ttf'),
     fetch('https://raw.githubusercontent.com/googlefonts/noto-fonts/main/hinted/ttf/NotoSans/NotoSans-Bold.ttf'),
@@ -69,8 +44,21 @@ async function loadFonts(pdfDoc: any) {
   const fontBoldBytes = new Uint8Array(await fontBoldResponse.arrayBuffer());
   const font = await pdfDoc.embedFont(fontRegularBytes);
   const fontBold = await pdfDoc.embedFont(fontBoldBytes);
-  console.log('Fonts embedded successfully');
   return { font, fontBold };
+}
+
+// Fetch lessor signature as JPEG (white background, no transparency issues)
+async function loadLessorSignature(pdfDoc: any): Promise<any | null> {
+  try {
+    const sigUrl = 'https://carbonus.lovable.app/lessor-signature-white.png';
+    const response = await fetch(sigUrl);
+    if (!response.ok) return null;
+    const sigBytes = new Uint8Array(await response.arrayBuffer());
+    return await pdfDoc.embedPng(sigBytes);
+  } catch (e) {
+    console.warn('Failed to load lessor signature:', e);
+    return null;
+  }
 }
 
 function drawLine(page: any, y: number) {
@@ -85,7 +73,6 @@ const LEFT = 40;
 const TEXT_LEFT = 50;
 const MAX_TEXT_WIDTH = 490;
 
-// Multi-page helper: checks if y is too low, adds a new page if needed
 function ensureSpace(pdfDoc: any, currentPage: any, y: number, needed: number, font: any, fontBold: any): { page: any; y: number } {
   if (y - needed < MARGIN_BOTTOM) {
     const newPage = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
@@ -94,7 +81,6 @@ function ensureSpace(pdfDoc: any, currentPage: any, y: number, needed: number, f
   return { page: currentPage, y };
 }
 
-// Draw section heading (bold)
 function drawSectionHeading(pdfDoc: any, page: any, y: number, text: string, font: any, fontBold: any, size: number = 11): { page: any; y: number } {
   const result = ensureSpace(pdfDoc, page, y, 20, font, fontBold);
   result.page.drawText(text, { x: LEFT, y: result.y, size, font: fontBold });
@@ -102,12 +88,10 @@ function drawSectionHeading(pdfDoc: any, page: any, y: number, text: string, fon
   return result;
 }
 
-// Draw a paragraph with auto page break (CPU-optimized wrapping)
 function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: any, fontBold: any, size: number = 9, indent: number = TEXT_LEFT): { page: any; y: number } {
   const words = text.split(' ');
   const maxCharsPerLine = Math.max(45, Math.floor((MAX_TEXT_WIDTH - (indent - LEFT)) / 5.3));
   const lines: string[] = [];
-
   let line = '';
   for (const word of words) {
     const next = line ? `${line} ${word}` : word;
@@ -129,46 +113,19 @@ function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: an
     currentPage.drawText(ln, { x: indent, y: currentY, size, font });
     currentY -= size + 3;
   }
-
-  currentY -= 3; // paragraph spacing
+  currentY -= 3;
   return { page: currentPage, y: currentY };
-}
-
-// Fetch and embed the lessor signature image
-async function loadLessorSignature(pdfDoc: any): Promise<any | null> {
-  try {
-    const sigUrl = 'https://carbonus.lovable.app/lessor-signature.png';
-    const response = await fetch(sigUrl);
-    if (!response.ok) {
-      console.warn('Failed to fetch lessor signature:', response.status);
-      return null;
-    }
-    const sigBytes = new Uint8Array(await response.arrayBuffer());
-    const sigImage = await pdfDoc.embedPng(sigBytes);
-    return sigImage;
-  } catch (e) {
-    console.warn('Failed to load lessor signature:', e);
-    return null;
-  }
 }
 
 // ============================================================
 // MAIN CONTRACT (full text, sections I-IX, points 1-37)
 // ============================================================
-async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
-  reservationId: string;
-  date: string;
-  customer: any;
-  car: any;
-  reservation: any;
-  signatureBytes: Uint8Array | null;
-  lessorSignatureImage: any | null;
-}) {
+async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any) {
   let page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   const { reservationId, date, customer } = data;
   let y = MARGIN_TOP;
 
-  // ===== TITLE =====
+  // TITLE (centered)
   const title = 'Transporto priemonės nuomos sutartis';
   const titleWidth = fontBold.widthOfTextAtSize(title, 14);
   page.drawText(title, { x: (PAGE_WIDTH - titleWidth) / 2, y, size: 14, font: fontBold });
@@ -177,7 +134,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   const nrWidth = font.widthOfTextAtSize(nrText, 10);
   page.drawText(nrText, { x: (PAGE_WIDTH - nrWidth) / 2, y, size: 10, font });
   y -= 16;
-  const dateText = `${date}`;
+  const dateText = date;
   const dateWidth = font.widthOfTextAtSize(dateText, 10);
   page.drawText(dateText, { x: (PAGE_WIDTH - dateWidth) / 2, y, size: 10, font, color: rgb(0.3, 0.3, 0.3) });
   y -= 8;
@@ -186,14 +143,13 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   page.drawText(cityText, { x: (PAGE_WIDTH - cityWidth) / 2, y, size: 10, font, color: rgb(0.3, 0.3, 0.3) });
   y -= 20;
 
-  // ===== I. NUOMOS SUTARTIES OBJEKTAS =====
+  // I. NUOMOS SUTARTIES OBJEKTAS
   let r = drawSectionHeading(pdfDoc, page, y, 'I. Nuomos sutarties objektas.', font, fontBold);
   page = r.page; y = r.y;
-
   r = drawParagraph(pdfDoc, page, y, '1. Šia Nuomos sutartimi (toliau – Sutartis) MB „Carbonus" (įmonės kodas – 307196558), atstovaujama direktoriaus Tomo Čepulio, (toliau – Nuomotojas) nuomoja automobilį Nuomininkui (toliau sutartyje – Šalys), Nuomininkas sutinka laikytis automobilio naudojimosi taisyklių, nustatytų šioje Sutartyje ir patvirtina tai savo parašu.', font, fontBold);
   page = r.page; y = r.y;
 
-  // ===== II. AUTOMOBILIO PRIĖMIMAS IR GRĄŽINIMAS =====
+  // II. AUTOMOBILIO PRIĖMIMAS IR GRĄŽINIMAS
   r = drawSectionHeading(pdfDoc, page, y, 'II. Automobilio priėmimas ir grąžinimas.', font, fontBold);
   page = r.page; y = r.y;
 
@@ -207,12 +163,9 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '8. Jei Nuomininkas pažeidžia Sutarties sąlygas, vykdo jas netinkamai arba kai numatoma, jog Nuomininkas negalės tinkamai įvykdyti savo pareigų, kylančių iš šios Sutarties, Nuomotojas turi besąlygišką teisę atsiimti automobilį anksčiau sutarto (numatyto) laiko, esant poreikiui – kreiptis į teisėsaugos organus ar kitus subjektus dėl automobilio paieškos paskelbimo.',
     '9. Jei Nuomininkas negrąžina automobilio 24 valandų laikotarpyje, kurios pradedamos skaičiuoti po Sutartyje nustatyto grąžinimo termino pabaigos, o taip pat jokia Nuomotojui priimtina ar sutarta komunikavimo forma, apie vėlavimą grąžinti automobilį neinformuoja Nuomotojo, Nuomotojas turi teisę kreiptis į teisėsaugos organus dėl turto (automobilio) vagystės, jo sunaikinimo ar sugadinimo ir reikalauti iš Nuomotojo žalos atlyginimo, išskyrus atvejus, jeigu tą žalą Nuomotojui atlygina draudimo kompanija arba atlygina tą dalį žalos, kurios nepadengia draudimo kompanija.',
   ];
-  for (const p of sectionII) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionII) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
-  // ===== III. AUTOMOBILIO NAUDOJIMAS =====
+  // III. AUTOMOBILIO NAUDOJIMAS
   r = drawSectionHeading(pdfDoc, page, y, 'III. Automobilio naudojimas.', font, fontBold);
   page = r.page; y = r.y;
 
@@ -222,10 +175,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '12. Nuomininkas įsipareigoja saugoti nuomojamos transporto priemonės dokumentus ir raktelius bei užtikrinti jų nepatekimą tretiesiems asmenims.',
     '13. Pagal šią Sutartį Nuomininkui draudžiama:',
   ];
-  for (const p of sectionIII_pre) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionIII_pre) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
   const prohibitions = [
     '13.1. Naudoti nuomojamą automobilį keleivių vežimui už atlygį;',
@@ -238,10 +188,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '13.8. Vežti degius skysčius bei medžiagas, ginklus, sprogmenis, narkotines ir psichotropines medžiagas ir kitus daiktus, kurių laikymą, disponavimą, naudojimą, gabenimą ir platinimą draudžia teisės aktai.',
     '13.9. Rūkyti automobilyje (bauda 50 EUR).',
   ];
-  for (const p of prohibitions) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60);
-    page = r.page; y = r.y;
-  }
+  for (const p of prohibitions) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
 
   const sectionIII_post = [
     '14. Nuomininkas/nuomojamos transporto priemonės vairuotojas privalo laikytis saugaus eismo taisyklių ir šios Sutarties sąlygų.',
@@ -249,12 +196,9 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '16. Sugedus automobiliui, jo remontą atlikti tik suderinus (vietą, laiką, kaštus ir t.t.) su Nuomotoju ir gavus jo leidimą. Remonto išlaidas apmoka Nuomotojas, išskyrus atvejus, jei Šalys nesutaria kitaip.',
     '17. Nuomininkas privalo imtis priemonių ir užtikrinti, kad tamsiu paros metu automobilis būtų maksimaliai apsaugotas nuo vagysčių ir sunaikinimo/sugadinimo.',
   ];
-  for (const p of sectionIII_post) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionIII_post) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
-  // ===== IV. AUTOMOBILIO VAGYSTĖ, AVARIJOS IR KITI GEDIMAI =====
+  // IV. AUTOMOBILIO VAGYSTĖ, AVARIJOS IR KITI GEDIMAI
   r = drawSectionHeading(pdfDoc, page, y, 'IV. Automobilio vagystė, avarijos ir kiti gedimai.', font, fontBold);
   page = r.page; y = r.y;
 
@@ -264,25 +208,19 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '20. Nuomininkas įsipareigoja saugoti įrodymų objektus (daiktus, pėdsakus, liudininkų parodymus, fotografijas ir pan.), įvykių dalyvių ir liudininkų kontaktinę informaciją. Taip pat Nuomininkas įspėtas ir žino, jog jam draudžiama pasirašyti bet kokius dokumentus, galinčius pakenkti Nuomotojo reputacijai, kaltinančiais Nuomotoją dėl žalos ar nuostolių atlyginimo ir pan.',
     '21. Nuomininkas ar nuomojamos transporto priemonės teisėtas naudotojas (įgaliotas vairuotojas) privalo imtis priemonių ir apsaugoti Nuomotojo ir automobilio draudimo kompanijos teisėtus interesus jei nuomos laikotarpiu įvyksta autoįvykis, avarija, automobilio apgadinimas, sunaikinimas ar vagystė, t.y.:',
   ];
-  for (const p of sectionIV) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionIV) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
   const sectionIV_sub = [
     '21.1. Nedelsiant gelbėti transporto priemonę, apsaugant ją nuo tolimesnio gedimo ir pašalinti priežastis, galinčias pakenkti automobilio vertei ir padidinti patiriamą žalą (nuostolius);',
     '21.2. Pranešti teisėsaugos institucijoms ir draudimo kompanijai apie įvykį, gauti su pranešimo užregistravimu susijusius dokumentus;',
     '21.3. Nedelsiant informuoti apie įvykį Nuomotoją.',
   ];
-  for (const p of sectionIV_sub) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionIV_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
 
   r = drawParagraph(pdfDoc, page, y, '22. Nuomotojas neatsako už žalą ir nuostolius, kuriuos patiria Nuomininkas nuomos laikotarpiu, tame tarpe ir dėl nuomojame automobilyje paliktų (sugadintų ar dingusių) Nuomininko daiktų ar turto.', font, fontBold);
   page = r.page; y = r.y;
 
-  // ===== V. AUTOMOBILIO DRAUDIMAS IR KITOS RINKLIAVOS =====
+  // V. AUTOMOBILIO DRAUDIMAS IR KITOS RINKLIAVOS
   r = drawSectionHeading(pdfDoc, page, y, 'V. Automobilio draudimas ir kitos rinkliavos.', font, fontBold);
   page = r.page; y = r.y;
 
@@ -290,12 +228,9 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '23. Už automobilio draudimą atsakingas Nuomotojas. Automobilio privalomojo transporto priemonės valdytojo civilinės atsakomybės draudimas turi galioti Europos Sąjungos valstybėse, o jame turi būti nurodyta, kad automobilį vairuos ir tretieji asmenys.',
     '24. Už kelių mokesčių ir kitų rinkliavų, o taip pat baudų už kelių eismo taisyklių pažeidimus, padarytus vairuojant nuomojamą automobilį, atsakingas Nuomininkas ar įgaliotas asmuo, vairavęs automobilį.',
   ];
-  for (const p of sectionV) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionV) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
-  // ===== VI. APMOKĖJIMO SĄLYGOS =====
+  // VI. APMOKĖJIMO SĄLYGOS
   r = drawSectionHeading(pdfDoc, page, y, 'VI. Apmokėjimo sąlygos.', font, fontBold);
   page = r.page; y = r.y;
 
@@ -305,10 +240,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '27. Nuomos įkainiai, nustatyti Sutarties prieduose, yra fiksuoti ir nekeičiami visą Sutarties galiojimo laikotarpį.',
     '28. Nuomininkas, ne vėliau kaip per 10 darbo dienų po pretenzijų jam pateikimo, papildomai padengia šias išlaidas (jos gali būti padengtos panaudojant piniginį užstatą, jei toks buvo skiriamas), atsiradusias automobilio nuomos laikotarpiu:',
   ];
-  for (const p of sectionVI) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionVI) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
   const sectionVI_sub = [
     '28.1. Papildomą nuomos sumą, apskaičiuotą už papildomą nuomos laikotarpį ar vėlavimą automobilį grąžinti laiku;',
@@ -317,36 +249,30 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '28.4. 100 EUR baudą, pametus automobilio dokumentus ar raktelius;',
     '28.5. Pilną žalos atlyginimą dėl automobilio apgadinimo, praradimo ar sunaikinimo, o taip pat frančizę (išskaitą), draudimo įvykio (KASKO) atveju (jei automobilis buvo apdraustas KASKO draudimu). Ši nuostata netaikoma tuo atveju, jei tokią žalą Nuomotojui padengia Draudimo kompanija. Nuomininkas neatsako už žalą, jeigu žala kilo ne dėl Nuomininko kaltės (tyčios ar dėl neatsargumo).',
   ];
-  for (const p of sectionVI_sub) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionVI_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
 
   r = drawParagraph(pdfDoc, page, y, '29. Už kiekvieną uždelstą kompensacijos ar žalos atlyginimo dieną Nuomininkas moka Nuomotojui 0.5% delspinigių nuo vėluojamos grąžinti (sumokėti) sumos.', font, fontBold);
   page = r.page; y = r.y;
 
-  // ===== VII. NUOMININKO ATSAKOMYBĖ =====
+  // VII. NUOMININKO ATSAKOMYBĖ
   r = drawSectionHeading(pdfDoc, page, y, 'VII. Nuomininko atsakomybė.', font, fontBold);
   page = r.page; y = r.y;
 
   r = drawParagraph(pdfDoc, page, y, '30. Nuomininkas yra visiškai atsakingas už automobiliui tyčia ar dėl neatsargos ir neapdairumo padarytą žalą ar gedimus, o taip pat kitų nuostolių padengimą Nuomotojui, jei jis pažeidė transporto priemonės saugaus eksploatavimo taisykles ir šios Sutarties sąlygas, nustatytas jos III ir IV dalyse, net ir tuo atveju, jei draudimo kompanija atsisako atlyginti žalą ir nuostolius, atsiradusius automobilio nuomos laikotarpiu. Nuomininkas neatsako už žalos atlyginimą jeigu žala kilo ne dėl Nuomininko kaltės (tyčios ar dėl neatsargumo).', font, fontBold);
   page = r.page; y = r.y;
 
-  // ===== VIII. NUOMOTOJO ATSAKOMYBĖ =====
+  // VIII. NUOMOTOJO ATSAKOMYBĖ
   r = drawSectionHeading(pdfDoc, page, y, 'VIII. Nuomotojo atsakomybė.', font, fontBold);
   page = r.page; y = r.y;
 
   const sectionVIII = [
-    '31. Nuomotojas neatsako už Nuomininko nuostolius, atsiradusius dėl to, jog pastarasis negalėjo naudotis automobiliu dėl jo gedimo nuomos laikotarpiu ar įvykus nelaimingam atsitikimui, avarijai, automobilio sugadinimui ar praradimui. Esant galimybėms, kalbamuoju atveju, Nuomotojas, Šalims sutarus, imasi priemonių, kad savo sąskaita (jei Šalys nesutaria kitaip) suremontuoti išnuomotą automobilį arba, esant galimybei, pakeisti jį kitu.',
+    '31. Nuomotojas neatsako už Nuomininko nuostolius, atsiradusius dėl to, jog pastarasis negalėjo naudotis automobiliu dėl jo gedimo nuomos laikotarpiu ar įvykus nelaimingam atsitikimui, avarijai, automobilio sugadinimui ar praradimui. Esant galimybėms, kalbamuoju atveju, Nuomotojas, Šalims sutarus, imasi priemonių, kad savo sąskaita (jei Šalys nesutaria kitaip) suremontuoti išnuomotą automobilį arba, esant galimybei, pakeisti jį kitu. Automobilio keitimo atveju, jo pristatymo išlaidų ir sugedusio automobilio pargabenimo išlaidų dengimo klausimas sprendžiamas Šalių sutarimu.',
     '32. Nuomotojas neatsako už Nuomininko sveikatos būklę automobilio Nuomos laikotarpiu ir po jos pasibaigimo, o taip pat už keleiviams ar tretiesiems asmenims Nuomininko padarytą ar dėl kaltės atsiradusią žalą automobilio nuomos laikotarpiu.',
     '33. Nuomotojas neatsako už jokį Nuomininko turto praradimą ir netekimus automobilio nuomos laikotarpiu ir jam pasibaigus.',
   ];
-  for (const p of sectionVIII) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionVIII) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
-  // ===== IX. BAIGIAMOSIOS NUOSTATOS =====
+  // IX. BAIGIAMOSIOS NUOSTATOS
   r = drawSectionHeading(pdfDoc, page, y, 'IX. Baigiamosios nuostatos.', font, fontBold);
   page = r.page; y = r.y;
 
@@ -356,91 +282,85 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
     '36. Sutartis sudaryta lietuvių kalba. Po vieną egzempliorių kiekvienai šaliai. Abu egzemplioriai turi vienodą juridinę galią.',
     '37. Šiai Sutarčiai ir iš jos kylantiems santykiams taikomi Lietuvos Respublikos teisės aktai. Visi ginčai, kylantys iš šios Sutarties sprendžiami derybų būdu, o nepavykus jų išspręsti taikiai – ginčo sprendimas perduodamas teismui.',
   ];
-  for (const p of sectionIX) {
-    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
-    page = r.page; y = r.y;
-  }
+  for (const p of sectionIX) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold); page = r.page; y = r.y; }
 
-  // ===== SIGNATURES =====
+  // ===== SIGNATURES (matching DOCX page 4 layout) =====
   y -= 10;
-  r = ensureSpace(pdfDoc, page, y, 100, font, fontBold);
+  r = ensureSpace(pdfDoc, page, y, 160, font, fontBold);
   page = r.page; y = r.y;
 
   drawLine(page, y);
   y -= 20;
 
+  // Two columns: NUOMOTOJAS left, NUOMININKAS right
   page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
   page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
-  y -= 16;
+  y -= 20;
 
-  page.drawText('MB "Carbonus"', { x: 50, y, size: 9, font });
-  page.drawText('Įmonės kodas 307196558', { x: 50, y: y - 12, size: 9, font });
-  page.drawText('Adresas: Neravų 2A-6, Druskininkai', { x: 50, y: y - 24, size: 9, font });
-  page.drawText('Tel. +37069818781', { x: 50, y: y - 36, size: 9, font });
-  page.drawText('El.p.: info@carbonus.lt', { x: 50, y: y - 48, size: 9, font });
-
-  const isCorporate = customer.is_corporate;
-  const signerName = isCorporate && customer.company_name
-    ? `${customer.company_name}`
-    : `${customer.first_name} ${customer.last_name}`;
-  page.drawText(signerName, { x: 320, y, size: 9, font });
-  if (customer.address) {
-    page.drawText(`Adresas: ${customer.address}`, { x: 320, y: y - 12, size: 9, font });
-  }
-  page.drawText(`Tel. ${customer.phone}`, { x: 320, y: y - 24, size: 9, font });
-  page.drawText(`El.p.: ${customer.email}`, { x: 320, y: y - 36, size: 9, font });
-
-  y -= 60;
+  // Signature lines
+  page.drawText('______________', { x: 50, y, size: 10, font });
+  page.drawText('______________', { x: 320, y, size: 10, font });
+  y -= 14;
 
   page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
-  y -= 6;
 
-  // Embed lessor signature
+  // Nuomininkas name
+  const isCorporate = customer.is_corporate;
+  const signerName = isCorporate && customer.company_name
+    ? customer.company_name
+    : `${customer.first_name} ${customer.last_name}`;
+  page.drawText(signerName, { x: 320, y, size: 9, font });
+  y -= 18;
+
+  // Lessor details (left column)
+  page.drawText('MB "Carbonus"', { x: 50, y, size: 9, font });
+  page.drawText('Adresas', { x: 320, y, size: 9, font });
+  y -= 12;
+  page.drawText('Įmonės kodas 307196558', { x: 50, y, size: 9, font });
+  page.drawText(`Tel. ${customer.phone || ''}`, { x: 320, y, size: 9, font });
+  y -= 12;
+  page.drawText('Adresas: Neravų 2A-6, Druskininkai,', { x: 50, y, size: 9, font });
+  page.drawText(`El.p. adresas: ${customer.email || ''}`, { x: 320, y, size: 9, font });
+  y -= 12;
+  page.drawText('Druskininkų sav.', { x: 50, y, size: 9, font });
+  y -= 12;
+  page.drawText('A.S. LT547189900059467578', { x: 50, y, size: 9, font });
+  y -= 12;
+  page.drawText('AB Artea bankas', { x: 50, y, size: 9, font });
+  y -= 12;
+  page.drawText('Tel. +37069818781', { x: 50, y, size: 9, font });
+  y -= 12;
+  page.drawText('El.p. adresas: info@carbonus.lt', { x: 50, y, size: 9, font });
+
+  // Embed lessor signature above the line
   const lessorSig = data.lessorSignatureImage;
   if (lessorSig) {
-    const scale = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
+    const scale = Math.min(120 / lessorSig.width, 40 / lessorSig.height);
     const w = lessorSig.width * scale;
     const h = lessorSig.height * scale;
-    page.drawImage(lessorSig, { x: 50, y: y - h, width: w, height: h });
-    y -= h + 4;
-  } else {
-    y -= 8;
+    // Position signature overlapping the ____ line area
+    page.drawImage(lessorSig, { x: 50, y: y + 70, width: w, height: h });
   }
-
-  page.drawText('_________________________', { x: 50, y, size: 10, font });
-  page.drawText('_________________________', { x: 320, y, size: 10, font });
 
   return page;
 }
 
 // ============================================================
-// APPENDIX Nr. 1 (without mileage)
+// APPENDIX Nr. 1 (matching DOCX pages 5-6 exactly)
 // ============================================================
-async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
-  reservationId: string;
-  date: string;
-  customer: any;
-  car: any;
-  reservation: any;
-  signatureBytes: Uint8Array | null;
-  lessorSignatureImage: any | null;
-}) {
-  const page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
+  let page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   const { reservationId, date, customer, car, reservation } = data;
   let y = MARGIN_TOP;
+  let r: any;
 
-  // Title
-  const appTitle = 'PRIEDAS Nr. 1';
-  const appTitleWidth = fontBold.widthOfTextAtSize(appTitle, 14);
-  page.drawText(appTitle, { x: (PAGE_WIDTH - appTitleWidth) / 2, y, size: 14, font: fontBold });
-  y -= 20;
-  const subTitle = `prie Transporto priemonės nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
-  const subTitleWidth = font.widthOfTextAtSize(subTitle, 10);
-  page.drawText(subTitle, { x: (PAGE_WIDTH - subTitleWidth) / 2, y, size: 10, font });
-  y -= 28;
-
-  drawLine(page, y);
-  y -= 20;
+  // Title (right-aligned like DOCX)
+  const appTitle1 = 'Transporto priemonės nuomos sutarties Nr.';
+  page.drawText(appTitle1, { x: 280, y, size: 10, font: fontBold });
+  y -= 14;
+  const appTitle2 = `${reservationId.substring(0, 8).toUpperCase()}    PRIEDAS Nr.1`;
+  page.drawText(appTitle2, { x: 280, y, size: 10, font: fontBold });
+  y -= 24;
 
   // ===== NUOMOTOJAS =====
   page.drawText('NUOMOTOJAS:', { x: LEFT, y, size: 11, font: fontBold });
@@ -457,9 +377,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
     y -= 13;
   }
 
-  y -= 8;
-  drawLine(page, y);
-  y -= 20;
+  y -= 12;
 
   // ===== NUOMININKAS =====
   page.drawText('NUOMININKAS:', { x: LEFT, y, size: 11, font: fontBold });
@@ -468,8 +386,8 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   const isCorporate = customer.is_corporate;
   const tenantLines: string[] = [];
   if (isCorporate && customer.company_name) {
-    tenantLines.push(`Įmonė: ${customer.company_name}`);
-    if (customer.company_code) tenantLines.push(`Įmonės kodas: ${customer.company_code}`);
+    tenantLines.push(`${customer.company_name}`);
+    if (customer.company_code) tenantLines.push(`Asmens (įmonės) kodas: ${customer.company_code}`);
     if (customer.vat_code) tenantLines.push(`PVM kodas: ${customer.vat_code}`);
     tenantLines.push(`Atstovas: ${customer.first_name} ${customer.last_name}`);
   } else {
@@ -484,9 +402,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
     y -= 13;
   }
 
-  y -= 8;
-  drawLine(page, y);
-  y -= 20;
+  y -= 12;
 
   // ===== NUOMOJAMAS AUTOMOBILIS =====
   page.drawText('NUOMOJAMAS AUTOMOBILIS:', { x: LEFT, y, size: 11, font: fontBold });
@@ -494,13 +410,12 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
 
   const carRows: [string, string][] = [
     ['Modelis', car?.name || reservation.car_name || '—'],
+    ['Valstybinis numeris', car?.license_plate || '—'],
     ['Pagaminimo metai', car?.year ? String(car.year) : '—'],
+    ['Kuro tipas', car?.fuel || '—'],
+    ['Pavarų dėžė', car?.transmission || '—'],
+    ['Rida', car?.current_mileage ? `${car.current_mileage} km` : '—'],
   ];
-  if (car?.license_plate) carRows.push(['Valstybinis numeris', car.license_plate]);
-  if (car?.fuel) carRows.push(['Kuro tipas', car.fuel]);
-  if (car?.transmission) carRows.push(['Pavarų dėžė', car.transmission]);
-  if (car?.passengers) carRows.push(['Keleivių skaičius', String(car.passengers)]);
-  // NOTE: Mileage (Rida) intentionally NOT shown - it's variable
 
   for (const [k, v] of carRows) {
     page.drawText(`${k}:`, { x: TEXT_LEFT, y, size: 10, font: fontBold });
@@ -512,72 +427,114 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   page.drawText('Perduodamas techniškai tvarkingas automobilis, su pilnu kuro baku, švarus.', { x: TEXT_LEFT, y, size: 9, font });
   y -= 18;
 
-  drawLine(page, y);
-  y -= 20;
+  // ===== KOMPLEKTACIJA TABLE =====
+  page.drawText('Su automobiliu perduodami:', { x: LEFT, y, size: 10, font: fontBold });
+  y -= 16;
 
-  // ===== NUOMOS LAIKOTARPIS IR KAINA =====
-  page.drawText('NUOMOS LAIKOTARPIS IR KAINA:', { x: LEFT, y, size: 11, font: fontBold });
+  const komplektacija = [
+    'Komplektacija*',
+    'Rakteliai',
+    'Dokumentai (tech. pasas, draudimai, techninės apžiūros talonas)',
+    'Tvarkingas atsarginis ratas',
+    'Automobilio keltuvas ir raktas ratui pakeisti',
+    'Gesintuvas',
+    'Pirmosios pagalbos rinkinys',
+    'Automagnetola',
+    'Vaikiška kėdutė',
+    'Kita (įrašyti)',
+  ];
+
+  const tableLeft = TEXT_LEFT;
+  const tableRight = 420;
+  const checkboxRight = 440;
+  const rowHeight = 16;
+
+  // Draw table
+  for (let i = 0; i < komplektacija.length; i++) {
+    const rowY = y - (i * rowHeight);
+    // Row borders
+    page.drawLine({ start: { x: tableLeft, y: rowY + 12 }, end: { x: checkboxRight, y: rowY + 12 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    page.drawLine({ start: { x: tableLeft, y: rowY - 4 }, end: { x: checkboxRight, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    // Left border
+    page.drawLine({ start: { x: tableLeft, y: rowY + 12 }, end: { x: tableLeft, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    // Right border (text col)
+    page.drawLine({ start: { x: tableRight, y: rowY + 12 }, end: { x: tableRight, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    // Right border (checkbox col)
+    page.drawLine({ start: { x: checkboxRight, y: rowY + 12 }, end: { x: checkboxRight, y: rowY - 4 }, thickness: 0.5, color: rgb(0, 0, 0) });
+
+    const isHeader = i === 0;
+    page.drawText(komplektacija[i], { x: tableLeft + 5, y: rowY, size: isHeader ? 9 : 8, font: isHeader ? fontBold : font });
+  }
+
+  y -= komplektacija.length * rowHeight + 4;
+  page.drawText('*reikiamą pažymėti varnele', { x: TEXT_LEFT, y, size: 7, font, color: rgb(0.4, 0.4, 0.4) });
   y -= 18;
 
+  // Check if we need a new page for the rest
+  r = ensureSpace(pdfDoc, page, y, 280, font, fontBold);
+  page = r.page; y = r.y;
+
+  // ===== NUOMOS LAIKOTARPIS (two-column layout like DOCX) =====
   const pickupTime = reservation.pickup_time || '10:00';
   const returnTime = reservation.return_time || '10:00';
 
-  const rentalRows: [string, string][] = [
-    ['Nuomos pradžia', `${reservation.start_date} ${pickupTime}`],
-    ['Nuomos pabaiga', `${reservation.end_date} ${returnTime}`],
-    ['Nuomos laikotarpis (paromis)', `${reservation.rental_days}`],
-    ['Nuomos kaina (už 1 parą)', `€${reservation.daily_rate}`],
-    ['Nuomos kaina (iš viso)', `€${reservation.total_rental_cost}`],
-    ['Užstato suma', `€${reservation.deposit_amount}`],
-    ['Bendra suma', `€${reservation.total_amount}`],
-  ];
+  page.drawText('NUOMOS PRADŽIA:', { x: LEFT, y, size: 10, font: fontBold });
+  page.drawText('NUOMOS PABAIGA:', { x: 300, y, size: 10, font: fontBold });
+  y -= 18;
 
-  for (const [k, v] of rentalRows) {
-    page.drawText(`${k}:`, { x: TEXT_LEFT, y, size: 10, font: fontBold });
-    page.drawText(v, { x: 250, y, size: 10, font });
-    y -= 15;
-  }
+  page.drawText(`${reservation.start_date}  ${pickupTime} val.`, { x: TEXT_LEFT, y, size: 10, font });
+  page.drawText(`${reservation.end_date}  ${returnTime} val.`, { x: 310, y, size: 10, font });
+  y -= 18;
 
-  y -= 8;
-  page.drawText('Jei automobilis grąžinamas savaitgalį, šventinę dieną ar po darbo valandų,', { x: TEXT_LEFT, y, size: 8, font, color: rgb(0.4, 0.4, 0.4) });
+  page.drawText(`Nuomos laikotarpis (paromis): ${reservation.rental_days}`, { x: TEXT_LEFT, y, size: 10, font });
+  page.drawText(`Nuomos kaina (iš viso) (EUR): ${reservation.total_rental_cost}`, { x: 310, y, size: 10, font });
+  y -= 18;
+
+  page.drawText(`Nuomos kaina (už 1 parą) (EUR): ${reservation.daily_rate}`, { x: TEXT_LEFT, y, size: 10, font });
+  page.drawText(`Užstato suma: ${reservation.deposit_amount} (EUR).`, { x: 310, y, size: 10, font });
+  y -= 24;
+
+  // Return address
+  page.drawText('Automobilis grąžinamas adresu: Neravų 2A-6, Druskininkai.', { x: LEFT, y, size: 9, font });
+  y -= 18;
+
+  page.drawText('Jei automobilis grąžinamas savaitgalį, šventinę dieną ar po darbo valandų, taikomas papildomas', { x: LEFT, y, size: 8, font: fontBold });
   y -= 11;
-  page.drawText('taikomas papildomas 20 EUR mokestis.', { x: TEXT_LEFT, y, size: 8, font, color: rgb(0.4, 0.4, 0.4) });
-  y -= 16;
-
-  drawLine(page, y);
+  page.drawText('20 EUR mokestis (neįskaitant PVM).', { x: LEFT, y, size: 8, font: fontBold });
   y -= 20;
 
   // ===== PASTABOS =====
-  page.drawText('PASTABOS:', { x: LEFT, y, size: 11, font: fontBold });
+  page.drawText('PASTABOS', { x: LEFT, y, size: 10, font: fontBold });
   y -= 16;
-  for (let i = 0; i < 3; i++) {
-    page.drawText('________________________________________________________________________________', { x: TEXT_LEFT, y, size: 9, font, color: rgb(0.7, 0.7, 0.7) });
-    y -= 16;
+  for (let i = 0; i < 5; i++) {
+    page.drawText('________________________________________________________________________________', { x: TEXT_LEFT, y, size: 9, font, color: rgb(0.5, 0.5, 0.5) });
+    y -= 14;
   }
 
-  y -= 10;
-  drawLine(page, y);
-  y -= 24;
+  y -= 16;
 
   // ===== SIGNATURES =====
   page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
   page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
-  y -= 16;
-  page.drawText('TOMAS ČEPULIS', { x: 50, y, size: 9, font });
+  y -= 20;
 
-  const signerName = isCorporate && customer.company_name
-    ? `${customer.company_name}`
+  page.drawText('______________', { x: 50, y, size: 10, font });
+  page.drawText('______________', { x: 320, y, size: 10, font });
+  y -= 14;
+
+  page.drawText('TOMAS ČEPULIS', { x: 50, y, size: 9, font });
+  const tenantSigName = isCorporate && customer.company_name
+    ? customer.company_name
     : `${customer.first_name} ${customer.last_name}`;
-  page.drawText(signerName, { x: 320, y, size: 9, font });
-  y -= 6;
+  page.drawText(tenantSigName, { x: 320, y, size: 9, font });
 
   // Embed lessor signature
   const lessorSig = data.lessorSignatureImage;
   if (lessorSig) {
-    const scaleL = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
+    const scaleL = Math.min(120 / lessorSig.width, 40 / lessorSig.height);
     const wL = lessorSig.width * scaleL;
     const hL = lessorSig.height * scaleL;
-    page.drawImage(lessorSig, { x: 50, y: y - hL, width: wL, height: hL });
+    page.drawImage(lessorSig, { x: 50, y: y + 8, width: wL, height: hL });
   }
 
   // Embed customer digital signature if available
@@ -587,15 +544,11 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
       const scale = Math.min(150 / png.width, 50 / png.height);
       const w = png.width * scale;
       const h = png.height * scale;
-      page.drawImage(png, { x: 320, y: y - h, width: w, height: h });
+      page.drawImage(png, { x: 320, y: y + 8, width: w, height: h });
     } catch (_e) {
       // continue without signature image
     }
   }
-
-  y -= 50;
-  page.drawText('_________________________', { x: 50, y, size: 10, font });
-  page.drawText('_________________________', { x: 320, y, size: 10, font });
 
   return page;
 }
@@ -611,92 +564,53 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const body = await req.json();
     const {
-      reservationId,
-      customerName,
-      customerEmail,
-      carName,
-      startDate,
-      endDate,
-      totalAmount,
-      signatureData,
-      pickupTime,
-      returnTime,
+      reservationId, customerName, customerEmail, carName,
+      startDate, endDate, totalAmount, signatureData, pickupTime, returnTime,
     }: ContractRequest = body;
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL") as string;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-    // Fetch full reservation, customer, and car data from DB
-    const { data: reservation } = await supabase
-      .from('reservations')
-      .select('*')
-      .eq('id', reservationId)
-      .single();
+    // Fetch reservation, customer, car
+    const { data: reservation } = await supabase.from('reservations').select('*').eq('id', reservationId).single();
 
     let customer: any = null;
     if (reservation?.customer_id) {
-      const { data: c } = await supabase
-        .from('customers')
-        .select('*')
-        .eq('id', reservation.customer_id)
-        .single();
+      const { data: c } = await supabase.from('customers').select('*').eq('id', reservation.customer_id).single();
       customer = c;
     }
-
-    // Fallback customer from request params
     if (!customer) {
       customer = {
         first_name: customerName?.split(' ')[0] || '',
         last_name: customerName?.split(' ').slice(1).join(' ') || '',
-        email: customerEmail,
-        phone: '',
-        address: '',
-        is_corporate: false,
+        email: customerEmail, phone: '', address: '', is_corporate: false,
       };
     }
 
     let car: any = null;
-    const carId = reservation?.car_id;
-    if (carId) {
-      const { data: c } = await supabase.from('cars').select('*').eq('id', carId).single();
+    if (reservation?.car_id) {
+      const { data: c } = await supabase.from('cars').select('*').eq('id', reservation.car_id).single();
       car = c;
     }
 
-    // Use reservation data or fallback
     const resData = reservation || {
-      id: reservationId,
-      car_name: carName,
-      start_date: startDate,
-      end_date: endDate,
-      total_amount: totalAmount,
-      pickup_time: pickupTime || '10:00',
-      return_time: returnTime || '10:00',
-      rental_days: 0,
-      daily_rate: 0,
-      total_rental_cost: 0,
-      deposit_amount: 0,
+      id: reservationId, car_name: carName, start_date: startDate, end_date: endDate,
+      total_amount: totalAmount, pickup_time: pickupTime || '10:00', return_time: returnTime || '10:00',
+      rental_days: 0, daily_rate: 0, total_rental_cost: 0, deposit_amount: 0,
     };
 
-    // Handle signature storage
-    let signatureUrl: string | null = null;
+    // Handle signature
     let signatureBytes: Uint8Array | null = null;
+    let signatureUrl: string | null = null;
     if (signatureData && signatureData.startsWith("data:image")) {
       try {
         signatureBytes = dataUrlToUint8Array(signatureData);
         const filePath = `signatures/${reservationId}.png`;
-        const { error: uploadError } = await supabase.storage
-          .from("contracts")
-          .upload(filePath, signatureBytes, { contentType: "image/png", upsert: true });
-        if (uploadError) throw uploadError;
-        const { data: signed, error: signedErr } = await supabase.storage
-          .from("contracts")
-          .createSignedUrl(filePath, 60 * 60 * 24 * 30);
-        if (signedErr) throw signedErr;
+        await supabase.storage.from("contracts").upload(filePath, signatureBytes, { contentType: "image/png", upsert: true });
+        const { data: signed } = await supabase.storage.from("contracts").createSignedUrl(filePath, 60 * 60 * 24 * 30);
         signatureUrl = signed?.signedUrl ?? null;
-      } catch (e) {
-        console.warn("Failed to store signature:", e);
-      }
+      } catch (e) { console.warn("Failed to store signature:", e); }
     }
 
     // Generate PDF
@@ -709,50 +623,34 @@ const handler = async (req: Request): Promise<Response> => {
       const lessorSignatureImage = await loadLessorSignature(pdfDoc);
 
       const pdfData = {
-        reservationId,
-        date: todayStr,
-        customer,
-        car,
-        reservation: resData,
-        signatureBytes,
-        lessorSignatureImage,
+        reservationId, date: todayStr, customer, car, reservation: resData,
+        signatureBytes, lessorSignatureImage,
       };
 
-      // Pages 1-N: Full contract (I-IX)
       await drawFullContract(pdfDoc, font, fontBold, pdfData);
-
-      // Last page: Appendix Nr. 1
       await drawAppendix(pdfDoc, font, fontBold, pdfData);
 
       generatedPdfBytes = await pdfDoc.save();
       const pdfFilePath = `${reservationId}/nuomos_sutartis_${reservationId}.pdf`;
-      const { error: pdfUploadError } = await supabase.storage
-        .from('contracts')
-        .upload(pdfFilePath, generatedPdfBytes, { contentType: 'application/pdf', upsert: true });
-      if (!pdfUploadError) {
-        contractPath = pdfFilePath;
-      } else {
-        console.error('PDF upload failed:', pdfUploadError);
-      }
+      const { error: pdfUploadError } = await supabase.storage.from('contracts').upload(pdfFilePath, generatedPdfBytes, { contentType: 'application/pdf', upsert: true });
+      if (!pdfUploadError) contractPath = pdfFilePath;
+      else console.error('PDF upload failed:', pdfUploadError);
     } catch (pdfErr) {
       console.error('PDF generation failed:', pdfErr);
     }
 
-    // Build PDF attachment directly from generated bytes (faster, avoids timeout)
+    // Build attachment
     let pdfAttachment = null;
     if (generatedPdfBytes) {
       try {
         const base64Pdf = encodeBase64(generatedPdfBytes);
         pdfAttachment = { filename: `nuomos_sutartis_${reservationId}.pdf`, content: base64Pdf };
-      } catch (pdfError) {
-        console.error('Failed to prepare PDF attachment:', pdfError);
-      }
+      } catch (e) { console.error('Failed to prepare PDF attachment:', e); }
     }
 
     // Email to customer
     const emailSummary = `
-      <!DOCTYPE html>
-      <html><head><meta charset="utf-8">
+      <!DOCTYPE html><html><head><meta charset="utf-8">
         <style>
           body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; }
           .header { text-align: center; border-bottom: 2px solid #22c55e; padding-bottom: 20px; margin-bottom: 30px; }
@@ -782,7 +680,6 @@ const handler = async (req: Request): Promise<Response> => {
       </body></html>
     `;
 
-    // Send to customer
     const recipientEmail = customerEmail || customer.email;
     if (recipientEmail) {
       await resend.emails.send({
@@ -808,7 +705,6 @@ const handler = async (req: Request): Promise<Response> => {
             ${customer.is_corporate && customer.company_name ? `<p><strong>Įmonė:</strong> ${customer.company_name}</p>` : ''}
             <p><strong>El. paštas:</strong> ${customer.email}</p>
             <p><strong>Telefonas:</strong> ${customer.phone}</p>
-            ${customer.address ? `<p><strong>Adresas:</strong> ${customer.address}</p>` : ''}
           </div>
           <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="margin-top: 0;">Rezervacija:</h3>
@@ -819,13 +715,13 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Bendra suma:</strong> €${resData.total_amount}</p>
           </div>
           ${signatureUrl ? `<div style="margin: 20px 0;"><p><strong>Parašas:</strong></p><img src="${signatureUrl}" alt="Parašas" style="max-width:280px;border:1px solid #ddd;padding:8px;"/></div>` : ''}
-          <p style="color: #6b7280; font-size: 14px;">Sutartis pridėta kaip PDF. Klientui (${recipientEmail}) taip pat išsiųsta.</p>
+          <p style="color: #6b7280; font-size: 14px;">Sutartis pridėta kaip PDF.</p>
         </div>
       `,
       ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
     });
 
-    console.log("Contract emails sent to customer and admin");
+    console.log("Contract emails sent");
 
     return new Response(
       JSON.stringify({ success: true, contractUrl: contractPath, message: "Contract generated and sent successfully" }),
