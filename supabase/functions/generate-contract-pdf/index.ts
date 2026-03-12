@@ -496,9 +496,6 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   page.drawText(`Užstato suma: ${reservation.deposit_amount} (EUR).`, { x: 310, y, size: 10, font });
   y -= 24;
 
-  // Return address
-  page.drawText('Automobilis grąžinamas adresu: Neravų 2A-6, Druskininkai.', { x: LEFT, y, size: 9, font });
-  y -= 18;
 
   page.drawText('Jei automobilis grąžinamas savaitgalį, šventinę dieną ar po darbo valandų, taikomas papildomas', { x: LEFT, y, size: 8, font: fontBold });
   y -= 11;
