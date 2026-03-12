@@ -286,7 +286,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
 
   // ===== SIGNATURES (matching DOCX page 4 layout) =====
   y -= 10;
-  r = ensureSpace(pdfDoc, page, y, 160, font, fontBold);
+  r = ensureSpace(pdfDoc, page, y, 220, font, fontBold);
   page = r.page; y = r.y;
 
   drawLine(page, y);
@@ -295,34 +295,26 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
   // Two columns: NUOMOTOJAS left, NUOMININKAS right
   page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
   page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
-  y -= 20;
+  y -= 16;
 
-  // Signature lines
-  page.drawText('______________', { x: 50, y, size: 10, font });
-  page.drawText('______________', { x: 320, y, size: 10, font });
-  y -= 14;
-
-  page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
-
-  // Nuomininkas name
+  // Lessor details (left column) and Nuomininkas details (right column)
+  page.drawText('MB "Carbonus"', { x: 50, y, size: 9, font });
   const isCorporate = customer.is_corporate;
   const signerName = isCorporate && customer.company_name
     ? customer.company_name
     : `${customer.first_name} ${customer.last_name}`;
   page.drawText(signerName, { x: 320, y, size: 9, font });
-  y -= 18;
-
-  // Lessor details (left column)
-  page.drawText('MB "Carbonus"', { x: 50, y, size: 9, font });
-  page.drawText('Adresas', { x: 320, y, size: 9, font });
   y -= 12;
   page.drawText('Įmonės kodas 307196558', { x: 50, y, size: 9, font });
-  page.drawText(`Tel. ${customer.phone || ''}`, { x: 320, y, size: 9, font });
+  if (customer.address) {
+    page.drawText(`Adresas: ${customer.address}`, { x: 320, y, size: 9, font });
+  }
   y -= 12;
   page.drawText('Adresas: Neravų 2A-6, Druskininkai,', { x: 50, y, size: 9, font });
-  page.drawText(`El.p. adresas: ${customer.email || ''}`, { x: 320, y, size: 9, font });
+  page.drawText(`Tel. ${customer.phone || ''}`, { x: 320, y, size: 9, font });
   y -= 12;
   page.drawText('Druskininkų sav.', { x: 50, y, size: 9, font });
+  page.drawText(`El.p. ${customer.email || ''}`, { x: 320, y, size: 9, font });
   y -= 12;
   page.drawText('A.S. LT547189900059467578', { x: 50, y, size: 9, font });
   y -= 12;
@@ -330,16 +322,26 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
   y -= 12;
   page.drawText('Tel. +37069818781', { x: 50, y, size: 9, font });
   y -= 12;
-  page.drawText('El.p. adresas: info@carbonus.lt', { x: 50, y, size: 9, font });
+  page.drawText('El.p. info@carbonus.lt', { x: 50, y, size: 9, font });
+  y -= 30;
 
-  // Embed lessor signature above the line
+  // Signature area with gap for actual signatures
+  page.drawText('______________', { x: 50, y, size: 10, font });
+  page.drawText('______________', { x: 320, y, size: 10, font });
+  y -= 14;
+
+  // Name on the same line below signature line
+  page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
+  page.drawText(signerName, { x: 320, y, size: 9, font });
+
+  // Embed lessor signature above the ____ line (in the gap)
   const lessorSig = data.lessorSignatureImage;
   if (lessorSig) {
-    const scale = Math.min(120 / lessorSig.width, 40 / lessorSig.height);
+    const scale = Math.min(100 / lessorSig.width, 35 / lessorSig.height);
     const w = lessorSig.width * scale;
     const h = lessorSig.height * scale;
-    // Position signature overlapping the ____ line area
-    page.drawImage(lessorSig, { x: 50, y: y + 70, width: w, height: h });
+    // Position signature centered above the ____ line
+    page.drawImage(lessorSig, { x: 55, y: y + 16, width: w, height: h });
   }
 
   return page;
