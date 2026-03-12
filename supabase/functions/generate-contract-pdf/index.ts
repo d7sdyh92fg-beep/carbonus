@@ -461,15 +461,6 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   page.drawText('20 EUR mokestis (neįskaitant PVM).', { x: LEFT, y, size: 8, font: fontBold });
   y -= 20;
 
-  // ===== PASTABOS =====
-  page.drawText('PASTABOS', { x: LEFT, y, size: 10, font: fontBold });
-  y -= 16;
-  for (let i = 0; i < 5; i++) {
-    page.drawText('________________________________________________________________________________', { x: TEXT_LEFT, y, size: 9, font, color: rgb(0.5, 0.5, 0.5) });
-    y -= 14;
-  }
-
-  y -= 16;
 
   // ===== SIGNATURES =====
   r = ensureSpace(pdfDoc, page, y, 120, font, fontBold);
