@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Mail, Send, Eye } from 'lucide-react';
+import { Mail, Send, Eye, FileText } from 'lucide-react';
 import { EmailPreview } from './EmailPreview';
 
 export const EmailTester: React.FC = () => {
