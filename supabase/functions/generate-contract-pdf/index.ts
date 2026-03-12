@@ -421,7 +421,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
 
   for (const [k, v] of carRows) {
     page.drawText(`${k}:`, { x: TEXT_LEFT, y, size: 10, font: fontBold });
-    page.drawText(v, { x: 190, y, size: 10, font });
+    page.drawText(v, { x: 210, y, size: 10, font });
     y -= 15;
   }
 
