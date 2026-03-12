@@ -164,6 +164,68 @@ export const EmailTester: React.FC = () => {
     setShowPreview(true);
   };
 
+  const sendTestContract = async () => {
+    if (!testEmail) {
+      toast({
+        title: "Klaida",
+        description: "Įveskite el. pašto adresą",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGeneratingContract(true);
+
+    try {
+      // Use a real reservation to generate the contract
+      const { data: reservation, error: resError } = await supabase
+        .from('reservations')
+        .select('id, customer_id, car_id, car_name, start_date, end_date, total_amount')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (resError || !reservation) {
+        throw new Error('Nerasta jokia rezervacija testavimui');
+      }
+
+      const { data: customer } = await supabase
+        .from('customers')
+        .select('first_name, last_name, email')
+        .eq('id', reservation.customer_id)
+        .single();
+
+      const response = await supabase.functions.invoke('generate-contract-pdf', {
+        body: {
+          reservationId: reservation.id,
+          customerName: customer ? `${customer.first_name} ${customer.last_name}` : 'Test User',
+          customerEmail: testEmail,
+          carName: reservation.car_name,
+          startDate: reservation.start_date,
+          endDate: reservation.end_date,
+          totalAmount: reservation.total_amount,
+          signatureData: '',
+        }
+      });
+
+      if (response.error) throw response.error;
+
+      toast({
+        title: "Sutartis sugeneruota ir išsiųsta ✅",
+        description: `Sutartis išsiųsta į ${testEmail} ir info@carbonus.lt`,
+      });
+    } catch (error: any) {
+      console.error('Error generating test contract:', error);
+      toast({
+        title: "Klaida",
+        description: "Nepavyko sugeneruoti sutarties: " + error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingContract(false);
+    }
+  };
+
   const emailTypes = [
     { id: 'booking', label: 'Rezervacijos patvirtinimas', description: 'Pirminis rezervacijos el. paštas' },
     { id: 'paid', label: 'Apmokėta', description: 'Kai rezervacija apmokėta' },
