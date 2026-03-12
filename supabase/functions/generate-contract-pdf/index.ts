@@ -90,12 +90,13 @@ function drawSectionHeading(pdfDoc: any, page: any, y: number, text: string, fon
 
 function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: any, fontBold: any, size: number = 9, indent: number = TEXT_LEFT): { page: any; y: number } {
   const words = text.split(' ');
-  const maxCharsPerLine = Math.max(45, Math.floor((MAX_TEXT_WIDTH - (indent - LEFT)) / 5.3));
+  const maxWidth = MAX_TEXT_WIDTH - (indent - LEFT);
   const lines: string[] = [];
   let line = '';
   for (const word of words) {
     const next = line ? `${line} ${word}` : word;
-    if (next.length > maxCharsPerLine && line) {
+    const textWidth = font.widthOfTextAtSize(next, size);
+    if (textWidth > maxWidth && line) {
       lines.push(line);
       line = word;
     } else {
