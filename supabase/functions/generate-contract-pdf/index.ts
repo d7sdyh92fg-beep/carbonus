@@ -47,10 +47,10 @@ async function loadFonts(pdfDoc: any) {
   return { font, fontBold };
 }
 
-// Fetch lessor signature as JPEG (white background, no transparency issues)
+// Fetch lessor signature (transparent PNG)
 async function loadLessorSignature(pdfDoc: any): Promise<any | null> {
   try {
-    const sigUrl = 'https://carbonus.lovable.app/lessor-signature-white.png';
+    const sigUrl = 'https://carbonus.lovable.app/lessor-signature.png';
     const response = await fetch(sigUrl);
     if (!response.ok) return null;
     const sigBytes = new Uint8Array(await response.arrayBuffer());
