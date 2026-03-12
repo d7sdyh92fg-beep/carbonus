@@ -386,6 +386,7 @@ const Admin = () => {
                 endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
                 totalAmount: reservation.total_amount,
                 depositAmount: reservation.deposit_amount,
+                skipEmail: true
               }
             });
             
@@ -546,6 +547,7 @@ const Admin = () => {
                 endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
                 totalAmount: reservation.total_amount,
                 depositAmount: reservation.deposit_amount,
+                skipEmail: true
               }
             });
             
