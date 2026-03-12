@@ -291,16 +291,20 @@ export function InPersonBooking() {
     }
   };
 
-  // Check if any booked date falls between start and end
-  const hasBookedDateInRange = (start: Date, end: Date): boolean => {
-    return bookedDates.some(bookedDate => {
-      const bd = new Date(bookedDate);
-      bd.setHours(0, 0, 0, 0);
-      const s = new Date(start);
-      s.setHours(0, 0, 0, 0);
-      const e = new Date(end);
-      e.setHours(0, 0, 0, 0);
-      return bd > s && bd < e;
+  const normalizeDate = (date: Date) => {
+    const normalized = new Date(date);
+    normalized.setHours(0, 0, 0, 0);
+    return normalized;
+  };
+
+  // Check if any booked date falls within selected range
+  const hasBookedDateInRange = (start: Date, end: Date, includeBoundaries = false): boolean => {
+    const s = normalizeDate(start);
+    const e = normalizeDate(end);
+
+    return bookedDates.some((bookedDate) => {
+      const bd = normalizeDate(bookedDate);
+      return includeBoundaries ? bd >= s && bd <= e : bd > s && bd < e;
     });
   };
 
