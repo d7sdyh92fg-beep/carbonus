@@ -108,7 +108,7 @@ function drawMainContract(pdfDoc: any, font: any, fontBold: any, data: {
     ['Pavadinimas', 'MB "Carbonus"'],
     ['Įmonės kodas', '306 588 891'],
     ['PVM mokėtojo kodas', 'Netaikoma'],
-    ['Adresas', 'Pilies g. 16-1, LT-01123 Vilnius'],
+    ['Adresas', 'Gardino g. 77, LT-66191 Druskininkai'],
     ['Telefonas', '+370 698 18 781'],
     ['El. paštas', 'info@carbonus.lt'],
   ];
@@ -228,7 +228,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   const lessorRows = [
     ['Pavadinimas', 'MB "Carbonus"'],
     ['Įmonės kodas', '306 588 891'],
-    ['Adresas', 'Pilies g. 16-1, LT-01123 Vilnius'],
+    ['Adresas', 'Gardino g. 77, LT-66191 Druskininkai'],
     ['Telefonas', '+370 698 18 781'],
     ['El. paštas', 'info@carbonus.lt'],
   ];
