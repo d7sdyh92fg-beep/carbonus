@@ -406,7 +406,6 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   } else {
     y -= 8;
   }
-  }
 
   page.drawText('_________________________', { x: 50, y, size: 10, font });
   page.drawText('_________________________', { x: 320, y, size: 10, font });
