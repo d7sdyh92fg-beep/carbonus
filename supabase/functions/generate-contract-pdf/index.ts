@@ -67,11 +67,11 @@ function drawLine(page: any, y: number) {
 
 const PAGE_WIDTH = 595.28;
 const PAGE_HEIGHT = 841.89;
-const MARGIN_TOP = 790;
-const MARGIN_BOTTOM = 50;
-const LEFT = 40;
-const TEXT_LEFT = 50;
-const MAX_TEXT_WIDTH = 490;
+const MARGIN_TOP = 769;
+const MARGIN_BOTTOM = 72;
+const LEFT = 72;
+const TEXT_LEFT = 72;
+const MAX_TEXT_WIDTH = 451;
 
 function ensureSpace(pdfDoc: any, currentPage: any, y: number, needed: number, font: any, fontBold: any): { page: any; y: number } {
   if (y - needed < MARGIN_BOTTOM) {
