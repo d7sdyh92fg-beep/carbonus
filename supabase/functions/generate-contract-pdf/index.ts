@@ -714,7 +714,7 @@ const handler = async (req: Request): Promise<Response> => {
       };
 
       // Pages 1-N: Full contract (I-IX)
-      drawFullContract(pdfDoc, font, fontBold, pdfData);
+      await drawFullContract(pdfDoc, font, fontBold, pdfData);
 
       // Last page: Appendix Nr. 1
       await drawAppendix(pdfDoc, font, fontBold, pdfData);
