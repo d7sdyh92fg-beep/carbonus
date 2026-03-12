@@ -291,34 +291,41 @@ function getEmailContent(data: StatusEmailRequest) {
 // Helper function to download generated contract PDF from Supabase Storage
 async function downloadGeneratedPdf(supabase: any, reservationId: string): Promise<{ base64: string; filename: string } | null> {
   try {
-    // Check if a generated contract exists in the reservations table
     const { data: reservation } = await supabase
       .from('reservations')
       .select('contract_pdf_url')
       .eq('id', reservationId)
       .single();
 
-    if (reservation?.contract_pdf_url) {
-      // Download from Supabase storage
-      const { data: fileData, error } = await supabase.storage
-        .from('contracts')
-        .download(reservation.contract_pdf_url);
-      
-      if (!error && fileData) {
-        const arrayBuffer = await fileData.arrayBuffer();
-        const bytes = new Uint8Array(arrayBuffer);
-        let binary = '';
-        for (let i = 0; i < bytes.length; i++) {
-          binary += String.fromCharCode(bytes[i]);
-        }
-        const base64 = btoa(binary);
-        return { base64, filename: `nuomos_sutartis_${reservationId.substring(0, 8)}.pdf` };
-      }
+    // Primary source: path stored in reservations.contract_pdf_url
+    let filePath = reservation?.contract_pdf_url || '';
+
+    // Fallback source: deterministic generated path for in-person flow
+    if (!filePath) {
+      filePath = `${reservationId}/nuomos_sutartis_${reservationId}.pdf`;
     }
+
+    const { data: fileData, error } = await supabase.storage
+      .from('contracts')
+      .download(filePath);
+
+    if (error || !fileData) {
+      return null;
+    }
+
+    const arrayBuffer = await fileData.arrayBuffer();
+    const bytes = new Uint8Array(arrayBuffer);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    const base64 = btoa(binary);
+    return { base64, filename: `nuomos_sutartis_${reservationId}.pdf` };
   } catch (e) {
     console.warn('Failed to download generated PDF:', e);
+    return null;
   }
-  return null;
 }
 
 // Fallback: download static PDF from URL
