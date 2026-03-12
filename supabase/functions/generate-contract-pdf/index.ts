@@ -392,7 +392,20 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   y -= 60;
 
   page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
-  y -= 14;
+  y -= 6;
+
+  // Embed lessor signature
+  const lessorSig = await loadLessorSignature(pdfDoc);
+  if (lessorSig) {
+    const scale = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
+    const w = lessorSig.width * scale;
+    const h = lessorSig.height * scale;
+    page.drawImage(lessorSig, { x: 50, y: y - h, width: w, height: h });
+    y -= h + 4;
+  } else {
+    y -= 8;
+  }
+
   page.drawText('_________________________', { x: 50, y, size: 10, font });
   page.drawText('_________________________', { x: 320, y, size: 10, font });
 
