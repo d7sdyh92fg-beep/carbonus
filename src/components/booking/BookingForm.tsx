@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { User, Mail, Phone, FileText } from "lucide-react";
+import { User, Mail, Phone, FileText, MapPin } from "lucide-react";
 import { useTranslations } from "@/hooks/use-translations";
 
 interface BookingFormProps {
@@ -44,6 +44,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
     lastName: "",
     email: "",
     phone: "",
+    address: "",
     refundAccount: "",
   });
   const [isCorporate, setIsCorporate] = useState(false);
@@ -133,6 +134,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             first_name: formData.firstName,
             last_name: formData.lastName,
             phone: formData.phone,
+            address: formData.address || null,
             refund_account_number: formData.refundAccount || null,
             is_corporate: isCorporate,
             company_name: isCorporate ? corporateData.companyName : null,
@@ -152,6 +154,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             last_name: formData.lastName,
             email: formData.email,
             phone: formData.phone,
+            address: formData.address || null,
             refund_account_number: formData.refundAccount || null,
             is_corporate: isCorporate,
             company_name: isCorporate ? corporateData.companyName : null,
@@ -560,6 +563,22 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 type="tel"
                 value={formData.phone}
                 onChange={handleInputChange}
+                className="pl-10"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="address">{language === 'lt' ? 'Adresas' : 'Address'} *</Label>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="address"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                placeholder={language === 'lt' ? 'Gatvė, namo nr., miestas' : 'Street, house no., city'}
                 className="pl-10"
                 required
               />
