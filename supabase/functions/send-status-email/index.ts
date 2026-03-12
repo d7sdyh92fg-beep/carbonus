@@ -365,28 +365,35 @@ serve(async (req) => {
       html: tmpl.html,
     };
 
-    // When marked as paid, attach the static contract PDF
+    // When marked as paid, attach the generated contract PDF (or fallback to static)
     if (data.status === 'paid') {
       try {
         const language = data.language || 'lt';
-        const pdfUrl = getStaticPdfUrl(language);
-        console.log('Downloading static PDF from:', pdfUrl);
         
-        const base64Content = await downloadPdfAsBase64(pdfUrl);
+        // Try generated PDF first
+        const generatedPdf = await downloadGeneratedPdf(supabase, data.reservationId);
         
-        const pdfFilename = language === 'en' 
-          ? 'carbonus-rental-agreement.pdf'
-          : 'carbonus-nuomos-sutartis.pdf';
-        
-        emailOptions.attachments = [{
-          filename: pdfFilename,
-          content: base64Content,
-          contentType: 'application/pdf'
-        }];
-        console.log(`Attached static ${language.toUpperCase()} PDF:`, pdfFilename);
+        if (generatedPdf) {
+          console.log('Attaching generated contract PDF');
+          emailOptions.attachments = [{
+            filename: generatedPdf.filename,
+            content: generatedPdf.base64,
+          }];
+        } else {
+          // Fallback to static PDF
+          const pdfUrl = getStaticPdfUrl(language);
+          console.log('Fallback: downloading static PDF from:', pdfUrl);
+          const base64Content = await downloadPdfAsBase64(pdfUrl);
+          const pdfFilename = language === 'en' 
+            ? 'carbonus-rental-agreement.pdf'
+            : 'carbonus-nuomos-sutartis.pdf';
+          emailOptions.attachments = [{
+            filename: pdfFilename,
+            content: base64Content,
+          }];
+        }
       } catch (error) {
         console.error('Error preparing PDF attachment:', error);
-        // Continue without attachment if there's an error
       }
     }
 
