@@ -896,7 +896,14 @@ export function InPersonBooking() {
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Kainų kategorija:</span>
-                          <span className="font-medium text-primary">{PRICING.getPricingTier(getRentalDays(), booking.carId).labelKey}</span>
+                          <span className="font-medium text-primary">
+                            {(() => {
+                              const days = getRentalDays();
+                              if (days >= 7) return '7+ dienų';
+                              if (days >= 3) return '3-7 dienos';
+                              return '1-3 dienos';
+                            })()}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Dienos kaina:</span>

@@ -23,6 +23,9 @@ interface StatusEmailRequest {
   paymentTransactionId?: string;
   contractPdfUrl?: string;
   language?: string;
+  customerPhone?: string;
+  customerAddress?: string;
+  additionalServices?: string;
 }
 
 // Minimal, clean email templates
