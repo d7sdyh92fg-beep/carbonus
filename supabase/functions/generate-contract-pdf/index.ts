@@ -62,16 +62,16 @@ async function loadLessorSignature(pdfDoc: any): Promise<any | null> {
 }
 
 function drawLine(page: any, y: number) {
-  page.drawLine({ start: { x: 40, y }, end: { x: 555, y }, thickness: 0.5, color: rgb(0.7, 0.7, 0.7) });
+  page.drawLine({ start: { x: 72, y }, end: { x: 523, y }, thickness: 0.5, color: rgb(0.7, 0.7, 0.7) });
 }
 
 const PAGE_WIDTH = 595.28;
 const PAGE_HEIGHT = 841.89;
-const MARGIN_TOP = 790;
-const MARGIN_BOTTOM = 50;
-const LEFT = 40;
-const TEXT_LEFT = 50;
-const MAX_TEXT_WIDTH = 490;
+const MARGIN_TOP = 769;
+const MARGIN_BOTTOM = 72;
+const LEFT = 72;
+const TEXT_LEFT = 72;
+const MAX_TEXT_WIDTH = 451;
 
 function ensureSpace(pdfDoc: any, currentPage: any, y: number, needed: number, font: any, fontBold: any): { page: any; y: number } {
   if (y - needed < MARGIN_BOTTOM) {
@@ -293,36 +293,36 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
   y -= 20;
 
   // Two columns: NUOMOTOJAS left, NUOMININKAS right
-  page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
-  page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
+  page.drawText('NUOMOTOJAS:', { x: LEFT, y, size: 10, font: fontBold });
+  page.drawText('NUOMININKAS:', { x: 340, y, size: 10, font: fontBold });
   y -= 16;
 
   // Lessor details (left column) and Nuomininkas details (right column)
-  page.drawText('MB "Carbonus"', { x: 50, y, size: 9, font });
+  page.drawText('MB "Carbonus"', { x: LEFT, y, size: 9, font });
   const isCorporate = customer.is_corporate;
   const signerName = isCorporate && customer.company_name
     ? customer.company_name
     : `${customer.first_name} ${customer.last_name}`;
-  page.drawText(signerName, { x: 320, y, size: 9, font });
+  page.drawText(signerName, { x: 340, y, size: 9, font });
   y -= 12;
-  page.drawText('Įmonės kodas 307196558', { x: 50, y, size: 9, font });
+  page.drawText('Įmonės kodas 307196558', { x: LEFT, y, size: 9, font });
   if (customer.address) {
-    page.drawText(`Adresas: ${customer.address}`, { x: 320, y, size: 9, font });
+    page.drawText(`Adresas: ${customer.address}`, { x: 340, y, size: 9, font });
   }
   y -= 12;
-  page.drawText('Adresas: Neravų 2A-6, Druskininkai,', { x: 50, y, size: 9, font });
-  page.drawText(`Tel. ${customer.phone || ''}`, { x: 320, y, size: 9, font });
+  page.drawText('Adresas: Neravų 2A-6, Druskininkai,', { x: LEFT, y, size: 9, font });
+  page.drawText(`Tel. ${customer.phone || ''}`, { x: 340, y, size: 9, font });
   y -= 12;
-  page.drawText('Druskininkų sav.', { x: 50, y, size: 9, font });
-  page.drawText(`El.p. ${customer.email || ''}`, { x: 320, y, size: 9, font });
+  page.drawText('Druskininkų sav.', { x: LEFT, y, size: 9, font });
+  page.drawText(`El.p. ${customer.email || ''}`, { x: 340, y, size: 9, font });
   y -= 12;
-  page.drawText('A.S. LT547189900059467578', { x: 50, y, size: 9, font });
+  page.drawText('A.S. LT547189900059467578', { x: LEFT, y, size: 9, font });
   y -= 12;
-  page.drawText('AB Artea bankas', { x: 50, y, size: 9, font });
+  page.drawText('AB Artea bankas', { x: LEFT, y, size: 9, font });
   y -= 12;
-  page.drawText('Tel. +37069818781', { x: 50, y, size: 9, font });
+  page.drawText('Tel. +37069818781', { x: LEFT, y, size: 9, font });
   y -= 12;
-  page.drawText('El.p. info@carbonus.lt', { x: 50, y, size: 9, font });
+  page.drawText('El.p. info@carbonus.lt', { x: LEFT, y, size: 9, font });
   y -= 50;
 
   // Embed lessor signature above the ____ line (in the gap)
@@ -331,17 +331,17 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
     const scale = Math.min(120 / lessorSig.width, 40 / lessorSig.height);
     const w = lessorSig.width * scale;
     const h = lessorSig.height * scale;
-    page.drawImage(lessorSig, { x: 55, y: y + 5, width: w, height: h });
+    page.drawImage(lessorSig, { x: LEFT + 5, y: y + 5, width: w, height: h });
   }
 
   // Signature area with gap for actual signatures
-  page.drawText('______________', { x: 50, y, size: 10, font });
-  page.drawText('______________', { x: 320, y, size: 10, font });
+  page.drawText('______________', { x: LEFT, y, size: 10, font });
+  page.drawText('______________', { x: 340, y, size: 10, font });
   y -= 14;
 
   // Name on the same line below signature line
-  page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
-  page.drawText(signerName, { x: 320, y, size: 9, font });
+  page.drawText('Direktorius Tomas Čepulis', { x: LEFT, y, size: 9, font });
+  page.drawText(signerName, { x: 340, y, size: 9, font });
 
   return page;
 }
@@ -421,7 +421,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
 
   for (const [k, v] of carRows) {
     page.drawText(`${k}:`, { x: TEXT_LEFT, y, size: 10, font: fontBold });
-    page.drawText(v, { x: 190, y, size: 10, font });
+    page.drawText(v, { x: 210, y, size: 10, font });
     y -= 15;
   }
 
@@ -440,19 +440,19 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   const returnTime = reservation.return_time || '10:00';
 
   page.drawText('NUOMOS PRADŽIA:', { x: LEFT, y, size: 10, font: fontBold });
-  page.drawText('NUOMOS PABAIGA:', { x: 300, y, size: 10, font: fontBold });
+  page.drawText('NUOMOS PABAIGA:', { x: 340, y, size: 10, font: fontBold });
   y -= 18;
 
   page.drawText(`${reservation.start_date}  ${pickupTime} val.`, { x: TEXT_LEFT, y, size: 10, font });
-  page.drawText(`${reservation.end_date}  ${returnTime} val.`, { x: 310, y, size: 10, font });
+  page.drawText(`${reservation.end_date}  ${returnTime} val.`, { x: 340, y, size: 10, font });
   y -= 18;
 
   page.drawText(`Nuomos laikotarpis (paromis): ${reservation.rental_days}`, { x: TEXT_LEFT, y, size: 10, font });
-  page.drawText(`Nuomos kaina (iš viso) (EUR): ${reservation.total_rental_cost}`, { x: 310, y, size: 10, font });
+  page.drawText(`Nuomos kaina (iš viso) (EUR): ${reservation.total_rental_cost}`, { x: 340, y, size: 10, font });
   y -= 18;
 
   page.drawText(`Nuomos kaina (už 1 parą) (EUR): ${reservation.daily_rate}`, { x: TEXT_LEFT, y, size: 10, font });
-  page.drawText(`Užstato suma: ${reservation.deposit_amount} (EUR).`, { x: 310, y, size: 10, font });
+  page.drawText(`Užstato suma: ${reservation.deposit_amount} (EUR).`, { x: 340, y, size: 10, font });
   y -= 24;
 
 
@@ -466,20 +466,20 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   r = ensureSpace(pdfDoc, page, y, 120, font, fontBold);
   page = r.page; y = r.y;
 
-  page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
-  page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
+  page.drawText('NUOMOTOJAS:', { x: LEFT, y, size: 10, font: fontBold });
+  page.drawText('NUOMININKAS:', { x: 340, y, size: 10, font: fontBold });
   y -= 50; // Big gap for signatures
 
-  page.drawText('______________', { x: 50, y, size: 10, font });
-  page.drawText('______________', { x: 320, y, size: 10, font });
+  page.drawText('______________', { x: LEFT, y, size: 10, font });
+  page.drawText('______________', { x: 340, y, size: 10, font });
   y -= 14;
 
   // Names on the same line below signature line
-  page.drawText('TOMAS ČEPULIS', { x: 50, y, size: 9, font });
+  page.drawText('TOMAS ČEPULIS', { x: LEFT, y, size: 9, font });
   const tenantSigName = isCorporate && customer.company_name
     ? customer.company_name
     : `${customer.first_name} ${customer.last_name}`;
-  page.drawText(tenantSigName, { x: 320, y, size: 9, font });
+  page.drawText(tenantSigName, { x: 340, y, size: 9, font });
 
   // Embed lessor signature in the gap above the ____ line
   const lessorSig = data.lessorSignatureImage;
@@ -487,7 +487,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
     const scaleL = Math.min(100 / lessorSig.width, 35 / lessorSig.height);
     const wL = lessorSig.width * scaleL;
     const hL = lessorSig.height * scaleL;
-    page.drawImage(lessorSig, { x: 55, y: y + 16, width: wL, height: hL });
+    page.drawImage(lessorSig, { x: LEFT + 5, y: y + 16, width: wL, height: hL });
   }
 
   // Embed customer digital signature if available
@@ -497,7 +497,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
       const scale = Math.min(100 / png.width, 35 / png.height);
       const w = png.width * scale;
       const h = png.height * scale;
-      page.drawImage(png, { x: 325, y: y + 16, width: w, height: h });
+      page.drawImage(png, { x: 345, y: y + 16, width: w, height: h });
     } catch (_e) {
       // continue without signature image
     }
