@@ -89,12 +89,18 @@ function drawMainContract(pdfDoc: any, font: any, fontBold: any, data: {
   const { reservationId, date, customer, car, reservation } = data;
   let y = 790;
 
-  // Title
-  page.drawText('AUTOMOBILIŲ NUOMOS SUTARTIS', { x: 140, y, size: 16, font: fontBold, color: rgb(0, 0, 0) });
+  // Title - centered
+  const pageWidth = 595.28;
+  const title1 = 'AUTOMOBILIŲ NUOMOS SUTARTIS';
+  const title1Width = fontBold.widthOfTextAtSize(title1, 16);
+  page.drawText(title1, { x: (pageWidth - title1Width) / 2, y, size: 16, font: fontBold, color: rgb(0, 0, 0) });
   y -= 22;
-  page.drawText(`Nr. ${reservationId.substring(0, 8).toUpperCase()}`, { x: 230, y, size: 11, font });
+  const nrText = `Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
+  const nrWidth = font.widthOfTextAtSize(nrText, 11);
+  page.drawText(nrText, { x: (pageWidth - nrWidth) / 2, y, size: 11, font });
   y -= 16;
-  page.drawText(date, { x: 260, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
+  const dateWidth = font.widthOfTextAtSize(date, 10);
+  page.drawText(date, { x: (pageWidth - dateWidth) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
   y -= 28;
 
   drawLine(page, y);
@@ -210,12 +216,18 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   const { reservationId, date, customer, car, reservation } = data;
   let y = 790;
 
-  // Title
-  page.drawText('PRIEDAS Nr. 1', { x: 220, y, size: 16, font: fontBold });
+  // Title - centered
+  const pageWidth = 595.28;
+  const appTitle = 'PRIEDAS Nr. 1';
+  const appTitleWidth = fontBold.widthOfTextAtSize(appTitle, 16);
+  page.drawText(appTitle, { x: (pageWidth - appTitleWidth) / 2, y, size: 16, font: fontBold });
   y -= 20;
-  page.drawText(`prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`, { x: 130, y, size: 10, font });
+  const subTitle = `prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
+  const subTitleWidth = font.widthOfTextAtSize(subTitle, 10);
+  page.drawText(subTitle, { x: (pageWidth - subTitleWidth) / 2, y, size: 10, font });
   y -= 16;
-  page.drawText(date, { x: 260, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
+  const dateWidth = font.widthOfTextAtSize(date, 10);
+  page.drawText(date, { x: (pageWidth - dateWidth) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
   y -= 28;
 
   drawLine(page, y);

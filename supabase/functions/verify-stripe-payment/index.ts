@@ -57,11 +57,17 @@ function generateMainContractPage(pdfDoc: any, font: any, fontBold: any, data: a
   const { reservationId, date, customer, car, reservation } = data;
   let y = 790;
 
-  page.drawText('AUTOMOBILIŲ NUOMOS SUTARTIS', { x: 140, y, size: 16, font: fontBold });
+  const pageWidth = 595.28;
+  const title1 = 'AUTOMOBILIŲ NUOMOS SUTARTIS';
+  const t1w = fontBold.widthOfTextAtSize(title1, 16);
+  page.drawText(title1, { x: (pageWidth - t1w) / 2, y, size: 16, font: fontBold });
   y -= 22;
-  page.drawText(`Nr. ${reservationId.substring(0, 8).toUpperCase()}`, { x: 230, y, size: 11, font });
+  const nrText = `Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
+  const nrw = font.widthOfTextAtSize(nrText, 11);
+  page.drawText(nrText, { x: (pageWidth - nrw) / 2, y, size: 11, font });
   y -= 16;
-  page.drawText(date, { x: 260, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
+  const dw = font.widthOfTextAtSize(date, 10);
+  page.drawText(date, { x: (pageWidth - dw) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
   y -= 28;
   drawLine(page, y); y -= 20;
 
@@ -132,9 +138,15 @@ function generateAppendixPage(pdfDoc: any, font: any, fontBold: any, data: any) 
   const { reservationId, date, customer, car, reservation } = data;
   let y = 790;
 
-  page.drawText('PRIEDAS Nr. 1', { x: 220, y, size: 16, font: fontBold }); y -= 20;
-  page.drawText(`prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`, { x: 130, y, size: 10, font }); y -= 16;
-  page.drawText(date, { x: 260, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) }); y -= 28;
+  const pageWidth = 595.28;
+  const at = 'PRIEDAS Nr. 1';
+  const atw = fontBold.widthOfTextAtSize(at, 16);
+  page.drawText(at, { x: (pageWidth - atw) / 2, y, size: 16, font: fontBold }); y -= 20;
+  const st = `prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
+  const stw = font.widthOfTextAtSize(st, 10);
+  page.drawText(st, { x: (pageWidth - stw) / 2, y, size: 10, font }); y -= 16;
+  const dw = font.widthOfTextAtSize(date, 10);
+  page.drawText(date, { x: (pageWidth - dw) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) }); y -= 28;
   drawLine(page, y); y -= 20;
 
   // Lessor
