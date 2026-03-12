@@ -178,15 +178,12 @@ export const EmailTester: React.FC = () => {
 
     try {
       // Use a real reservation to generate the contract
-      console.log('Starting contract test...');
       const { data: reservation, error: resError } = await supabase
         .from('reservations')
         .select('id, customer_id, car_id, car_name, start_date, end_date, total_amount')
         .order('created_at', { ascending: false })
         .limit(1)
         .single();
-
-      console.log('Reservation query result:', { reservation, resError });
 
       if (resError || !reservation) {
         throw new Error('Nerasta jokia rezervacija testavimui: ' + (resError?.message || 'no data'));

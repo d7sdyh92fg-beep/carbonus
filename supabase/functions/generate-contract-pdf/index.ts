@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument, rgb } from "npm:pdf-lib@1.17.1";
@@ -8,7 +9,7 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface ContractRequest {
@@ -101,35 +102,34 @@ function drawSectionHeading(pdfDoc: any, page: any, y: number, text: string, fon
   return result;
 }
 
-// Draw a paragraph with auto page break
+// Draw a paragraph with auto page break (CPU-optimized wrapping)
 function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: any, fontBold: any, size: number = 9, indent: number = TEXT_LEFT): { page: any; y: number } {
   const words = text.split(' ');
-  let line = '';
-  let currentPage = page;
-  let currentY = y;
-  const maxWidth = MAX_TEXT_WIDTH - (indent - LEFT);
+  const maxCharsPerLine = Math.max(45, Math.floor((MAX_TEXT_WIDTH - (indent - LEFT)) / 5.3));
+  const lines: string[] = [];
 
+  let line = '';
   for (const word of words) {
-    const testLine = line ? `${line} ${word}` : word;
-    const width = font.widthOfTextAtSize(testLine, size);
-    if (width > maxWidth && line) {
-      const check = ensureSpace(pdfDoc, currentPage, currentY, size + 3, font, fontBold);
-      currentPage = check.page;
-      currentY = check.y;
-      currentPage.drawText(line, { x: indent, y: currentY, size, font });
-      currentY -= size + 3;
+    const next = line ? `${line} ${word}` : word;
+    if (next.length > maxCharsPerLine && line) {
+      lines.push(line);
       line = word;
     } else {
-      line = testLine;
+      line = next;
     }
   }
-  if (line) {
+  if (line) lines.push(line);
+
+  let currentPage = page;
+  let currentY = y;
+  for (const ln of lines) {
     const check = ensureSpace(pdfDoc, currentPage, currentY, size + 3, font, fontBold);
     currentPage = check.page;
     currentY = check.y;
-    currentPage.drawText(line, { x: indent, y: currentY, size, font });
+    currentPage.drawText(ln, { x: indent, y: currentY, size, font });
     currentY -= size + 3;
   }
+
   currentY -= 3; // paragraph spacing
   return { page: currentPage, y: currentY };
 }
@@ -162,6 +162,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   car: any;
   reservation: any;
   signatureBytes: Uint8Array | null;
+  lessorSignatureImage: any | null;
 }) {
   let page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   const { reservationId, date, customer } = data;
@@ -395,7 +396,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   y -= 6;
 
   // Embed lessor signature
-  const lessorSig = await loadLessorSignature(pdfDoc);
+  const lessorSig = data.lessorSignatureImage;
   if (lessorSig) {
     const scale = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
     const w = lessorSig.width * scale;
@@ -422,6 +423,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   car: any;
   reservation: any;
   signatureBytes: Uint8Array | null;
+  lessorSignatureImage: any | null;
 }) {
   const page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   const { reservationId, date, customer, car, reservation } = data;
@@ -570,7 +572,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   y -= 6;
 
   // Embed lessor signature
-  const lessorSig = await loadLessorSignature(pdfDoc);
+  const lessorSig = data.lessorSignatureImage;
   if (lessorSig) {
     const scaleL = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
     const wL = lessorSig.width * scaleL;
@@ -603,7 +605,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
 // ============================================================
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
@@ -699,10 +701,12 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Generate PDF
     let contractPath: string | null = null;
+    let generatedPdfBytes: Uint8Array | null = null;
     try {
       const pdfDoc = await PDFDocument.create();
       const { font, fontBold } = await loadFonts(pdfDoc);
       const todayStr = new Date().toLocaleDateString('lt-LT');
+      const lessorSignatureImage = await loadLessorSignature(pdfDoc);
 
       const pdfData = {
         reservationId,
@@ -711,6 +715,7 @@ const handler = async (req: Request): Promise<Response> => {
         car,
         reservation: resData,
         signatureBytes,
+        lessorSignatureImage,
       };
 
       // Pages 1-N: Full contract (I-IX)
@@ -719,11 +724,11 @@ const handler = async (req: Request): Promise<Response> => {
       // Last page: Appendix Nr. 1
       await drawAppendix(pdfDoc, font, fontBold, pdfData);
 
-      const pdfBytes = await pdfDoc.save();
+      generatedPdfBytes = await pdfDoc.save();
       const pdfFilePath = `${reservationId}/nuomos_sutartis_${reservationId}.pdf`;
       const { error: pdfUploadError } = await supabase.storage
         .from('contracts')
-        .upload(pdfFilePath, pdfBytes, { contentType: 'application/pdf', upsert: true });
+        .upload(pdfFilePath, generatedPdfBytes, { contentType: 'application/pdf', upsert: true });
       if (!pdfUploadError) {
         contractPath = pdfFilePath;
       } else {
@@ -733,25 +738,14 @@ const handler = async (req: Request): Promise<Response> => {
       console.error('PDF generation failed:', pdfErr);
     }
 
-    // Download PDF for email attachment
+    // Build PDF attachment directly from generated bytes (faster, avoids timeout)
     let pdfAttachment = null;
-    if (contractPath) {
+    if (generatedPdfBytes) {
       try {
-        const { data: pdfData, error: downloadError } = await supabase.storage
-          .from('contracts')
-          .download(contractPath);
-        if (!downloadError && pdfData) {
-          const arrayBuffer = await pdfData.arrayBuffer();
-          const bytes = new Uint8Array(arrayBuffer);
-          let binary = '';
-          for (let i = 0; i < bytes.length; i++) {
-            binary += String.fromCharCode(bytes[i]);
-          }
-          const base64Pdf = btoa(binary);
-          pdfAttachment = { filename: `nuomos_sutartis_${reservationId}.pdf`, content: base64Pdf };
-        }
+        const base64Pdf = encodeBase64(generatedPdfBytes);
+        pdfAttachment = { filename: `nuomos_sutartis_${reservationId}.pdf`, content: base64Pdf };
       } catch (pdfError) {
-        console.error('Failed to download PDF for attachment:', pdfError);
+        console.error('Failed to prepare PDF attachment:', pdfError);
       }
     }
 
