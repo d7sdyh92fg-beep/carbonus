@@ -138,9 +138,15 @@ function generateAppendixPage(pdfDoc: any, font: any, fontBold: any, data: any) 
   const { reservationId, date, customer, car, reservation } = data;
   let y = 790;
 
-  page.drawText('PRIEDAS Nr. 1', { x: 220, y, size: 16, font: fontBold }); y -= 20;
-  page.drawText(`prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`, { x: 130, y, size: 10, font }); y -= 16;
-  page.drawText(date, { x: 260, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) }); y -= 28;
+  const pageWidth = 595.28;
+  const at = 'PRIEDAS Nr. 1';
+  const atw = fontBold.widthOfTextAtSize(at, 16);
+  page.drawText(at, { x: (pageWidth - atw) / 2, y, size: 16, font: fontBold }); y -= 20;
+  const st = `prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
+  const stw = font.widthOfTextAtSize(st, 10);
+  page.drawText(st, { x: (pageWidth - stw) / 2, y, size: 10, font }); y -= 16;
+  const dw = font.widthOfTextAtSize(date, 10);
+  page.drawText(date, { x: (pageWidth - dw) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) }); y -= 28;
   drawLine(page, y); y -= 20;
 
   // Lessor
