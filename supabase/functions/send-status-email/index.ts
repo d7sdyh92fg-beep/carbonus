@@ -427,6 +427,16 @@ serve(async (req) => {
 
     // Send clean admin summary to info@carbonus.lt
     try {
+      const c = customerDetails || {};
+      const r = reservationDetails || {};
+      const services = r.additional_services ? (typeof r.additional_services === 'string' ? JSON.parse(r.additional_services) : r.additional_services) : [];
+      const servicesHtml = services.length > 0 
+        ? `<h3 style="margin-bottom: 8px;">Pasirinktos paslaugos:</h3>
+           <div style="background:#fefce8; padding:16px; border-radius:8px; margin-bottom:16px;">
+             ${services.map((s: any) => `<p style="margin:4px 0;">• ${s.name || s.id} – €${s.price}</p>`).join('')}
+           </div>` 
+        : '';
+
       const adminHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
           <h2 style="color:#22c55e; border-bottom: 2px solid #22c55e; padding-bottom: 10px; margin-top: 0;">
@@ -435,19 +445,33 @@ serve(async (req) => {
           
           <h3 style="margin-bottom: 8px;">Kliento informacija:</h3>
           <div style="background:#f9fafb; padding:16px; border-radius:8px; margin-bottom:16px;">
-            <p style="margin:4px 0;"><strong>Vardas, pavardė:</strong> ${data.customerName}</p>
-            <p style="margin:4px 0;"><strong>El. paštas:</strong> ${data.customerEmail}</p>
-            <p style="margin:4px 0;"><strong>Rezervacijos Nr.:</strong> ${data.reservationId}</p>
+            <p style="margin:4px 0;"><strong>Vardas, pavardė:</strong> ${c.first_name || ''} ${c.last_name || ''}</p>
+            <p style="margin:4px 0;"><strong>El. paštas:</strong> ${c.email || data.customerEmail}</p>
+            <p style="margin:4px 0;"><strong>Telefonas:</strong> ${c.phone || ''}</p>
+            <p style="margin:4px 0;"><strong>Adresas:</strong> ${c.address || '—'}</p>
+            ${c.is_corporate && c.company_name ? `
+              <p style="margin:4px 0;"><strong>Įmonė:</strong> ${c.company_name}</p>
+              ${c.company_code ? `<p style="margin:4px 0;"><strong>Įmonės kodas:</strong> ${c.company_code}</p>` : ''}
+              ${c.vat_code ? `<p style="margin:4px 0;"><strong>PVM kodas:</strong> ${c.vat_code}</p>` : ''}
+            ` : ''}
           </div>
           
           <h3 style="margin-bottom: 8px;">Rezervacijos detalės:</h3>
           <div style="background:#f0f9ff; padding:16px; border-radius:8px; margin-bottom:16px;">
             <p style="margin:4px 0;"><strong>Automobilis:</strong> ${data.carName}</p>
-            <p style="margin:4px 0;"><strong>Nuomos pradžia:</strong> ${data.startDate}</p>
-            <p style="margin:4px 0;"><strong>Nuomos pabaiga:</strong> ${data.endDate}</p>
-            <p style="margin:4px 0;"><strong>Suma:</strong> €${data.totalAmount}</p>
+            <p style="margin:4px 0;"><strong>Nuomos pradžia:</strong> ${data.startDate} ${r.pickup_time || ''}</p>
+            <p style="margin:4px 0;"><strong>Nuomos pabaiga:</strong> ${data.endDate} ${r.return_time || ''}</p>
+            <p style="margin:4px 0;"><strong>Nuomos dienų:</strong> ${r.rental_days || '—'}</p>
+            <p style="margin:4px 0;"><strong>Dienos kaina:</strong> €${r.daily_rate || '—'}</p>
+            <p style="margin:4px 0;"><strong>Nuomos kaina:</strong> €${r.total_rental_cost || data.totalAmount}</p>
+            <p style="margin:4px 0;"><strong>Užstatas:</strong> €${r.deposit_amount || 0}</p>
+            <p style="margin:4px 0;"><strong>Bendra suma:</strong> €${data.totalAmount}</p>
+            <p style="margin:4px 0;"><strong>Rezervacijos Nr.:</strong> ${data.reservationId}</p>
             ${data.paymentTransactionId ? `<p style="margin:4px 0;"><strong>Mokėjimo ID:</strong> ${data.paymentTransactionId}</p>` : ''}
+            ${r.pricing_notes ? `<p style="margin:4px 0;"><strong>Kainų pastabos:</strong> ${r.pricing_notes}</p>` : ''}
           </div>
+          
+          ${servicesHtml}
           
           <p style="color:#6b7280; font-size:13px;">Sutartis pridėta kaip PDF priedas.</p>
         </div>
@@ -456,11 +480,10 @@ serve(async (req) => {
       const adminEmailOptions: any = {
         from: 'Carbonus <info@carbonus.lt>',
         to: ['info@carbonus.lt'],
-        subject: `Rezervacija: ${data.customerName} – ${data.carName} (${data.startDate})`,
+        subject: `Rezervacija: ${c.first_name || ''} ${c.last_name || ''} – ${data.carName} (${data.startDate})`,
         html: adminHtml,
       };
 
-      // Attach same PDF as customer got
       if (emailOptions.attachments) {
         adminEmailOptions.attachments = emailOptions.attachments;
       }
