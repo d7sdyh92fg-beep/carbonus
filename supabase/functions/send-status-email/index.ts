@@ -288,7 +288,40 @@ function getEmailContent(data: StatusEmailRequest) {
   return isLT ? templatesLT[status as StatusType] : templatesEN[status as StatusType];
 }
 
-// Helper function to get the static PDF URL based on language
+// Helper function to download generated contract PDF from Supabase Storage
+async function downloadGeneratedPdf(supabase: any, reservationId: string): Promise<{ base64: string; filename: string } | null> {
+  try {
+    // Check if a generated contract exists in the reservations table
+    const { data: reservation } = await supabase
+      .from('reservations')
+      .select('contract_pdf_url')
+      .eq('id', reservationId)
+      .single();
+
+    if (reservation?.contract_pdf_url) {
+      // Download from Supabase storage
+      const { data: fileData, error } = await supabase.storage
+        .from('contracts')
+        .download(reservation.contract_pdf_url);
+      
+      if (!error && fileData) {
+        const arrayBuffer = await fileData.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        const base64 = btoa(binary);
+        return { base64, filename: `nuomos_sutartis_${reservationId.substring(0, 8)}.pdf` };
+      }
+    }
+  } catch (e) {
+    console.warn('Failed to download generated PDF:', e);
+  }
+  return null;
+}
+
+// Fallback: download static PDF from URL
 function getStaticPdfUrl(language: string = 'lt'): string {
   const baseUrl = 'https://carbonus.lt';
   if (language === 'en') {
@@ -297,13 +330,11 @@ function getStaticPdfUrl(language: string = 'lt'): string {
   return `${baseUrl}/carbonus-nuomos-sutartis.pdf`;
 }
 
-// Helper function to download PDF from URL as base64
 async function downloadPdfAsBase64(url: string): Promise<string> {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to download PDF: ${response.statusText}`);
   }
-  
   const arrayBuffer = await response.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
   let binary = '';
