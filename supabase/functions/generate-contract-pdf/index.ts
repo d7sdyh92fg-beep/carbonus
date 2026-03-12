@@ -189,7 +189,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
     '13.8. Vežti degius skysčius bei medžiagas, ginklus, sprogmenis, narkotines ir psichotropines medžiagas ir kitus daiktus, kurių laikymą, disponavimą, naudojimą, gabenimą ir platinimą draudžia teisės aktai.',
     '13.9. Rūkyti automobilyje (bauda 50 EUR).',
   ];
-  for (const p of prohibitions) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
+  for (const p of prohibitions) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 85); page = r.page; y = r.y; }
 
   const sectionIII_post = [
     '14. Nuomininkas/nuomojamos transporto priemonės vairuotojas privalo laikytis saugaus eismo taisyklių ir šios Sutarties sąlygų.',
