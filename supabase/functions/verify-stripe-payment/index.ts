@@ -153,9 +153,10 @@ function generateAppendixPage(pdfDoc: any, font: any, fontBold: any, data: any) 
   // Lessor
   page.drawText('1. NUOMOTOJAS', { x: 40, y, size: 11, font: fontBold }); y -= 18;
   for (const [k, v] of [
-    ['Pavadinimas', 'MB "Carbonus"'], ['Įmonės kodas', '306 588 891'],
-    ['Adresas', 'Gardino g. 77, LT-66191 Druskininkai'],
-    ['Telefonas', '+370 698 18 781'], ['El. paštas', 'info@carbonus.lt'],
+    ['Pavadinimas', 'MB "Carbonus"'], ['Įmonės kodas', '307196558'],
+    ['Adresas', 'Neravų 2A-6, Druskininkai, Druskininkų sav.'],
+    ['A/S', 'LT547189900059467578, AB Artea bankas'],
+    ['Telefonas', '+37069818781'], ['El. paštas', 'info@carbonus.lt'],
   ]) {
     page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
     page.drawText(v, { x: 190, y, size: 10, font }); y -= 15;
