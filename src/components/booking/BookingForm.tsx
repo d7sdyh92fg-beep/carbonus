@@ -44,6 +44,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
     lastName: "",
     email: "",
     phone: "",
+    address: "",
     refundAccount: "",
   });
   const [isCorporate, setIsCorporate] = useState(false);
