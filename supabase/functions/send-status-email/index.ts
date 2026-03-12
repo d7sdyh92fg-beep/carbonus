@@ -288,7 +288,40 @@ function getEmailContent(data: StatusEmailRequest) {
   return isLT ? templatesLT[status as StatusType] : templatesEN[status as StatusType];
 }
 
-// Helper function to get the static PDF URL based on language
+// Helper function to download generated contract PDF from Supabase Storage
+async function downloadGeneratedPdf(supabase: any, reservationId: string): Promise<{ base64: string; filename: string } | null> {
+  try {
+    // Check if a generated contract exists in the reservations table
+    const { data: reservation } = await supabase
+      .from('reservations')
+      .select('contract_pdf_url')
+      .eq('id', reservationId)
+      .single();
+
+    if (reservation?.contract_pdf_url) {
+      // Download from Supabase storage
+      const { data: fileData, error } = await supabase.storage
+        .from('contracts')
+        .download(reservation.contract_pdf_url);
+      
+      if (!error && fileData) {
+        const arrayBuffer = await fileData.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        const base64 = btoa(binary);
+        return { base64, filename: `nuomos_sutartis_${reservationId.substring(0, 8)}.pdf` };
+      }
+    }
+  } catch (e) {
+    console.warn('Failed to download generated PDF:', e);
+  }
+  return null;
+}
+
+// Fallback: download static PDF from URL
 function getStaticPdfUrl(language: string = 'lt'): string {
   const baseUrl = 'https://carbonus.lt';
   if (language === 'en') {
@@ -297,13 +330,11 @@ function getStaticPdfUrl(language: string = 'lt'): string {
   return `${baseUrl}/carbonus-nuomos-sutartis.pdf`;
 }
 
-// Helper function to download PDF from URL as base64
 async function downloadPdfAsBase64(url: string): Promise<string> {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to download PDF: ${response.statusText}`);
   }
-  
   const arrayBuffer = await response.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
   let binary = '';
@@ -334,33 +365,53 @@ serve(async (req) => {
       html: tmpl.html,
     };
 
-    // When marked as paid, attach the static contract PDF
+    // When marked as paid, attach the generated contract PDF (or fallback to static)
     if (data.status === 'paid') {
       try {
         const language = data.language || 'lt';
-        const pdfUrl = getStaticPdfUrl(language);
-        console.log('Downloading static PDF from:', pdfUrl);
         
-        const base64Content = await downloadPdfAsBase64(pdfUrl);
+        // Try generated PDF first
+        const generatedPdf = await downloadGeneratedPdf(supabase, data.reservationId);
         
-        const pdfFilename = language === 'en' 
-          ? 'carbonus-rental-agreement.pdf'
-          : 'carbonus-nuomos-sutartis.pdf';
-        
-        emailOptions.attachments = [{
-          filename: pdfFilename,
-          content: base64Content,
-          contentType: 'application/pdf'
-        }];
-        console.log(`Attached static ${language.toUpperCase()} PDF:`, pdfFilename);
+        if (generatedPdf) {
+          console.log('Attaching generated contract PDF');
+          emailOptions.attachments = [{
+            filename: generatedPdf.filename,
+            content: generatedPdf.base64,
+          }];
+        } else {
+          // Fallback to static PDF
+          const pdfUrl = getStaticPdfUrl(language);
+          console.log('Fallback: downloading static PDF from:', pdfUrl);
+          const base64Content = await downloadPdfAsBase64(pdfUrl);
+          const pdfFilename = language === 'en' 
+            ? 'carbonus-rental-agreement.pdf'
+            : 'carbonus-nuomos-sutartis.pdf';
+          emailOptions.attachments = [{
+            filename: pdfFilename,
+            content: base64Content,
+          }];
+        }
       } catch (error) {
         console.error('Error preparing PDF attachment:', error);
-        // Continue without attachment if there's an error
       }
     }
 
     const response = await resend.emails.send(emailOptions);
-    console.log('Status email sent:', response?.id || response);
+    console.log('Status email sent to customer:', response?.id || response);
+
+    // Send copy to admin (info@carbonus.lt)
+    try {
+      const adminEmailOptions = {
+        ...emailOptions,
+        to: ['info@carbonus.lt'],
+        subject: `[Admin] ${emailOptions.subject} - ${data.customerName}`,
+      };
+      const adminResponse = await resend.emails.send(adminEmailOptions);
+      console.log('Status email sent to admin:', adminResponse?.id || adminResponse);
+    } catch (adminErr) {
+      console.warn('Failed to send admin copy:', adminErr);
+    }
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
