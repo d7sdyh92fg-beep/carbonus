@@ -573,7 +573,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   y -= 6;
 
   // Embed lessor signature
-  const lessorSig = await loadLessorSignature(pdfDoc);
+  const lessorSig = data.lessorSignatureImage;
   if (lessorSig) {
     const scaleL = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
     const wL = lessorSig.width * scaleL;
