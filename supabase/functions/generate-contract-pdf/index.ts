@@ -555,7 +555,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     // Send email to customer with contract PDF
-    const customerEmail = customerEmailOverride || customer.email;
+    const recipientEmail = customerEmail || customer.email;
     if (customerEmail) {
       await resend.emails.send({
         from: "CARBONUS <info@carbonus.lt>",
