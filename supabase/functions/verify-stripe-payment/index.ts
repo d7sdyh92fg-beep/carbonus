@@ -75,7 +75,7 @@ function generateMainContractPage(pdfDoc: any, font: any, fontBold: any, data: a
   page.drawText('1. NUOMOTOJAS', { x: 40, y, size: 12, font: fontBold }); y -= 18;
   for (const [k, v] of [
     ['Pavadinimas', 'MB "Carbonus"'], ['Įmonės kodas', '306 588 891'],
-    ['PVM mokėtojo kodas', 'Netaikoma'], ['Adresas', 'Gardino g. 77, LT-66191 Druskininkai'],
+    ['Adresas', 'Gardino g. 77, LT-66191 Druskininkai'],
     ['Telefonas', '+370 698 18 781'], ['El. paštas', 'info@carbonus.lt'],
   ]) {
     page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
