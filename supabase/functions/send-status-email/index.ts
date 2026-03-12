@@ -305,8 +305,12 @@ async function downloadPdfAsBase64(url: string): Promise<string> {
   }
   
   const arrayBuffer = await response.arrayBuffer();
-  const buffer = new Uint8Array(arrayBuffer);
-  return btoa(String.fromCharCode.apply(null, Array.from(buffer)));
+  const bytes = new Uint8Array(arrayBuffer);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
 }
 
 serve(async (req) => {
