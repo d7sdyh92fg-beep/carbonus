@@ -62,7 +62,7 @@ async function loadLessorSignature(pdfDoc: any): Promise<any | null> {
 }
 
 function drawLine(page: any, y: number) {
-  page.drawLine({ start: { x: 40, y }, end: { x: 555, y }, thickness: 0.5, color: rgb(0.7, 0.7, 0.7) });
+  page.drawLine({ start: { x: 72, y }, end: { x: 523, y }, thickness: 0.5, color: rgb(0.7, 0.7, 0.7) });
 }
 
 const PAGE_WIDTH = 595.28;
