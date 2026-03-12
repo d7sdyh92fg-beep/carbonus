@@ -216,7 +216,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
     '21.2. Pranešti teisėsaugos institucijoms ir draudimo kompanijai apie įvykį, gauti su pranešimo užregistravimu susijusius dokumentus;',
     '21.3. Nedelsiant informuoti apie įvykį Nuomotoją.',
   ];
-  for (const p of sectionIV_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
+  for (const p of sectionIV_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 85); page = r.page; y = r.y; }
 
   r = drawParagraph(pdfDoc, page, y, '22. Nuomotojas neatsako už žalą ir nuostolius, kuriuos patiria Nuomininkas nuomos laikotarpiu, tame tarpe ir dėl nuomojame automobilyje paliktų (sugadintų ar dingusių) Nuomininko daiktų ar turto.', font, fontBold);
   page = r.page; y = r.y;
