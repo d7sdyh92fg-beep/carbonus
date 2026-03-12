@@ -5,13 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Mail, Send, Eye } from 'lucide-react';
+import { Mail, Send, Eye, FileText } from 'lucide-react';
 import { EmailPreview } from './EmailPreview';
 
 export const EmailTester: React.FC = () => {
   const { toast } = useToast();
   const [testEmail, setTestEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [isGeneratingContract, setIsGeneratingContract] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewEmailType, setPreviewEmailType] = useState('');
   const [language, setLanguage] = useState<'lt' | 'en'>('lt');
@@ -163,6 +164,68 @@ export const EmailTester: React.FC = () => {
     setShowPreview(true);
   };
 
+  const sendTestContract = async () => {
+    if (!testEmail) {
+      toast({
+        title: "Klaida",
+        description: "Įveskite el. pašto adresą",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGeneratingContract(true);
+
+    try {
+      // Use a real reservation to generate the contract
+      const { data: reservation, error: resError } = await supabase
+        .from('reservations')
+        .select('id, customer_id, car_id, car_name, start_date, end_date, total_amount')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (resError || !reservation) {
+        throw new Error('Nerasta jokia rezervacija testavimui');
+      }
+
+      const { data: customer } = await supabase
+        .from('customers')
+        .select('first_name, last_name, email')
+        .eq('id', reservation.customer_id)
+        .single();
+
+      const response = await supabase.functions.invoke('generate-contract-pdf', {
+        body: {
+          reservationId: reservation.id,
+          customerName: customer ? `${customer.first_name} ${customer.last_name}` : 'Test User',
+          customerEmail: testEmail,
+          carName: reservation.car_name,
+          startDate: reservation.start_date,
+          endDate: reservation.end_date,
+          totalAmount: reservation.total_amount,
+          signatureData: '',
+        }
+      });
+
+      if (response.error) throw response.error;
+
+      toast({
+        title: "Sutartis sugeneruota ir išsiųsta ✅",
+        description: `Sutartis išsiųsta į ${testEmail} ir info@carbonus.lt`,
+      });
+    } catch (error: any) {
+      console.error('Error generating test contract:', error);
+      toast({
+        title: "Klaida",
+        description: "Nepavyko sugeneruoti sutarties: " + error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingContract(false);
+    }
+  };
+
   const emailTypes = [
     { id: 'booking', label: 'Rezervacijos patvirtinimas', description: 'Pirminis rezervacijos el. paštas' },
     { id: 'paid', label: 'Apmokėta', description: 'Kai rezervacija apmokėta' },
@@ -252,6 +315,31 @@ export const EmailTester: React.FC = () => {
             </Card>
           ))}
         </div>
+
+        {/* Contract Test Button */}
+        <Card className="border-2 border-primary/30 hover:shadow-md transition-shadow">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h4 className="font-semibold flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Sutarties PDF testas
+                </h4>
+                <p className="text-xs text-muted-foreground">
+                  Sugeneruoja sutartį pagal naujausią rezervaciją ir siunčia į nurodytą el. paštą + info@carbonus.lt
+                </p>
+              </div>
+              <Button
+                onClick={sendTestContract}
+                disabled={isGeneratingContract || !testEmail}
+                className="ml-4"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                {isGeneratingContract ? 'Generuojama...' : 'Generuoti ir siųsti'}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </CardContent>
 
       <EmailPreview
