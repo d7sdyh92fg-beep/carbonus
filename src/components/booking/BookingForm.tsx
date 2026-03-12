@@ -569,6 +569,22 @@ const BookingForm: React.FC<BookingFormProps> = ({
             </div>
           </div>
 
+          <div>
+            <Label htmlFor="address">{language === 'lt' ? 'Adresas' : 'Address'} *</Label>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="address"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                placeholder={language === 'lt' ? 'Gatvė, namo nr., miestas' : 'Street, house no., city'}
+                className="pl-10"
+                required
+              />
+            </div>
+          </div>
+
           {/* Driver License Confirmation */}
           <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
             <div className="flex items-start space-x-3">
