@@ -189,7 +189,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
     '13.8. Vežti degius skysčius bei medžiagas, ginklus, sprogmenis, narkotines ir psichotropines medžiagas ir kitus daiktus, kurių laikymą, disponavimą, naudojimą, gabenimą ir platinimą draudžia teisės aktai.',
     '13.9. Rūkyti automobilyje (bauda 50 EUR).',
   ];
-  for (const p of prohibitions) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
+  for (const p of prohibitions) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 85); page = r.page; y = r.y; }
 
   const sectionIII_post = [
     '14. Nuomininkas/nuomojamos transporto priemonės vairuotojas privalo laikytis saugaus eismo taisyklių ir šios Sutarties sąlygų.',
@@ -216,7 +216,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
     '21.2. Pranešti teisėsaugos institucijoms ir draudimo kompanijai apie įvykį, gauti su pranešimo užregistravimu susijusius dokumentus;',
     '21.3. Nedelsiant informuoti apie įvykį Nuomotoją.',
   ];
-  for (const p of sectionIV_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
+  for (const p of sectionIV_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 85); page = r.page; y = r.y; }
 
   r = drawParagraph(pdfDoc, page, y, '22. Nuomotojas neatsako už žalą ir nuostolius, kuriuos patiria Nuomininkas nuomos laikotarpiu, tame tarpe ir dėl nuomojame automobilyje paliktų (sugadintų ar dingusių) Nuomininko daiktų ar turto.', font, fontBold);
   page = r.page; y = r.y;
@@ -250,7 +250,7 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
     '28.4. 100 EUR baudą, pametus automobilio dokumentus ar raktelius;',
     '28.5. Pilną žalos atlyginimą dėl automobilio apgadinimo, praradimo ar sunaikinimo, o taip pat frančizę (išskaitą), draudimo įvykio (KASKO) atveju (jei automobilis buvo apdraustas KASKO draudimu). Ši nuostata netaikoma tuo atveju, jei tokią žalą Nuomotojui padengia Draudimo kompanija. Nuomininkas neatsako už žalą, jeigu žala kilo ne dėl Nuomininko kaltės (tyčios ar dėl neatsargumo).',
   ];
-  for (const p of sectionVI_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60); page = r.page; y = r.y; }
+  for (const p of sectionVI_sub) { r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 85); page = r.page; y = r.y; }
 
   r = drawParagraph(pdfDoc, page, y, '29. Už kiekvieną uždelstą kompensacijos ar žalos atlyginimo dieną Nuomininkas moka Nuomotojui 0.5% delspinigių nuo vėluojamos grąžinti (sumokėti) sumos.', font, fontBold);
   page = r.page; y = r.y;
