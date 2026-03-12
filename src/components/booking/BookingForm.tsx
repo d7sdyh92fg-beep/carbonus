@@ -154,6 +154,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             last_name: formData.lastName,
             email: formData.email,
             phone: formData.phone,
+            address: formData.address || null,
             refund_account_number: formData.refundAccount || null,
             is_corporate: isCorporate,
             company_name: isCorporate ? corporateData.companyName : null,
