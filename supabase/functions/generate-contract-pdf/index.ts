@@ -76,8 +76,68 @@ function drawLine(page: any, y: number) {
   page.drawLine({ start: { x: 40, y }, end: { x: 555, y }, thickness: 0.5, color: rgb(0.7, 0.7, 0.7) });
 }
 
-// Generate the main contract page
-function drawMainContract(pdfDoc: any, font: any, fontBold: any, data: {
+const PAGE_WIDTH = 595.28;
+const PAGE_HEIGHT = 841.89;
+const MARGIN_TOP = 790;
+const MARGIN_BOTTOM = 50;
+const LEFT = 40;
+const TEXT_LEFT = 50;
+const MAX_TEXT_WIDTH = 490;
+
+// Multi-page helper: checks if y is too low, adds a new page if needed
+function ensureSpace(pdfDoc: any, currentPage: any, y: number, needed: number, font: any, fontBold: any): { page: any; y: number } {
+  if (y - needed < MARGIN_BOTTOM) {
+    const newPage = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+    return { page: newPage, y: MARGIN_TOP };
+  }
+  return { page: currentPage, y };
+}
+
+// Draw section heading (bold)
+function drawSectionHeading(pdfDoc: any, page: any, y: number, text: string, font: any, fontBold: any, size: number = 11): { page: any; y: number } {
+  const result = ensureSpace(pdfDoc, page, y, 20, font, fontBold);
+  result.page.drawText(text, { x: LEFT, y: result.y, size, font: fontBold });
+  result.y -= size + 6;
+  return result;
+}
+
+// Draw a paragraph with auto page break
+function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: any, fontBold: any, size: number = 9, indent: number = TEXT_LEFT): { page: any; y: number } {
+  const words = text.split(' ');
+  let line = '';
+  let currentPage = page;
+  let currentY = y;
+  const maxWidth = MAX_TEXT_WIDTH - (indent - LEFT);
+
+  for (const word of words) {
+    const testLine = line ? `${line} ${word}` : word;
+    const width = font.widthOfTextAtSize(testLine, size);
+    if (width > maxWidth && line) {
+      const check = ensureSpace(pdfDoc, currentPage, currentY, size + 3, font, fontBold);
+      currentPage = check.page;
+      currentY = check.y;
+      currentPage.drawText(line, { x: indent, y: currentY, size, font });
+      currentY -= size + 3;
+      line = word;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line) {
+    const check = ensureSpace(pdfDoc, currentPage, currentY, size + 3, font, fontBold);
+    currentPage = check.page;
+    currentY = check.y;
+    currentPage.drawText(line, { x: indent, y: currentY, size, font });
+    currentY -= size + 3;
+  }
+  currentY -= 3; // paragraph spacing
+  return { page: currentPage, y: currentY };
+}
+
+// ============================================================
+// MAIN CONTRACT (full text, sections I-IX, points 1-37)
+// ============================================================
+function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   reservationId: string;
   date: string;
   customer: any;
@@ -85,125 +145,245 @@ function drawMainContract(pdfDoc: any, font: any, fontBold: any, data: {
   reservation: any;
   signatureBytes: Uint8Array | null;
 }) {
-  const page = pdfDoc.addPage([595.28, 841.89]);
-  const { reservationId, date, customer, car, reservation } = data;
-  let y = 790;
+  let page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+  const { reservationId, date, customer } = data;
+  let y = MARGIN_TOP;
 
-  // Title - centered
-  const pageWidth = 595.28;
-  const title1 = 'AUTOMOBILIŲ NUOMOS SUTARTIS';
-  const title1Width = fontBold.widthOfTextAtSize(title1, 16);
-  page.drawText(title1, { x: (pageWidth - title1Width) / 2, y, size: 16, font: fontBold, color: rgb(0, 0, 0) });
-  y -= 22;
+  // ===== TITLE =====
+  const title = 'Transporto priemonės nuomos sutartis';
+  const titleWidth = fontBold.widthOfTextAtSize(title, 14);
+  page.drawText(title, { x: (PAGE_WIDTH - titleWidth) / 2, y, size: 14, font: fontBold });
+  y -= 20;
   const nrText = `Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
-  const nrWidth = font.widthOfTextAtSize(nrText, 11);
-  page.drawText(nrText, { x: (pageWidth - nrWidth) / 2, y, size: 11, font });
+  const nrWidth = font.widthOfTextAtSize(nrText, 10);
+  page.drawText(nrText, { x: (PAGE_WIDTH - nrWidth) / 2, y, size: 10, font });
   y -= 16;
-  const dateWidth = font.widthOfTextAtSize(date, 10);
-  page.drawText(date, { x: (pageWidth - dateWidth) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
-  y -= 28;
-
-  drawLine(page, y);
+  const dateText = `${date}`;
+  const dateWidth = font.widthOfTextAtSize(dateText, 10);
+  page.drawText(dateText, { x: (PAGE_WIDTH - dateWidth) / 2, y, size: 10, font, color: rgb(0.3, 0.3, 0.3) });
+  y -= 8;
+  const cityText = 'Druskininkai';
+  const cityWidth = font.widthOfTextAtSize(cityText, 10);
+  page.drawText(cityText, { x: (PAGE_WIDTH - cityWidth) / 2, y, size: 10, font, color: rgb(0.3, 0.3, 0.3) });
   y -= 20;
 
-  // ===== NUOMOTOJAS (Lessor) =====
-  page.drawText('1. NUOMOTOJAS', { x: 40, y, size: 12, font: fontBold });
-  y -= 18;
+  // ===== I. NUOMOS SUTARTIES OBJEKTAS =====
+  let r = drawSectionHeading(pdfDoc, page, y, 'I. Nuomos sutarties objektas.', font, fontBold);
+  page = r.page; y = r.y;
 
-  const lessorRows = [
-    ['Pavadinimas', 'MB "Carbonus"'],
-    ['Įmonės kodas', '307196558'],
-    ['Adresas', 'Neravų 2A-6, Druskininkai, Druskininkų sav.'],
-    ['A/S', 'LT547189900059467578, AB Artea bankas'],
-    ['Telefonas', '+37069818781'],
-    ['El. paštas', 'info@carbonus.lt'],
+  r = drawParagraph(pdfDoc, page, y, '1. Šia Nuomos sutartimi (toliau – Sutartis) MB „Carbonus" (įmonės kodas – 307196558), atstovaujama direktoriaus Tomo Čepulio, (toliau – Nuomotojas) nuomoja automobilį Nuomininkui (toliau sutartyje – Šalys), Nuomininkas sutinka laikytis automobilio naudojimosi taisyklių, nustatytų šioje Sutartyje ir patvirtina tai savo parašu.', font, fontBold);
+  page = r.page; y = r.y;
+
+  // ===== II. AUTOMOBILIO PRIĖMIMAS IR GRĄŽINIMAS =====
+  r = drawSectionHeading(pdfDoc, page, y, 'II. Automobilio priėmimas ir grąžinimas.', font, fontBold);
+  page = r.page; y = r.y;
+
+  const sectionII = [
+    '2. Nuomininkas, priimdamas automobilį, savo parašu patvirtina, kad automobilį gavo tvarkingą ir geros (tinkamos saugiai eksploatacijai) techninės būklės, su visais papildomais priedais, įskaitant automobilio dokumentus.',
+    '3. Grąžinimo metu automobilis privalo būti tokios techninės būklės ir komplektacijos, kokios buvo išnuomotas, t.y. jo priėmimo naudotis momentu, bet atsižvelgiant į natūralų nusidėvėjimą.',
+    '4. Automobilis grąžinamas Nuomotojui sutartyje ar jos prieduose nustatytu laiku.',
+    '5. Darbo valandomis nuomojamas automobilis paimamas ir pristatomas (grąžinamas) į Sutartyje nustatytą ar Šalių sutartą vietą. Jei automobilis grąžinamas po darbo valandų ar savaitgaliais (švenčių dienomis), jam taikomos papildomos grąžinimo sąlygos (kainos) Šalių suderintos ir patvirtintos abipusiu Šalių susitarimu arba nustatytos pasirašant Sutartį, šios Sutarties priede.',
+    '6. Automobilis išnuomojas ir perduodamas Nuomininkui su pilnu degalų baku, švariu (nuplautu) kėbulu ir tvarkingu salonu. Grąžindamas automobilį Nuomininkas užtikrina jo grąžinimą taip pat su pilnu degalų baku, nuplautu kėbulu ir tvarkingu salonu.',
+    '7. Tuo atveju, jei automobilis grąžinimas pažeidžiant Sutarties 6 punkto sąlygas, Nuomininkas Nuomotojui moka kompensaciją, kuri sudaro 1.5 EUR (su PVM) už 1 litrą degalų, padauginus iš trūkstamo iki pilno kuro bako litrų kiekio, o tais atvejais, jei automobilis grąžinamas nešvariu kėbulu ir (ar) netvarkingu salonu, Nuomininkas Nuomotojui atitinkamai moka – 20 EUR baudą už nenuplautą automobilį ir 20 EUR baudą už netvarkingą saloną.',
+    '8. Jei Nuomininkas pažeidžia Sutarties sąlygas, vykdo jas netinkamai arba kai numatoma, jog Nuomininkas negalės tinkamai įvykdyti savo pareigų, kylančių iš šios Sutarties, Nuomotojas turi besąlygišką teisę atsiimti automobilį anksčiau sutarto (numatyto) laiko, esant poreikiui – kreiptis į teisėsaugos organus ar kitus subjektus dėl automobilio paieškos paskelbimo.',
+    '9. Jei Nuomininkas negrąžina automobilio 24 valandų laikotarpyje, kurios pradedamos skaičiuoti po Sutartyje nustatyto grąžinimo termino pabaigos, o taip pat jokia Nuomotojui priimtina ar sutarta komunikavimo forma, apie vėlavimą grąžinti automobilį neinformuoja Nuomotojo, Nuomotojas turi teisę kreiptis į teisėsaugos organus dėl turto (automobilio) vagystės, jo sunaikinimo ar sugadinimo ir reikalauti iš Nuomotojo žalos atlyginimo, išskyrus atvejus, jeigu tą žalą Nuomotojui atlygina draudimo kompanija arba atlygina tą dalį žalos, kurios nepadengia draudimo kompanija.',
   ];
-  for (const [k, v] of lessorRows) {
-    page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
-    page.drawText(v, { x: 190, y, size: 10, font });
-    y -= 15;
+  for (const p of sectionII) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
   }
 
+  // ===== III. AUTOMOBILIO NAUDOJIMAS =====
+  r = drawSectionHeading(pdfDoc, page, y, 'III. Automobilio naudojimas.', font, fontBold);
+  page = r.page; y = r.y;
+
+  const sectionIII_pre = [
+    '10. Nuomos laikotarpiu automobilį gali vairuoti tik Nuomininkas arba Nuomininko darbuotojas, jei nuomos sutartis sudaroma su įmone, turintis teisę vairuoti įmonės automobilius ir atitinkamą įgaliojimą vairuoti nuomojamą transporto priemonę. Už galimą kaltę ir žalą sukeliančius veiksmus bei pasekmes, atsiradusias ar kylančias dėl vairuotojos nuomojamos transporto priemonės, atsakingas nuomininkas/įmonė, išskyrus atvejus, jeigu ją pilna apimtimi Nuomotojui atlygina draudimo kompanija.',
+    '11. Nuomininkas užtikrina saugų ir tinkamą automobilio eksploatavimą visą nuomos laikotarpį, užrakina visas automobilio dureles, palikdamas automobilį be priežiūros net ir trumpam laikui.',
+    '12. Nuomininkas įsipareigoja saugoti nuomojamos transporto priemonės dokumentus ir raktelius bei užtikrinti jų nepatekimą tretiesiems asmenims.',
+    '13. Pagal šią Sutartį Nuomininkui draudžiama:',
+  ];
+  for (const p of sectionIII_pre) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
+  }
+
+  const prohibitions = [
+    '13.1. Naudoti nuomojamą automobilį keleivių vežimui už atlygį;',
+    '13.2. Naudoti automobilį priekabų ir kitų automobilių vilkimui;',
+    '13.3. Naudoti automobilį prekių pervežimui, pažeidžiant Lietuvos Respublikos teisės aktus, reglamentuojančius krovinių vežimą.',
+    '13.4. Naudoti automobilį nusikalstamai veiklai;',
+    '13.5. Vairuoti automobilį neblaiviam ar apsvaigusiam nuo psichotropinių medžiagų ir stipraus poveikio medikamentų, turinčių poveikį reakcijai ir atidumui;',
+    '13.6. Naudoti automobilį sportiniuose renginiuose ar kitokio pobūdžio eisme, kuriuose nesilaikoma saugaus eismo ir vairavimo taisyklių;',
+    '13.7. Vežti didelės vertės daiktus, neturint jų nuosavybę patvirtinančių dokumentų;',
+    '13.8. Vežti degius skysčius bei medžiagas, ginklus, sprogmenis, narkotines ir psichotropines medžiagas ir kitus daiktus, kurių laikymą, disponavimą, naudojimą, gabenimą ir platinimą draudžia teisės aktai.',
+    '13.9. Rūkyti automobilyje (bauda 50 EUR).',
+  ];
+  for (const p of prohibitions) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60);
+    page = r.page; y = r.y;
+  }
+
+  const sectionIII_post = [
+    '14. Nuomininkas/nuomojamos transporto priemonės vairuotojas privalo laikytis saugaus eismo taisyklių ir šios Sutarties sąlygų.',
+    '15. Nuomininkas privalo užtikrinti savalaikę periodinę tepalo lygio ir kitų automobilio skysčių lygio patikrą ir imtis priemonių jų papildymui, taip pat sekti oro slėgį automobilio padangose ir, esant poreikiui, imtis priemonių savalaikiam jo padidinimui.',
+    '16. Sugedus automobiliui, jo remontą atlikti tik suderinus (vietą, laiką, kaštus ir t.t.) su Nuomotoju ir gavus jo leidimą. Remonto išlaidas apmoka Nuomotojas, išskyrus atvejus, jei Šalys nesutaria kitaip.',
+    '17. Nuomininkas privalo imtis priemonių ir užtikrinti, kad tamsiu paros metu automobilis būtų maksimaliai apsaugotas nuo vagysčių ir sunaikinimo/sugadinimo.',
+  ];
+  for (const p of sectionIII_post) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
+  }
+
+  // ===== IV. AUTOMOBILIO VAGYSTĖ, AVARIJOS IR KITI GEDIMAI =====
+  r = drawSectionHeading(pdfDoc, page, y, 'IV. Automobilio vagystė, avarijos ir kiti gedimai.', font, fontBold);
+  page = r.page; y = r.y;
+
+  const sectionIV = [
+    '18. Įvykus autoįvykiui, avarijai, gaisrui, pastebėjus trečių asmenų padarytą žalą automobiliui ar jo vagystės atveju, Nuomininkas privalo nedelsdamas (ne vėliau kaip per 8 h.) kreiptis į atitinkamas institucijas ir apie tai informuoti Nuomotoją.',
+    '19. Nuomininkas patvirtina, jog žino, kad teisėsaugos institucijų atstovų išduoti dokumentai, transportavimo įmonių pažymos yra svarbios ir gali būti pagrindu nustatant žalos lygį ir išmokant draudimo išmoką už automobilio praradimą, sugadinimą ar sunaikinimą, o taip pat pateikiant reikalavimus (ieškinius) tretiesiems asmenims (kaltininkams).',
+    '20. Nuomininkas įsipareigoja saugoti įrodymų objektus (daiktus, pėdsakus, liudininkų parodymus, fotografijas ir pan.), įvykių dalyvių ir liudininkų kontaktinę informaciją. Taip pat Nuomininkas įspėtas ir žino, jog jam draudžiama pasirašyti bet kokius dokumentus, galinčius pakenkti Nuomotojo reputacijai, kaltinančiais Nuomotoją dėl žalos ar nuostolių atlyginimo ir pan.',
+    '21. Nuomininkas ar nuomojamos transporto priemonės teisėtas naudotojas (įgaliotas vairuotojas) privalo imtis priemonių ir apsaugoti Nuomotojo ir automobilio draudimo kompanijos teisėtus interesus jei nuomos laikotarpiu įvyksta autoįvykis, avarija, automobilio apgadinimas, sunaikinimas ar vagystė, t.y.:',
+  ];
+  for (const p of sectionIV) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
+  }
+
+  const sectionIV_sub = [
+    '21.1. Nedelsiant gelbėti transporto priemonę, apsaugant ją nuo tolimesnio gedimo ir pašalinti priežastis, galinčias pakenkti automobilio vertei ir padidinti patiriamą žalą (nuostolius);',
+    '21.2. Pranešti teisėsaugos institucijoms ir draudimo kompanijai apie įvykį, gauti su pranešimo užregistravimu susijusius dokumentus;',
+    '21.3. Nedelsiant informuoti apie įvykį Nuomotoją.',
+  ];
+  for (const p of sectionIV_sub) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60);
+    page = r.page; y = r.y;
+  }
+
+  r = drawParagraph(pdfDoc, page, y, '22. Nuomotojas neatsako už žalą ir nuostolius, kuriuos patiria Nuomininkas nuomos laikotarpiu, tame tarpe ir dėl nuomojame automobilyje paliktų (sugadintų ar dingusių) Nuomininko daiktų ar turto.', font, fontBold);
+  page = r.page; y = r.y;
+
+  // ===== V. AUTOMOBILIO DRAUDIMAS IR KITOS RINKLIAVOS =====
+  r = drawSectionHeading(pdfDoc, page, y, 'V. Automobilio draudimas ir kitos rinkliavos.', font, fontBold);
+  page = r.page; y = r.y;
+
+  const sectionV = [
+    '23. Už automobilio draudimą atsakingas Nuomotojas. Automobilio privalomojo transporto priemonės valdytojo civilinės atsakomybės draudimas turi galioti Europos Sąjungos valstybėse, o jame turi būti nurodyta, kad automobilį vairuos ir tretieji asmenys.',
+    '24. Už kelių mokesčių ir kitų rinkliavų, o taip pat baudų už kelių eismo taisyklių pažeidimus, padarytus vairuojant nuomojamą automobilį, atsakingas Nuomininkas ar įgaliotas asmuo, vairavęs automobilį.',
+  ];
+  for (const p of sectionV) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
+  }
+
+  // ===== VI. APMOKĖJIMO SĄLYGOS =====
+  r = drawSectionHeading(pdfDoc, page, y, 'VI. Apmokėjimo sąlygos.', font, fontBold);
+  page = r.page; y = r.y;
+
+  const sectionVI = [
+    '25. Automobilis perduodamas tik sumokėjus nuomos kainą ir užstatą, jei toks mokamas.',
+    '26. Į nuomos kainą įskaičiuoti visi Nuomotojo mokami mokesčiai ir kitos išlaidos, o taip pat automobilio draudimai, techniniai aptarnavimai.',
+    '27. Nuomos įkainiai, nustatyti Sutarties prieduose, yra fiksuoti ir nekeičiami visą Sutarties galiojimo laikotarpį.',
+    '28. Nuomininkas, ne vėliau kaip per 10 darbo dienų po pretenzijų jam pateikimo, papildomai padengia šias išlaidas (jos gali būti padengtos panaudojant piniginį užstatą, jei toks buvo skiriamas), atsiradusias automobilio nuomos laikotarpiu:',
+  ];
+  for (const p of sectionVI) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
+  }
+
+  const sectionVI_sub = [
+    '28.1. Papildomą nuomos sumą, apskaičiuotą už papildomą nuomos laikotarpį ar vėlavimą automobilį grąžinti laiku;',
+    '28.2. Kompensaciją dėl automobilio grąžinimo su nepilnu kuro baku (Sutarties 7 punktas);',
+    '28.3. 50 EUR baudą – už rūkymą automobilyje;',
+    '28.4. 100 EUR baudą, pametus automobilio dokumentus ar raktelius;',
+    '28.5. Pilną žalos atlyginimą dėl automobilio apgadinimo, praradimo ar sunaikinimo, o taip pat frančizę (išskaitą), draudimo įvykio (KASKO) atveju (jei automobilis buvo apdraustas KASKO draudimu). Ši nuostata netaikoma tuo atveju, jei tokią žalą Nuomotojui padengia Draudimo kompanija. Nuomininkas neatsako už žalą, jeigu žala kilo ne dėl Nuomininko kaltės (tyčios ar dėl neatsargumo).',
+  ];
+  for (const p of sectionVI_sub) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold, 9, 60);
+    page = r.page; y = r.y;
+  }
+
+  r = drawParagraph(pdfDoc, page, y, '29. Už kiekvieną uždelstą kompensacijos ar žalos atlyginimo dieną Nuomininkas moka Nuomotojui 0.5% delspinigių nuo vėluojamos grąžinti (sumokėti) sumos.', font, fontBold);
+  page = r.page; y = r.y;
+
+  // ===== VII. NUOMININKO ATSAKOMYBĖ =====
+  r = drawSectionHeading(pdfDoc, page, y, 'VII. Nuomininko atsakomybė.', font, fontBold);
+  page = r.page; y = r.y;
+
+  r = drawParagraph(pdfDoc, page, y, '30. Nuomininkas yra visiškai atsakingas už automobiliui tyčia ar dėl neatsargos ir neapdairumo padarytą žalą ar gedimus, o taip pat kitų nuostolių padengimą Nuomotojui, jei jis pažeidė transporto priemonės saugaus eksploatavimo taisykles ir šios Sutarties sąlygas, nustatytas jos III ir IV dalyse, net ir tuo atveju, jei draudimo kompanija atsisako atlyginti žalą ir nuostolius, atsiradusius automobilio nuomos laikotarpiu. Nuomininkas neatsako už žalos atlyginimą jeigu žala kilo ne dėl Nuomininko kaltės (tyčios ar dėl neatsargumo).', font, fontBold);
+  page = r.page; y = r.y;
+
+  // ===== VIII. NUOMOTOJO ATSAKOMYBĖ =====
+  r = drawSectionHeading(pdfDoc, page, y, 'VIII. Nuomotojo atsakomybė.', font, fontBold);
+  page = r.page; y = r.y;
+
+  const sectionVIII = [
+    '31. Nuomotojas neatsako už Nuomininko nuostolius, atsiradusius dėl to, jog pastarasis negalėjo naudotis automobiliu dėl jo gedimo nuomos laikotarpiu ar įvykus nelaimingam atsitikimui, avarijai, automobilio sugadinimui ar praradimui. Esant galimybėms, kalbamuoju atveju, Nuomotojas, Šalims sutarus, imasi priemonių, kad savo sąskaita (jei Šalys nesutaria kitaip) suremontuoti išnuomotą automobilį arba, esant galimybei, pakeisti jį kitu.',
+    '32. Nuomotojas neatsako už Nuomininko sveikatos būklę automobilio Nuomos laikotarpiu ir po jos pasibaigimo, o taip pat už keleiviams ar tretiesiems asmenims Nuomininko padarytą ar dėl kaltės atsiradusią žalą automobilio nuomos laikotarpiu.',
+    '33. Nuomotojas neatsako už jokį Nuomininko turto praradimą ir netekimus automobilio nuomos laikotarpiu ir jam pasibaigus.',
+  ];
+  for (const p of sectionVIII) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
+  }
+
+  // ===== IX. BAIGIAMOSIOS NUOSTATOS =====
+  r = drawSectionHeading(pdfDoc, page, y, 'IX. Baigiamosios nuostatos.', font, fontBold);
+  page = r.page; y = r.y;
+
+  const sectionIX = [
+    '34. Sutartis gali būti vienašališkai nutraukta bet kurios iš Šalių iniciatyva, įspėjus kitą šalį ne vėliau kaip prieš 10 darbo dienų.',
+    '35. Nuomos sutartis, jos papildymai ir priedai galioja tik raštiška, abiejų Šalių suderinta ir pasirašyta, forma.',
+    '36. Sutartis sudaryta lietuvių kalba. Po vieną egzempliorių kiekvienai šaliai. Abu egzemplioriai turi vienodą juridinę galią.',
+    '37. Šiai Sutarčiai ir iš jos kylantiems santykiams taikomi Lietuvos Respublikos teisės aktai. Visi ginčai, kylantys iš šios Sutarties sprendžiami derybų būdu, o nepavykus jų išspręsti taikiai – ginčo sprendimas perduodamas teismui.',
+  ];
+  for (const p of sectionIX) {
+    r = drawParagraph(pdfDoc, page, y, p, font, fontBold);
+    page = r.page; y = r.y;
+  }
+
+  // ===== SIGNATURES =====
   y -= 10;
+  r = ensureSpace(pdfDoc, page, y, 100, font, fontBold);
+  page = r.page; y = r.y;
+
   drawLine(page, y);
   y -= 20;
 
-  // ===== NUOMININKAS (Tenant) =====
-  page.drawText('2. NUOMININKAS', { x: 40, y, size: 12, font: fontBold });
-  y -= 18;
+  page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
+  page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
+  y -= 16;
+
+  page.drawText('MB "Carbonus"', { x: 50, y, size: 9, font });
+  page.drawText('Įmonės kodas 307196558', { x: 50, y: y - 12, size: 9, font });
+  page.drawText('Adresas: Neravų 2A-6, Druskininkai', { x: 50, y: y - 24, size: 9, font });
+  page.drawText('Tel. +37069818781', { x: 50, y: y - 36, size: 9, font });
+  page.drawText('El.p.: info@carbonus.lt', { x: 50, y: y - 48, size: 9, font });
 
   const isCorporate = customer.is_corporate;
-  const tenantRows: [string, string][] = [];
-
-  if (isCorporate && customer.company_name) {
-    tenantRows.push(['Įmonės pavadinimas', customer.company_name]);
-    if (customer.company_code) tenantRows.push(['Įmonės kodas', customer.company_code]);
-    if (customer.vat_code) tenantRows.push(['PVM mokėtojo kodas', customer.vat_code]);
-    tenantRows.push(['Atstovas', `${customer.first_name} ${customer.last_name}`]);
-  } else {
-    tenantRows.push(['Vardas, pavardė', `${customer.first_name} ${customer.last_name}`]);
-  }
-  if (customer.address) tenantRows.push(['Adresas', customer.address]);
-  tenantRows.push(['Telefonas', customer.phone]);
-  tenantRows.push(['El. paštas', customer.email]);
-  if (customer.refund_account_number) tenantRows.push(['Banko sąskaita', customer.refund_account_number]);
-
-  for (const [k, v] of tenantRows) {
-    page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
-    page.drawText(String(v), { x: 190, y, size: 10, font });
-    y -= 15;
-  }
-
-  y -= 10;
-  drawLine(page, y);
-  y -= 20;
-
-  // ===== SUTARTIES SĄLYGOS =====
-  page.drawText('3. PAGRINDINĖS SĄLYGOS', { x: 40, y, size: 12, font: fontBold });
-  y -= 18;
-
-  const terms = [
-    '3.1. Nuomotojas įsipareigoja perduoti techniškai tvarkingą automobilį nuomininkui.',
-    '3.2. Nuomininkas įsipareigoja naudoti automobilį pagal paskirtį ir laikytis KET.',
-    '3.3. Automobilis turi būti grąžintas švarus ir tokiu pačiu degalų lygiu.',
-    '3.4. Už pavėluotą grąžinimą taikomas 20 EUR/val. mokestis.',
-    '3.5. Užstatas grąžinamas per 3-5 darbo dienas po automobilio apžiūros.',
-    '3.6. Nuomotojas neatsako už asmeninius daiktus, paliktus automobilyje.',
-    '3.7. Draudžiama rūkyti automobilyje. Pažeidus – 150 EUR bauda.',
-    '3.8. Nuomininkas privalo nedelsiant pranešti apie bet kokį eismo įvykį ar gedimą.',
-  ];
-
-  for (const term of terms) {
-    y = drawWrappedText(page, term, 50, y, font, 9, 490);
-    y -= 4;
-  }
-
-  y -= 10;
-  drawLine(page, y);
-  y -= 20;
-
-  // ===== PARAŠAI =====
-  page.drawText('4. ŠALIŲ PARAŠAI', { x: 40, y, size: 12, font: fontBold });
-  y -= 24;
-
-  page.drawText('Nuomotojas:', { x: 50, y, size: 10, font: fontBold });
-  page.drawText('Nuomininkas:', { x: 320, y, size: 10, font: fontBold });
-  y -= 16;
-  page.drawText('MB "Carbonus"', { x: 50, y, size: 10, font });
-
   const signerName = isCorporate && customer.company_name
-    ? `${customer.company_name} (${customer.first_name} ${customer.last_name})`
+    ? `${customer.company_name}`
     : `${customer.first_name} ${customer.last_name}`;
-  page.drawText(signerName, { x: 320, y, size: 10, font });
-  y -= 50;
+  page.drawText(signerName, { x: 320, y, size: 9, font });
+  if (customer.address) {
+    page.drawText(`Adresas: ${customer.address}`, { x: 320, y: y - 12, size: 9, font });
+  }
+  page.drawText(`Tel. ${customer.phone}`, { x: 320, y: y - 24, size: 9, font });
+  page.drawText(`El.p.: ${customer.email}`, { x: 320, y: y - 36, size: 9, font });
 
+  y -= 60;
+
+  page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
+  y -= 14;
   page.drawText('_________________________', { x: 50, y, size: 10, font });
   page.drawText('_________________________', { x: 320, y, size: 10, font });
 
   return page;
 }
 
-// Generate the appendix page (Priedas Nr. 1)
+// ============================================================
+// APPENDIX Nr. 1 (without mileage)
+// ============================================================
 async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   reservationId: string;
   date: string;
@@ -212,105 +392,98 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   reservation: any;
   signatureBytes: Uint8Array | null;
 }) {
-  const page = pdfDoc.addPage([595.28, 841.89]);
+  const page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   const { reservationId, date, customer, car, reservation } = data;
-  let y = 790;
+  let y = MARGIN_TOP;
 
-  // Title - centered
-  const pageWidth = 595.28;
+  // Title
   const appTitle = 'PRIEDAS Nr. 1';
-  const appTitleWidth = fontBold.widthOfTextAtSize(appTitle, 16);
-  page.drawText(appTitle, { x: (pageWidth - appTitleWidth) / 2, y, size: 16, font: fontBold });
+  const appTitleWidth = fontBold.widthOfTextAtSize(appTitle, 14);
+  page.drawText(appTitle, { x: (PAGE_WIDTH - appTitleWidth) / 2, y, size: 14, font: fontBold });
   y -= 20;
-  const subTitle = `prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
+  const subTitle = `prie Transporto priemonės nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
   const subTitleWidth = font.widthOfTextAtSize(subTitle, 10);
-  page.drawText(subTitle, { x: (pageWidth - subTitleWidth) / 2, y, size: 10, font });
-  y -= 16;
-  const dateWidth = font.widthOfTextAtSize(date, 10);
-  page.drawText(date, { x: (pageWidth - dateWidth) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
+  page.drawText(subTitle, { x: (PAGE_WIDTH - subTitleWidth) / 2, y, size: 10, font });
   y -= 28;
 
   drawLine(page, y);
   y -= 20;
 
-  // ===== 1. NUOMOTOJAS =====
-  page.drawText('1. NUOMOTOJAS', { x: 40, y, size: 11, font: fontBold });
-  y -= 18;
-
-  const lessorRows = [
-    ['Pavadinimas', 'MB "Carbonus"'],
-    ['Įmonės kodas', '307196558'],
-    ['Adresas', 'Neravų 2A-6, Druskininkai, Druskininkų sav.'],
-    ['A/S', 'LT547189900059467578, AB Artea bankas'],
-    ['Telefonas', '+37069818781'],
-    ['El. paštas', 'info@carbonus.lt'],
+  // ===== NUOMOTOJAS =====
+  page.drawText('NUOMOTOJAS:', { x: LEFT, y, size: 11, font: fontBold });
+  y -= 16;
+  const lessorInfo = [
+    'MB „Carbonus", Neravų 2A-6, Druskininkai, Druskininkų sav.',
+    'Įmonės kodas: 307196558',
+    'Direktorius Tomas Čepulis',
+    'El.p. info@carbonus.lt',
+    'Tel. Nr. +37069818781',
   ];
-  for (const [k, v] of lessorRows) {
-    page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
-    page.drawText(v, { x: 190, y, size: 10, font });
-    y -= 15;
+  for (const line of lessorInfo) {
+    page.drawText(line, { x: TEXT_LEFT, y, size: 9, font });
+    y -= 13;
   }
 
-  y -= 10;
+  y -= 8;
   drawLine(page, y);
   y -= 20;
 
-  // ===== 2. NUOMININKAS =====
-  page.drawText('2. NUOMININKAS', { x: 40, y, size: 11, font: fontBold });
-  y -= 18;
+  // ===== NUOMININKAS =====
+  page.drawText('NUOMININKAS:', { x: LEFT, y, size: 11, font: fontBold });
+  y -= 16;
 
   const isCorporate = customer.is_corporate;
-  const tenantRows: [string, string][] = [];
-
+  const tenantLines: string[] = [];
   if (isCorporate && customer.company_name) {
-    tenantRows.push(['Įmonės pavadinimas', customer.company_name]);
-    if (customer.company_code) tenantRows.push(['Įmonės kodas', customer.company_code]);
-    if (customer.vat_code) tenantRows.push(['PVM mokėtojo kodas', customer.vat_code]);
-    tenantRows.push(['Atstovas', `${customer.first_name} ${customer.last_name}`]);
+    tenantLines.push(`Įmonė: ${customer.company_name}`);
+    if (customer.company_code) tenantLines.push(`Įmonės kodas: ${customer.company_code}`);
+    if (customer.vat_code) tenantLines.push(`PVM kodas: ${customer.vat_code}`);
+    tenantLines.push(`Atstovas: ${customer.first_name} ${customer.last_name}`);
   } else {
-    tenantRows.push(['Vardas, pavardė', `${customer.first_name} ${customer.last_name}`]);
+    tenantLines.push(`${customer.first_name} ${customer.last_name}`);
   }
-  if (customer.address) tenantRows.push(['Adresas', customer.address]);
-  tenantRows.push(['Telefonas', customer.phone]);
-  tenantRows.push(['El. paštas', customer.email]);
+  if (customer.address) tenantLines.push(`Adresas: ${customer.address}`);
+  tenantLines.push(`El.p. ${customer.email}`);
+  tenantLines.push(`Tel. Nr. ${customer.phone}`);
 
-  for (const [k, v] of tenantRows) {
-    page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
-    page.drawText(String(v), { x: 190, y, size: 10, font });
-    y -= 15;
+  for (const line of tenantLines) {
+    page.drawText(line, { x: TEXT_LEFT, y, size: 9, font });
+    y -= 13;
   }
 
-  y -= 10;
+  y -= 8;
   drawLine(page, y);
   y -= 20;
 
-  // ===== 3. AUTOMOBILIS =====
-  page.drawText('3. AUTOMOBILIS', { x: 40, y, size: 11, font: fontBold });
+  // ===== NUOMOJAMAS AUTOMOBILIS =====
+  page.drawText('NUOMOJAMAS AUTOMOBILIS:', { x: LEFT, y, size: 11, font: fontBold });
   y -= 18;
 
   const carRows: [string, string][] = [
-    ['Markė, modelis', car?.name || reservation.car_name || '—'],
-    ['Metai', car?.year ? String(car.year) : '—'],
-    ['Kategorija', car?.category || '—'],
-    ['Kuro tipas', car?.fuel || '—'],
-    ['Pavarų dėžė', car?.transmission || '—'],
-    ['Keleivių skaičius', car?.passengers ? String(car.passengers) : '—'],
+    ['Modelis', car?.name || reservation.car_name || '—'],
+    ['Pagaminimo metai', car?.year ? String(car.year) : '—'],
   ];
-  if (car?.license_plate) carRows.push(['Valst. numeris', car.license_plate]);
-  if (car?.current_mileage) carRows.push(['Rida', `${car.current_mileage} km`]);
+  if (car?.license_plate) carRows.push(['Valstybinis numeris', car.license_plate]);
+  if (car?.fuel) carRows.push(['Kuro tipas', car.fuel]);
+  if (car?.transmission) carRows.push(['Pavarų dėžė', car.transmission]);
+  if (car?.passengers) carRows.push(['Keleivių skaičius', String(car.passengers)]);
+  // NOTE: Mileage (Rida) intentionally NOT shown - it's variable
 
   for (const [k, v] of carRows) {
-    page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
+    page.drawText(`${k}:`, { x: TEXT_LEFT, y, size: 10, font: fontBold });
     page.drawText(v, { x: 190, y, size: 10, font });
     y -= 15;
   }
 
-  y -= 10;
+  y -= 6;
+  page.drawText('Perduodamas techniškai tvarkingas automobilis, su pilnu kuro baku, švarus.', { x: TEXT_LEFT, y, size: 9, font });
+  y -= 18;
+
   drawLine(page, y);
   y -= 20;
 
-  // ===== 4. NUOMOS LAIKOTARPIS =====
-  page.drawText('4. NUOMOS LAIKOTARPIS IR KAINA', { x: 40, y, size: 11, font: fontBold });
+  // ===== NUOMOS LAIKOTARPIS IR KAINA =====
+  page.drawText('NUOMOS LAIKOTARPIS IR KAINA:', { x: LEFT, y, size: 11, font: fontBold });
   y -= 18;
 
   const pickupTime = reservation.pickup_time || '10:00';
@@ -319,36 +492,50 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   const rentalRows: [string, string][] = [
     ['Nuomos pradžia', `${reservation.start_date} ${pickupTime}`],
     ['Nuomos pabaiga', `${reservation.end_date} ${returnTime}`],
-    ['Nuomos dienų skaičius', `${reservation.rental_days}`],
-    ['Dienos kaina', `€${reservation.daily_rate}`],
-    ['Nuomos kaina', `€${reservation.total_rental_cost}`],
-    ['Užstatas', `€${reservation.deposit_amount}`],
+    ['Nuomos laikotarpis (paromis)', `${reservation.rental_days}`],
+    ['Nuomos kaina (už 1 parą)', `€${reservation.daily_rate}`],
+    ['Nuomos kaina (iš viso)', `€${reservation.total_rental_cost}`],
+    ['Užstato suma', `€${reservation.deposit_amount}`],
     ['Bendra suma', `€${reservation.total_amount}`],
   ];
 
   for (const [k, v] of rentalRows) {
-    page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
-    page.drawText(v, { x: 190, y, size: 10, font });
+    page.drawText(`${k}:`, { x: TEXT_LEFT, y, size: 10, font: fontBold });
+    page.drawText(v, { x: 250, y, size: 10, font });
     y -= 15;
+  }
+
+  y -= 8;
+  page.drawText('Jei automobilis grąžinamas savaitgalį, šventinę dieną ar po darbo valandų,', { x: TEXT_LEFT, y, size: 8, font, color: rgb(0.4, 0.4, 0.4) });
+  y -= 11;
+  page.drawText('taikomas papildomas 20 EUR mokestis.', { x: TEXT_LEFT, y, size: 8, font, color: rgb(0.4, 0.4, 0.4) });
+  y -= 16;
+
+  drawLine(page, y);
+  y -= 20;
+
+  // ===== PASTABOS =====
+  page.drawText('PASTABOS:', { x: LEFT, y, size: 11, font: fontBold });
+  y -= 16;
+  for (let i = 0; i < 3; i++) {
+    page.drawText('________________________________________________________________________________', { x: TEXT_LEFT, y, size: 9, font, color: rgb(0.7, 0.7, 0.7) });
+    y -= 16;
   }
 
   y -= 10;
   drawLine(page, y);
-  y -= 20;
-
-  // ===== SIGNATURE =====
-  page.drawText('ŠALIŲ PARAŠAI', { x: 40, y, size: 11, font: fontBold });
   y -= 24;
 
-  page.drawText('Nuomotojas:', { x: 50, y, size: 10, font: fontBold });
-  page.drawText('Nuomininkas:', { x: 320, y, size: 10, font: fontBold });
+  // ===== SIGNATURES =====
+  page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
+  page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
   y -= 16;
-  page.drawText('MB "Carbonus"', { x: 50, y, size: 10, font });
+  page.drawText('TOMAS ČEPULIS', { x: 50, y, size: 9, font });
 
   const signerName = isCorporate && customer.company_name
     ? `${customer.company_name}`
     : `${customer.first_name} ${customer.last_name}`;
-  page.drawText(signerName, { x: 320, y, size: 10, font });
+  page.drawText(signerName, { x: 320, y, size: 9, font });
   y -= 14;
 
   // Embed digital signature if available
@@ -372,6 +559,9 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   return page;
 }
 
+// ============================================================
+// HTTP HANDLER
+// ============================================================
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -468,7 +658,7 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-    // Generate PDF with 2 pages
+    // Generate PDF
     let contractPath: string | null = null;
     try {
       const pdfDoc = await PDFDocument.create();
@@ -484,10 +674,10 @@ const handler = async (req: Request): Promise<Response> => {
         signatureBytes,
       };
 
-      // Page 1: Main contract
-      drawMainContract(pdfDoc, font, fontBold, pdfData);
+      // Pages 1-N: Full contract (I-IX)
+      drawFullContract(pdfDoc, font, fontBold, pdfData);
 
-      // Page 2: Appendix
+      // Last page: Appendix Nr. 1
       await drawAppendix(pdfDoc, font, fontBold, pdfData);
 
       const pdfBytes = await pdfDoc.save();
@@ -526,7 +716,7 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-    // Email summary
+    // Email to customer
     const emailSummary = `
       <!DOCTYPE html>
       <html><head><meta charset="utf-8">
@@ -559,7 +749,7 @@ const handler = async (req: Request): Promise<Response> => {
       </body></html>
     `;
 
-    // Send email to customer with contract PDF
+    // Send to customer
     const recipientEmail = customerEmail || customer.email;
     if (recipientEmail) {
       await resend.emails.send({
@@ -571,7 +761,7 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
-    // Send email to admin
+    // Send to admin
     await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
       to: ["info@carbonus.lt"],
