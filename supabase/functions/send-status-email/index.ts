@@ -430,10 +430,27 @@ serve(async (req) => {
       const c = customerDetails || {};
       const r = reservationDetails || {};
       const services = r.additional_services ? (typeof r.additional_services === 'string' ? JSON.parse(r.additional_services) : r.additional_services) : [];
+      
+      // Map service IDs to Lithuanian titles
+      const serviceNames: Record<string, string> = {
+        'additional-driver': 'Papildomas vairuotojas',
+        'abroad-zone3': 'Naudojimas užsienyje - Zona 3',
+        'abroad-zone2': 'Naudojimas užsienyje - Zona 2',
+        'abroad-zone1': 'Naudojimas užsienyje - Zona 1',
+        'roadside-assistance': 'Pagalba kelyje 24/7',
+        'tire-glass-protection': 'Padangų ir stiklų apsauga',
+        'baby-seat': 'Kūdikio kėdutė (0-13kg)',
+        'child-seat': 'Vaikiška kėdutė (9-36kg)',
+      };
+      
       const servicesHtml = services.length > 0 
         ? `<h3 style="margin-bottom: 8px;">Pasirinktos paslaugos:</h3>
            <div style="background:#fefce8; padding:16px; border-radius:8px; margin-bottom:16px;">
-             ${services.map((s: any) => `<p style="margin:4px 0;">• ${s.name || s.id} – €${s.price}</p>`).join('')}
+             ${services.map((s: any) => {
+               const title = s.title || serviceNames[s.id] || s.id;
+               const priceInfo = s.unit === 'perDay' ? `€${s.price}/dieną` : `€${s.price}`;
+               return `<p style="margin:4px 0;">• ${title} – ${priceInfo}</p>`;
+             }).join('')}
            </div>` 
         : '';
 
