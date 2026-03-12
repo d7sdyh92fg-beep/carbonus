@@ -12,6 +12,7 @@ export const EmailTester: React.FC = () => {
   const { toast } = useToast();
   const [testEmail, setTestEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [isGeneratingContract, setIsGeneratingContract] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewEmailType, setPreviewEmailType] = useState('');
   const [language, setLanguage] = useState<'lt' | 'en'>('lt');
