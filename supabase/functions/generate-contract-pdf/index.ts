@@ -216,12 +216,18 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   const { reservationId, date, customer, car, reservation } = data;
   let y = 790;
 
-  // Title
-  page.drawText('PRIEDAS Nr. 1', { x: 220, y, size: 16, font: fontBold });
+  // Title - centered
+  const pageWidth = 595.28;
+  const appTitle = 'PRIEDAS Nr. 1';
+  const appTitleWidth = fontBold.widthOfTextAtSize(appTitle, 16);
+  page.drawText(appTitle, { x: (pageWidth - appTitleWidth) / 2, y, size: 16, font: fontBold });
   y -= 20;
-  page.drawText(`prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`, { x: 130, y, size: 10, font });
+  const subTitle = `prie Automobilių nuomos sutarties Nr. ${reservationId.substring(0, 8).toUpperCase()}`;
+  const subTitleWidth = font.widthOfTextAtSize(subTitle, 10);
+  page.drawText(subTitle, { x: (pageWidth - subTitleWidth) / 2, y, size: 10, font });
   y -= 16;
-  page.drawText(date, { x: 260, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
+  const dateWidth = font.widthOfTextAtSize(date, 10);
+  page.drawText(date, { x: (pageWidth - dateWidth) / 2, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
   y -= 28;
 
   drawLine(page, y);
