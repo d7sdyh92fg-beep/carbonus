@@ -567,9 +567,18 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
     ? `${customer.company_name}`
     : `${customer.first_name} ${customer.last_name}`;
   page.drawText(signerName, { x: 320, y, size: 9, font });
-  y -= 14;
+  y -= 6;
 
-  // Embed digital signature if available
+  // Embed lessor signature
+  const lessorSig = await loadLessorSignature(pdfDoc);
+  if (lessorSig) {
+    const scaleL = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
+    const wL = lessorSig.width * scaleL;
+    const hL = lessorSig.height * scaleL;
+    page.drawImage(lessorSig, { x: 50, y: y - hL, width: wL, height: hL });
+  }
+
+  // Embed customer digital signature if available
   if (data.signatureBytes) {
     try {
       const png = await pdfDoc.embedPng(data.signatureBytes);
@@ -577,13 +586,12 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
       const w = png.width * scale;
       const h = png.height * scale;
       page.drawImage(png, { x: 320, y: y - h, width: w, height: h });
-      y -= h + 10;
     } catch (_e) {
       // continue without signature image
     }
   }
 
-  y -= 30;
+  y -= 50;
   page.drawText('_________________________', { x: 50, y, size: 10, font });
   page.drawText('_________________________', { x: 320, y, size: 10, font });
 
