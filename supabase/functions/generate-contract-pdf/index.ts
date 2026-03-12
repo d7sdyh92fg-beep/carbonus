@@ -112,9 +112,10 @@ function drawMainContract(pdfDoc: any, font: any, fontBold: any, data: {
 
   const lessorRows = [
     ['Pavadinimas', 'MB "Carbonus"'],
-    ['Įmonės kodas', '306 588 891'],
-    ['Adresas', 'Gardino g. 77, LT-66191 Druskininkai'],
-    ['Telefonas', '+370 698 18 781'],
+    ['Įmonės kodas', '307196558'],
+    ['Adresas', 'Neravų 2A-6, Druskininkai, Druskininkų sav.'],
+    ['A/S', 'LT547189900059467578, AB Artea bankas'],
+    ['Telefonas', '+37069818781'],
     ['El. paštas', 'info@carbonus.lt'],
   ];
   for (const [k, v] of lessorRows) {
