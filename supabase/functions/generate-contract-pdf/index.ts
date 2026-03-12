@@ -513,7 +513,12 @@ const handler = async (req: Request): Promise<Response> => {
           .download(contractPath);
         if (!downloadError && pdfData) {
           const arrayBuffer = await pdfData.arrayBuffer();
-          const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+          const bytes = new Uint8Array(arrayBuffer);
+          let binary = '';
+          for (let i = 0; i < bytes.length; i++) {
+            binary += String.fromCharCode(bytes[i]);
+          }
+          const base64Pdf = btoa(binary);
           pdfAttachment = { filename: `nuomos_sutartis_${reservationId}.pdf`, content: base64Pdf };
         }
       } catch (pdfError) {
