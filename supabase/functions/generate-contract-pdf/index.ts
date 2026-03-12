@@ -518,37 +518,41 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   y -= 16;
 
   // ===== SIGNATURES =====
+  r = ensureSpace(pdfDoc, page, y, 120, font, fontBold);
+  page = r.page; y = r.y;
+
   page.drawText('NUOMOTOJAS:', { x: 50, y, size: 10, font: fontBold });
   page.drawText('NUOMININKAS:', { x: 320, y, size: 10, font: fontBold });
-  y -= 20;
+  y -= 50; // Big gap for signatures
 
   page.drawText('______________', { x: 50, y, size: 10, font });
   page.drawText('______________', { x: 320, y, size: 10, font });
   y -= 14;
 
+  // Names on the same line below signature line
   page.drawText('TOMAS ČEPULIS', { x: 50, y, size: 9, font });
   const tenantSigName = isCorporate && customer.company_name
     ? customer.company_name
     : `${customer.first_name} ${customer.last_name}`;
   page.drawText(tenantSigName, { x: 320, y, size: 9, font });
 
-  // Embed lessor signature
+  // Embed lessor signature in the gap above the ____ line
   const lessorSig = data.lessorSignatureImage;
   if (lessorSig) {
-    const scaleL = Math.min(120 / lessorSig.width, 40 / lessorSig.height);
+    const scaleL = Math.min(100 / lessorSig.width, 35 / lessorSig.height);
     const wL = lessorSig.width * scaleL;
     const hL = lessorSig.height * scaleL;
-    page.drawImage(lessorSig, { x: 50, y: y + 8, width: wL, height: hL });
+    page.drawImage(lessorSig, { x: 55, y: y + 16, width: wL, height: hL });
   }
 
   // Embed customer digital signature if available
   if (data.signatureBytes) {
     try {
       const png = await pdfDoc.embedPng(data.signatureBytes);
-      const scale = Math.min(150 / png.width, 50 / png.height);
+      const scale = Math.min(100 / png.width, 35 / png.height);
       const w = png.width * scale;
       const h = png.height * scale;
-      page.drawImage(png, { x: 320, y: y + 8, width: w, height: h });
+      page.drawImage(png, { x: 325, y: y + 16, width: w, height: h });
     } catch (_e) {
       // continue without signature image
     }
