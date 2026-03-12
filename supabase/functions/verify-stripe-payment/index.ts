@@ -141,7 +141,7 @@ function generateAppendixPage(pdfDoc: any, font: any, fontBold: any, data: any) 
   page.drawText('1. NUOMOTOJAS', { x: 40, y, size: 11, font: fontBold }); y -= 18;
   for (const [k, v] of [
     ['Pavadinimas', 'MB "Carbonus"'], ['Įmonės kodas', '306 588 891'],
-    ['Adresas', 'Pilies g. 16-1, LT-01123 Vilnius'],
+    ['Adresas', 'Gardino g. 77, LT-66191 Druskininkai'],
     ['Telefonas', '+370 698 18 781'], ['El. paštas', 'info@carbonus.lt'],
   ]) {
     page.drawText(`${k}:`, { x: 50, y, size: 10, font: fontBold });
