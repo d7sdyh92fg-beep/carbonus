@@ -323,7 +323,16 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
   page.drawText('Tel. +37069818781', { x: 50, y, size: 9, font });
   y -= 12;
   page.drawText('El.p. info@carbonus.lt', { x: 50, y, size: 9, font });
-  y -= 30;
+  y -= 50;
+
+  // Embed lessor signature above the ____ line (in the gap)
+  const lessorSig = data.lessorSignatureImage;
+  if (lessorSig) {
+    const scale = Math.min(120 / lessorSig.width, 40 / lessorSig.height);
+    const w = lessorSig.width * scale;
+    const h = lessorSig.height * scale;
+    page.drawImage(lessorSig, { x: 55, y: y + 5, width: w, height: h });
+  }
 
   // Signature area with gap for actual signatures
   page.drawText('______________', { x: 50, y, size: 10, font });
@@ -333,16 +342,6 @@ async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: any
   // Name on the same line below signature line
   page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
   page.drawText(signerName, { x: 320, y, size: 9, font });
-
-  // Embed lessor signature above the ____ line (in the gap)
-  const lessorSig = data.lessorSignatureImage;
-  if (lessorSig) {
-    const scale = Math.min(100 / lessorSig.width, 35 / lessorSig.height);
-    const w = lessorSig.width * scale;
-    const h = lessorSig.height * scale;
-    // Position signature centered above the ____ line
-    page.drawImage(lessorSig, { x: 55, y: y + 16, width: w, height: h });
-  }
 
   return page;
 }
