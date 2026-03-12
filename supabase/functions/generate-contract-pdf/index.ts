@@ -707,6 +707,7 @@ const handler = async (req: Request): Promise<Response> => {
       const pdfDoc = await PDFDocument.create();
       const { font, fontBold } = await loadFonts(pdfDoc);
       const todayStr = new Date().toLocaleDateString('lt-LT');
+      const lessorSignatureImage = await loadLessorSignature(pdfDoc);
 
       const pdfData = {
         reservationId,
@@ -715,6 +716,7 @@ const handler = async (req: Request): Promise<Response> => {
         car,
         reservation: resData,
         signatureBytes,
+        lessorSignatureImage,
       };
 
       // Pages 1-N: Full contract (I-IX)
