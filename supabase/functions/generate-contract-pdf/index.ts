@@ -556,10 +556,10 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email to customer with contract PDF
     const recipientEmail = customerEmail || customer.email;
-    if (customerEmail) {
+    if (recipientEmail) {
       await resend.emails.send({
         from: "CARBONUS <info@carbonus.lt>",
-        to: [customerEmail],
+        to: [recipientEmail],
         subject: `Nuomos sutartis Nr. ${reservationId.substring(0, 8).toUpperCase()} – CARBONUS`,
         html: emailSummary,
         ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
