@@ -417,7 +417,6 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
     ['Pagaminimo metai', car?.year ? String(car.year) : '—'],
     ['Kuro tipas', car?.fuel || '—'],
     ['Pavarų dėžė', car?.transmission || '—'],
-    ['Rida', car?.current_mileage ? `${car.current_mileage} km` : '—'],
   ];
 
   for (const [k, v] of carRows) {
