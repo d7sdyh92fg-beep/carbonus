@@ -102,35 +102,34 @@ function drawSectionHeading(pdfDoc: any, page: any, y: number, text: string, fon
   return result;
 }
 
-// Draw a paragraph with auto page break
+// Draw a paragraph with auto page break (CPU-optimized wrapping)
 function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: any, fontBold: any, size: number = 9, indent: number = TEXT_LEFT): { page: any; y: number } {
   const words = text.split(' ');
-  let line = '';
-  let currentPage = page;
-  let currentY = y;
-  const maxWidth = MAX_TEXT_WIDTH - (indent - LEFT);
+  const maxCharsPerLine = Math.max(45, Math.floor((MAX_TEXT_WIDTH - (indent - LEFT)) / 5.3));
+  const lines: string[] = [];
 
+  let line = '';
   for (const word of words) {
-    const testLine = line ? `${line} ${word}` : word;
-    const width = font.widthOfTextAtSize(testLine, size);
-    if (width > maxWidth && line) {
-      const check = ensureSpace(pdfDoc, currentPage, currentY, size + 3, font, fontBold);
-      currentPage = check.page;
-      currentY = check.y;
-      currentPage.drawText(line, { x: indent, y: currentY, size, font });
-      currentY -= size + 3;
+    const next = line ? `${line} ${word}` : word;
+    if (next.length > maxCharsPerLine && line) {
+      lines.push(line);
       line = word;
     } else {
-      line = testLine;
+      line = next;
     }
   }
-  if (line) {
+  if (line) lines.push(line);
+
+  let currentPage = page;
+  let currentY = y;
+  for (const ln of lines) {
     const check = ensureSpace(pdfDoc, currentPage, currentY, size + 3, font, fontBold);
     currentPage = check.page;
     currentY = check.y;
-    currentPage.drawText(line, { x: indent, y: currentY, size, font });
+    currentPage.drawText(ln, { x: indent, y: currentY, size, font });
     currentY -= size + 3;
   }
+
   currentY -= 3; // paragraph spacing
   return { page: currentPage, y: currentY };
 }
