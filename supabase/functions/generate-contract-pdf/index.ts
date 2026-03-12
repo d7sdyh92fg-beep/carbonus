@@ -554,14 +554,26 @@ const handler = async (req: Request): Promise<Response> => {
       </body></html>
     `;
 
-    // Send email to admin only
+    // Send email to customer with contract PDF
+    const customerEmail = customerEmailOverride || customer.email;
+    if (customerEmail) {
+      await resend.emails.send({
+        from: "CARBONUS <info@carbonus.lt>",
+        to: [customerEmail],
+        subject: `Nuomos sutartis Nr. ${reservationId.substring(0, 8).toUpperCase()} – CARBONUS`,
+        html: emailSummary,
+        ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
+      });
+    }
+
+    // Send email to admin
     await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
       to: ["info@carbonus.lt"],
-      subject: `Nauja vietoje atlikta rezervacija – ${customer.first_name} ${customer.last_name}`,
+      subject: `Nuomos sutartis – ${customer.first_name} ${customer.last_name} (Nr. ${reservationId.substring(0, 8).toUpperCase()})`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="border-bottom: 2px solid #22c55e; padding-bottom: 10px;">Nauja rezervacija (vietoje)</h2>
+          <h2 style="border-bottom: 2px solid #22c55e; padding-bottom: 10px;">Nuomos sutartis sugeneruota</h2>
           <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="margin-top: 0;">Klientas:</h3>
             <p><strong>Vardas, pavardė:</strong> ${customer.first_name} ${customer.last_name}</p>
@@ -579,13 +591,13 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Bendra suma:</strong> €${resData.total_amount}</p>
           </div>
           ${signatureUrl ? `<div style="margin: 20px 0;"><p><strong>Parašas:</strong></p><img src="${signatureUrl}" alt="Parašas" style="max-width:280px;border:1px solid #ddd;padding:8px;"/></div>` : ''}
-          <p style="color: #6b7280; font-size: 14px;">Sutartis pridėta kaip PDF.</p>
+          <p style="color: #6b7280; font-size: 14px;">Sutartis pridėta kaip PDF. Klientui (${customerEmail}) taip pat išsiųsta.</p>
         </div>
       `,
       ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
     });
 
-    console.log("Contract emails sent successfully");
+    console.log("Contract emails sent to customer and admin");
 
     return new Response(
       JSON.stringify({ success: true, contractUrl: contractPath, message: "Contract generated and sent successfully" }),
