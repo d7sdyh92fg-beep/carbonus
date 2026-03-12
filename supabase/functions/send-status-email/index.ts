@@ -398,7 +398,20 @@ serve(async (req) => {
     }
 
     const response = await resend.emails.send(emailOptions);
-    console.log('Status email sent:', response?.id || response);
+    console.log('Status email sent to customer:', response?.id || response);
+
+    // Send copy to admin (info@carbonus.lt)
+    try {
+      const adminEmailOptions = {
+        ...emailOptions,
+        to: ['info@carbonus.lt'],
+        subject: `[Admin] ${emailOptions.subject} - ${data.customerName}`,
+      };
+      const adminResponse = await resend.emails.send(adminEmailOptions);
+      console.log('Status email sent to admin:', adminResponse?.id || adminResponse);
+    } catch (adminErr) {
+      console.warn('Failed to send admin copy:', adminErr);
+    }
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
