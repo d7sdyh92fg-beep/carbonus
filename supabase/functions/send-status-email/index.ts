@@ -367,6 +367,21 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
+    // Fetch full customer + reservation details from DB for admin email
+    let customerDetails: any = null;
+    let reservationDetails: any = null;
+    try {
+      const { data: res } = await supabase
+        .from('reservations')
+        .select('*, customers(*)')
+        .eq('id', data.reservationId)
+        .single();
+      if (res) {
+        reservationDetails = res;
+        customerDetails = res.customers;
+      }
+    } catch (_e) { /* continue with data from request */ }
+
     const tmpl = getEmailContent(data);
     const emailOptions: any = {
       from: 'Carbonus <info@carbonus.lt>',
