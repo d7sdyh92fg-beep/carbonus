@@ -532,6 +532,7 @@ const handler = async (req: Request): Promise<Response> => {
       reservationId, customerName, customerEmail, carName,
       startDate, endDate, totalAmount, signatureData, pickupTime, returnTime,
     }: ContractRequest = body;
+    const skipEmail = body.skipEmail === true;
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL") as string;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string;
