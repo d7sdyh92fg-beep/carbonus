@@ -291,6 +291,19 @@ export function InPersonBooking() {
     }
   };
 
+  // Check if any booked date falls between start and end
+  const hasBookedDateInRange = (start: Date, end: Date): boolean => {
+    return bookedDates.some(bookedDate => {
+      const bd = new Date(bookedDate);
+      bd.setHours(0, 0, 0, 0);
+      const s = new Date(start);
+      s.setHours(0, 0, 0, 0);
+      const e = new Date(end);
+      e.setHours(0, 0, 0, 0);
+      return bd > s && bd < e;
+    });
+  };
+
   const handleNextStep = () => {
     // Scroll to top when moving to next step
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -300,6 +313,11 @@ export function InPersonBooking() {
           !customer.address || !booking.carId || !booking.startDate || !booking.endDate ||
           !booking.pickupTime || !booking.returnTime) {
         toast.error('Prašome užpildyti visus privalomius laukus');
+        return;
+      }
+      // Validate no booked dates in range
+      if (hasBookedDateInRange(booking.startDate, booking.endDate)) {
+        toast.error('Pasirinktas laikotarpis apima užimtas datas. Pasirinkite kitą laikotarpį.');
         return;
       }
       setStep('services');
@@ -878,7 +896,14 @@ export function InPersonBooking() {
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Kainų kategorija:</span>
-                          <span className="font-medium text-primary">{PRICING.getPricingTier(getRentalDays(), booking.carId).labelKey}</span>
+                          <span className="font-medium text-primary">
+                            {(() => {
+                              const days = getRentalDays();
+                              if (days >= 7) return '7+ dienų';
+                              if (days >= 3) return '3-7 dienos';
+                              return '1-3 dienos';
+                            })()}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Dienos kaina:</span>
