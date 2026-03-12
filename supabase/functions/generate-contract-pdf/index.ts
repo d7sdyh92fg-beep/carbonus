@@ -424,6 +424,7 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
   car: any;
   reservation: any;
   signatureBytes: Uint8Array | null;
+  lessorSignatureImage: any | null;
 }) {
   const page = pdfDoc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   const { reservationId, date, customer, car, reservation } = data;
