@@ -134,10 +134,28 @@ function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: an
   return { page: currentPage, y: currentY };
 }
 
+// Fetch and embed the lessor signature image
+async function loadLessorSignature(pdfDoc: any): Promise<any | null> {
+  try {
+    const sigUrl = 'https://carbonus.lovable.app/lessor-signature.png';
+    const response = await fetch(sigUrl);
+    if (!response.ok) {
+      console.warn('Failed to fetch lessor signature:', response.status);
+      return null;
+    }
+    const sigBytes = new Uint8Array(await response.arrayBuffer());
+    const sigImage = await pdfDoc.embedPng(sigBytes);
+    return sigImage;
+  } catch (e) {
+    console.warn('Failed to load lessor signature:', e);
+    return null;
+  }
+}
+
 // ============================================================
 // MAIN CONTRACT (full text, sections I-IX, points 1-37)
 // ============================================================
-function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
+async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   reservationId: string;
   date: string;
   customer: any;
@@ -374,7 +392,20 @@ function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   y -= 60;
 
   page.drawText('Direktorius Tomas Čepulis', { x: 50, y, size: 9, font });
-  y -= 14;
+  y -= 6;
+
+  // Embed lessor signature
+  const lessorSig = await loadLessorSignature(pdfDoc);
+  if (lessorSig) {
+    const scale = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
+    const w = lessorSig.width * scale;
+    const h = lessorSig.height * scale;
+    page.drawImage(lessorSig, { x: 50, y: y - h, width: w, height: h });
+    y -= h + 4;
+  } else {
+    y -= 8;
+  }
+
   page.drawText('_________________________', { x: 50, y, size: 10, font });
   page.drawText('_________________________', { x: 320, y, size: 10, font });
 
@@ -536,9 +567,18 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
     ? `${customer.company_name}`
     : `${customer.first_name} ${customer.last_name}`;
   page.drawText(signerName, { x: 320, y, size: 9, font });
-  y -= 14;
+  y -= 6;
 
-  // Embed digital signature if available
+  // Embed lessor signature
+  const lessorSig = await loadLessorSignature(pdfDoc);
+  if (lessorSig) {
+    const scaleL = Math.min(140 / lessorSig.width, 45 / lessorSig.height);
+    const wL = lessorSig.width * scaleL;
+    const hL = lessorSig.height * scaleL;
+    page.drawImage(lessorSig, { x: 50, y: y - hL, width: wL, height: hL });
+  }
+
+  // Embed customer digital signature if available
   if (data.signatureBytes) {
     try {
       const png = await pdfDoc.embedPng(data.signatureBytes);
@@ -546,13 +586,12 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: {
       const w = png.width * scale;
       const h = png.height * scale;
       page.drawImage(png, { x: 320, y: y - h, width: w, height: h });
-      y -= h + 10;
     } catch (_e) {
       // continue without signature image
     }
   }
 
-  y -= 30;
+  y -= 50;
   page.drawText('_________________________', { x: 50, y, size: 10, font });
   page.drawText('_________________________', { x: 320, y, size: 10, font });
 
@@ -675,7 +714,7 @@ const handler = async (req: Request): Promise<Response> => {
       };
 
       // Pages 1-N: Full contract (I-IX)
-      drawFullContract(pdfDoc, font, fontBold, pdfData);
+      await drawFullContract(pdfDoc, font, fontBold, pdfData);
 
       // Last page: Appendix Nr. 1
       await drawAppendix(pdfDoc, font, fontBold, pdfData);
