@@ -407,17 +407,50 @@ serve(async (req) => {
     const response = await resend.emails.send(emailOptions);
     console.log('Status email sent to customer:', response?.id || response);
 
-    // Send copy to admin (info@carbonus.lt)
+    // Send clean admin summary to info@carbonus.lt
     try {
-      const adminEmailOptions = {
-        ...emailOptions,
+      const adminHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
+          <h2 style="color:#22c55e; border-bottom: 2px solid #22c55e; padding-bottom: 10px; margin-top: 0;">
+            Nauja rezervacija – ${data.status === 'paid' ? 'Apmokėta' : data.status}
+          </h2>
+          
+          <h3 style="margin-bottom: 8px;">Kliento informacija:</h3>
+          <div style="background:#f9fafb; padding:16px; border-radius:8px; margin-bottom:16px;">
+            <p style="margin:4px 0;"><strong>Vardas, pavardė:</strong> ${data.customerName}</p>
+            <p style="margin:4px 0;"><strong>El. paštas:</strong> ${data.customerEmail}</p>
+            <p style="margin:4px 0;"><strong>Rezervacijos Nr.:</strong> ${data.reservationId}</p>
+          </div>
+          
+          <h3 style="margin-bottom: 8px;">Rezervacijos detalės:</h3>
+          <div style="background:#f0f9ff; padding:16px; border-radius:8px; margin-bottom:16px;">
+            <p style="margin:4px 0;"><strong>Automobilis:</strong> ${data.carName}</p>
+            <p style="margin:4px 0;"><strong>Nuomos pradžia:</strong> ${data.startDate}</p>
+            <p style="margin:4px 0;"><strong>Nuomos pabaiga:</strong> ${data.endDate}</p>
+            <p style="margin:4px 0;"><strong>Suma:</strong> €${data.totalAmount}</p>
+            ${data.paymentTransactionId ? `<p style="margin:4px 0;"><strong>Mokėjimo ID:</strong> ${data.paymentTransactionId}</p>` : ''}
+          </div>
+          
+          <p style="color:#6b7280; font-size:13px;">Sutartis pridėta kaip PDF priedas.</p>
+        </div>
+      `;
+
+      const adminEmailOptions: any = {
+        from: 'Carbonus <info@carbonus.lt>',
         to: ['info@carbonus.lt'],
-        subject: `[Admin] ${emailOptions.subject} - ${data.customerName}`,
+        subject: `Rezervacija: ${data.customerName} – ${data.carName} (${data.startDate})`,
+        html: adminHtml,
       };
+
+      // Attach same PDF as customer got
+      if (emailOptions.attachments) {
+        adminEmailOptions.attachments = emailOptions.attachments;
+      }
+
       const adminResponse = await resend.emails.send(adminEmailOptions);
-      console.log('Status email sent to admin:', adminResponse?.id || adminResponse);
+      console.log('Admin email sent:', adminResponse?.id || adminResponse);
     } catch (adminErr) {
-      console.warn('Failed to send admin copy:', adminErr);
+      console.warn('Failed to send admin email:', adminErr);
     }
 
     return new Response(JSON.stringify({ ok: true }), {
