@@ -440,19 +440,19 @@ async function drawAppendix(pdfDoc: any, font: any, fontBold: any, data: any) {
   const returnTime = reservation.return_time || '10:00';
 
   page.drawText('NUOMOS PRADŽIA:', { x: LEFT, y, size: 10, font: fontBold });
-  page.drawText('NUOMOS PABAIGA:', { x: 300, y, size: 10, font: fontBold });
+  page.drawText('NUOMOS PABAIGA:', { x: 340, y, size: 10, font: fontBold });
   y -= 18;
 
   page.drawText(`${reservation.start_date}  ${pickupTime} val.`, { x: TEXT_LEFT, y, size: 10, font });
-  page.drawText(`${reservation.end_date}  ${returnTime} val.`, { x: 310, y, size: 10, font });
+  page.drawText(`${reservation.end_date}  ${returnTime} val.`, { x: 340, y, size: 10, font });
   y -= 18;
 
   page.drawText(`Nuomos laikotarpis (paromis): ${reservation.rental_days}`, { x: TEXT_LEFT, y, size: 10, font });
-  page.drawText(`Nuomos kaina (iš viso) (EUR): ${reservation.total_rental_cost}`, { x: 310, y, size: 10, font });
+  page.drawText(`Nuomos kaina (iš viso) (EUR): ${reservation.total_rental_cost}`, { x: 340, y, size: 10, font });
   y -= 18;
 
   page.drawText(`Nuomos kaina (už 1 parą) (EUR): ${reservation.daily_rate}`, { x: TEXT_LEFT, y, size: 10, font });
-  page.drawText(`Užstato suma: ${reservation.deposit_amount} (EUR).`, { x: 310, y, size: 10, font });
+  page.drawText(`Užstato suma: ${reservation.deposit_amount} (EUR).`, { x: 340, y, size: 10, font });
   y -= 24;
 
 
