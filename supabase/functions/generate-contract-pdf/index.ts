@@ -598,8 +598,16 @@ const handler = async (req: Request): Promise<Response> => {
       generatedPdfBytes = await pdfDoc.save();
       const pdfFilePath = `${reservationId}/nuomos_sutartis_${reservationId}.pdf`;
       const { error: pdfUploadError } = await supabase.storage.from('contracts').upload(pdfFilePath, generatedPdfBytes, { contentType: 'application/pdf', upsert: true });
-      if (!pdfUploadError) contractPath = pdfFilePath;
-      else console.error('PDF upload failed:', pdfUploadError);
+      if (!pdfUploadError) {
+        contractPath = pdfFilePath;
+        // Persist generated contract path so other functions (e.g. send-status-email) attach the same file
+        await supabase
+          .from('reservations')
+          .update({ contract_pdf_url: pdfFilePath })
+          .eq('id', reservationId);
+      } else {
+        console.error('PDF upload failed:', pdfUploadError);
+      }
     } catch (pdfErr) {
       console.error('PDF generation failed:', pdfErr);
     }
