@@ -315,6 +315,31 @@ export const EmailTester: React.FC = () => {
             </Card>
           ))}
         </div>
+
+        {/* Contract Test Button */}
+        <Card className="border-2 border-primary/30 hover:shadow-md transition-shadow">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h4 className="font-semibold flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Sutarties PDF testas
+                </h4>
+                <p className="text-xs text-muted-foreground">
+                  Sugeneruoja sutartį pagal naujausią rezervaciją ir siunčia į nurodytą el. paštą + info@carbonus.lt
+                </p>
+              </div>
+              <Button
+                onClick={sendTestContract}
+                disabled={isGeneratingContract || !testEmail}
+                className="ml-4"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                {isGeneratingContract ? 'Generuojama...' : 'Generuoti ir siųsti'}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </CardContent>
 
       <EmailPreview
