@@ -591,7 +591,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Bendra suma:</strong> €${resData.total_amount}</p>
           </div>
           ${signatureUrl ? `<div style="margin: 20px 0;"><p><strong>Parašas:</strong></p><img src="${signatureUrl}" alt="Parašas" style="max-width:280px;border:1px solid #ddd;padding:8px;"/></div>` : ''}
-          <p style="color: #6b7280; font-size: 14px;">Sutartis pridėta kaip PDF. Klientui (${customerEmail}) taip pat išsiųsta.</p>
+          <p style="color: #6b7280; font-size: 14px;">Sutartis pridėta kaip PDF. Klientui (${recipientEmail}) taip pat išsiųsta.</p>
         </div>
       `,
       ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
