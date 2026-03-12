@@ -532,6 +532,7 @@ const handler = async (req: Request): Promise<Response> => {
       reservationId, customerName, customerEmail, carName,
       startDate, endDate, totalAmount, signatureData, pickupTime, returnTime,
     }: ContractRequest = body;
+    const skipEmail = body.skipEmail === true;
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL") as string;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string;
@@ -621,6 +622,7 @@ const handler = async (req: Request): Promise<Response> => {
       } catch (e) { console.error('Failed to prepare PDF attachment:', e); }
     }
 
+    if (!skipEmail) {
     // Email to customer
     const emailSummary = `
       <!DOCTYPE html><html><head><meta charset="utf-8">
@@ -695,6 +697,9 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     console.log("Contract emails sent");
+    } else {
+      console.log("skipEmail=true, skipping contract emails");
+    }
 
     return new Response(
       JSON.stringify({ success: true, contractUrl: contractPath, message: "Contract generated and sent successfully" }),

@@ -439,7 +439,7 @@ export function InPersonBooking() {
         });
       }
 
-      // Generate and send contract
+      // Generate contract PDF (stored in storage, attached by send-status-email)
       await supabase.functions.invoke('generate-contract-pdf', {
         body: {
           reservationId: reservation.id,
@@ -449,7 +449,8 @@ export function InPersonBooking() {
           startDate: format(booking.startDate!, 'yyyy-MM-dd'),
           endDate: format(booking.endDate!, 'yyyy-MM-dd'),
           totalAmount: totalAmount,
-          signatureData: signatureData
+          signatureData: signatureData,
+          skipEmail: true
         }
       });
 
