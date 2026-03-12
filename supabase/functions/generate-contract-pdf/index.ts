@@ -134,10 +134,28 @@ function drawParagraph(pdfDoc: any, page: any, y: number, text: string, font: an
   return { page: currentPage, y: currentY };
 }
 
+// Fetch and embed the lessor signature image
+async function loadLessorSignature(pdfDoc: any): Promise<any | null> {
+  try {
+    const sigUrl = 'https://carbonus.lovable.app/lessor-signature.png';
+    const response = await fetch(sigUrl);
+    if (!response.ok) {
+      console.warn('Failed to fetch lessor signature:', response.status);
+      return null;
+    }
+    const sigBytes = new Uint8Array(await response.arrayBuffer());
+    const sigImage = await pdfDoc.embedPng(sigBytes);
+    return sigImage;
+  } catch (e) {
+    console.warn('Failed to load lessor signature:', e);
+    return null;
+  }
+}
+
 // ============================================================
 // MAIN CONTRACT (full text, sections I-IX, points 1-37)
 // ============================================================
-function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
+async function drawFullContract(pdfDoc: any, font: any, fontBold: any, data: {
   reservationId: string;
   date: string;
   customer: any;
