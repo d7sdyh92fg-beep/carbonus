@@ -154,7 +154,7 @@ export function Fleet() {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardContent className="p-0">
-                <div className="relative overflow-hidden rounded-t-lg" style={{ background: car.id === "4" ? '#e9eaec' : 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
+                <div className="relative overflow-hidden rounded-t-lg" style={{ background: car.id === "4" ? '#e4e5e7' : 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
                   <div className="relative">
                     <img
                       src={car.image}
