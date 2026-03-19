@@ -530,12 +530,13 @@ const CarDetail = () => {
                                 <button
                                   onClick={() => {
                                     const priceStr = dbCarData.price_package_wedding!;
-                                    const lowerPrice = parseInt(priceStr.split('-')[0]);
+                                    const parts = priceStr.split('-').map(Number);
+                                    const midPrice = parts.length === 2 ? Math.round((parts[0] + parts[1]) / 2) : parts[0];
                                     setSelectedPackage({
                                       type: 'wedding',
                                       name: t('carDetail.mercPricing.wedding'),
-                                      price: lowerPrice,
-                                      priceDisplay: priceStr,
+                                      price: midPrice,
+                                      priceDisplay: String(midPrice),
                                     });
                                     const bookingSection = document.getElementById('booking-section');
                                     bookingSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
