@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useBooking } from "@/contexts/BookingContext";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/hooks/use-translations";
-import { PRICING } from "@/config/pricing";
+
 
 interface BookingCalendarProps {
   carId: string;
