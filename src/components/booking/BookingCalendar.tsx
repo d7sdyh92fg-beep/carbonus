@@ -20,6 +20,8 @@ interface BookingCalendarProps {
   carId: string;
   carName: string;
   carImage?: string;
+  selectedPackage?: { type: 'romantic' | 'wedding'; name: string; price: number; priceDisplay: string } | null;
+  onClearPackage?: () => void;
 }
 
 const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage }) => {
