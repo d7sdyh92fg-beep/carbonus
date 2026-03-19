@@ -2461,7 +2461,7 @@ export const translations = {
         feature8: "Safety systems"
       },
       "6": {
-        description: "Mercedes-Benz SLK 2015 convertible - stylish and powerful sports car with automatic transmission. 1.8L turbo petrol engine ensures excellent dynamics. Perfect choice for an enjoyable open-top driving experience.",
+        description: "Mercedes-Benz SLK convertible – a stylish and powerful sports car with automatic transmission and a retractable metal roof. The perfect choice for weddings, photo shoots, a romantic occasion, or simply an unforgettable open-top drive through the scenic roads of Dzūkija. We offer special emotional packages – a romantic evening or wedding transport.",
         feature1: "Automatic transmission",
         feature2: "Retractable roof",
         feature3: "1.8L Turbo engine",
