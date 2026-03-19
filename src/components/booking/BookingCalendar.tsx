@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,20 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   const [isLoadingDates, setIsLoadingDates] = useState(true);
   const [pickupTime, setPickupTime] = useState('10:00');
   const [returnTime, setReturnTime] = useState('10:00');
+
+  // Fetch car pricing from database
+  const { data: dbCarPricing } = useQuery({
+    queryKey: ['car-pricing-booking', carId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cars')
+        .select('price_tier1, price_tier2, price_tier3')
+        .eq('id', carId)
+        .single();
+      if (error) return null;
+      return data;
+    },
+  });
 
   // Fetch booked dates on component mount and set up real-time updates
   useEffect(() => {
@@ -111,12 +126,19 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     return differenceInDays(selectedRange.to, selectedRange.from) + 1;
   };
 
+  const getDbDailyRate = (days: number): number => {
+    if (dbCarPricing?.price_tier1 != null) {
+      if (days >= 7 && dbCarPricing.price_tier3 != null) return Number(dbCarPricing.price_tier3);
+      if (days >= 3 && dbCarPricing.price_tier2 != null) return Number(dbCarPricing.price_tier2);
+      return Number(dbCarPricing.price_tier1);
+    }
+    return PRICING.getDailyRate(days, carId);
+  };
+
   const getTotalPrice = (): number => {
     const days = getDaysCount();
     if (days === 0) return 0;
-    
-    const dailyRate = PRICING.getDailyRate(days, carId);
-    return dailyRate * days;
+    return getDbDailyRate(days) * days;
   };
 
   const getPriceCategory = (): string => {
@@ -302,15 +324,15 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
             <div className="space-y-2">
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">{t('booking.category1to3')}</span>
-                <span className="font-semibold">€50{t('booking.perDay')}</span>
+                <span className="font-semibold">€{dbCarPricing?.price_tier1 ?? 50}{t('booking.perDay')}</span>
               </div>
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">{t('booking.category3to7')}</span>
-                <span className="font-semibold">€40{t('booking.perDay')}</span>
+                <span className="font-semibold">€{dbCarPricing?.price_tier2 ?? 40}{t('booking.perDay')}</span>
               </div>
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">{t('booking.category7plus')}</span>
-                <span className="font-semibold">€30{t('booking.perDay')}</span>
+                <span className="font-semibold">€{dbCarPricing?.price_tier3 ?? 30}{t('booking.perDay')}</span>
               </div>
             </div>
           </div>
@@ -329,7 +351,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{t('booking.dailyRate')}</span>
-                    <span className="font-semibold">€{PRICING.getDailyRate(getDaysCount(), carId)}</span>
+                    <span className="font-semibold">€{getDbDailyRate(getDaysCount())}</span>
                   </div>
                 </div>
               </div>

@@ -596,15 +596,14 @@ export const translations = {
       },
       mercPricing: {
         title: "Kainodara",
-        weekday7: "Darbo diena (7+ d.)",
-        weekday3: "Darbo diena (3–7 d.)",
-        weekday1: "Darbo diena (1–3 d.)",
-        weekend: "Savaitgalis",
-        summer: "Vasaros pikas (V–IX mėn.)",
+        weekday7: "7+ dienos",
+        weekday3: "3–7 dienos",
+        weekday1: "1–3 dienos",
         day: "para",
         packagesTitle: "Emociniai paketai",
         romantic: "Romantiškas vakaras",
-        wedding: "Vestuvės / Fotosesija"
+        wedding: "Vestuvės / Fotosesija",
+        orderPackage: "Užsakyti"
       }
     },
 
@@ -2393,15 +2392,14 @@ export const translations = {
       },
       mercPricing: {
         title: "Pricing",
-        weekday7: "Weekday (7+ days)",
-        weekday3: "Weekday (3–7 days)",
-        weekday1: "Weekday (1–3 days)",
-        weekend: "Weekend",
-        summer: "Summer peak (May–Sep)",
+        weekday7: "7+ days",
+        weekday3: "3–7 days",
+        weekday1: "1–3 days",
         day: "day",
         packagesTitle: "Special Packages",
         romantic: "Romantic evening",
-        wedding: "Wedding / Photo shoot"
+        wedding: "Wedding / Photo shoot",
+        orderPackage: "Order"
       }
     },
 

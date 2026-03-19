@@ -7,7 +7,7 @@ import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight, Crown, Heart, Camera } from "lucide-react";
+import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight, Crown, Heart, MessageCircle } from "lucide-react";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import { useTranslations } from "@/hooks/use-translations";
 import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
@@ -478,12 +478,6 @@ const CarDetail = () => {
                           <span className="text-muted-foreground">{t('carDetail.mercPricing.weekday1')}</span>
                           <span className="font-bold text-foreground">{dbCarData.price_tier1} €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
                         </div>
-                        {dbCarData.price_weekend != null && (
-                          <div className="flex justify-between items-center py-1.5">
-                            <span className="text-muted-foreground">{t('carDetail.mercPricing.weekend')}</span>
-                            <span className="font-bold text-foreground">{dbCarData.price_weekend} €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
-                          </div>
-                        )}
                       </div>
                     </div>
 
@@ -494,23 +488,40 @@ const CarDetail = () => {
                           <Heart className="w-4 h-4 text-rose-500" />
                           {t('carDetail.mercPricing.packagesTitle')}
                         </h4>
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-3 text-sm">
                           {dbCarData.price_package_romantic && (
-                            <div className="flex justify-between items-center py-1.5 border-b border-amber-200/30 dark:border-amber-800/20">
+                            <div className="flex justify-between items-center py-2 border-b border-amber-200/30 dark:border-amber-800/20">
                               <div>
                                 <span className="font-medium text-foreground">{t('carDetail.mercPricing.romantic')}</span>
                                 <span className="text-xs text-muted-foreground ml-2">(4–5 val.)</span>
                               </div>
-                              <span className="font-bold text-foreground">{dbCarData.price_package_romantic} €</span>
+                              <div className="flex items-center gap-3">
+                                <span className="font-bold text-foreground">{dbCarData.price_package_romantic} €</span>
+                                <a
+                                  href={language === 'en' ? '/contact' : '/kontaktai'}
+                                  className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
+                                >
+                                  <MessageCircle className="w-3 h-3" />
+                                  {t('carDetail.mercPricing.orderPackage')}
+                                </a>
+                              </div>
                             </div>
                           )}
                           {dbCarData.price_package_wedding && (
-                            <div className="flex justify-between items-center py-1.5">
-                              <div className="flex items-center gap-1">
-                                <Camera className="w-3.5 h-3.5 text-muted-foreground" />
+                            <div className="flex justify-between items-center py-2">
+                              <div>
                                 <span className="font-medium text-foreground">{t('carDetail.mercPricing.wedding')}</span>
                               </div>
-                              <span className="font-bold text-foreground">{dbCarData.price_package_wedding} €</span>
+                              <div className="flex items-center gap-3">
+                                <span className="font-bold text-foreground">{dbCarData.price_package_wedding} €</span>
+                                <a
+                                  href={language === 'en' ? '/contact' : '/kontaktai'}
+                                  className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
+                                >
+                                  <MessageCircle className="w-3 h-3" />
+                                  {t('carDetail.mercPricing.orderPackage')}
+                                </a>
+                              </div>
                             </div>
                           )}
                         </div>
