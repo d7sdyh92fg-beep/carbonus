@@ -83,7 +83,7 @@ export function Fleet() {
     {
       id: "6",
       name: "Mercedes-Benz SLK",
-      price: "50 EUR",
+      price: "90 EUR",
       image: mercedesSlkSide,
       category: "Kabrioletas",
       passengers: 2,
