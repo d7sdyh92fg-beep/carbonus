@@ -155,17 +155,24 @@ export function Fleet() {
             >
               <CardContent className="p-0">
                 <div className="relative overflow-hidden rounded-t-lg" style={{ background: 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
-                  <img
-                    src={car.image}
-                    alt={car.name}
-                    className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
-                      car.name === "Volkswagen Passat" 
-                        ? "scale-[0.85] group-hover:scale-[0.9]" 
-                        : car.name === "Mercedes-Benz SLK"
-                        ? "scale-[0.85] group-hover:scale-[0.9]"
-                        : "scale-100 group-hover:scale-105"
-                    }`}
-                  />
+                  <div className="relative">
+                    <img
+                      src={car.image}
+                      alt={car.name}
+                      className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
+                        car.name === "Volkswagen Passat" 
+                          ? "scale-[0.85] group-hover:scale-[0.9]" 
+                          : car.name === "Mercedes-Benz SLK"
+                          ? "scale-[0.85] group-hover:scale-[0.9]"
+                          : "scale-100 group-hover:scale-105"
+                      }`}
+                    />
+                    {/* Uniform shadow under all cars */}
+                    <div 
+                      className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[70%] h-3 rounded-[50%]"
+                      style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, transparent 70%)' }}
+                    />
+                  </div>
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
                       {t(`car.categories.${normalizeForTranslation(car.category)}`)}
