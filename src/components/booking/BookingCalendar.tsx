@@ -351,7 +351,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{t('booking.dailyRate')}</span>
-                    <span className="font-semibold">€{PRICING.getDailyRate(getDaysCount(), carId)}</span>
+                    <span className="font-semibold">€{getDbDailyRate(getDaysCount())}</span>
                   </div>
                 </div>
               </div>
