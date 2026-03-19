@@ -221,7 +221,7 @@ const CarDetail = () => {
     "6": {
       id: "6",
       name: "Mercedes-Benz SLK",
-      price: "nuo 50 EUR",
+      price: "nuo 90 EUR",
       image: mercedesSlkFront,
       images: [
         mercedesSlkFront,
@@ -235,7 +235,8 @@ const CarDetail = () => {
       year: "2015",
       doors: "2",
       trunk: "225 L",
-      engineType: "1.8L Turbo"
+      engineType: "1.8L Turbo",
+      isPremium: true
     }
   };
 
