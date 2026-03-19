@@ -52,6 +52,13 @@ interface CarDetails {
   service_interval_km: number;
   notes: string | null;
   is_available: boolean;
+  is_premium: boolean;
+  price_tier1: number | null;
+  price_tier2: number | null;
+  price_tier3: number | null;
+  price_weekend: number | null;
+  price_package_romantic: string | null;
+  price_package_wedding: string | null;
 }
 
 interface ServiceRecord {
