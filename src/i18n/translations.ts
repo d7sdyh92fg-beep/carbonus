@@ -665,7 +665,7 @@ export const translations = {
         feature8: "Saugos sistemos"
       },
       "6": {
-        description: "Mercedes-Benz SLK 2015 kabrioletas - stilingas ir galingas sportinis automobilis su automatine pavarų dėže. 1.8L benzininis variklis su turbo užtikrina puikų dinamiškumą. Tobulas pasirinkimas maloniam vairavimui atviru stogu.",
+        description: "Mercedes-Benz SLK kabrioletas – stilingas ir galingas sportinis automobilis su automatine pavarų dėže ir atidaromu metaliniu stogu. Idealus pasirinkimas vestuvėms, fotosesijoms, romantiškai progai ar tiesiog nepamirštamam pasivažinėjimui atviru stogu Dzūkijos keliais. Siūlome specialius emocinius paketus – romantišką vakarą ar vestuvių transportą.",
         feature1: "Automatinė pavarų dėžė",
         feature2: "Atidaromas stogas",
         feature3: "1.8L Turbo variklis",
@@ -2461,7 +2461,7 @@ export const translations = {
         feature8: "Safety systems"
       },
       "6": {
-        description: "Mercedes-Benz SLK 2015 convertible - stylish and powerful sports car with automatic transmission. 1.8L turbo petrol engine ensures excellent dynamics. Perfect choice for an enjoyable open-top driving experience.",
+        description: "Mercedes-Benz SLK convertible – a stylish and powerful sports car with automatic transmission and a retractable metal roof. The perfect choice for weddings, photo shoots, a romantic occasion, or simply an unforgettable open-top drive through the scenic roads of Dzūkija. We offer special emotional packages – a romantic evening or wedding transport.",
         feature1: "Automatic transmission",
         feature2: "Retractable roof",
         feature3: "1.8L Turbo engine",
