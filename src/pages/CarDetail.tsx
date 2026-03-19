@@ -225,8 +225,6 @@ const CarDetail = () => {
       image: mercedesSlkFront,
       images: [
         mercedesSlkFront,
-        mercedesSlkSide,
-        mercedesSlkSideRight,
         mercedesSlkRear
       ],
       category: "Kabrioletas",
