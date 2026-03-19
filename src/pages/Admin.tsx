@@ -855,6 +855,12 @@ const Admin = () => {
                                   style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%)' }}
                                 />
                               )}
+                              {car.id === "7" && (
+                                <div 
+                                  className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-[93%] h-5 rounded-[50%]"
+                                  style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%)' }}
+                                />
+                              )}
                             </div>
                             <Badge className="absolute top-2 right-2 text-xs">{car.category}</Badge>
                           </div>
