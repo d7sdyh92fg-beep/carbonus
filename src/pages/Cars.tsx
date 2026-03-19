@@ -356,16 +356,29 @@ const Cars = () => {
                 className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card"
               >
                 <CardContent className="p-0">
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img
-                      src={car.image}
-                      alt={car.name}
-                      className={`w-full h-48 transition-transform duration-300 ${
-                        car.name === "Volkswagen Passat" 
-                          ? "object-contain object-center scale-[1.15] sm:object-cover sm:scale-[0.8] lg:object-contain lg:scale-[1.3] -translate-y-2 group-hover:scale-[1.2] sm:group-hover:scale-[0.85] lg:group-hover:scale-[1.36]" 
-                          : "object-cover group-hover:scale-105"
-                      }`}
-                    />
+                  <div className="relative overflow-hidden rounded-t-lg" style={{ background: 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
+                    <div className="relative">
+                      <img
+                        src={car.image}
+                        alt={car.name}
+                        className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
+                          car.name === "Volkswagen Passat" 
+                            ? "scale-[0.92] group-hover:scale-[0.97]" 
+                            : car.name === "Mercedes-Benz SLK"
+                            ? "scale-[0.92] group-hover:scale-[0.97] translate-y-4"
+                            : car.id === "5"
+                            ? "scale-100 group-hover:scale-105 translate-y-4"
+                            : "scale-100 group-hover:scale-105 translate-y-4"
+                        }`}
+                      />
+                      {/* Shadow under KIA CEED 2020 and Mercedes SLK only */}
+                      {(car.id === "5" || car.id === "6") && (
+                        <div 
+                          className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                          style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
+                        />
+                      )}
+                    </div>
                     <div className="absolute top-4 left-4">
                       <Badge variant="secondary" className="bg-primary text-primary-foreground">
                         {t(`car.categories.${normalizeForTranslation(car.category)}`)}
