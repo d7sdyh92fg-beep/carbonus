@@ -112,12 +112,19 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     return differenceInDays(selectedRange.to, selectedRange.from) + 1;
   };
 
+  const getDbDailyRate = (days: number): number => {
+    if (dbCarPricing?.price_tier1 != null) {
+      if (days >= 7 && dbCarPricing.price_tier3 != null) return Number(dbCarPricing.price_tier3);
+      if (days >= 3 && dbCarPricing.price_tier2 != null) return Number(dbCarPricing.price_tier2);
+      return Number(dbCarPricing.price_tier1);
+    }
+    return PRICING.getDailyRate(days, carId);
+  };
+
   const getTotalPrice = (): number => {
     const days = getDaysCount();
     if (days === 0) return 0;
-    
-    const dailyRate = PRICING.getDailyRate(days, carId);
-    return dailyRate * days;
+    return getDbDailyRate(days) * days;
   };
 
   const getPriceCategory = (): string => {
