@@ -5,7 +5,7 @@ import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Users, Fuel, Settings, Star, CheckCircle, ChevronLeft, ChevronRight, Crown, Heart, Camera } from "lucide-react";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import { useTranslations } from "@/hooks/use-translations";
 import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
