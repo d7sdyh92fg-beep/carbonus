@@ -19,7 +19,7 @@ import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, B
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { DigitalSignature } from './DigitalSignature';
 import { AdditionalService } from '@/contexts/BookingContext';
-import { PRICING } from '@/config/pricing';
+import { useQuery } from '@tanstack/react-query';
 
 interface Customer {
   firstName: string;
