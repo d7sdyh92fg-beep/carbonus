@@ -53,6 +53,23 @@ const Cars = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
+  // Fetch premium status and pricing from DB
+  const { data: dbCars } = useQuery({
+    queryKey: ['cars-premium-status'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('cars')
+        .select('id, is_premium, price_tier1, price_tier3');
+      return data || [];
+    },
+  });
+  const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
+  const getCarDbPrice = (carId: string) => {
+    const dbCar = (dbCars || []).find(c => c.id === carId);
+    if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
+    return null;
+  };
+
   useEffect(() => {
     // Set page title and meta tags
     document.title = t('cars.meta.title');
