@@ -668,6 +668,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                           <SelectItem value="Universalas">Universalas</SelectItem>
                           <SelectItem value="Minivenas">Minivenas</SelectItem>
                           <SelectItem value="Visureigis">Visureigis</SelectItem>
+                          <SelectItem value="Kabrioletas">Kabrioletas</SelectItem>
                         </SelectContent>
                       </Select>
                     ) : (
@@ -676,15 +677,19 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Dienos kaina</Label>
+                    <Label>Premium automobilis</Label>
                     {isEditing ? (
-                      <Input
-                        type="number"
-                        value={editForm.price_per_day || ''}
-                        onChange={(e) => setEditForm({ ...editForm, price_per_day: Number(e.target.value) })}
-                      />
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={editForm.is_premium || false}
+                          onChange={(e) => setEditForm({ ...editForm, is_premium: e.target.checked })}
+                          className="h-4 w-4"
+                        />
+                        <span className="text-sm">{editForm.is_premium ? 'Taip' : 'Ne'}</span>
+                      </div>
                     ) : (
-                      <p className="text-sm">€{carDetails.price_per_day}</p>
+                      <p className="text-sm">{carDetails.is_premium ? '⭐ Taip' : 'Ne'}</p>
                     )}
                   </div>
 
@@ -734,6 +739,95 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     ) : (
                       <p className="text-sm">{carDetails.fuel}</p>
                     )}
+                  </div>
+                </div>
+
+                {/* Pricing Tiers */}
+                <div className="mt-6 pt-4 border-t">
+                  <h4 className="font-semibold mb-4 flex items-center gap-2">
+                    💰 Kainodara pagal trukmę
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="space-y-2">
+                      <Label>1–3 d. (€/para)</Label>
+                      {isEditing ? (
+                        <Input
+                          type="number"
+                          value={editForm.price_tier1 ?? ''}
+                          onChange={(e) => setEditForm({ ...editForm, price_tier1: e.target.value ? Number(e.target.value) : null })}
+                          placeholder="pvz. 50"
+                        />
+                      ) : (
+                        <p className="text-sm font-medium">{carDetails.price_tier1 != null ? `€${carDetails.price_tier1}` : '-'}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label>3–7 d. (€/para)</Label>
+                      {isEditing ? (
+                        <Input
+                          type="number"
+                          value={editForm.price_tier2 ?? ''}
+                          onChange={(e) => setEditForm({ ...editForm, price_tier2: e.target.value ? Number(e.target.value) : null })}
+                          placeholder="pvz. 40"
+                        />
+                      ) : (
+                        <p className="text-sm font-medium">{carDetails.price_tier2 != null ? `€${carDetails.price_tier2}` : '-'}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label>7+ d. (€/para)</Label>
+                      {isEditing ? (
+                        <Input
+                          type="number"
+                          value={editForm.price_tier3 ?? ''}
+                          onChange={(e) => setEditForm({ ...editForm, price_tier3: e.target.value ? Number(e.target.value) : null })}
+                          placeholder="pvz. 30"
+                        />
+                      ) : (
+                        <p className="text-sm font-medium">{carDetails.price_tier3 != null ? `€${carDetails.price_tier3}` : '-'}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Savaitgalis (€/para)</Label>
+                      {isEditing ? (
+                        <Input
+                          type="number"
+                          value={editForm.price_weekend ?? ''}
+                          onChange={(e) => setEditForm({ ...editForm, price_weekend: e.target.value ? Number(e.target.value) : null })}
+                          placeholder="pvz. 60"
+                        />
+                      ) : (
+                        <p className="text-sm font-medium">{carDetails.price_weekend != null ? `€${carDetails.price_weekend}` : '-'}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Special Packages */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div className="space-y-2">
+                      <Label>Romantiškas vakaras (kaina)</Label>
+                      {isEditing ? (
+                        <Input
+                          value={editForm.price_package_romantic ?? ''}
+                          onChange={(e) => setEditForm({ ...editForm, price_package_romantic: e.target.value || null })}
+                          placeholder="pvz. 70-90"
+                        />
+                      ) : (
+                        <p className="text-sm font-medium">{carDetails.price_package_romantic ? `€${carDetails.price_package_romantic}` : '-'}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Vestuvės / Fotosesija (kaina)</Label>
+                      {isEditing ? (
+                        <Input
+                          value={editForm.price_package_wedding ?? ''}
+                          onChange={(e) => setEditForm({ ...editForm, price_package_wedding: e.target.value || null })}
+                          placeholder="pvz. 150-200"
+                        />
+                      ) : (
+                        <p className="text-sm font-medium">{carDetails.price_package_wedding ? `€${carDetails.price_package_wedding}` : '-'}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </CardContent>
