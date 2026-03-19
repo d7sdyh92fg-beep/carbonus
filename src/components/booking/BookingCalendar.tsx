@@ -165,6 +165,14 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     );
   };
 
+  const getPackageTotal = (): number => {
+    if (!selectedPackage) return 0;
+    if (selectedPackage.type === 'romantic') return selectedPackage.price;
+    // Wedding: price per day × days
+    const days = getDaysCount();
+    return days > 0 ? selectedPackage.price * days : selectedPackage.price;
+  };
+
   const handleBooking = () => {
     if (!selectedRange.from || !selectedRange.to) {
       toast({
@@ -175,7 +183,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       return;
     }
 
-    const finalPrice = selectedPackage ? selectedPackage.price : getTotalPrice();
+    const finalPrice = selectedPackage ? getPackageTotal() : getTotalPrice();
 
     setBookingData({
       carId,
@@ -188,7 +196,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       rentalDays: getDaysCount(),
       basePrice: finalPrice,
       services: [],
-      selectedPackage: selectedPackage || undefined,
+      selectedPackage: selectedPackage ? { ...selectedPackage, price: finalPrice, priceDisplay: String(finalPrice) } : undefined,
     });
 
     const servicesRoute = language === 'en' 
