@@ -266,7 +266,7 @@ const Cars = () => {
     {
       id: "3",
       name: "Volkswagen Passat",
-      price: PRICING.priceFrom,
+      price: "nuo 30 EUR",
       image: vwPassatSideClean,
       category: "Sedanas",
       passengers: 5,
