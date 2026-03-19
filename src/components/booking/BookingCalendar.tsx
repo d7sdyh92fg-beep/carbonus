@@ -150,7 +150,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
     if (range) {
-      setSelectedRange(range);
+      // Romantic package: force single day
+      if (selectedPackage?.type === 'romantic' && range.from) {
+        setSelectedRange({ from: range.from, to: range.from });
+      } else {
+        setSelectedRange(range);
+      }
     }
   };
 
