@@ -171,7 +171,7 @@ export function Fleet() {
                         : car.name === "Mercedes-Benz SLK"
                         ? "scale-[0.92] group-hover:scale-[0.97] translate-y-4"
                         : car.id === "5"
-                        ? "scale-100 group-hover:scale-105 translate-y-4"
+                        ? "scale-[1.15] group-hover:scale-[1.20] translate-y-4"
                         : "scale-100 group-hover:scale-105 translate-y-4"
                     }`}
                     />
