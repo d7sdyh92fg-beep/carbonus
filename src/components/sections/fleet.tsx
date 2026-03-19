@@ -79,17 +79,17 @@ export function Fleet() {
   // Only show available cars (BMW and Chrysler are sold)
   const cars: Car[] = [
     {
-      id: "3",
-      name: "Volkswagen Passat",
-      price: "30 EUR",
-      image: vwPassatSideClean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Dyzelinas",
-      transmission: "Mechaninė",
-      rating: 4.7,
-      year: 2012,
-      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "50 EUR",
+      image: mercedesSlkSide,
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: 2015,
+      features: ["Atidaromas stogas", "Automatinė pavarų dėžė", "Sportinis dizainas"]
     },
     {
       id: "4",
@@ -118,17 +118,17 @@ export function Fleet() {
       features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
     },
     {
-      id: "6",
-      name: "Mercedes-Benz SLK",
-      price: "50 EUR",
-      image: mercedesSlkSide,
-      category: "Kabrioletas",
-      passengers: 2,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.9,
-      year: 2015,
-      features: ["Atidaromas stogas", "Automatinė pavarų dėžė", "Sportinis dizainas"]
+      id: "3",
+      name: "Volkswagen Passat",
+      price: "30 EUR",
+      image: vwPassatSideClean,
+      category: "Sedanas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.7,
+      year: 2012,
+      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     }
   ];
 
