@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
