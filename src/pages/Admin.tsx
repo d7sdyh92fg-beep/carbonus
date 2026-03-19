@@ -45,6 +45,7 @@ const getCarImage = (car: any) => {
     'Chrysler Town & Country': 'chryslerTownCountrySide',
     'Volkswagen Passat': 'vwPassatSideClean',
     'KIA CEED': car.category === 'Universalas' ? 'kiaCeedWagonSideClean' : 'kiaCeedHatchbackSideCleanGray',
+    'Mercedes-Benz SLK': 'mercedesSlkSideClean',
   };
   
   const imageKey = nameToImageMap[car.name] || 'bmw3Clean';
