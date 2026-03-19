@@ -169,11 +169,13 @@ export function Fleet() {
                         : "scale-100 group-hover:scale-105 translate-y-4"
                     }`}
                     />
-                    {/* Uniform shadow under all cars */}
-                    <div 
-                      className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
-                      style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%)' }}
-                    />
+                    {/* Uniform shadow under cars (skip Passat and KIA CEED 2013) */}
+                    {car.id !== "3" && car.id !== "4" && (
+                      <div 
+                        className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                        style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%)' }}
+                      />
+                    )}
                   </div>
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
