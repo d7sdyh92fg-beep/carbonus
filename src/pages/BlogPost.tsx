@@ -75,7 +75,7 @@ const BlogPost = () => {
       title: t('blog.posts.business.title'),
       excerpt: t('blog.posts.business.excerpt'),
       author: t('blog.posts.business.author'),
-      publishDate: "2024-11-30",
+      publishDate: "2025-11-30",
       readTime: t('blog.posts.business.readTime'),
       category: t('blog.posts.business.category'),
       image: blogBusinessTravel,
