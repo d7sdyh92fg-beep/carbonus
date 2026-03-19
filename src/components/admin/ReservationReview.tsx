@@ -47,6 +47,7 @@ interface Reservation {
   condition_return?: string;
   return_notes?: string;
   returned_at?: string;
+  pricing_notes?: string;
 }
 
 interface ContractSignature {
@@ -662,6 +663,20 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                   <p className="text-sm font-medium">€{reservation.total_amount}</p>
                 </div>
               </div>
+              {reservation.pricing_notes && reservation.pricing_notes.includes('📦') && (
+                <div className="p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200/50 dark:border-amber-800/30">
+                  <Label className="text-amber-700 dark:text-amber-400">Emocinis paketas</Label>
+                  <p className="text-sm font-medium mt-1">
+                    {reservation.pricing_notes.split('. ').find(n => n.includes('📦'))?.replace('📦 ', '')}
+                  </p>
+                </div>
+              )}
+              {reservation.pricing_notes && !reservation.pricing_notes.includes('📦') && reservation.pricing_notes.trim() !== '' && (
+                <div>
+                  <Label>Kainodaros pastabos</Label>
+                  <p className="text-sm font-medium text-muted-foreground">{reservation.pricing_notes}</p>
+                </div>
+              )}
               <div>
                 <Label>Sukurta</Label>
                 <p className="text-sm font-medium">{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</p>
