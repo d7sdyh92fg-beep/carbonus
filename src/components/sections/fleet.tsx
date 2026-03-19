@@ -170,7 +170,7 @@ export function Fleet() {
                     {/* Uniform shadow under all cars */}
                     <div 
                       className="absolute bottom-[22%] left-1/2 -translate-x-1/2 w-[70%] h-3 rounded-[50%]"
-                      style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, transparent 70%)' }}
+                      style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, transparent 70%)' }}
                     />
                   </div>
                   <div className="absolute top-4 left-4">
