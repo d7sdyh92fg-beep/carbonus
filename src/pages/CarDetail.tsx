@@ -38,7 +38,7 @@ import mercedesSlkRear from "@/assets/mercedes-slk-rear-studio.png";
 import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right-studio.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { PRICING } from "@/config/pricing";
+
 
 interface CarDetail {
   id: string;
