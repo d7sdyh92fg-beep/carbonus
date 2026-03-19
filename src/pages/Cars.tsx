@@ -7,7 +7,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar, Crown } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
 import { useTranslations } from "@/hooks/use-translations";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
@@ -50,6 +52,23 @@ const Cars = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+  // Fetch premium status and pricing from DB
+  const { data: dbCars } = useQuery({
+    queryKey: ['cars-premium-status'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('cars')
+        .select('id, is_premium, price_tier1, price_tier3');
+      return data || [];
+    },
+  });
+  const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
+  const getCarDbPrice = (carId: string) => {
+    const dbCar = (dbCars || []).find(c => c.id === carId);
+    if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
+    return null;
+  };
 
   useEffect(() => {
     // Set page title and meta tags
@@ -386,10 +405,16 @@ const Cars = () => {
                         />
                       )}
                     </div>
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-4 left-4 flex gap-1.5">
                       <Badge variant="secondary" className="bg-primary text-primary-foreground">
                         {t(`car.categories.${normalizeForTranslation(car.category)}`)}
                       </Badge>
+                      {premiumCarIds.has(car.id) && (
+                        <Badge variant="secondary" className="bg-amber-500 text-white flex items-center gap-1">
+                          <Crown className="w-3 h-3" />
+                          Premium
+                        </Badge>
+                      )}
                     </div>
                     <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -436,7 +461,7 @@ const Cars = () => {
                     <div className="flex items-center justify-between pt-4">
                       <div>
                         <p className="text-sm text-muted-foreground">{t('cars.price')}</p>
-                        <p className="text-2xl font-bold text-primary">{t('cars.from')} 30 EUR</p>
+                        <p className="text-2xl font-bold text-primary">{t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}</p>
                         <p className="text-xs text-muted-foreground">{t('cars.perDay')}</p>
                       </div>
                       <Button 

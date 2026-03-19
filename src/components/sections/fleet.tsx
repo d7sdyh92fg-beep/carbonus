@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar, Crown } from "lucide-react";
 import { useTranslations } from "@/hooks/use-translations";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
@@ -40,6 +42,23 @@ export function Fleet() {
   const navigate = useNavigate();
   const { t } = useTranslations();
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+  // Fetch premium status from DB
+  const { data: dbCars } = useQuery({
+    queryKey: ['cars-premium-status'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('cars')
+        .select('id, is_premium, price_tier1, price_tier3');
+      return data || [];
+    },
+  });
+  const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
+  const getCarDbPrice = (carId: string) => {
+    const dbCar = (dbCars || []).find(c => c.id === carId);
+    if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
+    return null;
+  };
 
   // Feature key mapping for translation
   const getFeatureKey = (feature: string): string => {
@@ -183,10 +202,16 @@ export function Fleet() {
                       />
                     )}
                   </div>
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 left-4 flex gap-1.5">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
                       {t(`car.categories.${normalizeForTranslation(car.category)}`)}
                     </Badge>
+                    {premiumCarIds.has(car.id) && (
+                      <Badge variant="secondary" className="bg-amber-500 text-white flex items-center gap-1">
+                        <Crown className="w-3 h-3" />
+                        Premium
+                      </Badge>
+                    )}
                   </div>
                   <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -233,7 +258,7 @@ export function Fleet() {
                   <div className="flex items-center justify-between pt-4">
                     <div>
                       <p className="text-sm text-muted-foreground">{t('fleet.price')}</p>
-                      <p className="text-2xl font-bold text-primary">{t('fleet.from')} {car.price}</p>
+                      <p className="text-2xl font-bold text-primary">{t('fleet.from')} {getCarDbPrice(car.id) || car.price}</p>
                       <p className="text-xs text-muted-foreground">{t('fleet.perDay')}</p>
                     </div>
                     <Button 

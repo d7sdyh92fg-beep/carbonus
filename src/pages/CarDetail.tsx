@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
@@ -64,6 +66,22 @@ const CarDetail = () => {
   
   // Convert slug to ID for backward compatibility with existing car data structure
   const id = slug ? getCarIdFromSlug(slug) : null;
+
+  // Fetch car pricing from database
+  const { data: dbCarData } = useQuery({
+    queryKey: ['car-pricing', id],
+    queryFn: async () => {
+      if (!id) return null;
+      const { data, error } = await supabase
+        .from('cars')
+        .select('is_premium, price_tier1, price_tier2, price_tier3, price_weekend, price_package_romantic, price_package_wedding, price_per_day')
+        .eq('id', id)
+        .single();
+      if (error) return null;
+      return data;
+    },
+    enabled: !!id,
+  });
   
   // Redirect to 404 if slug is invalid
   useEffect(() => {
@@ -415,7 +433,7 @@ const CarDetail = () => {
                 <Badge variant="secondary" className="bg-primary text-primary-foreground">
                   {t('car.categories.' + normalizeForTranslation(car.category))}
                 </Badge>
-                  {car.isPremium && (
+                  {(dbCarData?.is_premium || car.isPremium) && (
                     <Badge variant="secondary" className="bg-amber-500 text-white flex items-center gap-1">
                       <Crown className="w-3 h-3" />
                       Premium
@@ -431,11 +449,12 @@ const CarDetail = () => {
                   {car.name}
                 </h2>
                 
-                {car.id === "6" ? (
+                {/* Dynamic pricing from DB */}
+                {dbCarData?.price_tier1 != null ? (
                   <>
                     <div className="flex items-baseline gap-2 mb-4">
                       <span className="text-sm text-muted-foreground">{t('carDetail.startingFrom')}</span>
-                      <span className="text-4xl font-bold text-primary">{PRICING.mercedesPriceRange}</span>
+                      <span className="text-4xl font-bold text-primary">€{dbCarData.price_tier3 ?? dbCarData.price_tier1}–€{dbCarData.price_tier1}</span>
                       <span className="text-lg text-muted-foreground">{t('carDetail.perDay')}</span>
                     </div>
 
@@ -443,52 +462,60 @@ const CarDetail = () => {
                     <div className="bg-secondary/30 rounded-xl p-4 mb-4 space-y-3">
                       <h4 className="font-semibold text-foreground text-sm">{t('carDetail.mercPricing.title')}</h4>
                       <div className="space-y-2 text-sm">
-                        <div className="flex justify-between items-center py-1.5 border-b border-border/50">
-                          <span className="text-muted-foreground">{t('carDetail.mercPricing.weekday7')}</span>
-                          <span className="font-bold text-foreground">90 €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
-                        </div>
-                        <div className="flex justify-between items-center py-1.5 border-b border-border/50">
-                          <span className="text-muted-foreground">{t('carDetail.mercPricing.weekday3')}</span>
-                          <span className="font-bold text-foreground">100 €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
-                        </div>
+                        {dbCarData.price_tier3 != null && (
+                          <div className="flex justify-between items-center py-1.5 border-b border-border/50">
+                            <span className="text-muted-foreground">{t('carDetail.mercPricing.weekday7')}</span>
+                            <span className="font-bold text-foreground">{dbCarData.price_tier3} €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
+                          </div>
+                        )}
+                        {dbCarData.price_tier2 != null && (
+                          <div className="flex justify-between items-center py-1.5 border-b border-border/50">
+                            <span className="text-muted-foreground">{t('carDetail.mercPricing.weekday3')}</span>
+                            <span className="font-bold text-foreground">{dbCarData.price_tier2} €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
+                          </div>
+                        )}
                         <div className="flex justify-between items-center py-1.5 border-b border-border/50">
                           <span className="text-muted-foreground">{t('carDetail.mercPricing.weekday1')}</span>
-                          <span className="font-bold text-foreground">110 €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
+                          <span className="font-bold text-foreground">{dbCarData.price_tier1} €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
                         </div>
-                        <div className="flex justify-between items-center py-1.5 border-b border-border/50">
-                          <span className="text-muted-foreground">{t('carDetail.mercPricing.weekend')}</span>
-                          <span className="font-bold text-foreground">120 €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
-                        </div>
-                        <div className="flex justify-between items-center py-1.5">
-                          <span className="text-muted-foreground">{t('carDetail.mercPricing.summer')}</span>
-                          <span className="font-bold text-primary">130–160 €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
-                        </div>
+                        {dbCarData.price_weekend != null && (
+                          <div className="flex justify-between items-center py-1.5">
+                            <span className="text-muted-foreground">{t('carDetail.mercPricing.weekend')}</span>
+                            <span className="font-bold text-foreground">{dbCarData.price_weekend} €<span className="text-xs text-muted-foreground font-normal"> / {t('carDetail.mercPricing.day')}</span></span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    {/* Emotional packages */}
-                    <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-xl p-4 mb-6 space-y-3 border border-amber-200/50 dark:border-amber-800/30">
-                      <h4 className="font-semibold text-foreground text-sm flex items-center gap-2">
-                        <Heart className="w-4 h-4 text-rose-500" />
-                        {t('carDetail.mercPricing.packagesTitle')}
-                      </h4>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between items-center py-1.5 border-b border-amber-200/30 dark:border-amber-800/20">
-                          <div>
-                            <span className="font-medium text-foreground">{t('carDetail.mercPricing.romantic')}</span>
-                            <span className="text-xs text-muted-foreground ml-2">(4–5 val.)</span>
-                          </div>
-                          <span className="font-bold text-foreground">70–90 €</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1.5">
-                          <div className="flex items-center gap-1">
-                            <Camera className="w-3.5 h-3.5 text-muted-foreground" />
-                            <span className="font-medium text-foreground">{t('carDetail.mercPricing.wedding')}</span>
-                          </div>
-                          <span className="font-bold text-foreground">150–200 €</span>
+                    {/* Emotional packages - only show if configured */}
+                    {(dbCarData.price_package_romantic || dbCarData.price_package_wedding) && (
+                      <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-xl p-4 mb-6 space-y-3 border border-amber-200/50 dark:border-amber-800/30">
+                        <h4 className="font-semibold text-foreground text-sm flex items-center gap-2">
+                          <Heart className="w-4 h-4 text-rose-500" />
+                          {t('carDetail.mercPricing.packagesTitle')}
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          {dbCarData.price_package_romantic && (
+                            <div className="flex justify-between items-center py-1.5 border-b border-amber-200/30 dark:border-amber-800/20">
+                              <div>
+                                <span className="font-medium text-foreground">{t('carDetail.mercPricing.romantic')}</span>
+                                <span className="text-xs text-muted-foreground ml-2">(4–5 val.)</span>
+                              </div>
+                              <span className="font-bold text-foreground">{dbCarData.price_package_romantic} €</span>
+                            </div>
+                          )}
+                          {dbCarData.price_package_wedding && (
+                            <div className="flex justify-between items-center py-1.5">
+                              <div className="flex items-center gap-1">
+                                <Camera className="w-3.5 h-3.5 text-muted-foreground" />
+                                <span className="font-medium text-foreground">{t('carDetail.mercPricing.wedding')}</span>
+                              </div>
+                              <span className="font-bold text-foreground">{dbCarData.price_package_wedding} €</span>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    </div>
+                    )}
                   </>
                 ) : (
                   <div className="flex items-baseline gap-2 mb-6">
