@@ -249,7 +249,7 @@ const Cars = () => {
     {
       id: "5",
       name: "KIA CEED",
-      price: PRICING.priceFrom,
+      price: "nuo 30 EUR",
       image: kiaCeedHatchbackSideCleanGray,
       category: "Hecbekas",
       passengers: 5,
