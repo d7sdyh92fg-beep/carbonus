@@ -292,7 +292,7 @@ export function InPersonBooking() {
       total = parseFloat(customRentalPrice) || 0;
     } else {
       const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
-      const dailyRate = PRICING.getDailyRate(days, booking.carId);
+      const dailyRate = getDbDailyRate(days, booking.carId);
       total = days * dailyRate;
     }
     
