@@ -251,7 +251,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
             mode="range"
             selected={selectedRange}
             onSelect={handleSelect}
-            disabled={(date) => date < new Date() || isDateBooked(date)}
+            disabled={(date) => {
+              const minDate = carId === '7' ? new Date(2025, 4, 1) : new Date(); // May 1, 2025 for SpaceTourer
+              return date < minDate || isDateBooked(date);
+            }}
             modifiers={{
               booked: bookedDates,
             }}
