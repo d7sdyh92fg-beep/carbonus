@@ -170,8 +170,8 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       return;
     }
 
-    // Set booking data and navigate to services
-    // Use format with 'yyyy-MM-dd' to avoid timezone issues (toISOString converts to UTC)
+    const finalPrice = selectedPackage ? selectedPackage.price : getTotalPrice();
+
     setBookingData({
       carId,
       carName,
@@ -181,8 +181,9 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       pickupTime,
       returnTime,
       rentalDays: getDaysCount(),
-      basePrice: getTotalPrice(),
+      basePrice: finalPrice,
       services: [],
+      selectedPackage: selectedPackage || undefined,
     });
 
     const servicesRoute = language === 'en' 
