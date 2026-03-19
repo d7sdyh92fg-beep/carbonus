@@ -2020,6 +2020,7 @@ export const translations = {
         miniautobusas: "Minivan",
         universalas: "Estate",
         hecbekas: "Hatchback",
+        kabrioletas: "Convertible",
       },
       featuresList: {
         airConditioning: "Air Conditioning",
