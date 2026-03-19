@@ -76,7 +76,7 @@ const cars = [
   { 
     id: '7', 
     name: 'Citroën SpaceTourer', 
-    year: '2019', 
+    year: '2025', 
     available: true
   },
 ];
