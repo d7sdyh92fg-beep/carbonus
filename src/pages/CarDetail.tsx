@@ -498,13 +498,24 @@ const CarDetail = () => {
                               </div>
                               <div className="flex items-center gap-3">
                                 <span className="font-bold text-foreground">{dbCarData.price_package_romantic} €</span>
-                                <a
-                                  href={language === 'en' ? '/contact' : '/kontaktai'}
+                                <button
+                                  onClick={() => {
+                                    const priceStr = dbCarData.price_package_romantic!;
+                                    const lowerPrice = parseInt(priceStr.split('-')[0]);
+                                    setSelectedPackage({
+                                      type: 'romantic',
+                                      name: t('carDetail.mercPricing.romantic'),
+                                      price: lowerPrice,
+                                      priceDisplay: priceStr,
+                                    });
+                                    const bookingSection = document.getElementById('booking-section');
+                                    bookingSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                  }}
                                   className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
                                 >
                                   <MessageCircle className="w-3 h-3" />
                                   {t('carDetail.mercPricing.orderPackage')}
-                                </a>
+                                </button>
                               </div>
                             </div>
                           )}
@@ -515,13 +526,24 @@ const CarDetail = () => {
                               </div>
                               <div className="flex items-center gap-3">
                                 <span className="font-bold text-foreground">{dbCarData.price_package_wedding} €</span>
-                                <a
-                                  href={language === 'en' ? '/contact' : '/kontaktai'}
+                                <button
+                                  onClick={() => {
+                                    const priceStr = dbCarData.price_package_wedding!;
+                                    const lowerPrice = parseInt(priceStr.split('-')[0]);
+                                    setSelectedPackage({
+                                      type: 'wedding',
+                                      name: t('carDetail.mercPricing.wedding'),
+                                      price: lowerPrice,
+                                      priceDisplay: priceStr,
+                                    });
+                                    const bookingSection = document.getElementById('booking-section');
+                                    bookingSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                  }}
                                   className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
                                 >
                                   <MessageCircle className="w-3 h-3" />
                                   {t('carDetail.mercPricing.orderPackage')}
-                                </a>
+                                </button>
                               </div>
                             </div>
                           )}
