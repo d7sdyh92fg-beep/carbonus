@@ -67,6 +67,12 @@ const cars = [
     year: '2020', 
     available: true
   },
+  { 
+    id: '6', 
+    name: 'Mercedes-Benz SLK', 
+    year: '2015', 
+    available: true
+  },
 ];
 
 

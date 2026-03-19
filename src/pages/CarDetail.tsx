@@ -217,6 +217,27 @@ const CarDetail = () => {
       doors: "5",
       trunk: "395 L",
       engineType: "1.6L CRDi"
+    },
+    "6": {
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "nuo 50 EUR",
+      image: mercedesSlkFront,
+      images: [
+        mercedesSlkFront,
+        mercedesSlkSide,
+        mercedesSlkSideRight,
+        mercedesSlkRear
+      ],
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: "2015",
+      doors: "2",
+      trunk: "225 L",
+      engineType: "1.8L Turbo"
     }
   };
 
