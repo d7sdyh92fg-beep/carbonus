@@ -158,10 +158,12 @@ export function Fleet() {
                   <img
                     src={car.image}
                     alt={car.name}
-                    className={`w-full h-48 transition-transform duration-300 ${
+                    className={`w-full h-48 transition-transform duration-300 object-contain object-center ${
                       car.name === "Volkswagen Passat" 
-                        ? "object-contain object-center scale-[1.15] sm:object-cover sm:scale-[0.8] lg:object-contain lg:scale-[1.3] -translate-y-2 group-hover:scale-[1.2] sm:group-hover:scale-[0.85] lg:group-hover:scale-[1.36]" 
-                        : "object-cover group-hover:scale-105"
+                        ? "scale-[0.85] group-hover:scale-[0.9]" 
+                        : car.name === "Mercedes-Benz SLK"
+                        ? "scale-[0.85] group-hover:scale-[0.9]"
+                        : "scale-100 group-hover:scale-105"
                     }`}
                   />
                   <div className="absolute top-4 left-4">
