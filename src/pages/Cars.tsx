@@ -278,10 +278,27 @@ const Cars = () => {
       rating: 4.7,
       year: 2012,
       features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+    },
+    {
+      id: "7",
+      name: "Citroën SpaceTourer",
+      price: "nuo 60 EUR",
+      image: citroenSpacetourerSide,
+      category: "Vienatūris",
+      passengers: 9,
+      fuel: "Dyzelinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: 2025,
+      features: [
+        "9 keleivių vietos",
+        "Slankiosios durys",
+        "Erdvus salonas"
+      ],
     }
   ];
 
-  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas"];
+  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas", "Vienatūris"];
 
   // IDs of sold cars to hide from public view
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
