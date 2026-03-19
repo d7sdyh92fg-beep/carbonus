@@ -170,7 +170,7 @@ export function InPersonBooking() {
     returnTime: '10:00',
     dailyRate: 0
   });
-  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card_reader'>('cash');
+  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'pay_at_counter'>('cash');
   const [driverLicenseUrls, setDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
   const [secondDriverLicenseUrls, setSecondDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
   const [contractSigned, setContractSigned] = useState(false);
@@ -1288,7 +1288,7 @@ export function InPersonBooking() {
 
             <div>
               <Label className="text-base font-medium">Mokėjimo būdas</Label>
-              <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'cash' | 'card_reader')} className="mt-3">
+              <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'cash' | 'pay_at_counter')} className="mt-3">
                 <div className="flex items-center space-x-3 p-4 border rounded-lg">
                   <RadioGroupItem value="cash" id="cash" />
                   <Label htmlFor="cash" className="flex items-center gap-3 text-base cursor-pointer">
@@ -1297,8 +1297,8 @@ export function InPersonBooking() {
                   </Label>
                 </div>
                 <div className="flex items-center space-x-3 p-4 border rounded-lg">
-                  <RadioGroupItem value="card_reader" id="card_reader" />
-                  <Label htmlFor="card_reader" className="flex items-center gap-3 text-base cursor-pointer">
+                  <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
+                  <Label htmlFor="pay_at_counter" className="flex items-center gap-3 text-base cursor-pointer">
                     <CreditCard className="h-5 w-5" />
                     Mokėjimas kortele
                   </Label>
