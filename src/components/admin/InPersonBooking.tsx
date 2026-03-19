@@ -184,6 +184,51 @@ export function InPersonBooking() {
   const [isRetroactive, setIsRetroactive] = useState(false);
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
 
+  // Fetch car pricing from DB
+  const { data: dbCarPricing } = useQuery({
+    queryKey: ['cars-pricing-admin'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('cars')
+        .select('id, price_tier1, price_tier2, price_tier3, price_weekend');
+      return data || [];
+    },
+  });
+
+  // Get daily rate from DB pricing, with fallback defaults
+  const getDbDailyRate = (days: number, carId: string): number => {
+    const dbCar = (dbCarPricing || []).find(c => c.id === carId);
+    if (dbCar) {
+      if (days >= 7 && dbCar.price_tier3) return Number(dbCar.price_tier3);
+      if (days >= 3 && dbCar.price_tier2) return Number(dbCar.price_tier2);
+      if (dbCar.price_tier1) return Number(dbCar.price_tier1);
+    }
+    // Fallback for Mercedes SLK
+    if (carId === '6') {
+      if (days >= 7) return 90;
+      if (days >= 3) return 100;
+      return 110;
+    }
+    // Fallback defaults
+    if (days >= 7) return 30;
+    if (days >= 3) return 40;
+    return 50;
+  };
+
+  // Get pricing tiers for display
+  const getCarPricingTiers = (carId: string) => {
+    const dbCar = (dbCarPricing || []).find(c => c.id === carId);
+    if (dbCar && (dbCar.price_tier1 || dbCar.price_tier2 || dbCar.price_tier3)) {
+      return {
+        tier1: dbCar.price_tier1 ? Number(dbCar.price_tier1) : (carId === '6' ? 110 : 50),
+        tier2: dbCar.price_tier2 ? Number(dbCar.price_tier2) : (carId === '6' ? 100 : 40),
+        tier3: dbCar.price_tier3 ? Number(dbCar.price_tier3) : (carId === '6' ? 90 : 30),
+      };
+    }
+    if (carId === '6') return { tier1: 110, tier2: 100, tier3: 90 };
+    return { tier1: 50, tier2: 40, tier3: 30 };
+  };
+
   // Fetch booked dates when car is selected
   useEffect(() => {
     if (booking.carId) {
