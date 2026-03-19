@@ -149,13 +149,20 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   };
 
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
-    if (range) {
-      // Romantic package: force single day
-      if (selectedPackage?.type === 'romantic' && range.from) {
-        setSelectedRange({ from: range.from, to: range.from });
+    if (!range || !range.from) {
+      setSelectedRange({ from: undefined, to: undefined });
+      return;
+    }
+    // Romantic package: force single day
+    if (selectedPackage?.type === 'romantic') {
+      // If clicking same date, deselect
+      if (selectedRange.from && range.from.toDateString() === selectedRange.from.toDateString() && !range.to) {
+        setSelectedRange({ from: undefined, to: undefined });
       } else {
-        setSelectedRange(range);
+        setSelectedRange({ from: range.from, to: range.from });
       }
+    } else {
+      setSelectedRange(range);
     }
   };
 
