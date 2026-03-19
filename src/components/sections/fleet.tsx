@@ -146,8 +146,8 @@ export function Fleet() {
         </div>
 
         {/* Cars Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {cars.slice(0, 3).map((car, index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {cars.map((car, index) => (
             <Card
               key={car.id}
               className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card animate-scale-in"
