@@ -458,7 +458,7 @@ export function InPersonBooking() {
           return_date: format(booking.endDate!, 'yyyy-MM-dd'),
           return_time: booking.returnTime,
           rental_days: rentalDays,
-          daily_rate: useCustomPricing ? 0 : PRICING.getDailyRate(rentalDays, booking.carId),
+          daily_rate: useCustomPricing ? 0 : getDbDailyRate(rentalDays, booking.carId),
           total_rental_cost: rentalCost,
           deposit_amount: depositAmount,
           total_amount: totalAmount,
