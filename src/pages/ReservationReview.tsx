@@ -266,6 +266,8 @@ export default function ReservationReview() {
             depositAmount: 0,
             advancePayment: totalAmount,
             language: language,
+            packageName: bookingData.selectedPackage?.name || undefined,
+            packagePrice: bookingData.selectedPackage?.priceDisplay || undefined,
           }
         });
       } catch (emailError) {
