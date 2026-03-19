@@ -611,7 +611,13 @@ const CarDetail = () => {
               {t('carDetail.bookingSubtitle')}
             </p>
           </div>
-          <BookingCalendar carId={car.id} carName={car.name} carImage={car.image} />
+          <BookingCalendar 
+            carId={car.id} 
+            carName={car.name} 
+            carImage={car.image} 
+            selectedPackage={selectedPackage}
+            onClearPackage={() => setSelectedPackage(null)}
+          />
         </div>
       </section>
 
