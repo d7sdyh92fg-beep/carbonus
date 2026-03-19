@@ -62,6 +62,7 @@ const CarDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedPackage, setSelectedPackage] = useState<{ type: 'romantic' | 'wedding'; name: string; price: number; priceDisplay: string } | null>(null);
   const { t, language } = useTranslations();
   
   // Convert slug to ID for backward compatibility with existing car data structure
