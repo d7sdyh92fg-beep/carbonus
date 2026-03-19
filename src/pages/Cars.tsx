@@ -420,7 +420,7 @@ const Cars = () => {
                         }`}
                       />
                       {/* Shadow under KIA CEED 2020 and Mercedes SLK only */}
-                      {(car.id === "5" || car.id === "6") && loadedImages.has(car.id) && (
+                      {(car.id === "5" || car.id === "6" || car.id === "7") && loadedImages.has(car.id) && (
                         <div 
                           className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
                           style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
