@@ -367,7 +367,7 @@ const Cars = () => {
                             : car.name === "Mercedes-Benz SLK"
                             ? "scale-[0.99] group-hover:scale-[1.04] translate-y-4"
                             : car.id === "4"
-                            ? "scale-[1.27] group-hover:scale-[1.32] translate-y-4"
+                            ? "scale-[1.33] group-hover:scale-[1.38] translate-y-4"
                             : car.id === "5"
                             ? "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
                             : "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
