@@ -200,11 +200,17 @@ export function Fleet() {
                         : "scale-100 group-hover:scale-105 translate-y-4"
                     }`}
                     />
-                    {/* Shadow under KIA CEED 2020 and Mercedes SLK only */}
-                    {(car.id === "5" || car.id === "6" || car.id === "7") && loadedImages.has(car.id) && (
+                    {/* Shadow under cars */}
+                    {(car.id === "5" || car.id === "6") && loadedImages.has(car.id) && (
                       <div 
                         className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
                         style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
+                      />
+                    )}
+                    {car.id === "7" && loadedImages.has(car.id) && (
+                      <div 
+                        className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[96%] h-6 rounded-[50%]"
+                        style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, transparent 70%)' }}
                       />
                     )}
                   </div>
