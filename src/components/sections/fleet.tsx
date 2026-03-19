@@ -116,6 +116,19 @@ export function Fleet() {
       rating: 4.6,
       year: 2020,
       features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
+    },
+    {
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "50 EUR",
+      image: mercedesSlkSide,
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: 2015,
+      features: ["Atidaromas stogas", "Automatinė pavarų dėžė", "Sportinis dizainas"]
     }
   ];
 
