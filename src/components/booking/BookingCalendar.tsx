@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useBooking } from "@/contexts/BookingContext";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/hooks/use-translations";
-import { PRICING } from "@/config/pricing";
+
 
 interface BookingCalendarProps {
   carId: string;
@@ -134,7 +134,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       if (days >= 3 && dbCarPricing.price_tier2 != null) return Number(dbCarPricing.price_tier2);
       return Number(dbCarPricing.price_tier1);
     }
-    return PRICING.getDailyRate(days, carId);
+    // Fallback if DB has no data yet
+    if (days >= 7) return 30;
+    if (days >= 3) return 40;
+    return 50;
   };
 
   const getTotalPrice = (): number => {
@@ -145,7 +148,9 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
   const getPriceCategory = (): string => {
     const days = getDaysCount();
-    return t(PRICING.getPricingTier(days, carId).labelKey);
+    if (days >= 7) return t('pricing.tier3');
+    if (days >= 3) return t('pricing.tier2');
+    return t('pricing.tier1');
   };
 
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
