@@ -30,10 +30,10 @@ import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
 import chryslerEnhanced2WithPlate from "@/assets/chrysler-enhanced-2.png";
 import vwPassatEnhanced1 from "@/assets/vw-passat-enhanced-1.png";
 import vwPassatEnhanced2 from "@/assets/vw-passat-enhanced-2.png";
-import mercedesSlkFront from "@/assets/mercedes-slk-front-clean.png";
-import mercedesSlkSide from "@/assets/mercedes-slk-side-nobg.png";
-import mercedesSlkRear from "@/assets/mercedes-slk-rear-clean.png";
-import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right-clean.png";
+import mercedesSlkFront from "@/assets/mercedes-slk-front.jpg";
+import mercedesSlkSide from "@/assets/mercedes-slk-side.jpg";
+import mercedesSlkRear from "@/assets/mercedes-slk-rear.jpg";
+import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right.jpg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PRICING } from "@/config/pricing";
@@ -363,22 +363,13 @@ const CarDetail = () => {
             {/* Car Image Carousel */}
             <div className="bg-gray-50 rounded-2xl p-8 relative">
               <div className="text-center overflow-hidden">
-                <div className="relative">
-                  <img
-                    src={getCurrentImage()}
-                    alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
-                    className={`w-full max-w-2xl mx-auto object-contain rounded-lg ${
-                      car.id === "5" && currentImageIndex === 1 ? "scale-150" : ""
-                    }`}
-                  />
-                  {/* Shadow only under Mercedes SLK (other cars have natural shadows) */}
-                  {car.id === "6" && (
-                    <div 
-                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-8 rounded-[50%]"
-                      style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, transparent 70%)' }}
-                    />
-                  )}
-                </div>
+                <img
+                  src={getCurrentImage()}
+                  alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
+                  className={`w-full max-w-2xl mx-auto object-contain rounded-lg ${
+                    car.id === "5" && currentImageIndex === 1 ? "scale-150" : ""
+                  }`}
+                />
               </div>
               
               {/* Navigation arrows - only show if multiple images */}
