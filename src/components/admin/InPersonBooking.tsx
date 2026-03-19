@@ -976,13 +976,18 @@ export function InPersonBooking() {
                     {/* Pricing Explanation */}
                     <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
                       <div className="text-sm sm:text-base font-medium text-blue-900 mb-2">
-                        Kainų struktūra:
+                        Kainų struktūra ({booking.carName}):
                       </div>
-                      <div className="space-y-1 text-xs sm:text-sm text-blue-800">
-                        <div>• 1-3 dienos: €50/dieną</div>
-                        <div>• 3-7 dienos: €40/dieną</div>
-                        <div>• 7+ dienų: €30/dieną</div>
-                      </div>
+                      {(() => {
+                        const tiers = getCarPricingTiers(booking.carId);
+                        return (
+                          <div className="space-y-1 text-xs sm:text-sm text-blue-800">
+                            <div>• 1-3 dienos: €{tiers.tier1}/dieną</div>
+                            <div>• 3-7 dienos: €{tiers.tier2}/dieną</div>
+                            <div>• 7+ dienų: €{tiers.tier3}/dieną</div>
+                          </div>
+                        );
+                      })()}
                     </div>
                     
                     {/* Price Calculation */}
