@@ -862,10 +862,10 @@ const Admin = () => {
                                <Users className="h-3 w-3 flex-shrink-0" />
                                <span>{car.passengers} vietos</span>
                              </div>
-                              <div className="flex items-center justify-between">
-                                <span>{car.fuel} • {car.transmission}</span>
-                                <span className="font-semibold text-primary">50-30€/d.</span>
-                              </div>
+                               <div className="flex items-center justify-between">
+                                 <span>{car.fuel} • {car.transmission}</span>
+                                 <span className="font-semibold text-primary">{car.price_tier1 || 50}-{car.price_tier3 || 30}€/d.</span>
+                               </div>
                            </div>
                          </CardContent>
                        </Card>
