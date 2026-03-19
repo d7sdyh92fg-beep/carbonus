@@ -197,6 +197,10 @@ export default function ReservationReview() {
         pricing_notes: (() => {
           const notes: string[] = [];
           
+          if (bookingData.selectedPackage) {
+            notes.push(`📦 ${bookingData.selectedPackage.name}: ${bookingData.selectedPackage.priceDisplay} €`);
+          }
+          
           if (bookingData.insurance) {
             notes.push(t('review.pricingNoteInsurance')
               .replace('{title}', bookingData.insurance.title)
