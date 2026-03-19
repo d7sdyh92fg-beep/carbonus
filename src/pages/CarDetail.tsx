@@ -53,6 +53,7 @@ interface CarDetail {
   doors: string;
   trunk: string;
   engineType: string;
+  isPremium?: boolean;
 }
 
 const CarDetail = () => {
