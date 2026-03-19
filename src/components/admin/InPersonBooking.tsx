@@ -317,7 +317,7 @@ export function InPersonBooking() {
     }
     
     const days = getRentalDays();
-    return days * PRICING.getDailyRate(days, booking.carId);
+    return days * getDbDailyRate(days, booking.carId);
   };
   
   const getDepositAmount = () => {
