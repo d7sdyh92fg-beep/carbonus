@@ -324,15 +324,15 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
             <div className="space-y-2">
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">{t('booking.category1to3')}</span>
-                <span className="font-semibold">€50{t('booking.perDay')}</span>
+                <span className="font-semibold">€{dbCarPricing?.price_tier1 ?? 50}{t('booking.perDay')}</span>
               </div>
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">{t('booking.category3to7')}</span>
-                <span className="font-semibold">€40{t('booking.perDay')}</span>
+                <span className="font-semibold">€{dbCarPricing?.price_tier2 ?? 40}{t('booking.perDay')}</span>
               </div>
               <div className="flex justify-between items-center p-2 rounded border">
                 <span className="text-sm">{t('booking.category7plus')}</span>
-                <span className="font-semibold">€30{t('booking.perDay')}</span>
+                <span className="font-semibold">€{dbCarPricing?.price_tier3 ?? 30}{t('booking.perDay')}</span>
               </div>
             </div>
           </div>
