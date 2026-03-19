@@ -258,7 +258,7 @@ export function Fleet() {
                   <div className="flex items-center justify-between pt-4">
                     <div>
                       <p className="text-sm text-muted-foreground">{t('fleet.price')}</p>
-                      <p className="text-2xl font-bold text-primary">{t('fleet.from')} {car.price}</p>
+                      <p className="text-2xl font-bold text-primary">{t('fleet.from')} {getCarDbPrice(car.id) || car.price}</p>
                       <p className="text-xs text-muted-foreground">{t('fleet.perDay')}</p>
                     </div>
                     <Button 
