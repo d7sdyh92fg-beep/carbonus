@@ -461,7 +461,7 @@ const Cars = () => {
                     <div className="flex items-center justify-between pt-4">
                       <div>
                         <p className="text-sm text-muted-foreground">{t('cars.price')}</p>
-                        <p className="text-2xl font-bold text-primary">{t('cars.from')} 30 EUR</p>
+                        <p className="text-2xl font-bold text-primary">{t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}</p>
                         <p className="text-xs text-muted-foreground">{t('cars.perDay')}</p>
                       </div>
                       <Button 
