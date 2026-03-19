@@ -2489,6 +2489,17 @@ export const translations = {
         feature6: "Sporty design",
         feature7: "AMG styling elements",
         feature8: "Premium sound system"
+      },
+      "7": {
+        description: "Citroën SpaceTourer L3 – a spacious 9-seat passenger van with a powerful 180 HP diesel engine and 8-speed automatic transmission. Perfect for large groups, families or business trips. Sliding doors, 3 rows of seats and a huge cargo area ensure maximum comfort.",
+        feature1: "9 passenger seats",
+        feature2: "2.2L Diesel engine 180 HP",
+        feature3: "8-speed automatic transmission",
+        feature4: "Dual zone air conditioning",
+        feature5: "Sliding doors on both sides",
+        feature6: "10-inch touchscreen display",
+        feature7: "Android Auto and CarPlay",
+        feature8: "Collision braking assistant"
       }
     },
 
