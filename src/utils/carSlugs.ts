@@ -44,6 +44,13 @@ export const CAR_SLUGS: CarSlugMapping[] = [
     slugEn: "kia-ceed-hatchback-rental",
     name: "KIA CEED Hečbekas",
     category: "Hecbekas"
+  },
+  {
+    id: "6",
+    slug: "mercedes-benz-slk-nuoma",
+    slugEn: "mercedes-benz-slk-rental",
+    name: "Mercedes-Benz SLK",
+    category: "Kabrioletas"
   }
 ];
 

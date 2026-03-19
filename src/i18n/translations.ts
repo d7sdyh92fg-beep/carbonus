@@ -2431,6 +2431,17 @@ export const translations = {
         feature6: "Central locking",
         feature7: "Modern cabin design",
         feature8: "Safety systems"
+      },
+      "6": {
+        description: "Mercedes-Benz SLK 2015 convertible - stylish and powerful sports car with automatic transmission. 1.8L turbo petrol engine ensures excellent dynamics. Perfect choice for an enjoyable open-top driving experience.",
+        feature1: "Automatic transmission",
+        feature2: "Retractable roof",
+        feature3: "1.8L Turbo engine",
+        feature4: "Air conditioning",
+        feature5: "Leather seats",
+        feature6: "Sporty design",
+        feature7: "AMG styling elements",
+        feature8: "Premium sound system"
       }
     },
 
