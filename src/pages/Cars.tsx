@@ -27,6 +27,7 @@ import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.pn
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
+import mercedesSlkSide from "@/assets/mercedes-slk-side.jpg";
 import { PRICING } from "@/config/pricing";
 
 interface Car {
@@ -114,7 +115,10 @@ const Cars = () => {
       'Erdvus universalas': 'car.featuresList.spaciousWagon',
       'Patikimas automobilis': 'car.featuresList.reliable',
       'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
-      'Modernus LED apšvietimas': 'car.featuresList.modernLED'
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED',
+      'Atidaromas stogas': 'car.featuresList.retractableRoof',
+      'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
+      'Sportinis dizainas': 'car.featuresList.sportyDesign'
     };
     return featureMap[feature] || feature;
   };
@@ -234,10 +238,27 @@ const Cars = () => {
         "Modernus LED apšvietimas",
         "Patikimas automobilis"
       ],
+    },
+    {
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "50 EUR",
+      image: mercedesSlkSide,
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: 2015,
+      features: [
+        "Atidaromas stogas",
+        "Automatinė pavarų dėžė",
+        "Sportinis dizainas"
+      ],
     }
   ];
 
-  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas"];
+  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas"];
 
   // IDs of sold cars to hide from public view
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country

@@ -160,6 +160,7 @@ export const translations = {
         miniautobusas: "Miniautobusas",
         universalas: "Universalas",
         hecbekas: "Hečbekas",
+        kabrioletas: "Kabrioletas",
       },
       featuresList: {
         airConditioning: "Kondicionierius",
@@ -175,7 +176,10 @@ export const translations = {
         spaciousWagon: "Erdvus universalas",
         reliable: "Patikimas automobilis",
         economicalDiesel: "Ekonomiškas dyzelinis variklis",
-        modernLED: "Modernus LED apšvietimas"
+        modernLED: "Modernus LED apšvietimas",
+        retractableRoof: "Atidaromas stogas",
+        automaticTransmission: "Automatinė pavarų dėžė",
+        sportyDesign: "Sportinis dizainas"
       }
     },
 
@@ -648,6 +652,17 @@ export const translations = {
         feature6: "Centrinis užraktas",
         feature7: "Šiuolaikiškas salono dizainas",
         feature8: "Saugos sistemos"
+      },
+      "6": {
+        description: "Mercedes-Benz SLK 2015 kabrioletas - stilingas ir galingas sportinis automobilis su automatine pavarų dėže. 1.8L benzininis variklis su turbo užtikrina puikų dinamiškumą. Tobulas pasirinkimas maloniam vairavimui atviru stogu.",
+        feature1: "Automatinė pavarų dėžė",
+        feature2: "Atidaromas stogas",
+        feature3: "1.8L Turbo variklis",
+        feature4: "Kondicionierius",
+        feature5: "Odinės sėdynės",
+        feature6: "Sportinis dizainas",
+        feature7: "AMG stilistikos elementai",
+        feature8: "Premium garso sistema"
       }
     },
 
@@ -2008,6 +2023,7 @@ export const translations = {
         miniautobusas: "Minivan",
         universalas: "Estate",
         hecbekas: "Hatchback",
+        kabrioletas: "Convertible",
       },
       featuresList: {
         airConditioning: "Air Conditioning",
@@ -2023,7 +2039,10 @@ export const translations = {
         spaciousWagon: "Spacious Estate",
         reliable: "Reliable Car",
         economicalDiesel: "Economical Diesel Engine",
-        modernLED: "Modern LED Lighting"
+        modernLED: "Modern LED Lighting",
+        retractableRoof: "Retractable Roof",
+        automaticTransmission: "Automatic Transmission",
+        sportyDesign: "Sporty Design"
       }
     },
 
@@ -2418,6 +2437,17 @@ export const translations = {
         feature6: "Central locking",
         feature7: "Modern cabin design",
         feature8: "Safety systems"
+      },
+      "6": {
+        description: "Mercedes-Benz SLK 2015 convertible - stylish and powerful sports car with automatic transmission. 1.8L turbo petrol engine ensures excellent dynamics. Perfect choice for an enjoyable open-top driving experience.",
+        feature1: "Automatic transmission",
+        feature2: "Retractable roof",
+        feature3: "1.8L Turbo engine",
+        feature4: "Air conditioning",
+        feature5: "Leather seats",
+        feature6: "Sporty design",
+        feature7: "AMG styling elements",
+        feature8: "Premium sound system"
       }
     },
 

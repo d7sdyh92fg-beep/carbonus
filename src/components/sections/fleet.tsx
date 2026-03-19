@@ -10,6 +10,7 @@ import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
+import mercedesSlkSide from "@/assets/mercedes-slk-side.jpg";
 
 interface Car {
   id: string;
@@ -54,7 +55,10 @@ export function Fleet() {
       'Erdvus universalas': 'car.featuresList.spaciousWagon',
       'Patikimas automobilis': 'car.featuresList.reliable',
       'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
-      'Modernus LED apšvietimas': 'car.featuresList.modernLED'
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED',
+      'Atidaromas stogas': 'car.featuresList.retractableRoof',
+      'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
+      'Sportinis dizainas': 'car.featuresList.sportyDesign'
     };
     return featureMap[feature] || feature;
   };
@@ -112,6 +116,19 @@ export function Fleet() {
       rating: 4.6,
       year: 2020,
       features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
+    },
+    {
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "50 EUR",
+      image: mercedesSlkSide,
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: 2015,
+      features: ["Atidaromas stogas", "Automatinė pavarų dėžė", "Sportinis dizainas"]
     }
   ];
 
@@ -129,8 +146,8 @@ export function Fleet() {
         </div>
 
         {/* Cars Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {cars.slice(0, 3).map((car, index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {cars.map((car, index) => (
             <Card
               key={car.id}
               className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card animate-scale-in"

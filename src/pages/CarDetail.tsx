@@ -30,6 +30,10 @@ import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
 import chryslerEnhanced2WithPlate from "@/assets/chrysler-enhanced-2.png";
 import vwPassatEnhanced1 from "@/assets/vw-passat-enhanced-1.png";
 import vwPassatEnhanced2 from "@/assets/vw-passat-enhanced-2.png";
+import mercedesSlkFront from "@/assets/mercedes-slk-front.jpg";
+import mercedesSlkSide from "@/assets/mercedes-slk-side.jpg";
+import mercedesSlkRear from "@/assets/mercedes-slk-rear.jpg";
+import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right.jpg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PRICING } from "@/config/pricing";
@@ -213,6 +217,27 @@ const CarDetail = () => {
       doors: "5",
       trunk: "395 L",
       engineType: "1.6L CRDi"
+    },
+    "6": {
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "nuo 50 EUR",
+      image: mercedesSlkFront,
+      images: [
+        mercedesSlkFront,
+        mercedesSlkSide,
+        mercedesSlkSideRight,
+        mercedesSlkRear
+      ],
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: "2015",
+      doors: "2",
+      trunk: "225 L",
+      engineType: "1.8L Turbo"
     }
   };
 
