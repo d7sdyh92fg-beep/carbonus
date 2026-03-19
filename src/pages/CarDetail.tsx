@@ -360,11 +360,11 @@ const CarDetail = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Car Image Carousel */}
             <div className="bg-gray-50 rounded-2xl p-8 relative">
-              <div className="text-center overflow-hidden">
+              <div className="text-center overflow-hidden flex items-center justify-center h-[300px] sm:h-[350px] md:h-[400px]">
                 <img
                   src={getCurrentImage()}
                   alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
-                  className={`w-full max-w-2xl mx-auto object-contain rounded-lg ${
+                  className={`max-w-full max-h-full mx-auto object-contain rounded-lg ${
                     car.id === "5" && currentImageIndex === 1 ? "scale-150" : ""
                   }`}
                 />
