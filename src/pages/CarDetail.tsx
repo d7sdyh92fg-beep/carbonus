@@ -556,7 +556,7 @@ const CarDetail = () => {
                 ) : (
                   <div className="flex items-baseline gap-2 mb-6">
                     <span className="text-sm text-muted-foreground">{t('carDetail.startingFrom')}</span>
-                    <span className="text-4xl font-bold text-primary">{PRICING.priceRange}</span>
+                    <span className="text-4xl font-bold text-primary">€30–€50</span>
                     <span className="text-lg text-muted-foreground">{t('carDetail.perDay')}</span>
                   </div>
                 )}
