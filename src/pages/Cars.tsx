@@ -243,7 +243,7 @@ const Cars = () => {
       id: "6",
       name: "Mercedes-Benz SLK",
       price: "50 EUR",
-      image: mercedesSlkSide,
+      image: mercedesSlkSideClean,
       category: "Kabrioletas",
       passengers: 2,
       fuel: "Benzinas",
