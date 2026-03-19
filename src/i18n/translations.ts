@@ -161,6 +161,7 @@ export const translations = {
         universalas: "Universalas",
         hecbekas: "Hečbekas",
         kabrioletas: "Kabrioletas",
+        vienaturis: "Vienatūris",
       },
       featuresList: {
         airConditioning: "Kondicionierius",
@@ -179,7 +180,10 @@ export const translations = {
         modernLED: "Modernus LED apšvietimas",
         retractableRoof: "Atidaromas stogas",
         automaticTransmission: "Automatinė pavarų dėžė",
-        sportyDesign: "Sportinis dizainas"
+        sportyDesign: "Sportinis dizainas",
+        nineSeats: "9 keleivių vietos",
+        slidingDoors: "Slankiosios durys",
+        spaciousInterior: "Erdvus salonas"
       }
     },
 
