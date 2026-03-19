@@ -126,7 +126,7 @@ const Blog = () => {
       excerpt: t('blog.posts.family.excerpt'),
       content: "",
       author: t('blog.author'),
-      publishDate: "2024-11-20",
+      publishDate: "2025-11-20",
       readTime: "5 " + t('blog.readTime'),
       category: t('blog.posts.family.category'), 
       image: blogFamilyTravel,
