@@ -66,6 +66,22 @@ const CarDetail = () => {
   
   // Convert slug to ID for backward compatibility with existing car data structure
   const id = slug ? getCarIdFromSlug(slug) : null;
+
+  // Fetch car pricing from database
+  const { data: dbCarData } = useQuery({
+    queryKey: ['car-pricing', id],
+    queryFn: async () => {
+      if (!id) return null;
+      const { data, error } = await supabase
+        .from('cars')
+        .select('is_premium, price_tier1, price_tier2, price_tier3, price_weekend, price_package_romantic, price_package_wedding, price_per_day')
+        .eq('id', id)
+        .single();
+      if (error) return null;
+      return data;
+    },
+    enabled: !!id,
+  });
   
   // Redirect to 404 if slug is invalid
   useEffect(() => {
