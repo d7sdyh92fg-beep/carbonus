@@ -49,6 +49,7 @@ const Cars = () => {
   const { t, language } = useTranslations();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     // Set page title and meta tags
