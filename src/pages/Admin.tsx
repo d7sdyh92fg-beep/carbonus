@@ -829,12 +829,28 @@ const Admin = () => {
                          className="overflow-hidden cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
                          onClick={() => handleCarClick({ id: car.id, name: car.name })}
                        >
-                          <div className="aspect-video relative overflow-hidden">
-                            <img 
-                              src={getCarImage(car)} 
-                              alt={car.name}
-                              className="w-full h-full object-cover"
-                            />
+                          <div className="aspect-video relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
+                            <div className="relative w-full h-full">
+                              <img 
+                                src={getCarImage(car)} 
+                                alt={car.name}
+                                className={`w-full h-full object-contain mix-blend-multiply ${
+                                  car.name === "Volkswagen Passat" 
+                                    ? "scale-[0.92]" 
+                                    : car.name === "Mercedes-Benz SLK"
+                                    ? "scale-[0.92] translate-y-2"
+                                    : car.id === "5"
+                                    ? "scale-[1.30] translate-y-2"
+                                    : "scale-100 translate-y-2"
+                                }`}
+                              />
+                              {(car.id === "5" || car.id === "6") && (
+                                <div 
+                                  className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-[85%] h-5 rounded-[50%]"
+                                  style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%)' }}
+                                />
+                              )}
+                            </div>
                             <Badge className="absolute top-2 right-2 text-xs">{car.category}</Badge>
                           </div>
                          <CardContent className="p-3 sm:p-4">
