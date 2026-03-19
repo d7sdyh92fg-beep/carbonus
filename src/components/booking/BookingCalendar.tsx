@@ -38,6 +38,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   const [pickupTime, setPickupTime] = useState('10:00');
   const [returnTime, setReturnTime] = useState('10:00');
 
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const spaceTourerSeasonStart = new Date(now.getFullYear(), 4, 1); // Gegužės 1 d.
+  const minBookingDate = carId === '7' && today < spaceTourerSeasonStart
+    ? spaceTourerSeasonStart
+    : today;
+
   // Fetch car pricing from database
   const { data: dbCarPricing } = useQuery({
     queryKey: ['car-pricing-booking', carId],
@@ -251,10 +258,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
             mode="range"
             selected={selectedRange}
             onSelect={handleSelect}
-            disabled={(date) => {
-              const minDate = carId === '7' ? new Date(2025, 4, 1) : new Date(); // May 1, 2025 for SpaceTourer
-              return date < minDate || isDateBooked(date);
-            }}
+            disabled={(date) => date < minBookingDate || isDateBooked(date)}
             modifiers={{
               booked: bookedDates,
             }}
@@ -268,7 +272,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
               },
             }}
             className="rounded-lg border bg-card shadow-sm w-full max-w-full"
-            defaultMonth={carId === '7' && new Date() < new Date(2025, 4, 1) ? new Date(2025, 4, 1) : undefined}
+            defaultMonth={carId === '7' ? minBookingDate : undefined}
             locale={language === 'lt' ? lt : enUS}
           />
           
