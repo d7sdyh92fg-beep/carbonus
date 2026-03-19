@@ -160,6 +160,7 @@ export const translations = {
         miniautobusas: "Miniautobusas",
         universalas: "Universalas",
         hecbekas: "Hečbekas",
+        kabrioletas: "Kabrioletas",
       },
       featuresList: {
         airConditioning: "Kondicionierius",
