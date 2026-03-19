@@ -26,7 +26,7 @@ import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flippe
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
+import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
 import { PRICING } from "@/config/pricing";
 

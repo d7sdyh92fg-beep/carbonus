@@ -10,7 +10,7 @@ import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
+import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
 
 interface Car {
