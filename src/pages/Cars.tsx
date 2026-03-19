@@ -255,7 +255,7 @@ const Cars = () => {
     }
   ];
 
-  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas"];
+  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas"];
 
   // IDs of sold cars to hide from public view
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
