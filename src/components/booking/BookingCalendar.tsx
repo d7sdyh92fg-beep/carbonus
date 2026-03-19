@@ -82,6 +82,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   const fetchBookedDates = async () => {
     setIsLoadingDates(true);
     try {
+      // Fetch reservations
       const { data: reservations, error } = await supabase
         .from("reservations")
         .select("start_date, end_date")
@@ -107,6 +108,16 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
         for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
           dates.push(new Date(date));
         }
+      });
+
+      // Fetch blocked dates
+      const { data: blockedDates } = await supabase
+        .from("car_blocked_dates")
+        .select("blocked_date")
+        .eq("car_id", carId);
+
+      blockedDates?.forEach((bd) => {
+        dates.push(new Date(bd.blocked_date));
       });
 
       setBookedDates(dates);
