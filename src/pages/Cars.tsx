@@ -362,7 +362,11 @@ const Cars = () => {
                       <img
                         src={car.image}
                         alt={car.name}
+                        loading="eager"
+                        onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
                         className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
+                          !loadedImages.has(car.id) ? "opacity-0" : "opacity-100"
+                        } ${
                           car.name === "Volkswagen Passat" 
                             ? "scale-[1.22] group-hover:scale-[1.27]" 
                             : car.name === "Mercedes-Benz SLK"
@@ -375,7 +379,7 @@ const Cars = () => {
                         }`}
                       />
                       {/* Shadow under KIA CEED 2020 and Mercedes SLK only */}
-                      {(car.id === "5" || car.id === "6") && (
+                      {(car.id === "5" || car.id === "6") && loadedImages.has(car.id) && (
                         <div 
                           className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
                           style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
