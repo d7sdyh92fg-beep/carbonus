@@ -176,7 +176,10 @@ export const translations = {
         spaciousWagon: "Erdvus universalas",
         reliable: "Patikimas automobilis",
         economicalDiesel: "Ekonomiškas dyzelinis variklis",
-        modernLED: "Modernus LED apšvietimas"
+        modernLED: "Modernus LED apšvietimas",
+        retractableRoof: "Atidaromas stogas",
+        automaticTransmission: "Automatinė pavarų dėžė",
+        sportyDesign: "Sportinis dizainas"
       }
     },
 
