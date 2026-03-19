@@ -166,7 +166,7 @@ export function Fleet() {
                   />
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                      {t(`car.categories.${car.category.toLowerCase()}`)}
+                      {t(`car.categories.${normalizeForTranslation(car.category)}`)}
                     </Badge>
                   </div>
                   <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
