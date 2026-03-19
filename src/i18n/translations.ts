@@ -678,6 +678,17 @@ export const translations = {
         feature6: "Sportinis dizainas",
         feature7: "AMG stilistikos elementai",
         feature8: "Premium garso sistema"
+      },
+      "7": {
+        description: "Citroën SpaceTourer L3 – erdvus 9 vietų keleivis su galingu 180 AG dyzeliniu varikliu ir 8 laipsnių automatine pavarų dėže. Idealus pasirinkimas didelėms grupėms, šeimoms ar verslo kelionėms. Slankiosios durys, 3 eilės sėdynių ir didžiulė bagažinė užtikrina maksimalų patogumą.",
+        feature1: "9 keleivių vietos",
+        feature2: "2.2L Dyzelinis variklis 180 AG",
+        feature3: "8 laipsnių automatinė pavarų dėžė",
+        feature4: "Dvigubas oro kondicionierius",
+        feature5: "Slankiosios durys iš abiejų pusių",
+        feature6: "10 colių jutiklinis ekranas",
+        feature7: "Android Auto ir CarPlay",
+        feature8: "Susidūrimo stabdymo asistentas"
       }
     },
 
