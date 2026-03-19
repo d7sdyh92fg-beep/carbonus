@@ -17,6 +17,13 @@ export interface AdditionalService {
   icon?: any;
 }
 
+export interface SelectedPackage {
+  type: 'romantic' | 'wedding';
+  name: string;
+  price: number; // Use the lower bound of the range
+  priceDisplay: string; // e.g. "70-90"
+}
+
 export interface BookingData {
   carId: string;
   carName: string;
@@ -29,6 +36,7 @@ export interface BookingData {
   basePrice: number;
   insurance?: InsuranceOption;
   services: AdditionalService[];
+  selectedPackage?: SelectedPackage;
 }
 
 interface BookingContextType {

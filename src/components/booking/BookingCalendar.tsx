@@ -24,7 +24,7 @@ interface BookingCalendarProps {
   onClearPackage?: () => void;
 }
 
-const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage }) => {
+const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage, selectedPackage, onClearPackage }) => {
   const navigate = useNavigate();
   const { setBookingData } = useBooking();
   const { toast } = useToast();
