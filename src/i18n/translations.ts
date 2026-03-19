@@ -593,6 +593,18 @@ export const translations = {
         doors: "Durų skaičius",
         trunk: "Bagažinės talpa",
         engineType: "Variklio tipas"
+      },
+      mercPricing: {
+        title: "Kainodara",
+        weekday7: "Darbo diena (7+ d.)",
+        weekday3: "Darbo diena (3–7 d.)",
+        weekday1: "Darbo diena (1–3 d.)",
+        weekend: "Savaitgalis",
+        summer: "Vasaros pikas (V–IX mėn.)",
+        day: "para",
+        packagesTitle: "Emociniai paketai",
+        romantic: "Romantiškas vakaras",
+        wedding: "Vestuvės / Fotosesija"
       }
     },
 
