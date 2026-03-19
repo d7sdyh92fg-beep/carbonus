@@ -73,6 +73,12 @@ const cars = [
     year: '2015', 
     available: true
   },
+  { 
+    id: '7', 
+    name: 'Citroën SpaceTourer', 
+    year: '2019', 
+    available: true
+  },
 ];
 
 
