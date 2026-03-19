@@ -2039,7 +2039,10 @@ export const translations = {
         spaciousWagon: "Spacious Estate",
         reliable: "Reliable Car",
         economicalDiesel: "Economical Diesel Engine",
-        modernLED: "Modern LED Lighting"
+        modernLED: "Modern LED Lighting",
+        retractableRoof: "Retractable Roof",
+        automaticTransmission: "Automatic Transmission",
+        sportyDesign: "Sporty Design"
       }
     },
 
