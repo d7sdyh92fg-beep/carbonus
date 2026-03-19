@@ -150,7 +150,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
     if (range) {
-      setSelectedRange(range);
+      // Romantic package: force single day
+      if (selectedPackage?.type === 'romantic' && range.from) {
+        setSelectedRange({ from: range.from, to: range.from });
+      } else {
+        setSelectedRange(range);
+      }
     }
   };
 
@@ -158,6 +163,14 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     return bookedDates.some(bookedDate => 
       bookedDate.toDateString() === date.toDateString()
     );
+  };
+
+  const getPackageTotal = (): number => {
+    if (!selectedPackage) return 0;
+    if (selectedPackage.type === 'romantic') return selectedPackage.price;
+    // Wedding: price per day × days
+    const days = getDaysCount();
+    return days > 0 ? selectedPackage.price * days : selectedPackage.price;
   };
 
   const handleBooking = () => {
@@ -170,7 +183,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       return;
     }
 
-    const finalPrice = selectedPackage ? selectedPackage.price : getTotalPrice();
+    const finalPrice = selectedPackage ? getPackageTotal() : getTotalPrice();
 
     setBookingData({
       carId,
@@ -183,7 +196,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       rentalDays: getDaysCount(),
       basePrice: finalPrice,
       services: [],
-      selectedPackage: selectedPackage || undefined,
+      selectedPackage: selectedPackage ? { ...selectedPackage, price: finalPrice, priceDisplay: String(finalPrice) } : undefined,
     });
 
     const servicesRoute = language === 'en' 
@@ -338,9 +351,22 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                     </button>
                   )}
                 </div>
+                
+                {selectedPackage.type === 'romantic' ? (
+                  <div className="text-xs text-muted-foreground">
+                    {language === 'lt' ? 'Pasirinkite vieną dieną' : 'Select one day'}
+                  </div>
+                ) : (
+                  <div className="text-xs text-muted-foreground">
+                    {language === 'lt' 
+                      ? `${selectedPackage.price} € / para × ${getDaysCount() || '...'} d.` 
+                      : `${selectedPackage.price} € / day × ${getDaysCount() || '...'} days`}
+                  </div>
+                )}
+
                 <div className="flex justify-between items-center text-lg">
                   <span className="font-semibold">{t('booking.total')}</span>
-                  <span className="text-2xl font-bold text-primary">{selectedPackage.priceDisplay} €</span>
+                  <span className="text-2xl font-bold text-primary">{getDaysCount() > 0 ? getPackageTotal() : selectedPackage.price} €</span>
                 </div>
               </div>
 
@@ -350,7 +376,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                   size="lg"
                 >
-                  {t('booking.bookFor')} {selectedPackage.priceDisplay} €
+                  {t('booking.bookFor')} {getPackageTotal()} €
                 </Button>
               )}
 
