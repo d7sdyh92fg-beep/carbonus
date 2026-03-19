@@ -47,6 +47,7 @@ interface Reservation {
   condition_return?: string;
   return_notes?: string;
   returned_at?: string;
+  pricing_notes?: string;
 }
 
 interface ContractSignature {
