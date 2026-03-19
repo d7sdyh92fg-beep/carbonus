@@ -107,13 +107,20 @@ export type Database = {
           id: string
           image_url: string | null
           is_available: boolean | null
+          is_premium: boolean | null
           last_service_date: string | null
           license_plate: string | null
           name: string
           next_service_date: string | null
           notes: string | null
           passengers: number
+          price_package_romantic: string | null
+          price_package_wedding: string | null
           price_per_day: number
+          price_tier1: number | null
+          price_tier2: number | null
+          price_tier3: number | null
+          price_weekend: number | null
           service_interval_km: number | null
           transmission: string
           updated_at: string | null
@@ -128,13 +135,20 @@ export type Database = {
           id: string
           image_url?: string | null
           is_available?: boolean | null
+          is_premium?: boolean | null
           last_service_date?: string | null
           license_plate?: string | null
           name: string
           next_service_date?: string | null
           notes?: string | null
           passengers: number
+          price_package_romantic?: string | null
+          price_package_wedding?: string | null
           price_per_day: number
+          price_tier1?: number | null
+          price_tier2?: number | null
+          price_tier3?: number | null
+          price_weekend?: number | null
           service_interval_km?: number | null
           transmission: string
           updated_at?: string | null
@@ -149,13 +163,20 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_available?: boolean | null
+          is_premium?: boolean | null
           last_service_date?: string | null
           license_plate?: string | null
           name?: string
           next_service_date?: string | null
           notes?: string | null
           passengers?: number
+          price_package_romantic?: string | null
+          price_package_wedding?: string | null
           price_per_day?: number
+          price_tier1?: number | null
+          price_tier2?: number | null
+          price_tier3?: number | null
+          price_weekend?: number | null
           service_interval_km?: number | null
           transmission?: string
           updated_at?: string | null
