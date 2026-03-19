@@ -87,7 +87,7 @@ const BlogPost = () => {
       title: t('blog.posts.winter.title'),
       excerpt: t('blog.posts.winter.excerpt'),
       author: t('blog.posts.winter.author'),
-      publishDate: "2024-11-25",
+      publishDate: "2025-11-25",
       readTime: t('blog.posts.winter.readTime'),
       category: t('blog.posts.winter.category'),
       image: blogWinterDriving,
