@@ -80,7 +80,10 @@ export function Fleet() {
       'Modernus LED apšvietimas': 'car.featuresList.modernLED',
       'Atidaromas stogas': 'car.featuresList.retractableRoof',
       'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
-      'Sportinis dizainas': 'car.featuresList.sportyDesign'
+      'Sportinis dizainas': 'car.featuresList.sportyDesign',
+      '9 keleivių vietos': 'car.featuresList.nineSeats',
+      'Slankiosios durys': 'car.featuresList.slidingDoors',
+      'Erdvus salonas': 'car.featuresList.spaciousInterior'
     };
     return featureMap[feature] || feature;
   };
