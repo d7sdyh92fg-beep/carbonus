@@ -405,10 +405,16 @@ const Cars = () => {
                         />
                       )}
                     </div>
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-4 left-4 flex gap-1.5">
                       <Badge variant="secondary" className="bg-primary text-primary-foreground">
                         {t(`car.categories.${normalizeForTranslation(car.category)}`)}
                       </Badge>
+                      {premiumCarIds.has(car.id) && (
+                        <Badge variant="secondary" className="bg-amber-500 text-white flex items-center gap-1">
+                          <Crown className="w-3 h-3" />
+                          Premium
+                        </Badge>
+                      )}
                     </div>
                     <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
