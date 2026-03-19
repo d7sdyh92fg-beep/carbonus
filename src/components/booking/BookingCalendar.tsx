@@ -36,6 +36,20 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   const [pickupTime, setPickupTime] = useState('10:00');
   const [returnTime, setReturnTime] = useState('10:00');
 
+  // Fetch car pricing from database
+  const { data: dbCarPricing } = useQuery({
+    queryKey: ['car-pricing-booking', carId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cars')
+        .select('price_tier1, price_tier2, price_tier3')
+        .eq('id', carId)
+        .single();
+      if (error) return null;
+      return data;
+    },
+  });
+
   // Fetch booked dates on component mount and set up real-time updates
   useEffect(() => {
     fetchBookedDates();
