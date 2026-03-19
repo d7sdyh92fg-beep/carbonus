@@ -1254,7 +1254,7 @@ export function InPersonBooking() {
                 {!useCustomPricing && (
                   <div className="flex justify-between text-base">
                     <span>Dienos kaina:</span>
-                    <span className="font-medium">€{PRICING.getDailyRate(getRentalDays(), booking.carId)}</span>
+                    <span className="font-medium">€{getDbDailyRate(getRentalDays(), booking.carId)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-base">
