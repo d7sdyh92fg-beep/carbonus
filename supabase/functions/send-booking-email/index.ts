@@ -22,10 +22,11 @@ interface BookingEmailRequest {
   totalAmount: number;
   depositAmount: number;
   language?: string;
+  packageName?: string;
+  packagePrice?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -39,11 +40,32 @@ const handler = async (req: Request): Promise<Response> => {
     const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
     const logoStyles = 'max-width: 180px; height: auto; margin-bottom: 24px;';
 
-    // Email to admin (info@carbonus.lt) - always in Lithuanian
+    // Package info HTML block
+    const packageHtmlAdmin = booking.packageName ? `
+      <div style="background-color: #fff8e1; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #f59e0b;">
+        <p style="margin: 0;"><strong>📦 Emocinis paketas:</strong> ${booking.packageName} — ${booking.packagePrice} €</p>
+      </div>
+    ` : '';
+
+    const packageHtmlCustomerLT = booking.packageName ? `
+      <div style="background-color: #fff8e1; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #f59e0b;">
+        <p style="margin: 0;"><strong>✨ Pasirinktas paketas:</strong> ${booking.packageName}</p>
+        <p style="margin: 5px 0 0 0;"><strong>Paketo kaina:</strong> ${booking.packagePrice} €</p>
+      </div>
+    ` : '';
+
+    const packageHtmlCustomerEN = booking.packageName ? `
+      <div style="background-color: #fff8e1; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #f59e0b;">
+        <p style="margin: 0;"><strong>✨ Selected package:</strong> ${booking.packageName}</p>
+        <p style="margin: 5px 0 0 0;"><strong>Package price:</strong> ${booking.packagePrice} €</p>
+      </div>
+    ` : '';
+
+    // Email to admin
     const adminEmailResponse = await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
       to: ["info@carbonus.lt"],
-      subject: `Nauja rezervacija - ${booking.carName}`,
+      subject: `Nauja rezervacija - ${booking.carName}${booking.packageName ? ` (${booking.packageName})` : ''}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
@@ -56,6 +78,8 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Telefonas:</strong> ${booking.customerPhone}</p>
             <p><strong>Kalba:</strong> ${isLT ? 'Lietuvių' : 'English'}</p>
           </div>
+
+          ${packageHtmlAdmin}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #555; margin-top: 0;">Rezervacijos detalės</h2>
@@ -77,7 +101,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Admin email sent:", adminEmailResponse);
 
-    // Email to customer - in their preferred language
+    // Email to customer
     const customerEmailResponse = await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
       to: [booking.customerEmail],
@@ -89,6 +113,8 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p>Sveiki, ${booking.customerName}!</p>
           <p>Jūsų rezervacija sėkmingai gauta. Netrukus susisieksime su jumis dėl mokėjimo ir automobilio perdavimo detalių.</p>
+
+          ${packageHtmlCustomerLT}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #555; margin-top: 0;">Jūsų rezervacijos informacija</h2>
@@ -124,6 +150,8 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p>Hello, ${booking.customerName}!</p>
           <p>Your booking has been successfully received. We will contact you shortly regarding payment and car pickup details.</p>
+
+          ${packageHtmlCustomerEN}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #555; margin-top: 0;">Your Booking Information</h2>
