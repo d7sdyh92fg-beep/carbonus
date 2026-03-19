@@ -26,6 +26,7 @@ import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
+import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
 
 // Image mapping object for car images
 const imageMap: { [key: string]: string } = {
@@ -35,6 +36,7 @@ const imageMap: { [key: string]: string } = {
   kiaCeedWagonSideClean,
   kiaCeedHatchbackSideCleanGray,
   mercedesSlkSideClean,
+  citroenSpacetourerSide,
 };
 
 // Function to get the correct image for a car
@@ -46,6 +48,7 @@ const getCarImage = (car: any) => {
     'Volkswagen Passat': 'vwPassatSideClean',
     'KIA CEED': car.category === 'Universalas' ? 'kiaCeedWagonSideClean' : 'kiaCeedHatchbackSideCleanGray',
     'Mercedes-Benz SLK': 'mercedesSlkSideClean',
+    'Citroën SpaceTourer': 'citroenSpacetourerSide',
   };
   
   const imageKey = nameToImageMap[car.name] || 'bmw3Clean';

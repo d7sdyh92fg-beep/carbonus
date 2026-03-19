@@ -36,6 +36,8 @@ import mercedesSlkFront from "@/assets/mercedes-slk-front-studio.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-studio.png";
 import mercedesSlkRear from "@/assets/mercedes-slk-rear-studio.png";
 import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right-studio.png";
+import citroenSpacetourerFront from "@/assets/citroen-spacetourer-front-studio.png";
+import citroenSpacetourerRear from "@/assets/citroen-spacetourer-rear-studio.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -257,6 +259,25 @@ const CarDetail = () => {
       trunk: "225 L",
       engineType: "1.8L Turbo",
       isPremium: true
+    },
+    "7": {
+      id: "7",
+      name: "Citroën SpaceTourer",
+      price: "nuo 60 EUR",
+      image: citroenSpacetourerFront,
+      images: [
+        citroenSpacetourerFront,
+        citroenSpacetourerRear
+      ],
+      category: "Vienatūris",
+      passengers: 9,
+      fuel: "Dyzelinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: "2025",
+      doors: "5",
+      trunk: "2763 L (max)",
+      engineType: "2.2L Diesel 180 AG"
     }
   };
 

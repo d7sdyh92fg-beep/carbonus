@@ -30,7 +30,7 @@ import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
-
+import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
 
 interface Car {
   id: string;
@@ -138,7 +138,10 @@ const Cars = () => {
       'Modernus LED apšvietimas': 'car.featuresList.modernLED',
       'Atidaromas stogas': 'car.featuresList.retractableRoof',
       'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
-      'Sportinis dizainas': 'car.featuresList.sportyDesign'
+      'Sportinis dizainas': 'car.featuresList.sportyDesign',
+      '9 keleivių vietos': 'car.featuresList.nineSeats',
+      'Slankiosios durys': 'car.featuresList.slidingDoors',
+      'Erdvus salonas': 'car.featuresList.spaciousInterior'
     };
     return featureMap[feature] || feature;
   };
@@ -275,10 +278,27 @@ const Cars = () => {
       rating: 4.7,
       year: 2012,
       features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+    },
+    {
+      id: "7",
+      name: "Citroën SpaceTourer",
+      price: "nuo 60 EUR",
+      image: citroenSpacetourerSide,
+      category: "Vienatūris",
+      passengers: 9,
+      fuel: "Dyzelinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: 2025,
+      features: [
+        "9 keleivių vietos",
+        "Slankiosios durys",
+        "Erdvus salonas"
+      ],
     }
   ];
 
-  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas"];
+  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas", "Vienatūris"];
 
   // IDs of sold cars to hide from public view
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
@@ -394,6 +414,8 @@ const Cars = () => {
                             ? "scale-[1.33] group-hover:scale-[1.38] translate-y-4"
                             : car.id === "5"
                             ? "scale-[1.65] group-hover:scale-[1.70] translate-y-4"
+                            : car.id === "7"
+                            ? "scale-[1.15] group-hover:scale-[1.20] translate-y-2"
                             : "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
                         }`}
                       />

@@ -14,6 +14,7 @@ import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
+import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
 
 interface Car {
   id: string;
@@ -79,7 +80,10 @@ export function Fleet() {
       'Modernus LED apšvietimas': 'car.featuresList.modernLED',
       'Atidaromas stogas': 'car.featuresList.retractableRoof',
       'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
-      'Sportinis dizainas': 'car.featuresList.sportyDesign'
+      'Sportinis dizainas': 'car.featuresList.sportyDesign',
+      '9 keleivių vietos': 'car.featuresList.nineSeats',
+      'Slankiosios durys': 'car.featuresList.slidingDoors',
+      'Erdvus salonas': 'car.featuresList.spaciousInterior'
     };
     return featureMap[feature] || feature;
   };
@@ -111,6 +115,19 @@ export function Fleet() {
       rating: 4.9,
       year: 2015,
       features: ["Atidaromas stogas", "Automatinė pavarų dėžė", "Sportinis dizainas"]
+    },
+    {
+      id: "7",
+      name: "Citroën SpaceTourer",
+      price: "60 EUR",
+      image: citroenSpacetourerSide,
+      category: "Vienatūris",
+      passengers: 9,
+      fuel: "Dyzelinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: 2025,
+      features: ["9 keleivių vietos", "Slankiosios durys", "Erdvus salonas"]
     },
     {
       id: "4",
@@ -189,6 +206,8 @@ export function Fleet() {
                         ? "scale-[0.92] group-hover:scale-[0.97]" 
                         : car.name === "Mercedes-Benz SLK"
                         ? "scale-[0.92] group-hover:scale-[0.97] translate-y-4"
+                        : car.id === "7"
+                        ? "scale-[1.15] group-hover:scale-[1.20] translate-y-2"
                         : car.id === "5"
                         ? "scale-[1.30] group-hover:scale-[1.35] translate-y-3"
                         : "scale-100 group-hover:scale-105 translate-y-4"

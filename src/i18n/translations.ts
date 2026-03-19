@@ -161,6 +161,7 @@ export const translations = {
         universalas: "Universalas",
         hecbekas: "Hečbekas",
         kabrioletas: "Kabrioletas",
+        vienaturis: "Vienatūris",
       },
       featuresList: {
         airConditioning: "Kondicionierius",
@@ -179,7 +180,10 @@ export const translations = {
         modernLED: "Modernus LED apšvietimas",
         retractableRoof: "Atidaromas stogas",
         automaticTransmission: "Automatinė pavarų dėžė",
-        sportyDesign: "Sportinis dizainas"
+        sportyDesign: "Sportinis dizainas",
+        nineSeats: "9 keleivių vietos",
+        slidingDoors: "Slankiosios durys",
+        spaciousInterior: "Erdvus salonas"
       }
     },
 
@@ -674,6 +678,17 @@ export const translations = {
         feature6: "Sportinis dizainas",
         feature7: "AMG stilistikos elementai",
         feature8: "Premium garso sistema"
+      },
+      "7": {
+        description: "Citroën SpaceTourer L3 – erdvus 9 vietų keleivis su galingu 180 AG dyzeliniu varikliu ir 8 laipsnių automatine pavarų dėže. Idealus pasirinkimas didelėms grupėms, šeimoms ar verslo kelionėms. Slankiosios durys, 3 eilės sėdynių ir didžiulė bagažinė užtikrina maksimalų patogumą.",
+        feature1: "9 keleivių vietos",
+        feature2: "2.2L Dyzelinis variklis 180 AG",
+        feature3: "8 laipsnių automatinė pavarų dėžė",
+        feature4: "Dvigubas oro kondicionierius",
+        feature5: "Slankiosios durys iš abiejų pusių",
+        feature6: "10 colių jutiklinis ekranas",
+        feature7: "Android Auto ir CarPlay",
+        feature8: "Susidūrimo stabdymo asistentas"
       }
     },
 
@@ -2035,6 +2050,7 @@ export const translations = {
         universalas: "Estate",
         hecbekas: "Hatchback",
         kabrioletas: "Convertible",
+        vienaturis: "Van",
       },
       featuresList: {
         airConditioning: "Air Conditioning",
@@ -2053,7 +2069,10 @@ export const translations = {
         modernLED: "Modern LED Lighting",
         retractableRoof: "Retractable Roof",
         automaticTransmission: "Automatic Transmission",
-        sportyDesign: "Sporty Design"
+        sportyDesign: "Sporty Design",
+        nineSeats: "9 Passenger Seats",
+        slidingDoors: "Sliding Doors",
+        spaciousInterior: "Spacious Interior"
       }
     },
 
@@ -2470,6 +2489,17 @@ export const translations = {
         feature6: "Sporty design",
         feature7: "AMG styling elements",
         feature8: "Premium sound system"
+      },
+      "7": {
+        description: "Citroën SpaceTourer L3 – a spacious 9-seat passenger van with a powerful 180 HP diesel engine and 8-speed automatic transmission. Perfect for large groups, families or business trips. Sliding doors, 3 rows of seats and a huge cargo area ensure maximum comfort.",
+        feature1: "9 passenger seats",
+        feature2: "2.2L Diesel engine 180 HP",
+        feature3: "8-speed automatic transmission",
+        feature4: "Dual zone air conditioning",
+        feature5: "Sliding doors on both sides",
+        feature6: "10-inch touchscreen display",
+        feature7: "Android Auto and CarPlay",
+        feature8: "Collision braking assistant"
       }
     },
 

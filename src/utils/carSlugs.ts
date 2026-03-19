@@ -51,6 +51,13 @@ export const CAR_SLUGS: CarSlugMapping[] = [
     slugEn: "mercedes-benz-slk-rental",
     name: "Mercedes-Benz SLK",
     category: "Kabrioletas"
+  },
+  {
+    id: "7",
+    slug: "citroen-spacetourer-nuoma",
+    slugEn: "citroen-spacetourer-rental",
+    name: "Citroën SpaceTourer",
+    category: "Vienatūris"
   }
 ];
 
