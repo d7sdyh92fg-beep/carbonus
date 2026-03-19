@@ -27,7 +27,7 @@ import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.pn
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-clean-gray.png";
-import mercedesSlkSide from "@/assets/mercedes-slk-side.jpg";
+import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
 import { PRICING } from "@/config/pricing";
 
 interface Car {
