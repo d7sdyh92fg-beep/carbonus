@@ -2050,6 +2050,7 @@ export const translations = {
         universalas: "Estate",
         hecbekas: "Hatchback",
         kabrioletas: "Convertible",
+        vienaturis: "Van",
       },
       featuresList: {
         airConditioning: "Air Conditioning",
@@ -2068,7 +2069,10 @@ export const translations = {
         modernLED: "Modern LED Lighting",
         retractableRoof: "Retractable Roof",
         automaticTransmission: "Automatic Transmission",
-        sportyDesign: "Sporty Design"
+        sportyDesign: "Sporty Design",
+        nineSeats: "9 Passenger Seats",
+        slidingDoors: "Sliding Doors",
+        spaciousInterior: "Spacious Interior"
       }
     },
 
