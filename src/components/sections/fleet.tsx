@@ -38,6 +38,7 @@ const imageMap: { [key: string]: string } = {
 
 export function Fleet() {
   const navigate = useNavigate();
+  const { t } = useTranslations();
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
   // Feature key mapping for translation
