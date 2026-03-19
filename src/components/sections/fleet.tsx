@@ -55,7 +55,10 @@ export function Fleet() {
       'Erdvus universalas': 'car.featuresList.spaciousWagon',
       'Patikimas automobilis': 'car.featuresList.reliable',
       'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
-      'Modernus LED apšvietimas': 'car.featuresList.modernLED'
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED',
+      'Atidaromas stogas': 'car.featuresList.retractableRoof',
+      'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
+      'Sportinis dizainas': 'car.featuresList.sportyDesign'
     };
     return featureMap[feature] || feature;
   };
