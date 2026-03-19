@@ -363,13 +363,20 @@ const CarDetail = () => {
             {/* Car Image Carousel */}
             <div className="bg-gray-50 rounded-2xl p-8 relative">
               <div className="text-center overflow-hidden">
-                <img
-                  src={getCurrentImage()}
-                  alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
-                  className={`w-full max-w-2xl mx-auto object-contain rounded-lg ${
-                    car.id === "5" && currentImageIndex === 1 ? "scale-150" : ""
-                  }`}
-                />
+                <div className="relative">
+                  <img
+                    src={getCurrentImage()}
+                    alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
+                    className={`w-full max-w-2xl mx-auto object-contain rounded-lg ${
+                      car.id === "5" && currentImageIndex === 1 ? "scale-150" : ""
+                    }`}
+                  />
+                  {/* Shadow under car */}
+                  <div 
+                    className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[70%] h-6 rounded-[50%]"
+                    style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%)' }}
+                  />
+                </div>
               </div>
               
               {/* Navigation arrows - only show if multiple images */}
