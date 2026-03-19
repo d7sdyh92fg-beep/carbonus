@@ -189,7 +189,7 @@ const Cars = () => {
     {
       id: "1",
       name: "BMW 3 series",
-      price: PRICING.priceFrom,
+      price: "nuo 30 EUR",
       image: bmw3Clean,
       category: "Sedanas",
       passengers: 5,
