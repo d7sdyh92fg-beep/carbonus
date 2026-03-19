@@ -163,10 +163,10 @@ export function Fleet() {
                       car.name === "Volkswagen Passat" 
                         ? "scale-[0.85] group-hover:scale-[0.9]" 
                         : car.name === "Mercedes-Benz SLK"
-                        ? "scale-[0.85] group-hover:scale-[0.9] translate-y-2"
+                        ? "scale-[0.85] group-hover:scale-[0.9] translate-y-4"
                         : car.id === "5"
-                        ? "scale-100 group-hover:scale-105 translate-y-2"
-                        : "scale-100 group-hover:scale-105"
+                        ? "scale-100 group-hover:scale-105 translate-y-4"
+                        : "scale-100 group-hover:scale-105 translate-y-4"
                     }`}
                     />
                     {/* Uniform shadow under all cars */}
