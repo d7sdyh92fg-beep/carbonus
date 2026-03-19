@@ -374,8 +374,8 @@ const CarDetail = () => {
                   {/* Shadow only under Mercedes SLK (other cars have natural shadows) */}
                   {car.id === "6" && (
                     <div 
-                      className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[70%] h-6 rounded-[50%]"
-                      style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%)' }}
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-8 rounded-[50%]"
+                      style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, transparent 70%)' }}
                     />
                   )}
                 </div>
