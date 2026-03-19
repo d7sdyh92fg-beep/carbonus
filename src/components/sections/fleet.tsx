@@ -117,6 +117,19 @@ export function Fleet() {
       features: ["Atidaromas stogas", "Automatinė pavarų dėžė", "Sportinis dizainas"]
     },
     {
+      id: "7",
+      name: "Citroën SpaceTourer",
+      price: "60 EUR",
+      image: citroenSpacetourerSide,
+      category: "Vienatūris",
+      passengers: 9,
+      fuel: "Dyzelinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: 2025,
+      features: ["9 keleivių vietos", "Slankiosios durys", "Erdvus salonas"]
+    },
+    {
       id: "4",
       name: "KIA CEED",
       price: "30 EUR",
