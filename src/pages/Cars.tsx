@@ -196,7 +196,7 @@ const Cars = () => {
     {
       id: "6",
       name: "Mercedes-Benz SLK",
-      price: "50 EUR",
+      price: "90 EUR",
       image: mercedesSlkSideClean,
       category: "Kabrioletas",
       passengers: 2,
