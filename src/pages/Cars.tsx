@@ -193,17 +193,21 @@ const Cars = () => {
       features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
     },
     {
-      id: "3",
-      name: "Volkswagen Passat",
-      price: PRICING.priceFrom,
-      image: vwPassatSideClean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Dyzelinas",
-      transmission: "Mechaninė",
-      rating: 4.7,
-      year: 2012,
-      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "50 EUR",
+      image: mercedesSlkSideClean,
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: 2015,
+      features: [
+        "Atidaromas stogas",
+        "Automatinė pavarų dėžė",
+        "Sportinis dizainas"
+      ],
     },
     {
       id: "4",
@@ -240,21 +244,17 @@ const Cars = () => {
       ],
     },
     {
-      id: "6",
-      name: "Mercedes-Benz SLK",
-      price: "50 EUR",
-      image: mercedesSlkSideClean,
-      category: "Kabrioletas",
-      passengers: 2,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.9,
-      year: 2015,
-      features: [
-        "Atidaromas stogas",
-        "Automatinė pavarų dėžė",
-        "Sportinis dizainas"
-      ],
+      id: "3",
+      name: "Volkswagen Passat",
+      price: PRICING.priceFrom,
+      image: vwPassatSideClean,
+      category: "Sedanas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.7,
+      year: 2012,
+      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     }
   ];
 
