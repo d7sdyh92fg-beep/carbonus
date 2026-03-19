@@ -1,0 +1,1 @@
+UPDATE reservations SET car_name = 'Citroën SpaceTourer (2025)' WHERE car_id = '7' AND car_name = 'Citroën SpaceTourer (2019)';
