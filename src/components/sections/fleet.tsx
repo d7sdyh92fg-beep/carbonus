@@ -130,17 +130,17 @@ export function Fleet() {
       features: ["9 keleivių vietos", "Slankiosios durys", "Erdvus salonas"]
     },
     {
-      id: "4",
-      name: "KIA CEED",
+      id: "3",
+      name: "Volkswagen Passat",
       price: "30 EUR",
-      image: kiaCeedWagonSideClean,
-      category: "Universalas",
+      image: vwPassatSideClean,
+      category: "Sedanas",
       passengers: 5,
-      fuel: "Benzinas",
+      fuel: "Dyzelinas",
       transmission: "Mechaninė",
-      rating: 4.5,
-      year: 2013,
-      features: ["Ekonomiškas vairavimas", "Erdvus universalas", "Patikimas automobilis"]
+      rating: 4.7,
+      year: 2012,
+      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     },
     {
       id: "5",
@@ -154,19 +154,6 @@ export function Fleet() {
       rating: 4.6,
       year: 2020,
       features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
-    },
-    {
-      id: "3",
-      name: "Volkswagen Passat",
-      price: "30 EUR",
-      image: vwPassatSideClean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Dyzelinas",
-      transmission: "Mechaninė",
-      rating: 4.7,
-      year: 2012,
-      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     }
   ];
 
