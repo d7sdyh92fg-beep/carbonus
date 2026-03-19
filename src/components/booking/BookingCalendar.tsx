@@ -20,9 +20,11 @@ interface BookingCalendarProps {
   carId: string;
   carName: string;
   carImage?: string;
+  selectedPackage?: { type: 'romantic' | 'wedding'; name: string; price: number; priceDisplay: string } | null;
+  onClearPackage?: () => void;
 }
 
-const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage }) => {
+const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage, selectedPackage, onClearPackage }) => {
   const navigate = useNavigate();
   const { setBookingData } = useBooking();
   const { toast } = useToast();
@@ -168,8 +170,8 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       return;
     }
 
-    // Set booking data and navigate to services
-    // Use format with 'yyyy-MM-dd' to avoid timezone issues (toISOString converts to UTC)
+    const finalPrice = selectedPackage ? selectedPackage.price : getTotalPrice();
+
     setBookingData({
       carId,
       carName,
@@ -179,8 +181,9 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       pickupTime,
       returnTime,
       rentalDays: getDaysCount(),
-      basePrice: getTotalPrice(),
+      basePrice: finalPrice,
       services: [],
+      selectedPackage: selectedPackage || undefined,
     });
 
     const servicesRoute = language === 'en' 
@@ -318,74 +321,118 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Pricing Tiers */}
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">{t('booking.priceCategories')}</h4>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center p-2 rounded border">
-                <span className="text-sm">{t('booking.category1to3')}</span>
-                <span className="font-semibold">€{dbCarPricing?.price_tier1 ?? 50}{t('booking.perDay')}</span>
-              </div>
-              <div className="flex justify-between items-center p-2 rounded border">
-                <span className="text-sm">{t('booking.category3to7')}</span>
-                <span className="font-semibold">€{dbCarPricing?.price_tier2 ?? 40}{t('booking.perDay')}</span>
-              </div>
-              <div className="flex justify-between items-center p-2 rounded border">
-                <span className="text-sm">{t('booking.category7plus')}</span>
-                <span className="font-semibold">€{dbCarPricing?.price_tier3 ?? 30}{t('booking.perDay')}</span>
-              </div>
-            </div>
-          </div>
-
-          {getDaysCount() > 0 && (
+          {/* Package selected mode */}
+          {selectedPackage ? (
             <>
-              <div className="border-t pt-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{t('booking.category')}</span>
-                    <Badge variant="secondary">{getPriceCategory()}</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{t('booking.daysCount')}</span>
-                    <span className="font-semibold">{getDaysCount()}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{t('booking.dailyRate')}</span>
-                    <span className="font-semibold">€{getDbDailyRate(getDaysCount())}</span>
-                  </div>
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-xl p-4 space-y-3 border border-amber-200/50 dark:border-amber-800/30">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-semibold text-foreground text-sm flex items-center gap-2">
+                    ✨ {selectedPackage.name}
+                  </h4>
+                  {onClearPackage && (
+                    <button
+                      onClick={onClearPackage}
+                      className="text-xs text-muted-foreground hover:text-foreground underline"
+                    >
+                      {language === 'lt' ? 'Atšaukti paketą' : 'Cancel package'}
+                    </button>
+                  )}
+                </div>
+                <div className="flex justify-between items-center text-lg">
+                  <span className="font-semibold">{t('booking.total')}</span>
+                  <span className="text-2xl font-bold text-primary">{selectedPackage.priceDisplay} €</span>
                 </div>
               </div>
 
-              <div className="border-t pt-4 space-y-3">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{t('booking.rentalPrice')}</span>
-                    <span className="font-semibold">€{getTotalPrice()}</span>
-                  </div>
-                </div>
-                <div className="border-t pt-2">
-                  <div className="flex justify-between items-center text-lg">
-                    <span className="font-semibold">{t('booking.total')}</span>
-                    <span className="text-2xl font-bold text-primary">€{getTotalPrice()}</span>
-                  </div>
-                </div>
-              </div>
+              {getDaysCount() > 0 && (
+                <Button 
+                  onClick={handleBooking}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  size="lg"
+                >
+                  {t('booking.bookFor')} {selectedPackage.priceDisplay} €
+                </Button>
+              )}
 
-              <Button 
-                onClick={handleBooking}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                size="lg"
-              >
-                {t('booking.bookFor')} €{getTotalPrice()}
-              </Button>
+              {getDaysCount() === 0 && (
+                <div className="text-center py-4 text-muted-foreground">
+                  <CalendarIcon className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                  <p>{t('booking.selectDatesToSeePrice')}</p>
+                </div>
+              )}
             </>
-          )}
+          ) : (
+            <>
+              {/* Standard pricing tiers */}
+              <div className="space-y-3">
+                <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">{t('booking.priceCategories')}</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center p-2 rounded border">
+                    <span className="text-sm">{t('booking.category1to3')}</span>
+                    <span className="font-semibold">€{dbCarPricing?.price_tier1 ?? 50}{t('booking.perDay')}</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 rounded border">
+                    <span className="text-sm">{t('booking.category3to7')}</span>
+                    <span className="font-semibold">€{dbCarPricing?.price_tier2 ?? 40}{t('booking.perDay')}</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 rounded border">
+                    <span className="text-sm">{t('booking.category7plus')}</span>
+                    <span className="font-semibold">€{dbCarPricing?.price_tier3 ?? 30}{t('booking.perDay')}</span>
+                  </div>
+                </div>
+              </div>
 
-          {getDaysCount() === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              <CalendarIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>{t('booking.selectDatesToSeePrice')}</p>
-            </div>
+              {getDaysCount() > 0 && (
+                <>
+                  <div className="border-t pt-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">{t('booking.category')}</span>
+                        <Badge variant="secondary">{getPriceCategory()}</Badge>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">{t('booking.daysCount')}</span>
+                        <span className="font-semibold">{getDaysCount()}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">{t('booking.dailyRate')}</span>
+                        <span className="font-semibold">€{getDbDailyRate(getDaysCount())}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-4 space-y-3">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">{t('booking.rentalPrice')}</span>
+                        <span className="font-semibold">€{getTotalPrice()}</span>
+                      </div>
+                    </div>
+                    <div className="border-t pt-2">
+                      <div className="flex justify-between items-center text-lg">
+                        <span className="font-semibold">{t('booking.total')}</span>
+                        <span className="text-2xl font-bold text-primary">€{getTotalPrice()}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button 
+                    onClick={handleBooking}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                    size="lg"
+                  >
+                    {t('booking.bookFor')} €{getTotalPrice()}
+                  </Button>
+                </>
+              )}
+
+              {getDaysCount() === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <CalendarIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p>{t('booking.selectDatesToSeePrice')}</p>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>
