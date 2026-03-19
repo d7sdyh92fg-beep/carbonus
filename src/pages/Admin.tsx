@@ -836,11 +836,13 @@ const Admin = () => {
                                 alt={car.name}
                                 className={`w-full h-full object-contain mix-blend-multiply ${
                                   car.name === "Volkswagen Passat" 
-                                    ? "scale-[0.92]" 
+                                    ? "scale-[1.0]" 
                                     : car.name === "Mercedes-Benz SLK"
-                                    ? "scale-[0.92] translate-y-2"
+                                    ? "scale-[0.92] translate-y-4"
                                     : car.id === "5"
-                                    ? "scale-[1.30] translate-y-2"
+                                    ? "scale-[1.35] translate-y-4"
+                                    : car.id === "4"
+                                    ? "scale-[1.08] translate-y-2"
                                     : "scale-100 translate-y-2"
                                 }`}
                               />
