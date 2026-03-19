@@ -202,7 +202,7 @@ const Cars = () => {
     {
       id: "2",
       name: "Chrysler Town & Country",
-      price: PRICING.priceFrom,
+      price: "nuo 30 EUR",
       image: chryslerTownCountrySide,
       category: "Miniautobusas",
       passengers: 7,
