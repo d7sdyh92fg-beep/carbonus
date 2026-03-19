@@ -19,7 +19,7 @@ import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, B
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { DigitalSignature } from './DigitalSignature';
 import { AdditionalService } from '@/contexts/BookingContext';
-import { PRICING } from '@/config/pricing';
+import { useQuery } from '@tanstack/react-query';
 
 interface Customer {
   firstName: string;
@@ -184,6 +184,51 @@ export function InPersonBooking() {
   const [isRetroactive, setIsRetroactive] = useState(false);
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
 
+  // Fetch car pricing from DB
+  const { data: dbCarPricing } = useQuery({
+    queryKey: ['cars-pricing-admin'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('cars')
+        .select('id, price_tier1, price_tier2, price_tier3, price_weekend');
+      return data || [];
+    },
+  });
+
+  // Get daily rate from DB pricing, with fallback defaults
+  const getDbDailyRate = (days: number, carId: string): number => {
+    const dbCar = (dbCarPricing || []).find(c => c.id === carId);
+    if (dbCar) {
+      if (days >= 7 && dbCar.price_tier3) return Number(dbCar.price_tier3);
+      if (days >= 3 && dbCar.price_tier2) return Number(dbCar.price_tier2);
+      if (dbCar.price_tier1) return Number(dbCar.price_tier1);
+    }
+    // Fallback for Mercedes SLK
+    if (carId === '6') {
+      if (days >= 7) return 90;
+      if (days >= 3) return 100;
+      return 110;
+    }
+    // Fallback defaults
+    if (days >= 7) return 30;
+    if (days >= 3) return 40;
+    return 50;
+  };
+
+  // Get pricing tiers for display
+  const getCarPricingTiers = (carId: string) => {
+    const dbCar = (dbCarPricing || []).find(c => c.id === carId);
+    if (dbCar && (dbCar.price_tier1 || dbCar.price_tier2 || dbCar.price_tier3)) {
+      return {
+        tier1: dbCar.price_tier1 ? Number(dbCar.price_tier1) : (carId === '6' ? 110 : 50),
+        tier2: dbCar.price_tier2 ? Number(dbCar.price_tier2) : (carId === '6' ? 100 : 40),
+        tier3: dbCar.price_tier3 ? Number(dbCar.price_tier3) : (carId === '6' ? 90 : 30),
+      };
+    }
+    if (carId === '6') return { tier1: 110, tier2: 100, tier3: 90 };
+    return { tier1: 50, tier2: 40, tier3: 30 };
+  };
+
   // Fetch booked dates when car is selected
   useEffect(() => {
     if (booking.carId) {
@@ -247,7 +292,7 @@ export function InPersonBooking() {
       total = parseFloat(customRentalPrice) || 0;
     } else {
       const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
-      const dailyRate = PRICING.getDailyRate(days, booking.carId);
+      const dailyRate = getDbDailyRate(days, booking.carId);
       total = days * dailyRate;
     }
     
@@ -272,7 +317,7 @@ export function InPersonBooking() {
     }
     
     const days = getRentalDays();
-    return days * PRICING.getDailyRate(days, booking.carId);
+    return days * getDbDailyRate(days, booking.carId);
   };
   
   const getDepositAmount = () => {
@@ -413,7 +458,7 @@ export function InPersonBooking() {
           return_date: format(booking.endDate!, 'yyyy-MM-dd'),
           return_time: booking.returnTime,
           rental_days: rentalDays,
-          daily_rate: useCustomPricing ? 0 : PRICING.getDailyRate(rentalDays, booking.carId),
+          daily_rate: useCustomPricing ? 0 : getDbDailyRate(rentalDays, booking.carId),
           total_rental_cost: rentalCost,
           deposit_amount: depositAmount,
           total_amount: totalAmount,
@@ -931,13 +976,18 @@ export function InPersonBooking() {
                     {/* Pricing Explanation */}
                     <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
                       <div className="text-sm sm:text-base font-medium text-blue-900 mb-2">
-                        Kainų struktūra:
+                        Kainų struktūra ({booking.carName}):
                       </div>
-                      <div className="space-y-1 text-xs sm:text-sm text-blue-800">
-                        <div>• 1-3 dienos: €50/dieną</div>
-                        <div>• 3-7 dienos: €40/dieną</div>
-                        <div>• 7+ dienų: €30/dieną</div>
-                      </div>
+                      {(() => {
+                        const tiers = getCarPricingTiers(booking.carId);
+                        return (
+                          <div className="space-y-1 text-xs sm:text-sm text-blue-800">
+                            <div>• 1-3 dienos: €{tiers.tier1}/dieną</div>
+                            <div>• 3-7 dienos: €{tiers.tier2}/dieną</div>
+                            <div>• 7+ dienų: €{tiers.tier3}/dieną</div>
+                          </div>
+                        );
+                      })()}
                     </div>
                     
                     {/* Price Calculation */}
@@ -960,7 +1010,7 @@ export function InPersonBooking() {
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Dienos kaina:</span>
-                          <span className="font-medium">€{PRICING.getDailyRate(getRentalDays(), booking.carId)}</span>
+                          <span className="font-medium">€{getDbDailyRate(getRentalDays(), booking.carId)}</span>
                         </div>
                         <div className="flex justify-between text-sm sm:text-base">
                           <span>Nuomos kaina:</span>
@@ -1204,7 +1254,7 @@ export function InPersonBooking() {
                 {!useCustomPricing && (
                   <div className="flex justify-between text-base">
                     <span>Dienos kaina:</span>
-                    <span className="font-medium">€{PRICING.getDailyRate(getRentalDays(), booking.carId)}</span>
+                    <span className="font-medium">€{getDbDailyRate(getRentalDays(), booking.carId)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-base">
