@@ -351,9 +351,22 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                     </button>
                   )}
                 </div>
+                
+                {selectedPackage.type === 'romantic' ? (
+                  <div className="text-xs text-muted-foreground">
+                    {language === 'lt' ? 'Pasirinkite vieną dieną' : 'Select one day'}
+                  </div>
+                ) : (
+                  <div className="text-xs text-muted-foreground">
+                    {language === 'lt' 
+                      ? `${selectedPackage.price} € / para × ${getDaysCount() || '...'} d.` 
+                      : `${selectedPackage.price} € / day × ${getDaysCount() || '...'} days`}
+                  </div>
+                )}
+
                 <div className="flex justify-between items-center text-lg">
                   <span className="font-semibold">{t('booking.total')}</span>
-                  <span className="text-2xl font-bold text-primary">{selectedPackage.priceDisplay} €</span>
+                  <span className="text-2xl font-bold text-primary">{getDaysCount() > 0 ? getPackageTotal() : selectedPackage.price} €</span>
                 </div>
               </div>
 
@@ -363,7 +376,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                   size="lg"
                 >
-                  {t('booking.bookFor')} {selectedPackage.priceDisplay} €
+                  {t('booking.bookFor')} {getPackageTotal()} €
                 </Button>
               )}
 
