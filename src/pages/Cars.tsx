@@ -363,14 +363,14 @@ const Cars = () => {
                         alt={car.name}
                         className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
                           car.name === "Volkswagen Passat" 
-                            ? "scale-[1.15] group-hover:scale-[1.2]" 
+                            ? "scale-[1.22] group-hover:scale-[1.27]" 
                             : car.name === "Mercedes-Benz SLK"
-                            ? "scale-[0.92] group-hover:scale-[0.97] translate-y-4"
+                            ? "scale-[0.99] group-hover:scale-[1.04] translate-y-4"
                             : car.id === "4"
-                            ? "scale-[1.2] group-hover:scale-[1.25] translate-y-4"
+                            ? "scale-[1.27] group-hover:scale-[1.32] translate-y-4"
                             : car.id === "5"
-                            ? "scale-100 group-hover:scale-105 translate-y-4"
-                            : "scale-100 group-hover:scale-105 translate-y-4"
+                            ? "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
+                            : "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
                         }`}
                       />
                       {/* Shadow under KIA CEED 2020 and Mercedes SLK only */}
