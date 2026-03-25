@@ -83,6 +83,8 @@ interface BlockedDate {
 
 const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose, carId, carName }) => {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [reservedDates, setReservedDates] = useState<Date[]>([]);
+  const [calendarBlockedDates, setCalendarBlockedDates] = useState<Date[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [dateReservations, setDateReservations] = useState<Reservation[]>([]);
@@ -155,28 +157,32 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
       setReservations(data || []);
 
-      // Generate booked dates from reservations
-      const dates: Date[] = [];
+      // Generate reserved dates from reservations
+      const resDates: Date[] = [];
       data?.forEach((reservation) => {
         const start = new Date(reservation.start_date);
         const end = new Date(reservation.end_date);
         
         for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
-          dates.push(new Date(date));
+          resDates.push(new Date(date));
         }
       });
+      setReservedDates(resDates);
 
-      // Also include blocked dates
+      // Also fetch blocked dates separately
       const { data: blocked } = await supabase
         .from('car_blocked_dates')
         .select('blocked_date')
         .eq('car_id', carId);
 
+      const blkDates: Date[] = [];
       blocked?.forEach((bd) => {
-        dates.push(new Date(bd.blocked_date));
+        blkDates.push(new Date(bd.blocked_date));
       });
+      setCalendarBlockedDates(blkDates);
 
-      setBookedDates(dates);
+      // Combined for general use
+      setBookedDates([...resDates, ...blkDates]);
     } catch (error) {
       console.error('Error fetching car reservations:', error);
     }
@@ -503,12 +509,21 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     selected={selectedDate}
                     onSelect={handleDateSelect}
                     modifiers={{
-                      booked: bookedDates,
+                      reserved: reservedDates,
+                      blocked: calendarBlockedDates,
                     }}
                     modifiersStyles={{
-                      booked: {
+                      reserved: {
+                        backgroundColor: 'hsl(38, 92%, 50%)',
+                        color: 'white',
+                        fontWeight: 'bold',
+                        borderRadius: '4px',
+                      },
+                      blocked: {
                         backgroundColor: 'hsl(var(--destructive))',
                         color: 'hsl(var(--destructive-foreground))',
+                        fontWeight: 'bold',
+                        borderRadius: '4px',
                       },
                     }}
                     className="rounded-md border"
@@ -517,12 +532,16 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   
                   <div className="mt-4 space-y-2">
                     <div className="flex items-center gap-2 text-sm">
+                      <div className="w-4 h-4 rounded" style={{ backgroundColor: 'hsl(38, 92%, 50%)' }}></div>
+                      <span>Rezervuota</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-destructive rounded"></div>
-                      <span>Užimtos datos</span>
+                      <span>Blokuota</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-muted border border-border rounded"></div>
-                      <span>Laisvos datos</span>
+                      <span>Laisva</span>
                     </div>
                   </div>
                 </CardContent>
