@@ -509,12 +509,21 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     selected={selectedDate}
                     onSelect={handleDateSelect}
                     modifiers={{
-                      booked: bookedDates,
+                      reserved: reservedDates,
+                      blocked: calendarBlockedDates,
                     }}
                     modifiersStyles={{
-                      booked: {
+                      reserved: {
+                        backgroundColor: 'hsl(38, 92%, 50%)',
+                        color: 'white',
+                        fontWeight: 'bold',
+                        borderRadius: '4px',
+                      },
+                      blocked: {
                         backgroundColor: 'hsl(var(--destructive))',
                         color: 'hsl(var(--destructive-foreground))',
+                        fontWeight: 'bold',
+                        borderRadius: '4px',
                       },
                     }}
                     className="rounded-md border"
@@ -523,12 +532,16 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   
                   <div className="mt-4 space-y-2">
                     <div className="flex items-center gap-2 text-sm">
+                      <div className="w-4 h-4 rounded" style={{ backgroundColor: 'hsl(38, 92%, 50%)' }}></div>
+                      <span>Rezervuota</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-destructive rounded"></div>
-                      <span>Užimtos datos</span>
+                      <span>Blokuota</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-muted border border-border rounded"></div>
-                      <span>Laisvos datos</span>
+                      <span>Laisva</span>
                     </div>
                   </div>
                 </CardContent>
