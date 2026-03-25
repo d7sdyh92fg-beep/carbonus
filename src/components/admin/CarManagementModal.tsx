@@ -287,7 +287,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
       const { error } = await supabase
         .from('car_blocked_dates')
-        .insert(blockedDateEntries);
+        .upsert(blockedDateEntries, { onConflict: 'car_id,blocked_date' });
 
       if (error) throw error;
 
