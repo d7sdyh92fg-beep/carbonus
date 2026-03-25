@@ -272,6 +272,16 @@ export function InPersonBooking() {
         }
       });
 
+      // Also fetch blocked dates
+      const { data: blockedDates } = await supabase
+        .from("car_blocked_dates")
+        .select("blocked_date")
+        .eq("car_id", booking.carId);
+
+      blockedDates?.forEach((bd) => {
+        dates.push(new Date(bd.blocked_date));
+      });
+
       console.log('🚫 Booked dates count:', dates.length, dates);
       setBookedDates(dates);
     } catch (error) {
