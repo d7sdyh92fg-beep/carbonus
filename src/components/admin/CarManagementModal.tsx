@@ -1184,11 +1184,11 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                               }}
                               modifiers={{
                                 blocked: blockedDates,
-                                booked: bookedDates.map(d => new Date(d))
+                                reserved: reservedDates,
                               }}
                               modifiersStyles={{
                                 blocked: { backgroundColor: '#ef4444', color: 'white' },
-                                booked: { backgroundColor: '#f59e0b', color: 'white' }
+                                reserved: { backgroundColor: '#f59e0b', color: 'white' }
                               }}
                             />
                           </div>
