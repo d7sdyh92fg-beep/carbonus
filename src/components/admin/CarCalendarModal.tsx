@@ -61,7 +61,7 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
 
       setReservations(data || []);
 
-      // Generate booked dates
+      // Generate booked dates from reservations
       const dates: Date[] = [];
       data?.forEach((reservation) => {
         const start = new Date(reservation.start_date);
@@ -70,6 +70,16 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
         for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
           dates.push(new Date(date));
         }
+      });
+
+      // Also fetch blocked dates
+      const { data: blockedDates } = await supabase
+        .from('car_blocked_dates')
+        .select('blocked_date')
+        .eq('car_id', carId);
+
+      blockedDates?.forEach((bd) => {
+        dates.push(new Date(bd.blocked_date));
       });
 
       setBookedDates(dates);
