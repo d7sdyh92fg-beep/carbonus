@@ -1,0 +1,1 @@
+UPDATE cars SET passengers = 8 WHERE id = '7';
