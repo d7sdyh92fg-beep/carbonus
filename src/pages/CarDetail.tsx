@@ -270,7 +270,7 @@ const CarDetail = () => {
         citroenSpacetourerRear
       ],
       category: "Vienatūris",
-      passengers: 9,
+      passengers: 8,
       fuel: "Dyzelinas",
       transmission: "Automatinė",
       rating: 4.8,

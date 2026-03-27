@@ -139,7 +139,7 @@ const Cars = () => {
       'Atidaromas stogas': 'car.featuresList.retractableRoof',
       'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
       'Sportinis dizainas': 'car.featuresList.sportyDesign',
-      '9 keleivių vietos': 'car.featuresList.nineSeats',
+      '8 keleivių vietos': 'car.featuresList.nineSeats',
       'Slankiosios durys': 'car.featuresList.slidingDoors',
       'Erdvus salonas': 'car.featuresList.spaciousInterior'
     };
@@ -285,13 +285,13 @@ const Cars = () => {
       price: "nuo 60 EUR",
       image: citroenSpacetourerSide,
       category: "Vienatūris",
-      passengers: 9,
+      passengers: 8,
       fuel: "Dyzelinas",
       transmission: "Automatinė",
       rating: 4.8,
       year: 2025,
       features: [
-        "9 keleivių vietos",
+        "8 keleivių vietos",
         "Slankiosios durys",
         "Erdvus salonas"
       ],
