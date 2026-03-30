@@ -3732,7 +3732,7 @@ export const translations = {
           <p>Modern 8-seat vans have all the comforts: dual-zone air conditioning, USB ports for every row, a 10-inch touchscreen with Android Auto and CarPlay, comfortable seats with adjustable backrests. Nobody feels "squeezed."</p>
 
           <h2>How Much Does It Cost?</h2>
-          <p>Renting an 8-seat Citroën SpaceTourer from Carbonus starts at <strong>€70 per day</strong> (7+ day rental). Split among 8 passengers, that's only <strong>~€9 per person per day</strong> – cheaper than public transport!</p>
+          <p>Renting an 8-seat Citroën SpaceTourer from Carbonus starts at <strong>€80 per day</strong> (7+ day rental). Split among 8 passengers, that's only <strong>~€10 per person per day</strong> – cheaper than public transport!</p>
 
           <h2>Conclusion</h2>
           <p>An 8-seat minivan is a smart, economical, and comfortable solution for group travel. Instead of multiple cars, choose one spacious and comfortable vehicle that lets everyone travel together and enjoy the journey.</p>
