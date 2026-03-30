@@ -73,6 +73,7 @@ export default function ReservationReview() {
           customerEmail: formData.email,
           customerName: `${formData.firstName} ${formData.lastName}`,
           carName: bookingData.carName,
+          carId: bookingData.carId,
           paymentType
         }
       });

@@ -240,12 +240,22 @@ serve(async (req) => {
     const { sessionId, reservationId }: VerifyPaymentRequest = await req.json();
     console.log('Verifying payment:', { sessionId, reservationId });
 
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", { apiVersion: "2023-10-16" });
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
       { auth: { persistSession: false } }
     );
+
+    // Check which car this reservation is for to select the right Stripe key
+    const SANLAB_CAR_IDS = ['7'];
+    const { data: resData } = await supabase.from('reservations').select('car_id').eq('id', reservationId).single();
+    const isSanlabCar = resData && SANLAB_CAR_IDS.includes(resData.car_id);
+    const stripeKey = isSanlabCar 
+      ? Deno.env.get("SANLAB_STRIPE_SECRET_KEY") 
+      : Deno.env.get("STRIPE_SECRET_KEY");
+    
+    console.log('Using Stripe account:', isSanlabCar ? 'sanlab' : 'carbonus');
+    const stripe = new Stripe(stripeKey || "", { apiVersion: "2023-10-16" });
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     console.log('Stripe session status:', session.payment_status);

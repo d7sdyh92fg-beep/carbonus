@@ -267,6 +267,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           customerEmail: formData.email,
           customerName: `${formData.firstName} ${formData.lastName}`,
           carName: carName,
+          carId: carId,
           paymentType
         }
       });

@@ -14,8 +14,11 @@ interface PaymentRequest {
   customerEmail: string; 
   customerName: string;
   carName: string;
+  carId: string;
   paymentType: 'full' | 'advance';
 }
+
+const SANLAB_CAR_IDS = ['7'];
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -31,17 +34,26 @@ serve(async (req) => {
       customerEmail, 
       customerName,
       carName,
+      carId,
       paymentType 
     }: PaymentRequest = await req.json();
+
+    // Select Stripe key based on car ID (Sanlab for SpaceTourer)
+    const isSanlabCar = SANLAB_CAR_IDS.includes(carId);
+    const stripeKey = isSanlabCar 
+      ? Deno.env.get("SANLAB_STRIPE_SECRET_KEY") 
+      : Deno.env.get("STRIPE_SECRET_KEY");
 
     console.log('Creating Stripe payment session:', { 
       reservationId, 
       amount, 
-      paymentType 
+      paymentType,
+      isSanlabCar,
+      stripeAccount: isSanlabCar ? 'sanlab' : 'carbonus'
     });
 
     // Initialize Stripe
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
+    const stripe = new Stripe(stripeKey || "", {
       apiVersion: "2023-10-16",
     });
 
