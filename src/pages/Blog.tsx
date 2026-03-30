@@ -62,6 +62,18 @@ const Blog = () => {
 
   const blogPosts: BlogPost[] = [
     {
+      id: "7",
+      title: t('blog.posts.groupTravel.title'),
+      excerpt: t('blog.posts.groupTravel.excerpt'),
+      content: "",
+      author: t('blog.author'),
+      publishDate: "2026-03-30",
+      readTime: "6 " + t('blog.readTime'),
+      category: t('blog.posts.groupTravel.category'),
+      image: blogGroupTravel,
+      slug: "kelione-didelei-grupei-8-vietu-mikroautobusas"
+    },
+    {
       id: "1",
       title: t('blog.posts.savings.title'),
       excerpt: t('blog.posts.savings.excerpt'),
@@ -132,18 +144,6 @@ const Blog = () => {
       category: t('blog.posts.family.category'), 
       image: blogFamilyTravel,
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili"
-    },
-    {
-      id: "7",
-      title: t('blog.posts.groupTravel.title'),
-      excerpt: t('blog.posts.groupTravel.excerpt'),
-      content: "",
-      author: t('blog.author'),
-      publishDate: "2026-03-30",
-      readTime: "6 " + t('blog.readTime'),
-      category: t('blog.posts.groupTravel.category'),
-      image: blogGroupTravel,
-      slug: "kelione-didelei-grupei-8-vietu-mikroautobusas"
     }
   ];
 
