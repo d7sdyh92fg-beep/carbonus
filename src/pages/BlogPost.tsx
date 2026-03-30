@@ -107,16 +107,16 @@ const BlogPost = () => {
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili",
       content: t('blogPost.content.family')
     },
-    "kelione-didelei-grupei-8-vietu-busas": {
+    "kelione-didelei-grupei-8-vietu-mikroautobusas": {
       id: "7",
       title: t('blog.posts.groupTravel.title'),
       excerpt: t('blog.posts.groupTravel.excerpt'),
       author: t('blog.posts.groupTravel.author'),
-      publishDate: "2025-12-20",
+      publishDate: "2026-03-30",
       readTime: t('blog.posts.groupTravel.readTime'),
       category: t('blog.posts.groupTravel.category'),
       image: blogGroupTravel,
-      slug: "kelione-didelei-grupei-8-vietu-busas",
+      slug: "kelione-didelei-grupei-8-vietu-mikroautobusas",
       content: t('blogPost.content.groupTravel')
     }
   };
