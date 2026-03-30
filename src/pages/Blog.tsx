@@ -13,6 +13,7 @@ import blogCarInsurance from "@/assets/blog-car-insurance-new.jpg";
 import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
 import blogWinterDriving from "/lovable-uploads/7e8ac90d-43ea-4124-b0a3-07cb11da3447.png";
 import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
+import blogGroupTravel from "@/assets/blog-group-travel.jpg";
 
 interface BlogPost {
   id: string;
@@ -131,6 +132,18 @@ const Blog = () => {
       category: t('blog.posts.family.category'), 
       image: blogFamilyTravel,
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili"
+    },
+    {
+      id: "7",
+      title: t('blog.posts.groupTravel.title'),
+      excerpt: t('blog.posts.groupTravel.excerpt'),
+      content: "",
+      author: t('blog.author'),
+      publishDate: "2025-12-20",
+      readTime: "6 " + t('blog.readTime'),
+      category: t('blog.posts.groupTravel.category'),
+      image: blogGroupTravel,
+      slug: "kelione-didelei-grupei-8-vietu-busas"
     }
   ];
 
