@@ -139,11 +139,11 @@ const Blog = () => {
       excerpt: t('blog.posts.groupTravel.excerpt'),
       content: "",
       author: t('blog.author'),
-      publishDate: "2025-12-20",
+      publishDate: "2026-03-30",
       readTime: "6 " + t('blog.readTime'),
       category: t('blog.posts.groupTravel.category'),
       image: blogGroupTravel,
-      slug: "kelione-didelei-grupei-8-vietu-busas"
+      slug: "kelione-didelei-grupei-8-vietu-mikroautobusas"
     }
   ];
 

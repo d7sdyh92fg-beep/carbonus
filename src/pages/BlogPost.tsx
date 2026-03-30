@@ -107,16 +107,16 @@ const BlogPost = () => {
       slug: "seimos-kelione-kaip-pasirinkti-idealu-automobili",
       content: t('blogPost.content.family')
     },
-    "kelione-didelei-grupei-8-vietu-busas": {
+    "kelione-didelei-grupei-8-vietu-mikroautobusas": {
       id: "7",
       title: t('blog.posts.groupTravel.title'),
       excerpt: t('blog.posts.groupTravel.excerpt'),
       author: t('blog.posts.groupTravel.author'),
-      publishDate: "2025-12-20",
+      publishDate: "2026-03-30",
       readTime: t('blog.posts.groupTravel.readTime'),
       category: t('blog.posts.groupTravel.category'),
       image: blogGroupTravel,
-      slug: "kelione-didelei-grupei-8-vietu-busas",
+      slug: "kelione-didelei-grupei-8-vietu-mikroautobusas",
       content: t('blogPost.content.groupTravel')
     }
   };
@@ -163,10 +163,10 @@ const BlogPost = () => {
               variant="ghost" 
               size="sm"
               onClick={() => navigate("/naujienos")}
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground px-2 sm:px-3"
             >
-              <ArrowLeft className="w-4 h-4" />
-              {t('blogPost.backToNews')}
+              <ArrowLeft className="w-4 h-4 shrink-0" />
+              <span className="truncate">{t('blogPost.backToNews')}</span>
             </Button>
           </div>
         </div>
@@ -179,21 +179,21 @@ const BlogPost = () => {
             <Badge variant="secondary" className="mb-4 bg-primary text-primary-foreground">
               {post.category}
             </Badge>
-            <h1 className="text-3xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
               {post.title}
             </h1>
             
-            <div className="flex items-center justify-center gap-6 text-muted-foreground mb-8">
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4" />
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-sm sm:text-base text-muted-foreground mb-8">
+              <div className="flex items-center gap-1.5">
+                <User className="w-4 h-4 shrink-0" />
                 <span>{post.author}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
+              <div className="flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 shrink-0" />
                 <span>{new Date(post.publishDate).toLocaleDateString('lt-LT')}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4 shrink-0" />
                 <span>{post.readTime}</span>
               </div>
             </div>
@@ -217,8 +217,8 @@ const BlogPost = () => {
             {/* Main Content */}
             <div className="lg:col-span-3">
               <Card className="shadow-lg">
-                <CardContent className="p-8">
-        <div className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-ul:text-muted-foreground prose-ol:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-2xl prose-h2:font-bold prose-h2:mb-4 prose-h2:mt-8 prose-h3:text-xl prose-h3:font-semibold prose-h3:mb-8 prose-h3:mt-16 prose-h4:text-lg prose-h4:font-semibold prose-h4:mb-2 prose-h4:mt-4 prose-p:mb-12 prose-p:leading-relaxed prose-ul:mb-6 prose-ol:mb-6 prose-li:mb-2"
+                <CardContent className="p-4 sm:p-8">
+        <div className="prose prose-sm sm:prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-ul:text-muted-foreground prose-ol:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:font-bold prose-h2:mb-4 prose-h2:mt-8 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold prose-h3:mb-8 prose-h3:mt-16 prose-h4:text-base sm:prose-h4:text-lg prose-h4:font-semibold prose-h4:mb-2 prose-h4:mt-4 prose-p:mb-6 sm:prose-p:mb-12 prose-p:leading-relaxed prose-ul:mb-6 prose-ol:mb-6 prose-li:mb-2"
                      dangerouslySetInnerHTML={{ __html: post.content }}
                    />
                 </CardContent>
