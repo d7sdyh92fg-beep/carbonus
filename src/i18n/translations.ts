@@ -1916,11 +1916,11 @@ export const translations = {
           </ul>
 
           <h2>Kiek tai kainuoja?</h2>
-          <p>8 vietų Citroën SpaceTourer nuoma Carbonus kainuoja nuo <strong>70€ per dieną</strong> (7+ dienų nuoma). Padalijus tarp 8 keleivių, tai tik <strong>~9€ per žmogų per dieną</strong> – pigiau nei viešasis transportas!</p>
+          <p>8 vietų Citroën SpaceTourer nuoma Carbonus kainuoja nuo <strong>80€ per dieną</strong> (7+ dienų nuoma). Padalijus tarp 8 keleivių, tai tik <strong>~10€ per žmogų per dieną</strong> – pigiau nei viešasis transportas!</p>
           <ul>
-            <li><strong>1-3 dienos:</strong> nuo 110€/dieną (13.75€/žmogui)</li>
+            <li><strong>1-3 dienos:</strong> nuo 100€/dieną (12.50€/žmogui)</li>
             <li><strong>3-7 dienos:</strong> nuo 90€/dieną (11.25€/žmogui)</li>
-            <li><strong>7+ dienų:</strong> nuo 70€/dieną (8.75€/žmogui)</li>
+            <li><strong>7+ dienų:</strong> nuo 80€/dieną (10€/žmogui)</li>
           </ul>
 
           <h2>Išvada</h2>
