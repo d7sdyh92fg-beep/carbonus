@@ -1916,11 +1916,11 @@ export const translations = {
           </ul>
 
           <h2>Kiek tai kainuoja?</h2>
-          <p>8 vietų Citroën SpaceTourer nuoma Carbonus kainuoja nuo <strong>70€ per dieną</strong> (7+ dienų nuoma). Padalijus tarp 8 keleivių, tai tik <strong>~9€ per žmogų per dieną</strong> – pigiau nei viešasis transportas!</p>
+          <p>8 vietų Citroën SpaceTourer nuoma Carbonus kainuoja nuo <strong>80€ per dieną</strong> (7+ dienų nuoma). Padalijus tarp 8 keleivių, tai tik <strong>~10€ per žmogų per dieną</strong> – pigiau nei viešasis transportas!</p>
           <ul>
-            <li><strong>1-3 dienos:</strong> nuo 110€/dieną (13.75€/žmogui)</li>
+            <li><strong>1-3 dienos:</strong> nuo 100€/dieną (12.50€/žmogui)</li>
             <li><strong>3-7 dienos:</strong> nuo 90€/dieną (11.25€/žmogui)</li>
-            <li><strong>7+ dienų:</strong> nuo 70€/dieną (8.75€/žmogui)</li>
+            <li><strong>7+ dienų:</strong> nuo 80€/dieną (10€/žmogui)</li>
           </ul>
 
           <h2>Išvada</h2>
@@ -3732,7 +3732,7 @@ export const translations = {
           <p>Modern 8-seat vans have all the comforts: dual-zone air conditioning, USB ports for every row, a 10-inch touchscreen with Android Auto and CarPlay, comfortable seats with adjustable backrests. Nobody feels "squeezed."</p>
 
           <h2>How Much Does It Cost?</h2>
-          <p>Renting an 8-seat Citroën SpaceTourer from Carbonus starts at <strong>€70 per day</strong> (7+ day rental). Split among 8 passengers, that's only <strong>~€9 per person per day</strong> – cheaper than public transport!</p>
+          <p>Renting an 8-seat Citroën SpaceTourer from Carbonus starts at <strong>€80 per day</strong> (7+ day rental). Split among 8 passengers, that's only <strong>~€10 per person per day</strong> – cheaper than public transport!</p>
 
           <h2>Conclusion</h2>
           <p>An 8-seat minivan is a smart, economical, and comfortable solution for group travel. Instead of multiple cars, choose one spacious and comfortable vehicle that lets everyone travel together and enjoy the journey.</p>
