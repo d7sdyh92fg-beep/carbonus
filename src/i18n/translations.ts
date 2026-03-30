@@ -1894,8 +1894,8 @@ export const translations = {
           <h3><strong>Turizmas ir ekskursijos</strong></h3>
           <p>Užsienio svečiai atvyksta į Lietuvą? Pasiūlykite jiems kelionę su vairuotoju 8 vietų automobiliu po gražiausius Lietuvos kampelius. Tai nebrangiai ir labai patogu.</p>
 
-          <h2>Citroën SpaceTourer 2026 – mūsų pasiūlymas grupinėms kelionėms</h2>
-          <p>Carbonus automobilių parke turime naujausią <strong>Citroën SpaceTourer L3 2026</strong> modelį su šiomis specifikacijomis:</p>
+          <h2>Citroën SpaceTourer 2025 – mūsų pasiūlymas grupinėms kelionėms</h2>
+          <p>Carbonus automobilių parke turime naujausią <strong>Citroën SpaceTourer L3 2025</strong> modelį su šiomis specifikacijomis:</p>
           <ul>
             <li><strong>8 keleivių vietos</strong> – patogios sėdynės su reguliuojamais atlošais</li>
             <li><strong>2.2L dyzelinis variklis, 180 AG</strong> – galinga trauka net pilnai pakrautam automobiliui</li>
@@ -1926,7 +1926,7 @@ export const translations = {
           <h2>Išvada</h2>
           <p>8 vietų mikroautobusas – tai protingas, ekonomiškas ir patogus sprendimas grupinėms kelionėms. Vietoj kelių automobilių rinkitės vieną erdvų ir komfortišką transporto priemonę, kuri leis visiems keliauti kartu ir mėgautis kelione.</p>
 
-          <p><strong>Carbonus</strong> siūlo naujausią Citroën SpaceTourer 2026 modelį su automatine pavarų dėže, dvigubu oro kondicionieriumi ir visais šiuolaikinio komforto privalumais. Rezervuokite online arba susisiekite su mumis telefonu <strong>+370 698 18 781</strong>.</p>
+          <p><strong>Carbonus</strong> siūlo naujausią Citroën SpaceTourer 2025 modelį su automatine pavarų dėže, dvigubu oro kondicionieriumi ir visais šiuolaikinio komforto privalumais. Rezervuokite online arba susisiekite su mumis telefonu <strong>+370 698 18 781</strong>.</p>
         `,
       },
     },
@@ -3737,7 +3737,7 @@ export const translations = {
           <h2>Conclusion</h2>
           <p>An 8-seat minivan is a smart, economical, and comfortable solution for group travel. Instead of multiple cars, choose one spacious and comfortable vehicle that lets everyone travel together and enjoy the journey.</p>
 
-          <p><strong>Carbonus</strong> offers the latest Citroën SpaceTourer 2026 model with automatic transmission, dual air conditioning, and all modern comfort features. Reserve online or contact us at <strong>+370 698 18 781</strong>.</p>
+          <p><strong>Carbonus</strong> offers the latest Citroën SpaceTourer 2025 model with automatic transmission, dual air conditioning, and all modern comfort features. Reserve online or contact us at <strong>+370 698 18 781</strong>.</p>
         `,
       },
     },
