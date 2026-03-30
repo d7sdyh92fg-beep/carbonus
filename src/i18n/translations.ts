@@ -567,8 +567,8 @@ export const translations = {
           readTime: "5 min",
         },
         groupTravel: {
-          title: "Kelionė didelei grupei: kodėl verta rinktis 8 vietų busą",
-          excerpt: "Planuojate kelionę su draugais, šeima ar kolegomis? Sužinokite, kodėl 8 vietų mikroautobusas yra geriausias pasirinkimas grupinėms kelionėms po Lietuvą.",
+          title: "Kelionė didelei grupei: kodėl verta rinktis 8 vietų mikroautobusą",
+          excerpt: "Kelis automobilius nuomoti neracionalu ir neekonomiška. Sužinokite, kodėl 8 vietų mikroautobusas yra geriausias pasirinkimas grupinėms kelionėms po Lietuvą.",
           category: "Patarimai",
           author: "Carbonus komanda",
           readTime: "6 min",
