@@ -1864,9 +1864,9 @@ export const translations = {
           <p><strong>Carbonus</strong> siūlo platų šeimoms tinkančių automobilių pasirinkimą – nuo erdvių universalų iki minivanų su 7 sėdynėmis. Mūsų automobiliai turi ISOFIX sistemas ir visas reikalingas saugos priemones. Taip pat galite užsisakyti vaiko kėdutes kartu su automobilių.</p>
         `,
         groupTravel: `
-          <p>Kelionė dideliu grupe – ar tai draugų išvyka, šeimos susibūrimas, ar verslo komandos renginys – visada kelia klausimą: kaip visi patogiai nuvyks į vietą? Keliems automobiliams nuomoti brangoka, viešasis transportas nepatogus, o taksi didelei grupei – per brangu. Atsakymas paprastas: <strong>8 vietų mikroautobusas</strong>.</p>
+          <p>Kelionė didelei grupei – ar tai draugų išvyka, šeimos susibūrimas, ar verslo komandos renginys – visada kelia klausimą: kaip visi patogiai nuvyks į vietą? Keliems automobiliams nuomoti brangoka, viešasis transportas nepatogus, o taksi didelei grupei – per brangu. Atsakymas paprastas: <strong>8 vietų mikroautobusas</strong>.</p>
 
-          <h2>Kodėl 8 vietų busas – geriausias pasirinkimas?</h2>
+          <h2>Kodėl 8 vietų mikroautobusas – geriausias pasirinkimas?</h2>
 
           <h3><strong>1. Ekonomiškumas</strong></h3>
           <p>Nuomotis vieną 8 vietų mikroautobusą yra žymiai pigiau nei du ar tris atskirus automobilius. Padalijus kainą tarp visų keleivių, vieno žmogaus kelionės išlaidos tampa minimaliomis. Pridėkite prie to sutaupytus degalus (vienas automobilis vietoj trijų!) ir aiški nauda.</p>
@@ -1878,55 +1878,55 @@ export const translations = {
           <p>8 vietų mikroautobusai, ypač L3 versijos kaip <strong>Citroën SpaceTourer</strong>, turi didžiulę bagažinę. Telpa visi lagaminai, sportinis inventorius, maistas piknikui ar net dviračiai. Nereikia galvoti, kas kur tilps.</p>
 
           <h3><strong>4. Patogumas ilgose kelionėse</strong></h3>
-          <p>Šiuolaikiniai 8 vietų autobusai turi visus patogumais: dvigubo zonos oro kondicionavimą, USB jungtis kiekvienai eilei, 10 colių jutiklinį ekraną su Android Auto ir CarPlay, patogias sėdynes su reguliuojamais atlošais. Niekas nepasijaučia „suspaustais".</p>
+          <p>Šiuolaikiniai 8 vietų mikroautobusai turi visus patogumus: dviejų zonų oro kondicionavimą, USB jungtis kiekvienoje eilėje, 10 colių jutiklinį ekraną su Android Auto ir CarPlay, patogias sėdynes su reguliuojamais atlošais. Niekas nesijaučia „suspaustas".</p>
 
-          <h2>Kada verta rinktis 8 vietų busą?</h2>
+          <h2>Kada verta rinktis 8 vietų mikroautobusą?</h2>
 
           <h3><strong>Draugų kelionė savaitgaliui</strong></h3>
-          <p>Planuojate savaitgalį Palangoje, Druskininkuose ar Nidoje? Vietoj 3 automobilių išsinuomokite vieną busą. Sutaupysite pinigų, nereikės ieškoti kelių parkavimo vietų, o kelionė taps smagesnė.</p>
+          <p>Planuojate savaitgalį Palangoje, Druskininkuose ar Nidoje? Vietoj 3 automobilių išsinuomokite vieną mikroautobusą. Sutaupysite pinigų, nereikės ieškoti kelių parkavimo vietų, o kelionė taps smagesnė.</p>
 
           <h3><strong>Šeimos susibūrimas</strong></h3>
           <p>Seneliai, tėvai, vaikai – visa šeima viename automobilyje. Ypač patogu, kai vykstate į kaimo sodybą ar šventę toliau nuo miesto. Vaikai turi vietos žaisti, seneliai – patogiai sėdėti.</p>
 
           <h3><strong>Verslo renginiai ir konferencijos</strong></h3>
-          <p>Komanda vyksta į konferenciją, team building'ą ar klientų susitikimą? Profesionalus mikroautobusas palieka gerą įspūdį ir leidžia kelionės metu aptarti darbo klausimus.</p>
+          <p>Komanda vyksta į konferenciją, team building'ą ar klientų susitikimą? Modernus mikroautobusas palieka gerą įspūdį ir leidžia kelionės metu aptarti darbo klausimus.</p>
 
           <h3><strong>Turizmas ir ekskursijos</strong></h3>
-          <p>Užsienio svečiai atvyksta į Lietuvą? Pasiūlykite jiems kelionę su vairuotoju 8 vietų automobiliu po gražiausius Lietuvos kampelius. Tai nebrangiai ir labai patogu.</p>
+          <p>Užsienio svečiai atvyksta į Lietuvą? Pasiūlykite jiems kelionę su vairuotoju 8 vietų automobiliu po gražiausius Lietuvos kampelius. Tai nebrangu ir labai patogu.</p>
 
           <h2>Citroën SpaceTourer 2025 – mūsų pasiūlymas grupinėms kelionėms</h2>
           <p>Carbonus automobilių parke turime naujausią <strong>Citroën SpaceTourer L3 2025</strong> modelį su šiomis specifikacijomis:</p>
           <ul>
             <li><strong>8 keleivių vietos</strong> – patogios sėdynės su reguliuojamais atlošais</li>
-            <li><strong>2.2L dyzelinis variklis, 180 AG</strong> – galinga trauka net pilnai pakrautam automobiliui</li>
-            <li><strong>8 laipsnių automatinė pavarų dėžė</strong> – sklandus ir komfortiškas vairavimas</li>
+            <li><strong>2.2L dyzelinis variklis, 180 AG</strong> – galinga trauka net pilnai pakrautam mikroautobusui</li>
+            <li><strong>8 pavarų automatinė pavarų dėžė</strong> – sklandus ir komfortiškas vairavimas</li>
             <li><strong>Dvigubas oro kondicionierius</strong> – atskiras valdymas priekinei ir galinei daliai</li>
-            <li><strong>Slankiosios durys iš abiejų pusių</strong> – lengvas įlipimas ir išlipimas bet kurioje pusėje</li>
+            <li><strong>Stumdomos durys iš abiejų pusių</strong> – lengvas įlipimas ir išlipimas bet kurioje pusėje</li>
             <li><strong>10 colių jutiklinis ekranas</strong> – su Android Auto ir Apple CarPlay</li>
             <li><strong>Susidūrimo stabdymo asistentas</strong> – papildomas saugumas kelyje</li>
           </ul>
 
-          <h2>Praktiniai patarimai nuomojant busą grupinei kelionei</h2>
+          <h2>Praktiniai patarimai nuomojant mikroautobusą grupinei kelionei</h2>
           <ul>
             <li><strong>Rezervuokite iš anksto</strong> – 8 vietų automobiliai yra paklausūs, ypač savaitgaliais ir atostogų metu</li>
-            <li><strong>Pasiskirstykite vairavimą</strong> – jei kelionė ilga, keliais vairuotojais pasikeiskite (papildomas vairuotojas – tik su sutartyje nurodytu asmeniu)</li>
-            <li><strong>Planuokite sustojimus</strong> – su 8 žmonėmis dažniau prireiks sustojimų negu vienam</li>
+            <li><strong>Pasiskirstykite vairavimą</strong> – jei kelionė ilga, keliais vairuotojais pasikeiskite (papildomas vairuotojas galimas tik jei jis nurodytas sutartyje)</li>
+            <li><strong>Planuokite sustojimus</strong> – keliaujant 8 žmonėms dažniau prireiks sustojimų</li>
             <li><strong>Degalų išlaidos</strong> – dyzelinis variklis yra ekonomiškas, bet su 8 keleiviais suvartojimas šiek tiek padidės</li>
-            <li><strong>Parkavimas</strong> – busas ilgesnis nei standartinis automobilis, todėl rinkitės erdvesnes parkavimo vietas</li>
+            <li><strong>Parkavimas</strong> – mikroautobusas ilgesnis nei standartinis automobilis, todėl rinkitės erdvesnes parkavimo vietas</li>
           </ul>
 
           <h2>Kiek tai kainuoja?</h2>
-          <p>8 vietų Citroën SpaceTourer nuoma Carbonus kainuoja nuo <strong>80€ per dieną</strong> (7+ dienų nuoma). Padalijus tarp 8 keleivių, tai tik <strong>~10€ per žmogų per dieną</strong> – pigiau nei viešasis transportas!</p>
+          <p>8 vietų Citroën SpaceTourer nuoma Carbonus kainuoja nuo <strong>80 € per dieną</strong> (7+ dienų nuoma). Padalijus tarp 8 keleivių, tai tik <strong>~10 € per žmogų per dieną</strong> – pigiau nei viešasis transportas!</p>
           <ul>
-            <li><strong>1-3 dienos:</strong> nuo 100€/dieną (12.50€/žmogui)</li>
-            <li><strong>3-7 dienos:</strong> nuo 90€/dieną (11.25€/žmogui)</li>
-            <li><strong>7+ dienų:</strong> nuo 80€/dieną (10€/žmogui)</li>
+            <li><strong>1–3 dienos:</strong> nuo 100 € per dieną (12,50 €/žmogui)</li>
+            <li><strong>3–7 dienos:</strong> nuo 90 € per dieną (11,25 €/žmogui)</li>
+            <li><strong>7+ dienų:</strong> nuo 80 € per dieną (10 €/žmogui)</li>
           </ul>
 
           <h2>Išvada</h2>
           <p>8 vietų mikroautobusas – tai protingas, ekonomiškas ir patogus sprendimas grupinėms kelionėms. Vietoj kelių automobilių rinkitės vieną erdvų ir komfortišką transporto priemonę, kuri leis visiems keliauti kartu ir mėgautis kelione.</p>
 
-          <p><strong>Carbonus</strong> siūlo naujausią Citroën SpaceTourer 2025 modelį su automatine pavarų dėže, dvigubu oro kondicionieriumi ir visais šiuolaikinio komforto privalumais. Rezervuokite online arba susisiekite su mumis telefonu <strong>+370 698 18 781</strong>.</p>
+          <p><strong>Carbonus</strong> siūlo naujausią Citroën SpaceTourer 2025 modelį su automatine pavarų dėže, dvigubu oro kondicionieriumi ir visais šiuolaikinio komforto privalumais. Rezervuokite internetu arba susisiekite su mumis telefonu <strong>+370 698 18 781</strong>.</p>
         `,
       },
     },
