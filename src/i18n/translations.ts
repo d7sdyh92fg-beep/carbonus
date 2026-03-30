@@ -2449,6 +2449,13 @@ export const translations = {
           author: "Carbonus Team",
           readTime: "5 min",
         },
+        groupTravel: {
+          title: "Group Travel: Why an 8-Seat Van Is the Best Choice",
+          excerpt: "Planning a trip with friends, family or colleagues? Find out why an 8-seat minivan is the best choice for group travel in Lithuania.",
+          category: "Tips",
+          author: "Carbonus Team",
+          readTime: "6 min",
+        },
       },
     },
 
