@@ -1360,6 +1360,8 @@ export const translations = {
 
     blogPost: {
       backButton: "Grįžti į straipsnius",
+      backToNews: "Grįžti į naujienas",
+      notFound: "Straipsnis nerastas",
       articleInfo: "Straipsnio informacija",
       category: "Kategorija",
       published: "Paskelbta",
@@ -3213,6 +3215,8 @@ export const translations = {
     // Blog Post
     blogPost: {
       backButton: "Back to Articles",
+      backToNews: "Back to News",
+      notFound: "Article not found",
       articleInfo: "Article Info",
       category: "Category",
       published: "Published",
