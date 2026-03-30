@@ -3714,6 +3714,31 @@ export const translations = {
 
           <p><strong>Carbonus</strong> offers a wide selection of family-friendly cars – from spacious estates to minivans with 7 seats. Our cars have ISOFIX systems and all necessary safety features. You can also order child seats with the car.</p>
         `,
+        groupTravel: `
+          <p>Traveling in a large group – whether it's a friends' getaway, family reunion, or a team event – always raises the question: how will everyone get there comfortably? Renting several cars is expensive, public transport is inconvenient, and taxis for a large group are too costly. The answer is simple: <strong>an 8-seat minivan</strong>.</p>
+
+          <h2>Why Is an 8-Seat Van the Best Choice?</h2>
+
+          <h3><strong>1. Cost-Effective</strong></h3>
+          <p>Renting one 8-seat minivan is significantly cheaper than two or three separate cars. When you split the cost among all passengers, the per-person travel expenses become minimal. Add the saved fuel costs (one car instead of three!) and the benefit is clear.</p>
+
+          <h3><strong>2. Everyone Together</strong></h3>
+          <p>One of the biggest advantages – the whole group travels together. No need to coordinate multiple cars, call "where are you?", or wait for stragglers. The journey becomes a social experience – you can chat, play games, share snacks.</p>
+
+          <h3><strong>3. Luggage Space</strong></h3>
+          <p>8-seat minivans, especially L3 versions like the <strong>Citroën SpaceTourer</strong>, have a huge cargo area. All suitcases, sports equipment, picnic food, or even bicycles fit easily. No need to worry about what goes where.</p>
+
+          <h3><strong>4. Comfort on Long Trips</strong></h3>
+          <p>Modern 8-seat vans have all the comforts: dual-zone air conditioning, USB ports for every row, a 10-inch touchscreen with Android Auto and CarPlay, comfortable seats with adjustable backrests. Nobody feels "squeezed."</p>
+
+          <h2>How Much Does It Cost?</h2>
+          <p>Renting an 8-seat Citroën SpaceTourer from Carbonus starts at <strong>€70 per day</strong> (7+ day rental). Split among 8 passengers, that's only <strong>~€9 per person per day</strong> – cheaper than public transport!</p>
+
+          <h2>Conclusion</h2>
+          <p>An 8-seat minivan is a smart, economical, and comfortable solution for group travel. Instead of multiple cars, choose one spacious and comfortable vehicle that lets everyone travel together and enjoy the journey.</p>
+
+          <p><strong>Carbonus</strong> offers the latest Citroën SpaceTourer 2026 model with automatic transmission, dual air conditioning, and all modern comfort features. Reserve online or contact us at <strong>+370 698 18 781</strong>.</p>
+        `,
       },
     },
 
