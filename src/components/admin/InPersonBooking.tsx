@@ -343,7 +343,7 @@ export function InPersonBooking() {
 
   const getRentalDays = () => {
     if (!booking.startDate || !booking.endDate) return 0;
-    return Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
+    return calculateRentalDays(booking.startDate, booking.pickupTime, booking.endDate, booking.returnTime);
   };
 
   const handleCarSelect = (carId: string) => {

@@ -141,7 +141,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
   const getDaysCount = (): number => {
     if (!selectedRange.from || !selectedRange.to) return 0;
-    return differenceInDays(selectedRange.to, selectedRange.from) + 1;
+    return calculateRentalDays(selectedRange.from, pickupTime, selectedRange.to, returnTime);
   };
 
   const getDbDailyRate = (days: number): number => {
