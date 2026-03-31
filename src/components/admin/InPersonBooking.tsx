@@ -308,7 +308,7 @@ export function InPersonBooking() {
     if (useCustomPricing) {
       total = parseFloat(customRentalPrice) || 0;
     } else {
-      const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
+      const days = getRentalDays();
       const dailyRate = getDbDailyRate(days, booking.carId);
       total = days * dailyRate;
     }
