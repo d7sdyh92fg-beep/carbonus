@@ -2458,13 +2458,6 @@ export const translations = {
           author: "Carbonus Team",
           readTime: "6 min",
         },
-        carbonusIntro: {
-          title: "Need a Car in Druskininkai? Choose Carbonus",
-          excerpt: "Choose Carbonus – a convenient and flexible car rental platform across Lithuania. Wide selection, easy online booking, and transparent pricing.",
-          category: "News",
-          author: "Carbonus Team",
-          readTime: "3 min",
-        },
       },
     },
 
