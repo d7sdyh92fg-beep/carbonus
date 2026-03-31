@@ -573,13 +573,6 @@ export const translations = {
           author: "Carbonus komanda",
           readTime: "6 min",
         },
-        carbonusIntro: {
-          title: "Reikia automobilio Druskininkuose? Rinkitės „Carbonus"",
-          excerpt: "Rinkitės „Carbonus" – patogią ir lanksčią automobilių nuomos platformą visoje Lietuvoje. Platus pasirinkimas, paprasta rezervacija internetu ir aiškios kainos.",
-          category: "Naujienos",
-          author: "Carbonus komanda",
-          readTime: "3 min",
-        },
       },
     },
 
@@ -2464,13 +2457,6 @@ export const translations = {
           category: "Tips",
           author: "Carbonus Team",
           readTime: "6 min",
-        },
-        carbonusIntro: {
-          title: "Need a Car in Druskininkai? Choose Carbonus",
-          excerpt: "Choose Carbonus – a convenient and flexible car rental platform across Lithuania. Wide selection, easy online booking, and transparent pricing.",
-          category: "News",
-          author: "Carbonus Team",
-          readTime: "3 min",
         },
       },
     },
