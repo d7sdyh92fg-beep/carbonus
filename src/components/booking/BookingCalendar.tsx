@@ -40,10 +40,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const spaceTourerSeasonStart = new Date(now.getFullYear(), 4, 1); // Gegužės 1 d.
-  const minBookingDate = carId === '7' && today < spaceTourerSeasonStart
-    ? spaceTourerSeasonStart
-    : today;
+  const minBookingDate = today;
 
   // Fetch car pricing from database
   const { data: dbCarPricing } = useQuery({
