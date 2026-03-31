@@ -14,6 +14,7 @@ import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
 import blogWinterDriving from "/lovable-uploads/7e8ac90d-43ea-4124-b0a3-07cb11da3447.png";
 import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
 import blogGroupTravel from "@/assets/blog-group-travel.jpg";
+import blogCarbonusIntro from "@/assets/blog-carbonus-intro.jpg";
 
 interface BlogPost {
   id: string;
