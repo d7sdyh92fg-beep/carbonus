@@ -269,7 +269,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
               },
             }}
             className="rounded-lg border bg-card shadow-sm w-full max-w-full"
-            defaultMonth={carId === '7' ? minBookingDate : undefined}
+            defaultMonth={undefined}
             locale={language === 'lt' ? lt : enUS}
           />
           
