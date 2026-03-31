@@ -573,13 +573,6 @@ export const translations = {
           author: "Carbonus komanda",
           readTime: "6 min",
         },
-        carbonusIntro: {
-          title: 'Reikia automobilio Druskininkuose? Rinkitės \u201ECarbonus\u201C',
-          excerpt: 'Rinkitės \u201ECarbonus\u201C \u2013 patogią ir lanksčią automobilių nuomos platformą visoje Lietuvoje. Platus pasirinkimas, paprasta rezervacija internetu ir aiškios kainos.',
-          category: "Naujienos",
-          author: "Carbonus komanda",
-          readTime: "3 min",
-        },
       },
     },
 
