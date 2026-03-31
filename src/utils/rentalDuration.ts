@@ -6,7 +6,7 @@
  * - Minimum: 1 day
  */
 
-export const GRACE_PERIOD_MINUTES = 29;
+export const GRACE_PERIOD_MINUTES = 120; // 2 valandos
 
 /**
  * Calculate rental days based on actual pickup/return datetime with grace period.
