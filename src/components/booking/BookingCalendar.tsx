@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { CalendarIcon, Calculator, Clock } from "lucide-react";
-import { differenceInDays, format } from "date-fns";
+import { format } from "date-fns";
+import { calculateRentalDays } from "@/utils/rentalDuration";
 import { lt, enUS } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import { useBooking } from "@/contexts/BookingContext";
@@ -140,7 +141,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
 
   const getDaysCount = (): number => {
     if (!selectedRange.from || !selectedRange.to) return 0;
-    return differenceInDays(selectedRange.to, selectedRange.from) + 1;
+    return calculateRentalDays(selectedRange.from, pickupTime, selectedRange.to, returnTime);
   };
 
   const getDbDailyRate = (days: number): number => {

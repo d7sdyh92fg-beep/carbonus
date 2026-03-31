@@ -15,6 +15,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { lt } from 'date-fns/locale';
+import { calculateRentalDays } from '@/utils/rentalDuration';
 import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { DigitalSignature } from './DigitalSignature';
@@ -307,7 +308,7 @@ export function InPersonBooking() {
     if (useCustomPricing) {
       total = parseFloat(customRentalPrice) || 0;
     } else {
-      const days = Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
+      const days = getRentalDays();
       const dailyRate = getDbDailyRate(days, booking.carId);
       total = days * dailyRate;
     }
@@ -342,7 +343,7 @@ export function InPersonBooking() {
 
   const getRentalDays = () => {
     if (!booking.startDate || !booking.endDate) return 0;
-    return Math.ceil((booking.endDate.getTime() - booking.startDate.getTime()) / (1000 * 60 * 60 * 24));
+    return calculateRentalDays(booking.startDate, booking.pickupTime, booking.endDate, booking.returnTime);
   };
 
   const handleCarSelect = (carId: string) => {
