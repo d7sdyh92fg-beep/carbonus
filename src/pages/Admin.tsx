@@ -1327,7 +1327,7 @@ const Admin = () => {
                         <TableBody>
                           {completedReservations.length === 0 ? (
                             <TableRow>
-                              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                              <TableCell colSpan={isDeleteMode ? 8 : 7} className="text-center py-8 text-muted-foreground">
                                 Nėra baigtų rezervacijų
                               </TableCell>
                             </TableRow>
