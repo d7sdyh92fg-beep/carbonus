@@ -1319,7 +1319,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                                   variant={blockType === 'block' ? 'default' : 'outline'}
                                   size="sm"
                                   onClick={() => setBlockType('block')}
-                                  className="text-xs"
+                                  className={`text-xs ${blockType === 'block' ? 'bg-red-600 hover:bg-red-700 text-white' : 'border-red-300 text-red-700 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30'}`}
                                 >
                                   🔒 Blokuoti
                                 </Button>
@@ -1327,7 +1327,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                                   variant={blockType === 'phone_reservation' ? 'default' : 'outline'}
                                   size="sm"
                                   onClick={() => setBlockType('phone_reservation')}
-                                  className="text-xs"
+                                  className={`text-xs ${blockType === 'phone_reservation' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-950/30'}`}
                                 >
                                   📞 Tel. rezervacija
                                 </Button>
