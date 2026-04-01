@@ -18,26 +18,35 @@ export type Database = {
         Row: {
           blocked_date: string
           car_id: string
+          contact_name: string | null
+          contact_phone: string | null
           created_at: string
           created_by: string | null
           id: string
           reason: string | null
+          reservation_type: string
         }
         Insert: {
           blocked_date: string
           car_id: string
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           created_by?: string | null
           id?: string
           reason?: string | null
+          reservation_type?: string
         }
         Update: {
           blocked_date?: string
           car_id?: string
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           created_by?: string | null
           id?: string
           reason?: string | null
+          reservation_type?: string
         }
         Relationships: []
       }

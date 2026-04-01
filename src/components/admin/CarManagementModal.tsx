@@ -79,6 +79,9 @@ interface BlockedDate {
   reason: string | null;
   created_at: string;
   created_by: string | null;
+  reservation_type: string;
+  contact_name: string | null;
+  contact_phone: string | null;
 }
 
 const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose, carId, carName }) => {
@@ -105,9 +108,13 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
   
   // Blocked dates state
   const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+  const [phoneReservedDates, setPhoneReservedDates] = useState<Date[]>([]);
   const [blockedDatesData, setBlockedDatesData] = useState<BlockedDate[]>([]);
   const [selectedBlockDates, setSelectedBlockDates] = useState<Date[] | undefined>();
   const [blockReason, setBlockReason] = useState('');
+  const [blockType, setBlockType] = useState<'block' | 'phone_reservation'>('block');
+  const [contactName, setContactName] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
   
   const { toast } = useToast();
 
@@ -169,20 +176,25 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       });
       setReservedDates(resDates);
 
-      // Also fetch blocked dates separately
+      // Also fetch blocked dates separately (only actual blocks for calendar coloring)
       const { data: blocked } = await supabase
         .from('car_blocked_dates')
-        .select('blocked_date')
+        .select('blocked_date, reservation_type')
         .eq('car_id', carId);
 
       const blkDates: Date[] = [];
-      blocked?.forEach((bd) => {
-        blkDates.push(new Date(bd.blocked_date));
+      const phoneDates: Date[] = [];
+      (blocked as any[] || []).forEach((bd) => {
+        if (bd.reservation_type === 'phone_reservation') {
+          phoneDates.push(new Date(bd.blocked_date));
+        } else {
+          blkDates.push(new Date(bd.blocked_date));
+        }
       });
       setCalendarBlockedDates(blkDates);
 
       // Combined for general use
-      setBookedDates([...resDates, ...blkDates]);
+      setBookedDates([...resDates, ...blkDates, ...phoneDates]);
     } catch (error) {
       console.error('Error fetching car reservations:', error);
     }
@@ -282,9 +294,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
       if (error) throw error;
       
-      const blockedDatesArray = (data || []).map(item => new Date(item.blocked_date));
-      setBlockedDates(blockedDatesArray);
-      setBlockedDatesData(data || []);
+      const allData = (data || []) as unknown as BlockedDate[];
+      const blockDates = allData.filter(d => d.reservation_type !== 'phone_reservation').map(item => new Date(item.blocked_date));
+      const phoneDates = allData.filter(d => d.reservation_type === 'phone_reservation').map(item => new Date(item.blocked_date));
+      setBlockedDates(blockDates);
+      setPhoneReservedDates(phoneDates);
+      setBlockedDatesData(allData);
     } catch (error) {
       console.error('Error fetching blocked dates:', error);
     }
@@ -293,32 +308,50 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
   const blockSelectedDates = async () => {
     if (!selectedBlockDates || selectedBlockDates.length === 0) return;
 
+    if (blockType === 'phone_reservation' && !contactName.trim()) {
+      toast({
+        title: "Trūksta duomenų",
+        description: "Įveskite kontaktinio asmens vardą.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const blockedDateEntries = selectedBlockDates.map(date => ({
         car_id: carId,
         blocked_date: date.toISOString().split('T')[0],
         reason: blockReason || null,
-        created_by: null // Will be set by RLS if authenticated
+        created_by: null,
+        reservation_type: blockType,
+        contact_name: blockType === 'phone_reservation' ? contactName.trim() || null : null,
+        contact_phone: blockType === 'phone_reservation' ? contactPhone.trim() || null : null,
       }));
 
       const { error } = await supabase
         .from('car_blocked_dates')
-        .upsert(blockedDateEntries, { onConflict: 'car_id,blocked_date' });
+        .upsert(blockedDateEntries as any, { onConflict: 'car_id,blocked_date' });
 
       if (error) throw error;
 
       toast({
-        title: "Datos blokuotos",
-        description: `Sėkmingai blokuota ${selectedBlockDates.length} datos.`,
+        title: blockType === 'phone_reservation' ? "Telefoninė rezervacija sukurta" : "Datos blokuotos",
+        description: blockType === 'phone_reservation' 
+          ? `Rezervuota ${selectedBlockDates.length} d. klientui ${contactName}`
+          : `Sėkmingai blokuota ${selectedBlockDates.length} datos.`,
       });
 
       setSelectedBlockDates(undefined);
       setBlockReason('');
+      setContactName('');
+      setContactPhone('');
+      setBlockType('block');
       fetchBlockedDates();
+      fetchCarReservations();
     } catch (error: any) {
       toast({
         title: "Klaida",
-        description: "Nepavyko blokuoti datų: " + error.message,
+        description: "Nepavyko: " + error.message,
         variant: "destructive",
       });
     }
@@ -369,6 +402,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       });
 
       fetchBlockedDates();
+      fetchCarReservations();
     } catch (error: any) {
       toast({
         title: "Klaida",
@@ -511,6 +545,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     modifiers={{
                       reserved: reservedDates,
                       blocked: calendarBlockedDates,
+                      phoneReserved: phoneReservedDates,
                     }}
                     modifiersStyles={{
                       reserved: {
@@ -522,6 +557,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       blocked: {
                         backgroundColor: 'hsl(var(--destructive))',
                         color: 'hsl(var(--destructive-foreground))',
+                        fontWeight: 'bold',
+                        borderRadius: '4px',
+                      },
+                      phoneReserved: {
+                        backgroundColor: '#3b82f6',
+                        color: 'white',
                         fontWeight: 'bold',
                         borderRadius: '4px',
                       },
@@ -538,6 +579,10 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-destructive rounded"></div>
                       <span>Blokuota</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <div className="w-4 h-4 rounded" style={{ backgroundColor: '#3b82f6' }}></div>
+                      <span>Tel. rezervacija</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-muted border border-border rounded"></div>
@@ -1161,10 +1206,10 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <CalendarIcon className="w-5 h-5" />
-                      Blokuoti datos
+                      Datų valdymas
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Pasirinkite ir blokuokite datas, kai automobilis nebus prieinamas
+                      Blokuokite datas arba sukurkite telefoninę rezervaciją
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -1185,10 +1230,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                               modifiers={{
                                 blocked: blockedDates,
                                 reserved: reservedDates,
+                                phoneReserved: phoneReservedDates,
                               }}
                               modifiersStyles={{
                                 blocked: { backgroundColor: '#ef4444', color: 'white' },
-                                reserved: { backgroundColor: '#f59e0b', color: 'white' }
+                                reserved: { backgroundColor: '#f59e0b', color: 'white' },
+                                phoneReserved: { backgroundColor: '#3b82f6', color: 'white' },
                               }}
                             />
                           </div>
@@ -1196,12 +1243,16 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                         <div className="mt-2 text-xs text-muted-foreground">
                           <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                             <div className="flex items-center gap-1">
-                              <div className="w-3 h-3 bg-red-500 rounded shrink-0"></div>
+                              <div className="w-3 h-3 rounded shrink-0" style={{ backgroundColor: '#ef4444' }}></div>
                               <span>Blokuota</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <div className="w-3 h-3 bg-amber-500 rounded shrink-0"></div>
+                              <div className="w-3 h-3 rounded shrink-0" style={{ backgroundColor: '#f59e0b' }}></div>
                               <span>Rezervuota</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <div className="w-3 h-3 rounded shrink-0" style={{ backgroundColor: '#3b82f6' }}></div>
+                              <span>Tel. rezervacija</span>
                             </div>
                           </div>
                         </div>
@@ -1209,17 +1260,72 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       
                       <div className="space-y-4">
                         {selectedBlockDates && selectedBlockDates.length > 0 && (
-                          <div>
-                            <Label htmlFor="block-reason" className="text-sm">Blokavimo priežastis</Label>
-                            <Textarea
-                              id="block-reason"
-                              placeholder="Pvz., Remontas, Aptarnavimas, Kita..."
-                              value={blockReason}
-                              onChange={(e) => setBlockReason(e.target.value)}
-                              rows={3}
-                              className="text-sm"
-                            />
-                          </div>
+                          <>
+                            {/* Type selector */}
+                            <div className="space-y-2">
+                              <Label className="text-sm">Veiksmo tipas</Label>
+                              <div className="flex gap-2">
+                                <Button
+                                  variant={blockType === 'block' ? 'default' : 'outline'}
+                                  size="sm"
+                                  onClick={() => setBlockType('block')}
+                                  className="text-xs"
+                                >
+                                  🔒 Blokuoti
+                                </Button>
+                                <Button
+                                  variant={blockType === 'phone_reservation' ? 'default' : 'outline'}
+                                  size="sm"
+                                  onClick={() => setBlockType('phone_reservation')}
+                                  className="text-xs"
+                                >
+                                  📞 Tel. rezervacija
+                                </Button>
+                              </div>
+                            </div>
+
+                            {/* Contact fields for phone reservation */}
+                            {blockType === 'phone_reservation' && (
+                              <div className="space-y-2 p-3 border rounded-lg bg-blue-50 dark:bg-blue-950/20">
+                                <div className="space-y-1">
+                                  <Label htmlFor="contact-name" className="text-sm">Vardas *</Label>
+                                  <Input
+                                    id="contact-name"
+                                    placeholder="Kliento vardas"
+                                    value={contactName}
+                                    onChange={(e) => setContactName(e.target.value)}
+                                    className="text-sm"
+                                  />
+                                </div>
+                                <div className="space-y-1">
+                                  <Label htmlFor="contact-phone" className="text-sm">Telefonas</Label>
+                                  <Input
+                                    id="contact-phone"
+                                    placeholder="+370..."
+                                    value={contactPhone}
+                                    onChange={(e) => setContactPhone(e.target.value)}
+                                    className="text-sm"
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                            <div>
+                              <Label htmlFor="block-reason" className="text-sm">
+                                {blockType === 'phone_reservation' ? 'Pastaba' : 'Blokavimo priežastis'}
+                              </Label>
+                              <Textarea
+                                id="block-reason"
+                                placeholder={blockType === 'phone_reservation' 
+                                  ? "Pvz., Skambino dėl kelionės į Palangą..." 
+                                  : "Pvz., Remontas, Aptarnavimas, Kita..."}
+                                value={blockReason}
+                                onChange={(e) => setBlockReason(e.target.value)}
+                                rows={2}
+                                className="text-sm"
+                              />
+                            </div>
+                          </>
                         )}
                         
                         <div className="flex flex-col sm:flex-row gap-2">
@@ -1229,7 +1335,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                             size="sm"
                             className="w-full sm:w-auto text-xs sm:text-sm"
                           >
-                            Blokuoti pasirinktas datas
+                            {blockType === 'phone_reservation' ? '📞 Rezervuoti' : '🔒 Blokuoti'}
                           </Button>
                           <Button 
                             variant="outline"
@@ -1242,15 +1348,30 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                           </Button>
                         </div>
 
-                        {blockedDates.length > 0 && (
+                        {blockedDatesData.length > 0 && (
                           <div className="mt-4">
-                            <h4 className="font-medium mb-2 text-sm">Blokuotos datos:</h4>
-                            <div className="space-y-1 max-h-32 overflow-y-auto">
+                            <h4 className="font-medium mb-2 text-sm">Blokuotos datos ir tel. rezervacijos:</h4>
+                            <div className="space-y-1 max-h-48 overflow-y-auto">
                               {blockedDatesData.map((blocked) => (
-                                <div key={blocked.id} className="flex items-center justify-between p-2 bg-muted rounded text-xs sm:text-sm">
+                                <div 
+                                  key={blocked.id} 
+                                  className={`flex items-center justify-between p-2 rounded text-xs sm:text-sm ${
+                                    blocked.reservation_type === 'phone_reservation' 
+                                      ? 'bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800' 
+                                      : 'bg-muted'
+                                  }`}
+                                >
                                   <div className="flex-1 min-w-0">
-                                    <span className="font-medium block truncate">{format(new Date(blocked.blocked_date), 'PPP', { locale: lt })}</span>
-                                    {blocked.reason && <p className="text-xs text-muted-foreground truncate">{blocked.reason}</p>}
+                                    <div className="flex items-center gap-1">
+                                      <span>{blocked.reservation_type === 'phone_reservation' ? '📞' : '🔒'}</span>
+                                      <span className="font-medium truncate">{format(new Date(blocked.blocked_date), 'PPP', { locale: lt })}</span>
+                                    </div>
+                                    {blocked.contact_name && (
+                                      <p className="text-xs font-medium truncate ml-5">
+                                        {blocked.contact_name}{blocked.contact_phone ? ` • ${blocked.contact_phone}` : ''}
+                                      </p>
+                                    )}
+                                    {blocked.reason && <p className="text-xs text-muted-foreground truncate ml-5">{blocked.reason}</p>}
                                   </div>
                                   <Button
                                     variant="ghost"
