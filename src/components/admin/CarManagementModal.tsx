@@ -87,7 +87,6 @@ interface BlockedDate {
 const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose, carId, carName }) => {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
-  const [calendarBlockedDates, setCalendarBlockedDates] = useState<Date[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [dateReservations, setDateReservations] = useState<Reservation[]>([]);
