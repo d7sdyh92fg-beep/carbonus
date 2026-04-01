@@ -87,7 +87,6 @@ interface BlockedDate {
 const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose, carId, carName }) => {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
-  const [calendarBlockedDates, setCalendarBlockedDates] = useState<Date[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [dateReservations, setDateReservations] = useState<Reservation[]>([]);
@@ -190,27 +189,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
         }
       });
       setReservedDates(resDates);
-
-      // Also fetch blocked dates separately (only actual blocks for calendar coloring)
-      const { data: blocked } = await supabase
-        .from('car_blocked_dates')
-        .select('blocked_date, reservation_type')
-        .eq('car_id', carId);
-
-      const blkDates: Date[] = [];
-      const phoneDates: Date[] = [];
-      (blocked as any[] || []).forEach((bd) => {
-        if (bd.reservation_type === 'phone_reservation') {
-          phoneDates.push(new Date(bd.blocked_date));
-        } else {
-          blkDates.push(new Date(bd.blocked_date));
-        }
-      });
-      setCalendarBlockedDates(blkDates);
-      setPhoneReservedDates(prev => phoneDates.length > 0 ? phoneDates : prev);
-
-      // Combined for general use
-      setBookedDates([...resDates, ...blkDates, ...phoneDates]);
+      setBookedDates(resDates);
     } catch (error) {
       console.error('Error fetching car reservations:', error);
     }
@@ -311,8 +290,9 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       if (error) throw error;
       
       const allData = (data || []) as unknown as BlockedDate[];
-      const blockDates = allData.filter(d => d.reservation_type !== 'phone_reservation').map(item => new Date(item.blocked_date));
-      const phoneDates = allData.filter(d => d.reservation_type === 'phone_reservation').map(item => new Date(item.blocked_date));
+      // Use date string + T12:00 to avoid timezone shifting
+      const blockDates = allData.filter(d => d.reservation_type !== 'phone_reservation').map(item => new Date(item.blocked_date + 'T12:00:00'));
+      const phoneDates = allData.filter(d => d.reservation_type === 'phone_reservation').map(item => new Date(item.blocked_date + 'T12:00:00'));
       setBlockedDates(blockDates);
       setPhoneReservedDates(phoneDates);
       setBlockedDatesData(allData);
@@ -573,7 +553,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     onSelect={handleDateSelect}
                     modifiers={{
                       reserved: reservedDates,
-                      blocked: calendarBlockedDates,
+                      blocked: blockedDates,
                       phoneReserved: phoneReservedDates,
                     }}
                     modifiersStyles={{
