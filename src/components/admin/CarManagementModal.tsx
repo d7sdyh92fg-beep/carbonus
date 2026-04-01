@@ -91,6 +91,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [dateReservations, setDateReservations] = useState<Reservation[]>([]);
+  const [datePhoneReservations, setDatePhoneReservations] = useState<BlockedDate[]>([]);
   const [carDetails, setCarDetails] = useState<CarDetails | null>(null);
   const [serviceRecords, setServiceRecords] = useState<ServiceRecord[]>([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -434,8 +435,16 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
         return false;
       });
       setDateReservations(reservationsForDate);
+      
+      // Find phone reservations for this date
+      const dateIso = date.toISOString().split('T')[0];
+      const phoneRes = blockedDatesData.filter(bd => 
+        bd.reservation_type === 'phone_reservation' && bd.blocked_date === dateIso
+      );
+      setDatePhoneReservations(phoneRes);
     } else {
       setDateReservations([]);
+      setDatePhoneReservations([]);
     }
   };
 
@@ -601,8 +610,26 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {selectedDate && dateReservations.length > 0 ? (
+                  {selectedDate && (dateReservations.length > 0 || datePhoneReservations.length > 0) ? (
                     <div className="space-y-4">
+                      {datePhoneReservations.map((pr) => (
+                        <Card key={pr.id} className="border-l-4" style={{ borderLeftColor: '#3b82f6' }}>
+                          <CardContent className="pt-4">
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="font-semibold">📞 {pr.contact_name || 'Tel. rezervacija'}</span>
+                                <Badge style={{ backgroundColor: '#3b82f6', color: 'white' }}>Tel. rezervacija</Badge>
+                              </div>
+                              {pr.contact_phone && (
+                                <div className="text-sm text-muted-foreground">{pr.contact_phone}</div>
+                              )}
+                              {pr.reason && (
+                                <div className="text-sm"><strong>Pastaba:</strong> {pr.reason}</div>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                       {dateReservations.map((reservation) => (
                         <Card key={reservation.id} className="border-l-4 border-l-primary">
                           <CardContent className="pt-4">
@@ -626,7 +653,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                         </Card>
                       ))}
                     </div>
-                  ) : selectedDate && dateReservations.length === 0 ? (
+                  ) : selectedDate ? (
                     <div className="text-center py-8 text-muted-foreground">
                       <CalendarIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
                       <p>Šioje datoje rezervacijų nėra</p>
@@ -1237,6 +1264,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                                 reserved: { backgroundColor: '#f59e0b', color: 'white' },
                                 phoneReserved: { backgroundColor: '#3b82f6', color: 'white' },
                               }}
+                              locale={lt}
                             />
                           </div>
                         </div>
