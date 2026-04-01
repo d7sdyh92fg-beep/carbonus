@@ -544,6 +544,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     modifiers={{
                       reserved: reservedDates,
                       blocked: calendarBlockedDates,
+                      phoneReserved: phoneReservedDates,
                     }}
                     modifiersStyles={{
                       reserved: {
@@ -555,6 +556,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       blocked: {
                         backgroundColor: 'hsl(var(--destructive))',
                         color: 'hsl(var(--destructive-foreground))',
+                        fontWeight: 'bold',
+                        borderRadius: '4px',
+                      },
+                      phoneReserved: {
+                        backgroundColor: '#3b82f6',
+                        color: 'white',
                         fontWeight: 'bold',
                         borderRadius: '4px',
                       },
@@ -571,6 +578,10 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-destructive rounded"></div>
                       <span>Blokuota</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <div className="w-4 h-4 rounded" style={{ backgroundColor: '#3b82f6' }}></div>
+                      <span>Tel. rezervacija</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <div className="w-4 h-4 bg-muted border border-border rounded"></div>
