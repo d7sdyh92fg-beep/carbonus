@@ -378,7 +378,7 @@ const Cars = () => {
               {searchTerm || selectedCategory !== "all" ? (
                 <span>{t('cars.resultsCount')} {filteredCars.length} {getCarPluralForm(filteredCars.length)}</span>
               ) : (
-                <span>{t('cars.totalCount')} {cars.length} {getCarPluralForm(cars.length)}</span>
+                <span>{t('cars.totalCount')} {filteredCars.length} {getCarPluralForm(filteredCars.length)}</span>
               )}
             </div>
           </div>
