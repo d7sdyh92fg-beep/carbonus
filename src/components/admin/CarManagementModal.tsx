@@ -193,6 +193,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
         }
       });
       setCalendarBlockedDates(blkDates);
+      setPhoneReservedDates(prev => phoneDates.length > 0 ? phoneDates : prev);
 
       // Combined for general use
       setBookedDates([...resDates, ...blkDates, ...phoneDates]);
