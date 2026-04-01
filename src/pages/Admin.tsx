@@ -145,6 +145,8 @@ const Admin = () => {
 
   const [cars, setCars] = useState<any[]>([]);
   const [isLoadingCars, setIsLoadingCars] = useState(true);
+  const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
 
   // IDs of sold cars to hide from admin panel
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
