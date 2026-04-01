@@ -290,8 +290,9 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       if (error) throw error;
       
       const allData = (data || []) as unknown as BlockedDate[];
-      const blockDates = allData.filter(d => d.reservation_type !== 'phone_reservation').map(item => new Date(item.blocked_date));
-      const phoneDates = allData.filter(d => d.reservation_type === 'phone_reservation').map(item => new Date(item.blocked_date));
+      // Use date string + T12:00 to avoid timezone shifting
+      const blockDates = allData.filter(d => d.reservation_type !== 'phone_reservation').map(item => new Date(item.blocked_date + 'T12:00:00'));
+      const phoneDates = allData.filter(d => d.reservation_type === 'phone_reservation').map(item => new Date(item.blocked_date + 'T12:00:00'));
       setBlockedDates(blockDates);
       setPhoneReservedDates(phoneDates);
       setBlockedDatesData(allData);
