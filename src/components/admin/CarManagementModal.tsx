@@ -129,9 +129,16 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     }
   }, [isOpen, carId]);
 
+  const getLocalDateKey = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const cleanupPastBlockedDates = async () => {
     try {
-      const today = new Date().toISOString().split('T')[0];
+      const today = getLocalDateKey(new Date());
       await supabase
         .from('car_blocked_dates')
         .delete()
@@ -316,7 +323,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     try {
       const blockedDateEntries = selectedBlockDates.map(date => ({
         car_id: carId,
-        blocked_date: date.toISOString().split('T')[0],
+        blocked_date: getLocalDateKey(date),
         reason: blockReason || null,
         created_by: null,
         reservation_type: blockType,
@@ -357,7 +364,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     if (!selectedBlockDates || selectedBlockDates.length === 0) return;
 
     try {
-      const datesToUnblock = selectedBlockDates.map(date => date.toISOString().split('T')[0]);
+      const datesToUnblock = selectedBlockDates.map(date => getLocalDateKey(date));
       
       const { error } = await supabase
         .from('car_blocked_dates')
@@ -432,7 +439,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       setDateReservations(reservationsForDate);
       
       // Find phone reservations and blocks for this date
-      const dateIso = date.toISOString().split('T')[0];
+      const dateIso = getLocalDateKey(date);
       const phoneRes = blockedDatesData.filter(bd => 
         bd.reservation_type === 'phone_reservation' && bd.blocked_date === dateIso
       );
