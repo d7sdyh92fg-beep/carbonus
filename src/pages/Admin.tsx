@@ -1352,6 +1352,7 @@ const Admin = () => {
                                     </button>
                                   </TableCell>
                                 )}
+                                <TableCell>
                                   <div>
                                     <div className="font-medium">
                                       {reservation.customers.first_name} {reservation.customers.last_name}
