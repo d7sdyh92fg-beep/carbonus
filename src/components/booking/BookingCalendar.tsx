@@ -169,6 +169,18 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     return t('pricing.tier1');
   };
 
+  const hasBookedDateInRange = (from: Date, to: Date): boolean => {
+    const start = new Date(from);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(to);
+    end.setHours(0, 0, 0, 0);
+    
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      if (isDateBooked(d)) return true;
+    }
+    return false;
+  };
+
   const handleSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
     if (!range || !range.from) {
       setSelectedRange({ from: undefined, to: undefined });
@@ -183,6 +195,18 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
         setSelectedRange({ from: range.from, to: range.from });
       }
     } else {
+      // Check if range contains any booked/blocked dates
+      if (range.from && range.to && hasBookedDateInRange(range.from, range.to)) {
+        toast({
+          title: language === 'lt' ? 'Negalima rezervuoti' : 'Cannot book',
+          description: language === 'lt' 
+            ? 'Pasirinktas laikotarpis apima užimtas datas. Pasirinkite kitą laikotarpį.' 
+            : 'Selected period includes unavailable dates. Please choose a different period.',
+          variant: "destructive",
+        });
+        setSelectedRange({ from: range.from, to: undefined });
+        return;
+      }
       setSelectedRange(range);
     }
   };
