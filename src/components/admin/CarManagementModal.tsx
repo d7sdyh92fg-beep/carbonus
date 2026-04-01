@@ -1315,22 +1315,20 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                             <div className="space-y-2">
                               <Label className="text-sm">Veiksmo tipas</Label>
                               <div className="flex gap-2">
-                                <Button
-                                  variant={blockType === 'block' ? 'default' : 'outline'}
-                                  size="sm"
+                                <button
+                                  type="button"
                                   onClick={() => setBlockType('block')}
-                                  className={`text-xs ${blockType === 'block' ? 'bg-red-600 hover:bg-red-700 text-white' : 'border-red-300 text-red-700 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30'}`}
+                                  className={`text-xs px-3 py-1.5 rounded-full border-2 font-medium transition-colors ${blockType === 'block' ? 'bg-red-100 border-red-500 text-red-800 dark:bg-red-950/40 dark:text-red-300' : 'border-gray-200 text-gray-500 hover:border-red-300 dark:border-gray-700 dark:text-gray-400'}`}
                                 >
                                   🔒 Blokuoti
-                                </Button>
-                                <Button
-                                  variant={blockType === 'phone_reservation' ? 'default' : 'outline'}
-                                  size="sm"
+                                </button>
+                                <button
+                                  type="button"
                                   onClick={() => setBlockType('phone_reservation')}
-                                  className={`text-xs ${blockType === 'phone_reservation' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-950/30'}`}
+                                  className={`text-xs px-3 py-1.5 rounded-full border-2 font-medium transition-colors ${blockType === 'phone_reservation' ? 'bg-blue-100 border-blue-500 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300' : 'border-gray-200 text-gray-500 hover:border-blue-300 dark:border-gray-700 dark:text-gray-400'}`}
                                 >
                                   📞 Tel. rezervacija
-                                </Button>
+                                </button>
                               </div>
                             </div>
 
@@ -1385,7 +1383,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                             size="sm"
                             className={`w-full sm:w-auto text-xs sm:text-sm text-white ${blockType === 'phone_reservation' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-red-600 hover:bg-red-700'}`}
                           >
-                            {blockType === 'phone_reservation' ? '📞 Rezervuoti' : '🔒 Blokuoti'}
+                            {blockType === 'phone_reservation' ? '✅ Patvirtinti rezervaciją' : '✅ Patvirtinti blokavimą'}
                           </Button>
                           <Button 
                             variant="outline"
