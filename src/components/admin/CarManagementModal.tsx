@@ -108,9 +108,13 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
   
   // Blocked dates state
   const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+  const [phoneReservedDates, setPhoneReservedDates] = useState<Date[]>([]);
   const [blockedDatesData, setBlockedDatesData] = useState<BlockedDate[]>([]);
   const [selectedBlockDates, setSelectedBlockDates] = useState<Date[] | undefined>();
   const [blockReason, setBlockReason] = useState('');
+  const [blockType, setBlockType] = useState<'block' | 'phone_reservation'>('block');
+  const [contactName, setContactName] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
   
   const { toast } = useToast();
 
