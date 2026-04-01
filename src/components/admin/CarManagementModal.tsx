@@ -451,15 +451,20 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       });
       setDateReservations(reservationsForDate);
       
-      // Find phone reservations for this date
+      // Find phone reservations and blocks for this date
       const dateIso = date.toISOString().split('T')[0];
       const phoneRes = blockedDatesData.filter(bd => 
         bd.reservation_type === 'phone_reservation' && bd.blocked_date === dateIso
       );
       setDatePhoneReservations(phoneRes);
+      const blocks = blockedDatesData.filter(bd => 
+        bd.reservation_type !== 'phone_reservation' && bd.blocked_date === dateIso
+      );
+      setDateBlocks(blocks);
     } else {
       setDateReservations([]);
       setDatePhoneReservations([]);
+      setDateBlocks([]);
     }
   };
 
