@@ -92,6 +92,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [dateReservations, setDateReservations] = useState<Reservation[]>([]);
   const [datePhoneReservations, setDatePhoneReservations] = useState<BlockedDate[]>([]);
+  const [dateBlocks, setDateBlocks] = useState<BlockedDate[]>([]);
   const [carDetails, setCarDetails] = useState<CarDetails | null>(null);
   const [serviceRecords, setServiceRecords] = useState<ServiceRecord[]>([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -450,15 +451,20 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       });
       setDateReservations(reservationsForDate);
       
-      // Find phone reservations for this date
+      // Find phone reservations and blocks for this date
       const dateIso = date.toISOString().split('T')[0];
       const phoneRes = blockedDatesData.filter(bd => 
         bd.reservation_type === 'phone_reservation' && bd.blocked_date === dateIso
       );
       setDatePhoneReservations(phoneRes);
+      const blocks = blockedDatesData.filter(bd => 
+        bd.reservation_type !== 'phone_reservation' && bd.blocked_date === dateIso
+      );
+      setDateBlocks(blocks);
     } else {
       setDateReservations([]);
       setDatePhoneReservations([]);
+      setDateBlocks([]);
     }
   };
 
@@ -624,7 +630,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {selectedDate && (dateReservations.length > 0 || datePhoneReservations.length > 0) ? (
+                  {selectedDate && (dateReservations.length > 0 || datePhoneReservations.length > 0 || dateBlocks.length > 0) ? (
                     <div className="space-y-4">
                       {datePhoneReservations.map((pr) => (
                         <Card key={pr.id} className="border-l-4" style={{ borderLeftColor: '#3b82f6' }}>
@@ -639,6 +645,21 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                               )}
                               {pr.reason && (
                                 <div className="text-sm"><strong>Pastaba:</strong> {pr.reason}</div>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                      {dateBlocks.map((block) => (
+                        <Card key={block.id} className="border-l-4" style={{ borderLeftColor: '#ef4444' }}>
+                          <CardContent className="pt-4">
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="font-semibold">🔒 Blokuota</span>
+                                <Badge variant="destructive">Blokuota</Badge>
+                              </div>
+                              {block.reason && (
+                                <div className="text-sm"><strong>Priežastis:</strong> {block.reason}</div>
                               )}
                             </div>
                           </CardContent>
