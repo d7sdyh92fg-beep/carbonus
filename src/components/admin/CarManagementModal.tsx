@@ -552,7 +552,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                     onSelect={handleDateSelect}
                     modifiers={{
                       reserved: reservedDates,
-                      blocked: calendarBlockedDates,
+                      blocked: blockedDates,
                       phoneReserved: phoneReservedDates,
                     }}
                     modifiersStyles={{
