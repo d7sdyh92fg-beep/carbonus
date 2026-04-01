@@ -1264,6 +1264,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                                 reserved: { backgroundColor: '#f59e0b', color: 'white' },
                                 phoneReserved: { backgroundColor: '#3b82f6', color: 'white' },
                               }}
+                              locale={lt}
                             />
                           </div>
                         </div>
