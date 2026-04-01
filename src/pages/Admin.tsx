@@ -1403,9 +1403,25 @@ const Admin = () => {
                         </div>
                       ) : (
                         completedReservations.map((reservation) => (
-                          <Card key={reservation.id} className="p-4">
+                          <Card key={reservation.id} className={`p-4 ${selectedHistoryIds.has(reservation.id) ? 'ring-2 ring-red-400 bg-red-50 dark:bg-red-950/20' : ''}`}>
                             <div className="space-y-3">
                               <div className="flex items-start justify-between">
+                                {isDeleteMode && (
+                                  <button
+                                    onClick={() => {
+                                      const next = new Set(selectedHistoryIds);
+                                      if (next.has(reservation.id)) next.delete(reservation.id);
+                                      else next.add(reservation.id);
+                                      setSelectedHistoryIds(next);
+                                    }}
+                                    className="p-1 mr-2 mt-0.5"
+                                  >
+                                    {selectedHistoryIds.has(reservation.id)
+                                      ? <CheckSquare className="h-4 w-4 text-red-600" />
+                                      : <Square className="h-4 w-4 text-muted-foreground" />
+                                    }
+                                  </button>
+                                )}
                                 <div className="flex-1 min-w-0">
                                   <div className="font-semibold text-sm truncate">
                                     {reservation.customers.first_name} {reservation.customers.last_name}
