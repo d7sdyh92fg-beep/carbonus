@@ -650,6 +650,21 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                           </CardContent>
                         </Card>
                       ))}
+                      {dateBlocks.map((block) => (
+                        <Card key={block.id} className="border-l-4" style={{ borderLeftColor: '#ef4444' }}>
+                          <CardContent className="pt-4">
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="font-semibold">🔒 Blokuota</span>
+                                <Badge variant="destructive">Blokuota</Badge>
+                              </div>
+                              {block.reason && (
+                                <div className="text-sm"><strong>Priežastis:</strong> {block.reason}</div>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                       {dateReservations.map((reservation) => (
                         <Card key={reservation.id} className="border-l-4 border-l-primary">
                           <CardContent className="pt-4">
