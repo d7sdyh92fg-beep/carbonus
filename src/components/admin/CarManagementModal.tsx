@@ -308,32 +308,50 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
   const blockSelectedDates = async () => {
     if (!selectedBlockDates || selectedBlockDates.length === 0) return;
 
+    if (blockType === 'phone_reservation' && !contactName.trim()) {
+      toast({
+        title: "Trūksta duomenų",
+        description: "Įveskite kontaktinio asmens vardą.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const blockedDateEntries = selectedBlockDates.map(date => ({
         car_id: carId,
         blocked_date: date.toISOString().split('T')[0],
         reason: blockReason || null,
-        created_by: null // Will be set by RLS if authenticated
+        created_by: null,
+        reservation_type: blockType,
+        contact_name: blockType === 'phone_reservation' ? contactName.trim() || null : null,
+        contact_phone: blockType === 'phone_reservation' ? contactPhone.trim() || null : null,
       }));
 
       const { error } = await supabase
         .from('car_blocked_dates')
-        .upsert(blockedDateEntries, { onConflict: 'car_id,blocked_date' });
+        .upsert(blockedDateEntries as any, { onConflict: 'car_id,blocked_date' });
 
       if (error) throw error;
 
       toast({
-        title: "Datos blokuotos",
-        description: `Sėkmingai blokuota ${selectedBlockDates.length} datos.`,
+        title: blockType === 'phone_reservation' ? "Telefoninė rezervacija sukurta" : "Datos blokuotos",
+        description: blockType === 'phone_reservation' 
+          ? `Rezervuota ${selectedBlockDates.length} d. klientui ${contactName}`
+          : `Sėkmingai blokuota ${selectedBlockDates.length} datos.`,
       });
 
       setSelectedBlockDates(undefined);
       setBlockReason('');
+      setContactName('');
+      setContactPhone('');
+      setBlockType('block');
       fetchBlockedDates();
+      fetchCarReservations();
     } catch (error: any) {
       toast({
         title: "Klaida",
-        description: "Nepavyko blokuoti datų: " + error.message,
+        description: "Nepavyko: " + error.message,
         variant: "destructive",
       });
     }
