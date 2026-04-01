@@ -1333,8 +1333,25 @@ const Admin = () => {
                             </TableRow>
                           ) : (
                             completedReservations.map((reservation) => (
-                              <TableRow key={reservation.id}>
-                                <TableCell>
+                              <TableRow key={reservation.id} className={selectedHistoryIds.has(reservation.id) ? 'bg-red-50 dark:bg-red-950/20' : ''}>
+                                {isDeleteMode && (
+                                  <TableCell>
+                                    <button
+                                      onClick={() => {
+                                        const next = new Set(selectedHistoryIds);
+                                        if (next.has(reservation.id)) next.delete(reservation.id);
+                                        else next.add(reservation.id);
+                                        setSelectedHistoryIds(next);
+                                      }}
+                                      className="p-1"
+                                    >
+                                      {selectedHistoryIds.has(reservation.id) 
+                                        ? <CheckSquare className="h-4 w-4 text-red-600" />
+                                        : <Square className="h-4 w-4 text-muted-foreground" />
+                                      }
+                                    </button>
+                                  </TableCell>
+                                )}
                                   <div>
                                     <div className="font-medium">
                                       {reservation.customers.first_name} {reservation.customers.last_name}
