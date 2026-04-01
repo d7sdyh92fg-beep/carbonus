@@ -122,7 +122,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
         .eq("car_id", carId);
 
       blockedDates?.forEach((bd) => {
-        dates.push(new Date(bd.blocked_date));
+        dates.push(new Date(bd.blocked_date + 'T12:00:00'));
       });
 
       setBookedDates(dates);
