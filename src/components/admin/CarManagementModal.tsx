@@ -79,6 +79,9 @@ interface BlockedDate {
   reason: string | null;
   created_at: string;
   created_by: string | null;
+  reservation_type: string;
+  contact_name: string | null;
+  contact_phone: string | null;
 }
 
 const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose, carId, carName }) => {
