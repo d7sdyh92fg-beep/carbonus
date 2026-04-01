@@ -323,7 +323,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     try {
       const blockedDateEntries = selectedBlockDates.map(date => ({
         car_id: carId,
-        blocked_date: date.toISOString().split('T')[0],
+        blocked_date: getLocalDateKey(date),
         reason: blockReason || null,
         created_by: null,
         reservation_type: blockType,
