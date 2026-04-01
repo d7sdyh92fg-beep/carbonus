@@ -364,7 +364,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     if (!selectedBlockDates || selectedBlockDates.length === 0) return;
 
     try {
-      const datesToUnblock = selectedBlockDates.map(date => date.toISOString().split('T')[0]);
+      const datesToUnblock = selectedBlockDates.map(date => getLocalDateKey(date));
       
       const { error } = await supabase
         .from('car_blocked_dates')
