@@ -1314,6 +1314,7 @@ const Admin = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
+                            {isDeleteMode && <TableHead className="w-10"></TableHead>}
                             <TableHead>Klientas</TableHead>
                             <TableHead>Automobilis</TableHead>
                             <TableHead>Datos</TableHead>
