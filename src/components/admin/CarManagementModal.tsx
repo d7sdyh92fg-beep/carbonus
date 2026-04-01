@@ -176,20 +176,25 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       });
       setReservedDates(resDates);
 
-      // Also fetch blocked dates separately
+      // Also fetch blocked dates separately (only actual blocks for calendar coloring)
       const { data: blocked } = await supabase
         .from('car_blocked_dates')
-        .select('blocked_date')
+        .select('blocked_date, reservation_type')
         .eq('car_id', carId);
 
       const blkDates: Date[] = [];
-      blocked?.forEach((bd) => {
-        blkDates.push(new Date(bd.blocked_date));
+      const phoneDates: Date[] = [];
+      (blocked as any[] || []).forEach((bd) => {
+        if (bd.reservation_type === 'phone_reservation') {
+          phoneDates.push(new Date(bd.blocked_date));
+        } else {
+          blkDates.push(new Date(bd.blocked_date));
+        }
       });
       setCalendarBlockedDates(blkDates);
 
       // Combined for general use
-      setBookedDates([...resDates, ...blkDates]);
+      setBookedDates([...resDates, ...blkDates, ...phoneDates]);
     } catch (error) {
       console.error('Error fetching car reservations:', error);
     }
