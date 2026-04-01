@@ -1194,10 +1194,10 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <CalendarIcon className="w-5 h-5" />
-                      Blokuoti datos
+                      Datų valdymas
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Pasirinkite ir blokuokite datas, kai automobilis nebus prieinamas
+                      Blokuokite datas arba sukurkite telefoninę rezervaciją
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -1218,10 +1218,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                               modifiers={{
                                 blocked: blockedDates,
                                 reserved: reservedDates,
+                                phoneReserved: phoneReservedDates,
                               }}
                               modifiersStyles={{
                                 blocked: { backgroundColor: '#ef4444', color: 'white' },
-                                reserved: { backgroundColor: '#f59e0b', color: 'white' }
+                                reserved: { backgroundColor: '#f59e0b', color: 'white' },
+                                phoneReserved: { backgroundColor: '#3b82f6', color: 'white' },
                               }}
                             />
                           </div>
@@ -1229,12 +1231,16 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                         <div className="mt-2 text-xs text-muted-foreground">
                           <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                             <div className="flex items-center gap-1">
-                              <div className="w-3 h-3 bg-red-500 rounded shrink-0"></div>
+                              <div className="w-3 h-3 rounded shrink-0" style={{ backgroundColor: '#ef4444' }}></div>
                               <span>Blokuota</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <div className="w-3 h-3 bg-amber-500 rounded shrink-0"></div>
+                              <div className="w-3 h-3 rounded shrink-0" style={{ backgroundColor: '#f59e0b' }}></div>
                               <span>Rezervuota</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <div className="w-3 h-3 rounded shrink-0" style={{ backgroundColor: '#3b82f6' }}></div>
+                              <span>Tel. rezervacija</span>
                             </div>
                           </div>
                         </div>
@@ -1242,17 +1248,72 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                       
                       <div className="space-y-4">
                         {selectedBlockDates && selectedBlockDates.length > 0 && (
-                          <div>
-                            <Label htmlFor="block-reason" className="text-sm">Blokavimo priežastis</Label>
-                            <Textarea
-                              id="block-reason"
-                              placeholder="Pvz., Remontas, Aptarnavimas, Kita..."
-                              value={blockReason}
-                              onChange={(e) => setBlockReason(e.target.value)}
-                              rows={3}
-                              className="text-sm"
-                            />
-                          </div>
+                          <>
+                            {/* Type selector */}
+                            <div className="space-y-2">
+                              <Label className="text-sm">Veiksmo tipas</Label>
+                              <div className="flex gap-2">
+                                <Button
+                                  variant={blockType === 'block' ? 'default' : 'outline'}
+                                  size="sm"
+                                  onClick={() => setBlockType('block')}
+                                  className="text-xs"
+                                >
+                                  🔒 Blokuoti
+                                </Button>
+                                <Button
+                                  variant={blockType === 'phone_reservation' ? 'default' : 'outline'}
+                                  size="sm"
+                                  onClick={() => setBlockType('phone_reservation')}
+                                  className="text-xs"
+                                >
+                                  📞 Tel. rezervacija
+                                </Button>
+                              </div>
+                            </div>
+
+                            {/* Contact fields for phone reservation */}
+                            {blockType === 'phone_reservation' && (
+                              <div className="space-y-2 p-3 border rounded-lg bg-blue-50 dark:bg-blue-950/20">
+                                <div className="space-y-1">
+                                  <Label htmlFor="contact-name" className="text-sm">Vardas *</Label>
+                                  <Input
+                                    id="contact-name"
+                                    placeholder="Kliento vardas"
+                                    value={contactName}
+                                    onChange={(e) => setContactName(e.target.value)}
+                                    className="text-sm"
+                                  />
+                                </div>
+                                <div className="space-y-1">
+                                  <Label htmlFor="contact-phone" className="text-sm">Telefonas</Label>
+                                  <Input
+                                    id="contact-phone"
+                                    placeholder="+370..."
+                                    value={contactPhone}
+                                    onChange={(e) => setContactPhone(e.target.value)}
+                                    className="text-sm"
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                            <div>
+                              <Label htmlFor="block-reason" className="text-sm">
+                                {blockType === 'phone_reservation' ? 'Pastaba' : 'Blokavimo priežastis'}
+                              </Label>
+                              <Textarea
+                                id="block-reason"
+                                placeholder={blockType === 'phone_reservation' 
+                                  ? "Pvz., Skambino dėl kelionės į Palangą..." 
+                                  : "Pvz., Remontas, Aptarnavimas, Kita..."}
+                                value={blockReason}
+                                onChange={(e) => setBlockReason(e.target.value)}
+                                rows={2}
+                                className="text-sm"
+                              />
+                            </div>
+                          </>
                         )}
                         
                         <div className="flex flex-col sm:flex-row gap-2">
@@ -1262,7 +1323,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                             size="sm"
                             className="w-full sm:w-auto text-xs sm:text-sm"
                           >
-                            Blokuoti pasirinktas datas
+                            {blockType === 'phone_reservation' ? '📞 Rezervuoti' : '🔒 Blokuoti'}
                           </Button>
                           <Button 
                             variant="outline"
@@ -1275,15 +1336,30 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                           </Button>
                         </div>
 
-                        {blockedDates.length > 0 && (
+                        {blockedDatesData.length > 0 && (
                           <div className="mt-4">
-                            <h4 className="font-medium mb-2 text-sm">Blokuotos datos:</h4>
-                            <div className="space-y-1 max-h-32 overflow-y-auto">
+                            <h4 className="font-medium mb-2 text-sm">Blokuotos datos ir tel. rezervacijos:</h4>
+                            <div className="space-y-1 max-h-48 overflow-y-auto">
                               {blockedDatesData.map((blocked) => (
-                                <div key={blocked.id} className="flex items-center justify-between p-2 bg-muted rounded text-xs sm:text-sm">
+                                <div 
+                                  key={blocked.id} 
+                                  className={`flex items-center justify-between p-2 rounded text-xs sm:text-sm ${
+                                    blocked.reservation_type === 'phone_reservation' 
+                                      ? 'bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800' 
+                                      : 'bg-muted'
+                                  }`}
+                                >
                                   <div className="flex-1 min-w-0">
-                                    <span className="font-medium block truncate">{format(new Date(blocked.blocked_date), 'PPP', { locale: lt })}</span>
-                                    {blocked.reason && <p className="text-xs text-muted-foreground truncate">{blocked.reason}</p>}
+                                    <div className="flex items-center gap-1">
+                                      <span>{blocked.reservation_type === 'phone_reservation' ? '📞' : '🔒'}</span>
+                                      <span className="font-medium truncate">{format(new Date(blocked.blocked_date), 'PPP', { locale: lt })}</span>
+                                    </div>
+                                    {blocked.contact_name && (
+                                      <p className="text-xs font-medium truncate ml-5">
+                                        {blocked.contact_name}{blocked.contact_phone ? ` • ${blocked.contact_phone}` : ''}
+                                      </p>
+                                    )}
+                                    {blocked.reason && <p className="text-xs text-muted-foreground truncate ml-5">{blocked.reason}</p>}
                                   </div>
                                   <Button
                                     variant="ghost"
