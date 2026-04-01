@@ -289,9 +289,12 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
       if (error) throw error;
       
-      const blockedDatesArray = (data || []).map(item => new Date(item.blocked_date));
-      setBlockedDates(blockedDatesArray);
-      setBlockedDatesData(data || []);
+      const allData = (data || []) as unknown as BlockedDate[];
+      const blockDates = allData.filter(d => d.reservation_type !== 'phone_reservation').map(item => new Date(item.blocked_date));
+      const phoneDates = allData.filter(d => d.reservation_type === 'phone_reservation').map(item => new Date(item.blocked_date));
+      setBlockedDates(blockDates);
+      setPhoneReservedDates(phoneDates);
+      setBlockedDatesData(allData);
     } catch (error) {
       console.error('Error fetching blocked dates:', error);
     }
