@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarManagementModal from '@/components/admin/CarManagementModal';
@@ -145,6 +145,8 @@ const Admin = () => {
 
   const [cars, setCars] = useState<any[]>([]);
   const [isLoadingCars, setIsLoadingCars] = useState(true);
+  const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
 
   // IDs of sold cars to hide from admin panel
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
@@ -1222,47 +1224,87 @@ const Admin = () => {
                       <CardDescription>Visos baigtos rezervacijos</CardDescription>
                     </div>
                     {completedReservations.length > 0 && (
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => {
-                          setConfirmDialog({
-                            isOpen: true,
-                            title: "Ar tikrai norite ištrinti visas baigtas rezervacijas?",
-                            description: "Visos baigtos rezervacijos bus ištrinti iš sistemos. Šio veiksmo negalima atšaukti.",
-                            variant: "destructive",
-                            onConfirm: async () => {
-                              try {
-                                const completedIds = completedReservations.map(r => r.id);
-                                const { error } = await supabase
-                                  .from('reservations')
-                                  .delete()
-                                  .in('id', completedIds);
-
-                                if (error) throw error;
-
-                                toast({
-                                  title: "Ištrinta",
-                                  description: `${completedReservations.length} baigtos rezervacijos ištrinti.`,
-                                });
-
-                                fetchReservations();
-                              } catch (error: any) {
-                                toast({
-                                  title: "Klaida",
-                                  description: "Nepavyko ištrinti rezervacijų: " + error.message,
+                      <div className="flex gap-2">
+                        {isDeleteMode ? (
+                          <>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                if (selectedHistoryIds.size === completedReservations.length) {
+                                  setSelectedHistoryIds(new Set());
+                                } else {
+                                  setSelectedHistoryIds(new Set(completedReservations.map(r => r.id)));
+                                }
+                              }}
+                            >
+                              {selectedHistoryIds.size === completedReservations.length ? (
+                                <><CheckSquare className="h-4 w-4 mr-1" /> Atžymėti visas</>
+                              ) : (
+                                <><Square className="h-4 w-4 mr-1" /> Pažymėti visas</>
+                              )}
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              disabled={selectedHistoryIds.size === 0}
+                              onClick={() => {
+                                const count = selectedHistoryIds.size;
+                                setConfirmDialog({
+                                  isOpen: true,
+                                  title: `Ar tikrai norite ištrinti ${count} rezervacij${count === 1 ? 'ą' : 'as'}?`,
+                                  description: "Šio veiksmo negalima atšaukti.",
                                   variant: "destructive",
+                                  onConfirm: async () => {
+                                    try {
+                                      const { error } = await supabase
+                                        .from('reservations')
+                                        .delete()
+                                        .in('id', Array.from(selectedHistoryIds));
+                                      if (error) throw error;
+                                      toast({
+                                        title: "Ištrinta",
+                                        description: `${count} rezervacij${count === 1 ? 'a ištrinta' : 'os ištrintos'}.`,
+                                      });
+                                      setSelectedHistoryIds(new Set());
+                                      setIsDeleteMode(false);
+                                      fetchReservations();
+                                    } catch (error: any) {
+                                      toast({
+                                        title: "Klaida",
+                                        description: "Nepavyko ištrinti: " + error.message,
+                                        variant: "destructive",
+                                      });
+                                    } finally {
+                                      setConfirmDialog({ ...confirmDialog, isOpen: false });
+                                    }
+                                  }
                                 });
-                              } finally {
-                                setConfirmDialog({ ...confirmDialog, isOpen: false });
-                              }
-                            }
-                          });
-                        }}
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Ištrinti visas
-                      </Button>
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              Ištrinti ({selectedHistoryIds.size})
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => { setIsDeleteMode(false); setSelectedHistoryIds(new Set()); }}
+                            >
+                              Atšaukti
+                            </Button>
+                          </>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setIsDeleteMode(true)}
+                            className="text-red-600 border-red-300 hover:bg-red-50 dark:text-red-400 dark:border-red-700 dark:hover:bg-red-950/30"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Ištrinti
+                          </Button>
+                        )}
+                      </div>
                     )}
                   </CardHeader>
                   
@@ -1272,6 +1314,7 @@ const Admin = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
+                            {isDeleteMode && <TableHead className="w-10"></TableHead>}
                             <TableHead>Klientas</TableHead>
                             <TableHead>Automobilis</TableHead>
                             <TableHead>Datos</TableHead>
@@ -1284,13 +1327,31 @@ const Admin = () => {
                         <TableBody>
                           {completedReservations.length === 0 ? (
                             <TableRow>
-                              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                              <TableCell colSpan={isDeleteMode ? 8 : 7} className="text-center py-8 text-muted-foreground">
                                 Nėra baigtų rezervacijų
                               </TableCell>
                             </TableRow>
                           ) : (
                             completedReservations.map((reservation) => (
-                              <TableRow key={reservation.id}>
+                              <TableRow key={reservation.id} className={selectedHistoryIds.has(reservation.id) ? 'bg-red-50 dark:bg-red-950/20' : ''}>
+                                {isDeleteMode && (
+                                  <TableCell>
+                                    <button
+                                      onClick={() => {
+                                        const next = new Set(selectedHistoryIds);
+                                        if (next.has(reservation.id)) next.delete(reservation.id);
+                                        else next.add(reservation.id);
+                                        setSelectedHistoryIds(next);
+                                      }}
+                                      className="p-1"
+                                    >
+                                      {selectedHistoryIds.has(reservation.id) 
+                                        ? <CheckSquare className="h-4 w-4 text-red-600" />
+                                        : <Square className="h-4 w-4 text-muted-foreground" />
+                                      }
+                                    </button>
+                                  </TableCell>
+                                )}
                                 <TableCell>
                                   <div>
                                     <div className="font-medium">
@@ -1342,9 +1403,25 @@ const Admin = () => {
                         </div>
                       ) : (
                         completedReservations.map((reservation) => (
-                          <Card key={reservation.id} className="p-4">
+                          <Card key={reservation.id} className={`p-4 ${selectedHistoryIds.has(reservation.id) ? 'ring-2 ring-red-400 bg-red-50 dark:bg-red-950/20' : ''}`}>
                             <div className="space-y-3">
                               <div className="flex items-start justify-between">
+                                {isDeleteMode && (
+                                  <button
+                                    onClick={() => {
+                                      const next = new Set(selectedHistoryIds);
+                                      if (next.has(reservation.id)) next.delete(reservation.id);
+                                      else next.add(reservation.id);
+                                      setSelectedHistoryIds(next);
+                                    }}
+                                    className="p-1 mr-2 mt-0.5"
+                                  >
+                                    {selectedHistoryIds.has(reservation.id)
+                                      ? <CheckSquare className="h-4 w-4 text-red-600" />
+                                      : <Square className="h-4 w-4 text-muted-foreground" />
+                                    }
+                                  </button>
+                                )}
                                 <div className="flex-1 min-w-0">
                                   <div className="font-semibold text-sm truncate">
                                     {reservation.customers.first_name} {reservation.customers.last_name}
