@@ -92,6 +92,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [dateReservations, setDateReservations] = useState<Reservation[]>([]);
   const [datePhoneReservations, setDatePhoneReservations] = useState<BlockedDate[]>([]);
+  const [dateBlocks, setDateBlocks] = useState<BlockedDate[]>([]);
   const [carDetails, setCarDetails] = useState<CarDetails | null>(null);
   const [serviceRecords, setServiceRecords] = useState<ServiceRecord[]>([]);
   const [isEditing, setIsEditing] = useState(false);
