@@ -402,6 +402,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       });
 
       fetchBlockedDates();
+      fetchCarReservations();
     } catch (error: any) {
       toast({
         title: "Klaida",
