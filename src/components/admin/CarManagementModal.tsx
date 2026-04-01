@@ -1383,7 +1383,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                             onClick={blockSelectedDates}
                             disabled={!selectedBlockDates || selectedBlockDates.length === 0}
                             size="sm"
-                            className="w-full sm:w-auto text-xs sm:text-sm"
+                            className={`w-full sm:w-auto text-xs sm:text-sm text-white ${blockType === 'phone_reservation' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-red-600 hover:bg-red-700'}`}
                           >
                             {blockType === 'phone_reservation' ? '📞 Rezervuoti' : '🔒 Blokuoti'}
                           </Button>
@@ -1392,9 +1392,9 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                             onClick={unblockSelectedDates}
                             disabled={!selectedBlockDates || selectedBlockDates.length === 0}
                             size="sm"
-                            className="w-full sm:w-auto text-xs sm:text-sm"
+                            className="w-full sm:w-auto text-xs sm:text-sm border-gray-400 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                           >
-                            Atblokuoti
+                            🔓 Atblokuoti
                           </Button>
                         </div>
 
