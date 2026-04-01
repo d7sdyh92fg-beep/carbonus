@@ -630,7 +630,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {selectedDate && (dateReservations.length > 0 || datePhoneReservations.length > 0) ? (
+                  {selectedDate && (dateReservations.length > 0 || datePhoneReservations.length > 0 || dateBlocks.length > 0) ? (
                     <div className="space-y-4">
                       {datePhoneReservations.map((pr) => (
                         <Card key={pr.id} className="border-l-4" style={{ borderLeftColor: '#3b82f6' }}>
