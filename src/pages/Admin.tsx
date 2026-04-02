@@ -323,8 +323,8 @@ const Admin = () => {
 
           if (error) throw error;
 
-          // Send cancellation email
-          if (reservation) {
+          // Send cancellation email (only if not already sent)
+          if (reservation && reservation.last_email_sent_status !== 'cancelled') {
             await supabase.functions.invoke('send-status-email', {
               body: {
                 reservationId: reservation.id,
@@ -338,6 +338,7 @@ const Admin = () => {
                 language: (reservation as any).language || 'lt'
               }
             });
+            await supabase.from('reservations').update({ last_email_sent_status: 'cancelled' }).eq('id', id);
           }
 
           toast({
@@ -412,21 +413,24 @@ const Admin = () => {
           }
         }
         
-        // Send confirmation email with PDF
-        await supabase.functions.invoke('send-status-email', {
-          body: {
-            reservationId: reservation.id,
-            customerEmail: reservation.customers.email,
-            customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
-            carName: reservation.car_name,
-            startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
-            endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
-            totalAmount: reservation.total_amount,
-            status: 'paid',
-            contractPdfUrl: contractPdfUrl,
-            language: (reservation as any).language || 'lt'
-          }
-        });
+        // Send confirmation email with PDF (only if not already sent for this status)
+        if (reservation.last_email_sent_status !== 'paid') {
+          await supabase.functions.invoke('send-status-email', {
+            body: {
+              reservationId: reservation.id,
+              customerEmail: reservation.customers.email,
+              customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+              carName: reservation.car_name,
+              startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+              endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+              totalAmount: reservation.total_amount,
+              status: 'paid',
+              contractPdfUrl: contractPdfUrl,
+              language: (reservation as any).language || 'lt'
+            }
+          });
+          await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', id);
+        }
       }
 
       toast({
@@ -460,8 +464,8 @@ const Admin = () => {
 
       if (error) throw error;
 
-      // Send denial email
-      if (reservation) {
+      // Send denial email (only if not already sent)
+      if (reservation && reservation.last_email_sent_status !== 'denied') {
         await supabase.functions.invoke('send-status-email', {
           body: {
             reservationId: reservation.id,
@@ -471,10 +475,11 @@ const Admin = () => {
             startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
-            status: 'cancelled', // Using cancelled template for denied status
+            status: 'cancelled',
             language: (reservation as any).language || 'lt'
           }
         });
+        await supabase.from('reservations').update({ last_email_sent_status: 'denied' }).eq('id', id);
       }
 
       toast({
@@ -573,20 +578,24 @@ const Admin = () => {
           }
         }
         
-        await supabase.functions.invoke('send-status-email', {
-          body: {
-            reservationId: reservation.id,
-            customerEmail: reservation.customers.email,
-            customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
-            carName: reservation.car_name,
-            startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
-            endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
-            totalAmount: reservation.total_amount,
-            status: newStatus,
-            contractPdfUrl: newStatus === 'paid' ? contractPdfUrl : undefined,
-            language: (reservation as any).language || 'lt'
-          }
-        });
+        // Only send email if not already sent for this status
+        if (reservation.last_email_sent_status !== newStatus) {
+          await supabase.functions.invoke('send-status-email', {
+            body: {
+              reservationId: reservation.id,
+              customerEmail: reservation.customers.email,
+              customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+              carName: reservation.car_name,
+              startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+              endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+              totalAmount: reservation.total_amount,
+              status: newStatus,
+              contractPdfUrl: newStatus === 'paid' ? contractPdfUrl : undefined,
+              language: (reservation as any).language || 'lt'
+            }
+          });
+          await supabase.from('reservations').update({ last_email_sent_status: newStatus }).eq('id', reservationId);
+        }
       }
 
       toast({
