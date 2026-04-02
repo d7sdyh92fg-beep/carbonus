@@ -3774,6 +3774,7 @@ export const translations = {
 
     // Payment Pages
     payment: {
+      title: "Rental Terms",
       successTitle: "Payment Successful!",
       successDesc: "Your reservation has been successfully paid and confirmed.",
       processingTitle: "Payment Processing",
