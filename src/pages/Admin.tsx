@@ -464,8 +464,8 @@ const Admin = () => {
 
       if (error) throw error;
 
-      // Send denial email
-      if (reservation) {
+      // Send denial email (only if not already sent)
+      if (reservation && reservation.last_email_sent_status !== 'denied') {
         await supabase.functions.invoke('send-status-email', {
           body: {
             reservationId: reservation.id,
@@ -475,10 +475,11 @@ const Admin = () => {
             startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
             endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
             totalAmount: reservation.total_amount,
-            status: 'cancelled', // Using cancelled template for denied status
+            status: 'cancelled',
             language: (reservation as any).language || 'lt'
           }
         });
+        await supabase.from('reservations').update({ last_email_sent_status: 'denied' }).eq('id', id);
       }
 
       toast({
