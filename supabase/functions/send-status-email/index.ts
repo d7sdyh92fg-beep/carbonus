@@ -457,7 +457,15 @@ serve(async (req) => {
       const adminHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
           <h2 style="color:#22c55e; border-bottom: 2px solid #22c55e; padding-bottom: 10px; margin-top: 0;">
-            Nauja rezervacija – ${data.status === 'paid' ? 'Apmokėta' : data.status}
+            ${{
+              paid: 'Rezervacija – Apmokėta ✅',
+              completed: 'Rezervacija – Nuoma baigta ✅',
+              cancelled: 'Rezervacija – Atšaukta ❌',
+              picked_up: 'Rezervacija – Automobilis atsiimtas 🚗',
+              awaiting_payment: 'Rezervacija – Laukiama apmokėjimo ⏳',
+              partial_payment: 'Rezervacija – Išankstinis mokėjimas gautas',
+              payment_failed: 'Rezervacija – Mokėjimas nepavyko ❌',
+            }[data.status] || `Rezervacija – ${data.status}`}
           </h2>
           
           <h3 style="margin-bottom: 8px;">Kliento informacija:</h3>
