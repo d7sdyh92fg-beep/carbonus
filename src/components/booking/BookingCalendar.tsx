@@ -49,7 +49,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     queryFn: async () => {
       const { data, error } = await supabase
         .from('cars')
-        .select('price_tier1, price_tier2, price_tier3')
+        .select('price_tier1, price_tier2, price_tier3, deposit_amount, is_premium')
         .eq('id', carId)
         .single();
       if (error) return null;
@@ -247,6 +247,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       returnTime,
       rentalDays: getDaysCount(),
       basePrice: finalPrice,
+      depositAmount: dbCarPricing?.deposit_amount ? Number(dbCarPricing.deposit_amount) : 200,
       services: [],
       selectedPackage: selectedPackage ? { ...selectedPackage, price: finalPrice, priceDisplay: String(finalPrice) } : undefined,
     });
@@ -492,6 +493,18 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
                         <span className="font-semibold">{t('booking.total')}</span>
                         <span className="text-2xl font-bold text-primary">€{getTotalPrice()}</span>
                       </div>
+                    </div>
+                    {/* Deposit info */}
+                    <div className="bg-muted/50 rounded-lg p-3 mt-2">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">{language === 'lt' ? 'Užstatas' : 'Security deposit'}</span>
+                        <span className="font-semibold">€{dbCarPricing?.deposit_amount ? Number(dbCarPricing.deposit_amount) : 200}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {language === 'lt' 
+                          ? '💳 Mokamas atsiimant automobilį (kortele arba grynaisiais)' 
+                          : '💳 Paid at vehicle pickup (card or cash)'}
+                      </p>
                     </div>
                   </div>
 

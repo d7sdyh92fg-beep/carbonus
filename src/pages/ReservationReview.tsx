@@ -190,7 +190,7 @@ export default function ReservationReview() {
         rental_days: bookingData.rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
-        deposit_amount: 0,
+        deposit_amount: bookingData.depositAmount || 200,
         total_amount: totalAmount,
         status: 'awaiting_payment',
         payment_method: paymentMethod,
@@ -235,7 +235,7 @@ export default function ReservationReview() {
         p_rental_days: bookingData.rentalDays,
         p_daily_rate: dailyRate,
         p_total_rental_cost: totalAmount,
-        p_deposit_amount: 0,
+        p_deposit_amount: bookingData.depositAmount || 200,
         p_total_amount: totalAmount,
         p_status: 'awaiting_payment',
         p_payment_method: paymentMethod,
@@ -264,7 +264,7 @@ export default function ReservationReview() {
             endDate: format(new Date(bookingData.endDate), 'yyyy-MM-dd'),
             rentalDays: bookingData.rentalDays,
             totalAmount: totalAmount,
-            depositAmount: 0,
+            depositAmount: bookingData.depositAmount || 200,
             advancePayment: totalAmount,
             language: language,
             packageName: bookingData.selectedPackage?.name || undefined,
@@ -564,31 +564,35 @@ export default function ReservationReview() {
 
               <Separator className="my-4" />
 
-              <div className="flex justify-between font-bold text-lg mb-6">
+              <div className="flex justify-between font-bold text-lg mb-2">
                 <span>{t('review.summary.total')}</span>
                 <span className="text-primary">{totalPrice.toFixed(2)} €</span>
               </div>
 
-              {/* Additional Information */}
-              <div className="space-y-4">
-                <div className="bg-muted/30 p-3 rounded-md">
+              {/* Deposit Info */}
+              <div className="bg-muted/50 rounded-lg p-3 mb-6">
+                <div className="flex justify-between items-center text-sm mb-1">
+                  <span className="text-muted-foreground">{language === 'lt' ? 'Užstatas' : 'Security deposit'}</span>
+                  <span className="font-semibold">{(bookingData.depositAmount || 200).toFixed(2)} €</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {language === 'lt' 
+                    ? '💳 Mokamas atsiimant automobilį (kortele arba grynaisiais). Grąžinamas per 7 d.d. po automobilio grąžinimo.' 
+                    : '💳 Paid at vehicle pickup (card or cash). Refunded within 7 business days after return.'}
+                </p>
+              </div>
+
+              {paymentMethod === 'pay_at_counter' && (
+                <div className="bg-primary/5 border border-primary/20 p-4 rounded-md">
+                  <p className="text-sm font-semibold text-primary mb-2">{t('review.payAtCounterTitle')}</p>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    {t('review.payAtCounterNow').replace('{amount}', dailyRate.toFixed(2))}
+                  </p>
                   <p className="text-xs text-muted-foreground">
-                    {t('review.depositInfo')}
+                    {t('review.payAtCounterLater').replace('{amount}', (totalPrice - dailyRate).toFixed(2))}
                   </p>
                 </div>
-                
-                {paymentMethod === 'pay_at_counter' && (
-                  <div className="bg-primary/5 border border-primary/20 p-4 rounded-md">
-                    <p className="text-sm font-semibold text-primary mb-2">{t('review.payAtCounterTitle')}</p>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      {t('review.payAtCounterNow').replace('{amount}', dailyRate.toFixed(2))}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {t('review.payAtCounterLater').replace('{amount}', (totalPrice - dailyRate).toFixed(2))}
-                    </p>
-                  </div>
-                )}
-              </div>
+              )}
             </Card>
           </div>
         </div>

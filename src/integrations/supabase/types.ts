@@ -111,6 +111,7 @@ export type Database = {
           category: string
           created_at: string | null
           current_mileage: number | null
+          deposit_amount: number
           fuel: string
           health_status: string | null
           id: string
@@ -139,6 +140,7 @@ export type Database = {
           category: string
           created_at?: string | null
           current_mileage?: number | null
+          deposit_amount?: number
           fuel: string
           health_status?: string | null
           id: string
@@ -167,6 +169,7 @@ export type Database = {
           category?: string
           created_at?: string | null
           current_mileage?: number | null
+          deposit_amount?: number
           fuel?: string
           health_status?: string | null
           id?: string
