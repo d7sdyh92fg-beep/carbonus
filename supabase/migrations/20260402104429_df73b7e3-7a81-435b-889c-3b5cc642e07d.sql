@@ -1,0 +1,1 @@
+UPDATE cars SET price_tier1 = 50, price_tier2 = 40, price_tier3 = 30, price_per_day = 50 WHERE id = '3';
