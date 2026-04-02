@@ -581,19 +581,18 @@ export default function ReservationReview() {
                     : '💳 Paid at vehicle pickup (card or cash). Refunded within 7 business days after return.'}
                 </p>
               </div>
-                
-                {paymentMethod === 'pay_at_counter' && (
-                  <div className="bg-primary/5 border border-primary/20 p-4 rounded-md">
-                    <p className="text-sm font-semibold text-primary mb-2">{t('review.payAtCounterTitle')}</p>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      {t('review.payAtCounterNow').replace('{amount}', dailyRate.toFixed(2))}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {t('review.payAtCounterLater').replace('{amount}', (totalPrice - dailyRate).toFixed(2))}
-                    </p>
-                  </div>
-                )}
-              </div>
+
+              {paymentMethod === 'pay_at_counter' && (
+                <div className="bg-primary/5 border border-primary/20 p-4 rounded-md">
+                  <p className="text-sm font-semibold text-primary mb-2">{t('review.payAtCounterTitle')}</p>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    {t('review.payAtCounterNow').replace('{amount}', dailyRate.toFixed(2))}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t('review.payAtCounterLater').replace('{amount}', (totalPrice - dailyRate).toFixed(2))}
+                  </p>
+                </div>
+              )}
             </Card>
           </div>
         </div>
