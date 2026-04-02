@@ -522,7 +522,7 @@ export function InPersonBooking() {
         }
       });
 
-      // Send status email with "paid" status to trigger the confirmation email with PDF
+      // Send status email with "paid" status (with duplicate protection)
       await supabase.functions.invoke('send-status-email', {
         body: {
           reservationId: reservation.id,
@@ -536,6 +536,7 @@ export function InPersonBooking() {
           language: 'lt'
         }
       });
+      await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', reservation.id);
 
       toast.success('Rezervacija sėkmingai užbaigta!');
       setStep('complete');
