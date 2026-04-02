@@ -26,269 +26,463 @@ interface StatusEmailRequest {
   customerPhone?: string;
   customerAddress?: string;
   additionalServices?: string;
+  depositAmount?: number;
 }
 
-// Minimal, clean email templates
+// Shared styles matching EmailPreview component exactly
+const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
+
+const commonStyles = `font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;`;
+const headerStyles = `background: linear-gradient(135deg, #0a5028 0%, #2d8659 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0;`;
+const logoStyles = `max-width: 180px; height: auto; margin: 0 auto 15px auto; display: block;`;
+const contentStyles = `padding: 30px 20px; line-height: 1.6; color: #333333;`;
+const detailsBoxStyles = `background-color: #f8f9fa; border-left: 4px solid #0a5028; padding: 15px; margin: 20px 0; border-radius: 4px;`;
+const buttonStyles = `display: inline-block; background-color: #0a5028; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold;`;
+const footerStyles = `text-align: center; padding: 20px; color: #666666; font-size: 12px; border-top: 1px solid #eeeeee; margin-top: 30px;`;
+
 function getEmailContent(data: StatusEmailRequest) {
-  const { customerName, carName, startDate, endDate, totalAmount, status, paymentTransactionId, reservationId, language } = data;
+  const { customerName, carName, startDate, endDate, totalAmount, status, paymentTransactionId, reservationId, language, depositAmount } = data;
   const isLT = (language || 'lt') === 'lt';
-  
-  const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
-  const logoStyles = 'max-width: 180px; height: auto; margin-bottom: 24px;';
-  
-  const templatesLT: Record<StatusType, { subject: string; html: string }> = {
-    awaiting_payment: {
-      subject: "Užbaikite rezervaciją - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#3b82f6;margin:0 0 12px;">Laukiame mokėjimo</h1>
-          <p>Sveiki, ${customerName}! Jūsų rezervacija sukurta, bet laukiame mokėjimo patvirtinimo.</p>
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Laikotarpis:</strong> ${startDate} – ${endDate}</p>
-            <p><strong>Suma:</strong> €${totalAmount}</p>
-            <p><strong>Rezervacijos Nr.:</strong> ${reservationId}</p>
+
+  if (isLT) {
+    const templatesLT: Record<StatusType, { subject: string; html: string }> = {
+      awaiting_payment: {
+        subject: "Užbaikite rezervaciją - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">Carbonus</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">Automobilių nuoma</p>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Sveiki, ${customerName}!</h2>
+              <p>Dėkojame už rezervaciją! Gavome Jūsų užklausą ir laukiame apmokėjimo.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Rezervacijos detalės:</h3>
+                <p><strong>Rezervacijos nr.:</strong> ${reservationId}</p>
+                <p><strong>Automobilis:</strong> ${carName}</p>
+                <p><strong>Pradžios data:</strong> ${startDate}</p>
+                <p><strong>Pabaigos data:</strong> ${endDate}</p>
+                <p><strong>Suma:</strong> €${totalAmount}</p>
+                ${depositAmount ? `<p><strong>Užstatas:</strong> €${depositAmount}</p>` : ''}
+              </div>
+
+              <p>Prašome apmokėti sąskaitą, kad patvirtintume Jūsų rezervaciją.</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Carbonus automobilių nuoma</p>
+              <p>El. paštas: info@carbonus.lt | Tel: +370 6 98 18 781</p>
+            </div>
           </div>
-        </div>
-      `
-    },
-    partial_payment: {
-      subject: "Išankstinis mokėjimas gautas - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">Išankstinis mokėjimas gautas</h1>
-          <p>Sveiki, ${customerName}! Gavome jūsų išankstinį mokėjimą. Rezervacija patvirtinta.</p>
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Laikotarpis:</strong> ${startDate} – ${endDate}</p>
-            <p><strong>Bendra suma:</strong> €${totalAmount}</p>
-            <p><strong>Rezervacijos Nr.:</strong> ${reservationId}</p>
+        `
+      },
+      partial_payment: {
+        subject: "Išankstinis mokėjimas gautas - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">✓ Išankstinis mokėjimas gautas</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Sveiki, ${customerName}!</h2>
+              <p>Gavome jūsų išankstinį mokėjimą. Rezervacija patvirtinta.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Rezervacijos informacija:</h3>
+                <p><strong>Automobilis:</strong> ${carName}</p>
+                <p><strong>Nuomos laikotarpis:</strong> ${startDate} - ${endDate}</p>
+                <p><strong>Bendra suma:</strong> €${totalAmount}</p>
+                <p><strong>Rezervacijos Nr.:</strong> ${reservationId}</p>
+              </div>
+            </div>
+            <div style="${footerStyles}">
+              <p>Iki greito pasimatymo!</p>
+              <p>Carbonus automobilių nuoma</p>
+            </div>
           </div>
-        </div>
-      `
-    },
-    payment_failed: {
-      subject: "Mokėjimo klaida - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#ef4444;margin:0 0 12px;">Mokėjimas nepavyko</h1>
-          <p>Sveiki, ${customerName}! Deja, jūsų mokėjimas nepavyko. Jei reikia pagalbos – parašykite mums.</p>
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Laikotarpis:</strong> ${startDate} – ${endDate}</p>
-            <p><strong>Suma:</strong> €${totalAmount}</p>
+        `
+      },
+      payment_failed: {
+        subject: "Mokėjimo klaida - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">❌ Mokėjimas nepavyko</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Sveiki, ${customerName}!</h2>
+              <p>Deja, jūsų mokėjimas nepavyko. Jei reikia pagalbos – parašykite mums.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Rezervacijos detalės:</h3>
+                <p><strong>Automobilis:</strong> ${carName}</p>
+                <p><strong>Nuomos laikotarpis:</strong> ${startDate} – ${endDate}</p>
+                <p><strong>Suma:</strong> €${totalAmount}</p>
+              </div>
+
+              <p>Prašome bandyti dar kartą arba susisiekite su mumis.</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Carbonus automobilių nuoma</p>
+              <p>El. paštas: info@carbonus.lt | Tel: +370 6 98 18 781</p>
+            </div>
           </div>
-        </div>
-      `
-    },
-    paid: {
-      subject: "Apmokėjimas gautas - Carbonus nuoma",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">✅ Apmokėjimas sėkmingai gautas!</h1>
-          <p>Sveiki, ${customerName}!</p>
-          <p>Dėkojame už apmokėjimą! Jūsų rezervacija patvirtinta ir nuomos sutartis pridėta prie šio el. laiško (PDF formatu).</p>
-          
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <h2 style="margin-top:0;font-size:18px;">Rezervacijos detalės:</h2>
-            <p><strong>Automobilis:</strong> ${carName}</p>
-            <p><strong>Nuomos pradžia:</strong> ${startDate}</p>
-            <p><strong>Nuomos pabaiga:</strong> ${endDate}</p>
-            <p><strong>Sumokėta:</strong> €${totalAmount}</p>
-            ${paymentTransactionId ? `<p><strong>Mokėjimo ID:</strong> ${paymentTransactionId}</p>` : ''}
-            <p><strong>Rezervacijos Nr.:</strong> ${reservationId}</p>
+        `
+      },
+      paid: {
+        subject: "Apmokėjimas patvirtintas - Carbonus nuoma",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">✓ Apmokėjimas patvirtintas</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Sveiki, ${customerName}!</h2>
+              <p>Puiku! Jūsų apmokėjimas patvirtintas ir rezervacija užregistruota.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Rezervacijos informacija:</h3>
+                <p><strong>Automobilis:</strong> ${carName}</p>
+                <p><strong>Nuomos laikotarpis:</strong> ${startDate} - ${endDate}</p>
+                <p><strong>Sumokėta:</strong> €${totalAmount}</p>
+                ${paymentTransactionId ? `<p><strong>Mokėjimo ID:</strong> ${paymentTransactionId}</p>` : ''}
+                <p><strong>Rezervacijos Nr.:</strong> ${reservationId}</p>
+              </div>
+
+              <p>Sutartis bus paruošta ir galėsite ją pasirašyti prieš automobilio pasiėmimą.</p>
+
+              <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                <strong>Svarbu:</strong> Automobilio atsiėmimo dieną turėsite pateikti vairuotojo pažymėjimą.
+              </p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Iki greito pasimatymo!</p>
+              <p>Carbonus automobilių nuoma</p>
+            </div>
           </div>
-          
-          <div style="background:#dbeafe;padding:16px;border-radius:8px;margin:16px 0;">
-            <p style="margin:0;"><strong>📋 Kas toliau?</strong></p>
-            <p style="margin:10px 0 0 0;">
-              1. Pasiruoškite automobilio pasiėmimui nustatytą dieną<br>
-              2. Turėkite su savimi galiojantį vairuotojo pažymėjimą<br>
-              3. Automobilis bus paruoštas atsiėmimui nuo ${startDate} 9:00 val.
-            </p>
+        `
+      },
+      cancelled: {
+        subject: "Rezervacija atšaukta - Carbonus nuoma",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">Rezervacija atšaukta</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Sveiki, ${customerName}!</h2>
+              <p>Informuojame, kad Jūsų rezervacija buvo atšaukta.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Atšauktos rezervacijos duomenys:</h3>
+                <p><strong>Rezervacijos nr.:</strong> ${reservationId}</p>
+                <p><strong>Automobilis:</strong> ${carName}</p>
+                <p><strong>Pradžios data:</strong> ${startDate}</p>
+                <p><strong>Pabaigos data:</strong> ${endDate}</p>
+              </div>
+
+              <p>Jei sumokėjote už rezervaciją, pinigai bus grąžinti per 5-7 darbo dienas.</p>
+
+              <p style="margin-top: 20px;">Jei turite klausimų, prašome susisiekti su mumis.</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Carbonus automobilių nuoma</p>
+              <p>El. paštas: info@carbonus.lt | Tel: +370 6 98 18 781</p>
+            </div>
           </div>
-          
-          <div style="background:#fef3c7;padding:16px;border-radius:8px;margin:16px 0;border-left:4px solid #f59e0b;">
-            <p style="margin:0;"><strong>⚠️ Svarbu prisiminti:</strong></p>
-            <p style="margin:10px 0 0 0;">
-              • Automobilis bus paruoštas atsiėmimui nuo ${startDate} 9:00 val.<br>
-              • Prašome atvykti laiku<br>
-              • Automobilio būklė bus patikrinta kartu su jumis
-            </p>
+        `
+      },
+      picked_up: {
+        subject: "Automobilis atsiimtas - Carbonus nuoma",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">🚗 Geros kelionės!</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Sveiki, ${customerName}!</h2>
+              <p>Dėkojame, kad pasirinkote Carbonus! Linkime saugios ir malonios kelionės su ${carName}.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Primename:</h3>
+                <p><strong>Grąžinimo data:</strong> ${endDate}</p>
+                <p><strong>Grąžinimo laikas:</strong> 10:00</p>
+                <p><strong>Vieta:</strong> Carbonus biuras</p>
+              </div>
+
+              <p>Jei kiltų klausimų ar problemų kelionės metu, nedvejodami susisiekite su mumis.</p>
+
+              <p style="margin-top: 20px;">
+                <strong>Kontaktai pagalbai:</strong><br>
+                Tel: +370 6 98 18 781<br>
+                El. paštas: info@carbonus.lt
+              </p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Saugios kelionės!</p>
+              <p>Carbonus komanda</p>
+            </div>
           </div>
-          
-          <p>Jei turite klausimų ar reikia pakeisti atsiėmimo laiką, susisiekite su mumis:</p>
-          <p>📧 El. paštas: info@carbonus.lt<br>📞 Telefonas: +370 6 98 18 781</p>
-          
-          <p style="margin-top:30px;color:#6b7280;font-size:14px;">
-            Laukiame susitikimo!<br>Carbonus komanda
-          </p>
-        </div>
-      `
-    },
-    cancelled: {
-      subject: "Rezervacija atšaukta - Carbonus nuoma",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#ef4444;margin:0 0 12px;">Jūsų rezervacija atšaukta</h1>
-          <p>Sveiki, ${customerName}! Jūsų rezervacija atšaukta.</p>
-        </div>
-      `
-    },
-    picked_up: {
-      subject: "Automobilis atsiimtas - Carbonus nuoma",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#6366f1;margin:0 0 12px;">Automobilis sėkmingai atsiimtas</h1>
-          <p>Sveiki, ${customerName}! Patvirtiname, kad sėkmingai atsiėmėte automobilį.</p>
-        </div>
-      `
-    },
-    completed: {
-      subject: "Nuoma baigta - Dėkojame! - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">Ačiū, kad pasirinkote Carbonus!</h1>
-          <p>Sveiki, ${customerName}! Jūsų nuoma sėkmingai baigta.</p>
-        </div>
-      `
-    }
-  };
-  
-  const templatesEN: Record<StatusType, { subject: string; html: string }> = {
-    awaiting_payment: {
-      subject: "Complete Your Booking - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#3b82f6;margin:0 0 12px;">Awaiting Payment</h1>
-          <p>Hello, ${customerName}! Your booking has been created, but we are waiting for payment confirmation.</p>
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <p><strong>Car:</strong> ${carName}</p>
-            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
-            <p><strong>Amount:</strong> €${totalAmount}</p>
-            <p><strong>Booking ID:</strong> ${reservationId}</p>
+        `
+      },
+      completed: {
+        subject: "Nuoma baigta - Dėkojame! - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">✓ Nuoma užbaigta</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Sveiki, ${customerName}!</h2>
+              <p>Dėkojame, kad pasirinkote Carbonus automobilių nuomą!</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Nuomos informacija:</h3>
+                <p><strong>Automobilis:</strong> ${carName}</p>
+                <p><strong>Nuomos laikotarpis:</strong> ${startDate} - ${endDate}</p>
+              </div>
+
+              <p>Jūsų užstatas bus grąžintas per 3-5 darbo dienas, jei nebuvo jokių papildomų mokesčių.</p>
+
+              <p style="margin-top: 30px;">Būtume dėkingi už Jūsų atsiliepimą apie mūsų paslaugas!</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Laukiame Jūsų dar kartą!</p>
+              <p>Carbonus komanda</p>
+            </div>
           </div>
-        </div>
-      `
-    },
-    partial_payment: {
-      subject: "Advance Payment Received - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">Advance Payment Received</h1>
-          <p>Hello, ${customerName}! We received your advance payment. Booking confirmed.</p>
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <p><strong>Car:</strong> ${carName}</p>
-            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
-            <p><strong>Total Amount:</strong> €${totalAmount}</p>
-            <p><strong>Booking ID:</strong> ${reservationId}</p>
+        `
+      }
+    };
+    return templatesLT[status as StatusType];
+  } else {
+    const templatesEN: Record<StatusType, { subject: string; html: string }> = {
+      awaiting_payment: {
+        subject: "Complete Your Booking - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">Carbonus</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">Car Rental</p>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Hello, ${customerName}!</h2>
+              <p>Thank you for your booking! We have received your request and are waiting for payment.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Booking Details:</h3>
+                <p><strong>Booking ID:</strong> ${reservationId}</p>
+                <p><strong>Car:</strong> ${carName}</p>
+                <p><strong>Start Date:</strong> ${startDate}</p>
+                <p><strong>End Date:</strong> ${endDate}</p>
+                <p><strong>Amount:</strong> €${totalAmount}</p>
+                ${depositAmount ? `<p><strong>Deposit:</strong> €${depositAmount}</p>` : ''}
+              </div>
+
+              <p>Please complete the payment to confirm your booking.</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Carbonus Car Rental</p>
+              <p>Email: info@carbonus.lt | Phone: +370 6 98 18 781</p>
+            </div>
           </div>
-        </div>
-      `
-    },
-    payment_failed: {
-      subject: "Payment Error - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#ef4444;margin:0 0 12px;">Payment Failed</h1>
-          <p>Hello, ${customerName}! Unfortunately, your payment has failed. If you need help, please contact us.</p>
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <p><strong>Car:</strong> ${carName}</p>
-            <p><strong>Period:</strong> ${startDate} – ${endDate}</p>
-            <p><strong>Amount:</strong> €${totalAmount}</p>
+        `
+      },
+      partial_payment: {
+        subject: "Advance Payment Received - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">✓ Advance Payment Received</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Hello, ${customerName}!</h2>
+              <p>We received your advance payment. Booking confirmed.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Booking Information:</h3>
+                <p><strong>Car:</strong> ${carName}</p>
+                <p><strong>Rental Period:</strong> ${startDate} - ${endDate}</p>
+                <p><strong>Total Amount:</strong> €${totalAmount}</p>
+                <p><strong>Booking ID:</strong> ${reservationId}</p>
+              </div>
+            </div>
+            <div style="${footerStyles}">
+              <p>See you soon!</p>
+              <p>Carbonus Car Rental</p>
+            </div>
           </div>
-        </div>
-      `
-    },
-    paid: {
-      subject: "Payment Received - Carbonus Rental",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">✅ Payment Successfully Received!</h1>
-          <p>Hello, ${customerName}!</p>
-          <p>Thank you for your payment! Your booking is confirmed and the rental agreement is attached to this email (PDF format).</p>
-          
-          <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
-            <h2 style="margin-top:0;font-size:18px;">Booking Details:</h2>
-            <p><strong>Car:</strong> ${carName}</p>
-            <p><strong>Rental Start:</strong> ${startDate}</p>
-            <p><strong>Rental End:</strong> ${endDate}</p>
-            <p><strong>Paid:</strong> €${totalAmount}</p>
-            ${paymentTransactionId ? `<p><strong>Payment ID:</strong> ${paymentTransactionId}</p>` : ''}
-            <p><strong>Booking ID:</strong> ${reservationId}</p>
+        `
+      },
+      payment_failed: {
+        subject: "Payment Error - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">❌ Payment Failed</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Hello, ${customerName}!</h2>
+              <p>Unfortunately, your payment has failed. If you need help, please contact us.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Booking Details:</h3>
+                <p><strong>Car:</strong> ${carName}</p>
+                <p><strong>Rental Period:</strong> ${startDate} – ${endDate}</p>
+                <p><strong>Amount:</strong> €${totalAmount}</p>
+              </div>
+
+              <p>Please try again or contact us for assistance.</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Carbonus Car Rental</p>
+              <p>Email: info@carbonus.lt | Phone: +370 6 98 18 781</p>
+            </div>
           </div>
-          
-          <div style="background:#dbeafe;padding:16px;border-radius:8px;margin:16px 0;">
-            <p style="margin:0;"><strong>📋 What's Next?</strong></p>
-            <p style="margin:10px 0 0 0;">
-              1. Prepare for car pickup on the scheduled date<br>
-              2. Have your valid driver's license with you<br>
-              3. Car will be ready for pickup from ${startDate} 9:00 AM
-            </p>
+        `
+      },
+      paid: {
+        subject: "Payment Confirmed - Carbonus Rental",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">✓ Payment Confirmed</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Hello, ${customerName}!</h2>
+              <p>Great! Your payment has been confirmed and your booking is registered.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Booking Information:</h3>
+                <p><strong>Car:</strong> ${carName}</p>
+                <p><strong>Rental Period:</strong> ${startDate} - ${endDate}</p>
+                <p><strong>Paid:</strong> €${totalAmount}</p>
+                ${paymentTransactionId ? `<p><strong>Payment ID:</strong> ${paymentTransactionId}</p>` : ''}
+                <p><strong>Booking ID:</strong> ${reservationId}</p>
+              </div>
+
+              <p>The contract will be prepared and you can sign it before picking up the car.</p>
+
+              <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                <strong>Important:</strong> On car pickup day you must present your driver's license.
+              </p>
+            </div>
+            <div style="${footerStyles}">
+              <p>See you soon!</p>
+              <p>Carbonus Car Rental</p>
+            </div>
           </div>
-          
-          <div style="background:#fef3c7;padding:16px;border-radius:8px;margin:16px 0;border-left:4px solid #f59e0b;">
-            <p style="margin:0;"><strong>⚠️ Important to Remember:</strong></p>
-            <p style="margin:10px 0 0 0;">
-              • Car will be ready for pickup from ${startDate} 9:00 AM<br>
-              • Please arrive on time<br>
-              • Car condition will be inspected together with you
-            </p>
+        `
+      },
+      cancelled: {
+        subject: "Booking Cancelled - Carbonus Rental",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">Booking Cancelled</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Hello, ${customerName}!</h2>
+              <p>We inform you that your booking has been cancelled.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Cancelled Booking Details:</h3>
+                <p><strong>Booking ID:</strong> ${reservationId}</p>
+                <p><strong>Car:</strong> ${carName}</p>
+                <p><strong>Start Date:</strong> ${startDate}</p>
+                <p><strong>End Date:</strong> ${endDate}</p>
+              </div>
+
+              <p>If you paid for the booking, the money will be refunded within 5-7 business days.</p>
+
+              <p style="margin-top: 20px;">If you have any questions, please contact us.</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Carbonus Car Rental</p>
+              <p>Email: info@carbonus.lt | Phone: +370 6 98 18 781</p>
+            </div>
           </div>
-          
-          <p>If you have questions or need to change the pickup time, contact us:</p>
-          <p>📧 Email: info@carbonus.lt<br>📞 Phone: +370 6 98 18 781</p>
-          
-          <p style="margin-top:30px;color:#6b7280;font-size:14px;">
-            Looking forward to seeing you!<br>Carbonus Team
-          </p>
-        </div>
-      `
-    },
-    cancelled: {
-      subject: "Booking Cancelled - Carbonus Rental",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#ef4444;margin:0 0 12px;">Your Booking Has Been Cancelled</h1>
-          <p>Hello, ${customerName}! Your booking has been cancelled.</p>
-        </div>
-      `
-    },
-    picked_up: {
-      subject: "Car Picked Up - Carbonus Rental",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#6366f1;margin:0 0 12px;">Car Successfully Picked Up</h1>
-          <p>Hello, ${customerName}! We confirm that you have successfully picked up the car.</p>
-        </div>
-      `
-    },
-    completed: {
-      subject: "Rental Completed - Thank You! - Carbonus",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-          <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
-          <h1 style="color:#22c55e;margin:0 0 12px;">Thank You for Choosing Carbonus!</h1>
-          <p>Hello, ${customerName}! Your rental has been successfully completed.</p>
-        </div>
-      `
-    }
-  };
-  
-  return isLT ? templatesLT[status as StatusType] : templatesEN[status as StatusType];
+        `
+      },
+      picked_up: {
+        subject: "Car Picked Up - Carbonus Rental",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">🚗 Safe Travels!</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Hello, ${customerName}!</h2>
+              <p>Thank you for choosing Carbonus! We wish you a safe and pleasant journey with ${carName}.</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Reminder:</h3>
+                <p><strong>Return Date:</strong> ${endDate}</p>
+                <p><strong>Return Time:</strong> 10:00</p>
+                <p><strong>Location:</strong> Carbonus Office</p>
+              </div>
+
+              <p>If you have any questions or problems during your trip, don't hesitate to contact us.</p>
+
+              <p style="margin-top: 20px;">
+                <strong>Contact for Help:</strong><br>
+                Phone: +370 6 98 18 781<br>
+                Email: info@carbonus.lt
+              </p>
+            </div>
+            <div style="${footerStyles}">
+              <p>Safe travels!</p>
+              <p>Carbonus Team</p>
+            </div>
+          </div>
+        `
+      },
+      completed: {
+        subject: "Rental Completed - Thank You! - Carbonus",
+        html: `
+          <div style="${commonStyles}">
+            <div style="${headerStyles}">
+              <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
+              <h1 style="margin: 0; font-size: 28px;">✓ Rental Completed</h1>
+            </div>
+            <div style="${contentStyles}">
+              <h2 style="color: #0a5028;">Hello, ${customerName}!</h2>
+              <p>Thank you for choosing Carbonus Car Rental!</p>
+              
+              <div style="${detailsBoxStyles}">
+                <h3 style="margin-top: 0; color: #0a5028;">Rental Information:</h3>
+                <p><strong>Car:</strong> ${carName}</p>
+                <p><strong>Rental Period:</strong> ${startDate} - ${endDate}</p>
+              </div>
+
+              <p>Your deposit will be refunded within 3-5 business days, if there were no additional charges.</p>
+
+              <p style="margin-top: 30px;">We would appreciate your feedback about our services!</p>
+            </div>
+            <div style="${footerStyles}">
+              <p>We hope to see you again!</p>
+              <p>Carbonus Team</p>
+            </div>
+          </div>
+        `
+      }
+    };
+    return templatesEN[status as StatusType];
+  }
 }
 
 // Helper function to download generated contract PDF from Supabase Storage
@@ -300,10 +494,8 @@ async function downloadGeneratedPdf(supabase: any, reservationId: string): Promi
       .eq('id', reservationId)
       .single();
 
-    // Primary source: path stored in reservations.contract_pdf_url
     let filePath = reservation?.contract_pdf_url || '';
 
-    // Fallback source: deterministic generated path for in-person flow
     if (!filePath) {
       filePath = `${reservationId}/nuomos_sutartis_${reservationId}.pdf`;
     }
@@ -331,7 +523,6 @@ async function downloadGeneratedPdf(supabase: any, reservationId: string): Promi
   }
 }
 
-// Fallback: download static PDF from URL
 function getStaticPdfUrl(language: string = 'lt'): string {
   const baseUrl = 'https://carbonus.lt';
   if (language === 'en') {
@@ -395,7 +586,6 @@ serve(async (req) => {
       try {
         const language = data.language || 'lt';
         
-        // Try generated PDF first
         const generatedPdf = await downloadGeneratedPdf(supabase, data.reservationId);
         
         if (generatedPdf) {
@@ -405,7 +595,6 @@ serve(async (req) => {
             content: generatedPdf.base64,
           }];
         } else {
-          // Fallback to static PDF
           const pdfUrl = getStaticPdfUrl(language);
           console.log('Fallback: downloading static PDF from:', pdfUrl);
           const base64Content = await downloadPdfAsBase64(pdfUrl);
@@ -425,13 +614,12 @@ serve(async (req) => {
     const response = await resend.emails.send(emailOptions);
     console.log('Status email sent to customer:', response?.id || response);
 
-    // Send clean admin summary to info@carbonus.lt
+    // Send admin summary email
     try {
       const c = customerDetails || {};
       const r = reservationDetails || {};
       const services = r.additional_services ? (typeof r.additional_services === 'string' ? JSON.parse(r.additional_services) : r.additional_services) : [];
       
-      // Map service IDs to Lithuanian titles
       const serviceNames: Record<string, string> = {
         'additional-driver': 'Papildomas vairuotojas',
         'abroad-zone3': 'Naudojimas užsienyje - Zona 3',
@@ -454,18 +642,20 @@ serve(async (req) => {
            </div>` 
         : '';
 
+      const statusLabels: Record<string, string> = {
+        paid: 'Apmokėta ✅',
+        completed: 'Nuoma baigta ✅',
+        cancelled: 'Atšaukta ❌',
+        picked_up: 'Automobilis atsiimtas 🚗',
+        awaiting_payment: 'Laukiama apmokėjimo ⏳',
+        partial_payment: 'Išankstinis mokėjimas gautas',
+        payment_failed: 'Mokėjimas nepavyko ❌',
+      };
+
       const adminHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
           <h2 style="color:#22c55e; border-bottom: 2px solid #22c55e; padding-bottom: 10px; margin-top: 0;">
-            ${{
-              paid: 'Rezervacija – Apmokėta ✅',
-              completed: 'Rezervacija – Nuoma baigta ✅',
-              cancelled: 'Rezervacija – Atšaukta ❌',
-              picked_up: 'Rezervacija – Automobilis atsiimtas 🚗',
-              awaiting_payment: 'Rezervacija – Laukiama apmokėjimo ⏳',
-              partial_payment: 'Rezervacija – Išankstinis mokėjimas gautas',
-              payment_failed: 'Rezervacija – Mokėjimas nepavyko ❌',
-            }[data.status] || `Rezervacija – ${data.status}`}
+            Rezervacija – ${statusLabels[data.status] || data.status}
           </h2>
           
           <h3 style="margin-bottom: 8px;">Kliento informacija:</h3>
@@ -498,7 +688,7 @@ serve(async (req) => {
           
           ${servicesHtml}
           
-          <p style="color:#6b7280; font-size:13px;">Sutartis pridėta kaip PDF priedas.</p>
+          ${data.status === 'paid' ? `<p style="color:#6b7280; font-size:13px;">Sutartis pridėta kaip PDF priedas.</p>` : ''}
         </div>
       `;
 
