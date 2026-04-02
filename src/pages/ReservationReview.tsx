@@ -190,7 +190,7 @@ export default function ReservationReview() {
         rental_days: bookingData.rentalDays,
         daily_rate: dailyRate,
         total_rental_cost: totalAmount,
-        deposit_amount: 0,
+        deposit_amount: bookingData.depositAmount || 200,
         total_amount: totalAmount,
         status: 'awaiting_payment',
         payment_method: paymentMethod,
