@@ -1,0 +1,1 @@
+ALTER TABLE public.reservations ADD COLUMN last_email_sent_status text DEFAULT NULL;

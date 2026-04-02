@@ -392,6 +392,7 @@ export type Database = {
           fuel_level_return: string | null
           id: string
           language: string
+          last_email_sent_status: string | null
           notes: string | null
           payment_completed_at: string | null
           payment_method: string | null
@@ -438,6 +439,7 @@ export type Database = {
           fuel_level_return?: string | null
           id?: string
           language?: string
+          last_email_sent_status?: string | null
           notes?: string | null
           payment_completed_at?: string | null
           payment_method?: string | null
@@ -484,6 +486,7 @@ export type Database = {
           fuel_level_return?: string | null
           id?: string
           language?: string
+          last_email_sent_status?: string | null
           notes?: string | null
           payment_completed_at?: string | null
           payment_method?: string | null
