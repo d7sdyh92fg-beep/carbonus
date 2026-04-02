@@ -440,20 +440,23 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
       if (error) throw error;
 
-      // Send status email
-      await supabase.functions.invoke('send-status-email', {
-        body: {
-          reservationId: reservation.id,
-          customerEmail: reservation.customers.email,
-          customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
-          carName: reservation.car_name,
-          startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
-          endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
-          totalAmount: reservation.total_amount,
-          status: 'completed',
-          language: (reservation as any).language || 'lt'
-        },
-      });
+      // Send status email (only if not already sent for this status)
+      if ((reservation as any).last_email_sent_status !== 'completed') {
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: reservation.id,
+            customerEmail: reservation.customers.email,
+            customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+            carName: reservation.car_name,
+            startDate: format(new Date(reservation.start_date), 'yyyy-MM-dd'),
+            endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
+            totalAmount: reservation.total_amount,
+            status: 'completed',
+            language: (reservation as any).language || 'lt'
+          },
+        });
+        await supabase.from('reservations').update({ last_email_sent_status: 'completed' }).eq('id', reservation.id);
+      }
 
       toast({
         title: "Automobilis grąžintas",
