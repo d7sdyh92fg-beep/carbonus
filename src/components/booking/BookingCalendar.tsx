@@ -247,6 +247,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       returnTime,
       rentalDays: getDaysCount(),
       basePrice: finalPrice,
+      depositAmount: dbCarPricing?.deposit_amount ? Number(dbCarPricing.deposit_amount) : 200,
       services: [],
       selectedPackage: selectedPackage ? { ...selectedPackage, price: finalPrice, priceDisplay: String(finalPrice) } : undefined,
     });
