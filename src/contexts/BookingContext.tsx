@@ -34,6 +34,7 @@ export interface BookingData {
   returnTime?: string;
   rentalDays: number;
   basePrice: number;
+  depositAmount?: number;
   insurance?: InsuranceOption;
   services: AdditionalService[];
   selectedPackage?: SelectedPackage;

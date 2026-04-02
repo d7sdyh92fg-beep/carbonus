@@ -49,7 +49,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
     queryFn: async () => {
       const { data, error } = await supabase
         .from('cars')
-        .select('price_tier1, price_tier2, price_tier3')
+        .select('price_tier1, price_tier2, price_tier3, deposit_amount, is_premium')
         .eq('id', carId)
         .single();
       if (error) return null;
