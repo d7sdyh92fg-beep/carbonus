@@ -323,8 +323,8 @@ const Admin = () => {
 
           if (error) throw error;
 
-          // Send cancellation email
-          if (reservation) {
+          // Send cancellation email (only if not already sent)
+          if (reservation && reservation.last_email_sent_status !== 'cancelled') {
             await supabase.functions.invoke('send-status-email', {
               body: {
                 reservationId: reservation.id,
@@ -338,6 +338,7 @@ const Admin = () => {
                 language: (reservation as any).language || 'lt'
               }
             });
+            await supabase.from('reservations').update({ last_email_sent_status: 'cancelled' }).eq('id', id);
           }
 
           toast({
