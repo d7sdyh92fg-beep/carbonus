@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Eye, Download, Send, Loader2, Receipt, Trash2, RefreshCw } from 'lucide-react';
+import { FileText, Eye, Download, Send, Loader2, Receipt, Trash2, RefreshCw, Search, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
@@ -36,6 +38,10 @@ export const InvoiceList: React.FC = () => {
   const [deleteTarget, setDeleteTarget] = useState<InvoiceRow | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editInvoice, setEditInvoice] = useState<InvoiceRow | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
   useEffect(() => {
     fetchInvoices();
@@ -135,6 +141,29 @@ export const InvoiceList: React.FC = () => {
     return <Badge className={c.className}>{c.label}</Badge>;
   };
 
+  const filteredInvoices = useMemo(() => {
+    return invoices.filter(inv => {
+      if (statusFilter !== 'all' && inv.status !== statusFilter) return false;
+      if (dateFrom && inv.issue_date < dateFrom) return false;
+      if (dateTo && inv.issue_date > dateTo) return false;
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const name = inv.customers ? `${inv.customers.first_name} ${inv.customers.last_name}`.toLowerCase() : '';
+        if (!inv.invoice_number.toLowerCase().includes(q) && !name.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [invoices, statusFilter, searchQuery, dateFrom, dateTo]);
+
+  const hasActiveFilters = statusFilter !== 'all' || searchQuery || dateFrom || dateTo;
+
+  const clearFilters = () => {
+    setStatusFilter('all');
+    setSearchQuery('');
+    setDateFrom('');
+    setDateTo('');
+  };
+
   const totalRevenue = invoices
     .filter(i => i.status === 'sent' || i.status === 'confirmed')
     .reduce((sum, i) => sum + Number(i.total_amount), 0);
@@ -181,6 +210,61 @@ export const InvoiceList: React.FC = () => {
         </Card>
       </div>
 
+      {/* Filters */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Ieškoti pagal nr. arba klientą..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Statusas" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Visi statusai</SelectItem>
+                <SelectItem value="draft">Juodraščiai</SelectItem>
+                <SelectItem value="confirmed">Patvirtintos</SelectItem>
+                <SelectItem value="sent">Išsiųstos</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex gap-2 items-center">
+              <Input
+                type="date"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+                className="w-[150px]"
+                placeholder="Nuo"
+              />
+              <span className="text-muted-foreground text-sm">—</span>
+              <Input
+                type="date"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+                className="w-[150px]"
+                placeholder="Iki"
+              />
+            </div>
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
+                <X className="h-4 w-4" /> Išvalyti
+              </Button>
+            )}
+          </div>
+          {hasActiveFilters && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Rodoma {filteredInvoices.length} iš {invoices.length} sąskaitų
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Invoices Table */}
       <Card>
         <CardHeader>
@@ -195,9 +279,9 @@ export const InvoiceList: React.FC = () => {
             <div className="flex items-center justify-center py-8">
               <Loader2 className="h-6 w-6 animate-spin" />
             </div>
-          ) : invoices.length === 0 ? (
+          ) : filteredInvoices.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              Nėra sugeneruotų sąskaitų
+              {hasActiveFilters ? 'Nerasta sąskaitų pagal pasirinktus filtrus' : 'Nėra sugeneruotų sąskaitų'}
             </div>
           ) : (
             <>
@@ -216,7 +300,7 @@ export const InvoiceList: React.FC = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {invoices.map((inv) => (
+                    {filteredInvoices.map((inv) => (
                       <TableRow key={inv.id}>
                         <TableCell className="font-medium">{inv.invoice_number}</TableCell>
                         <TableCell>
@@ -274,7 +358,7 @@ export const InvoiceList: React.FC = () => {
 
               {/* Mobile */}
               <div className="lg:hidden space-y-3">
-                {invoices.map((inv) => (
+                {filteredInvoices.map((inv) => (
                   <Card key={inv.id} className="p-4">
                     <div className="space-y-2">
                       <div className="flex items-start justify-between">
