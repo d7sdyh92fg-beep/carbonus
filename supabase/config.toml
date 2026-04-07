@@ -41,3 +41,9 @@ verify_jwt = false
 
 [functions.manage-deposit]
 verify_jwt = false
+
+[functions.generate-invoice-pdf]
+verify_jwt = false
+
+[functions.send-invoice-email]
+verify_jwt = false
