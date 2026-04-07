@@ -288,6 +288,78 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          id: string
+          invoice_number: string
+          invoice_prefix: string
+          issue_date: string
+          items: Json
+          notes: string | null
+          pdf_url: string | null
+          reservation_id: string | null
+          sent_at: string | null
+          sequence_number: number
+          status: string
+          total_amount: number
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          invoice_number: string
+          invoice_prefix?: string
+          issue_date?: string
+          items?: Json
+          notes?: string | null
+          pdf_url?: string | null
+          reservation_id?: string | null
+          sent_at?: string | null
+          sequence_number: number
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          year?: number
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          invoice_number?: string
+          invoice_prefix?: string
+          issue_date?: string
+          items?: Json
+          notes?: string | null
+          pdf_url?: string | null
+          reservation_id?: string | null
+          sent_at?: string | null
+          sequence_number?: number
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
@@ -634,6 +706,14 @@ export type Database = {
             }
             Returns: string
           }
+      get_next_invoice_number: {
+        Args: { p_prefix?: string }
+        Returns: {
+          invoice_number: string
+          sequence_number: number
+          year: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
