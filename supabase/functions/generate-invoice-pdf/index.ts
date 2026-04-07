@@ -65,7 +65,7 @@ serve(async (req) => {
   }
 
   try {
-    const { reservationId, prefix = 'CARW' } = await req.json();
+    const { reservationId, prefix = 'CARW', invoiceId } = await req.json();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -82,55 +82,77 @@ serve(async (req) => {
       throw new Error(`Reservation not found: ${resError?.message}`);
     }
 
-    // Get next invoice number
-    const { data: invoiceNum, error: numError } = await supabase
-      .rpc('get_next_invoice_number', { p_prefix: prefix });
-
-    if (numError || !invoiceNum || invoiceNum.length === 0) {
-      throw new Error(`Failed to get invoice number: ${numError?.message}`);
-    }
-
-    const invoiceData = invoiceNum[0];
-    const invoiceNumber = invoiceData.invoice_number;
-    const sequenceNumber = invoiceData.sequence_number;
-    const invoiceYear = invoiceData.year;
-    const issueDate = new Date();
-    const issueDateStr = `${issueDate.getFullYear()} ${String(issueDate.getMonth() + 1).padStart(2, '0')} ${String(issueDate.getDate()).padStart(2, '0')}`;
-
     const customer = reservation.customers;
-    const rentalDays = reservation.rental_days;
-    const dailyRate = reservation.custom_rental_price 
-      ? reservation.custom_rental_price / rentalDays 
-      : reservation.daily_rate;
-    const totalAmount = reservation.custom_rental_price || reservation.total_rental_cost;
+    let invoiceNumber: string;
+    let sequenceNumber: number;
+    let invoiceYear: number;
+    let issueDate: Date;
+    let issueDateStr: string;
+    let items: Array<{ name: string; unit: string; qty: number; price: number; total: number }>;
+    let existingInvoiceId: string | null = invoiceId || null;
 
-    // Build invoice items
-    const items: Array<{ name: string; unit: string; qty: number; price: number; total: number }> = [];
+    if (existingInvoiceId) {
+      // Regenerate: use existing invoice data
+      const { data: existingInvoice, error: invErr } = await supabase
+        .from('invoices')
+        .select('*')
+        .eq('id', existingInvoiceId)
+        .single();
 
-    // Main rental service
-    const startDate = reservation.start_date;
-    const endDate = reservation.end_date;
-    items.push({
-      name: `Automobilio ${reservation.car_name} nuoma (${startDate}_${endDate})`,
-      unit: 'd.',
-      qty: rentalDays,
-      price: Number(dailyRate),
-      total: Number(totalAmount),
-    });
+      if (invErr || !existingInvoice) {
+        throw new Error(`Invoice not found: ${invErr?.message}`);
+      }
 
-    // Additional services
-    if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
-      for (const svc of reservation.additional_services) {
-        const svcName = svc.title || svc.name || 'Papildoma paslauga';
-        const svcPrice = Number(svc.price || 0);
-        const svcQty = svc.unit === 'perDay' ? rentalDays : 1;
-        items.push({
-          name: svcName,
-          unit: svc.unit === 'perDay' ? 'd.' : 'vnt.',
-          qty: svcQty,
-          price: svcPrice,
-          total: svcPrice * svcQty,
-        });
+      invoiceNumber = existingInvoice.invoice_number;
+      sequenceNumber = existingInvoice.sequence_number;
+      invoiceYear = existingInvoice.year;
+      issueDate = new Date(existingInvoice.issue_date);
+      issueDateStr = `${issueDate.getFullYear()} ${String(issueDate.getMonth() + 1).padStart(2, '0')} ${String(issueDate.getDate()).padStart(2, '0')}`;
+      items = existingInvoice.items as any[];
+    } else {
+      // New invoice: generate number and build items from reservation
+      const { data: invoiceNum, error: numError } = await supabase
+        .rpc('get_next_invoice_number', { p_prefix: prefix });
+
+      if (numError || !invoiceNum || invoiceNum.length === 0) {
+        throw new Error(`Failed to get invoice number: ${numError?.message}`);
+      }
+
+      const invoiceData = invoiceNum[0];
+      invoiceNumber = invoiceData.invoice_number;
+      sequenceNumber = invoiceData.sequence_number;
+      invoiceYear = invoiceData.year;
+      issueDate = new Date();
+      issueDateStr = `${issueDate.getFullYear()} ${String(issueDate.getMonth() + 1).padStart(2, '0')} ${String(issueDate.getDate()).padStart(2, '0')}`;
+
+      const rentalDays = reservation.rental_days;
+      const dailyRate = reservation.custom_rental_price 
+        ? reservation.custom_rental_price / rentalDays 
+        : reservation.daily_rate;
+      const totalAmount = reservation.custom_rental_price || reservation.total_rental_cost;
+
+      items = [];
+      items.push({
+        name: `Automobilio ${reservation.car_name} nuoma (${reservation.start_date}_${reservation.end_date})`,
+        unit: 'd.',
+        qty: rentalDays,
+        price: Number(dailyRate),
+        total: Number(totalAmount),
+      });
+
+      if (reservation.additional_services && Array.isArray(reservation.additional_services)) {
+        for (const svc of reservation.additional_services) {
+          const svcName = svc.title || svc.name || 'Papildoma paslauga';
+          const svcPrice = Number(svc.price || 0);
+          const svcQty = svc.unit === 'perDay' ? rentalDays : 1;
+          items.push({
+            name: svcName,
+            unit: svc.unit === 'perDay' ? 'd.' : 'vnt.',
+            qty: svcQty,
+            price: svcPrice,
+            total: svcPrice * svcQty,
+          });
+        }
       }
     }
 
