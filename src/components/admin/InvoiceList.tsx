@@ -210,6 +210,61 @@ export const InvoiceList: React.FC = () => {
         </Card>
       </div>
 
+      {/* Filters */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Ieškoti pagal nr. arba klientą..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Statusas" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Visi statusai</SelectItem>
+                <SelectItem value="draft">Juodraščiai</SelectItem>
+                <SelectItem value="confirmed">Patvirtintos</SelectItem>
+                <SelectItem value="sent">Išsiųstos</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex gap-2 items-center">
+              <Input
+                type="date"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+                className="w-[150px]"
+                placeholder="Nuo"
+              />
+              <span className="text-muted-foreground text-sm">—</span>
+              <Input
+                type="date"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+                className="w-[150px]"
+                placeholder="Iki"
+              />
+            </div>
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
+                <X className="h-4 w-4" /> Išvalyti
+              </Button>
+            )}
+          </div>
+          {hasActiveFilters && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Rodoma {filteredInvoices.length} iš {invoices.length} sąskaitų
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Invoices Table */}
       <Card>
         <CardHeader>
@@ -224,9 +279,9 @@ export const InvoiceList: React.FC = () => {
             <div className="flex items-center justify-center py-8">
               <Loader2 className="h-6 w-6 animate-spin" />
             </div>
-          ) : invoices.length === 0 ? (
+          ) : filteredInvoices.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              Nėra sugeneruotų sąskaitų
+              {hasActiveFilters ? 'Nerasta sąskaitų pagal pasirinktus filtrus' : 'Nėra sugeneruotų sąskaitų'}
             </div>
           ) : (
             <>
