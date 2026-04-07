@@ -358,7 +358,7 @@ export const InvoiceList: React.FC = () => {
 
               {/* Mobile */}
               <div className="lg:hidden space-y-3">
-                {invoices.map((inv) => (
+                {filteredInvoices.map((inv) => (
                   <Card key={inv.id} className="p-4">
                     <div className="space-y-2">
                       <div className="flex items-start justify-between">
