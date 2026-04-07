@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Eye, Download, Send, Loader2, Receipt, Trash2, RefreshCw } from 'lucide-react';
+import { FileText, Eye, Download, Send, Loader2, Receipt, Trash2, RefreshCw, Search, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
