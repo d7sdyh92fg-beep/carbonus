@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Eye, Download, Send, Loader2, Receipt } from 'lucide-react';
+import { FileText, Eye, Download, Send, Loader2, Receipt, Trash2, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
+import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
+import { InvoiceManager } from '@/components/admin/InvoiceManager';
 
 interface InvoiceRow {
   id: string;
@@ -31,6 +33,9 @@ export const InvoiceList: React.FC = () => {
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<InvoiceRow | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editInvoice, setEditInvoice] = useState<InvoiceRow | null>(null);
 
   useEffect(() => {
     fetchInvoices();
@@ -96,6 +101,27 @@ export const InvoiceList: React.FC = () => {
       toast({ title: 'Klaida siunčiant', description: err.message, variant: 'destructive' });
     } finally {
       setSendingId(null);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeletingId(deleteTarget.id);
+    try {
+      // Delete PDF from storage if exists
+      if (deleteTarget.pdf_url) {
+        await supabase.storage.from('contracts').remove([deleteTarget.pdf_url]);
+      }
+      // Delete invoice record
+      const { error } = await supabase.from('invoices').delete().eq('id', deleteTarget.id);
+      if (error) throw error;
+      toast({ title: 'Ištrinta', description: `Sąskaita ${deleteTarget.invoice_number} ištrinta` });
+      await fetchInvoices();
+    } catch (err: any) {
+      toast({ title: 'Klaida', description: err.message, variant: 'destructive' });
+    } finally {
+      setDeletingId(null);
+      setDeleteTarget(null);
     }
   };
 
@@ -212,6 +238,11 @@ export const InvoiceList: React.FC = () => {
                             <Button variant="ghost" size="sm" onClick={() => handleDownload(inv)} title="Atsisiųsti">
                               <Download className="h-4 w-4" />
                             </Button>
+                            {inv.status === 'draft' && inv.reservation_id && (
+                              <Button variant="ghost" size="sm" onClick={() => setEditInvoice(inv)} title="Redaguoti / Pergeneruoti">
+                                <RefreshCw className="h-4 w-4" />
+                              </Button>
+                            )}
                             {(inv.status === 'confirmed' || inv.status === 'sent') && (
                               <Button
                                 variant="ghost"
@@ -223,6 +254,16 @@ export const InvoiceList: React.FC = () => {
                                 {sendingId === inv.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                               </Button>
                             )}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setDeleteTarget(inv)}
+                              disabled={deletingId === inv.id}
+                              title="Ištrinti"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              {deletingId === inv.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -255,13 +296,18 @@ export const InvoiceList: React.FC = () => {
                           <div className="font-semibold">€{Number(inv.total_amount).toFixed(2)}</div>
                         </div>
                       </div>
-                      <div className="flex gap-2 pt-2 border-t">
+                      <div className="flex flex-wrap gap-2 pt-2 border-t">
                         <Button variant="outline" size="sm" onClick={() => handlePreview(inv)} className="text-xs flex-1">
                           <Eye className="h-3 w-3 mr-1" /> Peržiūrėti
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => handleDownload(inv)} className="text-xs flex-1">
                           <Download className="h-3 w-3 mr-1" /> Atsisiųsti
                         </Button>
+                        {inv.status === 'draft' && inv.reservation_id && (
+                          <Button variant="outline" size="sm" onClick={() => setEditInvoice(inv)} className="text-xs flex-1">
+                            <RefreshCw className="h-3 w-3 mr-1" /> Redaguoti
+                          </Button>
+                        )}
                         {(inv.status === 'confirmed' || inv.status === 'sent') && (
                           <Button
                             size="sm"
@@ -273,6 +319,16 @@ export const InvoiceList: React.FC = () => {
                             Siųsti
                           </Button>
                         )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setDeleteTarget(inv)}
+                          disabled={deletingId === inv.id}
+                          className="text-xs flex-1 text-destructive border-destructive hover:bg-destructive/10"
+                        >
+                          {deletingId === inv.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trash2 className="h-3 w-3 mr-1" />}
+                          Ištrinti
+                        </Button>
                       </div>
                     </div>
                   </Card>
@@ -282,6 +338,33 @@ export const InvoiceList: React.FC = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Delete confirmation */}
+      <ConfirmationDialog
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
+        title="Ištrinti sąskaitą faktūrą?"
+        description={`Ar tikrai norite ištrinti sąskaitą ${deleteTarget?.invoice_number || ''}? Šis veiksmas negrįžtamas.`}
+        confirmText="Ištrinti"
+        cancelText="Atšaukti"
+        variant="destructive"
+      />
+
+      {/* Edit/Regenerate modal for draft invoices */}
+      {editInvoice && editInvoice.reservation_id && (
+        <InvoiceManager
+          reservationId={editInvoice.reservation_id}
+          customerName={editInvoice.customers ? `${editInvoice.customers.first_name} ${editInvoice.customers.last_name}` : ''}
+          carName=""
+          totalAmount={Number(editInvoice.total_amount)}
+          isOpen={!!editInvoice}
+          onClose={() => {
+            setEditInvoice(null);
+            fetchInvoices();
+          }}
+        />
+      )}
     </div>
   );
 };
