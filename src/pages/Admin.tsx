@@ -130,6 +130,8 @@ const Admin = () => {
   const [reviewingReservation, setReviewingReservation] = useState<Reservation | null>(null);
   const [showPricingOverride, setShowPricingOverride] = useState(false);
   const [pricingReservation, setPricingReservation] = useState<Reservation | null>(null);
+  const [invoiceReservation, setInvoiceReservation] = useState<Reservation | null>(null);
+  const [showInvoice, setShowInvoice] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
     title: string;
