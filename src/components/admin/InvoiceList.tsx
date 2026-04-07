@@ -300,7 +300,7 @@ export const InvoiceList: React.FC = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {invoices.map((inv) => (
+                    {filteredInvoices.map((inv) => (
                       <TableRow key={inv.id}>
                         <TableCell className="font-medium">{inv.invoice_number}</TableCell>
                         <TableCell>
