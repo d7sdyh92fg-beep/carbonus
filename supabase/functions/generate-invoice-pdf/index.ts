@@ -165,7 +165,7 @@ serve(async (req) => {
     // Load logo
     let logoImage: any = null;
     try {
-      const logoResponse = await fetch('https://carbonus.lovable.app/images/carbonus-logo-invoice.png');
+      const logoResponse = await fetch('https://id-preview--169b147f-57ff-4ca9-9a41-8ca6d7209f23.lovable.app/images/carbonus-logo-invoice.png');
       if (logoResponse.ok) {
         const logoBytes = new Uint8Array(await logoResponse.arrayBuffer());
         logoImage = await pdfDoc.embedPng(logoBytes);
