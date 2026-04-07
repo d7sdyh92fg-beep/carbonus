@@ -320,27 +320,44 @@ serve(async (req) => {
 
     const { data: publicUrl } = supabase.storage.from('contracts').getPublicUrl(fileName);
 
-    // Save invoice record
-    const { data: invoice, error: invoiceError } = await supabase
-      .from('invoices')
-      .insert({
-        invoice_number: invoiceNumber,
-        invoice_prefix: prefix,
-        sequence_number: sequenceNumber,
-        year: invoiceYear,
-        reservation_id: reservationId,
-        customer_id: customer.id,
-        issue_date: issueDate.toISOString().split('T')[0],
-        items: items,
-        total_amount: grandTotal,
-        status: 'draft',
-        pdf_url: fileName,
-      })
-      .select()
-      .single();
+    let invoice;
+    if (existingInvoiceId) {
+      // Update existing invoice PDF
+      const { data: updatedInvoice, error: updateError } = await supabase
+        .from('invoices')
+        .update({ pdf_url: fileName, total_amount: grandTotal })
+        .eq('id', existingInvoiceId)
+        .select()
+        .single();
 
-    if (invoiceError) {
-      throw new Error(`Failed to save invoice: ${invoiceError.message}`);
+      if (updateError) {
+        throw new Error(`Failed to update invoice: ${updateError.message}`);
+      }
+      invoice = updatedInvoice;
+    } else {
+      // Save new invoice record
+      const { data: newInvoice, error: invoiceError } = await supabase
+        .from('invoices')
+        .insert({
+          invoice_number: invoiceNumber,
+          invoice_prefix: prefix,
+          sequence_number: sequenceNumber,
+          year: invoiceYear,
+          reservation_id: reservationId,
+          customer_id: customer.id,
+          issue_date: issueDate.toISOString().split('T')[0],
+          items: items,
+          total_amount: grandTotal,
+          status: 'draft',
+          pdf_url: fileName,
+        })
+        .select()
+        .single();
+
+      if (invoiceError) {
+        throw new Error(`Failed to save invoice: ${invoiceError.message}`);
+      }
+      invoice = newInvoice;
     }
 
     return new Response(
