@@ -1005,7 +1005,15 @@ const Admin = () => {
                                    >
                                      <DollarSign className="h-4 w-4" />
                                    </Button>
-                                  {reservation.status === 'requested' && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                      title="Sąskaita faktūra"
+                                    >
+                                      <Receipt className="h-4 w-4" />
+                                    </Button>
+                                   {reservation.status === 'requested' && (
                                     <>
                                       <Button
                                         variant="default"
@@ -1124,7 +1132,17 @@ const Admin = () => {
                                  <DollarSign className="h-3 w-3 mr-1" />
                                  Kaina
                                </Button>
-                              {reservation.status === 'requested' && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                  className="text-xs"
+                                  title="Sąskaita faktūra"
+                                >
+                                  <Receipt className="h-3 w-3 mr-1" />
+                                  Sąskaita
+                                </Button>
+                               {reservation.status === 'requested' && (
                                 <>
                                   <Button
                                     variant="default"
@@ -1392,13 +1410,23 @@ const Admin = () => {
                                   }
                                 </TableCell>
                                 <TableCell>
-                                  <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    onClick={() => handleReviewReservation(reservation)}
-                                  >
-                                    <FileText className="h-4 w-4" />
-                                  </Button>
+                                  <div className="flex gap-2">
+                                    <Button
+                                      variant="secondary"
+                                      size="sm"
+                                      onClick={() => handleReviewReservation(reservation)}
+                                    >
+                                      <FileText className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                      title="Sąskaita faktūra"
+                                    >
+                                      <Receipt className="h-4 w-4" />
+                                    </Button>
+                                  </div>
                                 </TableCell>
                               </TableRow>
                             ))
@@ -1478,6 +1506,15 @@ const Admin = () => {
                                 >
                                   <FileText className="h-3 w-3 mr-1" />
                                   Peržiūrėti
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                  className="text-xs flex-1"
+                                >
+                                  <Receipt className="h-3 w-3 mr-1" />
+                                  Sąskaita
                                 </Button>
                               </div>
                             </div>
