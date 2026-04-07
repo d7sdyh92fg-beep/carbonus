@@ -38,6 +38,10 @@ export const InvoiceList: React.FC = () => {
   const [deleteTarget, setDeleteTarget] = useState<InvoiceRow | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editInvoice, setEditInvoice] = useState<InvoiceRow | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
   useEffect(() => {
     fetchInvoices();
