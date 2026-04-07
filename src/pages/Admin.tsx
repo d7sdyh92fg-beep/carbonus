@@ -1580,6 +1580,18 @@ const Admin = () => {
         variant={confirmDialog.variant}
       />
 
+      {/* Invoice Manager */}
+      {invoiceReservation && (
+        <InvoiceManager
+          reservationId={invoiceReservation.id}
+          customerName={`${invoiceReservation.customers.first_name} ${invoiceReservation.customers.last_name}`}
+          carName={invoiceReservation.car_name}
+          totalAmount={invoiceReservation.total_amount}
+          isOpen={showInvoice}
+          onClose={() => setShowInvoice(false)}
+        />
+      )}
+
       <Footer />
     </div>
   );
