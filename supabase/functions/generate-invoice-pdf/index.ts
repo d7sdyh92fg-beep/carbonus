@@ -162,16 +162,13 @@ serve(async (req) => {
     const pdfDoc = await PDFDocument.create();
     const { font, fontBold } = await loadFonts(pdfDoc);
 
-    // Load logo
+    // Embed logo from base64
     let logoImage: any = null;
     try {
-      const logoResponse = await fetch('https://id-preview--169b147f-57ff-4ca9-9a41-8ca6d7209f23.lovable.app/images/carbonus-logo-invoice.png');
-      if (logoResponse.ok) {
-        const logoBytes = new Uint8Array(await logoResponse.arrayBuffer());
-        logoImage = await pdfDoc.embedPng(logoBytes);
-      }
+      const logoBytes = decodeBase64(LOGO_BASE64);
+      logoImage = await pdfDoc.embedPng(logoBytes);
     } catch (e) {
-      console.error('Failed to load logo:', e);
+      console.error('Failed to embed logo:', e);
     }
 
     const page = pdfDoc.addPage([595.28, 841.89]);
