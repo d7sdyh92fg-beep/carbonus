@@ -224,7 +224,8 @@ serve(async (req) => {
     y -= 15;
 
     // Table header
-    page.drawLine({ start: { x: LEFT, y: y + 12 }, end: { x: RIGHT, y: y + 12 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    const PAD = 8; // consistent padding between lines and text
+    page.drawLine({ start: { x: LEFT, y: y + PAD }, end: { x: RIGHT, y: y + PAD }, thickness: 0.5, color: rgb(0, 0, 0) });
 
     const colX = {
       name: LEFT + 5,
@@ -239,9 +240,9 @@ serve(async (req) => {
     page.drawText('Kiekis', { x: colX.qty, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
     page.drawText('Kaina', { x: colX.price, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
     page.drawText('Suma', { x: colX.total, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
-    y -= 10;
+    y -= PAD;
     page.drawLine({ start: { x: LEFT, y }, end: { x: RIGHT, y }, thickness: 0.5, color: rgb(0, 0, 0) });
-    y -= 18;
+    y -= (PAD + 6);
 
     // Table rows
     for (const item of items) {
@@ -281,25 +282,13 @@ serve(async (req) => {
     }
 
     // Total line
-    y -= 5;
-    page.drawLine({ start: { x: LEFT, y: y + 16 }, end: { x: RIGHT, y: y + 16 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    y -= PAD;
+    page.drawLine({ start: { x: LEFT, y: y + PAD }, end: { x: RIGHT, y: y + PAD }, thickness: 0.5, color: rgb(0, 0, 0) });
 
-    // "Suma žodžiais:" and total
+    // "Suma žodžiais:" and total with EUR
     const totalStr = grandTotal.toFixed(2).replace('.', ',');
     page.drawText('Suma žodžiais:', { x: LEFT + 5, y, font, size: 9, color: rgb(0, 0, 0) });
-    page.drawText(`Iš viso   ${totalStr}`, { x: colX.price - 20, y, font: fontBold, size: 10, color: rgb(0, 0, 0) });
-    y -= 30;
-
-    // Note about VAT
-    page.drawText('PVM mokėtoju neregistruota', { x: LEFT, y, font, size: 8, color: rgb(0.4, 0.4, 0.4) });
-    y -= 30;
-
-    // Signature line
-    page.drawText('(asmenų, atsakingų už pardavimo operacijos atlikimą ir teisingą įforminimą', { x: LEFT, y, font, size: 8, color: rgb(0.4, 0.4, 0.4) });
-    y -= 18;
-    page.drawText('Direktorius  Tomas Čepulis', { x: LEFT, y, font: fontBold, size: 10, color: rgb(0, 0, 0) });
-    y -= 14;
-    page.drawText('pareigos, vardai, pavardės, parašai)', { x: LEFT, y, font, size: 8, color: rgb(0.4, 0.4, 0.4) });
+    page.drawText(`Iš viso   ${totalStr} EUR`, { x: colX.price - 20, y, font: fontBold, size: 10, color: rgb(0, 0, 0) });
 
     const pdfBytes = await pdfDoc.save();
     const pdfBase64 = encodeBase64(pdfBytes);
