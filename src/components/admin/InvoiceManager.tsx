@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Send, Eye, Download, Loader2, CheckCircle } from 'lucide-react';
+import { FileText, Send, Eye, Download, Loader2, CheckCircle, Plus, Trash2, RotateCcw, Edit } from 'lucide-react';
 
 interface InvoiceManagerProps {
   reservationId: string;
@@ -15,6 +17,14 @@ interface InvoiceManagerProps {
   totalAmount: number;
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface InvoiceItem {
+  name: string;
+  unit: string;
+  qty: number;
+  price: number;
+  total: number;
 }
 
 interface Invoice {
@@ -26,7 +36,7 @@ interface Invoice {
   status: string;
   pdf_url: string;
   sent_at: string | null;
-  items: any[];
+  items: InvoiceItem[];
 }
 
 export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
@@ -40,14 +50,19 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
   const { toast } = useToast();
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
-  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [editingItems, setEditingItems] = useState<InvoiceItem[] | null>(null);
 
   useEffect(() => {
     if (isOpen && reservationId) {
       fetchExistingInvoice();
+    }
+    if (!isOpen) {
+      setEditingItems(null);
     }
   }, [isOpen, reservationId]);
 
@@ -90,6 +105,83 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
       toast({ title: 'Klaida', description: err.message, variant: 'destructive' });
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const startEditing = () => {
+    if (invoice?.items) {
+      setEditingItems(JSON.parse(JSON.stringify(invoice.items)));
+    }
+  };
+
+  const updateItem = (index: number, field: keyof InvoiceItem, value: string | number) => {
+    if (!editingItems) return;
+    const updated = [...editingItems];
+    if (field === 'name' || field === 'unit') {
+      updated[index] = { ...updated[index], [field]: value };
+    } else {
+      const numVal = Number(value) || 0;
+      updated[index] = { ...updated[index], [field]: numVal };
+      if (field === 'qty' || field === 'price') {
+        updated[index].total = updated[index].qty * updated[index].price;
+      }
+    }
+    setEditingItems(updated);
+  };
+
+  const addItem = () => {
+    if (!editingItems) return;
+    setEditingItems([...editingItems, { name: '', unit: 'vnt.', qty: 1, price: 0, total: 0 }]);
+  };
+
+  const removeItem = (index: number) => {
+    if (!editingItems || editingItems.length <= 1) return;
+    setEditingItems(editingItems.filter((_, i) => i !== index));
+  };
+
+  const getEditingTotal = () => {
+    if (!editingItems) return 0;
+    return editingItems.reduce((sum, item) => sum + item.total, 0);
+  };
+
+  const handleSaveItems = async () => {
+    if (!invoice || !editingItems) return;
+    setIsSaving(true);
+    try {
+      const newTotal = getEditingTotal();
+      const { error } = await supabase
+        .from('invoices')
+        .update({ items: editingItems as any, total_amount: newTotal })
+        .eq('id', invoice.id);
+
+      if (error) throw error;
+      toast({ title: 'Eilutės išsaugotos' });
+      setEditingItems(null);
+      await fetchExistingInvoice();
+    } catch (err: any) {
+      toast({ title: 'Klaida', description: err.message, variant: 'destructive' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleRegeneratePdf = async () => {
+    if (!invoice) return;
+    setIsRegenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
+        body: { reservationId, prefix: invoice.invoice_prefix, invoiceId: invoice.id },
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({ title: 'PDF pergeneruotas' });
+      await fetchExistingInvoice();
+    } catch (err: any) {
+      toast({ title: 'Klaida', description: err.message, variant: 'destructive' });
+    } finally {
+      setIsRegenerating(false);
     }
   };
 
@@ -179,7 +271,7 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
@@ -236,6 +328,118 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
 
                 <Separator />
 
+                {/* Invoice Items - View or Edit */}
+                {editingItems ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm font-semibold">Sąskaitos eilutės</Label>
+                      <Button variant="outline" size="sm" onClick={addItem}>
+                        <Plus className="h-3 w-3 mr-1" /> Pridėti
+                      </Button>
+                    </div>
+                    {editingItems.map((item, index) => (
+                      <Card key={index} className="p-3">
+                        <div className="space-y-2">
+                          <div className="flex items-start gap-2">
+                            <div className="flex-1">
+                              <Label className="text-xs text-muted-foreground">Pavadinimas</Label>
+                              <Input
+                                value={item.name}
+                                onChange={(e) => updateItem(index, 'name', e.target.value)}
+                                className="text-sm"
+                                maxLength={200}
+                              />
+                            </div>
+                            {editingItems.length > 1 && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeItem(index)}
+                                className="mt-5 text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            )}
+                          </div>
+                          <div className="grid grid-cols-4 gap-2">
+                            <div>
+                              <Label className="text-xs text-muted-foreground">Mato vnt.</Label>
+                              <Input
+                                value={item.unit}
+                                onChange={(e) => updateItem(index, 'unit', e.target.value)}
+                                className="text-sm"
+                                maxLength={10}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs text-muted-foreground">Kiekis</Label>
+                              <Input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={item.qty}
+                                onChange={(e) => updateItem(index, 'qty', e.target.value)}
+                                className="text-sm"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs text-muted-foreground">Kaina €</Label>
+                              <Input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={item.price}
+                                onChange={(e) => updateItem(index, 'price', e.target.value)}
+                                className="text-sm"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs text-muted-foreground">Suma €</Label>
+                              <div className="h-9 flex items-center text-sm font-medium px-3 bg-muted rounded-md">
+                                {item.total.toFixed(2)}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                    <div className="flex items-center justify-between pt-2 border-t">
+                      <span className="font-semibold">Iš viso: {getEditingTotal().toFixed(2)} €</span>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={() => setEditingItems(null)}>
+                          Atšaukti
+                        </Button>
+                        <Button size="sm" onClick={handleSaveItems} disabled={isSaving}>
+                          {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                          Išsaugoti
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm font-semibold">Eilutės</Label>
+                      {invoice.status === 'draft' && (
+                        <Button variant="outline" size="sm" onClick={startEditing}>
+                          <Edit className="h-3 w-3 mr-1" /> Redaguoti
+                        </Button>
+                      )}
+                    </div>
+                    <div className="text-xs space-y-1">
+                      {invoice.items.map((item: InvoiceItem, i: number) => (
+                        <div key={i} className="flex justify-between items-center py-1 border-b last:border-0">
+                          <span className="flex-1 truncate mr-2">{item.name}</span>
+                          <span className="text-muted-foreground mr-2">{item.qty} × {Number(item.price).toFixed(2)}</span>
+                          <span className="font-medium">{Number(item.total).toFixed(2)} €</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <Separator />
+
                 <div className="flex gap-2 flex-wrap">
                   <Button variant="outline" size="sm" onClick={handlePreview}>
                     <Eye className="h-4 w-4 mr-1" /> Peržiūrėti
@@ -243,10 +447,16 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
                   <Button variant="outline" size="sm" onClick={handleDownload}>
                     <Download className="h-4 w-4 mr-1" /> Atsisiųsti
                   </Button>
+                  {invoice.status === 'draft' && (
+                    <Button variant="outline" size="sm" onClick={handleRegeneratePdf} disabled={isRegenerating}>
+                      {isRegenerating ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <RotateCcw className="h-4 w-4 mr-1" />}
+                      Pergeneruoti PDF
+                    </Button>
+                  )}
                 </div>
 
                 {invoice.status === 'draft' && (
-                  <Button onClick={handleConfirm} disabled={isConfirming} className="w-full" variant="secondary">
+                  <Button onClick={handleConfirm} disabled={isConfirming || !!editingItems} className="w-full" variant="secondary">
                     {isConfirming ? (
                       <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Tvirtinama...</>
                     ) : (
