@@ -162,6 +162,18 @@ serve(async (req) => {
     const pdfDoc = await PDFDocument.create();
     const { font, fontBold } = await loadFonts(pdfDoc);
 
+    // Load logo
+    let logoImage: any = null;
+    try {
+      const logoResponse = await fetch('https://carbonus.lovable.app/images/carbonus-logo-invoice.png');
+      if (logoResponse.ok) {
+        const logoBytes = new Uint8Array(await logoResponse.arrayBuffer());
+        logoImage = await pdfDoc.embedPng(logoBytes);
+      }
+    } catch (e) {
+      console.error('Failed to load logo:', e);
+    }
+
     const page = pdfDoc.addPage([595.28, 841.89]);
     const { width, height } = page.getSize();
     const LEFT = 50;
@@ -169,11 +181,16 @@ serve(async (req) => {
     const COL_WIDTH = RIGHT - LEFT;
     let y = height - 60;
 
-    // Title
+    // Logo + Title
+    if (logoImage) {
+      const logoHeight = 35;
+      const logoWidth = logoHeight * (logoImage.width / logoImage.height);
+      page.drawImage(logoImage, { x: LEFT, y: y - 5, width: logoWidth, height: logoHeight });
+    }
     const titleText = 'SĄSKAITA FAKTŪRA';
     const titleWidth = fontBold.widthOfTextAtSize(titleText, 16);
-    page.drawText(titleText, { x: (width - titleWidth) / 2, y, font: fontBold, size: 16, color: rgb(0, 0, 0) });
-    y -= 25;
+    page.drawText(titleText, { x: (width - titleWidth) / 2, y: y + 5, font: fontBold, size: 16, color: rgb(0, 0, 0) });
+    y -= 35;
 
     // Invoice number and date
     const docLine = `Dokumento Nr: ${invoiceNumber}`;
