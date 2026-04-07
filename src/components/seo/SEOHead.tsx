@@ -15,7 +15,7 @@ export const SEOHead = ({
   title,
   description,
   canonical,
-  ogImage = 'https://carbonus.lt/lovable-uploads/2101c036-71b7-4282-b3a0-0a30895b680e.png',
+  ogImage = 'https://carbonus.lt/og-image.png',
   ogType = 'website',
   noindex = false,
   keywords,
