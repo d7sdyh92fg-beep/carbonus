@@ -737,7 +737,7 @@ const Admin = () => {
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
           <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-5 gap-1 h-auto p-1 bg-muted rounded-lg">
+            <TabsList className="grid grid-cols-6 gap-1 h-auto p-1 bg-muted rounded-lg">
               <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Skydelis</span>
@@ -762,6 +762,11 @@ const Admin = () => {
                 <Receipt className="h-4 w-4" />
                 <span className="hidden sm:inline">Sąskaitos</span>
                 <span className="sm:hidden text-[10px] text-center leading-3">Sąskaitos</span>
+              </TabsTrigger>
+              <TabsTrigger value="email-test" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <Mail className="h-4 w-4" />
+                <span className="hidden sm:inline">El. paštas</span>
+                <span className="sm:hidden text-[10px] text-center leading-3">El. paštas</span>
               </TabsTrigger>
             </TabsList>
 
@@ -1536,14 +1541,11 @@ const Admin = () => {
               </TabsContent>
 
               <TabsContent value="invoices" className="space-y-4">
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                  <div className="xl:col-span-2">
-                    <InvoiceList />
-                  </div>
-                  <div>
-                    <EmailTester />
-                  </div>
-                </div>
+                <InvoiceList />
+              </TabsContent>
+
+              <TabsContent value="email-test" className="space-y-4">
+                <EmailTester />
               </TabsContent>
             </Tabs>
         </div>
