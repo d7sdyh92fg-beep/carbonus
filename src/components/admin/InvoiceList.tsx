@@ -141,6 +141,29 @@ export const InvoiceList: React.FC = () => {
     return <Badge className={c.className}>{c.label}</Badge>;
   };
 
+  const filteredInvoices = useMemo(() => {
+    return invoices.filter(inv => {
+      if (statusFilter !== 'all' && inv.status !== statusFilter) return false;
+      if (dateFrom && inv.issue_date < dateFrom) return false;
+      if (dateTo && inv.issue_date > dateTo) return false;
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const name = inv.customers ? `${inv.customers.first_name} ${inv.customers.last_name}`.toLowerCase() : '';
+        if (!inv.invoice_number.toLowerCase().includes(q) && !name.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [invoices, statusFilter, searchQuery, dateFrom, dateTo]);
+
+  const hasActiveFilters = statusFilter !== 'all' || searchQuery || dateFrom || dateTo;
+
+  const clearFilters = () => {
+    setStatusFilter('all');
+    setSearchQuery('');
+    setDateFrom('');
+    setDateTo('');
+  };
+
   const totalRevenue = invoices
     .filter(i => i.status === 'sent' || i.status === 'confirmed')
     .reduce((sum, i) => sum + Number(i.total_amount), 0);
