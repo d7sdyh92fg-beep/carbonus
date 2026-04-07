@@ -224,7 +224,7 @@ serve(async (req) => {
     y -= 15;
 
     // Table header
-    page.drawLine({ start: { x: LEFT, y: y + 5 }, end: { x: RIGHT, y: y + 5 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    page.drawLine({ start: { x: LEFT, y: y + 12 }, end: { x: RIGHT, y: y + 12 }, thickness: 0.5, color: rgb(0, 0, 0) });
 
     const colX = {
       name: LEFT + 5,
@@ -239,9 +239,9 @@ serve(async (req) => {
     page.drawText('Kiekis', { x: colX.qty, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
     page.drawText('Kaina', { x: colX.price, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
     page.drawText('Suma', { x: colX.total, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
-    y -= 5;
+    y -= 10;
     page.drawLine({ start: { x: LEFT, y }, end: { x: RIGHT, y }, thickness: 0.5, color: rgb(0, 0, 0) });
-    y -= 15;
+    y -= 18;
 
     // Table rows
     for (const item of items) {
@@ -282,7 +282,7 @@ serve(async (req) => {
 
     // Total line
     y -= 5;
-    page.drawLine({ start: { x: LEFT, y: y + 10 }, end: { x: RIGHT, y: y + 10 }, thickness: 0.5, color: rgb(0, 0, 0) });
+    page.drawLine({ start: { x: LEFT, y: y + 16 }, end: { x: RIGHT, y: y + 16 }, thickness: 0.5, color: rgb(0, 0, 0) });
 
     // "Suma žodžiais:" and total
     const totalStr = grandTotal.toFixed(2).replace('.', ',');
