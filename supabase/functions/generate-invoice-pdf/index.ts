@@ -221,33 +221,38 @@ serve(async (req) => {
       }
       y -= 14;
     }
-    y -= 15;
+    y -= 20;
 
-    // Table header
-    const PAD = 8; // consistent padding between lines and text
-    page.drawLine({ start: { x: LEFT, y: y + PAD }, end: { x: RIGHT, y: y + PAD }, thickness: 0.5, color: rgb(0, 0, 0) });
-
-    const colX = {
-      name: LEFT + 5,
-      unit: LEFT + 280,
-      qty: LEFT + 330,
-      price: LEFT + 380,
-      total: LEFT + 440,
+    // Helper to right-align text
+    const drawRight = (text: string, xRight: number, yPos: number, f: any, size: number) => {
+      const w = f.widthOfTextAtSize(text, size);
+      page.drawText(text, { x: xRight - w, y: yPos, font: f, size, color: rgb(0, 0, 0) });
     };
 
+    // Column right edges for number alignment
+    const colX = {
+      name: LEFT + 5,
+      unitRight: LEFT + 320,
+      qtyRight: LEFT + 380,
+      priceRight: LEFT + 440,
+      totalRight: RIGHT - 5,
+    };
+
+    // Table header
+    const PAD = 10;
+    page.drawLine({ start: { x: LEFT, y: y + PAD + 2 }, end: { x: RIGHT, y: y + PAD + 2 }, thickness: 0.5, color: rgb(0, 0, 0) });
     page.drawText('Paslaugos pavadinimas', { x: colX.name, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
-    page.drawText('Mato vnt.', { x: colX.unit, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
-    page.drawText('Kiekis', { x: colX.qty, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
-    page.drawText('Kaina', { x: colX.price, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
-    page.drawText('Suma', { x: colX.total, y, font: fontBold, size: 9, color: rgb(0, 0, 0) });
+    drawRight('Mato vnt.', colX.unitRight, y, fontBold, 9);
+    drawRight('Kiekis', colX.qtyRight, y, fontBold, 9);
+    drawRight('Kaina', colX.priceRight, y, fontBold, 9);
+    drawRight('Suma', colX.totalRight, y, fontBold, 9);
     y -= PAD;
     page.drawLine({ start: { x: LEFT, y }, end: { x: RIGHT, y }, thickness: 0.5, color: rgb(0, 0, 0) });
-    y -= (PAD + 6);
+    y -= (PAD + 4);
 
     // Table rows
     for (const item of items) {
-      // Wrap long service names
-      const maxNameWidth = 225;
+      const maxNameWidth = 240;
       let nameText = item.name;
       const nameLines: string[] = [];
       
@@ -257,7 +262,6 @@ serve(async (req) => {
           fitLen--;
         }
         if (fitLen === 0) fitLen = 1;
-        // Try to break at space
         if (fitLen < nameText.length) {
           const lastSpace = nameText.lastIndexOf(' ', fitLen);
           if (lastSpace > 0) fitLen = lastSpace;
@@ -266,15 +270,13 @@ serve(async (req) => {
         nameText = nameText.substring(fitLen).trim();
       }
 
-      // First line with all columns
       page.drawText(nameLines[0], { x: colX.name, y, font, size: 9, color: rgb(0, 0, 0) });
-      page.drawText(item.unit, { x: colX.unit, y, font, size: 9, color: rgb(0, 0, 0) });
-      page.drawText(item.qty.toFixed(2).replace('.', ','), { x: colX.qty, y, font, size: 9, color: rgb(0, 0, 0) });
-      page.drawText(item.price.toFixed(2).replace('.', ','), { x: colX.price, y, font, size: 9, color: rgb(0, 0, 0) });
-      page.drawText(item.total.toFixed(2).replace('.', ','), { x: colX.total, y, font, size: 9, color: rgb(0, 0, 0) });
+      drawRight(item.unit, colX.unitRight, y, font, 9);
+      drawRight(item.qty.toFixed(2).replace('.', ','), colX.qtyRight, y, font, 9);
+      drawRight(item.price.toFixed(2).replace('.', ','), colX.priceRight, y, font, 9);
+      drawRight(item.total.toFixed(2).replace('.', ','), colX.totalRight, y, font, 9);
       y -= 14;
 
-      // Additional name lines
       for (let nl = 1; nl < nameLines.length; nl++) {
         page.drawText(nameLines[nl], { x: colX.name, y, font, size: 9, color: rgb(0, 0, 0) });
         y -= 14;
@@ -282,13 +284,13 @@ serve(async (req) => {
     }
 
     // Total line
-    y -= PAD;
-    page.drawLine({ start: { x: LEFT, y: y + PAD }, end: { x: RIGHT, y: y + PAD }, thickness: 0.5, color: rgb(0, 0, 0) });
-
-    // "Suma žodžiais:" and total with EUR
+    y -= 4;
+    page.drawLine({ start: { x: LEFT, y: y + PAD + 2 }, end: { x: RIGHT, y: y + PAD + 2 }, thickness: 0.5, color: rgb(0, 0, 0) });
     const totalStr = grandTotal.toFixed(2).replace('.', ',');
-    page.drawText('Suma žodžiais:', { x: LEFT + 5, y, font, size: 9, color: rgb(0, 0, 0) });
-    page.drawText(`Iš viso   ${totalStr} EUR`, { x: colX.price - 20, y, font: fontBold, size: 10, color: rgb(0, 0, 0) });
+    page.drawText('Suma žodžiais:', { x: colX.name, y, font, size: 9, color: rgb(0, 0, 0) });
+    drawRight(`Iš viso   ${totalStr} EUR`, colX.totalRight, y, fontBold, 10);
+    y -= PAD;
+    page.drawLine({ start: { x: LEFT, y }, end: { x: RIGHT, y }, thickness: 0.5, color: rgb(0, 0, 0) });
 
     const pdfBytes = await pdfDoc.save();
     const pdfBase64 = encodeBase64(pdfBytes);
