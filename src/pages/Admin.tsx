@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
 import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
+import { InvoiceList } from '@/components/admin/InvoiceList';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/sections/footer';
 import CarManagementModal from '@/components/admin/CarManagementModal';
@@ -757,10 +758,10 @@ const Admin = () => {
                 <span className="hidden sm:inline">Istorija</span>
                 <span className="sm:hidden text-[10px]">Istorija</span>
               </TabsTrigger>
-              <TabsTrigger value="email-tester" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <Mail className="h-4 w-4" />
-                <span className="hidden sm:inline">El. pašto testai</span>
-                <span className="sm:hidden text-[10px] text-center leading-3">El. paštas</span>
+              <TabsTrigger value="invoices" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <Receipt className="h-4 w-4" />
+                <span className="hidden sm:inline">Sąskaitos</span>
+                <span className="sm:hidden text-[10px] text-center leading-3">Sąskaitos</span>
               </TabsTrigger>
             </TabsList>
 
@@ -1534,8 +1535,15 @@ const Admin = () => {
                 <RecycleBin />
               </TabsContent>
 
-              <TabsContent value="email-tester" className="space-y-4">
-                <EmailTester />
+              <TabsContent value="invoices" className="space-y-4">
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                  <div className="xl:col-span-2">
+                    <InvoiceList />
+                  </div>
+                  <div>
+                    <EmailTester />
+                  </div>
+                </div>
               </TabsContent>
             </Tabs>
         </div>
