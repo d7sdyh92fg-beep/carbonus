@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Edit, Save, X, FileText, Image, User, Calendar, Car, CreditCard, Link as LinkIcon, CheckCircle } from 'lucide-react';
+import { Edit, Save, X, FileText, Image, User, Calendar, Car, CreditCard, Link as LinkIcon, CheckCircle, Receipt } from 'lucide-react';
+import { InvoiceManager } from './InvoiceManager';
 import { format } from 'date-fns';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -76,6 +77,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState<any[]>([]);
   const [driverLicenseUrls, setDriverLicenseUrls] = useState({ front: '', back: '' });
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
   
   const [editForm, setEditForm] = useState({
     first_name: '',
@@ -981,10 +983,24 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         )}
 
         <div className="flex justify-end gap-2 mt-6">
+          <Button variant="outline" onClick={() => setInvoiceOpen(true)}>
+            <Receipt className="h-4 w-4 mr-2" /> Sąskaita faktūra
+          </Button>
           <Button variant="outline" onClick={onClose}>
             Uždaryti
           </Button>
         </div>
+
+        {reservation && (
+          <InvoiceManager
+            reservationId={reservation.id}
+            customerName={`${reservation.customers.first_name} ${reservation.customers.last_name}`}
+            carName={reservation.car_name}
+            totalAmount={reservation.total_amount}
+            isOpen={invoiceOpen}
+            onClose={() => setInvoiceOpen(false)}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );
