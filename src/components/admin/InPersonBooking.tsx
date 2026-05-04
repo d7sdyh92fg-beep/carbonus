@@ -18,6 +18,7 @@ import { lt } from 'date-fns/locale';
 import { calculateRentalDays } from '@/utils/rentalDuration';
 import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
 import { DriverLicenseUpload } from './DriverLicenseUpload';
+import { CustomerPicker } from './CustomerPicker';
 import { DigitalSignature } from './DigitalSignature';
 import { AdditionalService } from '@/contexts/BookingContext';
 import { useQuery } from '@tanstack/react-query';
