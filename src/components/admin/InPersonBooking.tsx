@@ -646,7 +646,30 @@ export function InPersonBooking() {
             {/* Customer Details */}
             <Card className="w-full">
               <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Kliento informacija</CardTitle>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <CardTitle className="text-lg sm:text-xl">Kliento informacija</CardTitle>
+                  <CustomerPicker
+                    size="sm"
+                    onSelect={(c) => {
+                      setCustomer({
+                        firstName: c.firstName,
+                        lastName: c.lastName,
+                        email: c.email,
+                        phone: c.phone,
+                        address: c.address,
+                        refundAccount: c.refundAccount,
+                        isCorporate: c.isCorporate,
+                        companyName: c.companyName,
+                        companyCode: c.companyCode,
+                        vatCode: c.vatCode,
+                        representativeName: c.representativeName,
+                        representativePhone: c.representativePhone,
+                        representativeEmail: c.representativeEmail,
+                      });
+                      toast.success(`Užkrautas klientas: ${c.firstName} ${c.lastName}`);
+                    }}
+                  />
+                </div>
               </CardHeader>
               <CardContent className="space-y-4 sm:space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
