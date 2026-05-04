@@ -407,7 +407,13 @@ export function InPersonBooking() {
     } else if (step === 'services') {
       setStep('documents');
     } else if (step === 'documents') {
-      if (!skipDocuments) {
+      if (skipDocuments) {
+        // Safety: ensure pre-filled docs from previous reservation exist
+        if (!driverLicenseUrls.front || !signatureData) {
+          toast.error('Nepavyko užkrauti ankstesnių dokumentų. Atjunkite žymimąjį langelį ir įkelkite naujus.');
+          return;
+        }
+      } else {
         const hasAdditionalDriver = selectedServices.some(s => s.id === 'additional-driver');
         
         if (!driverLicenseUrls.front || !contractSigned) {
@@ -731,6 +737,9 @@ export function InPersonBooking() {
                           }
                         } else {
                           setPreviousDocs(null);
+                          // No prior docs — force admin to upload now
+                          setSkipDocuments(false);
+                          toast.info('Šis klientas dar neturi anksčiau įkeltų dokumentų — reikės pateikti naujus.');
                         }
                       } catch (err) {
                         console.error('Failed to load previous documents', err);
