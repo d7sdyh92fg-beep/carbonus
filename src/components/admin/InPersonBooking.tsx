@@ -193,6 +193,14 @@ export function InPersonBooking() {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [isReturningCustomer, setIsReturningCustomer] = useState(false);
   const [skipDocuments, setSkipDocuments] = useState(false);
+  const [previousDocs, setPreviousDocs] = useState<{
+    licenseFront?: string;
+    licenseBack?: string;
+    signature?: string;
+    signedAt?: string;
+    fromCarName?: string;
+    fromDate?: string;
+  } | null>(null);
 
   // Fetch car pricing from DB
   const { data: dbCarPricing } = useQuery({
