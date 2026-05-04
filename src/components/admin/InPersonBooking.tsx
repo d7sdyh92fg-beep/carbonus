@@ -407,7 +407,13 @@ export function InPersonBooking() {
     } else if (step === 'services') {
       setStep('documents');
     } else if (step === 'documents') {
-      if (!skipDocuments) {
+      if (skipDocuments) {
+        // Safety: ensure pre-filled docs from previous reservation exist
+        if (!driverLicenseUrls.front || !signatureData) {
+          toast.error('Nepavyko užkrauti ankstesnių dokumentų. Atjunkite žymimąjį langelį ir įkelkite naujus.');
+          return;
+        }
+      } else {
         const hasAdditionalDriver = selectedServices.some(s => s.id === 'additional-driver');
         
         if (!driverLicenseUrls.front || !contractSigned) {
