@@ -127,7 +127,7 @@ export function CustomerPicker({
           )}
         </div>
 
-        <ScrollArea className="flex-1 max-h-[55vh] -mx-2 px-2">
+        <ScrollArea className="flex-1 min-h-0 h-[55vh] -mx-2 px-2">
           {isLoading ? (
             <div className="text-center text-muted-foreground py-8 text-sm">
               Kraunama...
