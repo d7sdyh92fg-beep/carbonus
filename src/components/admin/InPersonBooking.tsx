@@ -399,16 +399,18 @@ export function InPersonBooking() {
     } else if (step === 'services') {
       setStep('documents');
     } else if (step === 'documents') {
-      const hasAdditionalDriver = selectedServices.some(s => s.id === 'additional-driver');
-      
-      if (!driverLicenseUrls.front || !contractSigned) {
-        toast.error('Prašome įkelti vairuotojo pažymėjimo priekį ir pasirašyti sutartį');
-        return;
-      }
-      
-      if (hasAdditionalDriver && (!secondDriverLicenseUrls.front || !secondDriverLicenseUrls.back)) {
-        toast.error('Prašome įkelti antro vairuotojo pažymėjimo priekį ir galą');
-        return;
+      if (!skipDocuments) {
+        const hasAdditionalDriver = selectedServices.some(s => s.id === 'additional-driver');
+        
+        if (!driverLicenseUrls.front || !contractSigned) {
+          toast.error('Prašome įkelti vairuotojo pažymėjimo priekį ir pasirašyti sutartį');
+          return;
+        }
+        
+        if (hasAdditionalDriver && (!secondDriverLicenseUrls.front || !secondDriverLicenseUrls.back)) {
+          toast.error('Prašome įkelti antro vairuotojo pažymėjimo priekį ir galą');
+          return;
+        }
       }
       
       setStep('payment');
