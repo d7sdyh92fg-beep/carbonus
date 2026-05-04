@@ -1230,57 +1230,84 @@ export function InPersonBooking() {
 
       {step === 'documents' && (
         <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-            {/* Main Driver License */}
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Pagrindinis vairuotojas</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <DriverLicenseUpload
-                  onUpload={(urls) => setDriverLicenseUrls(urls)}
-                  uploadedUrls={driverLicenseUrls}
-                />
-              </CardContent>
-            </Card>
-
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Sutarties pasirašymas</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <DigitalSignature
-                  onSign={(signature) => {
-                    setSignatureData(signature);
-                    setContractSigned(true);
-                  }}
-                  customerName={`${customer.firstName} ${customer.lastName}`}
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Second Driver License - shown only if additional driver service selected */}
-          {selectedServices.some(s => s.id === 'additional-driver') && (
-            <>
-              <Separator className="my-8" />
-              <Card className="w-full">
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                    <Users className="h-5 w-5" />
-                    Antras vairuotojas
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Įkelkite antro vairuotojo pažymėjimo priekį ir galą
-                  </p>
-                  <DriverLicenseUpload
-                    onUpload={(urls) => setSecondDriverLicenseUrls(urls)}
-                    uploadedUrls={secondDriverLicenseUrls}
+          {isReturningCustomer && (
+            <Card className="w-full border-primary/40 bg-primary/5">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-start gap-3">
+                  <Checkbox
+                    id="skipDocuments"
+                    checked={skipDocuments}
+                    onCheckedChange={(checked) => setSkipDocuments(checked as boolean)}
+                    className="mt-1"
                   />
-                </CardContent>
-              </Card>
+                  <div className="flex-1">
+                    <Label htmlFor="skipDocuments" className="cursor-pointer font-medium text-sm sm:text-base">
+                      Pakartotinis klientas — praleisti dokumentus ir parašą
+                    </Label>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                      Klientas jau yra pateikęs vairuotojo pažymėjimą ir pasirašęs anksčiau. Šio etapo nereikia kartoti.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {!skipDocuments && (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+                {/* Main Driver License */}
+                <Card className="w-full">
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">Pagrindinis vairuotojas</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <DriverLicenseUpload
+                      onUpload={(urls) => setDriverLicenseUrls(urls)}
+                      uploadedUrls={driverLicenseUrls}
+                    />
+                  </CardContent>
+                </Card>
+
+                <Card className="w-full">
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">Sutarties pasirašymas</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <DigitalSignature
+                      onSign={(signature) => {
+                        setSignatureData(signature);
+                        setContractSigned(true);
+                      }}
+                      customerName={`${customer.firstName} ${customer.lastName}`}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Second Driver License - shown only if additional driver service selected */}
+              {selectedServices.some(s => s.id === 'additional-driver') && (
+                <>
+                  <Separator className="my-8" />
+                  <Card className="w-full">
+                    <CardHeader>
+                      <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+                        <Users className="h-5 w-5" />
+                        Antras vairuotojas
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Įkelkite antro vairuotojo pažymėjimo priekį ir galą
+                      </p>
+                      <DriverLicenseUpload
+                        onUpload={(urls) => setSecondDriverLicenseUrls(urls)}
+                        uploadedUrls={secondDriverLicenseUrls}
+                      />
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </>
           )}
         </div>
