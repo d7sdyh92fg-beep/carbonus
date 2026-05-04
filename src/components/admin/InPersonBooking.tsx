@@ -731,6 +731,9 @@ export function InPersonBooking() {
                           }
                         } else {
                           setPreviousDocs(null);
+                          // No prior docs — force admin to upload now
+                          setSkipDocuments(false);
+                          toast.info('Šis klientas dar neturi anksčiau įkeltų dokumentų — reikės pateikti naujus.');
                         }
                       } catch (err) {
                         console.error('Failed to load previous documents', err);
