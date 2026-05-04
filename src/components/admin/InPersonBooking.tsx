@@ -582,6 +582,8 @@ export function InPersonBooking() {
     setCustomDeposit('200');
     setPricingNotes('');
     setIsRetroactive(false);
+    setIsReturningCustomer(false);
+    setSkipDocuments(false);
   };
 
   if (step === 'complete') {
