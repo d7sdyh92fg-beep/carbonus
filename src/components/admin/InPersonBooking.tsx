@@ -1312,6 +1312,74 @@ export function InPersonBooking() {
             </Card>
           )}
 
+          {skipDocuments && isReturningCustomer && (
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">Anksčiau pateikti dokumentai</CardTitle>
+                {previousDocs?.fromCarName && (
+                  <p className="text-sm text-muted-foreground">
+                    Iš rezervacijos: {previousDocs.fromCarName}
+                    {previousDocs.fromDate ? ` (${previousDocs.fromDate})` : ''}
+                  </p>
+                )}
+              </CardHeader>
+              <CardContent>
+                {!previousDocs ? (
+                  <p className="text-sm text-muted-foreground">
+                    Šis klientas dar neturi anksčiau įkeltų dokumentų. Atjunkite žymimąjį langelį, kad įkeltumėte dabar.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {previousDocs.licenseFront && (
+                      <div className="space-y-2">
+                        <Label className="text-sm">Vairuotojo pažymėjimas (priekis)</Label>
+                        <a href={previousDocs.licenseFront} target="_blank" rel="noopener noreferrer" className="block">
+                          <img
+                            src={previousDocs.licenseFront}
+                            alt="Vairuotojo pažymėjimas priekis"
+                            className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
+                            onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    {previousDocs.licenseBack && (
+                      <div className="space-y-2">
+                        <Label className="text-sm">Vairuotojo pažymėjimas (galas)</Label>
+                        <a href={previousDocs.licenseBack} target="_blank" rel="noopener noreferrer" className="block">
+                          <img
+                            src={previousDocs.licenseBack}
+                            alt="Vairuotojo pažymėjimas galas"
+                            className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
+                            onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    {previousDocs.signature && (
+                      <div className="space-y-2">
+                        <Label className="text-sm">
+                          Parašas{previousDocs.signedAt ? ` (${new Date(previousDocs.signedAt).toLocaleDateString('lt-LT')})` : ''}
+                        </Label>
+                        <div className="w-full h-40 rounded-lg border bg-white flex items-center justify-center p-2">
+                          <img
+                            src={previousDocs.signature}
+                            alt="Parašas"
+                            className="max-h-full max-w-full object-contain"
+                            onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {!skipDocuments && (
             <>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
