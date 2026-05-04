@@ -668,7 +668,9 @@ export function InPersonBooking() {
                         representativePhone: c.representativePhone,
                         representativeEmail: c.representativeEmail,
                       });
-                      toast.success(`Užkrautas klientas: ${c.firstName} ${c.lastName}`);
+                      setIsReturningCustomer(true);
+                      setSkipDocuments(true);
+                      toast.success(`Užkrautas pakartotinis klientas: ${c.firstName} ${c.lastName}. Dokumentų ir parašo etapas praleidžiamas.`);
                     }}
                   />
                 </div>
