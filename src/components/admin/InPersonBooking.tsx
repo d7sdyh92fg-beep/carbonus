@@ -191,6 +191,8 @@ export function InPersonBooking() {
   const [pricingNotes, setPricingNotes] = useState('');
   const [isRetroactive, setIsRetroactive] = useState(false);
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [isReturningCustomer, setIsReturningCustomer] = useState(false);
+  const [skipDocuments, setSkipDocuments] = useState(false);
 
   // Fetch car pricing from DB
   const { data: dbCarPricing } = useQuery({
