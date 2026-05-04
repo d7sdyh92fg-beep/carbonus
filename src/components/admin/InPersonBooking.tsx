@@ -193,6 +193,14 @@ export function InPersonBooking() {
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [isReturningCustomer, setIsReturningCustomer] = useState(false);
   const [skipDocuments, setSkipDocuments] = useState(false);
+  const [previousDocs, setPreviousDocs] = useState<{
+    licenseFront?: string;
+    licenseBack?: string;
+    signature?: string;
+    signedAt?: string;
+    fromCarName?: string;
+    fromDate?: string;
+  } | null>(null);
 
   // Fetch car pricing from DB
   const { data: dbCarPricing } = useQuery({
@@ -584,6 +592,7 @@ export function InPersonBooking() {
     setIsRetroactive(false);
     setIsReturningCustomer(false);
     setSkipDocuments(false);
+    setPreviousDocs(null);
   };
 
   if (step === 'complete') {
@@ -656,7 +665,7 @@ export function InPersonBooking() {
                   <CardTitle className="text-lg sm:text-xl">Kliento informacija</CardTitle>
                   <CustomerPicker
                     size="sm"
-                    onSelect={(c) => {
+                    onSelect={async (c) => {
                       setCustomer({
                         firstName: c.firstName,
                         lastName: c.lastName,
@@ -675,6 +684,57 @@ export function InPersonBooking() {
                       setIsReturningCustomer(true);
                       setSkipDocuments(true);
                       toast.success(`Užkrautas pakartotinis klientas: ${c.firstName} ${c.lastName}. Dokumentų ir parašo etapas praleidžiamas.`);
+
+                      // Fetch latest reservation with documents/signature
+                      try {
+                        const { data: prevRes } = await supabase
+                          .from('reservations')
+                          .select('id, car_name, start_date, driver_license_url, driver_license_back_url, contract_signed_at')
+                          .eq('customer_id', c.id)
+                          .is('deleted_at', null)
+                          .not('driver_license_url', 'is', null)
+                          .order('created_at', { ascending: false })
+                          .limit(1)
+                          .maybeSingle();
+
+                        let signature: string | undefined;
+                        let signedAt: string | undefined;
+                        if (prevRes?.id) {
+                          const { data: sig } = await supabase
+                            .from('contract_signatures')
+                            .select('signature_data, signed_at')
+                            .eq('reservation_id', prevRes.id)
+                            .order('signed_at', { ascending: false })
+                            .limit(1)
+                            .maybeSingle();
+                          signature = sig?.signature_data;
+                          signedAt = sig?.signed_at ?? prevRes.contract_signed_at ?? undefined;
+                        }
+
+                        if (prevRes) {
+                          setPreviousDocs({
+                            licenseFront: prevRes.driver_license_url ?? undefined,
+                            licenseBack: prevRes.driver_license_back_url ?? undefined,
+                            signature,
+                            signedAt,
+                            fromCarName: prevRes.car_name ?? undefined,
+                            fromDate: prevRes.start_date ?? undefined,
+                          });
+                          // Pre-fill so PDF / DB still get values
+                          setDriverLicenseUrls({
+                            front: prevRes.driver_license_url ?? undefined,
+                            back: prevRes.driver_license_back_url ?? undefined,
+                          });
+                          if (signature) {
+                            setSignatureData(signature);
+                            setContractSigned(true);
+                          }
+                        } else {
+                          setPreviousDocs(null);
+                        }
+                      } catch (err) {
+                        console.error('Failed to load previous documents', err);
+                      }
                     }}
                   />
                 </div>
@@ -1249,6 +1309,74 @@ export function InPersonBooking() {
                     </p>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {skipDocuments && isReturningCustomer && (
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">Anksčiau pateikti dokumentai</CardTitle>
+                {previousDocs?.fromCarName && (
+                  <p className="text-sm text-muted-foreground">
+                    Iš rezervacijos: {previousDocs.fromCarName}
+                    {previousDocs.fromDate ? ` (${previousDocs.fromDate})` : ''}
+                  </p>
+                )}
+              </CardHeader>
+              <CardContent>
+                {!previousDocs ? (
+                  <p className="text-sm text-muted-foreground">
+                    Šis klientas dar neturi anksčiau įkeltų dokumentų. Atjunkite žymimąjį langelį, kad įkeltumėte dabar.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {previousDocs.licenseFront && (
+                      <div className="space-y-2">
+                        <Label className="text-sm">Vairuotojo pažymėjimas (priekis)</Label>
+                        <a href={previousDocs.licenseFront} target="_blank" rel="noopener noreferrer" className="block">
+                          <img
+                            src={previousDocs.licenseFront}
+                            alt="Vairuotojo pažymėjimas priekis"
+                            className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
+                            onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    {previousDocs.licenseBack && (
+                      <div className="space-y-2">
+                        <Label className="text-sm">Vairuotojo pažymėjimas (galas)</Label>
+                        <a href={previousDocs.licenseBack} target="_blank" rel="noopener noreferrer" className="block">
+                          <img
+                            src={previousDocs.licenseBack}
+                            alt="Vairuotojo pažymėjimas galas"
+                            className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
+                            onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    {previousDocs.signature && (
+                      <div className="space-y-2">
+                        <Label className="text-sm">
+                          Parašas{previousDocs.signedAt ? ` (${new Date(previousDocs.signedAt).toLocaleDateString('lt-LT')})` : ''}
+                        </Label>
+                        <div className="w-full h-40 rounded-lg border bg-white flex items-center justify-center p-2">
+                          <img
+                            src={previousDocs.signature}
+                            alt="Parašas"
+                            className="max-h-full max-w-full object-contain"
+                            onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}
