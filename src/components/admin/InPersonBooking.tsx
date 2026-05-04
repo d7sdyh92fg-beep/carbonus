@@ -592,6 +592,7 @@ export function InPersonBooking() {
     setIsRetroactive(false);
     setIsReturningCustomer(false);
     setSkipDocuments(false);
+    setPreviousDocs(null);
   };
 
   if (step === 'complete') {
