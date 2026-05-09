@@ -674,6 +674,7 @@ const handler = async (req: Request): Promise<Response> => {
       startDate, endDate, totalAmount, signatureData, pickupTime, returnTime,
     }: ContractRequest = body;
     const skipEmail = body.skipEmail === true;
+    const testMode = body.testMode === true;
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL") as string;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string;
@@ -803,7 +804,8 @@ const handler = async (req: Request): Promise<Response> => {
         });
       }
 
-      // Admin email always in LT
+      // Admin email always in LT (skipped in test mode)
+      if (!testMode) {
       await resend.emails.send({
         from: "CARBONUS <info@carbonus.lt>",
         to: ["info@carbonus.lt"],
@@ -833,8 +835,11 @@ const handler = async (req: Request): Promise<Response> => {
         `,
         ...(pdfAttachment ? { attachments: [pdfAttachment] } : {})
       });
+      } else {
+        console.log("testMode=true, skipping admin email");
+      }
 
-      console.log("Contract emails sent (lang:", lang, ")");
+      console.log("Contract emails sent (lang:", lang, ", testMode:", testMode, ")");
     } else {
       console.log("skipEmail=true, skipping contract emails");
     }

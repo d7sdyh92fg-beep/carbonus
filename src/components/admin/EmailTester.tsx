@@ -205,6 +205,8 @@ export const EmailTester: React.FC = () => {
           endDate: reservation.end_date,
           totalAmount: reservation.total_amount,
           signatureData: '',
+          language: language,
+          testMode: true,
         }
       });
 
@@ -212,7 +214,7 @@ export const EmailTester: React.FC = () => {
 
       toast({
         title: "Sutartis sugeneruota ir išsiųsta ✅",
-        description: `Sutartis išsiųsta į ${testEmail} ir info@carbonus.lt`,
+        description: `Testinė sutartis (${language.toUpperCase()}) išsiųsta TIK į ${testEmail}`,
       });
     } catch (error: any) {
       console.error('Error generating test contract:', error);
