@@ -674,6 +674,7 @@ const handler = async (req: Request): Promise<Response> => {
       startDate, endDate, totalAmount, signatureData, pickupTime, returnTime,
     }: ContractRequest = body;
     const skipEmail = body.skipEmail === true;
+    const testMode = body.testMode === true;
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL") as string;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string;
