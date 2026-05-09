@@ -671,7 +671,27 @@ export function InPersonBooking() {
             <Card className="w-full">
               <CardHeader>
                 <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <CardTitle className="text-lg sm:text-xl">Kliento informacija</CardTitle>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <CardTitle className="text-lg sm:text-xl">Kliento informacija</CardTitle>
+                    <div className="flex items-center gap-1 rounded-md border border-border p-0.5">
+                      <button
+                        type="button"
+                        onClick={() => setContractLanguage('lt')}
+                        className={`px-2.5 py-1 text-xs font-medium rounded transition-colors ${contractLanguage === 'lt' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        title="Sutartis ir laiškai bus lietuvių kalba"
+                      >
+                        🇱🇹 LT
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setContractLanguage('en')}
+                        className={`px-2.5 py-1 text-xs font-medium rounded transition-colors ${contractLanguage === 'en' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        title="Contract and emails will be in English"
+                      >
+                        🇬🇧 EN
+                      </button>
+                    </div>
+                  </div>
                   <CustomerPicker
                     size="sm"
                     onSelect={async (c) => {
