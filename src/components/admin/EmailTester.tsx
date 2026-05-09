@@ -43,6 +43,7 @@ export const EmailTester: React.FC = () => {
         totalAmount: 350,
         depositAmount: 300,
         language: language,
+        testMode: true,
       };
 
       switch (emailType) {
