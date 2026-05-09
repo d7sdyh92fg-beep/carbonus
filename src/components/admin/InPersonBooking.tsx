@@ -555,7 +555,7 @@ export function InPersonBooking() {
           endDate: format(booking.endDate!, 'yyyy-MM-dd'),
           totalAmount: totalAmount,
           status: 'paid',
-          language: 'lt'
+          language: contractLanguage
         }
       });
       await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', reservation.id);
