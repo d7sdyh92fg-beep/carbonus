@@ -27,6 +27,7 @@ interface StatusEmailRequest {
   customerAddress?: string;
   additionalServices?: string;
   depositAmount?: number;
+  testMode?: boolean;
 }
 
 // Shared styles matching EmailPreview component exactly
