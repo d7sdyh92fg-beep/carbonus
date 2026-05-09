@@ -564,6 +564,7 @@ const Admin = () => {
                 endDate: format(new Date(reservation.end_date), 'yyyy-MM-dd'),
                 totalAmount: reservation.total_amount,
                 depositAmount: reservation.deposit_amount,
+                language: (reservation as any).language || 'lt',
                 skipEmail: true
               }
             });
