@@ -615,8 +615,10 @@ serve(async (req) => {
     const response = await resend.emails.send(emailOptions);
     console.log('Status email sent to customer:', response?.id || response);
 
-    // Send admin summary email
-    try {
+    // Send admin summary email (skipped in test mode)
+    if (data.testMode) {
+      console.log('🧪 TEST MODE: skipping admin summary email');
+    } else try {
       const c = customerDetails || {};
       const r = reservationDetails || {};
       const services = r.additional_services ? (typeof r.additional_services === 'string' ? JSON.parse(r.additional_services) : r.additional_services) : [];
