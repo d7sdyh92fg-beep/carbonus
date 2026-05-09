@@ -179,6 +179,7 @@ export function InPersonBooking() {
     dailyRate: 0
   });
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'pay_at_counter'>('cash');
+  const [contractLanguage, setContractLanguage] = useState<'lt' | 'en'>('lt');
   const [driverLicenseUrls, setDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
   const [secondDriverLicenseUrls, setSecondDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
   const [contractSigned, setContractSigned] = useState(false);
