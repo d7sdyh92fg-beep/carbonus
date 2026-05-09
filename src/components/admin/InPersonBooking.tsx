@@ -512,6 +512,7 @@ export function InPersonBooking() {
           custom_deposit_amount: useCustomPricing ? depositAmount : null,
           pricing_notes: useCustomPricing ? pricingNotes : null,
           additional_services: selectedServices.length > 0 ? JSON.stringify(selectedServices) : null,
+          language: contractLanguage,
         })
         .select()
         .single();
