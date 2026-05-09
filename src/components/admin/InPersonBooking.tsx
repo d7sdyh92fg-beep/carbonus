@@ -539,7 +539,7 @@ export function InPersonBooking() {
           endDate: format(booking.endDate!, 'yyyy-MM-dd'),
           totalAmount: totalAmount,
           signatureData: signatureData,
-          language: 'lt',
+          language: contractLanguage,
           skipEmail: true
         }
       });
