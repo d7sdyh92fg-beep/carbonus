@@ -122,6 +122,9 @@ const App = () => (
             
             {/* SEO Checklist */}
             <Route path="/seo-checklist" element={<SEOChecklist />} />
+
+            {/* Pixel / GA4 Event Tester (dev only, not linked anywhere) */}
+            <Route path="/pixel-tester" element={<PixelTester />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
