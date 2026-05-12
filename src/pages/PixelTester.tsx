@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
+import { useCookies } from "@/hooks/use-cookies";
 import {
   trackPurchase,
   trackBeginCheckout,
@@ -20,12 +21,21 @@ import {
  * Access: /pixel-tester
  */
 const PixelTester = () => {
+  const { preferences, acceptAll, resetConsent } = useCookies();
   const [value, setValue] = useState("150");
   const [currency] = useState("EUR");
   const [transactionId, setTransactionId] = useState(`TEST-${Date.now()}`);
   const [carName, setCarName] = useState("Mercedes-Benz SLK");
   const [carId, setCarId] = useState("test-slk");
   const [days, setDays] = useState("3");
+  const [pixelLoaded, setPixelLoaded] = useState(false);
+
+  useEffect(() => {
+    const check = () => setPixelLoaded(typeof (window as any).fbq === "function");
+    check();
+    const t = setInterval(check, 1000);
+    return () => clearInterval(t);
+  }, []);
 
   const fireFbq = (eventName: string, params?: Record<string, unknown>, opts?: Record<string, unknown>) => {
     const fbq = (window as any).fbq;
@@ -116,6 +126,46 @@ const PixelTester = () => {
             <strong>Meta Events Manager → Test Events</strong> ir <strong>GTM Preview</strong>.
           </p>
         </div>
+
+        <Card className={pixelLoaded ? "border-green-500/50" : "border-destructive/50"}>
+          <CardHeader>
+            <CardTitle className="text-base">
+              Consent & Pixel būsena{" "}
+              {pixelLoaded ? (
+                <span className="text-green-600">✅ fbq aktyvus</span>
+              ) : (
+                <span className="text-destructive">❌ fbq nepakrautas</span>
+              )}
+            </CardTitle>
+            <CardDescription>
+              Marketing slapukai: <strong>{preferences.marketing ? "PRIIMTI ✅" : "ATMESTI ❌"}</strong>
+              {" · "}Analytics:{" "}
+              <strong>{preferences.analytics ? "PRIIMTI ✅" : "ATMESTI ❌"}</strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              onClick={() => {
+                acceptAll();
+                toast.success("Visi slapukai priimti. Perkraunu puslapį, kad fbq pasileistų...");
+                setTimeout(() => window.location.reload(), 800);
+              }}
+            >
+              Priimti visus slapukus + reload
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                resetConsent();
+                toast.info("Consent atstatytas. Banner'is turėtų pasirodyti.");
+              }}
+            >
+              Reset consent (rodyti banner'į)
+            </Button>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
