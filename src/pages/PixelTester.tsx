@@ -127,6 +127,46 @@ const PixelTester = () => {
           </p>
         </div>
 
+        <Card className={pixelLoaded ? "border-green-500/50" : "border-destructive/50"}>
+          <CardHeader>
+            <CardTitle className="text-base">
+              Consent & Pixel būsena{" "}
+              {pixelLoaded ? (
+                <span className="text-green-600">✅ fbq aktyvus</span>
+              ) : (
+                <span className="text-destructive">❌ fbq nepakrautas</span>
+              )}
+            </CardTitle>
+            <CardDescription>
+              Marketing slapukai: <strong>{preferences.marketing ? "PRIIMTI ✅" : "ATMESTI ❌"}</strong>
+              {" · "}Analytics:{" "}
+              <strong>{preferences.analytics ? "PRIIMTI ✅" : "ATMESTI ❌"}</strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              onClick={() => {
+                acceptAll();
+                toast.success("Visi slapukai priimti. Perkraunu puslapį, kad fbq pasileistų...");
+                setTimeout(() => window.location.reload(), 800);
+              }}
+            >
+              Priimti visus slapukus + reload
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                resetConsent();
+                toast.info("Consent atstatytas. Banner'is turėtų pasirodyti.");
+              }}
+            >
+              Reset consent (rodyti banner'į)
+            </Button>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Test parametrai</CardTitle>
