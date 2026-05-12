@@ -29,6 +29,7 @@ import ReservationServices from "./pages/ReservationServices";
 import ReservationTerms from "./pages/ReservationTerms";
 import ReservationReview from "./pages/ReservationReview";
 import SEOChecklist from "./pages/SEOChecklist";
+import PixelTester from "./pages/PixelTester";
 
 const queryClient = new QueryClient();
 
@@ -121,6 +122,9 @@ const App = () => (
             
             {/* SEO Checklist */}
             <Route path="/seo-checklist" element={<SEOChecklist />} />
+
+            {/* Pixel / GA4 Event Tester (dev only, not linked anywhere) */}
+            <Route path="/pixel-tester" element={<PixelTester />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
