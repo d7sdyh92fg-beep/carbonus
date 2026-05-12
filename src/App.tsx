@@ -29,6 +29,7 @@ import ReservationServices from "./pages/ReservationServices";
 import ReservationTerms from "./pages/ReservationTerms";
 import ReservationReview from "./pages/ReservationReview";
 import SEOChecklist from "./pages/SEOChecklist";
+import PixelTester from "./pages/PixelTester";
 
 const queryClient = new QueryClient();
 
