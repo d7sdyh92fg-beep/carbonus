@@ -21,12 +21,21 @@ import {
  * Access: /pixel-tester
  */
 const PixelTester = () => {
+  const { preferences, acceptAll, resetConsent } = useCookies();
   const [value, setValue] = useState("150");
   const [currency] = useState("EUR");
   const [transactionId, setTransactionId] = useState(`TEST-${Date.now()}`);
   const [carName, setCarName] = useState("Mercedes-Benz SLK");
   const [carId, setCarId] = useState("test-slk");
   const [days, setDays] = useState("3");
+  const [pixelLoaded, setPixelLoaded] = useState(false);
+
+  useEffect(() => {
+    const check = () => setPixelLoaded(typeof (window as any).fbq === "function");
+    check();
+    const t = setInterval(check, 1000);
+    return () => clearInterval(t);
+  }, []);
 
   const fireFbq = (eventName: string, params?: Record<string, unknown>, opts?: Record<string, unknown>) => {
     const fbq = (window as any).fbq;
