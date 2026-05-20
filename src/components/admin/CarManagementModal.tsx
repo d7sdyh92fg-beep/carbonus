@@ -177,7 +177,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
           )
         `)
         .eq('car_id', carId)
-        .in('status', ['paid', 'pending', 'requested', 'picked_up'])
+        .in('status', ['paid', 'pending', 'requested', 'picked_up', 'awaiting_payment', 'completed', 'returned'])
         .is('deleted_at', null)
         .order('start_date', { ascending: true });
 
