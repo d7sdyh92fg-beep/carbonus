@@ -1113,29 +1113,33 @@ const Admin = () => {
                              <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
                                <TableCell>
                                  <div className="flex gap-2 flex-wrap">
-                                   <Button
-                                     variant="secondary"
-                                     size="sm"
-                                     onClick={() => handleReviewReservation(reservation)}
-                                   >
-                                     <FileText className="h-4 w-4" />
-                                   </Button>
-                                   <Button
-                                     variant="outline"
-                                     size="sm"
-                                     onClick={() => handlePricingOverride(reservation)}
-                                     title="Nustatyti specialią kainą"
-                                   >
-                                     <DollarSign className="h-4 w-4" />
-                                   </Button>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
-                                      title="Sąskaita faktūra"
-                                    >
-                                      <Receipt className="h-4 w-4" />
-                                    </Button>
+                                   {reservation.status !== 'phone_reservation' && (
+                                     <>
+                                       <Button
+                                         variant="secondary"
+                                         size="sm"
+                                         onClick={() => handleReviewReservation(reservation)}
+                                       >
+                                         <FileText className="h-4 w-4" />
+                                       </Button>
+                                       <Button
+                                         variant="outline"
+                                         size="sm"
+                                         onClick={() => handlePricingOverride(reservation)}
+                                         title="Nustatyti specialią kainą"
+                                       >
+                                         <DollarSign className="h-4 w-4" />
+                                       </Button>
+                                       <Button
+                                         variant="outline"
+                                         size="sm"
+                                         onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                         title="Sąskaita faktūra"
+                                       >
+                                         <Receipt className="h-4 w-4" />
+                                       </Button>
+                                     </>
+                                   )}
                                    {reservation.status === 'requested' && (
                                     <>
                                       <Button
@@ -1172,6 +1176,7 @@ const Admin = () => {
                                   </Button>
                                 </div>
                               </TableCell>
+
                             </TableRow>
                           ))
                           )}
