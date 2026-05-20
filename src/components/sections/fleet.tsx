@@ -127,7 +127,7 @@ export function Fleet() {
       fuel: "Dyzelinas",
       transmission: "Automatinė",
       rating: 4.8,
-      year: 2025,
+      year: 2026,
       features: ["8 keleivių vietos", "Slankiosios durys", "Erdvus salonas"]
     },
     {

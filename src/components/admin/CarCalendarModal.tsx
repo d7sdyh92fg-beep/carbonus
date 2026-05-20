@@ -53,7 +53,7 @@ const CarCalendarModal: React.FC<CarCalendarModalProps> = ({ isOpen, onClose, ca
           )
         `)
         .eq('car_id', carId)
-        .in('status', ['paid', 'pending', 'requested', 'picked_up'])
+        .in('status', ['paid', 'pending', 'requested', 'picked_up', 'completed', 'returned', 'awaiting_payment'])
         .is('deleted_at', null)
         .order('start_date', { ascending: true });
 

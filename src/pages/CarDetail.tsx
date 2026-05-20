@@ -277,7 +277,7 @@ const CarDetail = () => {
       fuel: "Dyzelinas",
       transmission: "Automatinė",
       rating: 4.8,
-      year: "2025",
+      year: "2026",
       doors: "5",
       trunk: "2763 L (max)",
       engineType: "2.2L Diesel 180 AG"
