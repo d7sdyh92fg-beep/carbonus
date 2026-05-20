@@ -697,6 +697,17 @@ export const translations = {
         feature6: "10 colių jutiklinis ekranas",
         feature7: "Android Auto ir CarPlay",
         feature8: "Susidūrimo stabdymo asistentas"
+      },
+      "8": {
+        description: "Hyundai Bayon Cross 2026 – visiškai naujas, modernus miesto krosoveris su 1.0 T-GDi 100 AG benzininiu varikliu ir 7 laipsnių automatine dviguba sankaba (7DCT). „Vibrant Blue\" perlamutrinė mėlyna spalva, dvispalvis stogas, ekonomiškas ir patogus vairavimui mieste bei tolimoms kelionėms. Idealus pasirinkimas tiems, kas ieško naujo automobilio su moderniausiomis technologijomis.",
+        feature1: "Naujas 2026 m. automobilis",
+        feature2: "Automatinė 7 laipsnių pavarų dėžė (7DCT)",
+        feature3: "1.0L T-GDi 100 AG benzininis variklis",
+        feature4: "Ekonomiškas miesto krosoveris",
+        feature5: "Moderni LED apšvietimo sistema",
+        feature6: "Skaitmeninė prietaisų skydelio sistema",
+        feature7: "Apple CarPlay ir Android Auto",
+        feature8: "Pažangios saugos sistemos"
       }
     },
 
@@ -2609,6 +2620,17 @@ export const translations = {
         feature6: "10-inch touchscreen display",
         feature7: "Android Auto and CarPlay",
         feature8: "Collision braking assistant"
+      },
+      "8": {
+        description: "Hyundai Bayon Cross 2026 – a brand new modern city crossover with a 1.0 T-GDi 100 HP petrol engine and 7-speed dual-clutch automatic transmission (7DCT). Vibrant Blue pearlescent color, two-tone roof, economical and comfortable for both city driving and long trips. Perfect choice for those who want a new car with the latest technology.",
+        feature1: "Brand new 2026 vehicle",
+        feature2: "7-speed automatic transmission (7DCT)",
+        feature3: "1.0L T-GDi 100 HP petrol engine",
+        feature4: "Economical city crossover",
+        feature5: "Modern LED lighting system",
+        feature6: "Digital instrument cluster",
+        feature7: "Apple CarPlay and Android Auto",
+        feature8: "Advanced safety systems"
       }
     },
 
