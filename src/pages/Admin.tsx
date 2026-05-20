@@ -723,7 +723,7 @@ const Admin = () => {
 
   // Filter reservations
   const activeReservations = reservations.filter(r => 
-    ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up'].includes(r.status)
+    ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up', 'phone_reservation'].includes(r.status)
   );
   
   const completedReservations = reservations.filter(r => 
@@ -740,6 +740,7 @@ const Admin = () => {
       picked_up: 'default',
       denied: 'destructive',
       awaiting_payment: 'secondary',
+      phone_reservation: 'default',
     } as const;
 
     const labels = {
@@ -751,6 +752,7 @@ const Admin = () => {
       picked_up: 'Atsiimta',
       denied: 'Atmesta',
       awaiting_payment: 'Laukiama apmokėjimo',
+      phone_reservation: '📞 Telefoninė',
     } as const;
 
     const colors = {
@@ -762,6 +764,7 @@ const Admin = () => {
       completed: 'bg-gray-100 text-gray-800 border-gray-300',
       pending: 'bg-gray-100 text-gray-800 border-gray-300',
       awaiting_payment: 'bg-orange-100 text-orange-800 border-orange-300',
+      phone_reservation: 'bg-blue-100 text-blue-800 border-blue-300',
     } as const;
 
     const statusOptions = [
@@ -772,7 +775,17 @@ const Admin = () => {
       { value: 'completed', label: 'Baigta' },
     ];
 
+    // Phone reservations are non-clickable (no status workflow)
+    if (status === 'phone_reservation') {
+      return (
+        <Badge variant="default" className={colors.phone_reservation}>
+          {labels.phone_reservation}
+        </Badge>
+      );
+    }
+
     if (clickable && reservationId) {
+
       return (
         <Select value={status} onValueChange={(value) => handleStatusChange(reservationId, value)}>
           <SelectTrigger className="h-auto w-auto border-0 p-0 hover:bg-transparent">
