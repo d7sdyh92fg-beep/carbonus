@@ -225,7 +225,7 @@ export function Fleet() {
                     )}
                     {car.id === "8" && loadedImages.has(car.id) && (
                       <div 
-                        className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-[88%] h-6 rounded-[50%]"
+                        className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[88%] h-6 rounded-[50%]"
                         style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
                       />
                     )}
