@@ -234,24 +234,93 @@ const Admin = () => {
 
   const fetchReservations = async () => {
     try {
-      const { data, error } = await supabase
-        .from('reservations')
-        .select(`
-          *,
-          customers (
-            id,
-            first_name,
-            last_name,
-            email,
-            phone,
-            address
-          )
-        `)
-        .is('deleted_at', null)
-        .order('created_at', { ascending: false });
+      const [resResult, phoneResult, carsResult] = await Promise.all([
+        supabase
+          .from('reservations')
+          .select(`
+            *,
+            customers (
+              id,
+              first_name,
+              last_name,
+              email,
+              phone,
+              address
+            )
+          `)
+          .is('deleted_at', null)
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('car_blocked_dates')
+          .select('*')
+          .eq('reservation_type', 'phone_reservation')
+          .order('blocked_date', { ascending: true }),
+        supabase.from('cars').select('id, name'),
+      ]);
 
-      if (error) throw error;
-      setReservations(data || []);
+      if (resResult.error) throw resResult.error;
+
+      // Group phone_reservation blocked_dates into consecutive ranges per (car_id, contact_name, contact_phone, reason)
+      const carNameMap = new Map<string, string>();
+      (carsResult.data || []).forEach((c: any) => carNameMap.set(c.id, c.name));
+
+      const phoneRows = (phoneResult.data || []) as any[];
+      const groups = new Map<string, any[]>();
+      phoneRows.forEach(row => {
+        const key = `${row.car_id}|${row.contact_name || ''}|${row.contact_phone || ''}|${row.reason || ''}`;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key)!.push(row);
+      });
+
+      const phoneReservations: Reservation[] = [];
+      groups.forEach((rows) => {
+        rows.sort((a, b) => a.blocked_date.localeCompare(b.blocked_date));
+        let runStart = rows[0];
+        let prev = rows[0];
+        const flush = (start: any, end: any) => {
+          const startDate = new Date(start.blocked_date + 'T12:00:00');
+          const endDate = new Date(end.blocked_date + 'T12:00:00');
+          const days = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+          phoneReservations.push({
+            id: `phone-${start.id}`,
+            car_name: carNameMap.get(start.car_id) || start.car_id,
+            car_id: start.car_id,
+            start_date: start.blocked_date,
+            end_date: end.blocked_date,
+            rental_days: days,
+            daily_rate: 0,
+            total_rental_cost: 0,
+            deposit_amount: 0,
+            total_amount: 0,
+            status: 'phone_reservation',
+            created_at: start.created_at,
+            updated_at: start.created_at,
+            customers: {
+              id: '',
+              first_name: start.contact_name || 'Telefoninė',
+              last_name: '',
+              email: start.reason || '',
+              phone: start.contact_phone || '',
+            },
+          } as Reservation);
+        };
+        for (let i = 1; i < rows.length; i++) {
+          const prevDate = new Date(prev.blocked_date + 'T12:00:00');
+          const currDate = new Date(rows[i].blocked_date + 'T12:00:00');
+          const diff = (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24);
+          if (diff > 1) {
+            flush(runStart, prev);
+            runStart = rows[i];
+          }
+          prev = rows[i];
+        }
+        flush(runStart, prev);
+      });
+
+      const merged = [...(resResult.data || []), ...phoneReservations].sort(
+        (a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+      setReservations(merged as any);
     } catch (error: any) {
       toast({
         title: "Klaida",
@@ -263,16 +332,43 @@ const Admin = () => {
     }
   };
 
+
   const deleteReservation = async (id: string) => {
+    const isPhone = id.startsWith('phone-');
     setConfirmDialog({
       isOpen: true,
-      title: "Ar tikrai norite ištrinti šią rezervaciją?",
-      description: "Rezervacija bus perkelta į šiukšlinę. Galėsite ją atkurti.",
+      title: isPhone ? "Ar tikrai norite ištrinti šią telefoninę rezervaciją?" : "Ar tikrai norite ištrinti šią rezervaciją?",
+      description: isPhone ? "Telefoninė rezervacija bus visam laikui pašalinta iš kalendoriaus." : "Rezervacija bus perkelta į šiukšlinę. Galėsite ją atkurti.",
       variant: "destructive",
       onConfirm: async () => {
         try {
+          if (isPhone) {
+            // Find the source row by the seed id stored in synthetic id
+            const seedId = id.replace('phone-', '');
+            const { data: seedRow } = await supabase
+              .from('car_blocked_dates')
+              .select('*')
+              .eq('id', seedId)
+              .maybeSingle();
+
+            if (seedRow) {
+              const { error } = await supabase
+                .from('car_blocked_dates')
+                .delete()
+                .eq('car_id', (seedRow as any).car_id)
+                .eq('reservation_type', 'phone_reservation')
+                .eq('contact_name', (seedRow as any).contact_name)
+                .eq('contact_phone', (seedRow as any).contact_phone)
+                .eq('reason', (seedRow as any).reason);
+              if (error) throw error;
+            }
+
+            toast({ title: "Ištrinta", description: "Telefoninė rezervacija pašalinta." });
+            fetchReservations();
+            return;
+          }
+
           const { data: { user } } = await supabase.auth.getUser();
-          
           const { error } = await supabase
             .from('reservations')
             .update({ 
@@ -301,6 +397,7 @@ const Admin = () => {
       }
     });
   };
+
 
   const cancelReservation = async (id: string) => {
     setConfirmDialog({
@@ -626,7 +723,7 @@ const Admin = () => {
 
   // Filter reservations
   const activeReservations = reservations.filter(r => 
-    ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up'].includes(r.status)
+    ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up', 'phone_reservation'].includes(r.status)
   );
   
   const completedReservations = reservations.filter(r => 
@@ -643,6 +740,7 @@ const Admin = () => {
       picked_up: 'default',
       denied: 'destructive',
       awaiting_payment: 'secondary',
+      phone_reservation: 'default',
     } as const;
 
     const labels = {
@@ -654,6 +752,7 @@ const Admin = () => {
       picked_up: 'Atsiimta',
       denied: 'Atmesta',
       awaiting_payment: 'Laukiama apmokėjimo',
+      phone_reservation: '📞 Telefoninė',
     } as const;
 
     const colors = {
@@ -665,6 +764,7 @@ const Admin = () => {
       completed: 'bg-gray-100 text-gray-800 border-gray-300',
       pending: 'bg-gray-100 text-gray-800 border-gray-300',
       awaiting_payment: 'bg-orange-100 text-orange-800 border-orange-300',
+      phone_reservation: 'bg-blue-100 text-blue-800 border-blue-300',
     } as const;
 
     const statusOptions = [
@@ -675,7 +775,17 @@ const Admin = () => {
       { value: 'completed', label: 'Baigta' },
     ];
 
+    // Phone reservations are non-clickable (no status workflow)
+    if (status === 'phone_reservation') {
+      return (
+        <Badge variant="default" className={colors.phone_reservation}>
+          {labels.phone_reservation}
+        </Badge>
+      );
+    }
+
     if (clickable && reservationId) {
+
       return (
         <Select value={status} onValueChange={(value) => handleStatusChange(reservationId, value)}>
           <SelectTrigger className="h-auto w-auto border-0 p-0 hover:bg-transparent">
@@ -1003,29 +1113,33 @@ const Admin = () => {
                              <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
                                <TableCell>
                                  <div className="flex gap-2 flex-wrap">
-                                   <Button
-                                     variant="secondary"
-                                     size="sm"
-                                     onClick={() => handleReviewReservation(reservation)}
-                                   >
-                                     <FileText className="h-4 w-4" />
-                                   </Button>
-                                   <Button
-                                     variant="outline"
-                                     size="sm"
-                                     onClick={() => handlePricingOverride(reservation)}
-                                     title="Nustatyti specialią kainą"
-                                   >
-                                     <DollarSign className="h-4 w-4" />
-                                   </Button>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
-                                      title="Sąskaita faktūra"
-                                    >
-                                      <Receipt className="h-4 w-4" />
-                                    </Button>
+                                   {reservation.status !== 'phone_reservation' && (
+                                     <>
+                                       <Button
+                                         variant="secondary"
+                                         size="sm"
+                                         onClick={() => handleReviewReservation(reservation)}
+                                       >
+                                         <FileText className="h-4 w-4" />
+                                       </Button>
+                                       <Button
+                                         variant="outline"
+                                         size="sm"
+                                         onClick={() => handlePricingOverride(reservation)}
+                                         title="Nustatyti specialią kainą"
+                                       >
+                                         <DollarSign className="h-4 w-4" />
+                                       </Button>
+                                       <Button
+                                         variant="outline"
+                                         size="sm"
+                                         onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                         title="Sąskaita faktūra"
+                                       >
+                                         <Receipt className="h-4 w-4" />
+                                       </Button>
+                                     </>
+                                   )}
                                    {reservation.status === 'requested' && (
                                     <>
                                       <Button
@@ -1062,6 +1176,7 @@ const Admin = () => {
                                   </Button>
                                 </div>
                               </TableCell>
+
                             </TableRow>
                           ))
                           )}
