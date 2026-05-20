@@ -212,7 +212,7 @@ export function Fleet() {
                         : car.id === "5"
                         ? "scale-[1.30] group-hover:scale-[1.35] translate-y-3"
                         : car.id === "8"
-                        ? "scale-[1.55] group-hover:scale-[1.60] translate-y-3"
+                        ? "scale-[1.55] group-hover:scale-[1.60] translate-y-7"
                         : "scale-100 group-hover:scale-105 translate-y-4"
                     }`}
                     />
