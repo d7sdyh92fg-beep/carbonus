@@ -81,6 +81,12 @@ const cars = [
     year: '2025', 
     available: true
   },
+  { 
+    id: '8', 
+    name: 'Hyundai Bayon Cross', 
+    year: '2026', 
+    available: true
+  },
 ];
 
 
