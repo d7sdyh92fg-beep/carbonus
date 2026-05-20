@@ -334,15 +334,41 @@ const Admin = () => {
 
 
   const deleteReservation = async (id: string) => {
+    const isPhone = id.startsWith('phone-');
     setConfirmDialog({
       isOpen: true,
-      title: "Ar tikrai norite ištrinti šią rezervaciją?",
-      description: "Rezervacija bus perkelta į šiukšlinę. Galėsite ją atkurti.",
+      title: isPhone ? "Ar tikrai norite ištrinti šią telefoninę rezervaciją?" : "Ar tikrai norite ištrinti šią rezervaciją?",
+      description: isPhone ? "Telefoninė rezervacija bus visam laikui pašalinta iš kalendoriaus." : "Rezervacija bus perkelta į šiukšlinę. Galėsite ją atkurti.",
       variant: "destructive",
       onConfirm: async () => {
         try {
+          if (isPhone) {
+            // Find the source row by the seed id stored in synthetic id
+            const seedId = id.replace('phone-', '');
+            const { data: seedRow } = await supabase
+              .from('car_blocked_dates')
+              .select('*')
+              .eq('id', seedId)
+              .maybeSingle();
+
+            if (seedRow) {
+              const { error } = await supabase
+                .from('car_blocked_dates')
+                .delete()
+                .eq('car_id', (seedRow as any).car_id)
+                .eq('reservation_type', 'phone_reservation')
+                .eq('contact_name', (seedRow as any).contact_name)
+                .eq('contact_phone', (seedRow as any).contact_phone)
+                .eq('reason', (seedRow as any).reason);
+              if (error) throw error;
+            }
+
+            toast({ title: "Ištrinta", description: "Telefoninė rezervacija pašalinta." });
+            fetchReservations();
+            return;
+          }
+
           const { data: { user } } = await supabase.auth.getUser();
-          
           const { error } = await supabase
             .from('reservations')
             .update({ 
@@ -371,6 +397,7 @@ const Admin = () => {
       }
     });
   };
+
 
   const cancelReservation = async (id: string) => {
     setConfirmDialog({
