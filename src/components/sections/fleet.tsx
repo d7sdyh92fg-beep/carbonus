@@ -15,6 +15,7 @@ import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
 import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
+import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
 interface Car {
   id: string;
