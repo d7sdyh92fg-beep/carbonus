@@ -31,6 +31,7 @@ import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
 import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
+import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
 interface Car {
   id: string;
@@ -295,10 +296,27 @@ const Cars = () => {
         "Slankiosios durys",
         "Erdvus salonas"
       ],
+    },
+    {
+      id: "8",
+      name: "Hyundai Bayon Cross",
+      price: "nuo 50 EUR",
+      image: hyundaiBayonSide,
+      category: "Krosoveris",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 5.0,
+      year: 2026,
+      features: [
+        "Automatinė pavarų dėžė",
+        "Modernus LED apšvietimas",
+        "Naujas automobilis"
+      ],
     }
   ];
 
-  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas", "Vienatūris"];
+  const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas", "Vienatūris", "Krosoveris"];
 
   // IDs of sold cars to hide from public view
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
