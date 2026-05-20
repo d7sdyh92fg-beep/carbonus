@@ -131,6 +131,19 @@ export function Fleet() {
       features: ["8 keleivių vietos", "Slankiosios durys", "Erdvus salonas"]
     },
     {
+      id: "8",
+      name: "Hyundai Bayon Cross",
+      price: "50 EUR",
+      image: hyundaiBayonSide,
+      category: "Krosoveris",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 5.0,
+      year: 2026,
+      features: ["Automatinė pavarų dėžė", "Modernus LED apšvietimas", "Naujas automobilis"]
+    },
+    {
       id: "3",
       name: "Volkswagen Passat",
       price: "30 EUR",
