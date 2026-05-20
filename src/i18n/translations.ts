@@ -162,6 +162,7 @@ export const translations = {
         hecbekas: "Hečbekas",
         kabrioletas: "Kabrioletas",
         vienaturis: "Vienatūris",
+        krosoveris: "Krosoveris",
       },
       featuresList: {
         airConditioning: "Kondicionierius",
@@ -2151,6 +2152,7 @@ export const translations = {
         hecbekas: "Hatchback",
         kabrioletas: "Convertible",
         vienaturis: "Van",
+        krosoveris: "Crossover",
       },
       featuresList: {
         airConditioning: "Air Conditioning",

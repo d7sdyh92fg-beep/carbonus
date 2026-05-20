@@ -15,6 +15,7 @@ import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
 import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
+import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
 interface Car {
   id: string;
@@ -128,6 +129,19 @@ export function Fleet() {
       rating: 4.8,
       year: 2025,
       features: ["8 keleivių vietos", "Slankiosios durys", "Erdvus salonas"]
+    },
+    {
+      id: "8",
+      name: "Hyundai Bayon Cross",
+      price: "50 EUR",
+      image: hyundaiBayonSide,
+      category: "Krosoveris",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 5.0,
+      year: 2026,
+      features: ["Automatinė pavarų dėžė", "Modernus LED apšvietimas", "Naujas automobilis"]
     },
     {
       id: "3",

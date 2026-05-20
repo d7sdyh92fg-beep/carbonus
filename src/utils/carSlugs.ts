@@ -58,6 +58,13 @@ export const CAR_SLUGS: CarSlugMapping[] = [
     slugEn: "citroen-spacetourer-rental",
     name: "Citroën SpaceTourer",
     category: "Vienatūris"
+  },
+  {
+    id: "8",
+    slug: "hyundai-bayon-cross-nuoma",
+    slugEn: "hyundai-bayon-cross-rental",
+    name: "Hyundai Bayon Cross",
+    category: "Krosoveris"
   }
 ];
 
