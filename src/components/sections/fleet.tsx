@@ -212,14 +212,20 @@ export function Fleet() {
                         : car.id === "5"
                         ? "scale-[1.30] group-hover:scale-[1.35] translate-y-3"
                         : car.id === "8"
-                        ? "scale-[1.55] group-hover:scale-[1.60] translate-y-3"
+                        ? "scale-[1.55] group-hover:scale-[1.60] translate-y-7"
                         : "scale-100 group-hover:scale-105 translate-y-4"
                     }`}
                     />
                     {/* Shadow under cars */}
-                    {(car.id === "5" || car.id === "6" || car.id === "8") && loadedImages.has(car.id) && (
+                    {(car.id === "5" || car.id === "6") && loadedImages.has(car.id) && (
                       <div 
                         className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                        style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
+                      />
+                    )}
+                    {car.id === "8" && loadedImages.has(car.id) && (
+                      <div 
+                        className="absolute bottom-[8%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
                         style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
                       />
                     )}
