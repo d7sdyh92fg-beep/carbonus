@@ -234,24 +234,93 @@ const Admin = () => {
 
   const fetchReservations = async () => {
     try {
-      const { data, error } = await supabase
-        .from('reservations')
-        .select(`
-          *,
-          customers (
-            id,
-            first_name,
-            last_name,
-            email,
-            phone,
-            address
-          )
-        `)
-        .is('deleted_at', null)
-        .order('created_at', { ascending: false });
+      const [resResult, phoneResult, carsResult] = await Promise.all([
+        supabase
+          .from('reservations')
+          .select(`
+            *,
+            customers (
+              id,
+              first_name,
+              last_name,
+              email,
+              phone,
+              address
+            )
+          `)
+          .is('deleted_at', null)
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('car_blocked_dates')
+          .select('*')
+          .eq('reservation_type', 'phone_reservation')
+          .order('blocked_date', { ascending: true }),
+        supabase.from('cars').select('id, name'),
+      ]);
 
-      if (error) throw error;
-      setReservations(data || []);
+      if (resResult.error) throw resResult.error;
+
+      // Group phone_reservation blocked_dates into consecutive ranges per (car_id, contact_name, contact_phone, reason)
+      const carNameMap = new Map<string, string>();
+      (carsResult.data || []).forEach((c: any) => carNameMap.set(c.id, c.name));
+
+      const phoneRows = (phoneResult.data || []) as any[];
+      const groups = new Map<string, any[]>();
+      phoneRows.forEach(row => {
+        const key = `${row.car_id}|${row.contact_name || ''}|${row.contact_phone || ''}|${row.reason || ''}`;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key)!.push(row);
+      });
+
+      const phoneReservations: Reservation[] = [];
+      groups.forEach((rows) => {
+        rows.sort((a, b) => a.blocked_date.localeCompare(b.blocked_date));
+        let runStart = rows[0];
+        let prev = rows[0];
+        const flush = (start: any, end: any) => {
+          const startDate = new Date(start.blocked_date + 'T12:00:00');
+          const endDate = new Date(end.blocked_date + 'T12:00:00');
+          const days = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+          phoneReservations.push({
+            id: `phone-${start.id}`,
+            car_name: carNameMap.get(start.car_id) || start.car_id,
+            car_id: start.car_id,
+            start_date: start.blocked_date,
+            end_date: end.blocked_date,
+            rental_days: days,
+            daily_rate: 0,
+            total_rental_cost: 0,
+            deposit_amount: 0,
+            total_amount: 0,
+            status: 'phone_reservation',
+            created_at: start.created_at,
+            updated_at: start.created_at,
+            customers: {
+              id: '',
+              first_name: start.contact_name || 'Telefoninė',
+              last_name: '',
+              email: start.reason || '',
+              phone: start.contact_phone || '',
+            },
+          } as Reservation);
+        };
+        for (let i = 1; i < rows.length; i++) {
+          const prevDate = new Date(prev.blocked_date + 'T12:00:00');
+          const currDate = new Date(rows[i].blocked_date + 'T12:00:00');
+          const diff = (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24);
+          if (diff > 1) {
+            flush(runStart, prev);
+            runStart = rows[i];
+          }
+          prev = rows[i];
+        }
+        flush(runStart, prev);
+      });
+
+      const merged = [...(resResult.data || []), ...phoneReservations].sort(
+        (a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+      setReservations(merged as any);
     } catch (error: any) {
       toast({
         title: "Klaida",
@@ -262,6 +331,7 @@ const Admin = () => {
       setIsLoading(false);
     }
   };
+
 
   const deleteReservation = async (id: string) => {
     setConfirmDialog({
