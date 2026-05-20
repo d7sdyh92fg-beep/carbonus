@@ -38,6 +38,9 @@ import mercedesSlkRear from "@/assets/mercedes-slk-rear-studio.png";
 import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right-studio.png";
 import citroenSpacetourerFront from "@/assets/citroen-spacetourer-front-studio.png";
 import citroenSpacetourerRear from "@/assets/citroen-spacetourer-rear-studio.png";
+import hyundaiBayonFront from "@/assets/hyundai-bayon-front-studio.png";
+import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
+import hyundaiBayonRear from "@/assets/hyundai-bayon-rear-studio.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -278,6 +281,26 @@ const CarDetail = () => {
       doors: "5",
       trunk: "2763 L (max)",
       engineType: "2.2L Diesel 180 AG"
+    },
+    "8": {
+      id: "8",
+      name: "Hyundai Bayon Cross",
+      price: "nuo 50 EUR",
+      image: hyundaiBayonFront,
+      images: [
+        hyundaiBayonFront,
+        hyundaiBayonSide,
+        hyundaiBayonRear
+      ],
+      category: "Krosoveris",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 5.0,
+      year: "2026",
+      doors: "5",
+      trunk: "411 L",
+      engineType: "1.0L T-GDi 100 AG"
     }
   };
 
