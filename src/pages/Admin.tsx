@@ -871,6 +871,8 @@ const Admin = () => {
                                     ? "scale-[1.35] translate-y-4"
                                     : car.id === "4"
                                     ? "scale-[1.08] translate-y-4"
+                                    : car.id === "8"
+                                    ? "scale-[1.45] translate-y-2"
                                     : "scale-100 translate-y-2"
                                 }`}
                               />
