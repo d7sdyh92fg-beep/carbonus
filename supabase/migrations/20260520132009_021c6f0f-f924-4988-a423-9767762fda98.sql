@@ -1,0 +1,1 @@
+UPDATE public.cars SET year = 2026 WHERE id = '7';
