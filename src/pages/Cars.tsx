@@ -434,11 +434,13 @@ const Cars = () => {
                             ? "scale-[1.65] group-hover:scale-[1.70] translate-y-4"
                             : car.id === "7"
                             ? "scale-[1.15] group-hover:scale-[1.20] translate-y-2"
+                            : car.id === "8"
+                            ? "scale-[1.45] group-hover:scale-[1.50] translate-y-3"
                             : "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
                         }`}
                       />
                       {/* Shadow under KIA CEED 2020 and Mercedes SLK only */}
-                      {(car.id === "5" || car.id === "6" || car.id === "7") && loadedImages.has(car.id) && (
+                      {(car.id === "5" || car.id === "6" || car.id === "7" || car.id === "8") && loadedImages.has(car.id) && (
                         <div 
                           className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
                           style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
