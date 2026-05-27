@@ -296,31 +296,37 @@ serve(async (req) => {
         }
 
         if (customer) {
-          // Generate proper contract PDF via dedicated function (includes lessor signature + full template)
           try {
-            const { data: pdfResp, error: pdfErr } = await supabase.functions.invoke('generate-contract-pdf', {
-              body: {
-                reservationId: reservation.id,
-                customerName: `${customer.first_name} ${customer.last_name}`,
-                customerEmail: customer.email,
-                customerPhone: customer.phone,
-                carName: reservation.car_name,
-                startDate: reservation.start_date,
-                endDate: reservation.end_date,
-                totalAmount: reservation.total_amount,
-                depositAmount: reservation.deposit_amount,
-                language: (reservation as any).language || 'lt',
-                skipEmail: true,
-              }
-            });
-            if (pdfErr) {
-              console.error('generate-contract-pdf error:', pdfErr);
-            } else if (pdfResp?.contractUrl) {
-              contractPdfUrl = pdfResp.contractUrl;
-              console.log('Contract PDF generated via generate-contract-pdf:', contractPdfUrl);
+            const pdfDoc = await PDFDocument.create();
+            const { font, fontBold } = await loadFonts(pdfDoc);
+            const todayStr = new Date().toLocaleDateString('lt-LT');
+
+            const pdfData = {
+              reservationId,
+              date: todayStr,
+              customer,
+              car,
+              reservation,
+              signatureBytes: null,
+            };
+
+            generateMainContractPage(pdfDoc, font, fontBold, pdfData);
+            generateAppendixPage(pdfDoc, font, fontBold, pdfData);
+
+            const pdfBytes = await pdfDoc.save();
+            const pdfFilePath = `${reservation.id}/nuomos_sutartis_${reservation.id}.pdf`;
+            
+            const { error: uploadError } = await supabase.storage
+              .from('contracts')
+              .upload(pdfFilePath, pdfBytes, { contentType: 'application/pdf', upsert: true });
+
+            if (!uploadError) {
+              contractPdfUrl = pdfFilePath;
+              await supabase.from('reservations').update({ contract_pdf_url: contractPdfUrl }).eq('id', reservation.id);
+              console.log('Contract PDF generated:', contractPdfUrl);
             }
           } catch (pdfError) {
-            console.error('Error invoking generate-contract-pdf:', pdfError);
+            console.error('Error generating contract PDF:', pdfError);
           }
 
           // Send confirmation email
