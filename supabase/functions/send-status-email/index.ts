@@ -664,7 +664,7 @@ serve(async (req) => {
           
           ${servicesHtml}
           
-          ${data.status === 'paid' ? `<p style="color:#6b7280; font-size:13px;">Sutartis pridėta kaip PDF priedas.</p>` : ''}
+          
         </div>
       `;
 
