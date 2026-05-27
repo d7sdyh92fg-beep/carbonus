@@ -582,35 +582,8 @@ serve(async (req) => {
       html: tmpl.html,
     };
 
-    // When marked as paid, attach the generated contract PDF (or fallback to static)
-    if (data.status === 'paid') {
-      try {
-        const language = data.language || 'lt';
-        
-        const generatedPdf = await downloadGeneratedPdf(supabase, data.reservationId);
-        
-        if (generatedPdf) {
-          console.log('Attaching generated contract PDF');
-          emailOptions.attachments = [{
-            filename: generatedPdf.filename,
-            content: generatedPdf.base64,
-          }];
-        } else {
-          const pdfUrl = getStaticPdfUrl(language);
-          console.log('Fallback: downloading static PDF from:', pdfUrl);
-          const base64Content = await downloadPdfAsBase64(pdfUrl);
-          const pdfFilename = language === 'en' 
-            ? 'carbonus-rental-agreement.pdf'
-            : 'carbonus-nuomos-sutartis.pdf';
-          emailOptions.attachments = [{
-            filename: pdfFilename,
-            content: base64Content,
-          }];
-        }
-      } catch (error) {
-        console.error('Error preparing PDF attachment:', error);
-      }
-    }
+    // Note: "paid" email no longer attaches a contract PDF.
+    // The full signed contract (c2) is generated and sent only on pickup via generate-contract-pdf.
 
     const response = await resend.emails.send(emailOptions);
     console.log('Status email sent to customer:', response?.id || response);
@@ -691,7 +664,7 @@ serve(async (req) => {
           
           ${servicesHtml}
           
-          ${data.status === 'paid' ? `<p style="color:#6b7280; font-size:13px;">Sutartis pridėta kaip PDF priedas.</p>` : ''}
+          
         </div>
       `;
 
