@@ -582,8 +582,58 @@ serve(async (req) => {
       html: tmpl.html,
     };
 
-    // Note: "paid" email no longer attaches a contract PDF.
-    // The full signed contract (c2) is generated and sent only on pickup via generate-contract-pdf.
+    // For "paid": generate a pre-signed contract (only lessor signature, no customer signature yet)
+    // and attach it. The fully co-signed contract is regenerated on pickup via generate-contract-pdf.
+    if (data.status === 'paid') {
+      try {
+        const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+        const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+        const language = data.language || 'lt';
+
+        // Trigger contract generation without signatureData → only lessor signature embedded.
+        // skipEmail=true: we attach the PDF to this status email ourselves.
+        const genResp = await fetch(`${supabaseUrl}/functions/v1/generate-contract-pdf`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${anonKey}`,
+            'apikey': anonKey,
+          },
+          body: JSON.stringify({
+            reservationId: data.reservationId,
+            customerName: `${customerDetails?.first_name || ''} ${customerDetails?.last_name || ''}`.trim(),
+            customerEmail: data.customerEmail,
+            carName: data.carName,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            totalAmount: data.totalAmount,
+            pickupTime: reservationDetails?.pickup_time,
+            returnTime: reservationDetails?.return_time,
+            language,
+            skipEmail: true,
+          }),
+        });
+
+        if (!genResp.ok) {
+          console.warn('generate-contract-pdf returned non-OK:', genResp.status, await genResp.text());
+        } else {
+          await genResp.json().catch(() => null);
+        }
+
+        const generatedPdf = await downloadGeneratedPdf(supabase, data.reservationId);
+        if (generatedPdf) {
+          console.log('Attaching pre-signed (lessor only) contract PDF');
+          emailOptions.attachments = [{
+            filename: generatedPdf.filename,
+            content: generatedPdf.base64,
+          }];
+        } else {
+          console.warn('No generated PDF available for paid email');
+        }
+      } catch (error) {
+        console.error('Error preparing pre-signed contract attachment:', error);
+      }
+    }
 
     const response = await resend.emails.send(emailOptions);
     console.log('Status email sent to customer:', response?.id || response);
@@ -663,6 +713,7 @@ serve(async (req) => {
           </div>
           
           ${servicesHtml}
+          ${data.status === 'paid' ? `<p style="color:#6b7280; font-size:13px;">Klientui išsiųsta sutartis su nuomotojo parašu (be kliento parašo). Pilna pasirašyta sutartis bus sugeneruota atsiėmimo metu.</p>` : ''}
           
           
         </div>
