@@ -713,6 +713,7 @@ serve(async (req) => {
           </div>
           
           ${servicesHtml}
+          ${data.status === 'paid' ? `<p style="color:#6b7280; font-size:13px;">Klientui išsiųsta sutartis su nuomotojo parašu (be kliento parašo). Pilna pasirašyta sutartis bus sugeneruota atsiėmimo metu.</p>` : ''}
           
           
         </div>
