@@ -113,6 +113,8 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
   const startEditing = () => {
     if (invoice?.items) {
       setEditingItems(JSON.parse(JSON.stringify(invoice.items)));
+      setEditingNumber(invoice.invoice_number);
+      setEditingIssueDate(invoice.issue_date);
     }
   };
 
