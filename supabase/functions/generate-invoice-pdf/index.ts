@@ -124,7 +124,10 @@ serve(async (req) => {
       invoiceNumber = invoiceData.invoice_number;
       sequenceNumber = invoiceData.sequence_number;
       invoiceYear = invoiceData.year;
-      issueDate = new Date();
+      // Default invoice issue date = reservation start (pickup) date, not generation date
+      issueDate = reservation.start_date
+        ? new Date(`${reservation.start_date}T12:00:00`)
+        : new Date();
       issueDateStr = `${issueDate.getFullYear()} ${String(issueDate.getMonth() + 1).padStart(2, '0')} ${String(issueDate.getDate()).padStart(2, '0')}`;
 
       const rentalDays = reservation.rental_days;
