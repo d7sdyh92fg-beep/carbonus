@@ -150,16 +150,29 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
 
   const handleSaveItems = async () => {
     if (!invoice || !editingItems) return;
+    if (!editingNumber.trim()) {
+      toast({ title: 'Klaida', description: 'Sąskaitos numeris privalomas', variant: 'destructive' });
+      return;
+    }
+    if (!editingIssueDate) {
+      toast({ title: 'Klaida', description: 'Data privaloma', variant: 'destructive' });
+      return;
+    }
     setIsSaving(true);
     try {
       const newTotal = getEditingTotal();
       const { error } = await supabase
         .from('invoices')
-        .update({ items: editingItems as any, total_amount: newTotal })
+        .update({
+          items: editingItems as any,
+          total_amount: newTotal,
+          invoice_number: editingNumber.trim(),
+          issue_date: editingIssueDate,
+        })
         .eq('id', invoice.id);
 
       if (error) throw error;
-      toast({ title: 'Eilutės išsaugotos' });
+      toast({ title: 'Pakeitimai išsaugoti', description: 'Spauskite "Pergeneruoti PDF", kad atnaujintumėte dokumentą.' });
       setEditingItems(null);
       await fetchExistingInvoice();
     } catch (err: any) {
