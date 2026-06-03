@@ -348,6 +348,26 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
                 {/* Invoice Items - View or Edit */}
                 {editingItems ? (
                   <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Sąskaitos numeris</Label>
+                        <Input
+                          value={editingNumber}
+                          onChange={(e) => setEditingNumber(e.target.value)}
+                          className="text-sm"
+                          maxLength={50}
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Išrašymo data</Label>
+                        <Input
+                          type="date"
+                          value={editingIssueDate}
+                          onChange={(e) => setEditingIssueDate(e.target.value)}
+                          className="text-sm"
+                        />
+                      </div>
+                    </div>
                     <div className="flex items-center justify-between">
                       <Label className="text-sm font-semibold">Sąskaitos eilutės</Label>
                       <Button variant="outline" size="sm" onClick={addItem}>
