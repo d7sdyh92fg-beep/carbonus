@@ -56,6 +56,8 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editingItems, setEditingItems] = useState<InvoiceItem[] | null>(null);
+  const [editingNumber, setEditingNumber] = useState<string>('');
+  const [editingIssueDate, setEditingIssueDate] = useState<string>('');
 
   useEffect(() => {
     if (isOpen && reservationId) {
