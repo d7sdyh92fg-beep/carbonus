@@ -429,6 +429,7 @@ const CarDetail = () => {
                 <img
                   src={getCurrentImage()}
                   alt={`${car.name} - Premium automobilių nuoma Druskininkuose - ${t('carData.' + car.id + '.description').substring(0, 100)}`}
+                  data-allow-save="true"
                   className={`max-w-full max-h-full mx-auto object-contain rounded-lg ${
                     car.id === "5" && currentImageIndex === 1 ? "scale-150" : ""
                   }`}
