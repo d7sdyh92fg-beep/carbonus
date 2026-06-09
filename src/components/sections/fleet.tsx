@@ -199,6 +199,7 @@ export function Fleet() {
                       src={car.image}
                       alt={car.name}
                       loading="eager"
+                      data-allow-save="true"
                       onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
                     className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
                       !loadedImages.has(car.id) ? "opacity-0" : "opacity-100"
