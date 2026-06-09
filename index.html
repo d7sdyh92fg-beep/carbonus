@@ -192,10 +192,10 @@
     <script type="module" src="/src/main.tsx"></script>
     <script>
       document.addEventListener('contextmenu', function(e) {
-        if (e.target.tagName === 'IMG') { e.preventDefault(); }
+        if (e.target.tagName === 'IMG' && e.target.dataset.allowSave !== 'true') { e.preventDefault(); }
       });
       document.addEventListener('dragstart', function(e) {
-        if (e.target.tagName === 'IMG') { e.preventDefault(); }
+        if (e.target.tagName === 'IMG' && e.target.dataset.allowSave !== 'true') { e.preventDefault(); }
       });
     </script>
   </body>
