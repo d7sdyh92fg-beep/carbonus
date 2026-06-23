@@ -127,6 +127,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Kalba:</strong> ${isLT ? 'Lietuvių' : 'English'}</p>
           </div>
 
+          ${packageHtmlAdmin}
           ${paymentHtmlAdmin}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
