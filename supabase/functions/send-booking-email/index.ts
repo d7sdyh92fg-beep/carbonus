@@ -21,6 +21,8 @@ interface BookingEmailRequest {
   rentalDays: number;
   totalAmount: number;
   depositAmount: number;
+  advancePayment?: number;
+  paymentMethod?: 'pay_now' | 'pay_at_counter' | string;
   language?: string;
   packageName?: string;
   packagePrice?: string;
