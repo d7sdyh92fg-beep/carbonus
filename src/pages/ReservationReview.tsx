@@ -250,9 +250,8 @@ export default function ReservationReview() {
 
       // Process Stripe payment
       const stripeAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
-      await processStripePayment(reservationId, stripeAmount, paymentMethod === 'pay_at_counter' ? 'advance' : 'full');
 
-      // Send notification email
+      // Send notification email BEFORE redirecting to Stripe (otherwise redirect cancels it)
       try {
         await supabase.functions.invoke('send-booking-email', {
           body: {
@@ -262,10 +261,13 @@ export default function ReservationReview() {
             carName: bookingData.carName,
             startDate: format(new Date(bookingData.startDate), 'yyyy-MM-dd'),
             endDate: format(new Date(bookingData.endDate), 'yyyy-MM-dd'),
+            pickupTime: bookingData.pickupTime || '10:00',
+            returnTime: bookingData.returnTime || '10:00',
             rentalDays: bookingData.rentalDays,
             totalAmount: totalAmount,
             depositAmount: bookingData.depositAmount || 200,
-            advancePayment: totalAmount,
+            advancePayment: stripeAmount,
+            paymentMethod: paymentMethod,
             language: language,
             packageName: bookingData.selectedPackage?.name || undefined,
             packagePrice: bookingData.selectedPackage?.priceDisplay || undefined,
@@ -273,14 +275,14 @@ export default function ReservationReview() {
         });
       } catch (emailError) {
         console.error('Email sending failed:', emailError);
-        
-        // Show warning toast but don't block booking
         toast({
           title: t('commonMessages.emailWarningTitle'),
           description: t('commonMessages.emailWarningDescription'),
           variant: 'default',
         });
       }
+
+      await processStripePayment(reservationId, stripeAmount, paymentMethod === 'pay_at_counter' ? 'advance' : 'full');
     } catch (error: any) {
       console.error('Booking error:', error);
       toast({
