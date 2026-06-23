@@ -157,6 +157,7 @@ const handler = async (req: Request): Promise<Response> => {
       to: [booking.customerEmail],
       subject: isLT ? `Rezervacijos patvirtinimas - ${booking.carName}` : `Booking Confirmation - ${booking.carName}`,
       html: isLT ? `
+        <meta charset="utf-8" />
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Rezervacija atlikta!</h1>
@@ -195,6 +196,7 @@ const handler = async (req: Request): Promise<Response> => {
           </p>
         </div>
       ` : `
+        <meta charset="utf-8" />
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <img src="${logoUrl}" alt="Carbonus" style="${logoStyles}" />
           <h1 style="color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Booking Confirmed!</h1>
