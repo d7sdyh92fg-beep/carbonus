@@ -164,6 +164,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Jūsų rezervacija sėkmingai gauta. Netrukus susisieksime su jumis dėl mokėjimo ir automobilio perdavimo detalių.</p>
 
           ${packageHtmlCustomerLT}
+          ${paymentHtmlCustomerLT}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #555; margin-top: 0;">Jūsų rezervacijos informacija</h2>
@@ -201,6 +202,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Your booking has been successfully received. We will contact you shortly regarding payment and car pickup details.</p>
 
           ${packageHtmlCustomerEN}
+          ${paymentHtmlCustomerEN}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #555; margin-top: 0;">Your Booking Information</h2>
