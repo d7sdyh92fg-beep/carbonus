@@ -63,6 +63,52 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     ` : '';
 
+    // Payment summary blocks (advance + remaining) — only when paying at counter
+    const isPayAtCounter = booking.paymentMethod === 'pay_at_counter';
+    const advance = booking.advancePayment ?? 0;
+    const remainingRental = Math.max(0, booking.totalAmount - advance);
+    const remainingTotal = remainingRental + booking.depositAmount;
+
+    const paymentHtmlAdmin = isPayAtCounter ? `
+      <div style="background-color: #e8f5e9; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #4caf50;">
+        <p style="margin: 0;"><strong>💳 Mokėjimo būdas:</strong> Mokėti atsiimant</p>
+        <p style="margin: 5px 0 0 0;"><strong>Sumokėtas avansas (Stripe):</strong> €${advance}</p>
+        <p style="margin: 5px 0 0 0;"><strong>Liko sumokėti atsiimant:</strong> €${remainingRental} (nuoma) + €${booking.depositAmount} (užstatas) = <strong>€${remainingTotal}</strong></p>
+      </div>
+    ` : `
+      <div style="background-color: #e8f5e9; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #4caf50;">
+        <p style="margin: 0;"><strong>💳 Mokėjimo būdas:</strong> Visa suma internetu (Stripe)</p>
+      </div>
+    `;
+
+    const paymentHtmlCustomerLT = isPayAtCounter ? `
+      <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4caf50;">
+        <h3 style="color: #2e7d32; margin-top: 0;">Mokėjimo informacija</h3>
+        <p style="margin: 5px 0;"><strong>Sumokėtas avansas (rezervacijai patvirtinti):</strong> €${advance}</p>
+        <p style="margin: 5px 0;"><strong>Liko sumokėti atsiimant automobilį:</strong></p>
+        <ul style="margin: 5px 0; padding-left: 20px; color: #2e7d32;">
+          <li>Likusi nuomos suma: €${remainingRental}</li>
+          <li>Užstatas (grąžinamas): €${booking.depositAmount}</li>
+        </ul>
+        <p style="margin: 10px 0 0 0; font-size: 16px;"><strong>Iš viso mokėtina atsiimant: €${remainingTotal}</strong></p>
+        <p style="margin: 10px 0 0 0; font-size: 13px; color: #555;">Mokėjimas atsiimant priimamas grynais arba terminalu.</p>
+      </div>
+    ` : '';
+
+    const paymentHtmlCustomerEN = isPayAtCounter ? `
+      <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4caf50;">
+        <h3 style="color: #2e7d32; margin-top: 0;">Payment information</h3>
+        <p style="margin: 5px 0;"><strong>Advance paid (to confirm reservation):</strong> €${advance}</p>
+        <p style="margin: 5px 0;"><strong>Remaining to pay on pickup:</strong></p>
+        <ul style="margin: 5px 0; padding-left: 20px; color: #2e7d32;">
+          <li>Remaining rental: €${remainingRental}</li>
+          <li>Deposit (refundable): €${booking.depositAmount}</li>
+        </ul>
+        <p style="margin: 10px 0 0 0; font-size: 16px;"><strong>Total due on pickup: €${remainingTotal}</strong></p>
+        <p style="margin: 10px 0 0 0; font-size: 13px; color: #555;">Payment on pickup is accepted in cash or by card terminal.</p>
+      </div>
+    ` : '';
+
     // Email to admin
     const adminEmailResponse = await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
