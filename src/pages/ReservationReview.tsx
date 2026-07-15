@@ -285,11 +285,23 @@ export default function ReservationReview() {
       await processStripePayment(reservationId, stripeAmount, paymentMethod === 'pay_at_counter' ? 'advance' : 'full');
     } catch (error: any) {
       console.error('Booking error:', error);
-      toast({
-        title: t('review.errorTitle'),
-        description: t('review.errorDescription').replace('{error}', error.message),
-        variant: 'destructive',
-      });
+      const msg = error?.message || '';
+      const isConflict = msg.includes('DATE_CONFLICT') || msg.includes('DATE_BLOCKED') || msg.includes('reservations_no_overlap');
+      if (isConflict) {
+        toast({
+          title: language === 'lt' ? 'Datos jau užimtos' : 'Dates no longer available',
+          description: language === 'lt'
+            ? 'Deja, pasirinktos datos ką tik tapo neprieinamos. Prašome pasirinkti kitą laikotarpį.'
+            : 'The selected dates just became unavailable. Please pick a different period.',
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: t('review.errorTitle'),
+          description: t('review.errorDescription').replace('{error}', msg),
+          variant: 'destructive',
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
