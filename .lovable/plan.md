@@ -1,89 +1,46 @@
+## Tikslas
+Pridėti kinematinius efektus (šviesų kvėpavimas, galinės šviesos, road shimmer, krentantys lapai, dulkės, subtilus parallax) prie dabartinio hero — **neįvedant įkepto UI kaip vieno paveikslėlio**. Tekstas ir rezervacijos forma lieka realūs elementai.
 
-## Nauja hero kompozicija
+## Failai iš paketo (užimti tiesiai)
+- `src/components/CinematicHeroMedia.tsx` — kopija iš `user-uploads://`
+- `src/components/cinematic-hero-media.css`
+- `src/components/heroMotionPresets.ts`
+- `public/images/carbonus-hero-clean.webp` → įkelti per `lovable-assets` (kad nebūtų binaras repo) ir naudoti CDN URL
 
-Visiškai atsisakome dabartinės „tekstas kairėje + iškirptas Hyundai PNG ant balto“ struktūros. Vietoje jos — pilno pločio kinematinė scena su viena horizontalia rezervacijos juosta apačioje (Variantas A: be dublikato „Pradėti kelionę“ mygtuko).
+## Pakeitimai `src/components/CarbonusHero.tsx`
+1. Importuoti `CinematicHeroMedia`, `heroMotionPresets` ir `cinematic-hero-media.css`.
+2. `heroRef` jau egzistuoja — perduoti kaip `targetRef`.
+3. Pašalinti dabartinį `<motion.img>` + custom pointer/scroll parallax bei glow div (juos dabar tvarko `CinematicHeroMedia`). Palikti dviejų sluoksnių tekstinį gradient overlay virš media, žemiau turinio.
+4. Media sluoksnis: `<CinematicHeroMedia targetRef={heroRef} src={heroCleanAsset.url} lightTrigger="hybrid" />` prie `absolute inset-0 z-0`.
+5. Turinys ir booking forma – `relative z-20`, su `data-hero-content` / `data-hero-booking` atributais (kad presetai galėtų taikyti animacijas jei komponentas jas riša per selektorius; jei presetai eksportuojami kaip `variants`, taikome tiesiogiai per `motion` props).
+6. Pakeisti dabartinius ad‑hoc `initial/animate` į `heroMotionPresets.badge / h1 / description / secondaryCta / bookingForm`. Booking formos atsiradimas ≤ 1.7 s.
+7. Palikti `onSearch`, datų būsenas, validaciją, analytics — nepakeistus.
 
-## Struktūra (desktop)
+## Ko NEKEISTI
+- `src/components/sections/hero.tsx` (Supabase/rezervacijos navigacija).
+- Kitų puslapio sekcijų, logo, kontaktų, kainodaros, URL routing.
+- `framer-motion` versijos — projekte jau įdiegta `framer-motion@11` (React 18 suderinama). Paketo `^12` reikalavimą ignoruojame; presetai naudoja standartinį FM API, kuris identiškas v11.
 
+## Responsive / prieinamumas
+- CSS iš `cinematic-hero-media.css` tvarko mobile mažinimą (≤3 lapai, be road shimmer, be pointer parallax).
+- `prefers-reduced-motion` — jau palaikoma paketo komponente; papildomai `useReducedMotion` išjungia presetų judesius.
+
+## Assetas
 ```
-┌──────────────────────────────────────────────────────────┐
-│ [ header lieka nepakitęs ]                               │
-│                                                          │
-│   ┌─ tekstas (max ~620px, vert. centre) ─┐               │
-│   │ • žyma: „Jūsų kelionė prasideda...“   │   [ scena    │
-│   │ • H1: Daugiau laisvės                 │    tęsiasi   │
-│   │        kiekvienai kelionei.           │    per visą  │
-│   │ • aprašymas                           │    plotį ]   │
-│   │ • antrinis tekstinis link:            │               │
-│   │   „Peržiūrėti automobilius →“         │               │
-│   └───────────────────────────────────────┘              │
-│                                                          │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ [Atsiėmimo data] [Grąžinimo] [Vieta] [ Ieškoti ] │   │ ← glass juosta
-│  └──────────────────────────────────────────────────┘   │
-│  Realus laisvumas · Aiški kaina · Pristatymas D-uose     │
-└──────────────────────────────────────────────────────────┘
+lovable-assets create --file /mnt/user-uploads/carbonus-hero-clean.webp \
+  --filename carbonus-hero-clean.webp > src/assets/carbonus-hero-clean.webp.asset.json
 ```
+Naudoti `import heroClean from "@/assets/carbonus-hero-clean.webp.asset.json"` ir `heroClean.url`.
 
-Aukštis: `min-h-[100svh] lg:min-h-[760px]`. Vienas bendras hero fonas — jokių baltų blokų už automobilio.
+## Patikra
+- `tsgo` typecheck.
+- Naršyklės konsolė be klaidų, be horizontal scroll.
+- Booking forma matoma be scroll, funkcinė (data validacija + navigacija į `/automobiliai?start=&end=`).
+- Reduced motion: efektai išjungti, forma vis tiek matoma.
 
-## Vizualas
-
-Naudosime **naują pilno hero dydžio atmosferinį placeholder vaizdą** (generuosime AI, aiškiai pažymėsime kaip laikiną, kol atsiras reali Carbonus fotosesija):
-
-- scena: automobilis prie SPA / viešbučio arba Druskininkų miško kelio
-- auksinė valanda / ankstyvas rytas
-- automobilis — natūrali scenos dalis, ne PNG ant balto
-- tamsus dviejų taškų gradient overlay: stipresnis kairėje (po tekstu), lengvas dešinėje
-
-Formatas: WebP, `fetchpriority="high"`, preload, be lazy. Responsive: atskiras mobile crop (portretas, automobilis necroppinamas ties ratais).
-
-Dabartinis `hyundai-bayon-side-clean.png` iš hero pašalinamas.
-
-## Tekstas (LT)
-
-- Žyma: „Jūsų kelionė prasideda Druskininkuose“
-- H1: „Daugiau laisvės\nkiekvienai kelionei.“ (žalias akcentas tik „kiekvienai kelionei.“)
-- Aprašymas: „Atraskite Druskininkus ir Lietuvą savo tempu. Pasirinkite tinkamą automobilį, o mes pristatysime jį ten, kur apsistojote.“
-- Antrinis link (ne mygtukas): „Peržiūrėti automobilius →“ — scroll į #fleet
-- EN vertimai atnaujinami analogiškai
-
-## Rezervacijos juosta
-
-Horizontali glass juosta (`backdrop-blur-md`, pusiau skaidrus tamsus fonas, rounded-2xl, subtili šviesos linija viršuje):
-
-| Atsiėmimo data | Grąžinimo data | Atsiėmimo vieta | [Rodyti laisvus automobilius] |
-
-- vietos select: Druskininkai (numatyta), + pristatymo pastaba
-- Submit → `/masinos?pickup=...&return=...&location=...` (be pakeitimų back-end logikai)
-- Po juosta smulki eilutė: „Realus laisvumas · Aiški kaina ir užstatas · Pristatymas Druskininkuose“
-
-Mobile: forma tampa vertikali, mygtukas per visą plotį; scena kraunama iš mobile srcset.
-
-## Pašalinama
-
-- „Pradėti kelionę“ CTA mygtukas ir scroll-to-form focus logika
-- Baltas dešinės pusės blokas / iškirpto automobilio kortelė
-- Dabartinis `hyundai-bayon-side-clean.png` importas hero
-- Trust markers grid, jei dubliuoja naują eilutę po forma
-
-## Animacija
-
-- Teksto fade + translateY (žyma → H1 → aprašymas → link, stagger 80ms)
-- Formos fade-in po teksto (~400ms delay)
-- Labai lėtas hero vaizdo scale (12s, nuo 1.00 iki 1.04)
-- `prefers-reduced-motion`: viską išjungti
-
-## Failai, kuriuos keisiu (build mode)
-
-1. `src/components/sections/hero.tsx` — visiškas perrašymas pagal struktūrą aukščiau
-2. `src/i18n/translations.ts` — hero raktai (žyma, H1 su akcentu, aprašymas, formos etiketės, trust juosta)
-3. Naujas hero vaizdas: `src/assets/hero-druskininkai.webp` (AI placeholder, atmosferinė scena) + preload nuoroda `index.html`
-4. Analytics: `hero_view`, `hero_search_started`, `search_availability` išlieka; `click_hero_booking` pašalinamas kartu su mygtuku
-
-## Prieš įgyvendinant
-
-Patvirtink:
-- **Variantas A** (forma iš karto, be „Pradėti kelionę“) — ar sutinki?
-- **Placeholder scena**: (a) automobilis prie modernaus SPA/viešbučio įvažiavimo, ar (b) miško kelias auksinės valandos šviesoje?
+## Pakeistų failų sąrašas (numatomas)
+- naujas: `src/components/CinematicHeroMedia.tsx`
+- naujas: `src/components/cinematic-hero-media.css`
+- naujas: `src/components/heroMotionPresets.ts`
+- naujas: `src/assets/carbonus-hero-clean.webp.asset.json`
+- redaguotas: `src/components/CarbonusHero.tsx`
