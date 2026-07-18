@@ -28,9 +28,6 @@ export function Hero({ carImage }: HeroProps) {
         <div className="space-y-4 md:space-y-12 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
           <div className="space-y-4 md:space-y-8">
             <div className="space-y-6 md:space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4 md:mb-6">
-                📍 {t('hero.badge')}
-              </div>
               <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-muted-foreground leading-relaxed">
                 {t('hero.subtitle')}
               </h1>
