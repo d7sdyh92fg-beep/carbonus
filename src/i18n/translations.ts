@@ -71,7 +71,6 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "Nuoma Druskininkuose • Vairuokite visoje Lietuvoje",
       subtitle: "Kurkime prisiminimus kartu:",
       title1: "Jūsų planai,",
       title2: "Mūsų automobilis Jūsų poreikiams",
@@ -2072,7 +2071,6 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "Rental in Druskininkai • Drive anywhere in Lithuania",
       subtitle: "Let's create memories together:",
       title1: "Your plans,",
       title2: "Our car for your needs",
