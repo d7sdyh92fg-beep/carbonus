@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import CinematicHeroMedia from "./CinematicHeroMedia";
-import heroVideoAsset from "../assets/hero-bg-loop-v2.mp4.asset.json";
+import heroVideoAsset from "../assets/hero-bg-loop-v3.mp4.asset.json";
 
 const HERO_VIDEO_SRC = heroVideoAsset.url;
 
