@@ -118,16 +118,7 @@ export default function CarbonusHero({
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(3,8,7,0.18)_0%,rgba(3,8,7,0.03)_48%,rgba(3,8,7,0.82)_100%)]" />
 
 
-      {/* Kairėje stipresnis kontrastas tekstui, dešinėje paliekamas gyvas vaizdas. */}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,12,9,0.93)_0%,rgba(3,12,9,0.80)_35%,rgba(3,12,9,0.34)_63%,rgba(3,12,9,0.10)_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,8,7,0.18)_0%,rgba(3,8,7,0.03)_48%,rgba(3,8,7,0.82)_100%)]" />
 
-      {/* Interaktyvus golden-hour šviesos sluoksnis. */}
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute right-[8%] top-[16%] h-[34rem] w-[34rem] rounded-full bg-amber-200/10 blur-[110px]"
-        style={{ x: glowX, y: glowY }}
-      />
 
       <div className="relative mx-auto flex min-h-[760px] w-full max-w-7xl flex-col px-5 pb-6 pt-28 sm:px-8 lg:min-h-[100svh] lg:px-10 lg:pb-8 lg:pt-36">
         <motion.div
