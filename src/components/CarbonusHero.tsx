@@ -111,7 +111,7 @@ export default function CarbonusHero({
       aria-labelledby="carbonus-hero-title"
       className="relative isolate min-h-[760px] overflow-hidden bg-slate-950 text-white lg:min-h-[100svh]"
     >
-      <HeroVideoBackground src={heroVideoAsset.url} poster={heroImage} />
+      <HeroVideoBackground src={HERO_VIDEO_SRC} poster={heroImage} />
 
       {/* Subtle bottom vignette to keep the form readable without tinting the scene. */}
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(0,0,0,0)_55%,rgba(0,0,0,0.55)_100%)]" />
