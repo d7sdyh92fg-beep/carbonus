@@ -109,11 +109,8 @@ export default function CarbonusHero({
       aria-labelledby="carbonus-hero-title"
       className="relative isolate min-h-[760px] overflow-hidden bg-slate-950 text-white lg:min-h-[100svh]"
     >
-      <CinematicHeroMedia
-        targetRef={heroRef}
-        src={heroImage}
-        lightTrigger="hybrid"
-      />
+      <HeroVideoBackground src={heroVideoAsset.url} poster={heroImage} />
+
 
       {/* Kairėje stipresnis kontrastas tekstui, dešinėje paliekamas gyvas vaizdas. */}
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(3,12,9,0.93)_0%,rgba(3,12,9,0.80)_35%,rgba(3,12,9,0.34)_63%,rgba(3,12,9,0.10)_100%)]" />
