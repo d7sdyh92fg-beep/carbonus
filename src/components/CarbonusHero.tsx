@@ -8,12 +8,11 @@ import {
 } from "react";
 import {
   motion,
-  useMotionValue,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
 } from "framer-motion";
+import CinematicHeroMedia from "./CinematicHeroMedia";
 
 
 type AvailabilitySearch = {
