@@ -56,11 +56,11 @@ export function Hero(_: { carImage?: string }) {
 
   return (
     <section
-      className="relative w-full overflow-hidden min-h-[100svh] lg:min-h-[760px] flex flex-col"
+      className="relative isolate w-full overflow-hidden min-h-[100svh] lg:min-h-[760px] flex flex-col"
       aria-label={t("hero.badge")}
     >
       {/* Full-bleed cinematic background */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 z-0">
         <img
           src={heroScene}
           alt={t("hero.imageAlt")}
