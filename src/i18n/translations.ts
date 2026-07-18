@@ -71,13 +71,19 @@ export const translations = {
 
     // Hero Section
     hero: {
-      subtitle: "Kurkime prisiminimus kartu:",
-      title1: "Jūsų planai,",
-      title2: "Mūsų automobilis Jūsų poreikiams",
-      title3: "Jūsų kelionės, nuotykiai",
-      title3Line2: "ir patirtys.",
-      description: "Patirkite pasirinkimo laisvę su Carbonus Druskininkuose - nuomokite kokybišką automobilį ir vykite į bet kurį Lietuvos kampelį saugiai ir patogiai.",
-      cta: "Pradėti",
+      badge: "Jūsų kelionė prasideda Druskininkuose",
+      title1: "Daugiau laisvės",
+      title2: "kiekvienai kelionei.",
+      description: "Atraskite Druskininkus ir Lietuvą savo tempu. Pasirinkite tinkamą automobilį, o mes pristatysime jį ten, kur apsistojote.",
+      cta: "Pradėti kelionę",
+      pickupDate: "Atsiėmimo data",
+      returnDate: "Grąžinimo data",
+      formCta: "Rodyti laisvus automobilius",
+      trust: "Realus laisvumas · Aiški kaina ir užstatas · Pristatymas Druskininkuose",
+      // Legacy keys (deprecated, kept for backward compatibility)
+      subtitle: "",
+      title3: "",
+      title3Line2: "",
     },
 
     // Features
@@ -2071,13 +2077,19 @@ export const translations = {
 
     // Hero Section
     hero: {
-      subtitle: "Let's create memories together:",
-      title1: "Your plans,",
-      title2: "Our car for your needs",
-      title3: "Your journeys, adventures",
-      title3Line2: "and experiences.",
-      description: "Experience the freedom of choice with Carbonus in Druskininkai - rent a quality car and travel to any corner of Lithuania safely and comfortably.",
-      cta: "Get Started",
+      badge: "Your journey starts in Druskininkai",
+      title1: "More freedom",
+      title2: "for every journey.",
+      description: "Discover Druskininkai and Lithuania at your own pace. Pick the right car and we will deliver it right to where you are staying.",
+      cta: "Start your journey",
+      pickupDate: "Pick-up date",
+      returnDate: "Return date",
+      formCta: "Show available cars",
+      trust: "Real availability · Clear price and deposit · Delivery in Druskininkai",
+      // Legacy keys (deprecated)
+      subtitle: "",
+      title3: "",
+      title3Line2: "",
     },
 
     // Features
