@@ -71,13 +71,19 @@ export const translations = {
 
     // Hero Section
     hero: {
-      subtitle: "Kurkime prisiminimus kartu:",
-      title1: "Jūsų planai,",
-      title2: "Mūsų automobilis Jūsų poreikiams",
-      title3: "Jūsų kelionės, nuotykiai",
-      title3Line2: "ir patirtys.",
-      description: "Patirkite pasirinkimo laisvę su Carbonus Druskininkuose - nuomokite kokybišką automobilį ir vykite į bet kurį Lietuvos kampelį saugiai ir patogiai.",
-      cta: "Pradėti",
+      badge: "Jūsų kelionė prasideda Druskininkuose",
+      title1: "Daugiau laisvės",
+      title2: "kiekvienai kelionei.",
+      description: "Atraskite Druskininkus ir Lietuvą savo tempu. Pasirinkite tinkamą automobilį, o mes pristatysime jį ten, kur apsistojote.",
+      cta: "Pradėti kelionę",
+      pickupDate: "Atsiėmimo data",
+      returnDate: "Grąžinimo data",
+      formCta: "Rodyti laisvus automobilius",
+      trust: "Realus laisvumas · Aiški kaina ir užstatas · Pristatymas Druskininkuose",
+      // Legacy keys (deprecated, kept for backward compatibility)
+      subtitle: "",
+      title3: "",
+      title3Line2: "",
     },
 
     // Features
