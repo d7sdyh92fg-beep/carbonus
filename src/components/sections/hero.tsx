@@ -21,5 +21,5 @@ export function Hero(_: { carImage?: string }) {
     navigate(`${path}?start=${pickupDate}&end=${returnDate}`);
   };
 
-  return <CarbonusHero heroImage="/images/carbonus-hero-druskininkai.webp" onSearch={handleSearch} />;
+  return <CarbonusHero heroImage="/images/carbonus-hero-v3.webp" onSearch={handleSearch} />;
 }
