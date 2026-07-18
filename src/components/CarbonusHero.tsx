@@ -15,11 +15,6 @@ import {
   useTransform,
 } from "framer-motion";
 
-declare global {
-  interface Window {
-    dataLayer?: Array<Record<string, unknown>>;
-  }
-}
 
 type AvailabilitySearch = {
   pickupDate: string;
