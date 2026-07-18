@@ -111,68 +111,20 @@ export default function CarbonusHero({
     >
       <HeroVideoBackground src={heroVideoAsset.url} poster={heroImage} />
 
-
-      {/* Kairėje stipresnis kontrastas tekstui, dešinėje paliekamas gyvas vaizdas. */}
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(3,12,9,0.93)_0%,rgba(3,12,9,0.80)_35%,rgba(3,12,9,0.34)_63%,rgba(3,12,9,0.10)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(3,8,7,0.18)_0%,rgba(3,8,7,0.03)_48%,rgba(3,8,7,0.82)_100%)]" />
-
-
-
+      {/* Subtle bottom vignette to keep the form readable without tinting the scene. */}
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(0,0,0,0)_55%,rgba(0,0,0,0.55)_100%)]" />
 
       <div className="relative mx-auto flex min-h-[760px] w-full max-w-7xl flex-col px-5 pb-6 pt-28 sm:px-8 lg:min-h-[100svh] lg:px-10 lg:pb-8 lg:pt-36">
-        <motion.div
-          className="max-w-[650px]"
-          style={{ y: contentY, opacity: contentOpacity }}
-        >
-          <motion.p
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-5 inline-flex rounded-full border border-emerald-200/25 bg-emerald-950/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-100 backdrop-blur-md sm:text-sm"
-          >
-            Jūsų kelionė prasideda Druskininkuose
-          </motion.p>
-
-          <motion.h1
-            id="carbonus-hero-title"
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.72,
-              delay: prefersReducedMotion ? 0 : 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="max-w-[12ch] text-balance text-5xl font-black leading-[0.98] tracking-[-0.045em] text-white sm:text-6xl lg:text-[5.25rem]"
-          >
-            Daugiau laisvės{" "}
-            <span className="text-emerald-300">kiekvienai kelionei.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.68,
-              delay: prefersReducedMotion ? 0 : 0.18,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mt-6 max-w-[58ch] text-pretty text-base leading-7 text-slate-200 sm:text-lg sm:leading-8"
-          >
-            Atraskite Druskininkus ir Lietuvą savo tempu. Pasirinkite tinkamą
-            automobilį, o mes pristatysime jį ten, kur apsistojote.
-          </motion.p>
-        </motion.div>
-
         <motion.form
           onSubmit={handleSubmit}
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 40, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{
-            duration: 0.72,
-            delay: prefersReducedMotion ? 0 : 0.3,
+            duration: 0.9,
+            delay: prefersReducedMotion ? 0 : 0.6,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mt-10 w-full rounded-[1.4rem] border border-white/[0.15] bg-slate-950/[0.58] p-4 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-5 lg:mt-auto"
+          className="mt-auto w-full rounded-[1.4rem] border border-white/[0.15] bg-slate-950/[0.58] p-4 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-5"
         >
           <div className="grid gap-3 md:grid-cols-[1fr_1fr_minmax(240px,0.85fr)] md:items-end">
             <label className="block">
