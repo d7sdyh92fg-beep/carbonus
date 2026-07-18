@@ -1,6 +1,8 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import CinematicHeroMedia from "./CinematicHeroMedia";
+import heroVideoAsset from "@/assets/hero-bg.mp4.asset.json";
+
 
 type AvailabilitySearch = {
   pickupDate: string;
