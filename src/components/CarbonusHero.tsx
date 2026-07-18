@@ -13,7 +13,7 @@ type CarbonusHeroProps = {
   minDate?: string;
 };
 
-const DEFAULT_HERO_IMAGE = "/images/carbonus-hero-clean.webp";
+const DEFAULT_HERO_IMAGE = "/images/carbonus-hero-v3.webp";
 
 function getLocalIsoDate(): string {
   const now = new Date();
