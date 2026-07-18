@@ -1,6 +1,8 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import CinematicHeroMedia from "./CinematicHeroMedia";
+import heroVideoAsset from "@/assets/hero-bg.mp4.asset.json";
+
 
 type AvailabilitySearch = {
   pickupDate: string;
@@ -107,11 +109,8 @@ export default function CarbonusHero({
       aria-labelledby="carbonus-hero-title"
       className="relative isolate min-h-[760px] overflow-hidden bg-slate-950 text-white lg:min-h-[100svh]"
     >
-      <CinematicHeroMedia
-        targetRef={heroRef}
-        src={heroImage}
-        lightTrigger="hybrid"
-      />
+      <HeroVideoBackground src={heroVideoAsset.url} poster={heroImage} />
+
 
       {/* Kairėje stipresnis kontrastas tekstui, dešinėje paliekamas gyvas vaizdas. */}
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(3,12,9,0.93)_0%,rgba(3,12,9,0.80)_35%,rgba(3,12,9,0.34)_63%,rgba(3,12,9,0.10)_100%)]" />
@@ -245,3 +244,74 @@ export default function CarbonusHero({
     </section>
   );
 }
+
+/**
+ * Seamless-looping muted background video. Uses two <video> elements that
+ * crossfade near the loop boundary to hide any hard cut at the file end.
+ */
+function HeroVideoBackground({ src, poster }: { src: string; poster?: string }) {
+  const videoARef = useRef<HTMLVideoElement>(null);
+  const videoBRef = useRef<HTMLVideoElement>(null);
+  const [activeIsA, setActiveIsA] = useState(true);
+  const swappingRef = useRef(false);
+  const CROSSFADE = 0.9; // seconds before end to start fade
+
+  useEffect(() => {
+    const a = videoARef.current;
+    const b = videoBRef.current;
+    if (!a || !b) return;
+    a.play().catch(() => {});
+  }, []);
+
+  function handleTimeUpdate(which: "A" | "B") {
+    const current = which === "A" ? videoARef.current : videoBRef.current;
+    const other = which === "A" ? videoBRef.current : videoARef.current;
+    if (!current || !other || swappingRef.current) return;
+    const remaining = current.duration - current.currentTime;
+    if (isFinite(remaining) && remaining <= CROSSFADE) {
+      swappingRef.current = true;
+      other.currentTime = 0;
+      const p = other.play();
+      const swap = () => {
+        setActiveIsA(which !== "A");
+        // Allow next cycle after crossfade completes
+        setTimeout(() => {
+          swappingRef.current = false;
+        }, CROSSFADE * 1000);
+      };
+      if (p && typeof p.then === "function") p.then(swap).catch(swap);
+      else swap();
+    }
+  }
+
+  const baseClass =
+    "absolute inset-0 h-full w-full object-cover transition-opacity duration-[900ms] ease-linear";
+
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
+      <video
+        ref={videoARef}
+        className={`${baseClass} ${activeIsA ? "opacity-100" : "opacity-0"}`}
+        src={src}
+        poster={poster}
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
+        aria-hidden="true"
+        onTimeUpdate={() => handleTimeUpdate("A")}
+      />
+      <video
+        ref={videoBRef}
+        className={`${baseClass} ${activeIsA ? "opacity-0" : "opacity-100"}`}
+        src={src}
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        onTimeUpdate={() => handleTimeUpdate("B")}
+      />
+    </div>
+  );
+}
+
