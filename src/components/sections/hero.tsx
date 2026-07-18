@@ -50,7 +50,7 @@ export function Hero(_: { carImage?: string }) {
   };
 
   const scrollToFleet = () => {
-    const el = document.getElementById("fleet");
+    const el = document.getElementById("cars");
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
