@@ -909,6 +909,8 @@ export function InPersonBooking() {
         </TabsContent>
       </Tabs>
 
+      {activeTab === 'new' && (
+      <>
       {/* Progress Steps - Mobile Optimized */}
       <div className="bg-background p-3 sm:p-4 rounded-lg border overflow-hidden">
 
