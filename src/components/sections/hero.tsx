@@ -32,7 +32,7 @@ export function Hero() {
   const showHotel = tab === "hotel";
 
   return (
-    <section className="dark relative bg-background text-foreground h-[100svh] flex flex-col overflow-hidden">
+    <section className="relative bg-[hsl(220_27%_8%)] text-white h-[100svh] flex flex-col overflow-hidden">
       {/* Hero fills remaining space */}
       <div className="relative flex-1 flex flex-col overflow-hidden">
         {/* Ambient background glows */}
@@ -44,7 +44,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget */}
-          <div className="rounded-3xl bg-card/95 backdrop-blur-xl border border-border shadow-elegant p-4 sm:p-5 lg:p-6">
+          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -115,37 +115,39 @@ export function Hero() {
 
           {/* Tagline */}
           <div className="mt-auto pt-[4vh] max-w-3xl">
-            <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-4 lg:mb-6">
+            <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-3 lg:mb-4">
               <MapPin className="h-3.5 w-3.5" />
               Druskininkai
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] text-foreground">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white">
               KELIAUKITE STILINGAI.<br />
               MĖGAUKITĖS LAISVE.
             </h1>
           </div>
+
         </div>
       </div>
 
       {/* Green feature band - fits in fullscreen */}
       <div className="bg-primary text-primary-foreground flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 lg:py-7">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 lg:py-6">
           <div className="text-center">
-            <h2 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-extrabold tracking-tight">
-              PREMIUM AUTOMOBILIŲ NUOMA DRUSKININKUOSE
+            <h2 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-extrabold tracking-tight">
+              AUTOMOBILIŲ NUOMA DRUSKININKUOSE
             </h2>
-            <p className="mt-1 lg:mt-2 text-primary-foreground/85 text-xs sm:text-sm">
+            <p className="mt-1 text-primary-foreground/85 text-xs sm:text-sm">
               Patogus rezervavimas, aiškios kainos ir kokybiški automobiliai kiekvienai kelionei.
             </p>
           </div>
-          <div className="mt-4 lg:mt-5 grid grid-cols-2 md:grid-cols-4 gap-3 lg:gap-5 text-xs sm:text-sm">
-            <Feature icon={<Gem className="h-4 w-4" />} label="Aukščiausios klasės automobiliai" />
-            <Feature icon={<MapPin className="h-4 w-4" />} label="Patogus atsiėmimas Druskininkuose" />
-            <Feature icon={<Wallet className="h-4 w-4" />} label="Konkurencingos ir skaidrios kainos" />
-            <Feature icon={<ShieldCheck className="h-4 w-4" />} label="Pilnas draudimas ir pagalba kelyje" />
+          <div className="mt-4 lg:mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 text-xs lg:text-[13px] xl:text-sm">
+            <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Aukščiausios klasės automobiliai" />
+            <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Patogus atsiėmimas Druskininkuose" />
+            <Feature icon={<Wallet className="h-3.5 w-3.5" />} label="Konkurencingos ir skaidrios kainos" />
+            <Feature icon={<ShieldCheck className="h-3.5 w-3.5" />} label="Pilnas draudimas ir pagalba kelyje" />
           </div>
         </div>
       </div>
+
     </section>
   );
 }
@@ -164,11 +166,12 @@ function Field({ label, icon, children }: { label: string; icon: React.ReactNode
 
 function Feature({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="flex items-center gap-2 lg:gap-3 justify-center md:justify-start">
-      <span className="inline-flex h-8 w-8 lg:h-9 lg:w-9 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
+    <div className="flex items-center gap-2 justify-center lg:justify-start min-w-0">
+      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
         {icon}
       </span>
-      <span className="font-medium leading-tight">{label}</span>
+      <span className="font-medium whitespace-nowrap truncate">{label}</span>
     </div>
   );
 }
+
