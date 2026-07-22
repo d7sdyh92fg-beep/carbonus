@@ -166,11 +166,12 @@ function Field({ label, icon, children }: { label: string; icon: React.ReactNode
 
 function Feature({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="flex items-center gap-2 lg:gap-3 justify-center md:justify-start">
-      <span className="inline-flex h-8 w-8 lg:h-9 lg:w-9 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
+    <div className="flex items-center gap-2 justify-center lg:justify-start min-w-0">
+      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
         {icon}
       </span>
-      <span className="font-medium leading-tight">{label}</span>
+      <span className="font-medium whitespace-nowrap truncate">{label}</span>
     </div>
   );
 }
+
