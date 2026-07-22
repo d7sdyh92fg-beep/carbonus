@@ -1882,6 +1882,9 @@ export function InPersonBooking() {
         </div>
       </div>
 
+      </>
+      )}
+
     </div>
   );
 }
