@@ -262,6 +262,7 @@ export function InPersonBooking() {
     fromDate?: string;
   } | null>(null);
 
+  const [activeTab, setActiveTab] = useState<'new' | 'drafts'>('new');
   const [availableDrafts, setAvailableDrafts] = useState<DraftPayload[]>([]);
   const [draftRestored, setDraftRestored] = useState(false);
   const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
