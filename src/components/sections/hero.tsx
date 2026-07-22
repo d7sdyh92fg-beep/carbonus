@@ -59,11 +59,11 @@ export function Hero() {
         {/* Secondary phone action — subtle ghost link, below the form so it never competes with the CTA */}
         <a
           href="tel:+37060000000"
-          className="-mt-1 inline-flex items-center gap-2 self-start text-sm font-medium text-white/85 transition hover:text-white"
+          className="inline-flex items-center gap-2 self-start text-sm font-medium text-white/85 transition hover:text-white"
         >
           <Phone className="h-4 w-4" />
           <span>
-            {t("hero.urgent")}{" "}
+            {t("hero.urgency")}{" "}
             <span className="underline decoration-white/40 underline-offset-4">
               +370 600 00000
             </span>
@@ -71,7 +71,7 @@ export function Hero() {
         </a>
 
         {/* Trust bar — glass capsules with even widths */}
-        <ul className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
+        <ul className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
           {trustItems.map(({ icon: Icon, label }) => (
             <li
               key={label}
