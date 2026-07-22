@@ -44,11 +44,11 @@ export function Hero() {
           height={1280}
           className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
         />
-        {/* Strong dark overlay for text readability */}
-        <div aria-hidden className="absolute inset-0 bg-black/70" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/30 to-black/95" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/20 to-black/60" />
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,rgba(11,17,32,0.9)_100%)]" />
+        {/* Dark overlay for text readability, kept lighter so the car stays visible */}
+        <div aria-hidden className="absolute inset-0 bg-black/45" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/60" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/30" />
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(11,17,32,0.5)_100%)]" />
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 left-1/3 h-[45vh] w-[45vh] rounded-full bg-primary/10 blur-[120px]" />
