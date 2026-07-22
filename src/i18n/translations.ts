@@ -2099,9 +2099,11 @@ export const translations = {
     hero: {
       eyebrow: "Local car rental in Druskininkai",
       title: "Car rental in Druskininkai — no surprises",
-      description: "Pick your dates, see the final price and reserve a car in just a few minutes.",
+      titleAccent: "no surprises",
+      description:
+        "Pick your dates, see the final price and reserve a car in just a few minutes.",
       cta: "Find an available car",
-      urgent: "Need a car urgently?",
+      urgent: "Need a car today?",
       urgentCta: "Call us",
       form: {
         pickupLocation: "Pick-up location",
@@ -2110,15 +2112,15 @@ export const translations = {
         returnDate: "Return date",
         pickupTime: "Pick-up time",
         returnTime: "Return time",
-        submit: "Find a car",
+        submit: "Find an available car",
         locationDruskininkai: "Druskininkai – office",
         locationHotel: "Druskininkai – hotel delivery",
       },
       trust: {
-        transparent: "Transparent final price",
-        local: "Local company",
-        support: "7-day support",
-        rating: "4.9★ Google rating",
+        transparent: "Final price before you book",
+        local: "Local company in Druskininkai",
+        support: "Support 7 days a week",
+        clean: "Clean and inspected cars",
       },
       subtitle: "Local car rental in Druskininkai",
       title1: "Car rental",
@@ -2126,6 +2128,7 @@ export const translations = {
       title3: "no surprises",
       title3Line2: "",
     },
+
 
 
     // Features
