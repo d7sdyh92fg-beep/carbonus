@@ -2094,14 +2094,36 @@ export const translations = {
 
     // Hero Section
     hero: {
-      subtitle: "Let's create memories together:",
-      title1: "Your plans,",
-      title2: "Our car for your needs",
-      title3: "Your journeys, adventures",
-      title3Line2: "and experiences.",
-      description: "Experience the freedom of choice with Carbonus in Druskininkai - rent a quality car and travel to any corner of Lithuania safely and comfortably.",
-      cta: "Get Started",
+      eyebrow: "Local car rental in Druskininkai",
+      title: "Car rental in Druskininkai — no surprises",
+      description: "Pick your dates, see the final price and reserve a car in just a few minutes.",
+      cta: "Find an available car",
+      urgent: "Need a car urgently?",
+      urgentCta: "Call us",
+      form: {
+        pickupLocation: "Pick-up location",
+        returnLocation: "Return location",
+        pickupDate: "Pick-up date",
+        returnDate: "Return date",
+        pickupTime: "Pick-up time",
+        returnTime: "Return time",
+        submit: "Find a car",
+        locationDruskininkai: "Druskininkai – office",
+        locationHotel: "Druskininkai – hotel delivery",
+      },
+      trust: {
+        transparent: "Transparent final price",
+        local: "Local company",
+        support: "7-day support",
+        rating: "4.9★ Google rating",
+      },
+      subtitle: "Local car rental in Druskininkai",
+      title1: "Car rental",
+      title2: "in Druskininkai",
+      title3: "no surprises",
+      title3Line2: "",
     },
+
 
     // Features
     features: {
