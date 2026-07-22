@@ -52,8 +52,8 @@ export function Hero() {
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 left-1/3 h-[45vh] w-[45vh] rounded-full bg-primary/10 blur-[120px]" />
-          <div className="absolute bottom-0 right-0 h-[40vh] w-[40vh] rounded-full bg-primary/6 blur-[100px]" />
-          <div className="absolute top-1/2 -left-24 h-[30vh] w-[30vh] rounded-full bg-primary/4 blur-[90px]" />
+          <div className="absolute bottom-0 right-0 h-[40vh] w-[40vh] rounded-full bg-primary/5 blur-[100px]" />
+          <div className="absolute top-1/2 -left-24 h-[30vh] w-[30vh] rounded-full bg-primary/5 blur-[90px]" />
         </div>
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
