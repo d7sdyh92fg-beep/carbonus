@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
 import { Car, Calendar, MapPin, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet, CalendarClock, Hotel } from "lucide-react";
 import { useState } from "react";
-import heroCar from "@/assets/hero-car.jpg";
+import heroCar from "@/assets/hero-spacetourer.png.asset.json";
 
 type TabKey = "cars" | "long" | "hotel";
 
@@ -38,7 +38,7 @@ export function Hero() {
       <div className="relative flex-1 flex flex-col overflow-hidden">
         {/* Background car image */}
         <img
-          src={heroCar}
+          src={heroCar.url}
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
