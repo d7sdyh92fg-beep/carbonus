@@ -45,10 +45,10 @@ export function Hero() {
           className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
         />
         {/* Dark gradient overlays for readability */}
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[hsl(220_27%_8%)]/98 via-[hsl(220_27%_8%)]/75 to-[hsl(220_27%_8%)]/98" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[hsl(220_27%_8%)]/95 via-transparent to-[hsl(220_27%_8%)]/80" />
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,hsl(220_27%_8%)/95_100%)]" />
-        <div aria-hidden className="absolute inset-0 bg-[hsl(220_27%_8%)]/30" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[hsl(220_27%_8%)]/95 via-[hsl(220_27%_8%)]/60 to-[hsl(220_27%_8%)]/95" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[hsl(220_27%_8%)]/90 via-transparent to-[hsl(220_27%_8%)]/70" />
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,hsl(220_27%_8%)/90_100%)]" />
+        <div aria-hidden className="absolute inset-0 bg-black/25" />
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 left-1/3 h-[45vh] w-[45vh] rounded-full bg-primary/12 blur-[120px]" />
