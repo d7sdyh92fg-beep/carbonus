@@ -32,7 +32,7 @@ export function Hero() {
   const showHotel = tab === "hotel";
 
   return (
-    <section className="dark relative bg-background text-foreground h-[100svh] flex flex-col overflow-hidden">
+    <section className="relative bg-[hsl(220_27%_8%)] text-white h-[100svh] flex flex-col overflow-hidden">
       {/* Hero fills remaining space */}
       <div className="relative flex-1 flex flex-col overflow-hidden">
         {/* Ambient background glows */}
