@@ -83,13 +83,13 @@ export function HeroSearchForm() {
     navigate(`${base}?${params.toString()}`);
   };
 
-  // Cream, warm surface with soft green tint on borders
+  // Cream, warm surface with soft green tint on borders — inner fields are near-white for contrast
   const fieldCls =
-    "flex flex-col gap-1.5 rounded-xl border border-primary/10 bg-[hsl(45_30%_98%)] px-4 py-3 text-left transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20";
+    "flex min-h-[70px] flex-col justify-between gap-1 rounded-xl border border-primary/10 bg-[#FCFDFB] px-4 py-2.5 text-left transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20";
   const labelCls =
     "flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-primary-dark/80";
   const valueCls =
-    "text-[15px] font-semibold text-foreground bg-transparent focus:outline-none";
+    "h-[22px] text-[15px] font-semibold leading-[22px] text-foreground bg-transparent focus:outline-none";
 
   const formatDate = (iso: string) =>
     parseISO(iso)
@@ -107,11 +107,15 @@ export function HeroSearchForm() {
     }
   }
 
+  const showHotelHint =
+    state.pickupLocation === "druskininkai-hotel" ||
+    state.returnLocation === "druskininkai-hotel";
+
   return (
     <form
       onSubmit={handleSubmit}
       className="w-full rounded-2xl border border-white/40 p-3 shadow-[0_24px_70px_rgba(3,25,18,0.24)] backdrop-blur-md sm:p-4"
-      style={{ background: "rgba(248, 247, 242, 0.96)" }}
+      style={{ background: "rgba(244, 242, 236, 0.97)" }}
     >
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6">
         {/* Pickup location */}
@@ -247,6 +251,14 @@ export function HeroSearchForm() {
           </select>
         </div>
       </div>
+
+      {showHotelHint && (
+        <p className="mt-2 px-1 text-[12px] leading-snug text-primary-dark/70">
+          {language === "lt"
+            ? "Pristatymo mokestis bus parodytas prieš rezervuojant."
+            : "Delivery fee will be shown before you book."}
+        </p>
+      )}
 
       <Button
         type="submit"
