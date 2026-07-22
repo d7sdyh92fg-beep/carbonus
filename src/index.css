@@ -4,84 +4,68 @@
 
 @layer base {
   :root {
-    /* Dzūkijos premium — šviesi tema */
-    --background: 40 35% 93%;           /* #F4F0E8 kreminis */
-    --foreground: 164 30% 13%;        /* #1A2E26 tamsus žalvaris */
-    --card: 40 30% 96%;                /* šviesesnis kremas */
-    --card-foreground: 164 30% 13%;
-    --popover: 40 35% 93%;
-    --popover-foreground: 164 30% 13%;
-
-    --primary: 166 61% 11%;            /* #0B2E26 pušų žalia */
-    --primary-foreground: 40 35% 93%;  /* kreminis ant žalios */
-    --primary-light: 163 25% 38%;      /* #4A7A6C */
-    --primary-dark: 166 70% 8%;        /* #082019 */
-
-    --secondary: 40 21% 89%;           /* #E8E4DC šiltas kremas */
-    --secondary-foreground: 166 61% 11%;
-
-    --accent: 46 65% 52%;              /* #D4AF37 premium auksas */
-    --accent-foreground: 166 61% 11%;
-
-    --muted: 40 21% 89%;
-    --muted-foreground: 159 9% 39%;    /* #5A6B65 */
-
-    --destructive: 4 76% 40%;          /* #B42318 */
-    --destructive-foreground: 40 35% 93%;
-
-    --border: 40 7% 83%;               /* #D9D5CD */
-    --input: 40 7% 83%;
-    --ring: 166 61% 11%;
-    --radius: 0.625rem;
-
-    --sidebar-background: 40 30% 96%;
-    --sidebar-foreground: 164 30% 13%;
-    --sidebar-primary: 166 61% 11%;
-    --sidebar-primary-foreground: 40 35% 93%;
-    --sidebar-accent: 40 21% 89%;
-    --sidebar-accent-foreground: 166 61% 11%;
-    --sidebar-border: 40 7% 83%;
-    --sidebar-ring: 166 61% 11%;
+    --background: 0 0% 100%;
+    --foreground: 220 13% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 15%;
+    --primary: 147 83% 19%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 147 50% 35%;
+    --primary-dark: 147 100% 12%;
+    --secondary: 147 15% 92%;
+    --secondary-foreground: 147 83% 19%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 147 15% 92%;
+    --accent-foreground: 147 83% 19%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 147 83% 19%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    /* Dzūkijos premium — tamsi tema */
-    --background: 166 61% 11%;         /* #0B2E26 */
-    --foreground: 40 35% 93%;         /* kreminis */
-    --card: 167 41% 17%;              /* #1A3E36 */
-    --card-foreground: 40 35% 93%;
-    --popover: 167 41% 17%;
-    --popover-foreground: 40 35% 93%;
-
-    --primary: 163 25% 38%;            /* #4A7A6C */
-    --primary-foreground: 166 61% 11%;
-    --primary-light: 163 30% 45%;
-    --primary-dark: 166 61% 11%;
-
-    --secondary: 167 41% 17%;          /* #1A3E36 */
-    --secondary-foreground: 40 35% 93%;
-
-    --accent: 46 65% 52%;              /* #D4AF37 */
-    --accent-foreground: 166 61% 11%;
-
-    --muted: 167 41% 17%;
-    --muted-foreground: 157 10% 69%;   /* #A8B8B2 */
-
-    --destructive: 4 76% 50%;
-    --destructive-foreground: 40 35% 93%;
-
-    --border: 167 41% 22%;
-    --input: 167 41% 22%;
-    --ring: 163 25% 38%;
-
-    --sidebar-background: 167 41% 17%;
-    --sidebar-foreground: 40 35% 93%;
-    --sidebar-primary: 163 25% 38%;
-    --sidebar-primary-foreground: 40 35% 93%;
-    --sidebar-accent: 167 41% 22%;
-    --sidebar-accent-foreground: 40 35% 93%;
-    --sidebar-border: 167 41% 22%;
-    --sidebar-ring: 163 25% 38%;
+    --background: 220 27% 8%;
+    --foreground: 210 40% 98%;
+    --card: 220 27% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 220 27% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 147 50% 35%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 147 40% 45%;
+    --primary-dark: 147 83% 19%;
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 220 20% 15%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 220 20% 15%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 20% 15%;
+    --input: 220 20% 15%;
+    --ring: 147 50% 35%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -90,10 +74,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight;
+    @apply bg-background text-foreground;
   }
 }
 
