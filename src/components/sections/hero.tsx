@@ -63,7 +63,7 @@ export function Hero() {
         >
           <Phone className="h-4 w-4" />
           <span>
-            {t("hero.urgency")}{" "}
+            {t("hero.urgent")}{" "}
             <span className="underline decoration-white/40 underline-offset-4">
               +370 600 00000
             </span>
