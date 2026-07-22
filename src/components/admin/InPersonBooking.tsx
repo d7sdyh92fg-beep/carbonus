@@ -157,6 +157,10 @@ const availableServices: AdditionalService[] = [
   },
 ];
 
+const DRAFT_STORAGE_KEY = 'inPersonBooking:draft:v1';
+
+
+
 export function InPersonBooking() {
   const [step, setStep] = useState<'details' | 'services' | 'documents' | 'payment' | 'complete'>('details');
   const [selectedServices, setSelectedServices] = useState<AdditionalService[]>([]);
