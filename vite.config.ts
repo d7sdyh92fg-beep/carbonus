@@ -8,6 +8,12 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/__l5e/assets-v1": {
+        target: "https://carbonus.lt",
+        changeOrigin: true,
+      },
+    },
   },
   plugins: [
     react(),
