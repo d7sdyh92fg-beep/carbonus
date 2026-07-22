@@ -773,9 +773,7 @@ export function InPersonBooking() {
       await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', reservation.id);
 
       toast.success('Rezervacija sėkmingai užbaigta!');
-      try { localStorage.removeItem(DRAFT_STORAGE_KEY); } catch {}
-      setDraftSavedAt(null);
-      setHasDraft(false);
+      discardDraft(currentDraftIdRef.current || undefined);
       setStep('complete');
 
     } catch (error) {
