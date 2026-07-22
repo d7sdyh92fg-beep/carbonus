@@ -1,88 +1,70 @@
+import { Phone, ShieldCheck, MapPin, Headphones, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
+import { HeroMedia } from "./hero-media";
+import { HeroSearchForm } from "./hero-search-form";
 
-interface HeroProps {
-  carImage?: string;
-}
-
-export function Hero({ carImage }: HeroProps) {
-  const navigate = useNavigate();
+export function Hero() {
   const { t } = useTranslations();
 
-  const handleNavigateToCars = () => {
-    navigate('/automobiliai');
-    // Small delay to ensure navigation completes before scrolling
-    setTimeout(() => {
-      window.scrollTo({
-        top: 300, // Same scroll amount as CTA button
-        behavior: 'smooth'
-      });
-    }, 100);
-  };
+  const trustItems = [
+    { icon: ShieldCheck, label: t("hero.trust.transparent") },
+    { icon: MapPin, label: t("hero.trust.local") },
+    { icon: Headphones, label: t("hero.trust.support") },
+    { icon: Star, label: t("hero.trust.rating") },
+  ];
 
   return (
-    <section className="relative min-h-[60vh] md:min-h-screen pt-12 md:pt-16 flex items-start md:items-center overflow-hidden bg-transparent md:bg-gradient-to-br md:from-background md:to-muted/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
-        {/* Left Content */}
-        <div className="space-y-4 md:space-y-12 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
-          <div className="space-y-4 md:space-y-8">
-            <div className="space-y-6 md:space-y-8">
-              <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-muted-foreground leading-relaxed">
-                {t('hero.subtitle')}
-              </h1>
-              <div className="space-y-3 md:space-y-4 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
-                <div className="text-primary">{t('hero.title1')}</div>
-                <div className="text-foreground">{t('hero.title2')}</div>
-                <div className="text-primary">
-                  {t('hero.title3')}<br />
-                  {t('hero.title3Line2')}
-                </div>
-              </div>
-            </div>
-            
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed mt-6 md:mt-8">
-              {t('hero.description')}
-            </p>
-          </div>
+    <section className="relative isolate flex min-h-[92vh] items-center overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24">
+      <HeroMedia />
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <Button 
-              variant="hero"
-              size="lg" 
-              className="animate-scale-in"
-              onClick={handleNavigateToCars}
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl space-y-6 text-white animate-fade-in">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary-light" />
+            {t("hero.eyebrow")}
+          </span>
+
+          <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
+            {t("hero.title")}
+          </h1>
+
+          <p className="max-w-2xl text-lg text-white/85 sm:text-xl">
+            {t("hero.description")}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            <Button
+              asChild
+              variant="secondary"
+              size="lg"
+              className="gap-2 bg-white/10 text-white backdrop-blur hover:bg-white/20"
             >
-              {t('hero.cta')}
+              <a href="tel:+37060000000">
+                <Phone className="h-4 w-4" />
+                <span className="hidden sm:inline">
+                  {t("hero.urgent")}{" "}
+                </span>
+                {t("hero.urgentCta")}
+              </a>
             </Button>
           </div>
         </div>
 
-        {/* Right Content - Car Image - Hidden on Mobile */}
-        <div className="hidden lg:block relative animate-slide-up -ml-0 lg:-ml-12 mt-8 lg:mt-0">
-          {/* Enhanced green glow around car - Hidden on mobile */}
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-400/20 blur-[90px] scale-110"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-500/22 blur-3xl scale-125"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-400/16 blur-2xl scale-105"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-300/14 blur-xl scale-150"></div>
-          
-
-          {/* Main Car Image */}
-          <div className="relative z-10">
-            <img
-              src="/lovable-uploads/a3fa3c94-d1ad-4b21-984f-e85b545f68df.png"
-              alt="Premium Green Audi"
-              className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-3xl mx-auto object-contain scale-75 sm:scale-90 lg:scale-110"
-            />
-          </div>
+        {/* Search form */}
+        <div className="animate-scale-in">
+          <HeroSearchForm />
         </div>
-      </div>
 
-
-      {/* Background Elements - Hidden on mobile */}
-      <div className="hidden lg:block absolute inset-0 -z-20 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        {/* Trust bar */}
+        <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-white/85">
+          {trustItems.map(({ icon: Icon, label }) => (
+            <li key={label} className="flex items-center gap-2">
+              <Icon className="h-4 w-4 text-primary-light" />
+              {label}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
