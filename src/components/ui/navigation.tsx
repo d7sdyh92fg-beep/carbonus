@@ -76,7 +76,7 @@ export function Navigation({ logo }: NavigationProps) {
                       ? "text-primary"
                       : "text-foreground/80"
                   }`}
-                  ${isActiveRoute(item.key) ? 'aria-current="page"' : ''}
+                  aria-current={isActiveRoute(item.key) ? 'page' : undefined}
                 >
                   {item.name}
                 </Link>
