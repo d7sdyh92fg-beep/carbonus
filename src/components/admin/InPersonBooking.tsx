@@ -213,6 +213,109 @@ export function InPersonBooking() {
     fromDate?: string;
   } | null>(null);
 
+  const [hasDraft, setHasDraft] = useState(false);
+  const [draftRestored, setDraftRestored] = useState(false);
+  const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
+
+  // Detect existing draft on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (raw) setHasDraft(true);
+    } catch {}
+  }, []);
+
+  const restoreDraft = () => {
+    try {
+      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (d.customer) setCustomer(d.customer);
+      if (d.booking) {
+        setBooking({
+          ...d.booking,
+          startDate: d.booking.startDate ? new Date(d.booking.startDate) : null,
+          endDate: d.booking.endDate ? new Date(d.booking.endDate) : null,
+        });
+      }
+      if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
+      if (d.contractLanguage) setContractLanguage(d.contractLanguage);
+      if (d.driverLicenseUrls) setDriverLicenseUrls(d.driverLicenseUrls);
+      if (d.secondDriverLicenseUrls) setSecondDriverLicenseUrls(d.secondDriverLicenseUrls);
+      if (typeof d.notes === 'string') setNotes(d.notes);
+      if (typeof d.useCustomPricing === 'boolean') setUseCustomPricing(d.useCustomPricing);
+      if (typeof d.customRentalPrice === 'string') setCustomRentalPrice(d.customRentalPrice);
+      if (typeof d.customDeposit === 'string') setCustomDeposit(d.customDeposit);
+      if (typeof d.pricingNotes === 'string') setPricingNotes(d.pricingNotes);
+      if (typeof d.isRetroactive === 'boolean') setIsRetroactive(d.isRetroactive);
+      if (Array.isArray(d.selectedServices)) setSelectedServices(d.selectedServices);
+      if (typeof d.isReturningCustomer === 'boolean') setIsReturningCustomer(d.isReturningCustomer);
+      if (typeof d.skipDocuments === 'boolean') setSkipDocuments(d.skipDocuments);
+      if (d.step) setStep(d.step);
+      setDraftRestored(true);
+      setHasDraft(false);
+      toast.success('Juodraštis atkurtas');
+    } catch (e) {
+      console.error('Draft restore failed', e);
+      toast.error('Nepavyko atkurti juodraščio');
+    }
+  };
+
+  const discardDraft = () => {
+    try { localStorage.removeItem(DRAFT_STORAGE_KEY); } catch {}
+    setHasDraft(false);
+    setDraftSavedAt(null);
+  };
+
+  const saveDraft = (silent = false) => {
+    try {
+      const payload = {
+        step,
+        customer,
+        booking: {
+          ...booking,
+          startDate: booking.startDate ? booking.startDate.toISOString() : null,
+          endDate: booking.endDate ? booking.endDate.toISOString() : null,
+        },
+        paymentMethod,
+        contractLanguage,
+        driverLicenseUrls,
+        secondDriverLicenseUrls,
+        notes,
+        useCustomPricing,
+        customRentalPrice,
+        customDeposit,
+        pricingNotes,
+        isRetroactive,
+        selectedServices,
+        isReturningCustomer,
+        skipDocuments,
+        savedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(payload));
+      setDraftSavedAt(payload.savedAt);
+      if (!silent) toast.success('Juodraštis išsaugotas');
+    } catch (e) {
+      console.error('Draft save failed', e);
+      if (!silent) toast.error('Nepavyko išsaugoti juodraščio');
+    }
+  };
+
+  // Auto-save on relevant state changes (debounced), only after user interaction or restore
+  useEffect(() => {
+    // Skip if nothing meaningful entered yet
+    const meaningful =
+      draftRestored ||
+      customer.firstName || customer.lastName || customer.email || customer.phone ||
+      booking.carId || booking.startDate || notes;
+    if (!meaningful) return;
+    const t = setTimeout(() => saveDraft(true), 500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, customer, booking, paymentMethod, contractLanguage, driverLicenseUrls, secondDriverLicenseUrls, notes, useCustomPricing, customRentalPrice, customDeposit, pricingNotes, isRetroactive, selectedServices, isReturningCustomer, skipDocuments, draftRestored]);
+
+
+
   // Fetch car pricing from DB
   const { data: dbCarPricing } = useQuery({
     queryKey: ['cars-pricing-admin'],
