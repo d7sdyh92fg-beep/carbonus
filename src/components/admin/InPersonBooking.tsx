@@ -749,8 +749,26 @@ export function InPersonBooking() {
 
   return (
     <div className="w-full max-w-none space-y-4 sm:space-y-6 lg:space-y-8 p-3 sm:p-4 lg:p-6">
+      {/* Draft banner */}
+      {hasDraft && !draftRestored && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+          <div className="text-sm">
+            💾 Rastas išsaugotas juodraštis. Ar norite tęsti nebaigtą rezervaciją?
+          </div>
+          <div className="flex gap-2">
+            <Button size="sm" onClick={restoreDraft}>Tęsti juodraštį</Button>
+            <Button size="sm" variant="outline" onClick={discardDraft}>Naikinti</Button>
+          </div>
+        </div>
+      )}
+      {draftSavedAt && (
+        <div className="text-xs text-muted-foreground">
+          Juodraštis automatiškai išsaugomas · paskutinis išsaugojimas {new Date(draftSavedAt).toLocaleTimeString('lt-LT')}
+        </div>
+      )}
       {/* Progress Steps - Mobile Optimized */}
       <div className="bg-background p-3 sm:p-4 rounded-lg border overflow-hidden">
+
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2">
           {[
             { key: 'details', label: 'Rezervacijos duomenys', shortLabel: 'Duomenys', icon: FileText },
