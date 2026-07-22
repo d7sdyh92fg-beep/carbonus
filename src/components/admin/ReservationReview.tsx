@@ -74,6 +74,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
   const { toast } = useToast();
   
   const [signature, setSignature] = useState<ContractSignature | null>(null);
+  const [isEditingSignature, setIsEditingSignature] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState<any[]>([]);
   const [driverLicenseUrls, setDriverLicenseUrls] = useState({ front: '', back: '' });
