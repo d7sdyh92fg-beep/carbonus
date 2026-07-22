@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Calendar } from '@/components/ui/calendar';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
@@ -261,6 +262,7 @@ export function InPersonBooking() {
     fromDate?: string;
   } | null>(null);
 
+  const [activeTab, setActiveTab] = useState<'new' | 'drafts'>('new');
   const [availableDrafts, setAvailableDrafts] = useState<DraftPayload[]>([]);
   const [draftRestored, setDraftRestored] = useState(false);
   const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
@@ -322,7 +324,8 @@ export function InPersonBooking() {
       currentDraftIdRef.current = draftId;
       setDraftSavedAt(d.savedAt);
       setDraftRestored(true);
-      setAvailableDrafts([]);
+      refreshAvailableDrafts();
+      setActiveTab('new');
       toast.success('Juodraštis atkurtas');
     } catch (e) {
       console.error('Draft restore failed', e);
@@ -846,38 +849,68 @@ export function InPersonBooking() {
 
   return (
     <div className="w-full max-w-none space-y-4 sm:space-y-6 lg:space-y-8 p-3 sm:p-4 lg:p-6">
-      {/* Draft banner - list all saved drafts, separated by car + customer */}
-      {availableDrafts.length > 0 && !draftRestored && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-3 sm:p-4 space-y-2">
-          <div className="text-sm font-medium">
-            💾 Rasti išsaugoti juodraščiai ({availableDrafts.length}). Kiekvienas juodraštis atskirtas pagal automobilį ir klientą.
-          </div>
-          <div className="space-y-2">
-            {availableDrafts.map((d) => (
-              <div
-                key={d.id}
-                className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between bg-white/60 rounded-md border border-amber-200 p-2 sm:p-3"
-              >
-                <div className="text-sm">
-                  <div className="font-medium">{d.customerLabel}</div>
-                  <div className="text-xs text-amber-800">
-                    {d.carLabel} · išsaugota {new Date(d.savedAt).toLocaleString('lt-LT')}
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={() => restoreDraft(d.id)}>Tęsti</Button>
-                  <Button size="sm" variant="outline" onClick={() => discardDraft(d.id)}>Naikinti</Button>
-                </div>
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'new' | 'drafts')} className="w-full">
+        <TabsList>
+          <TabsTrigger value="new">Nauja rezervacija</TabsTrigger>
+          <TabsTrigger value="drafts">
+            Juodraščiai{availableDrafts.length > 0 ? ` (${availableDrafts.length})` : ''}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="drafts" className="mt-4">
+          {availableDrafts.length === 0 ? (
+            <div className="text-sm text-muted-foreground border rounded-lg p-4">
+              Nėra išsaugotų juodraščių. Užpildyk vietinės rezervacijos formą – ji išsaugoma automatiškai, atskirai pagal automobilį ir klientą.
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">
+                Kiekvienas juodraštis atskirtas pagal automobilį ir klientą. Pasirink kurį tęsti.
               </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {draftSavedAt && (
-        <div className="text-xs text-muted-foreground">
-          Juodraštis automatiškai išsaugomas · paskutinis išsaugojimas {new Date(draftSavedAt).toLocaleTimeString('lt-LT')}
-        </div>
-      )}
+              {availableDrafts.map((d) => {
+                const isActive = currentDraftIdRef.current === d.id;
+                return (
+                  <div
+                    key={d.id}
+                    className={`flex flex-col sm:flex-row sm:items-center gap-2 justify-between rounded-md border p-3 ${
+                      isActive ? 'bg-primary/5 border-primary/40' : 'bg-background'
+                    }`}
+                  >
+                    <div className="text-sm">
+                      <div className="font-medium flex items-center gap-2">
+                        {d.customerLabel}
+                        {isActive && <Badge variant="secondary" className="text-[10px]">Aktyvus</Badge>}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {d.carLabel} · išsaugota {new Date(d.savedAt).toLocaleString('lt-LT')}
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button size="sm" onClick={() => restoreDraft(d.id)} disabled={isActive}>
+                        {isActive ? 'Įkeltas' : 'Tęsti'}
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => discardDraft(d.id)}>
+                        Naikinti
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="new" className="mt-4">
+          {draftSavedAt && (
+            <div className="text-xs text-muted-foreground mb-2">
+              Juodraštis automatiškai išsaugomas · paskutinis išsaugojimas {new Date(draftSavedAt).toLocaleTimeString('lt-LT')}
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+
+      {activeTab === 'new' && (
+      <>
       {/* Progress Steps - Mobile Optimized */}
       <div className="bg-background p-3 sm:p-4 rounded-lg border overflow-hidden">
 
@@ -1848,6 +1881,9 @@ export function InPersonBooking() {
           </Button>
         </div>
       </div>
+
+      </>
+      )}
 
     </div>
   );
