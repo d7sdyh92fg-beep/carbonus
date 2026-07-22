@@ -1693,7 +1693,7 @@ export function InPersonBooking() {
       )}
 
       {/* Action Buttons */}
-      <div className="flex justify-between pt-6">
+      <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6">
         <Button
           variant="outline"
           onClick={() => {
@@ -1707,15 +1707,36 @@ export function InPersonBooking() {
         >
           Atgal
         </Button>
-        <Button
-          onClick={handleNextStep}
-          disabled={loading}
-          size="lg"
-          className="min-w-40"
-        >
-          {loading ? 'Apdorojama...' : step === 'payment' ? 'Užbaigti rezervaciją' : 'Toliau'}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={() => saveDraft(false)}
+            disabled={loading}
+          >
+            💾 Išsaugoti juodraštį
+          </Button>
+          {(draftSavedAt || hasDraft) && (
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={() => { discardDraft(); toast.success('Juodraštis ištrintas'); }}
+              disabled={loading}
+            >
+              Naikinti juodraštį
+            </Button>
+          )}
+          <Button
+            onClick={handleNextStep}
+            disabled={loading}
+            size="lg"
+            className="min-w-40"
+          >
+            {loading ? 'Apdorojama...' : step === 'payment' ? 'Užbaigti rezervaciją' : 'Toliau'}
+          </Button>
+        </div>
       </div>
+
     </div>
   );
 }
