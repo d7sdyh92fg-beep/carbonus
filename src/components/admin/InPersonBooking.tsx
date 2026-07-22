@@ -846,15 +846,30 @@ export function InPersonBooking() {
 
   return (
     <div className="w-full max-w-none space-y-4 sm:space-y-6 lg:space-y-8 p-3 sm:p-4 lg:p-6">
-      {/* Draft banner */}
-      {hasDraft && !draftRestored && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-          <div className="text-sm">
-            💾 Rastas išsaugotas juodraštis. Ar norite tęsti nebaigtą rezervaciją?
+      {/* Draft banner - list all saved drafts, separated by car + customer */}
+      {availableDrafts.length > 0 && !draftRestored && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-3 sm:p-4 space-y-2">
+          <div className="text-sm font-medium">
+            💾 Rasti išsaugoti juodraščiai ({availableDrafts.length}). Kiekvienas juodraštis atskirtas pagal automobilį ir klientą.
           </div>
-          <div className="flex gap-2">
-            <Button size="sm" onClick={restoreDraft}>Tęsti juodraštį</Button>
-            <Button size="sm" variant="outline" onClick={discardDraft}>Naikinti</Button>
+          <div className="space-y-2">
+            {availableDrafts.map((d) => (
+              <div
+                key={d.id}
+                className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between bg-white/60 rounded-md border border-amber-200 p-2 sm:p-3"
+              >
+                <div className="text-sm">
+                  <div className="font-medium">{d.customerLabel}</div>
+                  <div className="text-xs text-amber-800">
+                    {d.carLabel} · išsaugota {new Date(d.savedAt).toLocaleString('lt-LT')}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={() => restoreDraft(d.id)}>Tęsti</Button>
+                  <Button size="sm" variant="outline" onClick={() => discardDraft(d.id)}>Naikinti</Button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
