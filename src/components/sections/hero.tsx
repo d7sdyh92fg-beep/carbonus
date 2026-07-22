@@ -38,7 +38,7 @@ export function Hero() {
       <div className="relative flex-1 flex flex-col overflow-hidden">
         {/* Background car image */}
         <img
-          src={heroCar}
+          src={heroCar.url}
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
