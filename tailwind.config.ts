@@ -72,50 +72,24 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
 				},
 				'fade-in': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				},
 				'slide-up': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(30px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
+					'0%': { opacity: '0', transform: 'translateY(30px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				},
 				'scale-in': {
-					'0%': {
-						opacity: '0',
-						transform: 'scale(0.95)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'scale(1)'
-					}
+					'0%': { opacity: '0', transform: 'scale(0.95)' },
+					'100%': { opacity: '1', transform: 'scale(1)' }
 				}
 			},
 			animation: {
@@ -126,12 +100,16 @@ export default {
 				'scale-in': 'scale-in 0.4s ease-out'
 			},
 			backgroundImage: {
-				'gradient-primary': 'linear-gradient(135deg, hsl(147 83% 19%), hsl(147 50% 35%))',
-				'gradient-hero': 'linear-gradient(120deg, hsl(147 83% 19%) 0%, hsl(147 50% 35%) 100%)'
+				'gradient-primary': 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)))',
+				'gradient-hero': 'linear-gradient(120deg, hsl(var(--primary)) 0%, hsl(var(--primary-light)) 100%)',
+				'gradient-accent': 'linear-gradient(135deg, hsl(var(--accent)), hsl(43 80% 60%))',
+				'gradient-cream': 'linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%)'
 			},
 			boxShadow: {
-				'elegant': '0 10px 30px -10px hsl(147 83% 19% / 0.3)',
-				'card': '0 4px 20px -2px hsl(147 83% 19% / 0.1)'
+				'elegant': '0 10px 30px -10px hsl(var(--primary) / 0.25)',
+				'card': '0 4px 20px -2px hsl(var(--primary) / 0.08)',
+				'accent': '0 8px 24px -6px hsl(var(--accent) / 0.25)',
+				'soft': '0 2px 12px -2px hsl(var(--primary) / 0.08)'
 			}
 		}
 	},
