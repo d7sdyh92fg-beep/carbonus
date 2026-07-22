@@ -1,25 +1,89 @@
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
-import { trackEvent } from "@/lib/analytics";
-import CarbonusHero from "@/components/CarbonusHero";
 
-export function Hero(_: { carImage?: string }) {
+interface HeroProps {
+  carImage?: string;
+}
+
+export function Hero({ carImage }: HeroProps) {
   const navigate = useNavigate();
-  const { language } = useTranslations();
+  const { t } = useTranslations();
 
-  const handleSearch = ({ pickupDate, returnDate }: { pickupDate: string; returnDate: string }) => {
-    const days = Math.max(
-      1,
-      Math.ceil(
-        (new Date(returnDate + "T12:00:00").getTime() -
-          new Date(pickupDate + "T12:00:00").getTime()) /
-          (1000 * 60 * 60 * 24)
-      )
-    );
-    trackEvent("search_availability", { start: pickupDate, end: returnDate, days });
-    const path = language === "en" ? "/cars" : "/automobiliai";
-    navigate(`${path}?start=${pickupDate}&end=${returnDate}`);
+  const handleNavigateToCars = () => {
+    navigate('/automobiliai');
+    // Small delay to ensure navigation completes before scrolling
+    setTimeout(() => {
+      window.scrollTo({
+        top: 300, // Same scroll amount as CTA button
+        behavior: 'smooth'
+      });
+    }, 100);
   };
 
-  return <CarbonusHero heroImage="/images/carbonus-hero-v3.webp" onSearch={handleSearch} />;
+  return (
+    <section className="relative min-h-[60vh] md:min-h-screen pt-12 md:pt-16 flex items-start md:items-center overflow-hidden bg-transparent md:bg-gradient-to-br md:from-background md:to-muted/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
+        {/* Left Content */}
+        <div className="space-y-4 md:space-y-12 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
+          <div className="space-y-4 md:space-y-8">
+            <div className="space-y-6 md:space-y-8">
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-muted-foreground leading-relaxed">
+                {t('hero.subtitle')}
+              </h1>
+              <div className="space-y-3 md:space-y-4 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+                <div className="text-primary">{t('hero.title1')}</div>
+                <div className="text-foreground">{t('hero.title2')}</div>
+                <div className="text-primary">
+                  {t('hero.title3')}<br />
+                  {t('hero.title3Line2')}
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed mt-6 md:mt-8">
+              {t('hero.description')}
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Button 
+              variant="hero"
+              size="lg" 
+              className="animate-scale-in"
+              onClick={handleNavigateToCars}
+            >
+              {t('hero.cta')}
+            </Button>
+          </div>
+        </div>
+
+        {/* Right Content - Car Image - Hidden on Mobile */}
+        <div className="hidden lg:block relative animate-slide-up -ml-0 lg:-ml-12 mt-8 lg:mt-0">
+          {/* Enhanced green glow around car - Hidden on mobile */}
+          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-400/20 blur-[90px] scale-110"></div>
+          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-500/22 blur-3xl scale-125"></div>
+          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-400/16 blur-2xl scale-105"></div>
+          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-300/14 blur-xl scale-150"></div>
+          
+
+          {/* Main Car Image */}
+          <div className="relative z-10">
+            <img
+              src="/lovable-uploads/a3fa3c94-d1ad-4b21-984f-e85b545f68df.png"
+              alt="Premium Green Audi"
+              className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-3xl mx-auto object-contain scale-75 sm:scale-90 lg:scale-110"
+            />
+          </div>
+        </div>
+      </div>
+
+
+      {/* Background Elements - Hidden on mobile */}
+      <div className="hidden lg:block absolute inset-0 -z-20 overflow-hidden">
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+      </div>
+    </section>
+  );
 }

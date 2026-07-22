@@ -71,22 +71,13 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "Jūsų kelionė prasideda Druskininkuose",
-      title1: "Daugiau laisvės",
-      title2: "kiekvienai kelionei.",
-      description: "Atraskite Druskininkus ir Lietuvą savo tempu. Pasirinkite tinkamą automobilį, o mes pristatysime jį ten, kur apsistojote.",
-      cta: "Pradėti kelionę",
-      secondaryCta: "Peržiūrėti automobilius",
-      pickupDate: "Atsiėmimo data",
-      returnDate: "Grąžinimo data",
-      location: "Atsiėmimo vieta",
-      locationDefault: "Druskininkai",
-      formCta: "Rodyti laisvus automobilius",
-      trust: "Realus laisvumas · Aiški kaina ir užstatas · Pristatymas Druskininkuose",
-      imageAlt: "Automobilis prie SPA viešbučio Druskininkuose auksinės valandos šviesoje",
-      subtitle: "",
-      title3: "",
-      title3Line2: "",
+      subtitle: "Kurkime prisiminimus kartu:",
+      title1: "Jūsų planai,",
+      title2: "Mūsų automobilis Jūsų poreikiams",
+      title3: "Jūsų kelionės, nuotykiai",
+      title3Line2: "ir patirtys.",
+      description: "Patirkite pasirinkimo laisvę su Carbonus Druskininkuose - nuomokite kokybišką automobilį ir vykite į bet kurį Lietuvos kampelį saugiai ir patogiai.",
+      cta: "Pradėti",
     },
 
     // Features
@@ -2080,22 +2071,13 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "Your journey starts in Druskininkai",
-      title1: "More freedom",
-      title2: "for every journey.",
-      description: "Discover Druskininkai and Lithuania at your own pace. Pick the right car and we will deliver it right to where you are staying.",
-      cta: "Start your journey",
-      secondaryCta: "Browse cars",
-      pickupDate: "Pick-up date",
-      returnDate: "Return date",
-      location: "Pick-up location",
-      locationDefault: "Druskininkai",
-      formCta: "Show available cars",
-      trust: "Real availability · Clear price and deposit · Delivery in Druskininkai",
-      imageAlt: "Car at a spa hotel in Druskininkai in golden hour light",
-      subtitle: "",
-      title3: "",
-      title3Line2: "",
+      subtitle: "Let's create memories together:",
+      title1: "Your plans,",
+      title2: "Our car for your needs",
+      title3: "Your journeys, adventures",
+      title3Line2: "and experiences.",
+      description: "Experience the freedom of choice with Carbonus in Druskininkai - rent a quality car and travel to any corner of Lithuania safely and comfortably.",
+      cta: "Get Started",
     },
 
     // Features
