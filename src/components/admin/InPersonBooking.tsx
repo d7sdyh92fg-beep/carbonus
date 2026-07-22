@@ -674,7 +674,11 @@ export function InPersonBooking() {
       await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', reservation.id);
 
       toast.success('Rezervacija sėkmingai užbaigta!');
+      try { localStorage.removeItem(DRAFT_STORAGE_KEY); } catch {}
+      setDraftSavedAt(null);
+      setHasDraft(false);
       setStep('complete');
+
     } catch (error) {
       console.error('Error completing booking:', error);
       toast.error('Nepavyko užbaigti rezervacijos. Bandykite dar kartą.');
