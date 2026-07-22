@@ -151,7 +151,11 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
   const handleSaveChanges = async () => {
     if (!reservation) return;
-    
+
+    const statusChanged = editForm.status !== reservation.status;
+    const changedToPickedUp = statusChanged && editForm.status === 'picked_up';
+    const changedToPaid = statusChanged && editForm.status === 'paid';
+
     setIsLoading(true);
     try {
       // Update customer information
@@ -192,9 +196,29 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
       if (reservationError) throw reservationError;
 
+      // Send status email when changing to paid or picked_up (avoid duplicates)
+      if ((changedToPaid || changedToPickedUp) && (reservation as any).last_email_sent_status !== editForm.status) {
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: reservation.id,
+            customerEmail: editForm.email.trim(),
+            customerName: `${editForm.first_name.trim()} ${editForm.last_name.trim()}`,
+            carName: editForm.car_name,
+            startDate: format(new Date(editForm.start_date), 'yyyy-MM-dd'),
+            endDate: format(new Date(editForm.end_date), 'yyyy-MM-dd'),
+            totalAmount: reservation.total_amount,
+            status: editForm.status,
+            language: (reservation as any).language || 'lt'
+          }
+        });
+        await supabase.from('reservations').update({ last_email_sent_status: editForm.status }).eq('id', reservation.id);
+      }
+
       toast({
         title: "Sėkmingai atnaujinta",
-        description: "Rezervacijos informacija buvo atnaujinta.",
+        description: changedToPickedUp
+          ? "Rezervacija atnaujinta. Sutartis išsiųsta klientui (jei parašas yra)."
+          : "Rezervacijos informacija buvo atnaujinta.",
       });
 
       onUpdate();
