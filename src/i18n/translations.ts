@@ -71,14 +71,37 @@ export const translations = {
 
     // Hero Section
     hero: {
-      subtitle: "Kurkime prisiminimus kartu:",
-      title1: "Jūsų planai,",
-      title2: "Mūsų automobilis Jūsų poreikiams",
-      title3: "Jūsų kelionės, nuotykiai",
-      title3Line2: "ir patirtys.",
-      description: "Patirkite pasirinkimo laisvę su Carbonus Druskininkuose - nuomokite kokybišką automobilį ir vykite į bet kurį Lietuvos kampelį saugiai ir patogiai.",
-      cta: "Pradėti",
+      eyebrow: "Vietinė automobilių nuoma Druskininkuose",
+      title: "Automobilių nuoma Druskininkuose be siurprizų",
+      description: "Pasirinkite datas, matykite galutinę kainą ir rezervuokite automobilį per kelias minutes.",
+      cta: "Rasti laisvą automobilį",
+      urgent: "Skubiai reikia automobilio?",
+      urgentCta: "Skambinti",
+      form: {
+        pickupLocation: "Atsiėmimo vieta",
+        returnLocation: "Grąžinimo vieta",
+        pickupDate: "Atsiėmimo data",
+        returnDate: "Grąžinimo data",
+        pickupTime: "Atsiėmimo laikas",
+        returnTime: "Grąžinimo laikas",
+        submit: "Rasti automobilį",
+        locationDruskininkai: "Druskininkai – biuras",
+        locationHotel: "Druskininkai – pristatymas į viešbutį",
+      },
+      trust: {
+        transparent: "Skaidri galutinė kaina",
+        local: "Vietinė įmonė",
+        support: "Pagalba 7 d./sav.",
+        rating: "4.9★ Google įvertinimas",
+      },
+      // Legacy keys kept for backwards compatibility
+      subtitle: "Vietinė automobilių nuoma Druskininkuose",
+      title1: "Automobilių nuoma",
+      title2: "Druskininkuose",
+      title3: "be siurprizų",
+      title3Line2: "",
     },
+
 
     // Features
     features: {
