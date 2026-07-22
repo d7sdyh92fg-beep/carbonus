@@ -115,15 +115,16 @@ export function Hero() {
 
           {/* Tagline */}
           <div className="mt-auto pt-[4vh] max-w-3xl">
-            <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-4 lg:mb-6">
+            <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-3 lg:mb-4">
               <MapPin className="h-3.5 w-3.5" />
               Druskininkai
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] text-foreground">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white">
               KELIAUKITE STILINGAI.<br />
               MĖGAUKITĖS LAISVE.
             </h1>
           </div>
+
         </div>
       </div>
 
