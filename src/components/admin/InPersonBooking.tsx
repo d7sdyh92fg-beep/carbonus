@@ -157,7 +157,55 @@ const availableServices: AdditionalService[] = [
   },
 ];
 
-const DRAFT_STORAGE_KEY = 'inPersonBooking:draft:v1';
+const DRAFTS_STORAGE_KEY = 'inPersonBooking:drafts:v2';
+const LEGACY_DRAFT_KEY = 'inPersonBooking:draft:v1';
+
+type DraftPayload = {
+  id: string;
+  step: string;
+  customer: any;
+  booking: any;
+  paymentMethod: any;
+  contractLanguage: any;
+  driverLicenseUrls: any;
+  secondDriverLicenseUrls: any;
+  notes: string;
+  useCustomPricing: boolean;
+  customRentalPrice: string;
+  customDeposit: string;
+  pricingNotes: string;
+  isRetroactive: boolean;
+  selectedServices: any[];
+  isReturningCustomer: boolean;
+  skipDocuments: boolean;
+  savedAt: string;
+  carLabel: string;
+  customerLabel: string;
+};
+
+const normalizeStr = (s: string) => (s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+
+const computeDraftId = (customer: any, booking: any): string => {
+  const carPart = booking?.carId || 'nocar';
+  const idPart =
+    normalizeStr(customer?.email) ||
+    normalizeStr(customer?.phone) ||
+    normalizeStr(`${customer?.firstName || ''} ${customer?.lastName || ''}`) ||
+    'anon';
+  return `${carPart}::${idPart}`;
+};
+
+const readDraftsMap = (): Record<string, DraftPayload> => {
+  try {
+    const raw = localStorage.getItem(DRAFTS_STORAGE_KEY);
+    if (raw) return JSON.parse(raw) || {};
+  } catch {}
+  return {};
+};
+
+const writeDraftsMap = (map: Record<string, DraftPayload>) => {
+  try { localStorage.setItem(DRAFTS_STORAGE_KEY, JSON.stringify(map)); } catch {}
+};
 
 
 
