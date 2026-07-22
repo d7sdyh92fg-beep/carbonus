@@ -1828,7 +1828,7 @@ export function InPersonBooking() {
           >
             💾 Išsaugoti juodraštį
           </Button>
-          {(draftSavedAt || hasDraft) && (
+          {draftSavedAt && (
             <Button
               variant="ghost"
               size="lg"
