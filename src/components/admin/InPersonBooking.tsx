@@ -324,7 +324,8 @@ export function InPersonBooking() {
       currentDraftIdRef.current = draftId;
       setDraftSavedAt(d.savedAt);
       setDraftRestored(true);
-      setAvailableDrafts([]);
+      refreshAvailableDrafts();
+      setActiveTab('new');
       toast.success('Juodraštis atkurtas');
     } catch (e) {
       console.error('Draft restore failed', e);
