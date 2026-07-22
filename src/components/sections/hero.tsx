@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
 import { Car, Calendar, MapPin, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet, CalendarClock, Hotel } from "lucide-react";
 import { useState } from "react";
+import heroCar from "@/assets/hero-car.jpg";
 
 type TabKey = "cars" | "long" | "hotel";
 
@@ -35,6 +36,17 @@ export function Hero() {
     <section className="relative bg-[hsl(220_27%_8%)] text-white h-[100svh] flex flex-col overflow-hidden">
       {/* Hero fills remaining space */}
       <div className="relative flex-1 flex flex-col overflow-hidden">
+        {/* Background car image */}
+        <img
+          src={heroCar}
+          alt="Premium automobilių nuoma Druskininkuose"
+          width={1920}
+          height={1280}
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
+        />
+        {/* Dark gradient overlays for readability */}
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[hsl(220_27%_8%)]/85 via-[hsl(220_27%_8%)]/55 to-[hsl(220_27%_8%)]/95" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[hsl(220_27%_8%)]/80 via-transparent to-[hsl(220_27%_8%)]/40" />
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 left-1/3 h-[45vh] w-[45vh] rounded-full bg-primary/12 blur-[120px]" />
