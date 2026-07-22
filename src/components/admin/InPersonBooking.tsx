@@ -157,6 +157,10 @@ const availableServices: AdditionalService[] = [
   },
 ];
 
+const DRAFT_STORAGE_KEY = 'inPersonBooking:draft:v1';
+
+
+
 export function InPersonBooking() {
   const [step, setStep] = useState<'details' | 'services' | 'documents' | 'payment' | 'complete'>('details');
   const [selectedServices, setSelectedServices] = useState<AdditionalService[]>([]);
@@ -208,6 +212,109 @@ export function InPersonBooking() {
     fromCarName?: string;
     fromDate?: string;
   } | null>(null);
+
+  const [hasDraft, setHasDraft] = useState(false);
+  const [draftRestored, setDraftRestored] = useState(false);
+  const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
+
+  // Detect existing draft on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (raw) setHasDraft(true);
+    } catch {}
+  }, []);
+
+  const restoreDraft = () => {
+    try {
+      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (d.customer) setCustomer(d.customer);
+      if (d.booking) {
+        setBooking({
+          ...d.booking,
+          startDate: d.booking.startDate ? new Date(d.booking.startDate) : null,
+          endDate: d.booking.endDate ? new Date(d.booking.endDate) : null,
+        });
+      }
+      if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
+      if (d.contractLanguage) setContractLanguage(d.contractLanguage);
+      if (d.driverLicenseUrls) setDriverLicenseUrls(d.driverLicenseUrls);
+      if (d.secondDriverLicenseUrls) setSecondDriverLicenseUrls(d.secondDriverLicenseUrls);
+      if (typeof d.notes === 'string') setNotes(d.notes);
+      if (typeof d.useCustomPricing === 'boolean') setUseCustomPricing(d.useCustomPricing);
+      if (typeof d.customRentalPrice === 'string') setCustomRentalPrice(d.customRentalPrice);
+      if (typeof d.customDeposit === 'string') setCustomDeposit(d.customDeposit);
+      if (typeof d.pricingNotes === 'string') setPricingNotes(d.pricingNotes);
+      if (typeof d.isRetroactive === 'boolean') setIsRetroactive(d.isRetroactive);
+      if (Array.isArray(d.selectedServices)) setSelectedServices(d.selectedServices);
+      if (typeof d.isReturningCustomer === 'boolean') setIsReturningCustomer(d.isReturningCustomer);
+      if (typeof d.skipDocuments === 'boolean') setSkipDocuments(d.skipDocuments);
+      if (d.step) setStep(d.step);
+      setDraftRestored(true);
+      setHasDraft(false);
+      toast.success('Juodraštis atkurtas');
+    } catch (e) {
+      console.error('Draft restore failed', e);
+      toast.error('Nepavyko atkurti juodraščio');
+    }
+  };
+
+  const discardDraft = () => {
+    try { localStorage.removeItem(DRAFT_STORAGE_KEY); } catch {}
+    setHasDraft(false);
+    setDraftSavedAt(null);
+  };
+
+  const saveDraft = (silent = false) => {
+    try {
+      const payload = {
+        step,
+        customer,
+        booking: {
+          ...booking,
+          startDate: booking.startDate ? booking.startDate.toISOString() : null,
+          endDate: booking.endDate ? booking.endDate.toISOString() : null,
+        },
+        paymentMethod,
+        contractLanguage,
+        driverLicenseUrls,
+        secondDriverLicenseUrls,
+        notes,
+        useCustomPricing,
+        customRentalPrice,
+        customDeposit,
+        pricingNotes,
+        isRetroactive,
+        selectedServices,
+        isReturningCustomer,
+        skipDocuments,
+        savedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(payload));
+      setDraftSavedAt(payload.savedAt);
+      if (!silent) toast.success('Juodraštis išsaugotas');
+    } catch (e) {
+      console.error('Draft save failed', e);
+      if (!silent) toast.error('Nepavyko išsaugoti juodraščio');
+    }
+  };
+
+  // Auto-save on relevant state changes (debounced), only after user interaction or restore
+  useEffect(() => {
+    // Skip if nothing meaningful entered yet
+    const meaningful =
+      draftRestored ||
+      customer.firstName || customer.lastName || customer.email || customer.phone ||
+      booking.carId || booking.startDate || notes;
+    if (!meaningful) return;
+    const t = setTimeout(() => saveDraft(true), 500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, customer, booking, paymentMethod, contractLanguage, driverLicenseUrls, secondDriverLicenseUrls, notes, useCustomPricing, customRentalPrice, customDeposit, pricingNotes, isRetroactive, selectedServices, isReturningCustomer, skipDocuments, draftRestored]);
+
+
 
   // Fetch car pricing from DB
   const { data: dbCarPricing } = useQuery({
@@ -567,7 +674,11 @@ export function InPersonBooking() {
       await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', reservation.id);
 
       toast.success('Rezervacija sėkmingai užbaigta!');
+      try { localStorage.removeItem(DRAFT_STORAGE_KEY); } catch {}
+      setDraftSavedAt(null);
+      setHasDraft(false);
       setStep('complete');
+
     } catch (error) {
       console.error('Error completing booking:', error);
       toast.error('Nepavyko užbaigti rezervacijos. Bandykite dar kartą.');
@@ -638,8 +749,26 @@ export function InPersonBooking() {
 
   return (
     <div className="w-full max-w-none space-y-4 sm:space-y-6 lg:space-y-8 p-3 sm:p-4 lg:p-6">
+      {/* Draft banner */}
+      {hasDraft && !draftRestored && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+          <div className="text-sm">
+            💾 Rastas išsaugotas juodraštis. Ar norite tęsti nebaigtą rezervaciją?
+          </div>
+          <div className="flex gap-2">
+            <Button size="sm" onClick={restoreDraft}>Tęsti juodraštį</Button>
+            <Button size="sm" variant="outline" onClick={discardDraft}>Naikinti</Button>
+          </div>
+        </div>
+      )}
+      {draftSavedAt && (
+        <div className="text-xs text-muted-foreground">
+          Juodraštis automatiškai išsaugomas · paskutinis išsaugojimas {new Date(draftSavedAt).toLocaleTimeString('lt-LT')}
+        </div>
+      )}
       {/* Progress Steps - Mobile Optimized */}
       <div className="bg-background p-3 sm:p-4 rounded-lg border overflow-hidden">
+
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2">
           {[
             { key: 'details', label: 'Rezervacijos duomenys', shortLabel: 'Duomenys', icon: FileText },
@@ -1564,7 +1693,7 @@ export function InPersonBooking() {
       )}
 
       {/* Action Buttons */}
-      <div className="flex justify-between pt-6">
+      <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6">
         <Button
           variant="outline"
           onClick={() => {
@@ -1578,15 +1707,36 @@ export function InPersonBooking() {
         >
           Atgal
         </Button>
-        <Button
-          onClick={handleNextStep}
-          disabled={loading}
-          size="lg"
-          className="min-w-40"
-        >
-          {loading ? 'Apdorojama...' : step === 'payment' ? 'Užbaigti rezervaciją' : 'Toliau'}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={() => saveDraft(false)}
+            disabled={loading}
+          >
+            💾 Išsaugoti juodraštį
+          </Button>
+          {(draftSavedAt || hasDraft) && (
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={() => { discardDraft(); toast.success('Juodraštis ištrintas'); }}
+              disabled={loading}
+            >
+              Naikinti juodraštį
+            </Button>
+          )}
+          <Button
+            onClick={handleNextStep}
+            disabled={loading}
+            size="lg"
+            className="min-w-40"
+          >
+            {loading ? 'Apdorojama...' : step === 'payment' ? 'Užbaigti rezervaciją' : 'Toliau'}
+          </Button>
+        </div>
       </div>
+
     </div>
   );
 }
