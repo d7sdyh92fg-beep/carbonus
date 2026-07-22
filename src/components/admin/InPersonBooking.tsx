@@ -716,14 +716,14 @@ export function InPersonBooking() {
           total_rental_cost: rentalCost,
           deposit_amount: depositAmount,
           total_amount: totalAmount,
-          status: 'paid',
+          status: (paymentMethod === 'bank_transfer' && !bankTransferPaid) ? 'awaiting_payment' : 'paid',
           payment_method: paymentMethod,
-          payment_completed_at: new Date().toISOString(),
+          payment_completed_at: (paymentMethod === 'bank_transfer' && !bankTransferPaid) ? null : new Date().toISOString(),
           driver_license_url: driverLicenseUrls.front || null,
           driver_license_back_url: driverLicenseUrls.back || null,
           second_driver_license_url: secondDriverLicenseUrls.front || null,
           second_driver_license_back_url: secondDriverLicenseUrls.back || null,
-          contract_signed_at: new Date().toISOString(),
+          contract_signed_at: signatureData ? new Date().toISOString() : null,
           notes: notes,
           custom_rental_price: useCustomPricing ? rentalCost : null,
           custom_deposit_amount: useCustomPricing ? depositAmount : null,
@@ -745,37 +745,41 @@ export function InPersonBooking() {
         });
       }
 
-      // Generate contract PDF (stored in storage, attached by send-status-email)
-      await supabase.functions.invoke('generate-contract-pdf', {
-        body: {
-          reservationId: reservation.id,
-          customerName: `${customer.firstName} ${customer.lastName}`,
-          customerEmail: customer.email,
-          carName: booking.carName,
-          startDate: format(booking.startDate!, 'yyyy-MM-dd'),
-          endDate: format(booking.endDate!, 'yyyy-MM-dd'),
-          totalAmount: totalAmount,
-          signatureData: signatureData,
-          language: contractLanguage,
-          skipEmail: true
-        }
-      });
+      const finalStatus = (paymentMethod === 'bank_transfer' && !bankTransferPaid) ? 'awaiting_payment' : 'paid';
 
-      // Send status email with "paid" status (with duplicate protection)
-      await supabase.functions.invoke('send-status-email', {
-        body: {
-          reservationId: reservation.id,
-          customerEmail: customer.email,
-          customerName: `${customer.firstName} ${customer.lastName}`,
-          carName: booking.carName,
-          startDate: format(booking.startDate!, 'yyyy-MM-dd'),
-          endDate: format(booking.endDate!, 'yyyy-MM-dd'),
-          totalAmount: totalAmount,
-          status: 'paid',
-          language: contractLanguage
-        }
-      });
-      await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', reservation.id);
+      if (sendContractNow) {
+        // Generate contract PDF (stored in storage, attached by send-status-email)
+        await supabase.functions.invoke('generate-contract-pdf', {
+          body: {
+            reservationId: reservation.id,
+            customerName: `${customer.firstName} ${customer.lastName}`,
+            customerEmail: customer.email,
+            carName: booking.carName,
+            startDate: format(booking.startDate!, 'yyyy-MM-dd'),
+            endDate: format(booking.endDate!, 'yyyy-MM-dd'),
+            totalAmount: totalAmount,
+            signatureData: signatureData,
+            language: contractLanguage,
+            skipEmail: true
+          }
+        });
+
+        // Send status email (with duplicate protection)
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: reservation.id,
+            customerEmail: customer.email,
+            customerName: `${customer.firstName} ${customer.lastName}`,
+            carName: booking.carName,
+            startDate: format(booking.startDate!, 'yyyy-MM-dd'),
+            endDate: format(booking.endDate!, 'yyyy-MM-dd'),
+            totalAmount: totalAmount,
+            status: finalStatus,
+            language: contractLanguage
+          }
+        });
+        await supabase.from('reservations').update({ last_email_sent_status: finalStatus }).eq('id', reservation.id);
+      }
 
       toast.success('Rezervacija sėkmingai užbaigta!');
       discardDraft(currentDraftIdRef.current || undefined);
