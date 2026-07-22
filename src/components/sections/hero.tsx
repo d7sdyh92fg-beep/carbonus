@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
-import { Car, Calendar, MapPin, User, ChevronDown, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet } from "lucide-react";
+import { Car, Calendar, MapPin, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet, CalendarClock, Hotel } from "lucide-react";
 import { useState } from "react";
 
-type TabKey = "cars" | "suv" | "long" | "transfer";
+type TabKey = "cars" | "long" | "hotel";
 
 export function Hero() {
   const navigate = useNavigate();
@@ -14,30 +14,34 @@ export function Hero() {
   const inTwo = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
   const [pickup, setPickup] = useState(today);
   const [ret, setRet] = useState(inTwo);
+  const [hotel, setHotel] = useState("");
 
   const goToCars = () => {
-    navigate(`/automobiliai?pickup=${pickup}&return=${ret}`);
+    const params = new URLSearchParams({ pickup, return: ret, mode: tab });
+    if (tab === "hotel" && hotel) params.set("hotel", hotel);
+    navigate(`/automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 300, behavior: "smooth" }), 100);
   };
 
   const tabs: { key: TabKey; label: string; icon: React.ElementType }[] = [
     { key: "cars", label: "Automobiliai", icon: Car },
-    { key: "suv", label: "SUV", icon: Car },
-    { key: "long", label: "Ilgesnė nuoma", icon: Calendar },
-    { key: "transfer", label: "Pervežimas | oro uostą", icon: ArrowRight },
+    { key: "long", label: "Ilgesnė nuoma", icon: CalendarClock },
+    { key: "hotel", label: "Pristatymas viešbutyje", icon: Hotel },
   ];
+
+  const showHotel = tab === "hotel";
 
   return (
     <section className="dark relative bg-background text-foreground">
-      {/* Hero dark area */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden min-h-[92vh] flex flex-col">
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 left-1/3 h-[520px] w-[520px] rounded-full bg-primary/10 blur-[120px]" />
-          <div className="absolute bottom-0 right-0 h-[420px] w-[420px] rounded-full bg-primary/5 blur-[100px]" />
+          <div className="absolute -top-24 left-1/3 h-[620px] w-[620px] rounded-full bg-primary/12 blur-[140px]" />
+          <div className="absolute bottom-0 right-0 h-[520px] w-[520px] rounded-full bg-primary/8 blur-[120px]" />
+          <div className="absolute top-1/2 -left-24 h-[380px] w-[380px] rounded-full bg-primary/6 blur-[100px]" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-24 md:pb-36">
+        <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 md:pt-32 pb-24 md:pb-40">
           {/* Search widget */}
           <div className="rounded-3xl bg-card/95 backdrop-blur-xl border border-border shadow-elegant p-4 sm:p-6">
             {/* Tabs */}
@@ -62,7 +66,7 @@ export function Hero() {
             </div>
 
             {/* Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4 items-end">
+            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "md:grid-cols-2 lg:grid-cols-5" : "md:grid-cols-2 lg:grid-cols-4"}`}>
               <Field label="Paėmimo vieta" icon={<MapPin className="h-4 w-4 text-muted-foreground" />}>
                 <input
                   defaultValue="Druskininkai"
@@ -85,12 +89,16 @@ export function Hero() {
                   className="w-full bg-transparent outline-none text-card-foreground font-medium"
                 />
               </Field>
-              <Field label="Vairuotojo amžius" icon={<User className="h-4 w-4 text-muted-foreground" />}>
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-medium text-card-foreground">21+</span>
-                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                </div>
-              </Field>
+              {showHotel && (
+                <Field label="Viešbučio pavadinimas" icon={<Hotel className="h-4 w-4 text-muted-foreground" />}>
+                  <input
+                    value={hotel}
+                    onChange={(e) => setHotel(e.target.value)}
+                    placeholder="Pvz. Grand SPA Lietuva"
+                    className="w-full bg-transparent outline-none text-card-foreground font-medium placeholder:text-muted-foreground"
+                  />
+                </Field>
+              )}
               <Button
                 variant="hero"
                 size="lg"
@@ -111,12 +119,12 @@ export function Hero() {
           </div>
 
           {/* Tagline */}
-          <div className="mt-16 md:mt-28 max-w-2xl">
+          <div className="mt-auto pt-20 md:pt-32 max-w-3xl">
             <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-6">
               <MapPin className="h-3.5 w-3.5" />
               Druskininkai
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-foreground">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] text-foreground">
               KELIAUKITE STILINGAI.<br />
               MĖGAUKITĖS LAISVE.
             </h1>
