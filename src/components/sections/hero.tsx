@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
 import { Car, Calendar, MapPin, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet, CalendarClock, Hotel } from "lucide-react";
 import { useState } from "react";
+import heroCar from "@/assets/hero-car.jpg";
 
 type TabKey = "cars" | "long" | "hotel";
 
