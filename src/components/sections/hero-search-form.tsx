@@ -253,7 +253,10 @@ export function HeroSearchForm() {
       </div>
 
       {showHotelHint && (
-        <p className="mt-2 px-1 text-[12px] leading-snug text-primary-dark/70">
+        <p
+          className="mt-2 px-1 text-[11px] leading-snug"
+          style={{ color: "#527063" }}
+        >
           {language === "lt"
             ? "Pristatymo mokestis bus parodytas prieš rezervuojant."
             : "Delivery fee will be shown before you book."}
