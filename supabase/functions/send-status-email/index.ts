@@ -582,16 +582,14 @@ serve(async (req) => {
       html: tmpl.html,
     };
 
-    // For "paid": generate a pre-signed contract (only lessor signature, no customer signature yet)
-    // and attach it. The fully co-signed contract is regenerated on pickup via generate-contract-pdf.
-    if (data.status === 'paid') {
+    // Attach contract PDF for "paid" (lessor-signed only) and "picked_up" (fully co-signed if customer signature exists).
+    if (data.status === 'paid' || data.status === 'picked_up') {
       try {
         const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
         const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
         const language = data.language || 'lt';
 
-        // Trigger contract generation without signatureData → only lessor signature embedded.
-        // skipEmail=true: we attach the PDF to this status email ourselves.
+        // Regenerate contract. generate-contract-pdf embeds the customer signature if present in contract_signatures.
         const genResp = await fetch(`${supabaseUrl}/functions/v1/generate-contract-pdf`, {
           method: 'POST',
           headers: {
@@ -622,16 +620,16 @@ serve(async (req) => {
 
         const generatedPdf = await downloadGeneratedPdf(supabase, data.reservationId);
         if (generatedPdf) {
-          console.log('Attaching pre-signed (lessor only) contract PDF');
+          console.log(`Attaching contract PDF for status=${data.status}`);
           emailOptions.attachments = [{
             filename: generatedPdf.filename,
             content: generatedPdf.base64,
           }];
         } else {
-          console.warn('No generated PDF available for paid email');
+          console.warn(`No generated PDF available for ${data.status} email`);
         }
       } catch (error) {
-        console.error('Error preparing pre-signed contract attachment:', error);
+        console.error('Error preparing contract attachment:', error);
       }
     }
 
