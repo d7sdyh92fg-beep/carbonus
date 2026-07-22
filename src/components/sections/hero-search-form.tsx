@@ -83,9 +83,9 @@ export function HeroSearchForm() {
     navigate(`${base}?${params.toString()}`);
   };
 
-  // Cream, warm surface with soft green tint on borders — inner fields are near-white for contrast
+  // Warm cream outer surface with crisp white inner fields for depth and contrast
   const fieldCls =
-    "flex min-h-[70px] flex-col justify-between gap-1 rounded-xl border border-primary/10 bg-[#FCFDFB] px-4 py-2.5 text-left transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20";
+    "flex min-h-[70px] flex-col justify-between gap-1 rounded-xl border border-primary/10 bg-white px-4 py-2.5 text-left transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20";
   const labelCls =
     "flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-primary-dark/80";
   const valueCls =
@@ -253,7 +253,10 @@ export function HeroSearchForm() {
       </div>
 
       {showHotelHint && (
-        <p className="mt-2 px-1 text-[12px] leading-snug text-primary-dark/70">
+        <p
+          className="mt-2 px-1 text-[11px] leading-snug"
+          style={{ color: "#527063" }}
+        >
           {language === "lt"
             ? "Pristatymo mokestis bus parodytas prieš rezervuojant."
             : "Delivery fee will be shown before you book."}

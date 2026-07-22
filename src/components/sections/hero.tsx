@@ -29,35 +29,37 @@ export function Hero() {
       <HeroMedia />
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-6 px-4 sm:px-6 lg:gap-7 lg:px-8">
-        <div className="max-w-[680px] space-y-5 text-white animate-fade-in">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary-light" />
-            {t("hero.eyebrow")}
-          </span>
+        <div className="-mt-2 md:-translate-y-3">
+          <div className="max-w-[680px] space-y-5 text-white animate-fade-in">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary-light" />
+              {t("hero.eyebrow")}
+            </span>
 
-          <h1 className="font-semibold tracking-tight text-white text-[38px] leading-[0.98] sm:text-5xl lg:text-[56px]">
-            {titleMain}
-            {titleAccent && (
-              <span className="mt-[-2px] block text-primary-light font-semibold">
-                {titleAccent}
-              </span>
-            )}
-          </h1>
+            <h1 className="font-semibold tracking-tight text-white text-[38px] leading-[0.98] sm:text-5xl lg:text-[56px]">
+              {titleMain}
+              {titleAccent && (
+                <span className="mt-[-2px] block text-primary-light font-semibold">
+                  {titleAccent}
+                </span>
+              )}
+            </h1>
 
-          <p className="max-w-[620px] text-lg leading-relaxed text-white/85 sm:text-xl">
-            {t("hero.description")}
-          </p>
-        </div>
+            <p className="max-w-[620px] text-lg leading-relaxed text-white/85 sm:text-xl">
+              {t("hero.description")}
+            </p>
+          </div>
 
-        {/* Search form */}
-        <div className="animate-scale-in">
-          <HeroSearchForm />
+          {/* Search form */}
+          <div className="mt-4 animate-scale-in">
+            <HeroSearchForm />
+          </div>
         </div>
 
         {/* Secondary phone action — subtle ghost link, below the form so it never competes with the CTA */}
         <a
           href="tel:+37060000000"
-          className="-mt-1 inline-flex items-center gap-2 self-start text-sm font-medium text-white/85 transition hover:text-white"
+          className="inline-flex items-center gap-2 self-start text-sm font-medium text-white/85 transition hover:text-white"
         >
           <Phone className="h-4 w-4" />
           <span>
@@ -69,7 +71,7 @@ export function Hero() {
         </a>
 
         {/* Trust bar — glass capsules with even widths */}
-        <ul className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
+        <ul className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
           {trustItems.map(({ icon: Icon, label }) => (
             <li
               key={label}
