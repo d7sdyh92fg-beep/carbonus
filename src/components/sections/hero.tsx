@@ -36,13 +36,16 @@ export function Hero() {
     <section className="relative bg-[hsl(220_27%_8%)] text-white h-[100svh] flex flex-col overflow-hidden">
       {/* Hero fills remaining space */}
       <div className="relative flex-1 flex flex-col overflow-hidden">
-        {/* Background car image */}
-        <img
-          src={heroCar.url}
-          alt="Premium automobilių nuoma Druskininkuose"
-          width={1920}
-          height={1280}
+        {/* Background video */}
+        <video
+          src={heroVideo.url}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
+          aria-label="Premium automobilių nuoma Druskininkuose"
         />
         {/* Dark gradient overlays for readability */}
         <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[hsl(220_27%_8%)]/85 via-[hsl(220_27%_8%)]/55 to-[hsl(220_27%_8%)]/95" />
