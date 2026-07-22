@@ -76,8 +76,9 @@ export function Navigation({ logo }: NavigationProps) {
                   className={`text-sm font-medium transition-colors hover:text-primary ${
                     isActiveRoute(item.key)
                       ? "text-primary border-b-2 border-primary pb-1"
-                      : "text-foreground"
+                      : isHome ? "text-white" : "text-foreground"
                   }`}
+
                 >
                   {item.name}
                 </Link>
