@@ -1811,22 +1811,63 @@ export function InPersonBooking() {
 
             <div>
               <Label className="text-base font-medium">Mokėjimo būdas</Label>
-              <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'cash' | 'pay_at_counter')} className="mt-3">
+              <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'cash' | 'pay_at_counter' | 'bank_transfer')} className="mt-3">
                 <div className="flex items-center space-x-3 p-4 border rounded-lg">
                   <RadioGroupItem value="cash" id="cash" />
                   <Label htmlFor="cash" className="flex items-center gap-3 text-base cursor-pointer">
                     <Banknote className="h-5 w-5" />
-                    Mokėjimas grynaisiais
+                    Grynaisiais
                   </Label>
                 </div>
                 <div className="flex items-center space-x-3 p-4 border rounded-lg">
                   <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
                   <Label htmlFor="pay_at_counter" className="flex items-center gap-3 text-base cursor-pointer">
                     <CreditCard className="h-5 w-5" />
-                    Mokėjimas kortele
+                    Kortele
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 p-4 border rounded-lg">
+                  <RadioGroupItem value="bank_transfer" id="bank_transfer" />
+                  <Label htmlFor="bank_transfer" className="flex items-center gap-3 text-base cursor-pointer">
+                    <FileText className="h-5 w-5" />
+                    Pavedimu (pagal sąskaitą)
                   </Label>
                 </div>
               </RadioGroup>
+
+              {paymentMethod === 'bank_transfer' && (
+                <div className="mt-3 p-4 border rounded-lg bg-muted/30 space-y-2">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={bankTransferPaid}
+                      onChange={(e) => setBankTransferPaid(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    <span className="text-sm">Jau apmokėta pagal sąskaitą</span>
+                  </label>
+                  <p className="text-xs text-muted-foreground pl-7">
+                    {bankTransferPaid
+                      ? 'Rezervacija bus sukurta su statusu „Apmokėta".'
+                      : 'Rezervacija bus sukurta su statusu „Laukia mokėjimo" — pažymėsi kai gausi pavedimą.'}
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-3 p-4 border rounded-lg bg-muted/30">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={sendContractNow}
+                    onChange={(e) => setSendContractNow(e.target.checked)}
+                    className="h-4 w-4"
+                  />
+                  <span className="text-sm font-medium">Siųsti sutartį klientui iškart</span>
+                </label>
+                <p className="text-xs text-muted-foreground pl-7 mt-1">
+                  Išjunk, kai pats vežiesi planšetę ir klientas pasirašys vietoje — tada sutartį išsiųsi rankiniu būdu iš rezervacijos peržiūros po parašo.
+                </p>
+              </div>
             </div>
 
             <div>
