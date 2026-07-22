@@ -582,8 +582,22 @@ serve(async (req) => {
       html: tmpl.html,
     };
 
-    // Attach contract PDF for "paid" (lessor-signed only) and "picked_up" (fully co-signed if customer signature exists).
-    if (data.status === 'paid' || data.status === 'picked_up') {
+    // For picked_up, only attach the contract if the customer has already signed.
+    let hasCustomerSignature = false;
+    if (data.status === 'picked_up') {
+      const { data: sig } = await supabase
+        .from('contract_signatures')
+        .select('id')
+        .eq('reservation_id', data.reservationId)
+        .maybeSingle();
+      hasCustomerSignature = !!sig;
+      if (!hasCustomerSignature) {
+        console.log('picked_up: no customer signature yet, skipping contract attachment');
+      }
+    }
+
+    // Attach contract PDF for "paid" (lessor-signed only) and "picked_up" (only if customer signed).
+    if (data.status === 'paid' || (data.status === 'picked_up' && hasCustomerSignature)) {
       try {
         const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
         const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
