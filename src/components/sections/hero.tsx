@@ -130,23 +130,24 @@ export function Hero() {
 
       {/* Green feature band - fits in fullscreen */}
       <div className="bg-primary text-primary-foreground flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 lg:py-7">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 lg:py-6">
           <div className="text-center">
-            <h2 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-extrabold tracking-tight">
-              PREMIUM AUTOMOBILIŲ NUOMA DRUSKININKUOSE
+            <h2 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-extrabold tracking-tight">
+              AUTOMOBILIŲ NUOMA DRUSKININKUOSE
             </h2>
-            <p className="mt-1 lg:mt-2 text-primary-foreground/85 text-xs sm:text-sm">
+            <p className="mt-1 text-primary-foreground/85 text-xs sm:text-sm">
               Patogus rezervavimas, aiškios kainos ir kokybiški automobiliai kiekvienai kelionei.
             </p>
           </div>
-          <div className="mt-4 lg:mt-5 grid grid-cols-2 md:grid-cols-4 gap-3 lg:gap-5 text-xs sm:text-sm">
-            <Feature icon={<Gem className="h-4 w-4" />} label="Aukščiausios klasės automobiliai" />
-            <Feature icon={<MapPin className="h-4 w-4" />} label="Patogus atsiėmimas Druskininkuose" />
-            <Feature icon={<Wallet className="h-4 w-4" />} label="Konkurencingos ir skaidrios kainos" />
-            <Feature icon={<ShieldCheck className="h-4 w-4" />} label="Pilnas draudimas ir pagalba kelyje" />
+          <div className="mt-4 lg:mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 text-xs lg:text-[13px] xl:text-sm">
+            <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Aukščiausios klasės automobiliai" />
+            <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Patogus atsiėmimas Druskininkuose" />
+            <Feature icon={<Wallet className="h-3.5 w-3.5" />} label="Konkurencingos ir skaidrios kainos" />
+            <Feature icon={<ShieldCheck className="h-3.5 w-3.5" />} label="Pilnas draudimas ir pagalba kelyje" />
           </div>
         </div>
       </div>
+
     </section>
   );
 }
