@@ -74,6 +74,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
   const { toast } = useToast();
   
   const [signature, setSignature] = useState<ContractSignature | null>(null);
+  const [isEditingSignature, setIsEditingSignature] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState<any[]>([]);
   const [driverLicenseUrls, setDriverLicenseUrls] = useState({ front: '', back: '' });
@@ -257,8 +258,14 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
   const handleSignature = async (signatureData: string) => {
     if (!reservation) return;
-    
+
     try {
+      // Replace any existing signature (allows re-signing)
+      await supabase
+        .from('contract_signatures')
+        .delete()
+        .eq('reservation_id', reservation.id);
+
       const { error } = await supabase
         .from('contract_signatures')
         .insert({
@@ -269,9 +276,32 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
       if (error) throw error;
 
+      // Mark contract as signed on the reservation
+      await supabase
+        .from('reservations')
+        .update({ contract_signed_at: new Date().toISOString() })
+        .eq('id', reservation.id);
+
+      // Regenerate PDF with the client signature and email it to the client
+      const language = (reservation as any).language || 'lt';
+      await supabase.functions.invoke('generate-contract-pdf', {
+        body: {
+          reservationId: reservation.id,
+          customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+          customerEmail: reservation.customers.email,
+          carName: reservation.car_name,
+          startDate: reservation.start_date,
+          endDate: reservation.end_date,
+          totalAmount: reservation.total_amount,
+          signatureData,
+          language,
+          skipEmail: false,
+        },
+      });
+
       toast({
         title: "Parašas išsaugotas",
-        description: "Skaitmeninis parašas sėkmingai išsaugotas",
+        description: "Pasirašyta sutartis išsiųsta klientui el. paštu.",
       });
 
       fetchSignature();
@@ -696,7 +726,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
           </Card>
 
           {/* Documents and Signature */}
-          {(reservation.status === 'paid' || reservation.status === 'picked_up' || reservation.status === 'completed') && (
+          {(reservation.status === 'paid' || reservation.status === 'picked_up' || reservation.status === 'completed' || reservation.status === 'awaiting_payment') && (
             <Card className="lg:col-span-2">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -737,8 +767,20 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
                 {/* Digital Signature */}
                 <div className="space-y-3">
-                  <Label className="text-base font-semibold">Skaitmeninis parašas</Label>
-                  {signature ? (
+                  <div className="flex items-center justify-between">
+                    <Label className="text-base font-semibold">Skaitmeninis parašas</Label>
+                    {signature && !isEditingSignature && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsEditingSignature(true)}
+                      >
+                        ✏️ Atnaujinti parašą
+                      </Button>
+                    )}
+                  </div>
+
+                  {signature && !isEditingSignature ? (
                     <div className="space-y-4">
                       <div className="w-full border rounded-lg p-4 bg-background">
                         <img
@@ -753,10 +795,26 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <DigitalSignature
-                      onSign={handleSignature}
-                      customerName={`${reservation.customers.first_name} ${reservation.customers.last_name}`}
-                    />
+                    <>
+                      {signature && isEditingSignature && (
+                        <p className="text-xs text-muted-foreground">
+                          Esamas parašas bus pakeistas nauju. Klientas gaus atnaujintą pasirašytą sutartį el. paštu.
+                        </p>
+                      )}
+                      <DigitalSignature
+                        onSign={(data) => { handleSignature(data); setIsEditingSignature(false); }}
+                        customerName={`${reservation.customers.first_name} ${reservation.customers.last_name}`}
+                      />
+                      {signature && isEditingSignature && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setIsEditingSignature(false)}
+                        >
+                          Atšaukti
+                        </Button>
+                      )}
+                    </>
                   )}
                 </div>
               </CardContent>

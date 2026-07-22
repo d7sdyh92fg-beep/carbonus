@@ -237,7 +237,9 @@ export function InPersonBooking() {
     returnTime: '10:00',
     dailyRate: 0
   });
-  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'pay_at_counter'>('cash');
+  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'pay_at_counter' | 'bank_transfer'>('cash');
+  const [bankTransferPaid, setBankTransferPaid] = useState(false);
+  const [sendContractNow, setSendContractNow] = useState(true);
   const [contractLanguage, setContractLanguage] = useState<'lt' | 'en'>('lt');
   const [driverLicenseUrls, setDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
   const [secondDriverLicenseUrls, setSecondDriverLicenseUrls] = useState<{ front?: string; back?: string }>({});
@@ -714,14 +716,14 @@ export function InPersonBooking() {
           total_rental_cost: rentalCost,
           deposit_amount: depositAmount,
           total_amount: totalAmount,
-          status: 'paid',
+          status: (paymentMethod === 'bank_transfer' && !bankTransferPaid) ? 'awaiting_payment' : 'paid',
           payment_method: paymentMethod,
-          payment_completed_at: new Date().toISOString(),
+          payment_completed_at: (paymentMethod === 'bank_transfer' && !bankTransferPaid) ? null : new Date().toISOString(),
           driver_license_url: driverLicenseUrls.front || null,
           driver_license_back_url: driverLicenseUrls.back || null,
           second_driver_license_url: secondDriverLicenseUrls.front || null,
           second_driver_license_back_url: secondDriverLicenseUrls.back || null,
-          contract_signed_at: new Date().toISOString(),
+          contract_signed_at: signatureData ? new Date().toISOString() : null,
           notes: notes,
           custom_rental_price: useCustomPricing ? rentalCost : null,
           custom_deposit_amount: useCustomPricing ? depositAmount : null,
@@ -743,37 +745,41 @@ export function InPersonBooking() {
         });
       }
 
-      // Generate contract PDF (stored in storage, attached by send-status-email)
-      await supabase.functions.invoke('generate-contract-pdf', {
-        body: {
-          reservationId: reservation.id,
-          customerName: `${customer.firstName} ${customer.lastName}`,
-          customerEmail: customer.email,
-          carName: booking.carName,
-          startDate: format(booking.startDate!, 'yyyy-MM-dd'),
-          endDate: format(booking.endDate!, 'yyyy-MM-dd'),
-          totalAmount: totalAmount,
-          signatureData: signatureData,
-          language: contractLanguage,
-          skipEmail: true
-        }
-      });
+      const finalStatus = (paymentMethod === 'bank_transfer' && !bankTransferPaid) ? 'awaiting_payment' : 'paid';
 
-      // Send status email with "paid" status (with duplicate protection)
-      await supabase.functions.invoke('send-status-email', {
-        body: {
-          reservationId: reservation.id,
-          customerEmail: customer.email,
-          customerName: `${customer.firstName} ${customer.lastName}`,
-          carName: booking.carName,
-          startDate: format(booking.startDate!, 'yyyy-MM-dd'),
-          endDate: format(booking.endDate!, 'yyyy-MM-dd'),
-          totalAmount: totalAmount,
-          status: 'paid',
-          language: contractLanguage
-        }
-      });
-      await supabase.from('reservations').update({ last_email_sent_status: 'paid' }).eq('id', reservation.id);
+      if (sendContractNow) {
+        // Generate contract PDF (stored in storage, attached by send-status-email)
+        await supabase.functions.invoke('generate-contract-pdf', {
+          body: {
+            reservationId: reservation.id,
+            customerName: `${customer.firstName} ${customer.lastName}`,
+            customerEmail: customer.email,
+            carName: booking.carName,
+            startDate: format(booking.startDate!, 'yyyy-MM-dd'),
+            endDate: format(booking.endDate!, 'yyyy-MM-dd'),
+            totalAmount: totalAmount,
+            signatureData: signatureData,
+            language: contractLanguage,
+            skipEmail: true
+          }
+        });
+
+        // Send status email (with duplicate protection)
+        await supabase.functions.invoke('send-status-email', {
+          body: {
+            reservationId: reservation.id,
+            customerEmail: customer.email,
+            customerName: `${customer.firstName} ${customer.lastName}`,
+            carName: booking.carName,
+            startDate: format(booking.startDate!, 'yyyy-MM-dd'),
+            endDate: format(booking.endDate!, 'yyyy-MM-dd'),
+            totalAmount: totalAmount,
+            status: finalStatus,
+            language: contractLanguage
+          }
+        });
+        await supabase.from('reservations').update({ last_email_sent_status: finalStatus }).eq('id', reservation.id);
+      }
 
       toast.success('Rezervacija sėkmingai užbaigta!');
       discardDraft(currentDraftIdRef.current || undefined);
@@ -1805,22 +1811,63 @@ export function InPersonBooking() {
 
             <div>
               <Label className="text-base font-medium">Mokėjimo būdas</Label>
-              <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'cash' | 'pay_at_counter')} className="mt-3">
+              <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'cash' | 'pay_at_counter' | 'bank_transfer')} className="mt-3">
                 <div className="flex items-center space-x-3 p-4 border rounded-lg">
                   <RadioGroupItem value="cash" id="cash" />
                   <Label htmlFor="cash" className="flex items-center gap-3 text-base cursor-pointer">
                     <Banknote className="h-5 w-5" />
-                    Mokėjimas grynaisiais
+                    Grynaisiais
                   </Label>
                 </div>
                 <div className="flex items-center space-x-3 p-4 border rounded-lg">
                   <RadioGroupItem value="pay_at_counter" id="pay_at_counter" />
                   <Label htmlFor="pay_at_counter" className="flex items-center gap-3 text-base cursor-pointer">
                     <CreditCard className="h-5 w-5" />
-                    Mokėjimas kortele
+                    Kortele
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 p-4 border rounded-lg">
+                  <RadioGroupItem value="bank_transfer" id="bank_transfer" />
+                  <Label htmlFor="bank_transfer" className="flex items-center gap-3 text-base cursor-pointer">
+                    <FileText className="h-5 w-5" />
+                    Pavedimu (pagal sąskaitą)
                   </Label>
                 </div>
               </RadioGroup>
+
+              {paymentMethod === 'bank_transfer' && (
+                <div className="mt-3 p-4 border rounded-lg bg-muted/30 space-y-2">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={bankTransferPaid}
+                      onChange={(e) => setBankTransferPaid(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    <span className="text-sm">Jau apmokėta pagal sąskaitą</span>
+                  </label>
+                  <p className="text-xs text-muted-foreground pl-7">
+                    {bankTransferPaid
+                      ? 'Rezervacija bus sukurta su statusu „Apmokėta".'
+                      : 'Rezervacija bus sukurta su statusu „Laukia mokėjimo" — pažymėsi kai gausi pavedimą.'}
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-3 p-4 border rounded-lg bg-muted/30">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={sendContractNow}
+                    onChange={(e) => setSendContractNow(e.target.checked)}
+                    className="h-4 w-4"
+                  />
+                  <span className="text-sm font-medium">Siųsti sutartį klientui iškart</span>
+                </label>
+                <p className="text-xs text-muted-foreground pl-7 mt-1">
+                  Išjunk, kai pats vežiesi planšetę ir klientas pasirašys vietoje — tada sutartį išsiųsi rankiniu būdu iš rezervacijos peržiūros po parašo.
+                </p>
+              </div>
             </div>
 
             <div>
