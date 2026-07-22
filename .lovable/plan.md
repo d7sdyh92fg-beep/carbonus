@@ -1,59 +1,53 @@
-# Pagrindinio puslapio premium redizainas
+# Carbonus premium redizainas — planas
 
-Didelės apimties darbas — perdarome visą `/` puslapį pagal naują struktūrą. Siūlau padalinti į etapus, kad galėtum peržiūrėti kiekvieną prieš judant toliau.
+Dirbame etapais. Šis planas apima **tik ETAPĄ 0** (auditą). Kiekvienas kitas etapas gaus atskirą planą po tavo peržiūros.
 
-## Etapas 1 — Hero sekcija (pirmiausia)
+## ETAPAS 0 — Pilnas auditas (dabar)
 
-**Turinys**
-- Maža eilutė: „Vietinė automobilių nuoma Druskininkuose"
-- H1: „Automobilių nuoma Druskininkuose be siurprizų"
-- Aprašymas + CTA „Rasti laisvą automobilį"
-- Antrinis: „Skubiai reikia automobilio? Skambinti" (tel. linkas)
+**Rezultatas:** vienas failas `docs/AUDIT-2026.md` (~15–25 psl.). Jokių kodo, DB ar UI pakeitimų. Jokių migracijų.
 
-**Rezervacijos paieškos forma (hero viduje)**
-- Atsiėmimo vieta / data / laikas
-- Grąžinimo vieta / data / laikas
-- Mygtukas „Rasti automobilį"
-- Reikšmės išsaugomos `sessionStorage` + perduodamos į `/automobiliai` per URL query (`?pickup=...&return=...&pickupTime=...`)
-- `Cars.tsx` skaito query ir pritaiko datų filtrą
+### Ką padarysiu
 
-**Vizualas ir animacija**
-- Placeholder struktūra video ciklui: `<video>` su `poster`, `webm` + `mp4` `<source>`, `muted autoplay loop playsInline preload="metadata"`
-- Atskiras `<source media="(max-width: 768px)">` mobiliai versijai
-- `prefers-reduced-motion`: rodomas tik `poster` vaizdas
-- Video failai kol kas — vietinis lengvas placeholder (Druskininkų pušynas + Carbonus automobilis); struktūra leidžia vėliau lengvai pakeisti be kodo pakeitimų
-- Tamsus gradient overlay užtikrina teksto kontrastą
-- Lazy load: video nesustabdo formos ir teksto renderinimo
+1. **Inventorizacija** — sitemap iš `src/App.tsx`, visų 21 puslapių paskirtis, komponentai, hooks, edge funkcijos (17 vnt.), Supabase lentelės (11 vnt.) ir jų RLS politikos.
+2. **Rezervacijos srauto schema** — nuo hero paieškos iki `payment-success`, su Stripe branch'ais (online / pay-at-counter / admin in-person), `create_reservation` RPC, `send-booking-email`, `verify-stripe-payment`, `send-status-email`.
+3. **Kainodaros auditas** — kaip realiai skaičiuojama: `cars` lentelės pakopos (1–3 / 3–7 / 7+), Mercedes SLK specialus atvejis, `PRICING` fallback `src/config/pricing.ts` (kur dar hardcoded), 24h ciklas `rentalDuration.ts`, avanso logika (50/40/30 €).
+4. **Užimtumo ir konflikto logika** — `reservations` statusai, `car_blocked_dates` (phone_reservation), naujausias serverinis DATE_CONFLICT patikras `create_reservation`, kur dar likę frontend-only tikrinimų.
+5. **Puslapių lentelė** (kritinis / aukštas / vidutinis / žemas) — kiekvienam puslapiui: paskirtis, funkcinės rizikos, dizaino problemos, SEO problemos, siūlomas pakeitimas, prioritetas.
+6. **SEO auditas** — canonical, hreflang, sitemap.xml, robots.txt, structured data, esami URL (numeric ID → slug 301), esami dubliai LT/EN, `SEOHead` naudojimas.
+7. **Analitikos auditas** — GA4/GTM/Meta Pixel integracija (`src/lib/analytics.ts`, `GoogleAnalytics.tsx`, `PixelTester.tsx`), esamų eventų mapping į specifikacijos 16 eventų, dubliavimo rizikos.
+8. **Techninių skolų sąrašas** — hardcoded kainos/tekstai, PII el. laiškuose, `service_role` naudojimas, RLS spragos (per `supabase--linter`), didžiuliai komponentai (Admin.tsx 1732 eil., CarDetail 715 eil., BookingForm 674, send-status-email 750).
+9. **Verslo duomenų klausimynas** — vienas struktūruotas skyrius su ~30–40 laukų, kuriuos privalai užpildyti prieš etapus 2–6 (užstatas pagal automobilį, draudimas, atsakomybė, kilometražas, kuro politika, pristatymo zonos ir kaina, atsiėmimo vieta, darbo laikas, juridiniai rekvizitai, hero video šaltinis, papildomos paslaugos ir jų kainos, promo kodai, refund politika, atšaukimo terminai, gedimo procedūra ir t.t.).
+10. **Ką BŪTINA išsaugoti** — sąrašas: `create_reservation` RPC serverinis konfliktų tikrinimas, Stripe dvigubas kelias (Carbonus + Sanlab), invoice CAR/CARW prefix logika, contract PDF c2 versija, `last_email_sent_status` apsauga nuo dublių, `car_blocked_dates` RLS grants, image protection (data-allow-save exception), draft juodraščiai `localStorage`.
+11. **Etapų sekos rekomendacija** su rizikos atidėjimu:
+    - **Anksti (žema rizika):** Etapas 1 (design system), Etapas 6 (About/FAQ/Contact/Guide redizainas), Etapas 8 (SEO be URL keitimo), Etapas 9 (analitika), Etapas 10 (privatumo/slapukų UI), Etapas 11 (greitis/a11y), Etapas 7 (admin patobulinimai).
+    - **Vidury:** Etapas 2 (pagrindinis puslapis + hero), Etapas 3 (katalogas), Etapas 4 (automobilio puslapis) — dizainas keičiasi, bet rezervacijos motoras nepaliečiamas.
+    - **Pabaigoje (aukšta rizika, atidedami):** Etapas 5 (rezervacijos proceso perkūrimas), Etapas 8-URL (marke-modelis-metai + 301), Etapas 13 (paleidimas).
+12. **Techninės rizikos** — kurie pakeitimai gali paliesti pinigų srautą arba SEO reitingus, kokie rollback žingsniai reikalingi.
 
-**Pasitikėjimo elementai** po formos: 4.9★ Google, „100+ patenkintų klientų", „Vietinė įmonė Druskininkuose", „Be paslėptų mokesčių"
+### Ko NEDARYSIU šiame etape
 
-## Etapas 2 — Kitos sekcijos
+- Nekeisiu jokių failų, išskyrus `docs/AUDIT-2026.md` sukūrimą.
+- Nevykdysiu Supabase migracijų.
+- Nediegsiu jokių edge funkcijų.
+- Nekurstyliuoju UI.
+- Nesuteikiu galutinių verslo tekstų — tik pažymiu, kur reikia tavo įvesties.
 
-Po hero patvirtinimo, atskirai atnaujinsiu:
+### Įrankiai, kuriuos naudosiu tik SKAITYMUI
 
-1. **Pasitikėjimo juosta** — 4 privalumai (Skaidri kaina / Patikrinti auto / Patogus perdavimas / Pagalba nuomos metu). Reikšmes laikysiu i18n faile (administruojama per translations).
-2. **Automobiliai pagal datas** — perrašytas `Fleet` komponentas: jei URL yra datos → filtruoja tik laisvus, rodo pilną nuomos kainą + kainą/dieną kaip antrinę. Jei ne — rekomenduojami + CTA pasirinkti datas.
-3. **Pasirinkimas pagal kelionę** — 4 naujos kortelės (Miestui / Šeimai / Verslui / Ilgai kelionei) → nukreipia į `/automobiliai` su iš anksto pritaikytu filtru (kategorija/sėdimų vietų sk.).
-4. **„Kaip tai veikia"** — 3 žingsniai (patobulinsiu esamą `HowItWorks`).
-5. **Atsiėmimas ir pristatymas** — nauja sekcija su Google Maps embed (Druskininkų adresas), darbo laiku, pristatymo teritorija. Pristatymo paslauga rodoma tik jei realiai teikiama (paprašysiu patvirtinimo).
-6. **Sąlygų santrauka** — 6 blokai (Užstatas / Draudimas / Atsakomybė / Kilometražas / Kuras / Atšaukimas) su reikšmėmis iš i18n/config.
-7. **Atsiliepimai** — pašalinu esamus `testimonials.tsx` išgalvotus, pridedu Supabase `reviews` lentelę (arba paslėpiu sekciją, kol nėra duomenų — pasakyk, kurį variantą nori).
-8. **Kelionių gidas** — 3 naujausi blog įrašai iš esamos `blog_posts` lentelės.
-9. **DUK** — 5–6 pagrindiniai klausimai (accordion) iš esamų FAQ.
-10. **Galutinis CTA** — pakartota datų forma + „Rasti automobilį".
+- `code--view` / `rg` — projekto failams.
+- `supabase--read_query` — realioms lentelėms/politikoms/eilučių pavyzdžiams.
+- `supabase--linter` — RLS ir konfigūracijos spragoms.
+- `seo_chat--list_findings` — dabartinės SEO būklės.
 
-## Techniniai sprendimai
+### Po ETAPO 0
 
-- **Dizaino sistema**: minėjai anksčiau ją ruošti atskirai. **Klausimas**: pradedu iškart nuo Hero (etapas 1) su esamais design tokens, ar pirmiausia atnaujinti globalius tokens (`index.css`, `tailwind.config.ts`) — premium spalvos, tipografijos skalė, tarpai?
-- **Video placeholder**: sukursiu `<HeroMedia>` komponentą su aiškiai pažymėtais TODO kur įdėti tikrus failus (`/public/hero/carbonus.webm` + `.mp4` + `.jpg`).
-- **Query state**: naudosiu `URLSearchParams` (be papildomų libų) + `BookingContext` update.
-- **Realūs atsiliepimai**: reikia sprendimo — (a) sukurti `reviews` lentelę su admin CRUD ar (b) laikinai paslėpti sekciją.
+Grįžtu su:
+- pilnu `docs/AUDIT-2026.md`,
+- trumpu chat santraukos pranešimu (top-10 kritinių radinių),
+- **ETAPO 1 planu** (design system tokenai, tipografija, komponentai) — patvirtinsi atskirai prieš pradedant.
 
-## Ką siūlau daryti dabar
+Kiekvienas paskesnis etapas gaus savo `plan--create` su: apimtimi, failais, migracijų (jei būtinos) rollback SQL, testų sąrašu, rankinių patikrinimų sąrašu. Nepradedu kito etapo, kol dabartinis neaprobuotas.
 
-Pradėti **tik nuo Etapo 1 (Hero + paieškos forma + video placeholder struktūra + pasitikėjimo elementai)**. Po to peržiūri ir judam prie sekančių sekcijų viena po kitos, kad nebūtų viena milžiniška neaudituojama iteracija.
+---
 
-**Prieš pradedant patvirtink:**
-1. Ar pradedu iškart Hero, ar pirma atnaujinti globalią dizaino sistemą?
-2. Atsiliepimai — sukurti admin valdomą lentelę, ar laikinai paslėpti?
-3. Pristatymas į viešbutį — ar realiai teikiate ir kokia kaina?
+**Patvirtink ir pradedu ETAPĄ 0 (tik audito failo rašymas).**
