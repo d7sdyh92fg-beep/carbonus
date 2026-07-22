@@ -1,89 +1,171 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
+import { Car, Calendar, MapPin, User, ChevronDown, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet } from "lucide-react";
+import { useState } from "react";
 
-interface HeroProps {
-  carImage?: string;
-}
+type TabKey = "cars" | "suv" | "long" | "transfer";
 
-export function Hero({ carImage }: HeroProps) {
+export function Hero() {
   const navigate = useNavigate();
   const { t } = useTranslations();
+  const [tab, setTab] = useState<TabKey>("cars");
+  const today = new Date().toISOString().slice(0, 10);
+  const inTwo = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
+  const [pickup, setPickup] = useState(today);
+  const [ret, setRet] = useState(inTwo);
 
-  const handleNavigateToCars = () => {
-    navigate('/automobiliai');
-    // Small delay to ensure navigation completes before scrolling
-    setTimeout(() => {
-      window.scrollTo({
-        top: 300, // Same scroll amount as CTA button
-        behavior: 'smooth'
-      });
-    }, 100);
+  const goToCars = () => {
+    navigate(`/automobiliai?pickup=${pickup}&return=${ret}`);
+    setTimeout(() => window.scrollTo({ top: 300, behavior: "smooth" }), 100);
   };
 
+  const tabs: { key: TabKey; label: string; icon: React.ElementType }[] = [
+    { key: "cars", label: "Automobiliai", icon: Car },
+    { key: "suv", label: "SUV", icon: Car },
+    { key: "long", label: "Ilgesnė nuoma", icon: Calendar },
+    { key: "transfer", label: "Pervežimas | oro uostą", icon: ArrowRight },
+  ];
+
   return (
-    <section className="relative min-h-[60vh] md:min-h-screen pt-12 md:pt-16 flex items-start md:items-center overflow-hidden bg-transparent md:bg-gradient-to-br md:from-background md:to-muted/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
-        {/* Left Content */}
-        <div className="space-y-4 md:space-y-12 animate-fade-in relative z-10 text-center lg:text-left pt-8 md:pt-0">
-          <div className="space-y-4 md:space-y-8">
-            <div className="space-y-6 md:space-y-8">
-              <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-muted-foreground leading-relaxed">
-                {t('hero.subtitle')}
-              </h1>
-              <div className="space-y-3 md:space-y-4 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
-                <div className="text-primary">{t('hero.title1')}</div>
-                <div className="text-foreground">{t('hero.title2')}</div>
-                <div className="text-primary">
-                  {t('hero.title3')}<br />
-                  {t('hero.title3Line2')}
-                </div>
-              </div>
+    <section className="dark relative bg-background text-foreground">
+      {/* Hero dark area */}
+      <div className="relative overflow-hidden">
+        {/* Ambient background glows */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-24 left-1/3 h-[520px] w-[520px] rounded-full bg-primary/10 blur-[120px]" />
+          <div className="absolute bottom-0 right-0 h-[420px] w-[420px] rounded-full bg-primary/5 blur-[100px]" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-24 md:pb-36">
+          {/* Search widget */}
+          <div className="rounded-3xl bg-card/95 backdrop-blur-xl border border-border shadow-elegant p-4 sm:p-6">
+            {/* Tabs */}
+            <div className="flex flex-wrap gap-2 mb-5">
+              {tabs.map(({ key, label, icon: Icon }) => {
+                const active = tab === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setTab(key)}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors border ${
+                      active
+                        ? "bg-foreground text-background border-foreground"
+                        : "bg-transparent text-card-foreground border-border hover:bg-muted"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {label}
+                  </button>
+                );
+              })}
             </div>
-            
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed mt-6 md:mt-8">
-              {t('hero.description')}
+
+            {/* Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4 items-end">
+              <Field label="Paėmimo vieta" icon={<MapPin className="h-4 w-4 text-muted-foreground" />}>
+                <input
+                  defaultValue="Druskininkai"
+                  className="w-full bg-transparent outline-none text-card-foreground font-medium"
+                />
+              </Field>
+              <Field label="Paėmimo data" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
+                <input
+                  type="date"
+                  value={pickup}
+                  onChange={(e) => setPickup(e.target.value)}
+                  className="w-full bg-transparent outline-none text-card-foreground font-medium"
+                />
+              </Field>
+              <Field label="Grąžinimo data" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
+                <input
+                  type="date"
+                  value={ret}
+                  onChange={(e) => setRet(e.target.value)}
+                  className="w-full bg-transparent outline-none text-card-foreground font-medium"
+                />
+              </Field>
+              <Field label="Vairuotojo amžius" icon={<User className="h-4 w-4 text-muted-foreground" />}>
+                <div className="flex items-center justify-between w-full">
+                  <span className="font-medium text-card-foreground">21+</span>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </Field>
+              <Button
+                variant="hero"
+                size="lg"
+                onClick={goToCars}
+                className="h-14 rounded-2xl w-full justify-center gap-2"
+              >
+                Rodyti automobilius
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Trust row */}
+            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Aiškios kainos be paslėptų mokesčių</span>
+              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Nemokamas atšaukimas iki 24 val.</span>
+              <span className="inline-flex items-center gap-2"><Headphones className="h-4 w-4 text-primary" /> Klientų aptarnavimas 24/7</span>
+            </div>
+          </div>
+
+          {/* Tagline */}
+          <div className="mt-16 md:mt-28 max-w-2xl">
+            <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-6">
+              <MapPin className="h-3.5 w-3.5" />
+              Druskininkai
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-foreground">
+              KELIAUKITE STILINGAI.<br />
+              MĖGAUKITĖS LAISVE.
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      {/* Green feature band */}
+      <div className="bg-primary text-primary-foreground">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12">
+          <div className="text-center">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight">
+              PREMIUM AUTOMOBILIŲ NUOMA DRUSKININKUOSE
+            </h2>
+            <p className="mt-3 text-primary-foreground/85 text-sm sm:text-base">
+              Patogus rezervavimas, aiškios kainos ir kokybiški automobiliai kiekvienai kelionei.
             </p>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <Button 
-              variant="hero"
-              size="lg" 
-              className="animate-scale-in"
-              onClick={handleNavigateToCars}
-            >
-              {t('hero.cta')}
-            </Button>
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm sm:text-base">
+            <Feature icon={<Gem className="h-5 w-5" />} label="Aukščiausios klasės automobiliai" />
+            <Feature icon={<MapPin className="h-5 w-5" />} label="Patogus atsiėmimas Druskininkuose" />
+            <Feature icon={<Wallet className="h-5 w-5" />} label="Konkurencingos ir skaidrios kainos" />
+            <Feature icon={<ShieldCheck className="h-5 w-5" />} label="Pilnas draudimas ir pagalba kelyje" />
           </div>
         </div>
-
-        {/* Right Content - Car Image - Hidden on Mobile */}
-        <div className="hidden lg:block relative animate-slide-up -ml-0 lg:-ml-12 mt-8 lg:mt-0">
-          {/* Enhanced green glow around car - Hidden on mobile */}
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-400/20 blur-[90px] scale-110"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-500/22 blur-3xl scale-125"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-green-400/16 blur-2xl scale-105"></div>
-          <div className="hidden lg:block absolute inset-0 rounded-full bg-emerald-300/14 blur-xl scale-150"></div>
-          
-
-          {/* Main Car Image */}
-          <div className="relative z-10">
-            <img
-              src="/lovable-uploads/a3fa3c94-d1ad-4b21-984f-e85b545f68df.png"
-              alt="Premium Green Audi"
-              className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-3xl mx-auto object-contain scale-75 sm:scale-90 lg:scale-110"
-            />
-          </div>
-        </div>
-      </div>
-
-
-      {/* Background Elements - Hidden on mobile */}
-      <div className="hidden lg:block absolute inset-0 -z-20 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
       </div>
     </section>
+  );
+}
+
+function Field({ label, icon, children }: { label: string; icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="block text-xs font-medium text-muted-foreground mb-1.5">{label}</span>
+      <div className="flex items-center gap-2 rounded-xl border border-border bg-background/40 px-3 h-14">
+        {icon}
+        <div className="flex-1 min-w-0">{children}</div>
+      </div>
+    </label>
+  );
+}
+
+function Feature({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <div className="flex items-center gap-3 justify-center md:justify-start">
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20">
+        {icon}
+      </span>
+      <span className="font-medium">{label}</span>
+    </div>
   );
 }
