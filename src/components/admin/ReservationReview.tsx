@@ -257,8 +257,14 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
   const handleSignature = async (signatureData: string) => {
     if (!reservation) return;
-    
+
     try {
+      // Replace any existing signature (allows re-signing)
+      await supabase
+        .from('contract_signatures')
+        .delete()
+        .eq('reservation_id', reservation.id);
+
       const { error } = await supabase
         .from('contract_signatures')
         .insert({
@@ -269,9 +275,32 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
 
       if (error) throw error;
 
+      // Mark contract as signed on the reservation
+      await supabase
+        .from('reservations')
+        .update({ contract_signed_at: new Date().toISOString() })
+        .eq('id', reservation.id);
+
+      // Regenerate PDF with the client signature and email it to the client
+      const language = (reservation as any).language || 'lt';
+      await supabase.functions.invoke('generate-contract-pdf', {
+        body: {
+          reservationId: reservation.id,
+          customerName: `${reservation.customers.first_name} ${reservation.customers.last_name}`,
+          customerEmail: reservation.customers.email,
+          carName: reservation.car_name,
+          startDate: reservation.start_date,
+          endDate: reservation.end_date,
+          totalAmount: reservation.total_amount,
+          signatureData,
+          language,
+          skipEmail: false,
+        },
+      });
+
       toast({
         title: "Parašas išsaugotas",
-        description: "Skaitmeninis parašas sėkmingai išsaugotas",
+        description: "Pasirašyta sutartis išsiųsta klientui el. paštu.",
       });
 
       fetchSignature();
