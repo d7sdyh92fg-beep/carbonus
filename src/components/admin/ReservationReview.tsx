@@ -282,7 +282,8 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         .update({ contract_signed_at: new Date().toISOString() })
         .eq('id', reservation.id);
 
-      // Regenerate PDF with the client signature and email it to the client
+      // Regenerate PDF with the client signature but DO NOT auto-email.
+      // Client receives it when admin changes status to "picked_up".
       const language = (reservation as any).language || 'lt';
       await supabase.functions.invoke('generate-contract-pdf', {
         body: {
@@ -295,13 +296,13 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
           totalAmount: reservation.total_amount,
           signatureData,
           language,
-          skipEmail: false,
+          skipEmail: true,
         },
       });
 
       toast({
         title: "Parašas išsaugotas",
-        description: "Pasirašyta sutartis išsiųsta klientui el. paštu.",
+        description: "Pasirašyta sutartis bus išsiųsta klientui, kai pakeisite statusą į „Atsiimta“.",
       });
 
       fetchSignature();
