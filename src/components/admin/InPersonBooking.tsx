@@ -849,7 +849,7 @@ export function InPersonBooking() {
 
   return (
     <div className="w-full max-w-none space-y-4 sm:space-y-6 lg:space-y-8 p-3 sm:p-4 lg:p-6">
-      <Tabs defaultValue="new" className="w-full">
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'new' | 'drafts')} className="w-full">
         <TabsList>
           <TabsTrigger value="new">Nauja rezervacija</TabsTrigger>
           <TabsTrigger value="drafts">
