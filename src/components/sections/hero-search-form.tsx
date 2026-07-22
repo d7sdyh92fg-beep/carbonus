@@ -1,15 +1,29 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Calendar as CalendarIcon, Clock, Search } from "lucide-react";
+import { format } from "date-fns";
+import { lt as ltLocale, enUS } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "@/hooks/use-translations";
 
 const STORAGE_KEY = "carbonus-hero-search";
 
-function todayISO(offsetDays = 0) {
-  const d = new Date();
-  d.setDate(d.getDate() + offsetDays);
+function isoDate(d: Date) {
   return d.toISOString().slice(0, 10);
+}
+function addDays(base: Date, n: number) {
+  const d = new Date(base);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+function parseISO(s?: string): Date | undefined {
+  if (!s) return undefined;
+  const [y, m, d] = s.split("-").map(Number);
+  if (!y || !m || !d) return undefined;
+  return new Date(y, m - 1, d);
 }
 
 interface SearchState {
@@ -30,11 +44,12 @@ function readInitial(): SearchState {
       /* ignore */
     }
   }
+  const today = new Date();
   return {
     pickupLocation: "druskininkai-office",
     returnLocation: "druskininkai-office",
-    pickupDate: todayISO(1),
-    returnDate: todayISO(3),
+    pickupDate: isoDate(addDays(today, 1)),
+    returnDate: isoDate(addDays(today, 3)),
     pickupTime: "10:00",
     returnTime: "10:00",
   };
@@ -44,6 +59,7 @@ export function HeroSearchForm() {
   const { t, language } = useTranslations();
   const navigate = useNavigate();
   const [state, setState] = useState<SearchState>(readInitial);
+  const dateLocale = language === "lt" ? ltLocale : enUS;
 
   const update = (patch: Partial<SearchState>) =>
     setState((prev) => ({ ...prev, ...patch }));
@@ -67,26 +83,44 @@ export function HeroSearchForm() {
     navigate(`${base}?${params.toString()}`);
   };
 
-  const inputCls =
-    "w-full bg-transparent text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none";
+  // Cream, warm surface with soft green tint on borders
   const fieldCls =
-    "flex flex-col gap-1 rounded-xl border border-border/60 bg-background/95 px-4 py-3 text-left transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20";
+    "flex flex-col gap-1.5 rounded-xl border border-primary/10 bg-[hsl(45_30%_98%)] px-4 py-3 text-left transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20";
   const labelCls =
-    "flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground";
+    "flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-primary-dark/80";
+  const valueCls =
+    "text-[15px] font-semibold text-foreground bg-transparent focus:outline-none";
+
+  const formatDate = (iso: string) =>
+    parseISO(iso)
+      ? format(parseISO(iso)!, language === "lt" ? "yyyy-MM-dd" : "PPP", {
+          locale: dateLocale,
+        })
+      : "";
+
+  const timeOptions: string[] = [];
+  for (let h = 8; h <= 20; h++) {
+    for (const m of [0, 30]) {
+      timeOptions.push(
+        `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`
+      );
+    }
+  }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full rounded-2xl border border-white/20 bg-background/85 p-3 shadow-2xl backdrop-blur-xl sm:p-4"
+      className="w-full rounded-2xl border border-white/40 p-3 shadow-[0_24px_70px_rgba(3,25,18,0.24)] backdrop-blur-md sm:p-4"
+      style={{ background: "rgba(248, 247, 242, 0.96)" }}
     >
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6">
         {/* Pickup location */}
-        <div className={`${fieldCls} lg:col-span-3`}>
+        <div className={cn(fieldCls, "lg:col-span-3")}>
           <label className={labelCls}>
-            <MapPin className="h-3 w-3" /> {t("hero.form.pickupLocation")}
+            <MapPin className="h-3.5 w-3.5" /> {t("hero.form.pickupLocation")}
           </label>
           <select
-            className={inputCls}
+            className={cn(valueCls, "w-full")}
             value={state.pickupLocation}
             onChange={(e) => update({ pickupLocation: e.target.value })}
           >
@@ -100,12 +134,12 @@ export function HeroSearchForm() {
         </div>
 
         {/* Return location */}
-        <div className={`${fieldCls} lg:col-span-3`}>
+        <div className={cn(fieldCls, "lg:col-span-3")}>
           <label className={labelCls}>
-            <MapPin className="h-3 w-3" /> {t("hero.form.returnLocation")}
+            <MapPin className="h-3.5 w-3.5" /> {t("hero.form.returnLocation")}
           </label>
           <select
-            className={inputCls}
+            className={cn(valueCls, "w-full")}
             value={state.returnLocation}
             onChange={(e) => update({ returnLocation: e.target.value })}
           >
@@ -119,59 +153,98 @@ export function HeroSearchForm() {
         </div>
 
         {/* Pickup date */}
-        <div className={`${fieldCls} lg:col-span-2`}>
+        <div className={cn(fieldCls, "lg:col-span-2")}>
           <label className={labelCls}>
-            <CalendarIcon className="h-3 w-3" /> {t("hero.form.pickupDate")}
+            <CalendarIcon className="h-3.5 w-3.5" /> {t("hero.form.pickupDate")}
           </label>
-          <input
-            type="date"
-            className={inputCls}
-            value={state.pickupDate}
-            min={todayISO()}
-            onChange={(e) => update({ pickupDate: e.target.value })}
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <button type="button" className={cn(valueCls, "text-left")}>
+                {formatDate(state.pickupDate)}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                locale={dateLocale}
+                weekStartsOn={1}
+                selected={parseISO(state.pickupDate)}
+                onSelect={(d) => {
+                  if (!d) return;
+                  const next: Partial<SearchState> = { pickupDate: isoDate(d) };
+                  if (parseISO(state.returnDate)! < d) {
+                    next.returnDate = isoDate(addDays(d, 2));
+                  }
+                  update(next);
+                }}
+                disabled={{ before: new Date() }}
+                initialFocus
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Pickup time */}
         <div className={fieldCls}>
           <label className={labelCls}>
-            <Clock className="h-3 w-3" /> {t("hero.form.pickupTime")}
+            <Clock className="h-3.5 w-3.5" /> {t("hero.form.pickupTime")}
           </label>
-          <input
-            type="time"
-            className={inputCls}
-            step={900}
+          <select
+            className={cn(valueCls, "w-full")}
             value={state.pickupTime}
             onChange={(e) => update({ pickupTime: e.target.value })}
-          />
+          >
+            {timeOptions.map((tm) => (
+              <option key={tm} value={tm}>
+                {tm}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Return date */}
-        <div className={`${fieldCls} lg:col-span-2`}>
+        <div className={cn(fieldCls, "lg:col-span-2")}>
           <label className={labelCls}>
-            <CalendarIcon className="h-3 w-3" /> {t("hero.form.returnDate")}
+            <CalendarIcon className="h-3.5 w-3.5" /> {t("hero.form.returnDate")}
           </label>
-          <input
-            type="date"
-            className={inputCls}
-            value={state.returnDate}
-            min={state.pickupDate || todayISO()}
-            onChange={(e) => update({ returnDate: e.target.value })}
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <button type="button" className={cn(valueCls, "text-left")}>
+                {formatDate(state.returnDate)}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                locale={dateLocale}
+                weekStartsOn={1}
+                selected={parseISO(state.returnDate)}
+                onSelect={(d) => d && update({ returnDate: isoDate(d) })}
+                disabled={{ before: parseISO(state.pickupDate) || new Date() }}
+                initialFocus
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Return time */}
         <div className={fieldCls}>
           <label className={labelCls}>
-            <Clock className="h-3 w-3" /> {t("hero.form.returnTime")}
+            <Clock className="h-3.5 w-3.5" /> {t("hero.form.returnTime")}
           </label>
-          <input
-            type="time"
-            className={inputCls}
-            step={900}
+          <select
+            className={cn(valueCls, "w-full")}
             value={state.returnTime}
             onChange={(e) => update({ returnTime: e.target.value })}
-          />
+          >
+            {timeOptions.map((tm) => (
+              <option key={tm} value={tm}>
+                {tm}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -179,7 +252,7 @@ export function HeroSearchForm() {
         type="submit"
         size="lg"
         variant="hero"
-        className="mt-3 w-full gap-2 text-base"
+        className="mt-3 h-[52px] w-full gap-2 text-base font-semibold"
       >
         <Search className="h-4 w-4" />
         {t("hero.form.submit")}

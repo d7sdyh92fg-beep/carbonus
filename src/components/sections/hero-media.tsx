@@ -67,21 +67,23 @@ export function HeroMedia() {
         </video>
       )}
 
-      {/* Contrast overlays: dark from bottom + slight vignette for text legibility */}
+      {/* Contrast overlays: strong left-to-right darkening so left copy is legible while the right side of the scene stays visible */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, hsl(147 60% 8% / 0.55) 0%, hsl(147 60% 8% / 0.35) 40%, hsl(147 60% 8% / 0.75) 100%)",
+            "linear-gradient(90deg, rgba(3, 24, 17, 0.88) 0%, rgba(3, 24, 17, 0.62) 48%, rgba(3, 24, 17, 0.24) 100%)",
         }}
       />
+      {/* Bottom fade to protect the trust bar */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-x-0 bottom-0 h-64"
         style={{
           background:
-            "radial-gradient(ellipse at 30% 40%, hsl(147 60% 8% / 0) 0%, hsl(147 60% 8% / 0.35) 100%)",
+            "linear-gradient(180deg, rgba(3, 24, 17, 0) 0%, rgba(3, 24, 17, 0.7) 100%)",
         }}
       />
+
     </div>
   );
 }
