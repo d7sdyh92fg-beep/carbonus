@@ -261,23 +261,42 @@ export function InPersonBooking() {
     fromDate?: string;
   } | null>(null);
 
-  const [hasDraft, setHasDraft] = useState(false);
+  const [availableDrafts, setAvailableDrafts] = useState<DraftPayload[]>([]);
   const [draftRestored, setDraftRestored] = useState(false);
   const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
+  const currentDraftIdRef = useRef<string | null>(null);
 
-  // Detect existing draft on mount
+  const refreshAvailableDrafts = () => {
+    const map = readDraftsMap();
+    const list = Object.values(map).sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
+    setAvailableDrafts(list);
+  };
+
+  // Detect existing drafts on mount (and migrate legacy single-draft key)
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
-      if (raw) setHasDraft(true);
+      const legacy = localStorage.getItem(LEGACY_DRAFT_KEY);
+      if (legacy) {
+        const d = JSON.parse(legacy);
+        const map = readDraftsMap();
+        const id = computeDraftId(d.customer || {}, d.booking || {});
+        const carLabel = d.booking?.carName || 'Automobilis nepasirinktas';
+        const customerLabel =
+          [d.customer?.firstName, d.customer?.lastName].filter(Boolean).join(' ').trim() ||
+          d.customer?.email || d.customer?.phone || 'Klientas nenurodytas';
+        map[id] = { ...d, id, carLabel, customerLabel, savedAt: d.savedAt || new Date().toISOString() };
+        writeDraftsMap(map);
+        localStorage.removeItem(LEGACY_DRAFT_KEY);
+      }
     } catch {}
+    refreshAvailableDrafts();
   }, []);
 
-  const restoreDraft = () => {
+  const restoreDraft = (draftId: string) => {
     try {
-      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
-      if (!raw) return;
-      const d = JSON.parse(raw);
+      const map = readDraftsMap();
+      const d = map[draftId];
+      if (!d) return;
       if (d.customer) setCustomer(d.customer);
       if (d.booking) {
         setBooking({
@@ -299,9 +318,11 @@ export function InPersonBooking() {
       if (Array.isArray(d.selectedServices)) setSelectedServices(d.selectedServices);
       if (typeof d.isReturningCustomer === 'boolean') setIsReturningCustomer(d.isReturningCustomer);
       if (typeof d.skipDocuments === 'boolean') setSkipDocuments(d.skipDocuments);
-      if (d.step) setStep(d.step);
+      if (d.step) setStep(d.step as any);
+      currentDraftIdRef.current = draftId;
+      setDraftSavedAt(d.savedAt);
       setDraftRestored(true);
-      setHasDraft(false);
+      setAvailableDrafts([]);
       toast.success('Juodraštis atkurtas');
     } catch (e) {
       console.error('Draft restore failed', e);
@@ -309,15 +330,32 @@ export function InPersonBooking() {
     }
   };
 
-  const discardDraft = () => {
-    try { localStorage.removeItem(DRAFT_STORAGE_KEY); } catch {}
-    setHasDraft(false);
-    setDraftSavedAt(null);
+  const discardDraft = (draftId?: string) => {
+    const id = draftId ?? currentDraftIdRef.current;
+    if (!id) {
+      // nothing tracked; clear whole banner
+      refreshAvailableDrafts();
+      return;
+    }
+    const map = readDraftsMap();
+    delete map[id];
+    writeDraftsMap(map);
+    if (id === currentDraftIdRef.current) {
+      currentDraftIdRef.current = null;
+      setDraftSavedAt(null);
+    }
+    refreshAvailableDrafts();
   };
 
   const saveDraft = (silent = false) => {
     try {
-      const payload = {
+      const id = computeDraftId(customer, booking);
+      const carLabel = booking.carName || 'Automobilis nepasirinktas';
+      const customerLabel =
+        [customer.firstName, customer.lastName].filter(Boolean).join(' ').trim() ||
+        customer.email || customer.phone || 'Klientas nenurodytas';
+      const payload: DraftPayload = {
+        id,
         step,
         customer,
         booking: {
@@ -339,10 +377,23 @@ export function InPersonBooking() {
         isReturningCustomer,
         skipDocuments,
         savedAt: new Date().toISOString(),
+        carLabel,
+        customerLabel,
       };
-      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(payload));
+      const map = readDraftsMap();
+      // If the identity changed (car/customer edited), remove the old entry so we don't duplicate.
+      const prevId = currentDraftIdRef.current;
+      if (prevId && prevId !== id && map[prevId]) {
+        delete map[prevId];
+      }
+      map[id] = payload;
+      writeDraftsMap(map);
+      currentDraftIdRef.current = id;
       setDraftSavedAt(payload.savedAt);
-      if (!silent) toast.success('Juodraštis išsaugotas');
+      if (!silent) {
+        toast.success('Juodraštis išsaugotas');
+        refreshAvailableDrafts();
+      }
     } catch (e) {
       console.error('Draft save failed', e);
       if (!silent) toast.error('Nepavyko išsaugoti juodraščio');
@@ -351,7 +402,6 @@ export function InPersonBooking() {
 
   // Auto-save on relevant state changes (debounced), only after user interaction or restore
   useEffect(() => {
-    // Skip if nothing meaningful entered yet
     const meaningful =
       draftRestored ||
       customer.firstName || customer.lastName || customer.email || customer.phone ||
@@ -361,6 +411,7 @@ export function InPersonBooking() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, customer, booking, paymentMethod, contractLanguage, driverLicenseUrls, secondDriverLicenseUrls, notes, useCustomPricing, customRentalPrice, customDeposit, pricingNotes, isRetroactive, selectedServices, isReturningCustomer, skipDocuments, draftRestored]);
+
 
 
 
