@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
 import { Car, Calendar as CalendarIcon, MapPin, ArrowRight, Gem, CalendarClock, Hotel, LifeBuoy } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { lt } from "date-fns/locale";
 import { Calendar } from "@/components/ui/calendar";
@@ -22,6 +22,13 @@ const toISO = (d: Date) => {
 const formatLt = (dateStr: string) => {
   return format(new Date(`${dateStr}T12:00:00`), "yyyy 'm.' MMMM d 'd.'", { locale: lt });
 };
+
+const features = [
+  { icon: <Gem className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Prižiūrėti automobiliai" },
+  { icon: <MapPin className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Atsiėmimas Druskininkuose" },
+  { icon: <Hotel className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Pristatymas visoje Lietuvoje" },
+  { icon: <LifeBuoy className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Pagalba nuomos metu" },
+];
 
 function DateField({
   label,
@@ -87,6 +94,14 @@ export function Hero() {
   const [ret, setRet] = useState(inTwo);
   const [hotel, setHotel] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
+  const [featureIndex, setFeatureIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFeatureIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   const goToCars = () => {
     const params = new URLSearchParams({ pickup, return: ret, mode: tab });
