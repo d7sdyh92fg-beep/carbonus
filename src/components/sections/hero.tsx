@@ -47,7 +47,7 @@ function DateField({
           <button
             type="button"
             className={cn(
-              "flex items-center gap-2 rounded-xl border border-border bg-background/40 px-3 h-12 lg:h-14 w-full text-left transition-colors hover:bg-background/70 hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/30"
+              "flex items-center gap-2 rounded-xl border border-border bg-background/40 px-3 h-11 sm:h-12 lg:h-14 w-full text-left transition-colors hover:bg-background/70 hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/30"
             )}
           >
             <CalendarIcon className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -135,7 +135,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget — absolute only on small mobile so it can grow without pushing the background */}
-          <div className="max-sm:absolute max-sm:top-[calc(5rem+2vh)] max-sm:left-4 max-sm:right-4 max-sm:z-20 rounded-3xl bg-white shadow-elegant p-4 sm:p-4 lg:p-5 w-full mt-5">
+          <div className="max-sm:absolute max-sm:top-[calc(5rem+2vh)] max-sm:left-4 max-sm:right-4 max-sm:z-20 rounded-3xl bg-white shadow-elegant p-3 sm:p-4 lg:p-5 w-full mt-5">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -144,7 +144,7 @@ export function Hero() {
                   <button
                     key={key}
                     onClick={() => setTab(key)}
-                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors border ${
+                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium transition-colors border ${
                       active
                         ? "bg-foreground text-background border-foreground"
                         : "bg-transparent text-card-foreground border-border hover:bg-muted"
@@ -158,7 +158,7 @@ export function Hero() {
             </div>
 
             {/* Fields */}
-            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2 lg:grid-cols-3"}`}>
+            <div className={`grid grid-cols-1 gap-2.5 sm:gap-3 lg:gap-4 items-end ${showHotel ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2 lg:grid-cols-3"}`}>
               {showHotel && (
                 <Field label="Miestas arba adresas" icon={<MapPin className="h-4 w-4 text-muted-foreground" />}>
                   <input
@@ -182,7 +182,7 @@ export function Hero() {
                   variant="hero"
                   size="lg"
                   onClick={goToCars}
-                  className="h-12 lg:h-14 rounded-xl w-full justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
+                  className="h-11 sm:h-12 lg:h-14 rounded-xl w-full justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
                 >
                   Rodyti automobilius
                   <ArrowRight className="h-4 w-4" />
@@ -198,8 +198,8 @@ export function Hero() {
             )}
           </div>
 
-          {/* Tagline — absolute at bottom only on small mobile so it stays anchored while the form grows */}
-          <div className="max-sm:absolute max-sm:bottom-[3vh] max-sm:left-4 max-sm:right-4 max-sm:z-10 mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6 relative top-[20px] md:-top-[30px]">
+          {/* Tagline — anchored at the bottom on mobile, offset at larger screens */}
+          <div className="absolute bottom-[3vh] left-4 right-4 z-10 sm:relative sm:top-[20px] md:-top-[30px] sm:bottom-auto sm:left-0 sm:right-0 sm:z-auto mt-0 sm:mt-auto pt-[4vh] mb-0 sm:mb-28 md:mb-32 lg:mb-40 w-full px-3 sm:px-5 lg:px-6">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
@@ -207,8 +207,8 @@ export function Hero() {
             <h1
               className="hero-title font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
               style={{
-                maxWidth: "clamp(300px, 72vw, 640px)",
-                fontSize: "clamp(30px, 7vw, 58px)",
+                maxWidth: "clamp(300px, 92vw, 640px)",
+                fontSize: "clamp(22px, 6.5vw, 58px)",
                 lineHeight: 1.05,
               }}
             >
@@ -224,7 +224,7 @@ export function Hero() {
       {/* Green feature band — more spacing, last item aligned with the booking button */}
       <div className="bg-primary-dark text-primary-foreground flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5 lg:py-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-8 text-[10px] sm:text-[11px] lg:text-[13px] xl:text-sm">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-8 text-[9px] sm:text-[11px] lg:text-[13px] xl:text-sm">
             <Feature icon={<Gem className="h-3 w-3 sm:h-3.5 sm:w-3.5" />} label="Prižiūrėti automobiliai" />
             <Feature icon={<MapPin className="h-3 w-3 sm:h-3.5 sm:w-3.5" />} label="Atsiėmimas Druskininkuose" />
             <Feature icon={<Hotel className="h-3 w-3 sm:h-3.5 sm:w-3.5" />} label="Pristatymas visoje Lietuvoje" />
@@ -254,11 +254,11 @@ function Field({ label, icon, hint, children, inputRef }: { label: string; icon:
 
 function Feature({ icon, label, className }: { icon: React.ReactNode; label: string; className?: string }) {
   return (
-    <div className={`flex items-center gap-1.5 md:gap-2 justify-center min-w-0 ${className || ""}`}>
-      <span className="inline-flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
+    <div className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-1.5 md:gap-2 justify-center text-center sm:text-left min-w-0 ${className || ""}`}>
+      <span className="inline-flex h-4 w-4 sm:h-5 sm:w-5 md:h-7 md:w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
         {icon}
       </span>
-      <span className="font-medium whitespace-nowrap truncate">{label}</span>
+      <span className="font-medium leading-tight sm:leading-normal sm:whitespace-nowrap sm:truncate">{label}</span>
     </div>
   );
 }
