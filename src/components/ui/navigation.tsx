@@ -115,16 +115,16 @@ export function Navigation({ logo }: NavigationProps) {
                     {t('nav.admin')}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="bg-[rgba(24,34,31,0.92)] backdrop-blur-[14px] border-white/10 text-white">
                   <DropdownMenuItem onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     navigate('/admin');
-                  }}>
+                  }} className="text-white focus:bg-white/10 focus:text-white">
                     <Shield className="mr-2 h-4 w-4" />
                     {t('nav.adminDashboard')}
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut}>
+                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuItem onClick={signOut} className="text-white focus:bg-white/10 focus:text-white">
                     <LogOut className="mr-2 h-4 w-4" />
                     {t('nav.logout')}
                   </DropdownMenuItem>
