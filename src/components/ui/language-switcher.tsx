@@ -2,6 +2,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "./button";
 import { ChevronDown } from "lucide-react";
+import { useLocation as useLoc } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
