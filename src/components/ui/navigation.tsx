@@ -68,7 +68,14 @@ export function Navigation({ logo }: NavigationProps) {
 
   const isHome = location.pathname === '/';
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent ${isHome ? '' : 'lg:bg-background/80 lg:backdrop-blur-md lg:border-b'}`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${
+        isHome
+          ? "bg-white/10 backdrop-blur-xl border-b border-white/10"
+          : "bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm"
+      }`}>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
