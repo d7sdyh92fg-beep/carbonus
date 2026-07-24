@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./button";
 import { Menu, X, User, LogOut, Shield } from "lucide-react";
@@ -20,10 +20,28 @@ interface NavigationProps {
 
 export function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const lastScrollY = useRef(0);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
   const { t, language } = useTranslations();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        setHidden(true);
+      } else if (currentScrollY < lastScrollY.current) {
+        setHidden(false);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const isActive = (ltPath: string, enPath: string) => 
     location.pathname === ltPath || location.pathname === enPath;
@@ -50,7 +68,14 @@ export function Navigation({ logo }: NavigationProps) {
 
   const isHome = location.pathname === '/';
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent ${isHome ? '' : 'lg:bg-background/80 lg:backdrop-blur-md lg:border-b'}`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${
+        isHome
+          ? "bg-white/10 backdrop-blur-xl border-b border-white/10"
+          : "bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm"
+      }`}>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
@@ -121,6 +146,7 @@ export function Navigation({ logo }: NavigationProps) {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
+              className={isHome ? "text-white hover:bg-white/10" : "text-foreground"}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
