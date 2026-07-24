@@ -45,7 +45,7 @@ export function Hero() {
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
-          className="absolute inset-0 w-full h-full object-cover opacity-100 object-[76%_65%] sm:object-[76%_60%] md:object-[76%_center] lg:object-[72%_center] xl:object-[68%_center] 2xl:object-[68%_center]"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 object-[82%_65%] sm:object-[80%_60%] md:object-[78%_center] lg:object-[72%_center] xl:object-[68%_center] 2xl:object-[68%_center]"
           style={{ filter: "brightness(1.08) contrast(1.06) saturate(1.08)" }}
         />
         {/* Directional overlay — darker on the left where text sits, near-clear on the right so the vehicle stays bright */}
@@ -156,8 +156,8 @@ export function Hero() {
             <h1
               className="hero-title font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
               style={{
-                maxWidth: "min(600px, 48vw)",
-                fontSize: "clamp(14px, 3.4vw, 58px)",
+                maxWidth: "clamp(280px, 65vw, 640px)",
+                fontSize: "clamp(24px, 5.5vw, 58px)",
                 lineHeight: 1.05,
               }}
             >
@@ -173,11 +173,11 @@ export function Hero() {
       {/* Green feature band — more spacing, last item aligned with the booking button */}
       <div className="bg-primary-dark text-primary-foreground flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-          <div className="grid grid-cols-2 gap-4 text-xs lg:text-[13px] xl:text-sm lg:grid-cols-4 lg:gap-8">
-            <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Prižiūrėti automobiliai" className="justify-start lg:justify-start" />
-            <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Atsiėmimas Druskininkuose" className="justify-center lg:justify-center" />
-            <Feature icon={<Hotel className="h-3.5 w-3.5" />} label="Pristatymas visoje Lietuvoje" className="justify-center lg:justify-center" />
-            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" className="justify-end lg:justify-end" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-8 text-[11px] md:text-[11px] lg:text-[13px] xl:text-sm">
+            <Feature icon={<Gem className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Prižiūrėti automobiliai" className="justify-start lg:justify-start" />
+            <Feature icon={<MapPin className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Atsiėmimas Druskininkuose" className="justify-center lg:justify-center" />
+            <Feature icon={<Hotel className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pristatymas visoje Lietuvoje" className="justify-center lg:justify-center" />
+            <Feature icon={<LifeBuoy className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pagalba nuomos metu" className="justify-end lg:justify-end" />
           </div>
         </div>
       </div>
