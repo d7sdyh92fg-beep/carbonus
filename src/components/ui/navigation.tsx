@@ -6,6 +6,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "@/hooks/use-translations";
 import { getRoute } from "@/utils/routes";
+import logoWhite from "@/assets/logo-white.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,7 +83,9 @@ export function Navigation({ logo }: NavigationProps) {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="block">
-              {logo ? (
+              {isHome ? (
+                <img src={logoWhite} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
+              ) : logo ? (
                 <img src={logo} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
               ) : (
                 <span className="text-2xl font-bold text-primary">CARBONUS.</span>

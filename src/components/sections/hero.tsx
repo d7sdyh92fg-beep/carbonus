@@ -1,11 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
-import { Car, Calendar, MapPin, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet, CalendarClock, Hotel } from "lucide-react";
+import { Car, Calendar, MapPin, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet, CalendarClock, Hotel, LifeBuoy } from "lucide-react";
 import { useState } from "react";
 import heroCar from "@/assets/hero-spacetourer.png.asset.json";
 
 type TabKey = "cars" | "long" | "hotel";
+
+const LT_MONTHS = [
+  "sausio", "vasario", "kovo", "balandžio", "gegužės", "birželio",
+  "liepos", "rugpjūčio", "rugsėjo", "spalio", "lapkričio", "gruodžio",
+];
+
+function formatLt(dateStr: string) {
+  if (!dateStr) return "";
+  const [y, m, d] = dateStr.split("-").map(Number);
+  if (!y || !m || !d) return dateStr;
+  return `${y} m. ${LT_MONTHS[m - 1]} ${d} d.`;
+}
 
 export function Hero() {
   const navigate = useNavigate();
@@ -43,13 +55,17 @@ export function Hero() {
           width={1920}
           height={1280}
           className="absolute inset-0 w-full h-full object-cover opacity-100 object-[70%_65%] sm:object-[72%_60%] md:object-[78%_center] lg:object-[72%_center] xl:object-[66%_center] 2xl:object-[60%_center]"
-          style={{ filter: "brightness(1.05) contrast(1.06) saturate(1.05)" }}
+          style={{ filter: "brightness(1.08) contrast(1.06) saturate(1.08)" }}
         />
-        {/* Dark overlay for text readability, kept lighter so the car stays visible */}
-        <div aria-hidden className="absolute inset-0 bg-black/20" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(11,17,32,0.2)_100%)]" />
+        {/* Directional overlay — darker on the left where text sits, lighter on the right so the vehicle stays bright */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(5,15,12,0.48) 0%, rgba(5,15,12,0.28) 48%, rgba(5,15,12,0.12) 100%)",
+          }}
+        />
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 left-1/3 h-[45vh] w-[45vh] rounded-full bg-primary/10 blur-[120px]" />
@@ -57,8 +73,8 @@ export function Hero() {
           <div className="absolute top-1/2 -left-24 h-[30vh] w-[30vh] rounded-full bg-primary/5 blur-[90px]" />
         </div>
 
-        <div className="relative z-10 flex-1 flex flex-col max-w-7xl 2xl:max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
-          {/* Search widget — constrained to left column on md+ so it never overlaps the vehicle */}
+        <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
+          {/* Search widget — aligns exactly with site container edges */}
           <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
@@ -93,17 +109,27 @@ export function Hero() {
                   />
                 </Field>
               )}
-              <Field label="Paėmimo data" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
+              <Field
+                label="Paėmimo data"
+                icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
+                hint={formatLt(pickup)}
+              >
                 <input
                   type="date"
+                  lang="lt-LT"
                   value={pickup}
                   onChange={(e) => setPickup(e.target.value)}
                   className="w-full bg-transparent outline-none text-card-foreground font-medium"
                 />
               </Field>
-              <Field label="Grąžinimo data" icon={<Calendar className="h-4 w-4 text-muted-foreground" />}>
+              <Field
+                label="Grąžinimo data"
+                icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
+                hint={formatLt(ret)}
+              >
                 <input
                   type="date"
+                  lang="lt-LT"
                   value={ret}
                   onChange={(e) => setRet(e.target.value)}
                   className="w-full bg-transparent outline-none text-card-foreground font-medium"
@@ -113,7 +139,7 @@ export function Hero() {
                 variant="hero"
                 size="lg"
                 onClick={goToCars}
-                className="h-14 rounded-2xl w-full justify-center gap-2"
+                className="h-14 rounded-2xl w-full justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
               >
                 Rodyti automobilius
                 <ArrowRight className="h-4 w-4" />
@@ -129,12 +155,19 @@ export function Hero() {
           </div>
 
           {/* Tagline — kept in the left column so it never crosses over the vehicle */}
-          <div className="mt-auto pt-[4vh] mb-6 md:mb-10 max-w-[92%] sm:max-w-xl md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
+          <div className="mt-auto pt-[4vh] mb-14 md:mb-16 max-w-[92%] sm:max-w-xl md:max-w-[600px]">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
             </div>
-            <h1 className="text-[1.6rem] sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] 2xl:text-6xl font-bold leading-[1.1] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+            <h1
+              className="hero-title font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
+              style={{
+                maxWidth: "600px",
+                fontSize: "clamp(30px, 3.6vw, 58px)",
+                lineHeight: 0.98,
+              }}
+            >
               KELIAUKITE STILINGAI.<br />
               MĖGAUKITĖS LAISVE.
             </h1>
@@ -143,22 +176,14 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Green feature band - fits in fullscreen */}
+      {/* Green feature band — simplified: just the four benefits in one clean row */}
       <div className="bg-primary text-primary-foreground flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 lg:py-6">
-          <div className="text-center">
-            <h2 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-extrabold tracking-tight">
-              AUTOMOBILIŲ NUOMA DRUSKININKUOSE
-            </h2>
-            <p className="mt-1 text-primary-foreground/85 text-xs sm:text-sm">
-              Patogus rezervavimas, aiškios kainos ir kokybiški automobiliai kiekvienai kelionei.
-            </p>
-          </div>
-          <div className="mt-4 lg:mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 text-xs lg:text-[13px] xl:text-sm">
-            <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Aukščiausios klasės automobiliai" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 text-xs lg:text-[13px] xl:text-sm">
+            <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Prižiūrėti automobiliai" />
             <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Patogus atsiėmimas Druskininkuose" />
-            <Feature icon={<Wallet className="h-3.5 w-3.5" />} label="Konkurencingos ir skaidrios kainos" />
-            <Feature icon={<ShieldCheck className="h-3.5 w-3.5" />} label="Pilnas draudimas ir pagalba kelyje" />
+            <Feature icon={<Wallet className="h-3.5 w-3.5" />} label="Aiškios kainos" />
+            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" />
           </div>
         </div>
       </div>
@@ -167,7 +192,7 @@ export function Hero() {
   );
 }
 
-function Field({ label, icon, children }: { label: string; icon: React.ReactNode; children: React.ReactNode }) {
+function Field({ label, icon, hint, children }: { label: string; icon: React.ReactNode; hint?: string; children: React.ReactNode }) {
   return (
     <label className="block">
       <span className="block text-xs font-medium text-muted-foreground mb-1.5">{label}</span>
@@ -175,6 +200,9 @@ function Field({ label, icon, children }: { label: string; icon: React.ReactNode
         {icon}
         <div className="flex-1 min-w-0">{children}</div>
       </div>
+      {hint && (
+        <span className="mt-1 block text-[11px] text-muted-foreground/80">{hint}</span>
+      )}
     </label>
   );
 }
@@ -189,4 +217,3 @@ function Feature({ icon, label }: { icon: React.ReactNode; label: string }) {
     </div>
   );
 }
-
