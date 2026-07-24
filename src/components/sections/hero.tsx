@@ -156,14 +156,15 @@ export function Hero() {
             <h1
               className="hero-title font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
               style={{
-                maxWidth: "600px",
-                fontSize: "clamp(24px, 3.6vw, 58px)",
+                maxWidth: "min(600px, 48vw)",
+                fontSize: "clamp(14px, 3.4vw, 58px)",
                 lineHeight: 1.05,
               }}
             >
               <span className="block whitespace-nowrap">KELIAUKITE STILINGAI.</span>
               <span className="block whitespace-nowrap">MĖGAUKITĖS LAISVE.</span>
             </h1>
+
           </div>
 
         </div>
