@@ -224,11 +224,11 @@ export function Hero() {
       {/* Green feature band — more spacing, last item aligned with the booking button */}
       <div className="bg-primary-dark text-primary-foreground flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5 lg:py-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-8 text-[11px] md:text-[11px] lg:text-[13px] xl:text-sm">
-            <Feature icon={<Gem className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Prižiūrėti automobiliai" />
-            <Feature icon={<MapPin className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Atsiėmimas Druskininkuose" />
-            <Feature icon={<Hotel className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pristatymas visoje Lietuvoje" />
-            <Feature icon={<LifeBuoy className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pagalba nuomos metu" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-8 text-[10px] sm:text-[11px] lg:text-[13px] xl:text-sm">
+            <Feature icon={<Gem className="h-3 w-3 sm:h-3.5 sm:w-3.5" />} label="Prižiūrėti automobiliai" />
+            <Feature icon={<MapPin className="h-3 w-3 sm:h-3.5 sm:w-3.5" />} label="Atsiėmimas Druskininkuose" />
+            <Feature icon={<Hotel className="h-3 w-3 sm:h-3.5 sm:w-3.5" />} label="Pristatymas visoje Lietuvoje" />
+            <Feature icon={<LifeBuoy className="h-3 w-3 sm:h-3.5 sm:w-3.5" />} label="Pagalba nuomos metu" />
           </div>
         </div>
       </div>
