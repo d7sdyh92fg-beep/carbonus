@@ -77,7 +77,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget — slightly narrower so more of the scene remains visible */}
-          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6 w-full max-w-full lg:max-w-[92%] xl:max-w-[88%]">
+          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6 w-full">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -168,7 +168,7 @@ export function Hero() {
 
           {/* Tagline — moved up ~100px so it sits higher over the scene */}
           {/* Tagline — indented to match booking card inner content (px-4 / sm:px-5 / lg:px-6) */}
-          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full max-w-full lg:max-w-[92%] xl:max-w-[88%] px-4 sm:px-5 lg:px-6">
+          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
