@@ -168,7 +168,7 @@ export function Hero() {
 
           {/* Tagline — moved up ~100px so it sits higher over the scene */}
           {/* Tagline — indented to match booking card inner content (px-4 / sm:px-5 / lg:px-6) */}
-          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full max-w-full lg:max-w-[92%] xl:max-w-[88%] px-4 sm:px-5 lg:px-6">
+          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
