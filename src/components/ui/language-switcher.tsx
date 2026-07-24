@@ -35,7 +35,11 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          className={`gap-2 ${location.pathname === '/' ? 'text-white hover:text-white hover:bg-white/10' : ''}`}
+        >
           <span className="text-sm">{currentLanguage?.flag}</span>
           <span className="text-sm font-medium">{currentLanguage?.name}</span>
           <ChevronDown className="h-4 w-4" />

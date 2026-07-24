@@ -137,15 +137,18 @@ export function Hero() {
                   className="w-full bg-transparent outline-none text-card-foreground font-medium"
                 />
               </Field>
-              <Button
-                variant="hero"
-                size="lg"
-                onClick={goToCars}
-                className="h-14 rounded-2xl w-full justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
-              >
-                Rodyti automobilius
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <div className="flex flex-col">
+                <span aria-hidden="true" className="block text-xs font-medium mb-1.5 invisible select-none">.</span>
+                <Button
+                  variant="hero"
+                  size="lg"
+                  onClick={goToCars}
+                  className="h-12 lg:h-14 rounded-xl w-full justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
+                >
+                  Rodyti automobilius
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
             {showHotel && (
