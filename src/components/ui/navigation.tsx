@@ -103,7 +103,9 @@ export function Navigation({ logo }: NavigationProps) {
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
                     isActiveRoute(item.key)
-                      ? "text-primary border-b-2 border-primary pb-1"
+                      ? isHome
+                        ? "text-white border-b-2 border-primary pb-1"
+                        : "text-primary border-b-2 border-primary pb-1"
                       : isHome ? "text-white" : "text-foreground"
                   }`}
 
