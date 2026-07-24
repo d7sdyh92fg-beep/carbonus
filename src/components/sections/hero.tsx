@@ -66,7 +66,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget — slightly narrower so more of the scene remains visible */}
-          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-4 lg:p-5 w-full">
+          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-4 lg:p-5 w-full mt-5">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
               {tabs.map(({ key, label, icon: Icon }) => {
