@@ -42,7 +42,8 @@ export function Hero() {
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-100"
+          style={{ filter: "brightness(1.05) contrast(1.06) saturate(1.05)" }}
         />
         {/* Dark overlay for text readability, kept lighter so the car stays visible */}
         <div aria-hidden className="absolute inset-0 bg-black/20" />
@@ -58,7 +59,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget */}
-          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6">
+          <div className="mt-[25px] rounded-3xl bg-white/80 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] ring-1 ring-white/40 p-4 sm:p-5 lg:p-6">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -112,7 +113,7 @@ export function Hero() {
                 variant="hero"
                 size="lg"
                 onClick={goToCars}
-                className="h-14 rounded-2xl w-full justify-center gap-2"
+                className="h-14 rounded-2xl w-full justify-center gap-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:brightness-110"
               >
                 Rodyti automobilius
                 <ArrowRight className="h-4 w-4" />
@@ -128,9 +129,9 @@ export function Hero() {
           </div>
 
           {/* Tagline */}
-          <div className="mt-auto pt-[4vh] max-w-3xl">
-            <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-3 lg:mb-4">
-              <MapPin className="h-3.5 w-3.5" />
+          <div className="mt-auto pt-[4vh] -mb-10 max-w-3xl">
+            <div className="inline-flex items-center gap-2 text-white text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+              <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white">
