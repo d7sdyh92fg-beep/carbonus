@@ -82,7 +82,7 @@ export function Hero() {
             </div>
 
             {/* Fields */}
-            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2 lg:grid-cols-3"}`}>
+            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "sm:grid-cols-2 xl:grid-cols-4" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
               {showHotel && (
                 <Field label="Viešbučio pavadinimas" icon={<Hotel className="h-4 w-4 text-muted-foreground" />}>
                   <input
