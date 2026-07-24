@@ -90,8 +90,8 @@ export function Navigation({ logo }: NavigationProps) {
                   key={item.name}
                   to={item.href}
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className={`text-sm font-medium transition-colors hover:text-primary text-white/95 ${
-                    isActiveRoute(item.key) ? "text-white border-b-2 border-primary pb-1" : ""
+                  className={`text-sm font-medium transition-colors hover:text-primary text-white ${
+                    isActiveRoute(item.key) ? "border-b-2 border-primary pb-1" : ""
                   }`}
                 >
                   {item.name}
