@@ -200,7 +200,7 @@ export function Hero() {
 
           {/* Tagline — moved up ~100px so it sits higher over the scene */}
           {/* Tagline — indented to match booking card inner content (px-4 / sm:px-5 / lg:px-6) */}
-          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6 relative -top-[30px]">
+          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6 relative top-[20px] md:-top-[30px]">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
@@ -208,8 +208,8 @@ export function Hero() {
             <h1
               className="hero-title font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
               style={{
-                maxWidth: "clamp(280px, 65vw, 640px)",
-                fontSize: "clamp(24px, 5.5vw, 58px)",
+                maxWidth: "clamp(300px, 72vw, 640px)",
+                fontSize: "clamp(30px, 7vw, 58px)",
                 lineHeight: 1.05,
               }}
             >
@@ -226,10 +226,10 @@ export function Hero() {
       <div className="bg-primary-dark text-primary-foreground flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5 lg:py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-8 text-[11px] md:text-[11px] lg:text-[13px] xl:text-sm">
-            <Feature icon={<Gem className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Prižiūrėti automobiliai" className="justify-start lg:justify-start" />
-            <Feature icon={<MapPin className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Atsiėmimas Druskininkuose" className="justify-center lg:justify-center" />
-            <Feature icon={<Hotel className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pristatymas visoje Lietuvoje" className="justify-center lg:justify-center" />
-            <Feature icon={<LifeBuoy className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pagalba nuomos metu" className="justify-end lg:justify-end" />
+            <Feature icon={<Gem className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Prižiūrėti automobiliai" />
+            <Feature icon={<MapPin className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Atsiėmimas Druskininkuose" />
+            <Feature icon={<Hotel className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pristatymas visoje Lietuvoje" />
+            <Feature icon={<LifeBuoy className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Pagalba nuomos metu" />
           </div>
         </div>
       </div>
@@ -255,7 +255,7 @@ function Field({ label, icon, hint, children, inputRef }: { label: string; icon:
 
 function Feature({ icon, label, className }: { icon: React.ReactNode; label: string; className?: string }) {
   return (
-    <div className={`flex items-center gap-1.5 md:gap-2 justify-center lg:justify-start min-w-0 ${className || ""}`}>
+    <div className={`flex items-center gap-1.5 md:gap-2 justify-center min-w-0 ${className || ""}`}>
       <span className="inline-flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
         {icon}
       </span>
