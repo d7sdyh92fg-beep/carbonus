@@ -1,5 +1,8 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { format } from "date-fns";
+import { lt as ltLocale } from "date-fns/locale";
+
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
@@ -7,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Fuel, Settings, Star, Calendar, Crown } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar, Crown, CalendarCheck, MapPin, X, Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
@@ -50,26 +53,97 @@ interface Car {
 const Cars = () => {
   const navigate = useNavigate();
   const { t, language } = useTranslations();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
-  // Fetch premium status and pricing from DB
+  // Availability search state (from URL, editable inline)
+  const urlPickup = searchParams.get("pickup") || "";
+  const urlReturn = searchParams.get("return") || "";
+  const urlMode = searchParams.get("mode") || "cars";
+  const urlCity = searchParams.get("city") || searchParams.get("hotel") || "";
+  const [pickup, setPickup] = useState(urlPickup);
+  const [ret, setRet] = useState(urlReturn);
+  const [deliveryCity, setDeliveryCity] = useState(urlCity);
+  useEffect(() => { setPickup(urlPickup); setRet(urlReturn); setDeliveryCity(urlCity); }, [urlPickup, urlReturn, urlCity]);
+
+  const hasDateFilter = Boolean(urlPickup && urlReturn && urlPickup <= urlReturn);
+  const rentalDays = useMemo(() => {
+    if (!hasDateFilter) return 0;
+    const s = new Date(`${urlPickup}T12:00:00`).getTime();
+    const e = new Date(`${urlReturn}T12:00:00`).getTime();
+    return Math.max(1, Math.round((e - s) / 86400000));
+  }, [hasDateFilter, urlPickup, urlReturn]);
+
+  // Fetch premium status and full pricing tiers from DB
   const { data: dbCars } = useQuery({
-    queryKey: ['cars-premium-status'],
+    queryKey: ['cars-pricing'],
     queryFn: async () => {
       const { data } = await supabase
         .from('cars')
-        .select('id, is_premium, price_tier1, price_tier3');
+        .select('id, is_premium, price_tier1, price_tier2, price_tier3');
       return data || [];
     },
   });
   const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
+  const getDbCar = (carId: string) => (dbCars || []).find(c => c.id === carId);
+  const getPerDayRate = (carId: string, days: number): number | null => {
+    const c = getDbCar(carId);
+    if (!c || c.price_tier1 == null) return null;
+    if (days >= 7 && c.price_tier3 != null) return Number(c.price_tier3);
+    if (days >= 3 && c.price_tier2 != null) return Number(c.price_tier2);
+    return Number(c.price_tier1);
+  };
   const getCarDbPrice = (carId: string) => {
-    const dbCar = (dbCars || []).find(c => c.id === carId);
-    if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
+    const c = getDbCar(carId);
+    if (c?.price_tier3) return `${c.price_tier3} EUR`;
     return null;
   };
+
+  // Availability: fetch overlapping reservations + blocked dates for the requested range
+  const { data: unavailableIds } = useQuery({
+    queryKey: ['availability', urlPickup, urlReturn],
+    enabled: hasDateFilter,
+    queryFn: async () => {
+      const blocked = new Set<string>();
+      const [resv, blk] = await Promise.all([
+        supabase
+          .from('reservations')
+          .select('car_id, start_date, end_date, status, deleted_at')
+          .in('status', ['paid', 'pending', 'requested', 'picked_up', 'awaiting_payment'])
+          .is('deleted_at', null)
+          .lte('start_date', urlReturn)
+          .gte('end_date', urlPickup),
+        supabase
+          .from('car_blocked_dates')
+          .select('car_id, blocked_date')
+          .gte('blocked_date', urlPickup)
+          .lte('blocked_date', urlReturn),
+      ]);
+      (resv.data || []).forEach((r: any) => r.car_id && blocked.add(String(r.car_id)));
+      (blk.data || []).forEach((b: any) => b.car_id && blocked.add(String(b.car_id)));
+      return blocked;
+    },
+  });
+
+  const applyDateSearch = () => {
+    if (!pickup || !ret || pickup > ret) return;
+    const next = new URLSearchParams(searchParams);
+    next.set('pickup', pickup);
+    next.set('return', ret);
+    next.set('mode', urlMode || 'cars');
+    if (deliveryCity) next.set('city', deliveryCity); else next.delete('city');
+    setSearchParams(next, { replace: true });
+    trackSearch(`${pickup}→${ret}`, 'cars_availability');
+  };
+  const clearDateSearch = () => {
+    const next = new URLSearchParams(searchParams);
+    ['pickup', 'return', 'mode', 'city', 'hotel'].forEach(k => next.delete(k));
+    setSearchParams(next, { replace: true });
+  };
+  const formatLt = (d: string) => format(new Date(`${d}T12:00:00`), "yyyy 'm.' MMMM d 'd.'", { locale: ltLocale });
+
 
   useEffect(() => {
     // Set page title and meta tags
@@ -184,9 +258,13 @@ const Cars = () => {
     
     const slug = getCarSlugFromId(carId, language as 'lt' | 'en');
     if (slug) {
-      const route = language === 'en' ? `/cars/${slug}` : `/automobiliai/${slug}`;
-      navigate(route);
+      const base = language === 'en' ? `/cars/${slug}` : `/automobiliai/${slug}`;
+      const qs = new URLSearchParams();
+      if (hasDateFilter) { qs.set('pickup', urlPickup); qs.set('return', urlReturn); }
+      if (deliveryCity) qs.set('city', deliveryCity);
+      navigate(qs.toString() ? `${base}?${qs.toString()}` : base);
     }
+
   };
 
   const cars: Car[] = [
@@ -335,6 +413,11 @@ const Cars = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const isCarAvailable = (carId: string) => !hasDateFilter || !unavailableIds || !unavailableIds.has(carId);
+  const availableCars = filteredCars.filter(c => isCarAvailable(c.id));
+  const unavailableCars = filteredCars.filter(c => !isCarAvailable(c.id));
+
+
   return (
     <div className="min-h-screen bg-background">
       {/* SEO Meta Tags */}
@@ -403,16 +486,90 @@ const Cars = () => {
         </div>
       </section>
 
+      {/* Availability Search Bar — visible whenever dates are being edited or applied */}
+      <section className="sticky top-16 z-30 bg-white/95 backdrop-blur border-y border-border shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col lg:flex-row lg:items-end gap-3 lg:gap-4">
+            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Paėmimo data</label>
+                <div className="relative">
+                  <CalendarCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <Input type="date" value={pickup} min={new Date().toISOString().slice(0,10)} onChange={(e) => { setPickup(e.target.value); if (ret && e.target.value > ret) setRet(e.target.value); }} className="pl-9 h-11" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Grąžinimo data</label>
+                <div className="relative">
+                  <CalendarCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <Input type="date" value={ret} min={pickup || new Date().toISOString().slice(0,10)} onChange={(e) => setRet(e.target.value)} className="pl-9 h-11" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Pristatymo miestas (nebūtina)</label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <Input type="text" placeholder="Pvz., Vilnius, Kaunas..." value={deliveryCity} onChange={(e) => setDeliveryCity(e.target.value)} className="pl-9 h-11" />
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button className="h-11 bg-primary hover:bg-primary/90 text-primary-foreground gap-2" onClick={applyDateSearch} disabled={!pickup || !ret || pickup > ret}>
+                <Search className="w-4 h-4" /> Ieškoti laisvų
+              </Button>
+              {hasDateFilter && (
+                <Button variant="outline" className="h-11 gap-2" onClick={clearDateSearch}>
+                  <X className="w-4 h-4" /> Išvalyti
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {hasDateFilter && (
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+              <span className="inline-flex items-center gap-1.5 text-foreground font-medium">
+                <CalendarCheck className="w-4 h-4 text-primary" />
+                {formatLt(urlPickup)} → {formatLt(urlReturn)}
+              </span>
+              <span className="text-muted-foreground">·</span>
+              <span className="text-muted-foreground">{rentalDays} d. nuoma</span>
+              {deliveryCity && (<>
+                <span className="text-muted-foreground">·</span>
+                <span className="inline-flex items-center gap-1 text-muted-foreground"><MapPin className="w-3.5 h-3.5" /> Pristatymas: {deliveryCity}</span>
+              </>)}
+              <span className="ml-auto inline-flex items-center gap-2">
+                <Badge className="bg-primary text-primary-foreground">{availableCars.length} laisvi</Badge>
+                {unavailableCars.length > 0 && (
+                  <Badge variant="outline" className="text-muted-foreground">{unavailableCars.length} užimti</Badge>
+                )}
+              </span>
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Cars Grid */}
-      <section className="pt-16 pb-20 bg-secondary/30">
+      <section className="pt-10 pb-20 bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {hasDateFilter && availableCars.length === 0 && (
+            <div className="mb-8 rounded-lg border border-amber-200 bg-amber-50 p-6 text-center">
+              <p className="text-lg font-semibold text-amber-900">Šioms datoms laisvų automobilių nėra</p>
+              <p className="text-sm text-amber-800 mt-1">Pabandykite kitas datas arba susisiekite su mumis — dažnai turime papildomų galimybių.</p>
+            </div>
+          )}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCars.map((car) => (
+            {[...availableCars, ...unavailableCars].map((car) => (
               <Card
+
                 key={car.id}
-                className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card"
+                className={`group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card relative ${!isCarAvailable(car.id) ? 'opacity-60 grayscale' : ''}`}
               >
+                {hasDateFilter && !isCarAvailable(car.id) && (
+                  <div className="absolute top-3 right-3 z-10">
+                    <Badge variant="secondary" className="bg-red-600 text-white">Užimta šiomis datomis</Badge>
+                  </div>
+                )}
+
                 <CardContent className="p-0">
                   <div className="relative overflow-hidden rounded-t-lg" style={{ background: 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
                     <div className="relative">
@@ -508,17 +665,29 @@ const Cars = () => {
                     
                     <div className="flex items-center justify-between pt-4">
                       <div>
-                        <p className="text-sm text-muted-foreground">{t('cars.price')}</p>
-                        <p className="text-2xl font-bold text-primary">{t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}</p>
-                        <p className="text-xs text-muted-foreground">{t('cars.perDay')}</p>
+                        {hasDateFilter && getPerDayRate(car.id, rentalDays) != null ? (
+                          <>
+                            <p className="text-sm text-muted-foreground">Kaina {rentalDays} d.</p>
+                            <p className="text-2xl font-bold text-primary">{(getPerDayRate(car.id, rentalDays) as number) * rentalDays} EUR</p>
+                            <p className="text-xs text-muted-foreground">{getPerDayRate(car.id, rentalDays)} EUR / d. · aiški galutinė kaina</p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-sm text-muted-foreground">{t('cars.price')}</p>
+                            <p className="text-2xl font-bold text-primary">{t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}</p>
+                            <p className="text-xs text-muted-foreground">{t('cars.perDay')}</p>
+                          </>
+                        )}
                       </div>
                       <Button 
                         className="bg-primary hover:bg-primary/90 text-primary-foreground"
                         onClick={() => handleCarSelect(car.id)}
+                        disabled={hasDateFilter && !isCarAvailable(car.id)}
                       >
-                        {t('cars.viewButton')}
+                        {hasDateFilter && isCarAvailable(car.id) ? 'Rezervuoti' : t('cars.viewButton')}
                       </Button>
                     </div>
+
                   </div>
                 </CardContent>
               </Card>
