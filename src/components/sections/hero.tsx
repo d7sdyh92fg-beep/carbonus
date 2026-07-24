@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
 import { Car, Calendar as CalendarIcon, MapPin, ArrowRight, Gem, CalendarClock, Hotel, LifeBuoy } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { lt } from "date-fns/locale";
 import { Calendar } from "@/components/ui/calendar";
