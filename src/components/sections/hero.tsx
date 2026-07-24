@@ -42,7 +42,8 @@ export function Hero() {
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-100"
+          style={{ filter: "brightness(1.05) contrast(1.06) saturate(1.05)" }}
         />
         {/* Dark overlay for text readability, kept lighter so the car stays visible */}
         <div aria-hidden className="absolute inset-0 bg-black/20" />
