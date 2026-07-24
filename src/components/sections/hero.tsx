@@ -59,7 +59,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget */}
-          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6">
+          <div className="mt-[25px] rounded-3xl bg-white/80 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] ring-1 ring-white/40 p-4 sm:p-5 lg:p-6">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
               {tabs.map(({ key, label, icon: Icon }) => {
