@@ -39,7 +39,7 @@ const handler = async (req: Request): Promise<Response> => {
     const lang = booking.language || 'lt';
     const isLT = lang === 'lt';
     
-    const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
+    const logoUrl = 'https://carbonus.lt/__l5e/assets-v1/ca2ce61e-2fe8-4b83-805a-6d90ebedc076/carbonus_logo_green_white_transparent.png';
     const logoStyles = 'max-width: 180px; height: auto; margin-bottom: 24px;';
 
     // Package info HTML block
