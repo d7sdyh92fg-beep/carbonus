@@ -56,16 +56,16 @@ export function Hero() {
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
-          className="absolute inset-0 w-full h-full object-cover opacity-100 object-[70%_65%] sm:object-[72%_60%] md:object-[78%_center] lg:object-[72%_center] xl:object-[66%_center] 2xl:object-[60%_center]"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 object-[76%_65%] sm:object-[76%_60%] md:object-[76%_center] lg:object-[72%_center] xl:object-[68%_center] 2xl:object-[68%_center]"
           style={{ filter: "brightness(1.08) contrast(1.06) saturate(1.08)" }}
         />
-        {/* Directional overlay — darker on the left where text sits, lighter on the right so the vehicle stays bright */}
+        {/* Directional overlay — darker on the left where text sits, near-clear on the right so the vehicle stays bright */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(5,15,12,0.48) 0%, rgba(5,15,12,0.28) 48%, rgba(5,15,12,0.12) 100%)",
+              "linear-gradient(90deg, rgba(4,15,11,0.52) 0%, rgba(4,15,11,0.28) 42%, rgba(4,15,11,0.08) 74%, rgba(4,15,11,0.12) 100%)",
           }}
         />
         {/* Ambient background glows */}
