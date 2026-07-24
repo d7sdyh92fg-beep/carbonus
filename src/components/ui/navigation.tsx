@@ -74,7 +74,7 @@ export function Navigation({ logo }: NavigationProps) {
       } bg-[rgba(24,34,31,0.88)] backdrop-blur-[14px] border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.25)]`}>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="relative flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="block">
@@ -83,8 +83,8 @@ export function Navigation({ logo }: NavigationProps) {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:block">
-            <div className="ml-10 flex items-center space-x-8">
+          <div className="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className="flex items-center space-x-8">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
