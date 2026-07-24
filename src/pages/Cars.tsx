@@ -562,8 +562,14 @@ const Cars = () => {
               <Card
 
                 key={car.id}
-                className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card"
+                className={`group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card relative ${!isCarAvailable(car.id) ? 'opacity-60 grayscale' : ''}`}
               >
+                {hasDateFilter && !isCarAvailable(car.id) && (
+                  <div className="absolute top-3 right-3 z-10">
+                    <Badge variant="secondary" className="bg-red-600 text-white">Užimta šiomis datomis</Badge>
+                  </div>
+                )}
+
                 <CardContent className="p-0">
                   <div className="relative overflow-hidden rounded-t-lg" style={{ background: 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
                     <div className="relative">
