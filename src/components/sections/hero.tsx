@@ -150,7 +150,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget — absolute only on small mobile so it can grow without pushing the background */}
-          <div className="max-sm:absolute max-sm:top-[calc(5rem+2vh)] max-sm:left-4 max-sm:right-4 max-sm:z-20 rounded-3xl bg-white shadow-elegant p-3 sm:p-4 lg:p-5 w-full mt-5">
+          <div className="max-sm:absolute max-sm:top-[calc(5rem+2vh)] max-sm:left-4 max-sm:right-4 max-sm:z-20 rounded-3xl bg-white shadow-elegant p-2.5 sm:p-4 lg:p-5 w-full max-sm:w-auto mt-5">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
               {tabs.map(({ key, label, icon: Icon }) => {
