@@ -74,7 +74,7 @@ export function Navigation({ logo }: NavigationProps) {
         hidden ? "-translate-y-full" : "translate-y-0"
       } ${
         isHome
-          ? "bg-[rgba(8,18,15,0.35)] backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
+          ? "bg-[rgba(8,18,15,0.55)] backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
           : "bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm"
       }`}>
 
@@ -117,12 +117,16 @@ export function Navigation({ logo }: NavigationProps) {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className={`hidden lg:flex items-center ${user && isAdmin ? "space-x-4" : "ml-auto"}`}>
             <LanguageSwitcher />
             {user && isAdmin && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={isHome ? "text-white hover:text-white hover:bg-white/10" : "text-foreground"}
+                  >
                     <Shield className="h-4 w-4 mr-2" />
                     {t('nav.admin')}
                   </Button>
