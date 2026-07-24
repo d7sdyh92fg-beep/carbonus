@@ -153,7 +153,7 @@ const BlogPost = () => {
         <meta property="og:url" content={`https://carbonus.lt/naujienos/${post.slug}`} />
         <meta property="og:image" content={post.image} />
       </Helmet>
-      <Navigation logo="/__l5e/assets-v1/ca2ce61e-2fe8-4b83-805a-6d90ebedc076/carbonus_logo_green_white_transparent.png" />
+      <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Breadcrumb */}
       <section className="pt-24 pb-6 bg-background">

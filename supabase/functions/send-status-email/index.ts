@@ -31,7 +31,7 @@ interface StatusEmailRequest {
 }
 
 // Shared styles matching EmailPreview component exactly
-const logoUrl = 'https://carbonus.lt/__l5e/assets-v1/ca2ce61e-2fe8-4b83-805a-6d90ebedc076/carbonus_logo_green_white_transparent.png';
+const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
 
 const commonStyles = `font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;`;
 const headerStyles = `background: linear-gradient(135deg, #0a5028 0%, #2d8659 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0;`;

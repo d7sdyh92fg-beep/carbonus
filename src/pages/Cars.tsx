@@ -348,7 +348,7 @@ const Cars = () => {
       {/* Language Links */}
       <LanguageLinks ltPath="/automobiliai" enPath="/cars" />
       
-      <Navigation logo="/__l5e/assets-v1/ca2ce61e-2fe8-4b83-805a-6d90ebedc076/carbonus_logo_green_white_transparent.png" />
+      <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
       
       {/* Hero Section */}
       <section className="pt-32 md:pt-40 pb-12 bg-gradient-to-br from-gray-50 to-white">
