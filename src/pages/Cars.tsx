@@ -342,7 +342,7 @@ const Cars = () => {
         title={t('cars.meta.title')}
         description={t('cars.meta.description')}
         canonical={`https://carbonus.lt/${language === 'en' ? 'cars' : 'automobiliai'}`}
-        keywords="automobilių nuoma, car rental, BMW, KIA, VW Passat, premium cars, nuoma Lietuvoje"
+        keywords="automobilių nuoma druskininkuose, mercedes slk nuoma, citroen spacetourer nuoma, mikroautobuso nuoma, kabrioleto nuoma, volkswagen passat nuoma, kia ceed nuoma, hyundai bayon nuoma"
       />
       
       {/* Language Links */}
