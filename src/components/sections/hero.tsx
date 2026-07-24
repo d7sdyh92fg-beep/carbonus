@@ -59,7 +59,7 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl 2xl:max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget — constrained to left column on md+ so it never overlaps the vehicle */}
-          <div className="w-full md:max-w-[560px] lg:max-w-[600px] xl:max-w-[680px] 2xl:max-w-[760px] mt-[25px] rounded-3xl bg-white/80 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] ring-1 ring-white/40 p-4 sm:p-5 lg:p-6">
+          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -82,7 +82,7 @@ export function Hero() {
             </div>
 
             {/* Fields */}
-            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "sm:grid-cols-2 xl:grid-cols-4" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
+            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2 lg:grid-cols-3"}`}>
               {showHotel && (
                 <Field label="Viešbučio pavadinimas" icon={<Hotel className="h-4 w-4 text-muted-foreground" />}>
                   <input
@@ -113,7 +113,7 @@ export function Hero() {
                 variant="hero"
                 size="lg"
                 onClick={goToCars}
-                className="h-14 rounded-2xl w-full justify-center gap-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:brightness-110"
+                className="h-14 rounded-2xl w-full justify-center gap-2"
               >
                 Rodyti automobilius
                 <ArrowRight className="h-4 w-4" />
