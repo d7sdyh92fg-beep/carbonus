@@ -173,12 +173,12 @@ export function Hero() {
               className="hero-title font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
               style={{
                 maxWidth: "600px",
-                fontSize: "clamp(30px, 3.6vw, 58px)",
-                lineHeight: 0.98,
+                fontSize: "clamp(24px, 3.6vw, 58px)",
+                lineHeight: 1.05,
               }}
             >
-              KELIAUKITE STILINGAI.<br />
-              MĖGAUKITĖS LAISVE.
+              <span className="block whitespace-nowrap">KELIAUKITE STILINGAI.</span>
+              <span className="block whitespace-nowrap">MĖGAUKITĖS LAISVE.</span>
             </h1>
           </div>
 
