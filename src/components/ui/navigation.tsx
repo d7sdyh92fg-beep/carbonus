@@ -74,7 +74,7 @@ export function Navigation({ logo }: NavigationProps) {
         hidden ? "-translate-y-full" : "translate-y-0"
       } ${
         isHome
-          ? "bg-white/10 backdrop-blur-xl border-b border-white/10"
+          ? "bg-[rgba(8,18,15,0.35)] backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
           : "bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm"
       }`}>
 
