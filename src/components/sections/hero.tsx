@@ -172,7 +172,7 @@ export function Hero() {
 
       {/* Green feature band — more spacing, last item aligned with the booking button */}
       <div className="bg-primary-dark text-primary-foreground flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5 lg:py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-8 text-[11px] md:text-[11px] lg:text-[13px] xl:text-sm">
             <Feature icon={<Gem className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Prižiūrėti automobiliai" className="justify-start lg:justify-start" />
             <Feature icon={<MapPin className="h-3 w-3 md:h-3.5 md:w-3.5" />} label="Atsiėmimas Druskininkuose" className="justify-center lg:justify-center" />
@@ -203,8 +203,8 @@ function Field({ label, icon, hint, children }: { label: string; icon: React.Rea
 
 function Feature({ icon, label, className }: { icon: React.ReactNode; label: string; className?: string }) {
   return (
-    <div className={`flex items-center gap-2 justify-center lg:justify-start min-w-0 ${className || ""}`}>
-      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
+    <div className={`flex items-center gap-1.5 md:gap-2 justify-center lg:justify-start min-w-0 ${className || ""}`}>
+      <span className="inline-flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
         {icon}
       </span>
       <span className="font-medium whitespace-nowrap truncate">{label}</span>
