@@ -214,7 +214,7 @@ export function Hero() {
           </div>
 
           {/* Tagline — anchored at the bottom on mobile, offset at larger screens */}
-          <div className="absolute bottom-[3vh] left-4 right-4 z-10 sm:relative sm:top-[20px] md:-top-[30px] sm:bottom-auto sm:left-0 sm:right-0 sm:z-auto mt-0 sm:mt-auto pt-[4vh] mb-0 sm:mb-28 md:mb-32 lg:mb-40 w-full px-3 sm:px-5 lg:px-6">
+          <div className="absolute bottom-[6vh] left-4 right-4 z-10 sm:relative sm:top-[20px] md:-top-[30px] sm:bottom-auto sm:left-0 sm:right-0 sm:z-auto mt-0 sm:mt-auto pt-[4vh] mb-0 sm:mb-28 md:mb-32 lg:mb-40 w-full px-3 sm:px-5 lg:px-6">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
