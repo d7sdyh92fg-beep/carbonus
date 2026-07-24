@@ -53,26 +53,97 @@ interface Car {
 const Cars = () => {
   const navigate = useNavigate();
   const { t, language } = useTranslations();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
-  // Fetch premium status and pricing from DB
+  // Availability search state (from URL, editable inline)
+  const urlPickup = searchParams.get("pickup") || "";
+  const urlReturn = searchParams.get("return") || "";
+  const urlMode = searchParams.get("mode") || "cars";
+  const urlCity = searchParams.get("city") || searchParams.get("hotel") || "";
+  const [pickup, setPickup] = useState(urlPickup);
+  const [ret, setRet] = useState(urlReturn);
+  const [deliveryCity, setDeliveryCity] = useState(urlCity);
+  useEffect(() => { setPickup(urlPickup); setRet(urlReturn); setDeliveryCity(urlCity); }, [urlPickup, urlReturn, urlCity]);
+
+  const hasDateFilter = Boolean(urlPickup && urlReturn && urlPickup <= urlReturn);
+  const rentalDays = useMemo(() => {
+    if (!hasDateFilter) return 0;
+    const s = new Date(`${urlPickup}T12:00:00`).getTime();
+    const e = new Date(`${urlReturn}T12:00:00`).getTime();
+    return Math.max(1, Math.round((e - s) / 86400000));
+  }, [hasDateFilter, urlPickup, urlReturn]);
+
+  // Fetch premium status and full pricing tiers from DB
   const { data: dbCars } = useQuery({
-    queryKey: ['cars-premium-status'],
+    queryKey: ['cars-pricing'],
     queryFn: async () => {
       const { data } = await supabase
         .from('cars')
-        .select('id, is_premium, price_tier1, price_tier3');
+        .select('id, is_premium, price_tier1, price_tier2, price_tier3');
       return data || [];
     },
   });
   const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
+  const getDbCar = (carId: string) => (dbCars || []).find(c => c.id === carId);
+  const getPerDayRate = (carId: string, days: number): number | null => {
+    const c = getDbCar(carId);
+    if (!c || c.price_tier1 == null) return null;
+    if (days >= 7 && c.price_tier3 != null) return Number(c.price_tier3);
+    if (days >= 3 && c.price_tier2 != null) return Number(c.price_tier2);
+    return Number(c.price_tier1);
+  };
   const getCarDbPrice = (carId: string) => {
-    const dbCar = (dbCars || []).find(c => c.id === carId);
-    if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
+    const c = getDbCar(carId);
+    if (c?.price_tier3) return `${c.price_tier3} EUR`;
     return null;
   };
+
+  // Availability: fetch overlapping reservations + blocked dates for the requested range
+  const { data: unavailableIds } = useQuery({
+    queryKey: ['availability', urlPickup, urlReturn],
+    enabled: hasDateFilter,
+    queryFn: async () => {
+      const blocked = new Set<string>();
+      const [resv, blk] = await Promise.all([
+        supabase
+          .from('reservations')
+          .select('car_id, start_date, end_date, status, deleted_at')
+          .in('status', ['paid', 'pending', 'requested', 'picked_up', 'awaiting_payment'])
+          .is('deleted_at', null)
+          .lte('start_date', urlReturn)
+          .gte('end_date', urlPickup),
+        supabase
+          .from('car_blocked_dates')
+          .select('car_id, blocked_date')
+          .gte('blocked_date', urlPickup)
+          .lte('blocked_date', urlReturn),
+      ]);
+      (resv.data || []).forEach((r: any) => r.car_id && blocked.add(String(r.car_id)));
+      (blk.data || []).forEach((b: any) => b.car_id && blocked.add(String(b.car_id)));
+      return blocked;
+    },
+  });
+
+  const applyDateSearch = () => {
+    if (!pickup || !ret || pickup > ret) return;
+    const next = new URLSearchParams(searchParams);
+    next.set('pickup', pickup);
+    next.set('return', ret);
+    next.set('mode', urlMode || 'cars');
+    if (deliveryCity) next.set('city', deliveryCity); else next.delete('city');
+    setSearchParams(next, { replace: true });
+    trackSearch(`${pickup}→${ret}`, 'cars_availability');
+  };
+  const clearDateSearch = () => {
+    const next = new URLSearchParams(searchParams);
+    ['pickup', 'return', 'mode', 'city', 'hotel'].forEach(k => next.delete(k));
+    setSearchParams(next, { replace: true });
+  };
+  const formatLt = (d: string) => format(new Date(`${d}T12:00:00`), "yyyy 'm.' MMMM d 'd.'", { locale: ltLocale });
+
 
   useEffect(() => {
     // Set page title and meta tags
