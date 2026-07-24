@@ -413,6 +413,11 @@ const Cars = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const isCarAvailable = (carId: string) => !hasDateFilter || !unavailableIds || !unavailableIds.has(carId);
+  const availableCars = filteredCars.filter(c => isCarAvailable(c.id));
+  const unavailableCars = filteredCars.filter(c => !isCarAvailable(c.id));
+
+
   return (
     <div className="min-h-screen bg-background">
       {/* SEO Meta Tags */}
