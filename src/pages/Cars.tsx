@@ -258,9 +258,13 @@ const Cars = () => {
     
     const slug = getCarSlugFromId(carId, language as 'lt' | 'en');
     if (slug) {
-      const route = language === 'en' ? `/cars/${slug}` : `/automobiliai/${slug}`;
-      navigate(route);
+      const base = language === 'en' ? `/cars/${slug}` : `/automobiliai/${slug}`;
+      const qs = new URLSearchParams();
+      if (hasDateFilter) { qs.set('pickup', urlPickup); qs.set('return', urlReturn); }
+      if (deliveryCity) qs.set('city', deliveryCity);
+      navigate(qs.toString() ? `${base}?${qs.toString()}` : base);
     }
+
   };
 
   const cars: Car[] = [
