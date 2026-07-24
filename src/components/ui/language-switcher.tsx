@@ -45,12 +45,12 @@ export function LanguageSwitcher() {
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="bg-[rgba(24,34,31,0.92)] backdrop-blur-[14px] border-white/10 text-white">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code as any)}
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex items-center gap-2 cursor-pointer text-white focus:bg-white/10 focus:text-white"
           >
             <span>{lang.flag}</span>
             <span>{lang.name}</span>

@@ -2,11 +2,16 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
 import { Car, Calendar, MapPin, ArrowRight, Gem, CalendarClock, Hotel, LifeBuoy } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { format } from "date-fns";
+import { lt } from "date-fns/locale";
 import heroCar from "@/assets/hero-spacetourer.png.asset.json";
 
 type TabKey = "cars" | "long" | "hotel";
 
+const formatLt = (dateStr: string) => {
+  return format(new Date(`${dateStr}T12:00:00`), "yyyy 'm.' MMMM d 'd.'", { locale: lt });
+};
 
 export function Hero() {
   const navigate = useNavigate();
@@ -14,10 +19,12 @@ export function Hero() {
   const [tab, setTab] = useState<TabKey>("cars");
   const today = new Date().toISOString().slice(0, 10);
   const inTwo = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
-  const [pickup, setPickup] = useState(today);
-  const [ret, setRet] = useState(inTwo);
-  const [hotel, setHotel] = useState("");
-  const [deliveryCity, setDeliveryCity] = useState("");
+const [pickup, setPickup] = useState(today);
+const [ret, setRet] = useState(inTwo);
+const [hotel, setHotel] = useState("");
+const [deliveryCity, setDeliveryCity] = useState("");
+const pickupRef = useRef<HTMLInputElement>(null);
+const returnRef = useRef<HTMLInputElement>(null);
 
   const goToCars = () => {
     const params = new URLSearchParams({ pickup, return: ret, mode: tab });
@@ -96,33 +103,41 @@ export function Hero() {
                     value={deliveryCity}
                     onChange={(e) => setDeliveryCity(e.target.value)}
                     placeholder="Pvz. Vilnius, Gedimino pr. 5"
-                    className="w-full bg-transparent outline-none text-card-foreground font-medium placeholder:text-muted-foreground"
+                    className="w-full h-full bg-transparent outline-none text-card-foreground font-medium placeholder:text-muted-foreground"
                   />
                 </Field>
               )}
               <Field
                 label="Paėmimo data"
                 icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
+                inputRef={pickupRef}
               >
                 <input
                   type="date"
-                  lang="lt-LT"
+                  ref={pickupRef}
                   value={pickup}
                   onChange={(e) => setPickup(e.target.value)}
-                  className="w-full bg-transparent outline-none text-card-foreground font-medium"
+                  className="absolute inset-0 w-full h-full bg-transparent outline-none text-transparent cursor-pointer"
                 />
+                <span className="absolute inset-0 flex items-center pointer-events-none text-card-foreground font-medium truncate">
+                  {formatLt(pickup)}
+                </span>
               </Field>
               <Field
                 label="Grąžinimo data"
                 icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
+                inputRef={returnRef}
               >
                 <input
                   type="date"
-                  lang="lt-LT"
+                  ref={returnRef}
                   value={ret}
                   onChange={(e) => setRet(e.target.value)}
-                  className="w-full bg-transparent outline-none text-card-foreground font-medium"
+                  className="absolute inset-0 w-full h-full bg-transparent outline-none text-transparent cursor-pointer"
                 />
+                <span className="absolute inset-0 flex items-center pointer-events-none text-card-foreground font-medium truncate">
+                  {formatLt(ret)}
+                </span>
               </Field>
               <div className="flex flex-col">
                 <span aria-hidden="true" className="block text-xs font-medium mb-1.5 invisible select-none">.</span>
@@ -148,7 +163,7 @@ export function Hero() {
 
           {/* Tagline — moved up ~100px so it sits higher over the scene */}
           {/* Tagline — indented to match booking card inner content (px-4 / sm:px-5 / lg:px-6) */}
-          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6">
+          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6 relative -top-[30px]">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
@@ -186,13 +201,13 @@ export function Hero() {
   );
 }
 
-function Field({ label, icon, hint, children }: { label: string; icon: React.ReactNode; hint?: string; children: React.ReactNode }) {
+function Field({ label, icon, hint, children, inputRef }: { label: string; icon: React.ReactNode; hint?: string; children: React.ReactNode; inputRef?: React.RefObject<HTMLInputElement> }) {
   return (
     <label className="block">
       <span className="block text-xs font-medium text-muted-foreground mb-1.5">{label}</span>
-      <div className="flex items-center gap-2 rounded-xl border border-border bg-background/40 px-3 h-12 lg:h-14">
+      <div className="flex items-center gap-2 rounded-xl border border-border bg-background/40 px-3 h-12 lg:h-14 cursor-pointer" onClick={() => inputRef?.current?.focus()}>
         {icon}
-        <div className="flex-1 min-w-0">{children}</div>
+        <div className="flex-1 min-w-0 relative h-full flex items-center">{children}</div>
       </div>
       {hint && (
         <span className="mt-1 block text-[11px] text-muted-foreground/80">{hint}</span>
