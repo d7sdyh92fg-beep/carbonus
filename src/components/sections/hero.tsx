@@ -28,10 +28,12 @@ export function Hero() {
   const [pickup, setPickup] = useState(today);
   const [ret, setRet] = useState(inTwo);
   const [hotel, setHotel] = useState("");
+  const [deliveryCity, setDeliveryCity] = useState("");
 
   const goToCars = () => {
     const params = new URLSearchParams({ pickup, return: ret, mode: tab });
     if (tab === "hotel" && hotel) params.set("hotel", hotel);
+    if (tab === "hotel" && deliveryCity) params.set("city", deliveryCity);
     navigate(`/automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 300, behavior: "smooth" }), 100);
   };
@@ -39,7 +41,7 @@ export function Hero() {
   const tabs: { key: TabKey; label: string; icon: React.ElementType }[] = [
     { key: "cars", label: "Automobiliai", icon: Car },
     { key: "long", label: "Ilgesnė nuoma", icon: CalendarClock },
-    { key: "hotel", label: "Pristatymas viešbutyje", icon: Hotel },
+    { key: "hotel", label: "Pristatymas Lietuvoje", icon: Hotel },
   ];
 
   const showHotel = tab === "hotel";
