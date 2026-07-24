@@ -134,8 +134,8 @@ export function Hero() {
         </div>
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
-          {/* Search widget — absolute on mobile so it can grow without pushing the background */}
-          <div className="max-md:absolute max-md:top-[calc(5rem+2vh)] max-md:left-4 max-md:right-4 max-md:z-20 rounded-3xl bg-white shadow-elegant p-4 sm:p-4 lg:p-5 w-full mt-5">
+          {/* Search widget — absolute only on small mobile so it can grow without pushing the background */}
+          <div className="max-sm:absolute max-sm:top-[calc(5rem+2vh)] max-sm:left-4 max-sm:right-4 max-sm:z-20 rounded-3xl bg-white shadow-elegant p-4 sm:p-4 lg:p-5 w-full mt-5">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -198,8 +198,8 @@ export function Hero() {
             )}
           </div>
 
-          {/* Tagline — absolute at bottom on mobile so it stays anchored while the form grows */}
-          <div className="max-md:absolute max-md:bottom-[3vh] max-md:left-4 max-md:right-4 max-md:z-10 mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6 relative top-[20px] md:-top-[30px]">
+          {/* Tagline — absolute at bottom only on small mobile so it stays anchored while the form grows */}
+          <div className="max-sm:absolute max-sm:bottom-[3vh] max-sm:left-4 max-sm:right-4 max-sm:z-10 mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 w-full px-4 sm:px-5 lg:px-6 relative top-[20px] md:-top-[30px]">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
