@@ -206,8 +206,9 @@ export const translations = {
       viewButton: "Žiūrėti",
       from: "nuo",
       meta: {
-        title: "Automobiliai - Carbonus | BMW, Audi ir kiti premium automobiliai nuomai",
-        description: "Peržiūrėkite mūsų premium automobilių parką. BMW 3 serijos, Chrysler ir kiti naujausių modelių automobiliai nuomai Lietuvoje. Rezervuokite online."
+        title: "Automobiliai – Carbonus | Automobilių nuoma Druskininkuose",
+        description: "Peržiūrėkite Carbonus automobilių parką: Mercedes-Benz SLK, Citroën SpaceTourer, Volkswagen Passat, KIA CEED ir Hyundai Bayon. Aiški galutinė kaina prieš rezervuojant. Pristatymas visoje Lietuvoje."
+
       }
     },
 
