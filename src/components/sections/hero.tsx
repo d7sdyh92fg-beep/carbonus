@@ -129,7 +129,7 @@ export function Hero() {
           </div>
 
           {/* Tagline */}
-          <div className="mt-auto pt-[4vh] -mb-10 max-w-3xl">
+          <div className="mt-auto pt-[4vh] mb-10 max-w-3xl">
             <div className="inline-flex items-center gap-2 text-white text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
