@@ -94,6 +94,14 @@ export function Hero() {
   const [ret, setRet] = useState(inTwo);
   const [hotel, setHotel] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
+  const [featureIndex, setFeatureIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFeatureIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   const goToCars = () => {
     const params = new URLSearchParams({ pickup, return: ret, mode: tab });
