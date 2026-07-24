@@ -76,8 +76,8 @@ export function Hero() {
         </div>
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
-          {/* Search widget — aligns exactly with site container edges */}
-          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6">
+          {/* Search widget — slightly narrower so more of the scene remains visible */}
+          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6 w-full max-w-full lg:max-w-[92%] xl:max-w-[88%]">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -102,11 +102,11 @@ export function Hero() {
             {/* Fields */}
             <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2 lg:grid-cols-3"}`}>
               {showHotel && (
-                <Field label="Viešbučio pavadinimas" icon={<Hotel className="h-4 w-4 text-muted-foreground" />}>
+                <Field label="Miestas arba adresas" icon={<MapPin className="h-4 w-4 text-muted-foreground" />}>
                   <input
-                    value={hotel}
-                    onChange={(e) => setHotel(e.target.value)}
-                    placeholder="Pvz. Grand SPA Lietuva"
+                    value={deliveryCity}
+                    onChange={(e) => setDeliveryCity(e.target.value)}
+                    placeholder="Pvz. Vilnius, Gedimino pr. 5"
                     className="w-full bg-transparent outline-none text-card-foreground font-medium placeholder:text-muted-foreground"
                   />
                 </Field>
@@ -148,6 +148,13 @@ export function Hero() {
               </Button>
             </div>
 
+            {showHotel && (
+              <div className="mt-3 text-xs sm:text-sm text-muted-foreground inline-flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-primary" />
+                Pristatome visoje Lietuvoje. Pristatymo kaina bus parodyta prieš rezervuojant.
+              </div>
+            )}
+
             {/* Trust row */}
             <div className="mt-4 lg:mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Aiškios kainos be paslėptų mokesčių</span>
@@ -156,8 +163,8 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Tagline — kept in the left column so it never crosses over the vehicle */}
-          <div className="mt-auto pt-[4vh] mb-14 md:mb-16 max-w-[92%] sm:max-w-xl md:max-w-[600px]">
+          {/* Tagline — moved up ~100px so it sits higher over the scene */}
+          <div className="mt-auto pt-[4vh] mb-28 md:mb-32 lg:mb-40 max-w-[92%] sm:max-w-xl md:max-w-[600px]">
             <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
@@ -178,16 +185,17 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Green feature band — simplified: just the four benefits in one clean row */}
+      {/* Green feature band — more vertical padding + updated four benefits */}
       <div className="bg-primary text-primary-foreground flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-5">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 text-xs lg:text-[13px] xl:text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-[18px] lg:py-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 text-xs lg:text-[13px] xl:text-sm">
             <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Prižiūrėti automobiliai" />
-            <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Patogus atsiėmimas Druskininkuose" />
-            <Feature icon={<Wallet className="h-3.5 w-3.5" />} label="Aiškios kainos" />
+            <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Atsiėmimas Druskininkuose" />
+            <Feature icon={<Hotel className="h-3.5 w-3.5" />} label="Pristatymas visoje Lietuvoje" />
             <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" />
           </div>
         </div>
+      </div>
       </div>
 
     </section>
