@@ -83,12 +83,10 @@ export function Hero() {
   const [tab, setTab] = useState<TabKey>("cars");
   const today = new Date().toISOString().slice(0, 10);
   const inTwo = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
-const [pickup, setPickup] = useState(today);
-const [ret, setRet] = useState(inTwo);
-const [hotel, setHotel] = useState("");
-const [deliveryCity, setDeliveryCity] = useState("");
-const pickupRef = useRef<HTMLInputElement>(null);
-const returnRef = useRef<HTMLInputElement>(null);
+  const [pickup, setPickup] = useState(today);
+  const [ret, setRet] = useState(inTwo);
+  const [hotel, setHotel] = useState("");
+  const [deliveryCity, setDeliveryCity] = useState("");
 
   const goToCars = () => {
     const params = new URLSearchParams({ pickup, return: ret, mode: tab });
