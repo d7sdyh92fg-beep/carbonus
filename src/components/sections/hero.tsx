@@ -173,11 +173,11 @@ export function Hero() {
       {/* Green feature band — more vertical padding + updated four benefits */}
       <div className="bg-primary text-primary-foreground flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-[18px] lg:py-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 text-xs lg:text-[13px] xl:text-sm">
-            <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Prižiūrėti automobiliai" />
-            <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Atsiėmimas Druskininkuose" />
-            <Feature icon={<Hotel className="h-3.5 w-3.5" />} label="Pristatymas visoje Lietuvoje" />
-            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" className="justify-center lg:justify-end" />
+          <div className="grid grid-cols-2 gap-3 text-xs lg:text-[13px] xl:text-sm lg:flex lg:justify-between lg:gap-0">
+            <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Prižiūrėti automobiliai" className="justify-center lg:flex-1" />
+            <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Atsiėmimas Druskininkuose" className="justify-center lg:flex-1" />
+            <Feature icon={<Hotel className="h-3.5 w-3.5" />} label="Pristatymas visoje Lietuvoje" className="justify-center lg:flex-1" />
+            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" className="justify-center lg:flex-1" />
           </div>
         </div>
       </div>
