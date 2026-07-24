@@ -170,14 +170,14 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Green feature band — more vertical padding + updated four benefits, slightly darker for depth */}
+      {/* Green feature band — more spacing, last item aligned with the booking button */}
       <div className="bg-primary-dark text-primary-foreground flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-[18px] lg:py-6">
-          <div className="grid grid-cols-2 gap-3 text-xs lg:text-[13px] xl:text-sm lg:flex lg:justify-between lg:gap-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+          <div className="grid grid-cols-2 gap-4 text-xs lg:text-[13px] xl:text-sm lg:flex lg:justify-between lg:gap-8">
             <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Prižiūrėti automobiliai" className="justify-center lg:flex-1" />
             <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Atsiėmimas Druskininkuose" className="justify-center lg:flex-1" />
             <Feature icon={<Hotel className="h-3.5 w-3.5" />} label="Pristatymas visoje Lietuvoje" className="justify-center lg:flex-1" />
-            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" className="justify-center lg:flex-1" />
+            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" className="justify-center lg:flex-1 lg:justify-end" />
           </div>
         </div>
       </div>
