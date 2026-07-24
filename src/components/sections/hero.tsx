@@ -42,13 +42,13 @@ export function Hero() {
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
-          className="absolute inset-0 w-full h-full object-cover object-bottom opacity-90"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
         />
         {/* Dark overlay for text readability, kept lighter so the car stays visible */}
-        <div aria-hidden className="absolute inset-0 bg-black/10" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/15" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(11,17,32,0.1)_100%)]" />
+        <div aria-hidden className="absolute inset-0 bg-black/20" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/10" />
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(11,17,32,0.2)_100%)]" />
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 left-1/3 h-[45vh] w-[45vh] rounded-full bg-primary/10 blur-[120px]" />
@@ -128,7 +128,7 @@ export function Hero() {
           </div>
 
           {/* Tagline */}
-          <div className="mt-auto pt-[1vh] mb-6 max-w-3xl">
+          <div className="mt-auto pt-[4vh] max-w-3xl">
             <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold tracking-[0.2em] uppercase border-b border-primary/60 pb-2 mb-3 lg:mb-4">
               <MapPin className="h-3.5 w-3.5" />
               Druskininkai
