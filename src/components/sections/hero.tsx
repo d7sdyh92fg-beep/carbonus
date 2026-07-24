@@ -177,7 +177,7 @@ export function Hero() {
             <Feature icon={<Gem className="h-3.5 w-3.5" />} label="Prižiūrėti automobiliai" />
             <Feature icon={<MapPin className="h-3.5 w-3.5" />} label="Atsiėmimas Druskininkuose" />
             <Feature icon={<Hotel className="h-3.5 w-3.5" />} label="Pristatymas visoje Lietuvoje" />
-            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" />
+            <Feature icon={<LifeBuoy className="h-3.5 w-3.5" />} label="Pagalba nuomos metu" className="justify-center lg:justify-end" />
           </div>
         </div>
       </div>
@@ -201,9 +201,9 @@ function Field({ label, icon, hint, children }: { label: string; icon: React.Rea
   );
 }
 
-function Feature({ icon, label }: { icon: React.ReactNode; label: string }) {
+function Feature({ icon, label, className }: { icon: React.ReactNode; label: string; className?: string }) {
   return (
-    <div className="flex items-center gap-2 justify-center lg:justify-start min-w-0">
+    <div className={`flex items-center gap-2 justify-center lg:justify-start min-w-0 ${className || ""}`}>
       <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
         {icon}
       </span>
