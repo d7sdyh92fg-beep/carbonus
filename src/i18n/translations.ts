@@ -2207,8 +2207,9 @@ export const translations = {
       viewButton: "View",
       from: "from",
       meta: {
-        title: "Cars - Carbonus | BMW, Audi and Other Premium Cars for Rent",
-        description: "Browse our premium car fleet. BMW 3 Series, Chrysler and other latest model cars for rent in Lithuania. Reserve online."
+        title: "Cars – Carbonus | Car Rental in Druskininkai, Lithuania",
+        description: "Browse the Carbonus fleet: Mercedes-Benz SLK, Citroën SpaceTourer, Volkswagen Passat, KIA CEED and Hyundai Bayon. Clear final price before you book. Delivery across Lithuania."
+
       }
     },
 
