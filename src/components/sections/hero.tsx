@@ -77,9 +77,9 @@ export function Hero() {
 
         <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
           {/* Search widget — slightly narrower so more of the scene remains visible */}
-          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-5 lg:p-6 w-full">
+          <div className="rounded-3xl bg-white shadow-elegant p-4 sm:p-4 lg:p-5 w-full">
             {/* Tabs */}
-            <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
+            <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
               {tabs.map(({ key, label, icon: Icon }) => {
                 const active = tab === key;
                 return (
@@ -114,7 +114,6 @@ export function Hero() {
               <Field
                 label="Paėmimo data"
                 icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
-                hint={formatLt(pickup)}
               >
                 <input
                   type="date"
@@ -127,7 +126,6 @@ export function Hero() {
               <Field
                 label="Grąžinimo data"
                 icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
-                hint={formatLt(ret)}
               >
                 <input
                   type="date"
@@ -157,13 +155,6 @@ export function Hero() {
                 Pristatome visoje Lietuvoje. Pristatymo kaina bus parodyta prieš rezervuojant.
               </div>
             )}
-
-            {/* Trust row */}
-            <div className="mt-4 lg:mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Aiškios kainos be paslėptų mokesčių</span>
-              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Nemokamas atšaukimas iki 24 val.</span>
-              <span className="inline-flex items-center gap-2"><Headphones className="h-4 w-4 text-primary" /> Klientų aptarnavimas 24/7</span>
-            </div>
           </div>
 
           {/* Tagline — moved up ~100px so it sits higher over the scene */}
