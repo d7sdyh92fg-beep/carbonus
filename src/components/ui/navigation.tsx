@@ -146,6 +146,7 @@ export function Navigation({ logo }: NavigationProps) {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
+              className={isHome ? "text-white hover:bg-white/10" : "text-foreground"}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
