@@ -255,7 +255,7 @@ function Field({ label, icon, hint, children, inputRef }: { label: string; icon:
 
 function Feature({ icon, label, className }: { icon: React.ReactNode; label: string; className?: string }) {
   return (
-    <div className={`flex items-center gap-1.5 md:gap-2 justify-center lg:justify-start min-w-0 ${className || ""}`}>
+    <div className={`flex items-center gap-1.5 md:gap-2 justify-center min-w-0 ${className || ""}`}>
       <span className="inline-flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex-shrink-0">
         {icon}
       </span>
