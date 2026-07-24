@@ -665,17 +665,29 @@ const Cars = () => {
                     
                     <div className="flex items-center justify-between pt-4">
                       <div>
-                        <p className="text-sm text-muted-foreground">{t('cars.price')}</p>
-                        <p className="text-2xl font-bold text-primary">{t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}</p>
-                        <p className="text-xs text-muted-foreground">{t('cars.perDay')}</p>
+                        {hasDateFilter && getPerDayRate(car.id, rentalDays) != null ? (
+                          <>
+                            <p className="text-sm text-muted-foreground">Kaina {rentalDays} d.</p>
+                            <p className="text-2xl font-bold text-primary">{(getPerDayRate(car.id, rentalDays) as number) * rentalDays} EUR</p>
+                            <p className="text-xs text-muted-foreground">{getPerDayRate(car.id, rentalDays)} EUR / d. · aiški galutinė kaina</p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-sm text-muted-foreground">{t('cars.price')}</p>
+                            <p className="text-2xl font-bold text-primary">{t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}</p>
+                            <p className="text-xs text-muted-foreground">{t('cars.perDay')}</p>
+                          </>
+                        )}
                       </div>
                       <Button 
                         className="bg-primary hover:bg-primary/90 text-primary-foreground"
                         onClick={() => handleCarSelect(car.id)}
+                        disabled={hasDateFilter && !isCarAvailable(car.id)}
                       >
-                        {t('cars.viewButton')}
+                        {hasDateFilter && isCarAvailable(car.id) ? 'Rezervuoti' : t('cars.viewButton')}
                       </Button>
                     </div>
+
                   </div>
                 </CardContent>
               </Card>
