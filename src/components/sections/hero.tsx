@@ -1,23 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/hooks/use-translations";
-import { Car, Calendar, MapPin, ArrowRight, ShieldCheck, CheckCircle2, Headphones, Gem, Wallet, CalendarClock, Hotel, LifeBuoy } from "lucide-react";
+import { Car, Calendar, MapPin, ArrowRight, Gem, CalendarClock, Hotel, LifeBuoy } from "lucide-react";
 import { useState } from "react";
 import heroCar from "@/assets/hero-spacetourer.png.asset.json";
 
 type TabKey = "cars" | "long" | "hotel";
 
-const LT_MONTHS = [
-  "sausio", "vasario", "kovo", "balandžio", "gegužės", "birželio",
-  "liepos", "rugpjūčio", "rugsėjo", "spalio", "lapkričio", "gruodžio",
-];
-
-function formatLt(dateStr: string) {
-  if (!dateStr) return "";
-  const [y, m, d] = dateStr.split("-").map(Number);
-  if (!y || !m || !d) return dateStr;
-  return `${y} m. ${LT_MONTHS[m - 1]} ${d} d.`;
-}
 
 export function Hero() {
   const navigate = useNavigate();
