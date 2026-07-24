@@ -23,6 +23,13 @@ const formatLt = (dateStr: string) => {
   return format(new Date(`${dateStr}T12:00:00`), "yyyy 'm.' MMMM d 'd.'", { locale: lt });
 };
 
+const features = [
+  { icon: <Gem className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Prižiūrėti automobiliai" },
+  { icon: <MapPin className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Atsiėmimas Druskininkuose" },
+  { icon: <Hotel className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Pristatymas visoje Lietuvoje" },
+  { icon: <LifeBuoy className="h-3 w-3 sm:h-3.5 sm:w-3.5" />, label: "Pagalba nuomos metu" },
+];
+
 function DateField({
   label,
   value,
