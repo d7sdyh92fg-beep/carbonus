@@ -486,13 +486,81 @@ const Cars = () => {
         </div>
       </section>
 
+      {/* Availability Search Bar — visible whenever dates are being edited or applied */}
+      <section className="sticky top-16 z-30 bg-white/95 backdrop-blur border-y border-border shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col lg:flex-row lg:items-end gap-3 lg:gap-4">
+            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Paėmimo data</label>
+                <div className="relative">
+                  <CalendarCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <Input type="date" value={pickup} min={new Date().toISOString().slice(0,10)} onChange={(e) => { setPickup(e.target.value); if (ret && e.target.value > ret) setRet(e.target.value); }} className="pl-9 h-11" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Grąžinimo data</label>
+                <div className="relative">
+                  <CalendarCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <Input type="date" value={ret} min={pickup || new Date().toISOString().slice(0,10)} onChange={(e) => setRet(e.target.value)} className="pl-9 h-11" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Pristatymo miestas (nebūtina)</label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <Input type="text" placeholder="Pvz., Vilnius, Kaunas..." value={deliveryCity} onChange={(e) => setDeliveryCity(e.target.value)} className="pl-9 h-11" />
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button className="h-11 bg-primary hover:bg-primary/90 text-primary-foreground gap-2" onClick={applyDateSearch} disabled={!pickup || !ret || pickup > ret}>
+                <Search className="w-4 h-4" /> Ieškoti laisvų
+              </Button>
+              {hasDateFilter && (
+                <Button variant="outline" className="h-11 gap-2" onClick={clearDateSearch}>
+                  <X className="w-4 h-4" /> Išvalyti
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {hasDateFilter && (
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+              <span className="inline-flex items-center gap-1.5 text-foreground font-medium">
+                <CalendarCheck className="w-4 h-4 text-primary" />
+                {formatLt(urlPickup)} → {formatLt(urlReturn)}
+              </span>
+              <span className="text-muted-foreground">·</span>
+              <span className="text-muted-foreground">{rentalDays} d. nuoma</span>
+              {deliveryCity && (<>
+                <span className="text-muted-foreground">·</span>
+                <span className="inline-flex items-center gap-1 text-muted-foreground"><MapPin className="w-3.5 h-3.5" /> Pristatymas: {deliveryCity}</span>
+              </>)}
+              <span className="ml-auto inline-flex items-center gap-2">
+                <Badge className="bg-primary text-primary-foreground">{availableCars.length} laisvi</Badge>
+                {unavailableCars.length > 0 && (
+                  <Badge variant="outline" className="text-muted-foreground">{unavailableCars.length} užimti</Badge>
+                )}
+              </span>
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Cars Grid */}
-      <section className="pt-16 pb-20 bg-secondary/30">
+      <section className="pt-10 pb-20 bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {hasDateFilter && availableCars.length === 0 && (
+            <div className="mb-8 rounded-lg border border-amber-200 bg-amber-50 p-6 text-center">
+              <p className="text-lg font-semibold text-amber-900">Šioms datoms laisvų automobilių nėra</p>
+              <p className="text-sm text-amber-800 mt-1">Pabandykite kitas datas arba susisiekite su mumis — dažnai turime papildomų galimybių.</p>
+            </div>
+          )}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCars.map((car) => (
+            {[...availableCars, ...unavailableCars].map((car) => (
               <Card
+
                 key={car.id}
                 className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card"
               >
