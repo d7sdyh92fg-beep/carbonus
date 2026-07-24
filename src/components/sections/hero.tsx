@@ -169,38 +169,13 @@ export function Hero() {
                   />
                 </Field>
               )}
-              <Field
-                label="Paėmimo data"
-                icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
-                inputRef={pickupRef}
-              >
-                <input
-                  type="date"
-                  ref={pickupRef}
-                  value={pickup}
-                  onChange={(e) => setPickup(e.target.value)}
-                  className="absolute inset-0 w-full h-full bg-transparent outline-none text-transparent cursor-pointer"
-                />
-                <span className="absolute inset-0 flex items-center pointer-events-none text-card-foreground font-medium truncate">
-                  {formatLt(pickup)}
-                </span>
-              </Field>
-              <Field
+              <DateField label="Paėmimo data" value={pickup} onChange={setPickup} />
+              <DateField
                 label="Grąžinimo data"
-                icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
-                inputRef={returnRef}
-              >
-                <input
-                  type="date"
-                  ref={returnRef}
-                  value={ret}
-                  onChange={(e) => setRet(e.target.value)}
-                  className="absolute inset-0 w-full h-full bg-transparent outline-none text-transparent cursor-pointer"
-                />
-                <span className="absolute inset-0 flex items-center pointer-events-none text-card-foreground font-medium truncate">
-                  {formatLt(ret)}
-                </span>
-              </Field>
+                value={ret}
+                onChange={setRet}
+                minDate={new Date(`${pickup}T12:00:00`)}
+              />
               <div className="flex flex-col">
                 <span aria-hidden="true" className="block text-xs font-medium mb-1.5 invisible select-none">.</span>
                 <Button
