@@ -113,7 +113,7 @@ export function Hero() {
                 variant="hero"
                 size="lg"
                 onClick={goToCars}
-                className="h-14 rounded-2xl w-full justify-center gap-2"
+                className="h-14 rounded-2xl w-full justify-center gap-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:brightness-110"
               >
                 Rodyti automobilius
                 <ArrowRight className="h-4 w-4" />
