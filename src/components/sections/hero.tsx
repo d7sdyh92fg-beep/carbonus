@@ -33,22 +33,22 @@ export function Hero() {
   const showHotel = tab === "hotel";
 
   return (
-    <section className="relative bg-[hsl(220_27%_8%)] text-white h-[100svh] flex flex-col overflow-hidden">
+    <section className="relative bg-[hsl(220_27%_8%)] text-white min-h-[100svh] lg:h-[100svh] flex flex-col overflow-hidden">
       {/* Hero fills remaining space */}
-      <div className="relative flex-1 flex flex-col overflow-hidden">
-        {/* Background car image */}
+      <div className="relative flex-1 flex flex-col overflow-hidden min-h-[560px]">
+        {/* Background car image — object-position tuned per breakpoint so the vehicle stays visible on the right */}
         <img
           src={heroCar.url}
           alt="Premium automobilių nuoma Druskininkuose"
           width={1920}
           height={1280}
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-100"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 object-[70%_65%] sm:object-[72%_60%] md:object-[78%_center] lg:object-[72%_center] xl:object-[66%_center] 2xl:object-[60%_center]"
           style={{ filter: "brightness(1.05) contrast(1.06) saturate(1.05)" }}
         />
         {/* Dark overlay for text readability, kept lighter so the car stays visible */}
         <div aria-hidden className="absolute inset-0 bg-black/20" />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/10" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(11,17,32,0.2)_100%)]" />
         {/* Ambient background glows */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -57,9 +57,9 @@ export function Hero() {
           <div className="absolute top-1/2 -left-24 h-[30vh] w-[30vh] rounded-full bg-primary/5 blur-[90px]" />
         </div>
 
-        <div className="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
-          {/* Search widget */}
-          <div className="mt-[25px] rounded-3xl bg-white/80 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] ring-1 ring-white/40 p-4 sm:p-5 lg:p-6">
+        <div className="relative z-10 flex-1 flex flex-col max-w-7xl 2xl:max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(5rem+2vh)] pb-[3vh]">
+          {/* Search widget — constrained to left column on md+ so it never overlaps the vehicle */}
+          <div className="w-full md:max-w-[560px] lg:max-w-[600px] xl:max-w-[680px] 2xl:max-w-[760px] mt-[25px] rounded-3xl bg-white/80 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] ring-1 ring-white/40 p-4 sm:p-5 lg:p-6">
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
               {tabs.map(({ key, label, icon: Icon }) => {
@@ -82,7 +82,7 @@ export function Hero() {
             </div>
 
             {/* Fields */}
-            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2 lg:grid-cols-3"}`}>
+            <div className={`grid grid-cols-1 gap-3 lg:gap-4 items-end ${showHotel ? "sm:grid-cols-2 xl:grid-cols-4" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
               {showHotel && (
                 <Field label="Viešbučio pavadinimas" icon={<Hotel className="h-4 w-4 text-muted-foreground" />}>
                   <input
@@ -128,13 +128,13 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Tagline */}
-          <div className="mt-auto pt-[4vh] mb-10 max-w-3xl">
-            <div className="inline-flex items-center gap-2 text-white text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+          {/* Tagline — kept in the left column so it never crosses over the vehicle */}
+          <div className="mt-auto pt-[4vh] mb-6 md:mb-10 max-w-[92%] sm:max-w-xl md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
+            <div className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-bold tracking-[0.22em] uppercase border-b-2 border-primary pb-2 mb-3 lg:mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <MapPin className="h-4 w-4 text-primary" />
               Druskininkai
             </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white">
+            <h1 className="text-[1.6rem] sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] 2xl:text-6xl font-bold leading-[1.1] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
               KELIAUKITE STILINGAI.<br />
               MĖGAUKITĖS LAISVE.
             </h1>
