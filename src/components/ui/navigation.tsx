@@ -20,10 +20,28 @@ interface NavigationProps {
 
 export function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
   const { t, language } = useTranslations();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setHidden(true);
+      } else if (currentScrollY < lastScrollY) {
+        setHidden(false);
+      }
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const isActive = (ltPath: string, enPath: string) => 
     location.pathname === ltPath || location.pathname === enPath;
