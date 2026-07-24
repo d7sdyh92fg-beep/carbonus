@@ -38,7 +38,7 @@ export function LanguageSwitcher() {
         <Button
           variant="ghost"
           size="sm"
-          className={`gap-2 ${location.pathname === '/' ? 'text-white hover:text-white hover:bg-white/10' : ''}`}
+          className="gap-2 text-white hover:text-white hover:bg-white/10"
         >
           <span className="text-sm">{currentLanguage?.flag}</span>
           <span className="text-sm font-medium">{currentLanguage?.name}</span>

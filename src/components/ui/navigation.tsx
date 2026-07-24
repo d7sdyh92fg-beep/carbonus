@@ -67,29 +67,18 @@ export function Navigation({ logo }: NavigationProps) {
     return location.pathname === ltPath || location.pathname === enPath;
   };
 
-  const isHome = location.pathname === '/';
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
         hidden ? "-translate-y-full" : "translate-y-0"
-      } ${
-        isHome
-          ? "bg-[rgba(8,18,15,0.55)] backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
-          : "bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm"
-      }`}>
+      } bg-[rgba(24,34,31,0.88)] backdrop-blur-[14px] border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.25)]`}>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="block">
-              {isHome ? (
-                <img src={logoWhite} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
-              ) : logo ? (
-                <img src={logo} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
-              ) : (
-                <span className="text-2xl font-bold text-primary">CARBONUS.</span>
-              )}
+              <img src={logoWhite} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
             </Link>
           </div>
 
@@ -101,14 +90,9 @@ export function Navigation({ logo }: NavigationProps) {
                   key={item.name}
                   to={item.href}
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActiveRoute(item.key)
-                      ? isHome
-                        ? "text-white border-b-2 border-primary pb-1"
-                        : "text-primary border-b-2 border-primary pb-1"
-                      : isHome ? "text-white" : "text-foreground"
+                  className={`text-sm font-medium transition-colors hover:text-primary text-white ${
+                    isActiveRoute(item.key) ? "border-b-2 border-primary pb-1" : ""
                   }`}
-
                 >
                   {item.name}
                 </Link>
@@ -125,7 +109,7 @@ export function Navigation({ logo }: NavigationProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className={isHome ? "text-white hover:text-white hover:bg-white/10" : "text-foreground"}
+                    className="text-white hover:text-white hover:bg-white/10"
                   >
                     <Shield className="h-4 w-4 mr-2" />
                     {t('nav.admin')}
@@ -155,7 +139,7 @@ export function Navigation({ logo }: NavigationProps) {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className={isHome ? "text-white hover:bg-white/10" : "text-foreground"}
+              className="text-white hover:bg-white/10"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
@@ -165,13 +149,13 @@ export function Navigation({ logo }: NavigationProps) {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="lg:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[rgba(24,34,31,0.96)] border-t border-white/10">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary block px-3 py-2 ${
-                    isActiveRoute(item.key) ? "text-primary" : "text-foreground"
+                  className={`text-sm font-medium transition-colors hover:text-primary block px-3 py-2 text-white/95 ${
+                    isActiveRoute(item.key) ? "text-white border-b-2 border-primary pb-1" : ""
                   }`}
                   onClick={() => {
                     setIsOpen(false);
@@ -181,7 +165,7 @@ export function Navigation({ logo }: NavigationProps) {
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-4 border-t mt-4 space-y-3">
+              <div className="pt-4 border-t border-white/10 mt-4 space-y-3">
                 <div className="flex justify-center">
                   <LanguageSwitcher />
                 </div>
@@ -189,7 +173,7 @@ export function Navigation({ logo }: NavigationProps) {
                   <div className="space-y-2">
                     <Link
                       to="/admin"
-                      className="text-sm font-medium block px-3 py-2 text-center"
+                      className="text-sm font-medium block px-3 py-2 text-center text-white"
                       onClick={() => {
                         setIsOpen(false);
                         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -205,7 +189,7 @@ export function Navigation({ logo }: NavigationProps) {
                         signOut();
                         setIsOpen(false);
                       }}
-                      className="w-full"
+                      className="w-full text-white hover:text-white hover:bg-white/10"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
                       {t('nav.logout')}
