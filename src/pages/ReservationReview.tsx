@@ -168,85 +168,67 @@ export default function ReservationReview() {
         }
       }
 
-      const dailyRate = bookingData.basePrice / bookingData.rentalDays;
-      const insuranceTotal = bookingData.insurance ? bookingData.insurance.pricePerDay * bookingData.rentalDays : 0;
-      const servicesTotal = bookingData.services.reduce((sum, service) => {
-        return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
-      }, 0);
-      const totalAmount = bookingData.basePrice + insuranceTotal + servicesTotal;
-      const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalAmount;
+      // Build pricing notes (informational only — server computes totals)
+      const pricingNotes = (() => {
+        const notes: string[] = [];
+        if (bookingData.selectedPackage) {
+          notes.push(`📦 ${bookingData.selectedPackage.name}: ${bookingData.selectedPackage.priceDisplay} €`);
+        }
+        if (bookingData.insurance) {
+          notes.push(t('review.pricingNoteInsurance')
+            .replace('{title}', bookingData.insurance.title)
+            .replace('{pricePerDay}', bookingData.insurance.pricePerDay.toString())
+            .replace('{excess}', bookingData.insurance.excess.toString())
+          );
+        }
+        if (bookingData.services && bookingData.services.length > 0) {
+          const servicesList = bookingData.services
+            .map(s => `${s.title} (€${s.price}${s.unit === 'perDay' ? t('review.perDay') : ''})`)
+            .join(', ');
+          notes.push(t('review.pricingNoteServices').replace('{services}', servicesList));
+        }
+        return notes.length > 0 ? notes.join('. ') : null;
+      })();
 
-      // Create reservation
-      const reservationData = {
-        customer_id: customerId,
-        car_name: bookingData.carName,
-        car_id: bookingData.carId,
-        start_date: bookingData.startDate,
-        end_date: bookingData.endDate,
-        pickup_date: bookingData.startDate,
-        pickup_time: bookingData.pickupTime || '10:00',
-        return_date: bookingData.endDate,
-        return_time: bookingData.returnTime || '10:00',
-        rental_days: bookingData.rentalDays,
-        daily_rate: dailyRate,
-        total_rental_cost: totalAmount,
-        deposit_amount: bookingData.depositAmount || 200,
-        total_amount: totalAmount,
-        status: 'awaiting_payment',
-        payment_method: paymentMethod,
-        payment_provider: 'stripe',
-        pricing_notes: (() => {
-          const notes: string[] = [];
-          
-          if (bookingData.selectedPackage) {
-            notes.push(`📦 ${bookingData.selectedPackage.name}: ${bookingData.selectedPackage.priceDisplay} €`);
-          }
-          
-          if (bookingData.insurance) {
-            notes.push(t('review.pricingNoteInsurance')
-              .replace('{title}', bookingData.insurance.title)
-              .replace('{pricePerDay}', bookingData.insurance.pricePerDay.toString())
-              .replace('{excess}', bookingData.insurance.excess.toString())
-            );
-          }
-          
-          if (bookingData.services && bookingData.services.length > 0) {
-            const servicesList = bookingData.services
-              .map(s => `${s.title} (€${s.price}${s.unit === 'perDay' ? t('review.perDay') : ''})`)
-              .join(', ');
-            notes.push(t('review.pricingNoteServices').replace('{services}', servicesList));
-          }
-          
-          return notes.length > 0 ? notes.join('. ') : null;
-        })(),
-      };
+      // Map selected package to server pricing_extras code
+      const packageCode = bookingData.selectedPackage
+        ? (bookingData.selectedPackage.type === 'wedding' ? 'package-wedding' : 'package-romantic')
+        : null;
 
-      // Use RPC to create reservation (bypasses RLS SELECT restriction)
-      const { data: reservationId, error: reservationError } = await supabase.rpc('create_reservation', {
+      // Server computes ALL prices from cars + pricing_extras. Frontend
+      // only passes selection codes; never numeric prices or totals.
+      const { data: rpcData, error: reservationError } = await supabase.rpc('create_reservation', {
         p_customer_id: customerId,
-        p_car_name: bookingData.carName,
         p_car_id: bookingData.carId,
         p_start_date: bookingData.startDate,
         p_end_date: bookingData.endDate,
-        p_pickup_date: bookingData.startDate,
         p_pickup_time: bookingData.pickupTime || '10:00',
-        p_return_date: bookingData.endDate,
         p_return_time: bookingData.returnTime || '10:00',
-        p_rental_days: bookingData.rentalDays,
-        p_daily_rate: dailyRate,
-        p_total_rental_cost: totalAmount,
-        p_deposit_amount: bookingData.depositAmount || 200,
-        p_total_amount: totalAmount,
-        p_status: 'awaiting_payment',
+        p_insurance_code: bookingData.insurance?.id ?? null,
+        p_service_codes: (bookingData.services || []).map(s => s.id),
+        p_package_code: packageCode,
+        p_delivery_fee: 0,
         p_payment_method: paymentMethod,
         p_payment_provider: 'stripe',
-        p_pricing_notes: reservationData.pricing_notes,
+        p_status: 'awaiting_payment',
         p_language: language,
-      });
+        p_pricing_notes: pricingNotes,
+      } as any);
 
-      if (reservationError || !reservationId) {
-        throw reservationError || new Error('No reservation ID returned');
+      if (reservationError || !rpcData) {
+        throw reservationError || new Error('No reservation returned');
       }
+
+      const snapshot = rpcData as {
+        id: string;
+        total_amount: number;
+        daily_rate: number;
+        deposit_amount: number;
+      };
+      const reservationId = snapshot.id;
+      const totalAmount = Number(snapshot.total_amount);
+      const dailyRate = Number(snapshot.daily_rate);
+      const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalAmount;
 
       // Process Stripe payment
       const stripeAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
