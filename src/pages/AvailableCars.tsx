@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 import { lt } from "date-fns/locale";
@@ -133,25 +134,37 @@ const AvailableCars = () => {
   };
 
   // DB data: pricing + premium
-  const { data: dbCars } = useQuery({
+  const {
+    data: dbCars,
+    isLoading: carsLoading,
+    isError: carsError,
+    refetch: refetchCars,
+  } = useQuery({
     queryKey: ["available-cars-db"],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("cars")
         .select("id, is_premium, price_tier1, price_tier2, price_tier3, deposit_amount");
+      if (error) throw error;
       return data || [];
     },
   });
 
   // Reservations overlapping the range
-  const { data: reservations } = useQuery({
+  const {
+    data: reservations,
+    isLoading: resLoading,
+    isError: resError,
+    refetch: refetchRes,
+  } = useQuery({
     queryKey: ["available-cars-reservations", pickup, ret],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("reservations")
         .select("car_id, start_date, end_date, status, deleted_at")
         .lte("start_date", ret)
         .gte("end_date", pickup);
+      if (error) throw error;
       return (data || []).filter(
         (r: any) => !r.deleted_at && ACTIVE_STATUSES.includes(r.status)
       );
@@ -159,17 +172,27 @@ const AvailableCars = () => {
   });
 
   // Blocked dates in range
-  const { data: blocked } = useQuery({
+  const {
+    data: blocked,
+    isLoading: blockedLoading,
+    isError: blockedError,
+    refetch: refetchBlocked,
+  } = useQuery({
     queryKey: ["available-cars-blocked", pickup, ret],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("car_blocked_dates")
         .select("car_id, blocked_date")
         .gte("blocked_date", pickup)
         .lte("blocked_date", ret);
+      if (error) throw error;
       return data || [];
     },
   });
+
+  const isQueryLoading = carsLoading || resLoading || blockedLoading;
+  const isQueryError = carsError || resError || blockedError;
+  const retryAll = () => { refetchCars(); refetchRes(); refetchBlocked(); };
 
   const unavailableIds = useMemo(() => {
     const s = new Set<string>();
@@ -241,11 +264,42 @@ const AvailableCars = () => {
   // Counts per filter facet (based on all available, ignoring same-facet filter)
   const count = (pred: (c: CatalogCar) => boolean) => availableCars.filter(pred).length;
 
-  const openCar = (id: string) => {
-    const slug = getCarSlugFromId(id, language as "lt" | "en");
-    const base = language === "en" ? "/cars" : "/automobiliai";
-    const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
-    navigate(slug ? `${base}/${slug}?${qs}` : base);
+  const { toast } = useToast();
+  const [checkingId, setCheckingId] = useState<string | null>(null);
+
+  const openCar = async (id: string) => {
+    if (checkingId) return;
+    setCheckingId(id);
+    try {
+      const { data, error } = await supabase.rpc("check_car_availability", {
+        p_car_id: id,
+        p_start_date: pickup,
+        p_end_date: ret,
+      } as any);
+      if (error) throw error;
+      const res = data as { available: boolean; reason?: string } | null;
+      if (!res?.available) {
+        toast({
+          title: "Automobilis ką tik tapo užimtas",
+          description: "Prašome pasirinkti kitą automobilį arba pakeisti datas.",
+          variant: "destructive",
+        });
+        retryAll();
+        return;
+      }
+      const slug = getCarSlugFromId(id, language as "lt" | "en");
+      const base = language === "en" ? "/cars" : "/automobiliai";
+      const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
+      navigate(slug ? `${base}/${slug}?${qs}` : base);
+    } catch (e) {
+      toast({
+        title: "Nepavyko patikrinti užimtumo",
+        description: "Bandykite dar kartą.",
+        variant: "destructive",
+      });
+    } finally {
+      setCheckingId(null);
+    }
   };
 
   const clearFilters = () => {
@@ -434,10 +488,34 @@ const AvailableCars = () => {
               </div>
             </div>
 
-            {filtered.length === 0 ? (
+            {isQueryError ? (
+              <div className="bg-white rounded-2xl p-10 text-center shadow-card border border-destructive/40">
+                <p className="text-lg font-medium text-destructive">Nepavyko patikrinti automobilių užimtumo</p>
+                <p className="text-sm text-muted-foreground mt-2">Bandykite dar kartą arba susisiekite su mumis.</p>
+                <Button variant="outline" className="mt-4" onClick={retryAll}>Bandyti dar kartą</Button>
+              </div>
+            ) : isQueryLoading ? (
+              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="bg-white rounded-2xl shadow-card border border-border overflow-hidden">
+                    <div className="w-full h-48 bg-secondary/60 animate-pulse" />
+                    <div className="p-6 space-y-3">
+                      <div className="h-5 w-2/3 bg-secondary/60 rounded animate-pulse" />
+                      <div className="h-4 w-full bg-secondary/50 rounded animate-pulse" />
+                      <div className="h-4 w-5/6 bg-secondary/50 rounded animate-pulse" />
+                      <div className="h-8 w-full bg-secondary/50 rounded animate-pulse mt-4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filtered.length === 0 ? (
               <div className="bg-white rounded-2xl p-10 text-center shadow-card border border-border">
-                <p className="text-lg font-medium">Šioms datoms laisvų automobilių nerasta</p>
+                <p className="text-lg font-medium">Šiomis datomis laisvų automobilių neradome</p>
                 <p className="text-sm text-muted-foreground mt-2">Pabandykite pakeisti datas arba filtrus.</p>
+                <div className="mt-4 flex gap-2 justify-center">
+                  <Button variant="outline" onClick={() => setEditOpen(true)}>Keisti datas</Button>
+                  <Button variant="outline" onClick={clearFilters}>Išvalyti filtrus</Button>
+                </div>
               </div>
             ) : (
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -539,8 +617,9 @@ const AvailableCars = () => {
                           <Button
                             className="bg-primary hover:bg-primary/90 text-primary-foreground"
                             onClick={() => openCar(car.id)}
+                            disabled={checkingId === car.id}
                           >
-                            Rinktis
+                            {checkingId === car.id ? "Tikrinama…" : "Rinktis"}
                           </Button>
                         </div>
                       </div>

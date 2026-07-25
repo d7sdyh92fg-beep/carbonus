@@ -387,6 +387,39 @@ export type Database = {
         }
         Relationships: []
       }
+      pricing_extras: {
+        Row: {
+          active: boolean
+          category: string
+          code: string
+          created_at: string
+          name: string
+          price: number
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          code: string
+          created_at?: string
+          name: string
+          price: number
+          unit: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          code?: string
+          created_at?: string
+          name?: string
+          price?: number
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -636,6 +669,10 @@ export type Database = {
       }
     }
     Functions: {
+      check_car_availability: {
+        Args: { p_car_id: string; p_end_date: string; p_start_date: string }
+        Returns: Json
+      }
       check_user_is_admin: { Args: { user_email: string }; Returns: boolean }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       create_or_get_customer:
@@ -658,54 +695,26 @@ export type Database = {
             }
             Returns: string
           }
-      create_reservation:
-        | {
-            Args: {
-              p_car_id: string
-              p_car_name: string
-              p_customer_id: string
-              p_daily_rate: number
-              p_deposit_amount: number
-              p_end_date: string
-              p_payment_method: string
-              p_payment_provider: string
-              p_pickup_date: string
-              p_pickup_time: string
-              p_pricing_notes: string
-              p_rental_days: number
-              p_return_date: string
-              p_return_time: string
-              p_start_date: string
-              p_status: string
-              p_total_amount: number
-              p_total_rental_cost: number
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              p_car_id: string
-              p_car_name: string
-              p_customer_id: string
-              p_daily_rate: number
-              p_deposit_amount: number
-              p_end_date: string
-              p_language?: string
-              p_payment_method: string
-              p_payment_provider: string
-              p_pickup_date: string
-              p_pickup_time: string
-              p_pricing_notes: string
-              p_rental_days: number
-              p_return_date: string
-              p_return_time: string
-              p_start_date: string
-              p_status: string
-              p_total_amount: number
-              p_total_rental_cost: number
-            }
-            Returns: string
-          }
+      create_reservation: {
+        Args: {
+          p_car_id: string
+          p_customer_id: string
+          p_delivery_fee?: number
+          p_end_date: string
+          p_insurance_code?: string
+          p_language?: string
+          p_package_code?: string
+          p_payment_method?: string
+          p_payment_provider?: string
+          p_pickup_time: string
+          p_pricing_notes?: string
+          p_return_time: string
+          p_service_codes?: string[]
+          p_start_date: string
+          p_status?: string
+        }
+        Returns: Json
+      }
       get_next_invoice_number: {
         Args: { p_prefix?: string }
         Returns: {
