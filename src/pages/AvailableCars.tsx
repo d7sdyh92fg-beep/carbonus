@@ -96,7 +96,25 @@ const AvailableCars = () => {
 
   const pickup = params.get("pickup") || today;
   const ret = params.get("return") || inTwo;
+  const pickupTime = params.get("pickupTime") || "10:00";
+  const returnTime = params.get("returnTime") || "10:00";
   const rentalDays = daysBetween(pickup, ret);
+
+  const updateParam = (updates: Record<string, string>) => {
+    const p = new URLSearchParams(params);
+    Object.entries(updates).forEach(([k, v]) => p.set(k, v));
+    setParams(p);
+  };
+
+  const onPickupChange = (v: string) => {
+    const oldP = new Date(`${pickup}T12:00:00`).getTime();
+    const oldR = new Date(`${ret}T12:00:00`).getTime();
+    const diffDays = Math.max(1, Math.round((oldR - oldP) / 86400000));
+    const newP = new Date(`${v}T12:00:00`);
+    const newR = new Date(newP);
+    newR.setDate(newR.getDate() + diffDays);
+    updateParam({ pickup: v, return: toISO(newR) });
+  };
 
   // Edit-search state
   const [editOpen, setEditOpen] = useState(false);
