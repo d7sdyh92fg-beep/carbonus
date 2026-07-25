@@ -67,6 +67,7 @@ function DateField({
           <Calendar
             mode="single"
             selected={selected}
+            defaultMonth={selected}
             onSelect={(d) => {
               if (d) {
                 onChange(toISO(d));
@@ -184,7 +185,20 @@ export function Hero() {
                   />
                 </Field>
               )}
-              <DateField label="Paėmimo data" value={pickup} onChange={setPickup} />
+              <DateField
+                label="Paėmimo data"
+                value={pickup}
+                onChange={(v) => {
+                  const oldP = new Date(`${pickup}T12:00:00`).getTime();
+                  const oldR = new Date(`${ret}T12:00:00`).getTime();
+                  const diffDays = Math.max(1, Math.round((oldR - oldP) / 86400000));
+                  const newP = new Date(`${v}T12:00:00`);
+                  const newR = new Date(newP);
+                  newR.setDate(newR.getDate() + diffDays);
+                  setPickup(v);
+                  setRet(toISO(newR));
+                }}
+              />
               <DateField
                 label="Grąžinimo data"
                 value={ret}
