@@ -488,10 +488,34 @@ const AvailableCars = () => {
               </div>
             </div>
 
-            {filtered.length === 0 ? (
+            {isQueryError ? (
+              <div className="bg-white rounded-2xl p-10 text-center shadow-card border border-destructive/40">
+                <p className="text-lg font-medium text-destructive">Nepavyko patikrinti automobilių užimtumo</p>
+                <p className="text-sm text-muted-foreground mt-2">Bandykite dar kartą arba susisiekite su mumis.</p>
+                <Button variant="outline" className="mt-4" onClick={retryAll}>Bandyti dar kartą</Button>
+              </div>
+            ) : isQueryLoading ? (
+              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="bg-white rounded-2xl shadow-card border border-border overflow-hidden">
+                    <div className="w-full h-48 bg-secondary/60 animate-pulse" />
+                    <div className="p-6 space-y-3">
+                      <div className="h-5 w-2/3 bg-secondary/60 rounded animate-pulse" />
+                      <div className="h-4 w-full bg-secondary/50 rounded animate-pulse" />
+                      <div className="h-4 w-5/6 bg-secondary/50 rounded animate-pulse" />
+                      <div className="h-8 w-full bg-secondary/50 rounded animate-pulse mt-4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filtered.length === 0 ? (
               <div className="bg-white rounded-2xl p-10 text-center shadow-card border border-border">
-                <p className="text-lg font-medium">Šioms datoms laisvų automobilių nerasta</p>
+                <p className="text-lg font-medium">Šiomis datomis laisvų automobilių neradome</p>
                 <p className="text-sm text-muted-foreground mt-2">Pabandykite pakeisti datas arba filtrus.</p>
+                <div className="mt-4 flex gap-2 justify-center">
+                  <Button variant="outline" onClick={() => setEditOpen(true)}>Keisti datas</Button>
+                  <Button variant="outline" onClick={clearFilters}>Išvalyti filtrus</Button>
+                </div>
               </div>
             ) : (
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
