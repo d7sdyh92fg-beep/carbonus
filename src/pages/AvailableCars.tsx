@@ -263,7 +263,20 @@ const AvailableCars = () => {
                 </PopoverTrigger>
                 <PopoverContent className="w-[320px] p-4 z-[80]" align="end">
                   <div className="space-y-3">
-                    <DatePickField label="Atsiėmimo data" value={editPickup} onChange={setEditPickup} />
+                    <DatePickField
+                      label="Atsiėmimo data"
+                      value={editPickup}
+                      onChange={(v) => {
+                        const oldP = new Date(`${editPickup}T12:00:00`).getTime();
+                        const oldR = new Date(`${editReturn}T12:00:00`).getTime();
+                        const diffDays = Math.max(1, Math.round((oldR - oldP) / 86400000));
+                        const newP = new Date(`${v}T12:00:00`);
+                        const newR = new Date(newP);
+                        newR.setDate(newR.getDate() + diffDays);
+                        setEditPickup(v);
+                        setEditReturn(toISO(newR));
+                      }}
+                    />
                     <DatePickField label="Grąžinimo data" value={editReturn} onChange={setEditReturn} minDate={new Date(`${editPickup}T12:00:00`)} />
                     <Button variant="hero" className="w-full" onClick={applySearch}>Taikyti</Button>
                   </div>
