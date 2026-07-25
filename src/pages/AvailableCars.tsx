@@ -96,7 +96,25 @@ const AvailableCars = () => {
 
   const pickup = params.get("pickup") || today;
   const ret = params.get("return") || inTwo;
+  const pickupTime = params.get("pickupTime") || "10:00";
+  const returnTime = params.get("returnTime") || "10:00";
   const rentalDays = daysBetween(pickup, ret);
+
+  const updateParam = (updates: Record<string, string>) => {
+    const p = new URLSearchParams(params);
+    Object.entries(updates).forEach(([k, v]) => p.set(k, v));
+    setParams(p);
+  };
+
+  const onPickupChange = (v: string) => {
+    const oldP = new Date(`${pickup}T12:00:00`).getTime();
+    const oldR = new Date(`${ret}T12:00:00`).getTime();
+    const diffDays = Math.max(1, Math.round((oldR - oldP) / 86400000));
+    const newP = new Date(`${v}T12:00:00`);
+    const newR = new Date(newP);
+    newR.setDate(newR.getDate() + diffDays);
+    updateParam({ pickup: v, return: toISO(newR) });
+  };
 
   // Edit-search state
   const [editOpen, setEditOpen] = useState(false);
@@ -250,9 +268,23 @@ const AvailableCars = () => {
           <div className="bg-white rounded-2xl shadow-card border border-border p-4 md:p-5">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr_auto_1.3fr_1fr_auto] gap-4 md:gap-6 items-center">
               <SummaryItem icon={<MapPin className="h-5 w-5 text-primary" />} label="Atsiėmimo vieta" value="Druskininkai" />
-              <SummaryItem icon={<CalendarIcon className="h-5 w-5 text-primary" />} label="Atsiėmimas" value={fmtLtDateTime(pickup)} />
+              <EditableDateTimeSummary
+                label="Atsiėmimas"
+                date={pickup}
+                time={pickupTime}
+                onDateChange={onPickupChange}
+                onTimeChange={(v) => updateParam({ pickupTime: v })}
+              />
               <ArrowRight className="hidden md:block h-5 w-5 text-muted-foreground mx-auto" />
-              <SummaryItem icon={<CalendarIcon className="h-5 w-5 text-primary" />} label="Grąžinimas" value={fmtLtDateTime(ret)} />
+              <EditableDateTimeSummary
+                label="Grąžinimas"
+                date={ret}
+                time={returnTime}
+                onDateChange={(v) => updateParam({ return: v })}
+                onTimeChange={(v) => updateParam({ returnTime: v })}
+                minDate={new Date(`${pickup}T12:00:00`)}
+              />
+              
               <SummaryItem icon={<Clock className="h-5 w-5 text-primary" />} label="Nuomos trukmė" value={`${rentalDays} ${rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}`} />
               <Popover open={editOpen} onOpenChange={setEditOpen}>
                 <PopoverTrigger asChild>
@@ -544,6 +576,75 @@ function SummaryItem({ icon, label, value }: { icon: React.ReactNode; label: str
         <div className="text-sm md:text-base font-semibold text-foreground truncate">{value}</div>
       </div>
     </div>
+  );
+}
+
+const TIME_OPTIONS = Array.from({ length: 28 }, (_, i) => {
+  const totalMin = 7 * 60 + i * 30;
+  const h = String(Math.floor(totalMin / 60)).padStart(2, "0");
+  const m = String(totalMin % 60).padStart(2, "0");
+  return `${h}:${m}`;
+});
+
+function EditableDateTimeSummary({
+  label,
+  date,
+  time,
+  onDateChange,
+  onTimeChange,
+  minDate,
+}: {
+  label: string;
+  date: string;
+  time: string;
+  onDateChange: (v: string) => void;
+  onTimeChange: (v: string) => void;
+  minDate?: Date;
+}) {
+  const [open, setOpen] = useState(false);
+  const selected = new Date(`${date}T12:00:00`);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const min = minDate ?? today;
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button type="button" className="flex items-center gap-3 min-w-0 text-left rounded-lg -mx-1 px-1 py-1 hover:bg-muted/60 transition-colors">
+          <div className="shrink-0"><CalendarIcon className="h-5 w-5 text-primary" /></div>
+          <div className="min-w-0">
+            <div className="text-xs text-muted-foreground">{label}</div>
+            <div className="text-sm md:text-base font-semibold text-foreground truncate">
+              {format(selected, "yyyy 'm.' MMMM d 'd.'", { locale: lt })}, {time}
+            </div>
+          </div>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-3 z-[90] pointer-events-auto" align="start">
+        <Calendar
+          mode="single"
+          selected={selected}
+          defaultMonth={selected}
+          onSelect={(d) => { if (d) onDateChange(toISO(d)); }}
+          disabled={(d) => d < min}
+          initialFocus
+          locale={lt}
+          className="p-0 pointer-events-auto"
+        />
+        <div className="mt-3 pt-3 border-t border-border">
+          <div className="text-xs text-muted-foreground mb-1.5 flex items-center gap-1.5">
+            <Clock className="h-3.5 w-3.5" /> Laikas
+          </div>
+          <Select value={time} onValueChange={(v) => { onTimeChange(v); }}>
+            <SelectTrigger className="w-full h-10"><SelectValue /></SelectTrigger>
+            <SelectContent className="z-[100] max-h-64">
+              {TIME_OPTIONS.map((t) => (
+                <SelectItem key={t} value={t}>{t}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Button variant="hero" className="w-full mt-3 h-10" onClick={() => setOpen(false)}>Gerai</Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 
