@@ -55,8 +55,41 @@ const ACTIVE_STATUSES = ["confirmed", "picked_up", "paid", "awaiting_payment", "
 
 const AvailableCars = () => {
   const navigate = useNavigate();
-  const { language } = useTranslations();
+  const { t, language } = useTranslations();
   const [params, setParams] = useSearchParams();
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+  const normalizeForTranslation = (text: string): string =>
+    text.toLowerCase()
+      .replace(/ė/g, "e").replace(/ą/g, "a").replace(/į/g, "i")
+      .replace(/ų/g, "u").replace(/ū/g, "u").replace(/č/g, "c")
+      .replace(/š/g, "s").replace(/ž/g, "z");
+
+  const getFeatureKey = (feature: string): string => {
+    const map: Record<string, string> = {
+      'Kondicionierius': 'car.featuresList.airConditioning',
+      'Bluetooth': 'car.featuresList.bluetooth',
+      'GPS navigacija': 'car.featuresList.gpsNavigation',
+      '7 vietos': 'car.featuresList.sevenSeats',
+      'Bagažinė': 'car.featuresList.trunk',
+      'Šeimos automobilis': 'car.featuresList.familyCar',
+      'Ekonomiškas': 'car.featuresList.economical',
+      'Patogus': 'car.featuresList.comfortable',
+      'Didelis bagažas': 'car.featuresList.largeTrunk',
+      'Ekonomiškas vairavimas': 'car.featuresList.economicalDriving',
+      'Erdvus universalas': 'car.featuresList.spaciousWagon',
+      'Patikimas automobilis': 'car.featuresList.reliable',
+      'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED',
+      'Atidaromas stogas': 'car.featuresList.retractableRoof',
+      'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
+      'Sportinis dizainas': 'car.featuresList.sportyDesign',
+      '8 keleivių vietos': 'car.featuresList.nineSeats',
+      'Slankiosios durys': 'car.featuresList.slidingDoors',
+      'Erdvus salonas': 'car.featuresList.spaciousInterior',
+    };
+    return map[feature] || feature;
+  };
 
   const today = new Date().toISOString().slice(0, 10);
   const inTwo = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
