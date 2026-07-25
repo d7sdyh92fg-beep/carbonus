@@ -64,7 +64,7 @@ async function callCreate(overrides = {}) {
 }
 
 // Use far-future dates to avoid colliding with real reservations
-const FAR = `20${30 + Math.floor(Math.random() * 20)}-01-01`;
+const FAR = new Date(Date.now() + (365 + Math.floor(Math.random()*3650)) * 86400000).toISOString().slice(0,10);
 console.log("base test date:", FAR);
 
 // ---- tests -------------------------------------------------------------
