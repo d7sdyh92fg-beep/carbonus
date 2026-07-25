@@ -51,7 +51,9 @@ const daysBetween = (a: string, b: string) => {
   return Math.max(1, Math.round(ms / 86400000));
 };
 
-const ACTIVE_STATUSES = ["confirmed", "picked_up", "paid", "awaiting_payment", "manual_block"];
+// Statuses that occupy a car for a date range. Must match server-side
+// conflict check in the `create_reservation` RPC + BookingCalendar.
+const ACTIVE_STATUSES = ["paid", "pending", "requested", "picked_up", "awaiting_payment"];
 
 const AvailableCars = () => {
   const navigate = useNavigate();
