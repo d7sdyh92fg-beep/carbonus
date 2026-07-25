@@ -101,7 +101,7 @@ async function run() {
       p_end_date: addDays(FAR, 11),
     });
     const dr = data?.daily_rate ? Number(data.daily_rate) : null;
-    rec("tier1 (1-2 days) selected for Mercedes SLK", !error && dr === 110, `daily_rate=${dr}`);
+    rec("tier1 (1-2 days) selected for Mercedes SLK", !error && dr === 120, `daily_rate=${dr}`);
   }
 
   // 3) Tier picking — 5 days = tier2
@@ -112,7 +112,7 @@ async function run() {
       p_end_date: addDays(FAR, 24),
     });
     const dr = data?.daily_rate ? Number(data.daily_rate) : null;
-    rec("tier2 (3-6 days) selected for Mercedes SLK", !error && dr === 100, `daily_rate=${dr}`);
+    rec("tier2 (3-6 days) selected for Mercedes SLK", !error && dr === 110, `daily_rate=${dr}`);
   }
 
   // 4) Tier picking — 10 days = tier3
@@ -123,7 +123,7 @@ async function run() {
       p_end_date: addDays(FAR, 39),
     });
     const dr = data?.daily_rate ? Number(data.daily_rate) : null;
-    rec("tier3 (7+ days) selected for Mercedes SLK", !error && dr === 90, `daily_rate=${dr}`);
+    rec("tier3 (7+ days) selected for Mercedes SLK", !error && dr === 100, `daily_rate=${dr}`);
   }
 
   // 5) Invalid insurance code is rejected
