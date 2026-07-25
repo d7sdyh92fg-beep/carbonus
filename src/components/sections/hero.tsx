@@ -67,6 +67,7 @@ function DateField({
           <Calendar
             mode="single"
             selected={selected}
+            defaultMonth={selected}
             onSelect={(d) => {
               if (d) {
                 onChange(toISO(d));
