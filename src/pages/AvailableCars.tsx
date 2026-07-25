@@ -133,25 +133,37 @@ const AvailableCars = () => {
   };
 
   // DB data: pricing + premium
-  const { data: dbCars } = useQuery({
+  const {
+    data: dbCars,
+    isLoading: carsLoading,
+    isError: carsError,
+    refetch: refetchCars,
+  } = useQuery({
     queryKey: ["available-cars-db"],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("cars")
         .select("id, is_premium, price_tier1, price_tier2, price_tier3, deposit_amount");
+      if (error) throw error;
       return data || [];
     },
   });
 
   // Reservations overlapping the range
-  const { data: reservations } = useQuery({
+  const {
+    data: reservations,
+    isLoading: resLoading,
+    isError: resError,
+    refetch: refetchRes,
+  } = useQuery({
     queryKey: ["available-cars-reservations", pickup, ret],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("reservations")
         .select("car_id, start_date, end_date, status, deleted_at")
         .lte("start_date", ret)
         .gte("end_date", pickup);
+      if (error) throw error;
       return (data || []).filter(
         (r: any) => !r.deleted_at && ACTIVE_STATUSES.includes(r.status)
       );
@@ -159,17 +171,27 @@ const AvailableCars = () => {
   });
 
   // Blocked dates in range
-  const { data: blocked } = useQuery({
+  const {
+    data: blocked,
+    isLoading: blockedLoading,
+    isError: blockedError,
+    refetch: refetchBlocked,
+  } = useQuery({
     queryKey: ["available-cars-blocked", pickup, ret],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("car_blocked_dates")
         .select("car_id, blocked_date")
         .gte("blocked_date", pickup)
         .lte("blocked_date", ret);
+      if (error) throw error;
       return data || [];
     },
   });
+
+  const isQueryLoading = carsLoading || resLoading || blockedLoading;
+  const isQueryError = carsError || resError || blockedError;
+  const retryAll = () => { refetchCars(); refetchRes(); refetchBlocked(); };
 
   const unavailableIds = useMemo(() => {
     const s = new Set<string>();
