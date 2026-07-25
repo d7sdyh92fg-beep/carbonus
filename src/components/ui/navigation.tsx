@@ -104,7 +104,7 @@ export function Navigation({ logo }: NavigationProps) {
           <div className={`hidden lg:flex items-center ${user && isAdmin ? "space-x-4" : "ml-auto"}`}>
             <LanguageSwitcher />
             {user && isAdmin && (
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
