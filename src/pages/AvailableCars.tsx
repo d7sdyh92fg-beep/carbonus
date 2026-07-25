@@ -244,7 +244,8 @@ const AvailableCars = () => {
   const openCar = (id: string) => {
     const slug = getCarSlugFromId(id, language as "lt" | "en");
     const base = language === "en" ? "/cars" : "/automobiliai";
-    navigate(slug ? `${base}/${slug}?pickup=${pickup}&return=${ret}` : base);
+    const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
+    navigate(slug ? `${base}/${slug}?${qs}` : base);
   };
 
   const clearFilters = () => {
