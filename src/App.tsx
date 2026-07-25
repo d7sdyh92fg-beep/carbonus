@@ -11,6 +11,7 @@ import { BookingProvider } from "@/contexts/BookingContext";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import Index from "./pages/Index";
 import Cars from "./pages/Cars";
+import AvailableCars from "./pages/AvailableCars";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
@@ -58,6 +59,11 @@ const App = () => (
             {/* Cars - Lithuanian & English */}
             <Route path="/automobiliai" element={<Cars />} />
             <Route path="/cars" element={<Cars />} />
+
+            {/* Availability search results */}
+            <Route path="/laisvi-automobiliai" element={<AvailableCars />} />
+            <Route path="/available-cars" element={<AvailableCars />} />
+
             
             {/* New slug-based car routes */}
             <Route path="/automobiliai/:slug" element={<CarDetail />} />

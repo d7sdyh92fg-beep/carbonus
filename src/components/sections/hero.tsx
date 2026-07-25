@@ -107,8 +107,8 @@ export function Hero() {
     const params = new URLSearchParams({ pickup, return: ret, mode: tab });
     if (tab === "hotel" && hotel) params.set("hotel", hotel);
     if (tab === "hotel" && deliveryCity) params.set("city", deliveryCity);
-    navigate(`/automobiliai?${params.toString()}`);
-    setTimeout(() => window.scrollTo({ top: 300, behavior: "smooth" }), 100);
+    navigate(`/laisvi-automobiliai?${params.toString()}`);
+    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
   };
 
   const tabs: { key: TabKey; label: string; icon: React.ElementType }[] = [

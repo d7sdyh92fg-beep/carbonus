@@ -1,0 +1,510 @@
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { format } from "date-fns";
+import { lt } from "date-fns/locale";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/sections/footer";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  MapPin,
+  Calendar as CalendarIcon,
+  Clock,
+  ArrowRight,
+  Pencil,
+  Users,
+  Fuel,
+  Settings,
+  Star,
+  ChevronDown,
+  ChevronUp,
+  ShieldCheck,
+  CalendarClock,
+  Truck,
+  Headphones,
+  Crown,
+} from "lucide-react";
+import { CARS_CATALOG, HIDDEN_CAR_IDS, CatalogCar } from "@/data/carsCatalog";
+import { getCarSlugFromId } from "@/utils/carSlugs";
+import { useTranslations } from "@/hooks/use-translations";
+import { SEOHead } from "@/components/seo/SEOHead";
+import { cn } from "@/lib/utils";
+
+const toISO = (d: Date) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+};
+const fmtLtDateTime = (dateStr: string, time = "10:00") =>
+  `${format(new Date(`${dateStr}T12:00:00`), "yyyy 'm.' MMMM d 'd.'", { locale: lt })}, ${time}`;
+const daysBetween = (a: string, b: string) => {
+  const ms = new Date(`${b}T12:00:00`).getTime() - new Date(`${a}T12:00:00`).getTime();
+  return Math.max(1, Math.round(ms / 86400000));
+};
+
+const ACTIVE_STATUSES = ["confirmed", "picked_up", "paid", "awaiting_payment", "manual_block"];
+
+const AvailableCars = () => {
+  const navigate = useNavigate();
+  const { language } = useTranslations();
+  const [params, setParams] = useSearchParams();
+
+  const today = new Date().toISOString().slice(0, 10);
+  const inTwo = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
+
+  const pickup = params.get("pickup") || today;
+  const ret = params.get("return") || inTwo;
+  const rentalDays = daysBetween(pickup, ret);
+
+  // Edit-search state
+  const [editOpen, setEditOpen] = useState(false);
+  const [editPickup, setEditPickup] = useState(pickup);
+  const [editReturn, setEditReturn] = useState(ret);
+  useEffect(() => { setEditPickup(pickup); setEditReturn(ret); }, [pickup, ret]);
+
+  const applySearch = () => {
+    const p = new URLSearchParams(params);
+    p.set("pickup", editPickup);
+    p.set("return", editReturn);
+    setParams(p);
+    setEditOpen(false);
+  };
+
+  // DB data: pricing + premium
+  const { data: dbCars } = useQuery({
+    queryKey: ["available-cars-db"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("cars")
+        .select("id, is_premium, price_tier1, price_tier2, price_tier3, deposit_amount");
+      return data || [];
+    },
+  });
+
+  // Reservations overlapping the range
+  const { data: reservations } = useQuery({
+    queryKey: ["available-cars-reservations", pickup, ret],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("reservations")
+        .select("car_id, start_date, end_date, status, deleted_at")
+        .lte("start_date", ret)
+        .gte("end_date", pickup);
+      return (data || []).filter(
+        (r: any) => !r.deleted_at && ACTIVE_STATUSES.includes(r.status)
+      );
+    },
+  });
+
+  // Blocked dates in range
+  const { data: blocked } = useQuery({
+    queryKey: ["available-cars-blocked", pickup, ret],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("car_blocked_dates")
+        .select("car_id, blocked_date")
+        .gte("blocked_date", pickup)
+        .lte("blocked_date", ret);
+      return data || [];
+    },
+  });
+
+  const unavailableIds = useMemo(() => {
+    const s = new Set<string>();
+    (reservations || []).forEach((r: any) => r.car_id && s.add(String(r.car_id)));
+    (blocked || []).forEach((b: any) => b.car_id && s.add(String(b.car_id)));
+    return s;
+  }, [reservations, blocked]);
+
+  const pricingFor = (carId: string) => {
+    const c = (dbCars || []).find((x: any) => String(x.id) === carId);
+    let daily: number | null = null;
+    if (c) {
+      if (rentalDays >= 7 && c.price_tier3) daily = Number(c.price_tier3);
+      else if (rentalDays >= 3 && c.price_tier2) daily = Number(c.price_tier2);
+      else if (c.price_tier1) daily = Number(c.price_tier1);
+    }
+    const deposit = c?.deposit_amount ? Number(c.deposit_amount) : 200;
+    const isPremium = !!c?.is_premium;
+    return { daily, deposit, isPremium };
+  };
+
+  // Filters
+  const [fTransmission, setFTransmission] = useState<Set<string>>(new Set());
+  const [fFuel, setFFuel] = useState<Set<string>>(new Set());
+  const [fPassengers, setFPassengers] = useState<Set<string>>(new Set()); // "2-4","5","7+"
+  const [fBody, setFBody] = useState<Set<string>>(new Set());
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
+  const [sort, setSort] = useState<string>("recommended");
+
+  const toggle = (setter: (s: Set<string>) => void, set: Set<string>, v: string) => {
+    const next = new Set(set);
+    next.has(v) ? next.delete(v) : next.add(v);
+    setter(next);
+  };
+
+  const availableCars = useMemo(() => {
+    return CARS_CATALOG.filter((c) => !HIDDEN_CAR_IDS.has(c.id) && !unavailableIds.has(c.id));
+  }, [unavailableIds]);
+
+  const filtered = useMemo(() => {
+    const passengersMatch = (p: number) => {
+      if (fPassengers.size === 0) return true;
+      if (fPassengers.has("2-4") && p >= 2 && p <= 4) return true;
+      if (fPassengers.has("5") && p === 5) return true;
+      if (fPassengers.has("7+") && p >= 7) return true;
+      return false;
+    };
+    return availableCars
+      .map((c) => ({ car: c, ...pricingFor(c.id) }))
+      .filter((row) => {
+        const { car, daily } = row;
+        if (fTransmission.size && !fTransmission.has(car.transmission)) return false;
+        if (fFuel.size && !fFuel.has(car.fuel)) return false;
+        if (!passengersMatch(car.passengers)) return false;
+        if (fBody.size && !fBody.has(car.category)) return false;
+        if (daily != null && (daily < priceRange[0] || daily > priceRange[1])) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        if (sort === "price-asc") return (a.daily ?? 9999) - (b.daily ?? 9999);
+        if (sort === "price-desc") return (b.daily ?? 0) - (a.daily ?? 0);
+        if (sort === "rating") return b.car.rating - a.car.rating;
+        // recommended: premium first, then rating
+        if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
+        return b.car.rating - a.car.rating;
+      });
+  }, [availableCars, dbCars, fTransmission, fFuel, fPassengers, fBody, priceRange, sort, rentalDays]);
+
+  // Counts per filter facet (based on all available, ignoring same-facet filter)
+  const count = (pred: (c: CatalogCar) => boolean) => availableCars.filter(pred).length;
+
+  const openCar = (id: string) => {
+    const slug = getCarSlugFromId(id, language as "lt" | "en");
+    const base = language === "en" ? "/cars" : "/automobiliai";
+    navigate(slug ? `${base}/${slug}?pickup=${pickup}&return=${ret}` : base);
+  };
+
+  const clearFilters = () => {
+    setFTransmission(new Set());
+    setFFuel(new Set());
+    setFPassengers(new Set());
+    setFBody(new Set());
+    setPriceRange([0, 200]);
+  };
+
+  return (
+    <div className="min-h-screen bg-secondary/40">
+      <SEOHead
+        title="Laisvi automobiliai jūsų datoms | Carbonus"
+        description="Peržiūrėkite laisvus automobilius pasirinktomis datomis. Skaidrios kainos, pristatymas visoje Lietuvoje."
+        canonical="https://carbonus.lt/laisvi-automobiliai"
+      />
+      <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
+
+      {/* Search summary bar */}
+      <section className="pt-28 md:pt-32 pb-6 bg-secondary/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-card border border-border p-4 md:p-5">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr_auto_1.3fr_1fr_auto] gap-4 md:gap-6 items-center">
+              <SummaryItem icon={<MapPin className="h-5 w-5 text-primary" />} label="Atsiėmimo vieta" value="Druskininkai" />
+              <SummaryItem icon={<CalendarIcon className="h-5 w-5 text-primary" />} label="Atsiėmimas" value={fmtLtDateTime(pickup)} />
+              <ArrowRight className="hidden md:block h-5 w-5 text-muted-foreground mx-auto" />
+              <SummaryItem icon={<CalendarIcon className="h-5 w-5 text-primary" />} label="Grąžinimas" value={fmtLtDateTime(ret)} />
+              <SummaryItem icon={<Clock className="h-5 w-5 text-primary" />} label="Nuomos trukmė" value={`${rentalDays} ${rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}`} />
+              <Popover open={editOpen} onOpenChange={setEditOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="hero" className="gap-2 h-12 rounded-xl">
+                    <Pencil className="h-4 w-4" />
+                    Keisti paiešką
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[320px] p-4 z-[80]" align="end">
+                  <div className="space-y-3">
+                    <DatePickField label="Atsiėmimo data" value={editPickup} onChange={setEditPickup} />
+                    <DatePickField label="Grąžinimo data" value={editReturn} onChange={setEditReturn} minDate={new Date(`${editPickup}T12:00:00`)} />
+                    <Button variant="hero" className="w-full" onClick={applySearch}>Taikyti</Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground">Laisvi automobiliai jūsų pasirinktomis datomis</h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                {fmtLtDateTime(pickup)} – {fmtLtDateTime(ret)} • {rentalDays} nuomos {rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}
+              </p>
+            </div>
+            <div className="text-sm text-muted-foreground">Rasta: <span className="text-foreground font-semibold">{filtered.length} automobiliai</span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Body: filters + grid */}
+      <section className="pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
+          {/* Filters */}
+          <aside className="bg-white rounded-2xl shadow-card border border-border p-5 h-fit sticky top-24">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-semibold">Filtrai</h2>
+              <button onClick={clearFilters} className="text-xs text-primary hover:underline">Išvalyti</button>
+            </div>
+
+            <FilterGroup title="Transmisija">
+              {["Automatinė", "Mechaninė"].map((v) => (
+                <FilterRow
+                  key={v}
+                  label={v}
+                  count={count((c) => c.transmission === v)}
+                  checked={fTransmission.has(v)}
+                  onChange={() => toggle(setFTransmission, fTransmission, v)}
+                />
+              ))}
+            </FilterGroup>
+
+            <FilterGroup title="Kuro tipas">
+              {["Benzinas", "Dyzelinas"].map((v) => (
+                <FilterRow
+                  key={v}
+                  label={v}
+                  count={count((c) => c.fuel === v)}
+                  checked={fFuel.has(v)}
+                  onChange={() => toggle(setFFuel, fFuel, v)}
+                />
+              ))}
+            </FilterGroup>
+
+            <FilterGroup title="Keleivių skaičius">
+              {[
+                { key: "2-4", label: "2–4", pred: (c: CatalogCar) => c.passengers >= 2 && c.passengers <= 4 },
+                { key: "5", label: "5", pred: (c: CatalogCar) => c.passengers === 5 },
+                { key: "7+", label: "7+", pred: (c: CatalogCar) => c.passengers >= 7 },
+              ].map((o) => (
+                <FilterRow
+                  key={o.key}
+                  label={o.label}
+                  count={count(o.pred)}
+                  checked={fPassengers.has(o.key)}
+                  onChange={() => toggle(setFPassengers, fPassengers, o.key)}
+                />
+              ))}
+            </FilterGroup>
+
+            <FilterGroup title="Kėbulo tipas">
+              {["Hecbekas", "Universalas", "Sedanas", "Kabrioletas", "Vienatūris", "Krosoveris", "Miniautobusas"].map((v) => {
+                const cnt = count((c) => c.category === v);
+                if (cnt === 0) return null;
+                return (
+                  <FilterRow
+                    key={v}
+                    label={v === "Hecbekas" ? "Hečbekas" : v}
+                    count={cnt}
+                    checked={fBody.has(v)}
+                    onChange={() => toggle(setFBody, fBody, v)}
+                  />
+                );
+              })}
+            </FilterGroup>
+
+            <FilterGroup title="Kainos intervalas" defaultOpen>
+              <div className="pt-2 pb-1">
+                <Slider
+                  min={0}
+                  max={200}
+                  step={5}
+                  value={priceRange}
+                  onValueChange={(v) => setPriceRange([v[0], v[1]] as [number, number])}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                  <span>{priceRange[0]} €</span>
+                  <span>{priceRange[1]} €</span>
+                </div>
+              </div>
+            </FilterGroup>
+          </aside>
+
+          {/* Grid */}
+          <div>
+            <div className="flex justify-end mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Rūšiuoti pagal</span>
+                <Select value={sort} onValueChange={setSort}>
+                  <SelectTrigger className="w-[220px] bg-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="recommended">Rekomenduojami</SelectItem>
+                    <SelectItem value="price-asc">Kaina: nuo mažiausios</SelectItem>
+                    <SelectItem value="price-desc">Kaina: nuo didžiausios</SelectItem>
+                    <SelectItem value="rating">Įvertinimas</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {filtered.length === 0 ? (
+              <div className="bg-white rounded-2xl p-10 text-center shadow-card border border-border">
+                <p className="text-lg font-medium">Šioms datoms laisvų automobilių nerasta</p>
+                <p className="text-sm text-muted-foreground mt-2">Pabandykite pakeisti datas arba filtrus.</p>
+              </div>
+            ) : (
+              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                {filtered.map(({ car, daily, deposit, isPremium }, idx) => (
+                  <div key={car.id} className="group bg-white rounded-2xl shadow-card border border-border overflow-hidden hover:shadow-elegant hover:-translate-y-1 transition-all">
+                    <div className="relative" style={{ background: "linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)" }}>
+                      {idx === 0 && (
+                        <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground z-10">Populiariausias</Badge>
+                      )}
+                      {isPremium && (
+                        <Badge className="absolute top-3 left-3 bg-amber-500 text-white z-10 flex items-center gap-1">
+                          <Crown className="w-3 h-3" /> Premium
+                        </Badge>
+                      )}
+                      <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-white/95 rounded-full px-2 py-1">
+                        <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs font-semibold">{car.rating}</span>
+                      </div>
+                      <img
+                        src={car.image}
+                        alt={car.name}
+                        className="w-full h-44 object-contain object-center mix-blend-multiply p-3"
+                      />
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-lg font-semibold">{car.name}</h3>
+                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mt-3">
+                        <div className="flex items-center gap-1.5"><Users className="w-4 h-4" />{car.passengers}</div>
+                        <div className="flex items-center gap-1.5"><Settings className="w-4 h-4" />{car.transmission}</div>
+                        <div className="flex items-center gap-1.5"><Fuel className="w-4 h-4" />{car.fuel}</div>
+                        <div className="flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" />{car.year}</div>
+                      </div>
+                      <div className="mt-4 flex items-end justify-between">
+                        <div>
+                          <div className="text-2xl font-bold text-foreground leading-none">
+                            {daily != null ? `${daily * rentalDays} €` : "—"}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {daily != null ? `${daily} €/dieną` : "kaina pateikiama"}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-0.5">Užstatas: {deposit} €</div>
+                        </div>
+                        <Button variant="hero" onClick={() => openCar(car.id)}>Rinktis</Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits strip */}
+      <section className="bg-white border-t border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+          <Benefit icon={<ShieldCheck className="w-6 h-6 text-primary" />} title="Aiškios kainos" desc="Be paslėptų mokesčių" />
+          <Benefit icon={<CalendarClock className="w-6 h-6 text-primary" />} title="Nemokamas atšaukimas" desc="Iki 24 val. prieš atsiėmimą" />
+          <Benefit icon={<Truck className="w-6 h-6 text-primary" />} title="Pristatymas visoje Lietuvoje" desc="Tiesiai į jūsų nurodytą adresą" />
+          <Benefit icon={<Headphones className="w-6 h-6 text-primary" />} title="Pagalba 24/7" desc="Esame šalia visos nuomos metu" />
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+/* ---------- Helpers ---------- */
+
+function SummaryItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-3 min-w-0">
+      <div className="shrink-0">{icon}</div>
+      <div className="min-w-0">
+        <div className="text-xs text-muted-foreground">{label}</div>
+        <div className="text-sm md:text-base font-semibold text-foreground truncate">{value}</div>
+      </div>
+    </div>
+  );
+}
+
+function FilterGroup({ title, defaultOpen = true, children }: { title: string; defaultOpen?: boolean; children: React.ReactNode }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="border-t border-border first:border-t-0 py-3">
+      <button onClick={() => setOpen((v) => !v)} className="w-full flex items-center justify-between text-sm font-semibold">
+        <span>{title}</span>
+        {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+      </button>
+      {open && <div className="mt-2 space-y-1.5">{children}</div>}
+    </div>
+  );
+}
+
+function FilterRow({ label, count, checked, onChange }: { label: string; count: number; checked: boolean; onChange: () => void }) {
+  const disabled = count === 0;
+  return (
+    <label className={cn("flex items-center justify-between py-1.5 cursor-pointer", disabled && "opacity-50 cursor-not-allowed")}>
+      <div className="flex items-center gap-2">
+        <Checkbox checked={checked} onCheckedChange={onChange} disabled={disabled} />
+        <span className="text-sm">{label}</span>
+      </div>
+      <span className="text-xs text-muted-foreground">{count}</span>
+    </label>
+  );
+}
+
+function DatePickField({ label, value, onChange, minDate }: { label: string; value: string; onChange: (v: string) => void; minDate?: Date }) {
+  const [open, setOpen] = useState(false);
+  const selected = new Date(`${value}T12:00:00`);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const min = minDate ?? today;
+  return (
+    <div>
+      <div className="text-xs text-muted-foreground mb-1">{label}</div>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button type="button" className="w-full flex items-center gap-2 rounded-xl border border-border px-3 h-11 text-left hover:bg-muted">
+            <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium">{format(selected, "yyyy 'm.' MMMM d 'd.'", { locale: lt })}</span>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0 z-[90]" align="start">
+          <Calendar
+            mode="single"
+            selected={selected}
+            onSelect={(d) => { if (d) { onChange(toISO(d)); setOpen(false); } }}
+            disabled={(d) => d < min}
+            initialFocus
+            locale={lt}
+            className="p-3 pointer-events-auto"
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+
+function Benefit({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">{icon}</div>
+      <div>
+        <div className="font-semibold text-sm">{title}</div>
+        <div className="text-xs text-muted-foreground">{desc}</div>
+      </div>
+    </div>
+  );
+}
+
+export default AvailableCars;
