@@ -407,34 +407,38 @@ const AvailableCars = () => {
                             loading="eager"
                             data-allow-save="true"
                             onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
-                            className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
+                          className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
                               !loadedImages.has(car.id) ? "opacity-0" : "opacity-100"
                             } ${
                               car.name === "Volkswagen Passat"
-                                ? "scale-[1.22] group-hover:scale-[1.27]"
+                                ? "scale-[0.92] group-hover:scale-[0.97]"
                                 : car.name === "Mercedes-Benz SLK"
-                                ? "scale-[0.99] group-hover:scale-[1.04] translate-y-4"
-                                : car.id === "4"
-                                ? "scale-[1.33] group-hover:scale-[1.38] translate-y-4"
-                                : car.id === "5"
-                                ? "scale-[1.65] group-hover:scale-[1.70] translate-y-4"
+                                ? "scale-[0.92] group-hover:scale-[0.97] translate-y-4"
                                 : car.id === "7"
-                                ? "scale-[1.15] group-hover:scale-[1.20] translate-y-2"
+                                ? "scale-[1.0] group-hover:scale-[1.05] translate-y-2"
+                                : car.id === "5"
+                                ? "scale-[1.30] group-hover:scale-[1.35] translate-y-3"
                                 : car.id === "8"
-                                ? "scale-[1.75] group-hover:scale-[1.80] translate-y-0"
-                                : "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
+                                ? "scale-[1.35] group-hover:scale-[1.40] translate-y-0"
+                                : "scale-100 group-hover:scale-105 translate-y-4"
                             }`}
                           />
-                          {(car.id === "5" || car.id === "6" || car.id === "7") && loadedImages.has(car.id) && (
+                          {(car.id === "5" || car.id === "6") && loadedImages.has(car.id) && (
                             <div
-                              className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                              className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
                               style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)" }}
                             />
                           )}
                           {car.id === "8" && loadedImages.has(car.id) && (
                             <div
-                              className="absolute bottom-[9%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                              className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[88%] h-6 rounded-[50%]"
                               style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)" }}
+                            />
+                          )}
+                          {car.id === "7" && loadedImages.has(car.id) && (
+                            <div
+                              className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[96%] h-6 rounded-[50%]"
+                              style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, transparent 70%)" }}
                             />
                           )}
                         </div>
