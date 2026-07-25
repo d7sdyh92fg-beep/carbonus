@@ -59,6 +59,11 @@ const App = () => (
             {/* Cars - Lithuanian & English */}
             <Route path="/automobiliai" element={<Cars />} />
             <Route path="/cars" element={<Cars />} />
+
+            {/* Availability search results */}
+            <Route path="/laisvi-automobiliai" element={<AvailableCars />} />
+            <Route path="/available-cars" element={<AvailableCars />} />
+
             
             {/* New slug-based car routes */}
             <Route path="/automobiliai/:slug" element={<CarDetail />} />
