@@ -35,6 +35,7 @@ async function makeCustomer() {
     p_first_name: "Sec",
     p_last_name: "Test",
     p_phone: "+37060000000",
+    p_address: "Test 1, Druskininkai",
   });
   if (error) throw error;
   return data;
