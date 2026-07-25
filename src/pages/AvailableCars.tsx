@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -54,8 +55,41 @@ const ACTIVE_STATUSES = ["confirmed", "picked_up", "paid", "awaiting_payment", "
 
 const AvailableCars = () => {
   const navigate = useNavigate();
-  const { language } = useTranslations();
+  const { t, language } = useTranslations();
   const [params, setParams] = useSearchParams();
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+  const normalizeForTranslation = (text: string): string =>
+    text.toLowerCase()
+      .replace(/ė/g, "e").replace(/ą/g, "a").replace(/į/g, "i")
+      .replace(/ų/g, "u").replace(/ū/g, "u").replace(/č/g, "c")
+      .replace(/š/g, "s").replace(/ž/g, "z");
+
+  const getFeatureKey = (feature: string): string => {
+    const map: Record<string, string> = {
+      'Kondicionierius': 'car.featuresList.airConditioning',
+      'Bluetooth': 'car.featuresList.bluetooth',
+      'GPS navigacija': 'car.featuresList.gpsNavigation',
+      '7 vietos': 'car.featuresList.sevenSeats',
+      'Bagažinė': 'car.featuresList.trunk',
+      'Šeimos automobilis': 'car.featuresList.familyCar',
+      'Ekonomiškas': 'car.featuresList.economical',
+      'Patogus': 'car.featuresList.comfortable',
+      'Didelis bagažas': 'car.featuresList.largeTrunk',
+      'Ekonomiškas vairavimas': 'car.featuresList.economicalDriving',
+      'Erdvus universalas': 'car.featuresList.spaciousWagon',
+      'Patikimas automobilis': 'car.featuresList.reliable',
+      'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED',
+      'Atidaromas stogas': 'car.featuresList.retractableRoof',
+      'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
+      'Sportinis dizainas': 'car.featuresList.sportyDesign',
+      '8 keleivių vietos': 'car.featuresList.nineSeats',
+      'Slankiosios durys': 'car.featuresList.slidingDoors',
+      'Erdvus salonas': 'car.featuresList.spaciousInterior',
+    };
+    return map[feature] || feature;
+  };
 
   const today = new Date().toISOString().slice(0, 10);
   const inTwo = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
@@ -358,51 +392,108 @@ const AvailableCars = () => {
                 <p className="text-sm text-muted-foreground mt-2">Pabandykite pakeisti datas arba filtrus.</p>
               </div>
             ) : (
-              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
                 {filtered.map(({ car, daily, deposit, isPremium }, idx) => (
-                  <div key={car.id} className="group bg-white rounded-2xl shadow-card border border-border overflow-hidden hover:shadow-elegant hover:-translate-y-1 transition-all">
-                    <div className="relative aspect-[4/3] overflow-hidden" style={{ background: "linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)" }}>
-                      <div className="absolute top-3 left-3 z-10 flex flex-col items-start gap-1.5">
-                        {isPremium ? (
-                          <Badge className="bg-amber-500 text-white flex items-center gap-1">
-                            <Crown className="w-3 h-3" /> Premium
-                          </Badge>
-                        ) : idx === 0 ? (
-                          <Badge className="bg-primary text-primary-foreground">Populiariausias</Badge>
-                        ) : null}
-                      </div>
-                      <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-white/95 rounded-full px-2 py-1">
-                        <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs font-semibold">{car.rating}</span>
-                      </div>
-                      <img
-                        src={car.image}
-                        alt={car.name}
-                        className="absolute inset-0 w-full h-full object-contain object-center mix-blend-multiply p-4"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-lg font-semibold">{car.name}</h3>
-                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mt-3">
-                        <div className="flex items-center gap-1.5"><Users className="w-4 h-4" />{car.passengers}</div>
-                        <div className="flex items-center gap-1.5"><Settings className="w-4 h-4" />{car.transmission}</div>
-                        <div className="flex items-center gap-1.5"><Fuel className="w-4 h-4" />{car.fuel}</div>
-                        <div className="flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" />{car.year}</div>
-                      </div>
-                      <div className="mt-4 flex items-end justify-between">
-                        <div>
-                          <div className="text-2xl font-bold text-foreground leading-none">
-                            {daily != null ? `${daily * rentalDays} €` : "—"}
-                          </div>
-                          <div className="text-xs text-muted-foreground mt-1">
-                            {daily != null ? `${daily} €/dieną` : "kaina pateikiama"}
-                          </div>
-                          <div className="text-xs text-muted-foreground mt-0.5">Užstatas: {deposit} €</div>
+                  <Card
+                    key={car.id}
+                    className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card"
+                  >
+                    <CardContent className="p-0">
+                      <div className="relative overflow-hidden rounded-t-lg" style={{ background: "linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)" }}>
+                        <div className="relative">
+                          <img
+                            src={car.image}
+                            alt={car.name}
+                            loading="eager"
+                            data-allow-save="true"
+                            onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
+                            className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
+                              !loadedImages.has(car.id) ? "opacity-0" : "opacity-100"
+                            } ${
+                              car.name === "Volkswagen Passat"
+                                ? "scale-[1.22] group-hover:scale-[1.27]"
+                                : car.name === "Mercedes-Benz SLK"
+                                ? "scale-[0.99] group-hover:scale-[1.04] translate-y-4"
+                                : car.id === "4"
+                                ? "scale-[1.33] group-hover:scale-[1.38] translate-y-4"
+                                : car.id === "5"
+                                ? "scale-[1.65] group-hover:scale-[1.70] translate-y-4"
+                                : car.id === "7"
+                                ? "scale-[1.15] group-hover:scale-[1.20] translate-y-2"
+                                : car.id === "8"
+                                ? "scale-[1.75] group-hover:scale-[1.80] translate-y-0"
+                                : "scale-[1.07] group-hover:scale-[1.12] translate-y-4"
+                            }`}
+                          />
+                          {(car.id === "5" || car.id === "6" || car.id === "7") && loadedImages.has(car.id) && (
+                            <div
+                              className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                              style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)" }}
+                            />
+                          )}
+                          {car.id === "8" && loadedImages.has(car.id) && (
+                            <div
+                              className="absolute bottom-[9%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                              style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)" }}
+                            />
+                          )}
                         </div>
-                        <Button variant="hero" onClick={() => openCar(car.id)}>Rinktis</Button>
+                        <div className="absolute top-4 left-4 flex gap-1.5">
+                          <Badge variant="secondary" className="bg-primary text-primary-foreground">
+                            {t(`car.categories.${normalizeForTranslation(car.category)}`)}
+                          </Badge>
+                          {isPremium ? (
+                            <Badge variant="secondary" className="bg-amber-500 text-white flex items-center gap-1">
+                              <Crown className="w-3 h-3" /> Premium
+                            </Badge>
+                          ) : idx === 0 ? (
+                            <Badge variant="secondary" className="bg-foreground text-background">Populiariausias</Badge>
+                          ) : null}
+                        </div>
+                        <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-sm font-semibold">{car.rating}</span>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+
+                      <div className="p-6 space-y-4">
+                        <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                          {car.name}
+                        </h3>
+
+                        <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1"><Users className="w-4 h-4" /><span>{car.passengers}</span></div>
+                          <div className="flex items-center gap-1"><Fuel className="w-4 h-4" /><span>{t(`car.${normalizeForTranslation(car.fuel)}`)}</span></div>
+                          <div className="flex items-center gap-1"><Settings className="w-4 h-4" /><span>{t(`car.${normalizeForTranslation(car.transmission)}`)}</span></div>
+                          <div className="flex items-center gap-1"><CalendarIcon className="w-4 h-4" /><span>{car.year}</span></div>
+                        </div>
+
+                        <div className="space-y-1">
+                          {car.features.map((feature, i) => (
+                            <div key={i} className="text-sm text-muted-foreground">• {t(getFeatureKey(feature))}</div>
+                          ))}
+                        </div>
+
+                        <div className="flex items-end justify-between pt-4">
+                          <div>
+                            <p className="text-xs text-muted-foreground">Kaina {rentalDays} {rentalDays === 1 ? "dienai" : "dienoms"}</p>
+                            <p className="text-2xl font-bold text-primary leading-tight">
+                              {daily != null ? `${daily * rentalDays} €` : "—"}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {daily != null ? `${daily} €/dieną` : "kaina pateikiama"} · Užstatas {deposit} €
+                            </p>
+                          </div>
+                          <Button
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                            onClick={() => openCar(car.id)}
+                          >
+                            Rinktis
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             )}
