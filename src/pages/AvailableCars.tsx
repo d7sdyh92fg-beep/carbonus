@@ -592,6 +592,7 @@ function DatePickField({ label, value, onChange, minDate }: { label: string; val
           <Calendar
             mode="single"
             selected={selected}
+            defaultMonth={selected}
             onSelect={(d) => { if (d) { onChange(toISO(d)); setOpen(false); } }}
             disabled={(d) => d < min}
             initialFocus
