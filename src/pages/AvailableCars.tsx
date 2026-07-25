@@ -361,15 +361,16 @@ const AvailableCars = () => {
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {filtered.map(({ car, daily, deposit, isPremium }, idx) => (
                   <div key={car.id} className="group bg-white rounded-2xl shadow-card border border-border overflow-hidden hover:shadow-elegant hover:-translate-y-1 transition-all">
-                    <div className="relative" style={{ background: "linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)" }}>
-                      {idx === 0 && (
-                        <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground z-10">Populiariausias</Badge>
-                      )}
-                      {isPremium && (
-                        <Badge className="absolute top-3 left-3 bg-amber-500 text-white z-10 flex items-center gap-1">
-                          <Crown className="w-3 h-3" /> Premium
-                        </Badge>
-                      )}
+                    <div className="relative aspect-[4/3] overflow-hidden" style={{ background: "linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)" }}>
+                      <div className="absolute top-3 left-3 z-10 flex flex-col items-start gap-1.5">
+                        {isPremium ? (
+                          <Badge className="bg-amber-500 text-white flex items-center gap-1">
+                            <Crown className="w-3 h-3" /> Premium
+                          </Badge>
+                        ) : idx === 0 ? (
+                          <Badge className="bg-primary text-primary-foreground">Populiariausias</Badge>
+                        ) : null}
+                      </div>
                       <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-white/95 rounded-full px-2 py-1">
                         <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                         <span className="text-xs font-semibold">{car.rating}</span>
@@ -377,7 +378,7 @@ const AvailableCars = () => {
                       <img
                         src={car.image}
                         alt={car.name}
-                        className="w-full h-44 object-contain object-center mix-blend-multiply p-3"
+                        className="absolute inset-0 w-full h-full object-contain object-center mix-blend-multiply p-4"
                       />
                     </div>
                     <div className="p-5">
