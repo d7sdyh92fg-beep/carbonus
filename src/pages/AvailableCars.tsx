@@ -268,8 +268,22 @@ const AvailableCars = () => {
           <div className="bg-white rounded-2xl shadow-card border border-border p-4 md:p-5">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr_auto_1.3fr_1fr_auto] gap-4 md:gap-6 items-center">
               <SummaryItem icon={<MapPin className="h-5 w-5 text-primary" />} label="Atsiėmimo vieta" value="Druskininkai" />
-              <SummaryItem icon={<CalendarIcon className="h-5 w-5 text-primary" />} label="Atsiėmimas" value={fmtLtDateTime(pickup)} />
+              <EditableDateTimeSummary
+                label="Atsiėmimas"
+                date={pickup}
+                time={pickupTime}
+                onDateChange={onPickupChange}
+                onTimeChange={(v) => updateParam({ pickupTime: v })}
+              />
               <ArrowRight className="hidden md:block h-5 w-5 text-muted-foreground mx-auto" />
+              <EditableDateTimeSummary
+                label="Grąžinimas"
+                date={ret}
+                time={returnTime}
+                onDateChange={(v) => updateParam({ return: v })}
+                onTimeChange={(v) => updateParam({ returnTime: v })}
+                minDate={new Date(`${pickup}T12:00:00`)}
+              />
               <SummaryItem icon={<CalendarIcon className="h-5 w-5 text-primary" />} label="Grąžinimas" value={fmtLtDateTime(ret)} />
               <SummaryItem icon={<Clock className="h-5 w-5 text-primary" />} label="Nuomos trukmė" value={`${rentalDays} ${rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}`} />
               <Popover open={editOpen} onOpenChange={setEditOpen}>
