@@ -284,7 +284,7 @@ const AvailableCars = () => {
                 onTimeChange={(v) => updateParam({ returnTime: v })}
                 minDate={new Date(`${pickup}T12:00:00`)}
               />
-              <SummaryItem icon={<CalendarIcon className="h-5 w-5 text-primary" />} label="Grąžinimas" value={fmtLtDateTime(ret)} />
+              
               <SummaryItem icon={<Clock className="h-5 w-5 text-primary" />} label="Nuomos trukmė" value={`${rentalDays} ${rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}`} />
               <Popover open={editOpen} onOpenChange={setEditOpen}>
                 <PopoverTrigger asChild>
