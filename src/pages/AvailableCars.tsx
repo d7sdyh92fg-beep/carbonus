@@ -617,8 +617,9 @@ const AvailableCars = () => {
                           <Button
                             className="bg-primary hover:bg-primary/90 text-primary-foreground"
                             onClick={() => openCar(car.id)}
+                            disabled={checkingId === car.id}
                           >
-                            Rinktis
+                            {checkingId === car.id ? "Tikrinama…" : "Rinktis"}
                           </Button>
                         </div>
                       </div>
