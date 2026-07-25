@@ -264,11 +264,42 @@ const AvailableCars = () => {
   // Counts per filter facet (based on all available, ignoring same-facet filter)
   const count = (pred: (c: CatalogCar) => boolean) => availableCars.filter(pred).length;
 
-  const openCar = (id: string) => {
-    const slug = getCarSlugFromId(id, language as "lt" | "en");
-    const base = language === "en" ? "/cars" : "/automobiliai";
-    const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
-    navigate(slug ? `${base}/${slug}?${qs}` : base);
+  const { toast } = useToast();
+  const [checkingId, setCheckingId] = useState<string | null>(null);
+
+  const openCar = async (id: string) => {
+    if (checkingId) return;
+    setCheckingId(id);
+    try {
+      const { data, error } = await supabase.rpc("check_car_availability", {
+        p_car_id: id,
+        p_start_date: pickup,
+        p_end_date: ret,
+      } as any);
+      if (error) throw error;
+      const res = data as { available: boolean; reason?: string } | null;
+      if (!res?.available) {
+        toast({
+          title: "Automobilis ką tik tapo užimtas",
+          description: "Prašome pasirinkti kitą automobilį arba pakeisti datas.",
+          variant: "destructive",
+        });
+        retryAll();
+        return;
+      }
+      const slug = getCarSlugFromId(id, language as "lt" | "en");
+      const base = language === "en" ? "/cars" : "/automobiliai";
+      const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
+      navigate(slug ? `${base}/${slug}?${qs}` : base);
+    } catch (e) {
+      toast({
+        title: "Nepavyko patikrinti užimtumo",
+        description: "Bandykite dar kartą.",
+        variant: "destructive",
+      });
+    } finally {
+      setCheckingId(null);
+    }
   };
 
   const clearFilters = () => {
