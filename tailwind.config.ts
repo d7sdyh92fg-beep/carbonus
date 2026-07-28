@@ -18,7 +18,18 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Manrope', 'Inter', 'Arial', 'sans-serif'],
+			},
 			colors: {
+				'carbonus-green': 'hsl(var(--carbonus-green))',
+				'carbonus-green-hover': 'hsl(var(--carbonus-green-hover))',
+				'carbonus-green-dark': 'hsl(var(--carbonus-green-dark))',
+				'carbonus-green-deep': 'hsl(var(--carbonus-green-deep))',
+				'carbonus-green-soft': 'hsl(var(--carbonus-green-soft))',
+				'carbonus-dark': 'hsl(var(--carbonus-dark))',
+				'carbonus-dark-2': 'hsl(var(--carbonus-dark-2))',
+				'carbonus-dark-3': 'hsl(var(--carbonus-dark-3))',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
