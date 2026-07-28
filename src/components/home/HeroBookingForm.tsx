@@ -63,13 +63,8 @@ export function HeroBookingForm() {
         border: "1px solid rgba(255,255,255,0.12)",
       }}
     >
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-[10px] lg:gap-[10px]"
-        style={{
-          gridTemplateColumns: undefined,
-        }}
-      >
-        <div className="hidden lg:grid col-span-full" style={{ display: "grid", gridTemplateColumns: "minmax(210px,1.15fr) minmax(190px,1fr) minmax(190px,1fr) minmax(220px,1.15fr)", gap: 10 }}>
+      <div className="grid gap-[10px] grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(210px,1.15fr)_minmax(190px,1fr)_minmax(190px,1fr)_minmax(220px,1.15fr)]">
+
 
         {/* Location */}
         <FieldShell
@@ -146,8 +141,9 @@ export function HeroBookingForm() {
         <button
           type="button"
           onClick={submit}
-          className="min-h-[54px] rounded-lg text-white text-sm font-bold inline-flex items-center justify-center gap-2 bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:-translate-y-0.5 hover:brightness-110 transition-all shadow-[0_10px_30px_hsl(var(--carbonus-green)/0.3)]"
+          className="h-[56px] px-6 rounded-lg text-white text-sm font-bold inline-flex items-center justify-center gap-2 bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:-translate-y-0.5 hover:brightness-110 transition-all shadow-[0_10px_30px_hsl(var(--carbonus-green)/0.3)]"
         >
+
           <Search className="h-4 w-4" /> Ieškoti automobilių
         </button>
       </div>
