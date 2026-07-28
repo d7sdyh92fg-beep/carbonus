@@ -59,8 +59,8 @@ export function HeroBookingForm() {
         minHeight: 82,
         padding: 13,
         borderRadius: 14,
-        background: "rgba(10, 31, 32, 0.42)",
-        border: "1px solid rgba(255,255,255,0.14)",
+        background: "rgba(12, 14, 16, 0.38)",
+        border: "1px solid rgba(255,255,255,0.16)",
       }}
     >
       <div className="grid gap-[10px] grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(210px,1.15fr)_minmax(190px,1fr)_minmax(190px,1fr)_minmax(220px,1.15fr)]">
