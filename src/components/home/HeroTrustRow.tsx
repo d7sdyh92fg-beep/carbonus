@@ -18,8 +18,8 @@ export function HeroTrustRow() {
             <Icon className="h-4 w-4" />
           </span>
           <div className="min-w-0">
-            <div className="text-white text-[12px] font-bold leading-tight">{title}</div>
-            <div className="text-white/60 text-[11px] leading-[1.4] mt-0.5">{text}</div>
+            <div className="text-white text-[13px] font-bold leading-tight">{title}</div>
+            <div className="text-white/60 text-[12px] leading-[1.4] mt-0.5">{text}</div>
           </div>
         </div>
       ))}
