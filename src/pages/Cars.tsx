@@ -29,7 +29,7 @@ import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.pn
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
+import mercedesSlkSide from "@/assets/mercedes-slk-side-studio.png";
 import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
 import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
@@ -220,7 +220,7 @@ const Cars = () => {
       id: "6",
       name: "Mercedes-Benz SLK",
       price: "90 EUR",
-      image: mercedesSlkSideClean,
+      image: mercedesSlkSide,
       category: "Kabrioletas",
       passengers: 2,
       fuel: "Benzinas",
@@ -254,7 +254,7 @@ const Cars = () => {
       id: "5",
       name: "KIA CEED",
       price: "nuo 30 EUR",
-      image: kiaCeedHatchbackSideCleanGray,
+      image: kiaCeedHatchbackSideBrown,
       category: "Hecbekas",
       passengers: 5,
       fuel: "Dyzelinas",
