@@ -1,77 +1,53 @@
-## Homepage 1:1 redizainas pagal mockupą
+# Carbonus premium redizainas — planas
 
-Perdarysiu visą homepage taip, kad kuo tiksliau atitiktų atsiųstą dizainą. Automobilių sąrašas, kainos ir logika (rezervavimo forma, laisvų automobilių paieška) lieka tokia pati — keičiasi tik vizualas.
+Dirbame etapais. Šis planas apima **tik ETAPĄ 0** (auditą). Kiekvienas kitas etapas gaus atskirą planą po tavo peržiūros.
 
-### 1. Navigation (`src/components/ui/navigation.tsx`)
-- Baltas fonas, subtili apatinė linija, juodas tekstas
-- Kairėje: logo su mažu žaliu automobiliuko akcentu (naudosiu esamą logo variantą)
-- Centre: Pradžia · Automobiliai · Apie mus · Kontaktai · DUK · Patarimai ir gidas (aktyvi nuoroda — žalia + apatinis brūkšnys)
-- Dešinėje: „LT ▾" mygtukas + žalia apvali „Admin" pill (rodoma tik prisijungus adminui)
-- Scrollinant vis dar slepiasi/rodosi kaip dabar
+## ETAPAS 0 — Pilnas auditas (dabar)
 
-### 2. Hero (`src/components/sections/hero.tsx`)
-Tamsus (`#0E1512`) fonas visai sekcijai. Nauja įkelta žalio SUV nuotrauka bus įkelta per `lovable-assets` ir naudojama kaip hero vaizdas dešinėje pusėje (~55% pločio, be overlay maskavimo — masina turi būti ryški).
+**Rezultatas:** vienas failas `docs/AUDIT-2026.md` (~15–25 psl.). Jokių kodo, DB ar UI pakeitimų. Jokių migracijų.
 
-Kairėje:
-- Mažas caps eyebrow: „KELIAUKITE PATOGIAI, MOKĖKITE PROTINGAI."
-- H1 (didelis, baltas): „Jūsų kelionė prasideda su" + nauja eilutė žalios spalvos „Carbonus."
-- Paragrafas su aprašymu
-- 3 pilki chip badges su ikonomis: „Nauji automobiliai" · „Skaidrios kainos" · „Greitas rezervavimas"
-- Žalias pill mygtukas „Rasti automobilį →"
+### Ką padarysiu
 
-Apačioje (per visą hero plotį): **tamsus rezervavimo bar'as** su 4 stulpeliais:
-- Paėmimo vieta (dropdown „Druskininkai")
-- Paėmimo data (kalendorius)
-- Grąžinimo data (kalendorius)
-- Žalias „Ieškoti automobilių 🔍" mygtukas
+1. **Inventorizacija** — sitemap iš `src/App.tsx`, visų 21 puslapių paskirtis, komponentai, hooks, edge funkcijos (17 vnt.), Supabase lentelės (11 vnt.) ir jų RLS politikos.
+2. **Rezervacijos srauto schema** — nuo hero paieškos iki `payment-success`, su Stripe branch'ais (online / pay-at-counter / admin in-person), `create_reservation` RPC, `send-booking-email`, `verify-stripe-payment`, `send-status-email`.
+3. **Kainodaros auditas** — kaip realiai skaičiuojama: `cars` lentelės pakopos (1–3 / 3–7 / 7+), Mercedes SLK specialus atvejis, `PRICING` fallback `src/config/pricing.ts` (kur dar hardcoded), 24h ciklas `rentalDuration.ts`, avanso logika (50/40/30 €).
+4. **Užimtumo ir konflikto logika** — `reservations` statusai, `car_blocked_dates` (phone_reservation), naujausias serverinis DATE_CONFLICT patikras `create_reservation`, kur dar likę frontend-only tikrinimų.
+5. **Puslapių lentelė** (kritinis / aukštas / vidutinis / žemas) — kiekvienam puslapiui: paskirtis, funkcinės rizikos, dizaino problemos, SEO problemos, siūlomas pakeitimas, prioritetas.
+6. **SEO auditas** — canonical, hreflang, sitemap.xml, robots.txt, structured data, esami URL (numeric ID → slug 301), esami dubliai LT/EN, `SEOHead` naudojimas.
+7. **Analitikos auditas** — GA4/GTM/Meta Pixel integracija (`src/lib/analytics.ts`, `GoogleAnalytics.tsx`, `PixelTester.tsx`), esamų eventų mapping į specifikacijos 16 eventų, dubliavimo rizikos.
+8. **Techninių skolų sąrašas** — hardcoded kainos/tekstai, PII el. laiškuose, `service_role` naudojimas, RLS spragos (per `supabase--linter`), didžiuliai komponentai (Admin.tsx 1732 eil., CarDetail 715 eil., BookingForm 674, send-status-email 750).
+9. **Verslo duomenų klausimynas** — vienas struktūruotas skyrius su ~30–40 laukų, kuriuos privalai užpildyti prieš etapus 2–6 (užstatas pagal automobilį, draudimas, atsakomybė, kilometražas, kuro politika, pristatymo zonos ir kaina, atsiėmimo vieta, darbo laikas, juridiniai rekvizitai, hero video šaltinis, papildomos paslaugos ir jų kainos, promo kodai, refund politika, atšaukimo terminai, gedimo procedūra ir t.t.).
+10. **Ką BŪTINA išsaugoti** — sąrašas: `create_reservation` RPC serverinis konfliktų tikrinimas, Stripe dvigubas kelias (Carbonus + Sanlab), invoice CAR/CARW prefix logika, contract PDF c2 versija, `last_email_sent_status` apsauga nuo dublių, `car_blocked_dates` RLS grants, image protection (data-allow-save exception), draft juodraščiai `localStorage`.
+11. **Etapų sekos rekomendacija** su rizikos atidėjimu:
+    - **Anksti (žema rizika):** Etapas 1 (design system), Etapas 6 (About/FAQ/Contact/Guide redizainas), Etapas 8 (SEO be URL keitimo), Etapas 9 (analitika), Etapas 10 (privatumo/slapukų UI), Etapas 11 (greitis/a11y), Etapas 7 (admin patobulinimai).
+    - **Vidury:** Etapas 2 (pagrindinis puslapis + hero), Etapas 3 (katalogas), Etapas 4 (automobilio puslapis) — dizainas keičiasi, bet rezervacijos motoras nepaliečiamas.
+    - **Pabaigoje (aukšta rizika, atidedami):** Etapas 5 (rezervacijos proceso perkūrimas), Etapas 8-URL (marke-modelis-metai + 301), Etapas 13 (paleidimas).
+12. **Techninės rizikos** — kurie pakeitimai gali paliesti pinigų srautą arba SEO reitingus, kokie rollback žingsniai reikalingi.
 
-Dar žemiau: 3 privalumų juostą su ikonomis (Nemokamas atsiėmimas · Be paslėptų mokesčių · 24/7 klientų pagalba), atskirta plonais vertikaliais separatoriais.
+### Ko NEDARYSIU šiame etape
 
-### 3. Fleet (`src/components/sections/fleet.tsx`)
-- Eyebrow „POPULIARIAUSI AUTOMOBILIAI", H2 „Rinkitės iš mūsų geriausių pasiūlymų", dešinėje „Peržiūrėti visus automobilius →" link
-- **5 kortelės vienoje eilutėje** (dabar 4) — kompaktiškesnės
-- Kiekvienoje kortelėje:
-  - Viršuje: juodas pill su kategorija (kairėje) + geltona žvaigždė su ratingu (dešinėje)
-  - Automobilio nuotrauka baltame fone
-  - Pavadinimas
-  - 4 mažos specs eilutės (2×2 grid): keleiviai · kuras · metai · pavarų dėžė
-  - Apačioje: „nuo **XX €** /d." (kairėje) + žalias „Rinktis" mygtukas (dešinėje)
-- Baltas „Žiūrėti daugiau automobilių →" ghost mygtukas su žalia riba, centre po grid'u
+- Nekeisiu jokių failų, išskyrus `docs/AUDIT-2026.md` sukūrimą.
+- Nevykdysiu Supabase migracijų.
+- Nediegsiu jokių edge funkcijų.
+- Nekurstyliuoju UI.
+- Nesuteikiu galutinių verslo tekstų — tik pažymiu, kur reikia tavo įvesties.
 
-### 4. Features (`src/components/sections/features.tsx`)
-- Šviesiai pilkas/off-white fonas (`bg-secondary/30`)
-- Eyebrow „KODĖL VERTA RINKTIS CARBONUS?!", H2 „Patikima nuoma be rūpesčių"
-- **4 stulpeliai** (dabar 3) su apvaliais šviesiai žaliais ikonų badge'ais: Lengvas užsakymas · Kokybė ir įvairovė · Skaidrios kainos · Klientų palaikymas
+### Įrankiai, kuriuos naudosiu tik SKAITYMUI
 
-### 5. How It Works (`src/components/sections/how-it-works.tsx`)
-Perdarau iš vertikalaus į **horizontalų 4 žingsnių flow**:
-- Eyebrow „KAIP TAI VEIKIA", H2 „Nuoma paprasta kaip 1–2–3–4"
-- 4 apvalūs šviesiai žali badge'ai su ikonom (kalendorius, automobilis, checkmark, raktas)
-- Punktyrinės linijos jungia badge'us
-- Po kiekvienu: mažas skaičius apskritime (1/2/3/4) + pavadinimas + aprašymas
+- `code--view` / `rg` — projekto failams.
+- `supabase--read_query` — realioms lentelėms/politikoms/eilučių pavyzdžiams.
+- `supabase--linter` — RLS ir konfigūracijos spragoms.
+- `seo_chat--list_findings` — dabartinės SEO būklės.
 
-### 6. CTA (`src/components/sections/cta.tsx`)
-- Tamsi kortelė su suapvalintais kampais
-- Kairėje pusėje: SUV nuotrauka (paliksiu esamą arba naudosiu Q3-style)
-- Dešinėje: H2 „Pasiruošę **kelionei**?" (kelionei — žalias), aprašymas, žalias „Užsakyti dabar →" mygtukas
-- Apačioje 3 chip'ai: Geriausios kainos · Nauji automobiliai · Lankstus atlaikimas
+### Po ETAPO 0
 
-### 7. Footer (`src/components/sections/footer.tsx`)
-- Baltas fonas
-- 4 kolonos: Brand (logo + aprašymas + soc. ikonos) · Greita navigacija · Pagalba · MB Carbonus (telefonas, el. paštas, adresas)
-- Apačioje centre: „© 2025 Carbonus. Visos teisės saugomos."
-- Newsletter formos atsisakau (mockupe jos nėra), bet paliksiu funkciją prieinamą per kitą puslapį jei reikės
+Grįžtu su:
+- pilnu `docs/AUDIT-2026.md`,
+- trumpu chat santraukos pranešimu (top-10 kritinių radinių),
+- **ETAPO 1 planu** (design system tokenai, tipografija, komponentai) — patvirtinsi atskirai prieš pradedant.
 
-### Techninės detalės
-- Nauja hero nuotrauka → `src/assets/hero-carbonus-suv.png.asset.json` per `lovable-assets create`
-- Visa spalvinė paletė — semantiniai design tokens (`--primary` jau žalias, `--background`, tamsūs pritaikymai per `hsl(...)` variables jei reikia naujų tonų)
-- Rezervavimo formos logika (state, navigacija į `/laisvi-automobiliai`, date sync) — nepakinta, tik vizualas
-- Visos vertimo raktai (`t('...')`) išlieka, kur reikės naujų label'ų — pridėsiu į LT/EN žodynus
-- Responsive: mobile pasirūpinsiu, kad hero tekstas eitų virš/po nuotraukos, rezervavimo forma sustabčiuota, fleet grid → 1-2 stulpeliai, features/how-it-works → stacked
+Kiekvienas paskesnis etapas gaus savo `plan--create` su: apimtimi, failais, migracijų (jei būtinos) rollback SQL, testų sąrašu, rankinių patikrinimų sąrašu. Nepradedu kito etapo, kol dabartinis neaprobuotas.
 
-### Ko NEDARAU
-- Nekeičiu backend'o, RPC, rezervacijų logikos, kainų
-- Nekeičiu kitų puslapių (`/automobiliai`, `/laisvi-automobiliai`, admin, blog)
-- Neišimu esamų funkcijų (long/hotel tabs paliksiu prieinamus, jei paslėpti — patvirtinsi)
+---
 
-Patvirtinus — vykdau viską vienu ėjimu.
+**Patvirtink ir pradedu ETAPĄ 0 (tik audito failo rašymas).**

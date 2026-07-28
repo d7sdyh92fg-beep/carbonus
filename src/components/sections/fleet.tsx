@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { Users, Fuel, Settings, Star, Calendar, ArrowRight } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar, Crown } from "lucide-react";
 import { useTranslations } from "@/hooks/use-translations";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getCarSlugFromId } from "@/utils/carSlugs";
+import bmw3Clean from "@/assets/bmw-3-clean.png";
+import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
+import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
 import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
@@ -22,137 +27,305 @@ interface Car {
   fuel: string;
   transmission: string;
   rating: number;
+  features: string[];
   year: number;
 }
+
+// Image mapping object
+const imageMap: { [key: string]: string } = {
+  bmw3Clean,
+  chryslerTownCountrySide,
+  vwPassatSideClean,
+  kiaCeedWagonSideClean,
+  kiaCeedHatchbackSideCleanGray,
+};
 
 export function Fleet() {
   const navigate = useNavigate();
   const { t } = useTranslations();
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
+  // Fetch premium status from DB
   const { data: dbCars } = useQuery({
     queryKey: ['cars-premium-status'],
     queryFn: async () => {
-      const { data } = await supabase.from('cars').select('id, is_premium, price_tier1, price_tier3');
+      const { data } = await supabase
+        .from('cars')
+        .select('id, is_premium, price_tier1, price_tier3');
       return data || [];
     },
   });
+  const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
   const getCarDbPrice = (carId: string) => {
     const dbCar = (dbCars || []).find(c => c.id === carId);
-    if (dbCar?.price_tier3) return `${dbCar.price_tier3} €`;
+    if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
     return null;
   };
 
-  const normalize = (t: string) => t.toLowerCase()
-    .replace(/ė/g, 'e').replace(/ą/g, 'a').replace(/į/g, 'i')
-    .replace(/ų/g, 'u').replace(/ū/g, 'u').replace(/č/g, 'c')
-    .replace(/š/g, 's').replace(/ž/g, 'z');
-
-  const cars: Car[] = [
-    { id: "6", name: "Mercedes-Benz SLK", price: "100 €", image: mercedesSlkSide, category: "Kabrioletas", passengers: 2, fuel: "Benzinas", transmission: "Automatinė", rating: 4.9, year: 2015 },
-    { id: "7", name: "Citroën SpaceTourer", price: "80 €", image: citroenSpacetourerSide, category: "Vienatūris", passengers: 8, fuel: "Dyzelinas", transmission: "Automatinė", rating: 4.8, year: 2026 },
-    { id: "8", name: "Hyundai Bayon Cross", price: "50 €", image: hyundaiBayonSide, category: "Krosoveris", passengers: 5, fuel: "Benzinas", transmission: "Automatinė", rating: 4.7, year: 2026 },
-    { id: "3", name: "Volkswagen Passat", price: "30 €", image: vwPassatSideClean, category: "Sedanas", passengers: 5, fuel: "Dyzelinas", transmission: "Mechaninė", rating: 4.7, year: 2012 },
-    { id: "5", name: "KIA CEED", price: "30 €", image: kiaCeedHatchbackSideCleanGray, category: "Hečbekas", passengers: 5, fuel: "Dyzelinas", transmission: "Mechaninė", rating: 4.6, year: 2020 },
-  ];
-
-  const openCar = (id: string) => {
-    const slug = getCarSlugFromId(id, 'lt');
-    if (slug) {
-      navigate(`/automobiliai/${slug}`);
-      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
-    }
+  // Feature key mapping for translation
+  const getFeatureKey = (feature: string): string => {
+    const featureMap: { [key: string]: string } = {
+      'Kondicionierius': 'car.featuresList.airConditioning',
+      'Bluetooth': 'car.featuresList.bluetooth',
+      'GPS navigacija': 'car.featuresList.gpsNavigation',
+      '7 vietos': 'car.featuresList.sevenSeats',
+      'Bagažinė': 'car.featuresList.trunk',
+      'Šeimos automobilis': 'car.featuresList.familyCar',
+      'Ekonomiškas': 'car.featuresList.economical',
+      'Patogus': 'car.featuresList.comfortable',
+      'Didelis bagažas': 'car.featuresList.largeTrunk',
+      'Ekonomiškas vairavimas': 'car.featuresList.economicalDriving',
+      'Erdvus universalas': 'car.featuresList.spaciousWagon',
+      'Patikimas automobilis': 'car.featuresList.reliable',
+      'Ekonomiškas dyzelinis variklis': 'car.featuresList.economicalDiesel',
+      'Modernus LED apšvietimas': 'car.featuresList.modernLED',
+      'Atidaromas stogas': 'car.featuresList.retractableRoof',
+      'Automatinė pavarų dėžė': 'car.featuresList.automaticTransmission',
+      'Sportinis dizainas': 'car.featuresList.sportyDesign',
+      '8 keleivių vietos': 'car.featuresList.nineSeats',
+      'Slankiosios durys': 'car.featuresList.slidingDoors',
+      'Erdvus salonas': 'car.featuresList.spaciousInterior'
+    };
+    return featureMap[feature] || feature;
   };
 
+  // Normalize Lithuanian characters for translation keys
+  const normalizeForTranslation = (text: string): string => {
+    return text.toLowerCase()
+      .replace(/ė/g, 'e')
+      .replace(/ą/g, 'a')
+      .replace(/į/g, 'i')
+      .replace(/ų/g, 'u')
+      .replace(/ū/g, 'u')
+      .replace(/č/g, 'c')
+      .replace(/š/g, 's')
+      .replace(/ž/g, 'z');
+  };
+
+  // Only show available cars (BMW and Chrysler are sold)
+  const cars: Car[] = [
+    {
+      id: "6",
+      name: "Mercedes-Benz SLK",
+      price: "90 EUR",
+      image: mercedesSlkSide,
+      category: "Kabrioletas",
+      passengers: 2,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.9,
+      year: 2015,
+      features: ["Atidaromas stogas", "Automatinė pavarų dėžė", "Sportinis dizainas"]
+    },
+    {
+      id: "7",
+      name: "Citroën SpaceTourer",
+      price: "60 EUR",
+      image: citroenSpacetourerSide,
+      category: "Vienatūris",
+      passengers: 8,
+      fuel: "Dyzelinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: 2026,
+      features: ["8 keleivių vietos", "Slankiosios durys", "Erdvus salonas"]
+    },
+    {
+      id: "8",
+      name: "Hyundai Bayon Cross",
+      price: "50 EUR",
+      image: hyundaiBayonSide,
+      category: "Krosoveris",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 5.0,
+      year: 2026,
+      features: ["Automatinė pavarų dėžė", "Modernus LED apšvietimas", "Naujas automobilis"]
+    },
+    {
+      id: "3",
+      name: "Volkswagen Passat",
+      price: "30 EUR",
+      image: vwPassatSideClean,
+      category: "Sedanas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.7,
+      year: 2012,
+      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
+    },
+    {
+      id: "5",
+      name: "KIA CEED",
+      price: "30 EUR",
+      image: kiaCeedHatchbackSideCleanGray,
+      category: "Hečbekas",
+      passengers: 5,
+      fuel: "Dyzelinas",
+      transmission: "Mechaninė",
+      rating: 4.6,
+      year: 2020,
+      features: ["Ekonomiškas dyzelinis variklis", "Modernus LED apšvietimas", "Patikimas automobilis"]
+    }
+  ];
+
   return (
-    <section id="cars" className="py-16 md:py-24 bg-white">
+    <section id="cars" className="py-20 bg-secondary/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 md:mb-14">
-          <div>
-            <p className="text-[11px] font-semibold text-primary uppercase tracking-[0.2em] mb-3">
-              Populiariausi automobiliai
-            </p>
-            <h2 className="text-3xl md:text-4xl lg:text-[38px] font-bold text-foreground leading-tight">
-              Rinkitės iš mūsų geriausių pasiūlymų
-            </h2>
-          </div>
-          <button
-            onClick={() => { navigate('/automobiliai'); setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100); }}
-            className="text-sm font-semibold text-primary hover:underline inline-flex items-center gap-1.5 shrink-0"
-          >
-            Peržiūrėti visus automobilius <ArrowRight className="h-4 w-4" />
-          </button>
+        <div className="text-center mb-16 animate-fade-in">
+          <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-2">
+            {t('fleet.badge')}
+          </p>
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
+            {t('fleet.title')}
+          </h2>
         </div>
 
-        {/* Cars Grid — 5 in a row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-          {cars.map((car) => (
-            <div
+        {/* Cars Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {cars.slice(0, 4).map((car, index) => (
+            <Card
               key={car.id}
-              className="group bg-white rounded-2xl border border-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 overflow-hidden flex flex-col"
+              className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-background border-0 shadow-card animate-scale-in"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="relative pt-4 px-3">
-                <div className="flex items-start justify-between mb-2">
-                  <span className="inline-flex items-center rounded-full bg-[#0E1512] text-white text-[11px] font-medium px-3 py-1">
-                    {car.category}
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-black/[0.04] px-2 py-1 text-[11px] font-semibold">
-                    <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                    {car.rating}
-                  </span>
+              <CardContent className="p-0">
+                <div className="relative overflow-hidden rounded-t-lg" style={{ background: 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
+                  <div className="relative">
+                    <img
+                      src={car.image}
+                      alt={car.name}
+                      loading="eager"
+                      data-allow-save="true"
+                      onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
+                    className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
+                      !loadedImages.has(car.id) ? "opacity-0" : "opacity-100"
+                    } ${
+                      car.name === "Volkswagen Passat" 
+                        ? "scale-[0.92] group-hover:scale-[0.97]" 
+                        : car.name === "Mercedes-Benz SLK"
+                        ? "scale-[0.92] group-hover:scale-[0.97] translate-y-4"
+                        : car.id === "7"
+                        ? "scale-[1.0] group-hover:scale-[1.05] translate-y-2"
+                        : car.id === "5"
+                        ? "scale-[1.30] group-hover:scale-[1.35] translate-y-3"
+                        : car.id === "8"
+                        ? "scale-[1.35] group-hover:scale-[1.40] translate-y-0"
+                        : "scale-100 group-hover:scale-105 translate-y-4"
+                    }`}
+                    />
+                    {/* Shadow under cars */}
+                    {(car.id === "5" || car.id === "6") && loadedImages.has(car.id) && (
+                      <div 
+                        className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[90%] h-6 rounded-[50%]"
+                        style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
+                      />
+                    )}
+                    {car.id === "8" && loadedImages.has(car.id) && (
+                      <div 
+                        className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[88%] h-6 rounded-[50%]"
+                        style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 70%)' }}
+                      />
+                    )}
+                    {car.id === "7" && loadedImages.has(car.id) && (
+                      <div 
+                        className="absolute bottom-[16%] left-1/2 -translate-x-1/2 w-[96%] h-6 rounded-[50%]"
+                        style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, transparent 70%)' }}
+                      />
+                    )}
+                  </div>
+                  <div className="absolute top-4 left-4 flex gap-1.5">
+                    <Badge variant="secondary" className="bg-primary text-primary-foreground">
+                      {t(`car.categories.${normalizeForTranslation(car.category)}`)}
+                    </Badge>
+                    {premiumCarIds.has(car.id) && (
+                      <Badge variant="secondary" className="bg-amber-500 text-white flex items-center gap-1">
+                        <Crown className="w-3 h-3" />
+                        Premium
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold">{car.rating}</span>
+                  </div>
                 </div>
-                <div className="relative h-28 md:h-32 flex items-center justify-center" style={{ background: 'linear-gradient(180deg,#fff 0%,#f6f7f8 100%)' }}>
-                  <img
-                    src={car.image}
-                    alt={car.name}
-                    loading="lazy"
-                    data-allow-save="true"
-                    onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
-                    className={`max-h-full max-w-full object-contain mix-blend-multiply transition-all duration-300 group-hover:scale-105 ${loadedImages.has(car.id) ? 'opacity-100' : 'opacity-0'}`}
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 pt-3 flex flex-col flex-1">
-                <h3 className="text-[15px] font-semibold text-foreground mb-3 leading-tight">{car.name}</h3>
-
-                <div className="grid grid-cols-2 gap-y-2 gap-x-3 text-[12px] text-muted-foreground mb-4">
-                  <div className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" /><span>{car.passengers}</span></div>
-                  <div className="flex items-center gap-1.5"><Fuel className="h-3.5 w-3.5" /><span>{t(`car.${normalize(car.fuel)}`)}</span></div>
-                  <div className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /><span>{car.year}</span></div>
-                  <div className="flex items-center gap-1.5"><Settings className="h-3.5 w-3.5" /><span>{t(`car.${normalize(car.transmission)}`)}</span></div>
-                </div>
-
-                <div className="flex items-end justify-between mt-auto pt-3 border-t border-black/5">
+                
+                <div className="p-6 space-y-4">
                   <div>
-                    <div className="text-[10px] text-muted-foreground leading-none mb-0.5">nuo</div>
-                    <div className="text-[17px] font-bold text-primary leading-none">
-                      {getCarDbPrice(car.id) || car.price} <span className="text-[12px] font-medium text-muted-foreground">/d.</span>
+                    <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                      {car.name}
+                    </h3>
+                  </div>
+
+                  {/* Car Features */}
+                  <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Users className="w-4 h-4" />
+                      <span>{car.passengers}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Fuel className="w-4 h-4" />
+                      <span>{t(`car.${normalizeForTranslation(car.fuel)}`)}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Settings className="w-4 h-4" />
+                      <span>{t(`car.${normalizeForTranslation(car.transmission)}`)}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{car.year}</span>
                     </div>
                   </div>
-                  <Button
-                    size="sm"
-                    onClick={() => openCar(car.id)}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg h-8 px-4 text-xs font-semibold"
-                  >
-                    Rinktis
-                  </Button>
+
+                  {/* Features List */}
+                  <div className="space-y-1">
+                    {car.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="text-sm text-muted-foreground">
+                        • {t(getFeatureKey(feature))}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center justify-between pt-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('fleet.price')}</p>
+                      <p className="text-2xl font-bold text-primary">{t('fleet.from')} {getCarDbPrice(car.id) || car.price}</p>
+                      <p className="text-xs text-muted-foreground">{t('fleet.perDay')}</p>
+                    </div>
+                    <Button 
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                      onClick={() => {
+                        const slug = getCarSlugFromId(car.id, 'lt');
+                        if (slug) {
+                          navigate(`/automobiliai/${slug}`);
+                          setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+                        }
+                      }}
+                    >
+                      {t('fleet.viewButton')}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
-        {/* View more */}
+        {/* View More Button */}
         <div className="text-center mt-12">
-          <Button
-            variant="outline"
+          <Button 
             size="lg"
-            onClick={() => { navigate('/automobiliai'); setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100); }}
-            className="rounded-full border-primary/30 text-foreground hover:bg-primary/5 hover:text-primary px-8 gap-2"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8"
+            onClick={() => {
+              navigate('/automobiliai');
+              setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+            }}
           >
-            Žiūrėti daugiau automobilių <ArrowRight className="h-4 w-4" />
+            {t('fleet.viewMore')}
           </Button>
         </div>
       </div>
