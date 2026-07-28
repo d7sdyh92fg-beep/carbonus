@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Star, Users, Fuel, CalendarDays, Settings2 } from "lucide-react";
-import mercedesSlk from "@/assets/mercedes-slk-side-clean.png";
+import mercedesSlk from "@/assets/mercedes-slk-side-studio.png";
 import citroen from "@/assets/citroen-spacetourer-side-clean.png";
 import hyundai from "@/assets/hyundai-bayon-side-clean.png";
 import vw from "@/assets/vw-passat-side-clean.png";
-import kia from "@/assets/kia-ceed-hatchback-side-khaki.png";
+import kia from "@/assets/kia-ceed-hatchback-side-brown.png";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 
 type Car = {
@@ -20,6 +20,20 @@ const cars: Car[] = [
   { id: "3", name: "Volkswagen Passat", category: "Sedanas", rating: 4.7, seats: 5, fuel: "Dyzelinas", year: 2012, transmission: "Mechaninė", price: 30, image: vw },
   { id: "5", name: "KIA CEED", category: "Hečbekas", rating: 4.6, seats: 5, fuel: "Dyzelinas", year: 2020, transmission: "Mechaninė", price: 30, image: kia },
 ];
+
+function CarShadow({ carId }: { carId: string }) {
+  const width = carId === "7" ? "w-[96%]" : carId === "8" ? "w-[88%]" : "w-[90%]";
+  return (
+    <div
+      className={`absolute left-1/2 -translate-x-1/2 ${width} h-3 rounded-[50%] blur-md`}
+      style={{
+        bottom: "6%",
+        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 45%, transparent 75%)",
+      }}
+      aria-hidden
+    />
+  );
+}
 
 function CarCard({ car }: { car: Car }) {
   const navigate = useNavigate();
@@ -39,8 +53,8 @@ function CarCard({ car }: { car: Car }) {
       </div>
 
       {/* Image */}
-      <div className="relative mt-2 h-[110px] flex items-center justify-center">
-        <div className="absolute inset-x-4 bottom-1 h-4 bg-gradient-to-b from-black/10 to-transparent rounded-[50%] blur-md" aria-hidden />
+      <div className="relative mt-2 h-[110px] flex items-center justify-center rounded-xl bg-gradient-to-b from-[#f8faf9] to-[#eef1f0]">
+        <CarShadow carId={car.id} />
         <img
           src={car.image}
           alt={car.name}

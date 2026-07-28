@@ -12,8 +12,8 @@ import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
+import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
+import mercedesSlkSide from "@/assets/mercedes-slk-side-studio.png";
 import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
 import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
@@ -37,7 +37,7 @@ const imageMap: { [key: string]: string } = {
   chryslerTownCountrySide,
   vwPassatSideClean,
   kiaCeedWagonSideClean,
-  kiaCeedHatchbackSideCleanGray,
+  kiaCeedHatchbackSideBrown,
 };
 
 export function Fleet() {
@@ -160,7 +160,7 @@ export function Fleet() {
       id: "5",
       name: "KIA CEED",
       price: "30 EUR",
-      image: kiaCeedHatchbackSideCleanGray,
+      image: kiaCeedHatchbackSideBrown,
       category: "Hečbekas",
       passengers: 5,
       fuel: "Dyzelinas",
