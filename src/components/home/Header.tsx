@@ -49,17 +49,18 @@ export function Header() {
           : "bg-transparent"
       )}
     >
-      <div className="max-w-[1280px] mx-auto h-[78px] px-5 md:px-8 lg:px-12 flex items-center justify-between">
+      <div className="max-w-[1320px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Carbonus">
-          <span className="inline-flex items-center gap-1 text-white font-extrabold text-2xl tracking-tight">
+        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Carbonus" style={{ width: 126 }}>
+          <span className="inline-flex items-center gap-1 text-white font-extrabold text-[22px] tracking-tight">
             <span className="text-[hsl(var(--carbonus-green))]">car</span>
             <span>bonus</span>
           </span>
         </Link>
 
+
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-[30px] text-[14px]">
           {NAV.map((item) => {
             const active = pathname === item.to;
             return (
@@ -67,7 +68,7 @@ export function Header() {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "relative text-sm font-medium transition-colors",
+                  "relative text-[14px] font-medium transition-colors",
                   active ? "text-white" : "text-white/80 hover:text-white"
                 )}
               >
@@ -83,7 +84,7 @@ export function Header() {
         {/* Right */}
         <div className="hidden lg:flex items-center gap-3">
           <DropdownMenu>
-            <DropdownMenuTrigger className="inline-flex items-center gap-1.5 h-[42px] px-4 rounded-full bg-white/[0.06] border border-white/10 text-white text-sm font-medium hover:bg-white/[0.10] transition-colors">
+            <DropdownMenuTrigger className="inline-flex items-center gap-1.5 h-[40px] px-4 rounded-full bg-white/[0.06] border border-white/10 text-white text-sm font-medium hover:bg-white/[0.10] transition-colors">
               {language.toUpperCase()} <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[hsl(var(--carbonus-dark-2))] border-white/10 text-white min-w-[100px]">
@@ -94,7 +95,7 @@ export function Header() {
 
           <button
             onClick={() => navigate(isAdmin ? "/admin" : "/auth")}
-            className="inline-flex items-center gap-2 h-[42px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
+            className="inline-flex items-center gap-2 h-[40px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
           >
             <UserCircle className="h-4 w-4" />
             Admin
