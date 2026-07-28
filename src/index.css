@@ -4,6 +4,16 @@
 
 @layer base {
   :root {
+    /* Carbonus brand tokens */
+    --carbonus-green: 147 63% 46%;
+    --carbonus-green-hover: 147 63% 40%;
+    --carbonus-green-dark: 152 89% 24%;
+    --carbonus-green-deep: 156 84% 15%;
+    --carbonus-green-soft: 141 46% 94%;
+    --carbonus-dark: 190 62% 6%;
+    --carbonus-dark-2: 187 51% 9%;
+    --carbonus-dark-3: 184 47% 12%;
+
     --background: 0 0% 100%;
     --foreground: 220 13% 15%;
     --card: 0 0% 100%;

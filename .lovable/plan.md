@@ -1,53 +1,69 @@
-# Carbonus premium redizainas — planas
+# Homepage redizainas 1:1 pagal mockupą
 
-Dirbame etapais. Šis planas apima **tik ETAPĄ 0** (auditą). Kiekvienas kitas etapas gaus atskirą planą po tavo peržiūros.
+Perdarysiu `/` puslapį pagal pateiktą mockupą ir specifikaciją. Esama rezervacijų logika, Supabase užklausos, maršrutai ir edge funkcijos lieka nepaliestos — keičiu tik UI sluoksnį.
 
-## ETAPAS 0 — Pilnas auditas (dabar)
+## Apimtis
 
-**Rezultatas:** vienas failas `docs/AUDIT-2026.md` (~15–25 psl.). Jokių kodo, DB ar UI pakeitimų. Jokių migracijų.
+**Keičiu tik pagrindinį puslapį** (`src/pages/Index.tsx` ir jo sekcijų komponentus). Kiti puslapiai (Cars, CarDetail, AvailableCars, Admin, rezervacijų srautas, checkout, sutartys, email'ai) — nepaliečiami.
 
-### Ką padarysiu
+## Ką padarysiu
 
-1. **Inventorizacija** — sitemap iš `src/App.tsx`, visų 21 puslapių paskirtis, komponentai, hooks, edge funkcijos (17 vnt.), Supabase lentelės (11 vnt.) ir jų RLS politikos.
-2. **Rezervacijos srauto schema** — nuo hero paieškos iki `payment-success`, su Stripe branch'ais (online / pay-at-counter / admin in-person), `create_reservation` RPC, `send-booking-email`, `verify-stripe-payment`, `send-status-email`.
-3. **Kainodaros auditas** — kaip realiai skaičiuojama: `cars` lentelės pakopos (1–3 / 3–7 / 7+), Mercedes SLK specialus atvejis, `PRICING` fallback `src/config/pricing.ts` (kur dar hardcoded), 24h ciklas `rentalDuration.ts`, avanso logika (50/40/30 €).
-4. **Užimtumo ir konflikto logika** — `reservations` statusai, `car_blocked_dates` (phone_reservation), naujausias serverinis DATE_CONFLICT patikras `create_reservation`, kur dar likę frontend-only tikrinimų.
-5. **Puslapių lentelė** (kritinis / aukštas / vidutinis / žemas) — kiekvienam puslapiui: paskirtis, funkcinės rizikos, dizaino problemos, SEO problemos, siūlomas pakeitimas, prioritetas.
-6. **SEO auditas** — canonical, hreflang, sitemap.xml, robots.txt, structured data, esami URL (numeric ID → slug 301), esami dubliai LT/EN, `SEOHead` naudojimas.
-7. **Analitikos auditas** — GA4/GTM/Meta Pixel integracija (`src/lib/analytics.ts`, `GoogleAnalytics.tsx`, `PixelTester.tsx`), esamų eventų mapping į specifikacijos 16 eventų, dubliavimo rizikos.
-8. **Techninių skolų sąrašas** — hardcoded kainos/tekstai, PII el. laiškuose, `service_role` naudojimas, RLS spragos (per `supabase--linter`), didžiuliai komponentai (Admin.tsx 1732 eil., CarDetail 715 eil., BookingForm 674, send-status-email 750).
-9. **Verslo duomenų klausimynas** — vienas struktūruotas skyrius su ~30–40 laukų, kuriuos privalai užpildyti prieš etapus 2–6 (užstatas pagal automobilį, draudimas, atsakomybė, kilometražas, kuro politika, pristatymo zonos ir kaina, atsiėmimo vieta, darbo laikas, juridiniai rekvizitai, hero video šaltinis, papildomos paslaugos ir jų kainos, promo kodai, refund politika, atšaukimo terminai, gedimo procedūra ir t.t.).
-10. **Ką BŪTINA išsaugoti** — sąrašas: `create_reservation` RPC serverinis konfliktų tikrinimas, Stripe dvigubas kelias (Carbonus + Sanlab), invoice CAR/CARW prefix logika, contract PDF c2 versija, `last_email_sent_status` apsauga nuo dublių, `car_blocked_dates` RLS grants, image protection (data-allow-save exception), draft juodraščiai `localStorage`.
-11. **Etapų sekos rekomendacija** su rizikos atidėjimu:
-    - **Anksti (žema rizika):** Etapas 1 (design system), Etapas 6 (About/FAQ/Contact/Guide redizainas), Etapas 8 (SEO be URL keitimo), Etapas 9 (analitika), Etapas 10 (privatumo/slapukų UI), Etapas 11 (greitis/a11y), Etapas 7 (admin patobulinimai).
-    - **Vidury:** Etapas 2 (pagrindinis puslapis + hero), Etapas 3 (katalogas), Etapas 4 (automobilio puslapis) — dizainas keičiasi, bet rezervacijos motoras nepaliečiamas.
-    - **Pabaigoje (aukšta rizika, atidedami):** Etapas 5 (rezervacijos proceso perkūrimas), Etapas 8-URL (marke-modelis-metai + 301), Etapas 13 (paleidimas).
-12. **Techninės rizikos** — kurie pakeitimai gali paliesti pinigų srautą arba SEO reitingus, kokie rollback žingsniai reikalingi.
+### 1. Design system (globalūs pakeitimai)
+- **`index.html`**: pridedu Google Font `Manrope` (400/500/600/700/800).
+- **`tailwind.config.ts`**: `fontFamily.sans = ['Manrope', 'Inter', 'Arial', 'sans-serif']`.
+- **`src/index.css`**: pridedu naujus CSS kintamuosius pagal spec (`--carbonus-green`, `--carbonus-dark`, `--text-primary`, `--page-soft`, `--rating-yellow` ir t.t.) HSL formatu, nekeičiant esamų shadcn tokenų (`--primary`, `--background`) — tik papildau. Papildomos radius, shadow, focus ring utilities.
 
-### Ko NEDARYSIU šiame etape
+### 2. Naujas homepage komponentų medis
+Sukuriu `src/components/home/` katalogą su naujais komponentais, nekeisdamas esamo `src/components/sections/*` (jie lieka, jei kur nors kitur naudojami; jei ne — pašalinsiu iš `Index.tsx` importų):
 
-- Nekeisiu jokių failų, išskyrus `docs/AUDIT-2026.md` sukūrimą.
-- Nevykdysiu Supabase migracijų.
-- Nediegsiu jokių edge funkcijų.
-- Nekurstyliuoju UI.
-- Nesuteikiu galutinių verslo tekstų — tik pažymiu, kur reikia tavo įvesties.
+- `Header.tsx` — permatomas hero viršuje, scroll → dark glass, centrinė navigacija (Pradžia / Automobiliai / Apie mus / Kontaktai / DUK / Patarimai ir gidas), LT dropdown pill + Admin pill. Mobile hamburger + full-screen tamsus meniu. Naudoja esamą `useLanguage` hook ir `AuthContext` (Admin matomas tik prisijungus, kaip dabar).
+- `Hero.tsx` — background image (`user-uploads://carbonus-hero-image.png` → įkelsiu per `lovable-assets`), 3 gradientų overlay, kairėje eyebrow + H1 („Jūsų kelionė / prasideda su / **Carbonus.**") + aprašymas + 3 mini privalumai + „Rasti automobilį" CTA.
+- `HeroBookingForm.tsx` — 4 stulpelių forma (Paėmimo vieta / Paėmimo data / Grąžinimo data / Ieškoti mygtukas). Naudoja esamą `Popover` + `Calendar` + `DateField` logiką iš dabartinio `hero.tsx` (auto-sync trukmės, `formatLt`, navigacija į `/laisvi-automobiliai?pickup=&return=&mode=cars`). Vieta = „Druskininkai" (statiška, kaip mockupe).
+- `HeroTrustRow.tsx` — 3 elementai (Nemokamas atšaukimas / Be paslėptų mokesčių / 24/7 klientų pagalba) su vertikalias skirtukais.
+- `PopularCars.tsx` + `CarCard.tsx` — sekcija su top 5 automobiliais iš Supabase `cars` lentelės (naudos esamą užklausą kaip `fleet.tsx`, tik apribos iki 5 ir naujas kortelės dizainas). Kortelėje: kategorijos badge, rating pill, automobilio nuotrauka (contain, gradient po ja), pavadinimas, meta grid (Users/Fuel/CalendarDays/Settings2), „nuo X € /d." + „Rinktis" mygtukas → `/automobiliai/{slug}`. Reali rating jei duomenų bazėje yra, kitu atveju stabilus pseudo-rating pagal `car.id`. „Peržiūrėti visus" → `/automobiliai`. Loading skeleton + error + empty state.
+- `BenefitsSection.tsx` — 4 kortelės (ShieldCheck / CarFront / Tags / Headphones).
+- `HowItWorks.tsx` — 4 žingsniai su dotted linija tarp icon circles desktop'e, mobile'e vertikali timeline.
+- `BottomCTA.tsx` — 58/42 grid, kairėje SUV nuotrauka (sugeneruosiu per `imagegen`, tamsi, motion blur subtiliai), dešinėje dark gradient + H2 + aprašymas + „Užsakyti dabar" → `/automobiliai` + 3 badges.
+- `Footer.tsx` — dark #07191C, 4 stulpeliai, socials, kontaktai, copyright. Nuorodos į esamus maršrutus (`/`, `/automobiliai`, `/apie-mus`, `/kontaktai`, `/duk`, `/patarimai-ir-gidas`, `/privatumo-politika`, `/nuomos-sutartis`).
 
-### Įrankiai, kuriuos naudosiu tik SKAITYMUI
+### 3. `src/pages/Index.tsx`
+Pilnai pakeičiu importus į naujus `home/*` komponentus. Palieku `LanguageLinks` SEO tag'ą. `Navigation` nebenaudojamas homepage'ui (naujas `Header` pakeičia), bet failas lieka — kiti puslapiai jį vis dar naudoja.
 
-- `code--view` / `rg` — projekto failams.
-- `supabase--read_query` — realioms lentelėms/politikoms/eilučių pavyzdžiams.
-- `supabase--linter` — RLS ir konfigūracijos spragoms.
-- `seo_chat--list_findings` — dabartinės SEO būklės.
+### 4. Assets
+- `carbonus-hero-image.png` → įkelsiu per `lovable-assets create` į `src/assets/carbonus-hero.png.asset.json`.
+- Apatinis CTA SUV → sugeneruosiu per `imagegen` (tamsus SUV, kalnų kelias, subtilus motion blur) → `src/assets/cta-suv.jpg`.
 
-### Po ETAPO 0
+## Ko NEDARYSIU
 
-Grįžtu su:
-- pilnu `docs/AUDIT-2026.md`,
-- trumpu chat santraukos pranešimu (top-10 kritinių radinių),
-- **ETAPO 1 planu** (design system tokenai, tipografija, komponentai) — patvirtinsi atskirai prieš pradedant.
+- Nekeičiu jokių Supabase migracijų, RPC, RLS, edge funkcijų.
+- Nekeičiu `AvailableCars`, `CarDetail`, `BookingForm`, `ReservationReview`, `Admin`, checkout, invoice/contract logikos.
+- Neišmetu `data-allow-save`, image protection, analytics tracking.
+- Nekeičiu i18n raktų reikšmių — mockupe visi tekstai LT, todėl homepage tekstus rašau statiškai LT (kaip ir dabartinis `hero.tsx`), atskirai EN nesiimsiu (galima pridėti vėliau, jei prašysi).
+- Nekeičiu esamų `sections/*` failų — tik nustoju juos importuoti iš `Index.tsx`.
 
-Kiekvienas paskesnis etapas gaus savo `plan--create` su: apimtimi, failais, migracijų (jei būtinos) rollback SQL, testų sąrašu, rankinių patikrinimų sąrašu. Nepradedu kito etapo, kol dabartinis neaprobuotas.
+## Techninės detalės
 
----
+- **Šriftai**: Manrope tik per Tailwind default sans, kad nereikėtų perrašyti visų komponentų.
+- **Spalvos**: naujus tokenus laikau HSL formatu (`--carbonus-green: 149 62% 46%;`) kad veiktų su Tailwind arbitrary values `bg-[hsl(var(--carbonus-green))]`. Kortelėse, mygtukuose ir CTA naudoju šiuos tokenus, ne raw hex.
+- **Header scroll**: `useEffect` + `window.scrollY > 40` → toggle klasę.
+- **Mobile menu**: shadcn `Sheet` komponentas.
+- **Kortelių rating**: jei `cars.rating` stulpelio nėra (patikrinsiu prieš rašydamas), naudosiu deterministinę reikšmę `4.6 + (hash(car.id) % 4) * 0.1`.
+- **Automobilių limitas**: `.limit(5)` + `order('display_order')` (arba dabartinis fleet ordering).
+- **Responsive**: Tailwind breakpoints `md` (768) ir `lg` (1024) pagal spec.
 
-**Patvirtink ir pradedu ETAPĄ 0 (tik audito failo rašymas).**
+## Rizikos
+
+- Jei `Navigation` komponentas turi kokį global side-effect (pvz., analytics), praradau jį homepage'e. **Rizikos mažinimas**: naujame `Header` iškviesiu tą patį hook, jei toks yra.
+- Jei `cars` lentelės schema neturi `category`/`rating`/`year`/`transmission`/`fuel`/`seats` laukų tais pačiais pavadinimais kaip mockupe, mapinsiu iš esamų (`car_type`, `metai`, `pavaru_deze` ir t.t.) — patikrinsiu prieš rašydamas.
+- Manrope šrifto pridėjimas gali paveikti kitus puslapius (visur bus Manrope vietoj dabartinio sans). Tai laikau **pageidautinu** efektu (bendra tipografija), bet paminiu.
+
+## Eiga
+
+1. Perskaityti `src/components/sections/fleet.tsx`, `src/components/ui/navigation.tsx`, `src/hooks/use-language.tsx`, `src/App.tsx` (maršrutai), `src/integrations/supabase/types.ts` (cars lentelės laukai) — patikrinti realius duomenis.
+2. Įkelti hero asset, sugeneruoti CTA asset.
+3. Atnaujinti `index.html`, `index.css`, `tailwind.config.ts`.
+4. Sukurti `src/components/home/*` failus.
+5. Perrašyti `src/pages/Index.tsx`.
+6. Typecheck + vizualus patikrinimas Playwright'u (desktop 1280, tablet 900, mobile 390) side-by-side su mockupu.
+
+Po patvirtinimo pradedu.
