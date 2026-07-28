@@ -1,0 +1,121 @@
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, Star, Users, Fuel, CalendarDays, Settings2 } from "lucide-react";
+import mercedesSlk from "@/assets/mercedes-slk-side-clean.png";
+import citroen from "@/assets/citroen-spacetourer-side-clean.png";
+import hyundai from "@/assets/hyundai-bayon-side-clean.png";
+import vw from "@/assets/vw-passat-side-clean.png";
+import kia from "@/assets/kia-ceed-hatchback-side-khaki.png";
+import { getCarSlugFromId } from "@/utils/carSlugs";
+
+type Car = {
+  id: string; name: string; category: string; rating: number;
+  seats: number; fuel: string; year: number; transmission: string;
+  price: number; image: string;
+};
+
+const cars: Car[] = [
+  { id: "6", name: "Mercedes-Benz SLK", category: "Kabrioletas", rating: 4.9, seats: 2, fuel: "Benzinas", year: 2015, transmission: "Automatinė", price: 100, image: mercedesSlk },
+  { id: "7", name: "Citroën SpaceTourer", category: "Vienatūris", rating: 4.8, seats: 8, fuel: "Dyzelinas", year: 2026, transmission: "Automatinė", price: 80, image: citroen },
+  { id: "8", name: "Hyundai Bayon Cross", category: "Visureigis", rating: 4.7, seats: 5, fuel: "Benzinas", year: 2020, transmission: "Automatinė", price: 30, image: hyundai },
+  { id: "3", name: "Volkswagen Passat", category: "Sedanas", rating: 4.7, seats: 5, fuel: "Dyzelinas", year: 2012, transmission: "Mechaninė", price: 30, image: vw },
+  { id: "5", name: "KIA CEED", category: "Hečbekas", rating: 4.6, seats: 5, fuel: "Dyzelinas", year: 2020, transmission: "Mechaninė", price: 30, image: kia },
+];
+
+function CarCard({ car }: { car: Car }) {
+  const navigate = useNavigate();
+  const slug = getCarSlugFromId(car.id, "lt");
+  const open = () => navigate(slug ? `/automobiliai/${slug}` : "/automobiliai");
+  return (
+    <div className="group flex flex-col rounded-2xl bg-white border border-[hsl(var(--border))] p-3.5 shadow-[0_10px_35px_rgba(18,35,29,0.07)] hover:shadow-[0_18px_45px_rgba(18,35,29,0.12)] hover:-translate-y-1 transition-all duration-200">
+      {/* Top row */}
+      <div className="flex items-center justify-between">
+        <span className="inline-flex items-center h-6 rounded-full bg-[hsl(var(--carbonus-dark))] text-white text-[11px] font-semibold px-2.5">
+          {car.category}
+        </span>
+        <span className="inline-flex items-center gap-1 h-6 rounded-full bg-white text-[11px] font-semibold px-2 shadow-sm border border-[hsl(var(--border))]">
+          <Star className="h-3 w-3 fill-[hsl(var(--rating-yellow,42_100%_65%))] text-[hsl(var(--rating-yellow,42_100%_65%))]" style={{ color: "#FFC44D", fill: "#FFC44D" }} />
+          {car.rating.toFixed(1)}
+        </span>
+      </div>
+
+      {/* Image */}
+      <div className="relative mt-2 h-[110px] flex items-center justify-center">
+        <div className="absolute inset-x-4 bottom-1 h-4 bg-gradient-to-b from-black/10 to-transparent rounded-[50%] blur-md" aria-hidden />
+        <img
+          src={car.image}
+          alt={car.name}
+          data-allow-save="true"
+          loading="lazy"
+          className="max-h-[110px] w-auto object-contain relative z-10"
+          onContextMenu={(e) => e.stopPropagation()}
+        />
+      </div>
+
+      {/* Title */}
+      <h3 className="mt-2 text-[15px] font-bold text-[hsl(var(--text-primary,220_20%_10%))] text-[#12191A] min-h-[40px]">{car.name}</h3>
+
+      {/* Meta */}
+      <div className="grid grid-cols-2 gap-y-2 gap-x-3 text-[12px] text-[#697475]">
+        <span className="inline-flex items-center gap-1.5"><Users className="h-3.5 w-3.5" />{car.seats}</span>
+        <span className="inline-flex items-center gap-1.5"><Fuel className="h-3.5 w-3.5" />{car.fuel}</span>
+        <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5" />{car.year}</span>
+        <span className="inline-flex items-center gap-1.5"><Settings2 className="h-3.5 w-3.5" />{car.transmission}</span>
+      </div>
+
+      {/* Bottom */}
+      <div className="mt-3 pt-3 border-t border-[hsl(var(--border))] flex items-end justify-between">
+        <div>
+          <div className="text-[11px] text-[#8B9494]">nuo</div>
+          <div className="text-[22px] font-extrabold text-[hsl(var(--carbonus-green))] leading-none">
+            {car.price} € <span className="text-xs text-[#8B9494] font-medium">/d.</span>
+          </div>
+        </div>
+        <button
+          onClick={open}
+          className="h-[42px] px-4 rounded-lg text-white text-sm font-bold bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:brightness-110 transition"
+        >
+          Rinktis
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function PopularCars() {
+  const navigate = useNavigate();
+  return (
+    <section id="popular-cars" className="bg-white pt-[72px] pb-[84px]">
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+          <div>
+            <div className="text-[12px] uppercase tracking-[0.10em] font-bold text-[hsl(var(--carbonus-green))]">
+              Populiariausi automobiliai
+            </div>
+            <h2 className="mt-2 font-extrabold tracking-[-0.025em] text-[#12191A]" style={{ fontSize: "clamp(26px, 3.4vw, 34px)", lineHeight: 1.18 }}>
+              Rinkitės iš mūsų geriausių pasiūlymų
+            </h2>
+          </div>
+          <button
+            onClick={() => navigate("/automobiliai")}
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[hsl(var(--carbonus-green))] hover:text-[hsl(var(--carbonus-green-hover))]"
+          >
+            Peržiūrėti visus automobilius <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {cars.map((c) => <CarCard key={c.id} car={c} />)}
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={() => navigate("/automobiliai")}
+            className="inline-flex items-center justify-center gap-2 h-[46px] w-full sm:w-[330px] rounded-lg bg-white border-2 border-[hsl(var(--carbonus-green))] text-[hsl(var(--carbonus-green))] font-bold text-sm hover:bg-[hsl(var(--carbonus-green-soft))] transition"
+          >
+            Žiūrėti daugiau automobilių <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}

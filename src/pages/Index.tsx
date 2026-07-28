@@ -1,21 +1,22 @@
-import { Navigation } from "@/components/ui/navigation";
-import { Hero } from "@/components/sections/hero";
-import { Fleet } from "@/components/sections/fleet";
-import { Features } from "@/components/sections/features";
-import { HowItWorks } from "@/components/sections/how-it-works";
-import { CTA } from "@/components/sections/cta";
-import { Footer } from "@/components/sections/footer";
+import { Header } from "@/components/home/Header";
+import { Hero } from "@/components/home/Hero";
+import { PopularCars } from "@/components/home/PopularCars";
+import { BenefitsSection } from "@/components/home/BenefitsSection";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { BottomCTA } from "@/components/home/BottomCTA";
+import { Footer } from "@/components/home/Footer";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-transparent md:bg-background">
-      <Navigation logo="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" />
+    <div className="min-h-screen bg-white font-sans text-[#12191A]">
+      <LanguageLinks />
+      <Header />
       <Hero />
-      <Fleet />
-      <Features />
+      <PopularCars />
+      <BenefitsSection />
       <HowItWorks />
-      <CTA />
+      <BottomCTA />
       <Footer />
     </div>
   );
