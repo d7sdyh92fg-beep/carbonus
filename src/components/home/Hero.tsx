@@ -20,7 +20,7 @@ export function Hero() {
           src={heroBg.url}
           alt="Carbonus – premium automobilių nuoma"
           className="w-full h-full object-cover"
-          style={{ objectPosition: "58% center" }}
+          style={{ objectPosition: "58% calc(50% - 20px)" }}
           fetchPriority="high"
         />
         {/* Left gradient for readability — lighter on the right so vehicle stays visible */}
@@ -36,10 +36,10 @@ export function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-[1320px] mx-auto px-6 md:px-12 pt-[126px] pb-[64px] lg:pb-[92px] min-h-[700px] flex flex-col">
+      <div className="relative z-10 max-w-[1360px] mx-auto px-6 md:px-12 pt-[126px] pb-[64px] lg:pb-[92px] min-h-[700px] flex flex-col">
         <div className="flex-1 flex flex-col justify-center">
           <div className="max-w-[510px]">
-            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/60 mb-4">
+            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
               Keliaukite patogiai. Mokėkite protingai.
             </div>
             <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.02, letterSpacing: "-0.04em", fontWeight: 800 }}>

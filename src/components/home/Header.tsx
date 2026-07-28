@@ -49,7 +49,7 @@ export function Header() {
           : "bg-transparent"
       )}
     >
-      <div className="max-w-[1320px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-[1360px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Carbonus" style={{ width: 126 }}>
           <span className="inline-flex items-center gap-1 text-white font-extrabold text-[22px] tracking-tight">
