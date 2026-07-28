@@ -19,12 +19,13 @@ export function Hero() {
         <img
           src={heroBg.url}
           alt="Carbonus – premium automobilių nuoma"
-          className="w-full h-full object-cover object-[center_center]"
+          className="w-full h-full object-cover"
+          style={{ objectPosition: "58% center" }}
           fetchPriority="high"
         />
-        {/* Left gradient for readability */}
+        {/* Left gradient for readability — lighter on the right so vehicle stays visible */}
         <div aria-hidden className="absolute inset-0" style={{
-          background: "linear-gradient(90deg, rgba(3,18,20,0.96) 0%, rgba(3,18,20,0.82) 32%, rgba(3,18,20,0.28) 64%, rgba(3,18,20,0.12) 100%)"
+          background: "linear-gradient(90deg, rgba(2,18,20,0.96) 0%, rgba(2,18,20,0.82) 30%, rgba(2,18,20,0.34) 57%, rgba(2,18,20,0.12) 100%)"
         }} />
         <div aria-hidden className="absolute inset-x-0 top-0 h-40" style={{
           background: "linear-gradient(180deg, rgba(2,15,17,0.52) 0%, rgba(2,15,17,0.05) 100%)"
@@ -35,18 +36,18 @@ export function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-[126px] pb-[64px] lg:pb-[92px] min-h-[690px] flex flex-col">
+      <div className="relative z-10 max-w-[1320px] mx-auto px-6 md:px-12 pt-[126px] pb-[64px] lg:pb-[92px] min-h-[700px] flex flex-col">
         <div className="flex-1 flex flex-col justify-center">
-          <div className="max-w-[500px]">
+          <div className="max-w-[510px]">
             <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/60 mb-4">
               Keliaukite patogiai. Mokėkite protingai.
             </div>
-            <h1 className="font-extrabold text-white leading-[1.04] tracking-[-0.035em]" style={{ fontSize: "clamp(38px, 5.4vw, 58px)" }}>
+            <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.02, letterSpacing: "-0.04em", fontWeight: 800 }}>
               <span className="block">Jūsų kelionė</span>
               <span className="block">prasideda su</span>
               <span className="block text-[hsl(var(--carbonus-green))]">Carbonus.</span>
             </h1>
-            <p className="mt-5 text-white/75 text-base leading-[1.65] max-w-[430px]">
+            <p className="mt-5 text-white/75 text-base leading-[1.65] max-w-[450px]">
               Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
             </p>
 
@@ -80,3 +81,4 @@ export function Hero() {
     </section>
   );
 }
+
