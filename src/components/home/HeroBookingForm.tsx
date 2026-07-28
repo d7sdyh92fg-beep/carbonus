@@ -24,7 +24,7 @@ function FieldShell({ label, icon, trailing, onClick, children }: {
     <button
       type="button"
       onClick={onClick}
-      className="w-full text-left rounded-lg bg-white/[0.055] border border-white/[0.06] hover:bg-white/[0.09] transition-colors min-h-[54px] px-3.5 py-2 flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--carbonus-green)/0.4)]"
+      className="w-full text-left rounded-lg bg-white/[0.055] border border-white/[0.06] hover:bg-white/[0.09] transition-colors h-[56px] px-3.5 py-2 flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--carbonus-green)/0.4)]"
     >
       <span className="text-[hsl(var(--carbonus-green))] shrink-0">{icon}</span>
       <span className="flex-1 min-w-0">
@@ -35,6 +35,7 @@ function FieldShell({ label, icon, trailing, onClick, children }: {
     </button>
   );
 }
+
 
 export function HeroBookingForm() {
   const navigate = useNavigate();
@@ -52,8 +53,24 @@ export function HeroBookingForm() {
   };
 
   return (
-    <div className="w-full rounded-[15px] bg-[hsl(var(--carbonus-dark-2)/0.88)] backdrop-blur-xl border border-white/10 shadow-[0_16px_50px_rgba(0,0,0,0.35)] p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.1fr_1fr_1fr_0.95fr] gap-3">
+    <div
+      className="w-full backdrop-blur-xl shadow-[0_16px_50px_rgba(0,0,0,0.35)]"
+      style={{
+        minHeight: 82,
+        padding: 13,
+        borderRadius: 14,
+        background: "rgba(10, 31, 32, 0.94)",
+        border: "1px solid rgba(255,255,255,0.12)",
+      }}
+    >
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 gap-[10px] lg:gap-[10px]"
+        style={{
+          gridTemplateColumns: undefined,
+        }}
+      >
+        <div className="hidden lg:grid col-span-full" style={{ display: "grid", gridTemplateColumns: "minmax(210px,1.15fr) minmax(190px,1fr) minmax(190px,1fr) minmax(220px,1.15fr)", gap: 10 }}>
+
         {/* Location */}
         <FieldShell
           label="Paėmimo vieta"
