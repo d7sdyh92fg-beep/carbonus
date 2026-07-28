@@ -1,6 +1,6 @@
 import { ShieldCheck, BadgeDollarSign, Zap, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import heroBg from "@/assets/carbonus-hero.png.asset.json";
+import heroBg from "@/assets/carbonus-hero-suv.png.asset.json";
 import { HeroBookingForm } from "./HeroBookingForm";
 import { HeroTrustRow } from "./HeroTrustRow";
 
