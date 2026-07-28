@@ -36,7 +36,10 @@ export function Hero() {
             <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
               Keliaukite patogiai. Mokėkite protingai.
             </div>
-            <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.02, letterSpacing: "-0.02em", fontWeight: 800 }}>
+            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
+              Keliaukite patogiai. Mokėkite protingai.
+            </div>
+            <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.04, letterSpacing: "-0.01em", fontWeight: 800 }}>
               <span className="block">Jūsų kelionė</span>
               <span className="block">prasideda su</span>
               <span className="block text-[hsl(var(--carbonus-green))]">Carbonus.</span>
