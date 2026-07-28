@@ -54,13 +54,13 @@ export function HeroBookingForm() {
 
   return (
     <div
-      className="w-full backdrop-blur-xl shadow-[0_16px_50px_rgba(0,0,0,0.35)]"
+      className="w-full backdrop-blur-2xl shadow-[0_16px_50px_rgba(0,0,0,0.28)]"
       style={{
         minHeight: 82,
         padding: 13,
         borderRadius: 14,
-        background: "rgba(10, 31, 32, 0.94)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "rgba(10, 31, 32, 0.42)",
+        border: "1px solid rgba(255,255,255,0.14)",
       }}
     >
       <div className="grid gap-[10px] grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(210px,1.15fr)_minmax(190px,1fr)_minmax(190px,1fr)_minmax(220px,1.15fr)]">
