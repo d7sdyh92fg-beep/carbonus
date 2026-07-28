@@ -1,14 +1,8 @@
-import { ShieldCheck, BadgeDollarSign, Zap, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/carbonus-hero-suv.png.asset.json";
 import { HeroBookingForm } from "./HeroBookingForm";
 import { HeroTrustRow } from "./HeroTrustRow";
-
-const miniFeatures = [
-  { icon: ShieldCheck, label: "Nauji automobiliai" },
-  { icon: BadgeDollarSign, label: "Skaidrios kainos" },
-  { icon: Zap, label: "Greitas rezervavimas" },
-];
 
 export function Hero() {
   const navigate = useNavigate();
