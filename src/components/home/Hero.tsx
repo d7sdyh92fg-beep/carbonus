@@ -56,7 +56,7 @@ export function Hero() {
         </div>
 
         {/* Booking form at bottom */}
-        <div className="mt-10 lg:mt-14">
+        <div className="mt-16 lg:mt-24">
           <HeroBookingForm />
           <HeroTrustRow />
         </div>
