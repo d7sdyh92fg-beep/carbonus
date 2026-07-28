@@ -1,14 +1,8 @@
-import { ShieldCheck, BadgeDollarSign, Zap, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/carbonus-hero-suv.png.asset.json";
 import { HeroBookingForm } from "./HeroBookingForm";
 import { HeroTrustRow } from "./HeroTrustRow";
-
-const miniFeatures = [
-  { icon: ShieldCheck, label: "Nauji automobiliai" },
-  { icon: BadgeDollarSign, label: "Skaidrios kainos" },
-  { icon: Zap, label: "Greitas rezervavimas" },
-];
 
 export function Hero() {
   const navigate = useNavigate();
@@ -42,7 +36,10 @@ export function Hero() {
             <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
               Keliaukite patogiai. Mokėkite protingai.
             </div>
-            <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.02, letterSpacing: "-0.04em", fontWeight: 800 }}>
+            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
+              Keliaukite patogiai. Mokėkite protingai.
+            </div>
+            <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.04, letterSpacing: "-0.01em", fontWeight: 800 }}>
               <span className="block">Jūsų kelionė</span>
               <span className="block">prasideda su</span>
               <span className="block text-[hsl(var(--carbonus-green))]">Carbonus.</span>
@@ -50,17 +47,6 @@ export function Hero() {
             <p className="mt-5 text-white/75 text-base leading-[1.65] max-w-[450px]">
               Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
             </p>
-
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-              {miniFeatures.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-2 text-[13px] text-white/85">
-                  <span className="inline-flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[hsl(var(--carbonus-green)/0.15)] border border-[hsl(var(--carbonus-green)/0.35)]">
-                    <Icon className="h-3.5 w-3.5 text-[hsl(var(--carbonus-green))]" aria-hidden />
-                  </span>
-                  {label}
-                </div>
-              ))}
-            </div>
 
             <button
               type="button"
