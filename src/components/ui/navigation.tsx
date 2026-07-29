@@ -6,7 +6,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "@/hooks/use-translations";
 import { getRoute } from "@/utils/routes";
-import logo from "@/assets/carbonus-logo-white.png";
+import logo from "@/assets/logo-white.png.asset.json";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,7 +67,7 @@ export function Navigation({ logo: logoProp }: NavigationProps) {
     return location.pathname === ltPath || location.pathname === enPath;
   };
 
-  const logoSrc = logoProp || logo;
+  const logoSrc = logoProp || logo.url;
 
   return (
     <nav

@@ -77,7 +77,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <img 
-              src="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" 
+              src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" 
               alt="Carbonus Logo" 
               className="h-16 md:h-24 lg:h-36 mb-6"
             />
