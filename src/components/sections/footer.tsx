@@ -70,7 +70,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-gray-100 text-foreground">
+    <footer className="bg-[#07191C] text-white">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -81,7 +81,7 @@ export function Footer() {
               alt="Carbonus Logo" 
               className="h-16 md:h-24 lg:h-36 mb-6"
             />
-            <p className="text-muted-foreground mb-6 max-w-md">
+            <p className="text-white/70 mb-6 max-w-md">
               {t('footer.brand.description')}
             </p>
             <div className="mt-4 max-w-sm">
