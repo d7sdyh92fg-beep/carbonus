@@ -14,7 +14,7 @@ export function Hero() {
           src={heroBg.url}
           alt="Carbonus – premium automobilių nuoma"
           className="w-full h-full object-cover"
-          style={{ objectPosition: "42% center" }}
+          style={{ objectPosition: "50% center" }}
           fetchPriority="high"
         />
         {/* Left gradient for readability — lighter on the right so vehicle stays visible */}
