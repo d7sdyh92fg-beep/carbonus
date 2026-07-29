@@ -56,14 +56,14 @@ function CarCard({ car }: { car: Car }) {
       </div>
 
       {/* Image */}
-      <div className="relative mt-4 h-[312px] flex items-end justify-center">
+      <div className="relative mt-4 h-[240px] flex items-end justify-center">
         <CarShadow carId={car.id} />
         <img
           src={car.image}
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className={`w-[96%] max-w-[360px] max-h-[252px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] ${car.id === "8" ? "translate-y-[33px]" : car.id === "5" ? "translate-y-[40px]" : car.id === "6" || car.id === "7" ? "-translate-y-[5px]" : ""}`}
+          className={`w-[96%] max-w-[300px] max-h-[200px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] ${car.id === "8" ? "translate-y-[25px]" : car.id === "5" ? "translate-y-[30px]" : car.id === "6" || car.id === "7" ? "-translate-y-[4px]" : ""}`}
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
