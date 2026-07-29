@@ -111,25 +111,25 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4 text-primary">{t('footer.quickLinks.title')}</h4>
+            <h4 className="font-semibold mb-4 text-[hsl(var(--carbonus-green))]">{t('footer.quickLinks.title')}</h4>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleLinkClick("home")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("home")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.quickLinks.home')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("cars")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("cars")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.quickLinks.cars')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("about")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("about")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.quickLinks.about')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("contact")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("contact")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.quickLinks.contact')}
                 </button>
               </li>
@@ -138,25 +138,25 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold mb-4 text-primary">{t('footer.support.title')}</h4>
+            <h4 className="font-semibold mb-4 text-[hsl(var(--carbonus-green))]">{t('footer.support.title')}</h4>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleLinkClick("faq")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("faq")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.support.faq')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("privacy")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("privacy")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.support.privacy')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("leaseAgreement")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("leaseAgreement")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.support.terms')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("blog")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("blog")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
                   {t('footer.support.blog')}
                 </button>
               </li>
@@ -165,7 +165,7 @@ export function Footer() {
         </div>
 
         {/* Company Information */}
-        <div className="border-t border-border mt-12 pt-8">
+        <div className="border-t border-white/10 mt-12 pt-8">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Company Details */}
             <div>
