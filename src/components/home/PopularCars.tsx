@@ -25,11 +25,11 @@ function CarShadow({ carId }: { carId: string }) {
   const width = carId === "7" ? "w-[92%]" : carId === "8" ? "w-[82%]" : carId === "6" ? "w-[78%]" : "w-[85%]";
   return (
     <div
-      className={`absolute left-1/2 -translate-x-1/2 ${width} h-5 rounded-[50%]`}
+      className={`absolute left-1/2 -translate-x-1/2 ${width} h-4 rounded-[50%] z-0`}
       style={{
-        bottom: "10%",
-        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.08) 70%, transparent 85%)",
-        filter: "blur(6px)",
+        bottom: "14%",
+        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
+        filter: "blur(5px)",
       }}
       aria-hidden
     />
@@ -41,54 +41,64 @@ function CarCard({ car }: { car: Car }) {
   const navigate = useNavigate();
   const slug = getCarSlugFromId(car.id, "lt");
   const open = () => navigate(slug ? `/automobiliai/${slug}` : "/automobiliai");
+
+  // Per-car image scaling to fill card visually like reference
+  const imgScale =
+    car.id === "6" ? "scale-[1.05] translate-y-1"
+    : car.id === "7" ? "scale-[1.08]"
+    : car.id === "8" ? "scale-[1.15]"
+    : car.id === "3" ? "scale-[1.05]"
+    : car.id === "5" ? "scale-[1.15]"
+    : "scale-100";
+
   return (
-    <div className="group flex flex-col rounded-2xl bg-white border border-[hsl(var(--border))] p-3.5 shadow-[0_10px_35px_rgba(18,35,29,0.07)] hover:shadow-[0_18px_45px_rgba(18,35,29,0.12)] hover:-translate-y-1 transition-all duration-200">
+    <div className="group flex flex-col rounded-2xl bg-white border border-[hsl(var(--border))] p-5 shadow-[0_8px_24px_rgba(18,35,29,0.06)] hover:shadow-[0_18px_40px_rgba(18,35,29,0.12)] hover:-translate-y-1 transition-all duration-200">
       {/* Top row */}
       <div className="flex items-center justify-between">
-        <span className="inline-flex items-center h-6 rounded-full bg-[hsl(var(--carbonus-dark))] text-white text-[11px] font-semibold px-2.5">
+        <span className="inline-flex items-center h-7 rounded-full bg-[hsl(var(--carbonus-dark))] text-white text-[12px] font-semibold px-3">
           {car.category}
         </span>
-        <span className="inline-flex items-center gap-1 h-6 rounded-full bg-white text-[11px] font-semibold px-2 shadow-sm border border-[hsl(var(--border))]">
-          <Star className="h-3 w-3 fill-[hsl(var(--rating-yellow,42_100%_65%))] text-[hsl(var(--rating-yellow,42_100%_65%))]" style={{ color: "#FFC44D", fill: "#FFC44D" }} />
+        <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-[#12191A]">
+          <Star className="h-4 w-4" style={{ color: "#FFC44D", fill: "#FFC44D" }} />
           {car.rating.toFixed(1)}
         </span>
       </div>
 
       {/* Image */}
-      <div className="relative mt-2 h-[110px] flex items-center justify-center rounded-xl bg-gradient-to-b from-[#f8faf9] to-[#eef1f0]">
+      <div className="relative mt-3 h-[150px] flex items-end justify-center">
         <CarShadow carId={car.id} />
         <img
           src={car.image}
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className="max-h-[110px] w-auto object-contain relative z-10"
+          className={`max-h-[130px] w-auto object-contain relative z-10 mix-blend-multiply transition-transform duration-300 ${imgScale} group-hover:scale-[1.05]`}
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
 
       {/* Title */}
-      <h3 className="mt-2 text-[15px] font-bold text-[hsl(var(--text-primary,220_20%_10%))] text-[#12191A] min-h-[40px]">{car.name}</h3>
+      <h3 className="mt-4 text-[17px] font-bold text-[#12191A]">{car.name}</h3>
 
       {/* Meta */}
-      <div className="grid grid-cols-2 gap-y-2 gap-x-3 text-[12px] text-[#697475]">
-        <span className="inline-flex items-center gap-1.5"><Users className="h-3.5 w-3.5" />{car.seats}</span>
-        <span className="inline-flex items-center gap-1.5"><Fuel className="h-3.5 w-3.5" />{car.fuel}</span>
-        <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5" />{car.year}</span>
-        <span className="inline-flex items-center gap-1.5"><Settings2 className="h-3.5 w-3.5" />{car.transmission}</span>
+      <div className="mt-3 grid grid-cols-2 gap-y-2.5 gap-x-3 text-[13px] text-[#697475]">
+        <span className="inline-flex items-center gap-2"><Users className="h-4 w-4" />{car.seats}</span>
+        <span className="inline-flex items-center gap-2"><Fuel className="h-4 w-4" />{car.fuel}</span>
+        <span className="inline-flex items-center gap-2"><CalendarDays className="h-4 w-4" />{car.year}</span>
+        <span className="inline-flex items-center gap-2"><Settings2 className="h-4 w-4" />{car.transmission}</span>
       </div>
 
       {/* Bottom */}
-      <div className="mt-3 pt-3 border-t border-[hsl(var(--border))] flex items-end justify-between">
+      <div className="mt-5 flex items-end justify-between">
         <div>
-          <div className="text-[11px] text-[#8B9494]">nuo</div>
-          <div className="text-[22px] font-extrabold text-[hsl(var(--carbonus-green))] leading-none">
-            {car.price} € <span className="text-xs text-[#8B9494] font-medium">/d.</span>
+          <div className="text-[12px] text-[#8B9494] leading-none mb-1">nuo</div>
+          <div className="text-[24px] font-extrabold text-[hsl(var(--carbonus-green))] leading-none">
+            {car.price} € <span className="text-[13px] text-[#8B9494] font-medium">/d.</span>
           </div>
         </div>
         <button
           onClick={open}
-          className="h-[42px] px-4 rounded-lg text-white text-sm font-bold bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:brightness-110 transition"
+          className="h-[38px] px-5 rounded-lg text-white text-[13px] font-bold bg-[hsl(var(--carbonus-green))] hover:bg-[hsl(var(--carbonus-green-hover))] transition"
         >
           Rinktis
         </button>
