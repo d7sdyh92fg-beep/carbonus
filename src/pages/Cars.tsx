@@ -25,11 +25,11 @@ import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
 import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
-import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-brown.png";
+import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSide from "@/assets/mercedes-slk-side-studio.png";
+import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
 import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
 import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
