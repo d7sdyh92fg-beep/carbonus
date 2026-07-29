@@ -10,7 +10,8 @@ const items = [
 export function BenefitsSection() {
   return (
     <section className="border-t border-[#EDF1EF] py-[66px] md:py-[78px]" style={{ background: "linear-gradient(180deg,#F7FAF8 0%,#FFFFFF 100%)" }}>
-      <div className="max-w-[1120px] mx-auto px-5 md:px-8 text-center">
+      <div className="max-w-[1360px] mx-auto px-6 md:px-12 text-center">
+
         <div className="text-[12px] uppercase tracking-[0.10em] font-bold text-[hsl(var(--carbonus-green))]">
           Kodėl verta rinktis Carbonus?!
         </div>

@@ -6,7 +6,8 @@ export function BottomCTA() {
   const navigate = useNavigate();
   return (
     <section className="bg-white pt-4 pb-[44px]">
-      <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <div className="max-w-[1360px] mx-auto px-6 md:px-12">
+
         <div className="grid grid-cols-1 lg:grid-cols-[58%_42%] rounded-[18px] overflow-hidden shadow-[0_18px_55px_rgba(6,25,27,0.16)] bg-[hsl(var(--carbonus-dark-2))] min-h-[250px]">
           <div className="relative min-h-[220px] lg:min-h-[250px]">
             <img src={ctaSuv} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />

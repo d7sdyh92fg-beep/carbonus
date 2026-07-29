@@ -5,7 +5,8 @@ export function Footer() {
   return (
     <footer className="relative bg-[#07191C] text-white pt-14 pb-6 overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-[hsl(var(--carbonus-green)/0.08)] blur-[120px]" />
-      <div className="relative max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <div className="relative max-w-[1360px] mx-auto px-6 md:px-12">
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 lg:gap-[70px]">
           <div>
             <div className="text-2xl font-extrabold">
