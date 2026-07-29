@@ -51,11 +51,8 @@ export function Header() {
     >
       <div className="max-w-[1360px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Carbonus" style={{ width: 126 }}>
-          <span className="inline-flex items-center gap-1 text-white font-extrabold text-[22px] tracking-tight">
-            <span className="text-[hsl(var(--carbonus-green))]">car</span>
-            <span>bonus</span>
-          </span>
+        <Link to="/" className="flex items-center shrink-0" aria-label="Carbonus" style={{ width: 126 }}>
+          <img src={carbonusLogo} alt="Carbonus" className="h-8 w-auto" />
         </Link>
 
 
@@ -116,9 +113,7 @@ export function Header() {
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] bg-[hsl(var(--carbonus-dark))] flex flex-col">
           <div className="h-[68px] px-5 flex items-center justify-between border-b border-white/10">
-            <span className="text-white font-extrabold text-xl">
-              <span className="text-[hsl(var(--carbonus-green))]">car</span>bonus
-            </span>
+            <img src={carbonusLogo} alt="Carbonus" className="h-8 w-auto" />
             <button onClick={() => setMobileOpen(false)} aria-label="Uždaryti" className="h-11 w-11 inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 text-white">
               <X className="h-5 w-5" />
             </button>

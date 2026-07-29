@@ -78,7 +78,7 @@ export function Navigation({ logo }: NavigationProps) {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="block">
-              <img src={logoWhite} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
+              <img src={carbonusLogo} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
             </Link>
           </div>
 
