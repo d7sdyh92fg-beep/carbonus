@@ -22,15 +22,14 @@ const cars: Car[] = [
 ];
 
 function CarShadow({ carId }: { carId: string }) {
-  const width = carId === "7" ? "w-[92%]" : carId === "8" ? "w-[96%]" : carId === "5" ? "w-[96%]" : carId === "6" ? "w-[78%]" : "w-[85%]";
-  const offset = carId === "8" || carId === "5" ? { bottom: "10%" } : { bottom: "14%" };
+  const width = carId === "6" ? "w-[92%]" : "w-[96%]";
   return (
     <div
-      className={`absolute left-1/2 -translate-x-1/2 ${width} h-4 rounded-[50%] z-0`}
+      className={`absolute left-1/2 -translate-x-1/2 ${width} h-5 rounded-[50%] z-0`}
       style={{
-        ...offset,
+        bottom: "10%",
         background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
-        filter: "blur(5px)",
+        filter: "blur(6px)",
       }}
       aria-hidden
     />
@@ -57,17 +56,14 @@ function CarCard({ car }: { car: Car }) {
       </div>
 
       {/* Image */}
-      <div className="relative mt-3 h-[150px] flex items-end justify-center">
+      <div className="relative mt-4 h-[260px] flex items-end justify-center">
         <CarShadow carId={car.id} />
         <img
           src={car.image}
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className={[
-            "w-[92%] max-w-[220px] max-h-[120px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]",
-            (car.id === "8" || car.id === "5") ? "scale-[1.24] translate-y-3.5" : "",
-          ].join(" ")}
+          className="w-[96%] max-w-[300px] max-h-[210px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]"
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
