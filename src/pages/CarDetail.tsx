@@ -33,7 +33,7 @@ import chryslerEnhanced2WithPlate from "@/assets/chrysler-enhanced-2.png";
 import vwPassatEnhanced1 from "@/assets/vw-passat-enhanced-1.png";
 import vwPassatEnhanced2 from "@/assets/vw-passat-enhanced-2.png";
 import mercedesSlkFront from "@/assets/mercedes-slk-front-studio.png";
-import mercedesSlkSide from "@/assets/mercedes-slk-side-studio.png";
+import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
 import mercedesSlkRear from "@/assets/mercedes-slk-rear-studio.png";
 import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right-studio.png";
 import citroenSpacetourerFront from "@/assets/citroen-spacetourer-front-studio.png";
