@@ -17,16 +17,6 @@ export function Hero() {
           style={{ objectPosition: "58% calc(50% - 20px)" }}
           fetchPriority="high"
         />
-        {/* Left gradient for readability — lighter on the right so vehicle stays visible */}
-        <div aria-hidden className="absolute inset-0" style={{
-          background: "linear-gradient(90deg, rgba(2,18,20,0.96) 0%, rgba(2,18,20,0.82) 30%, rgba(2,18,20,0.34) 57%, rgba(2,18,20,0.12) 100%)"
-        }} />
-        <div aria-hidden className="absolute inset-x-0 top-0 h-40" style={{
-          background: "linear-gradient(180deg, rgba(2,15,17,0.52) 0%, rgba(2,15,17,0.05) 100%)"
-        }} />
-        <div aria-hidden className="absolute inset-x-0 bottom-0 h-56" style={{
-          background: "linear-gradient(0deg, rgba(3,18,20,0.80) 0%, rgba(3,18,20,0) 100%)"
-        }} />
       </div>
 
       {/* Content */}
@@ -48,7 +38,7 @@ export function Hero() {
             <button
               type="button"
               onClick={() => document.getElementById("popular-cars")?.scrollIntoView({ behavior: "smooth" })}
-              className="mt-9 inline-flex items-center gap-2 h-12 px-6 rounded-lg text-white text-sm font-bold bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:-translate-y-0.5 hover:brightness-110 transition-all shadow-[0_10px_30px_hsl(var(--carbonus-green)/0.3)]"
+              className="mt-[61px] inline-flex items-center gap-2 h-12 px-6 rounded-lg text-white text-sm font-bold bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:-translate-y-0.5 hover:brightness-110 transition-all shadow-[0_10px_30px_hsl(var(--carbonus-green)/0.3)]"
             >
               Rasti automobilį <ArrowRight className="h-4 w-4" />
             </button>
@@ -56,7 +46,7 @@ export function Hero() {
         </div>
 
         {/* Booking form at bottom */}
-        <div className="mt-16 lg:mt-24">
+        <div className="mt-[89px] lg:mt-[121px]">
           <HeroBookingForm />
           <HeroTrustRow />
         </div>
