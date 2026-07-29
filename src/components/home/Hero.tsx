@@ -17,6 +17,16 @@ export function Hero() {
           style={{ objectPosition: "58% calc(50% - 20px)" }}
           fetchPriority="high"
         />
+        {/* Left gradient for readability — lighter on the right so vehicle stays visible */}
+        <div aria-hidden className="absolute inset-0" style={{
+          background: "linear-gradient(90deg, rgba(2,18,20,0.96) 0%, rgba(2,18,20,0.82) 30%, rgba(2,18,20,0.34) 57%, rgba(2,18,20,0.12) 100%)"
+        }} />
+        <div aria-hidden className="absolute inset-x-0 top-0 h-40" style={{
+          background: "linear-gradient(180deg, rgba(2,15,17,0.52) 0%, rgba(2,15,17,0.05) 100%)"
+        }} />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 h-56" style={{
+          background: "linear-gradient(0deg, rgba(3,18,20,0.80) 0%, rgba(3,18,20,0) 100%)"
+        }} />
       </div>
 
       {/* Content */}
