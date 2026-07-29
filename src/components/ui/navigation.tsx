@@ -6,7 +6,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "@/hooks/use-translations";
 import { getRoute } from "@/utils/routes";
-import logoWhite from "@/assets/logo-white.png";
+import carbonusLogo from "@/assets/carbonus-logo-white.png";
 import {
   DropdownMenu,
   DropdownMenuContent,

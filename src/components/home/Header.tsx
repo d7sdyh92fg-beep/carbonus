@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import logo from "@/assets/carbonus-hero.png.asset.json";
+import carbonusLogo from "@/assets/carbonus-logo-white.png";
 
 const NAV = [
   { to: "/", label: "Pradžia" },
