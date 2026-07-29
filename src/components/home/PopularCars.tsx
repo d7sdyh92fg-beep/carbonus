@@ -3,9 +3,9 @@ import { ArrowRight, Star, Users, Fuel, CalendarDays, Settings2 } from "lucide-r
 import mercedesSlk from "@/assets/mercedes-slk-side-clean.png";
 import citroen from "@/assets/citroen-spacetourer-side-clean.png";
 import hyundai from "@/assets/hyundai-bayon-side-clean.png";
-import vw from "@/assets/vw-passat-side-clean.png";
 import kia from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import { getCarSlugFromId } from "@/utils/carSlugs";
+
 
 type Car = {
   id: string; name: string; category: string; rating: number;
@@ -17,9 +17,9 @@ const cars: Car[] = [
   { id: "6", name: "Mercedes-Benz SLK", category: "Kabrioletas", rating: 4.9, seats: 2, fuel: "Benzinas", year: 2015, transmission: "Automatinė", price: 100, image: mercedesSlk },
   { id: "7", name: "Citroën SpaceTourer", category: "Vienatūris", rating: 4.8, seats: 8, fuel: "Dyzelinas", year: 2026, transmission: "Automatinė", price: 80, image: citroen },
   { id: "8", name: "Hyundai Bayon Cross", category: "Visureigis", rating: 4.7, seats: 5, fuel: "Benzinas", year: 2020, transmission: "Automatinė", price: 30, image: hyundai },
-  { id: "3", name: "Volkswagen Passat", category: "Sedanas", rating: 4.7, seats: 5, fuel: "Dyzelinas", year: 2012, transmission: "Mechaninė", price: 30, image: vw },
   { id: "5", name: "KIA CEED", category: "Hečbekas", rating: 4.6, seats: 5, fuel: "Dyzelinas", year: 2020, transmission: "Mechaninė", price: 30, image: kia },
 ];
+
 
 function CarShadow({ carId }: { carId: string }) {
   const width = carId === "6" ? "w-[92%]" : "w-[96%]";
@@ -121,7 +121,8 @@ export function PopularCars() {
           </button>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
           {cars.map((c) => <CarCard key={c.id} car={c} />)}
         </div>
 
