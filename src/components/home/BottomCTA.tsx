@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ShieldCheck, CarFront, RefreshCcw } from "lucide-react";
-import ctaSuv from "@/assets/cta-suv.jpg";
+import ctaSuv from "@/assets/cta-suv.png.asset.json";
 
 export function BottomCTA() {
   const navigate = useNavigate();
