@@ -56,14 +56,14 @@ function CarCard({ car }: { car: Car }) {
       </div>
 
       {/* Image */}
-      <div className="relative mt-4 h-[240px] flex items-end justify-center">
+      <div className="relative mt-4 h-[260px] flex items-end justify-center">
         <CarShadow carId={car.id} />
         <img
           src={car.image}
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className="w-[96%] max-w-[260px] max-h-[190px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]"
+          className="w-[96%] max-w-[300px] max-h-[210px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]"
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
