@@ -13,7 +13,7 @@ const Index = () => {
       <LanguageLinks />
       <Header />
       <Hero />
-      <PopularCars />
+      <Fleet />
       <BenefitsSection />
       <HowItWorks />
       <BottomCTA />
