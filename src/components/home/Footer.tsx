@@ -10,7 +10,7 @@ export function Footer() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 lg:gap-[70px]">
           <div>
-            <img src={logo.url} alt="Carbonus" className="h-9 w-auto" />
+            <img src={logo.url} alt="Carbonus" className="h-12 w-auto" />
             <p className="mt-4 text-[13px] text-white/70 max-w-[260px]">
               Modernios automobilių nuomos paslaugos Druskininkuose ir visoje Lietuvoje.
             </p>
