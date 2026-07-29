@@ -42,15 +42,6 @@ function CarCard({ car }: { car: Car }) {
   const slug = getCarSlugFromId(car.id, "lt");
   const open = () => navigate(slug ? `/automobiliai/${slug}` : "/automobiliai");
 
-  // Per-car image scaling to fill card visually like reference
-  const imgScale =
-    car.id === "6" ? "scale-[1.05] translate-y-1"
-    : car.id === "7" ? "scale-[1.08]"
-    : car.id === "8" ? "scale-[1.15]"
-    : car.id === "3" ? "scale-[1.05]"
-    : car.id === "5" ? "scale-[1.15]"
-    : "scale-100";
-
   return (
     <div className="group flex flex-col rounded-2xl bg-white border border-[hsl(var(--border))] p-5 shadow-[0_8px_24px_rgba(18,35,29,0.06)] hover:shadow-[0_18px_40px_rgba(18,35,29,0.12)] hover:-translate-y-1 transition-all duration-200">
       {/* Top row */}
@@ -72,7 +63,7 @@ function CarCard({ car }: { car: Car }) {
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className={`max-h-[130px] w-auto object-contain relative z-10 mix-blend-multiply transition-transform duration-300 ${imgScale} group-hover:scale-[1.05]`}
+          className="w-[92%] max-w-[220px] max-h-[120px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]"
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
