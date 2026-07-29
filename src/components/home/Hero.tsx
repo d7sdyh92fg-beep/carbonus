@@ -17,6 +17,10 @@ export function Hero() {
           style={{ objectPosition: "58% calc(50% - 20px)" }}
           fetchPriority="high"
         />
+        {/* Left-to-right shadow for text readability */}
+        <div aria-hidden className="absolute inset-0" style={{
+          background: "linear-gradient(90deg, rgba(2,18,20,0.72) 0%, rgba(2,18,20,0.40) 30%, rgba(2,18,20,0.12) 57%, rgba(2,18,20,0.04) 100%)"
+        }} />
       </div>
 
       {/* Content */}

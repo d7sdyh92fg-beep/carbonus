@@ -43,10 +43,10 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-colors duration-200",
+        "fixed top-0 left-0 right-0 z-50 backdrop-blur-md transition-colors duration-200",
         scrolled
-          ? "bg-[hsl(var(--carbonus-dark)/0.94)] backdrop-blur-md border-b border-white/10"
-          : "bg-transparent"
+          ? "bg-[hsl(var(--carbonus-dark)/0.96)] border-b border-white/10"
+          : "bg-[hsl(var(--carbonus-dark)/0.80)]"
       )}
     >
       <div className="max-w-[1360px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
