@@ -1,6 +1,6 @@
 import { Header } from "@/components/home/Header";
 import { Hero } from "@/components/home/Hero";
-import { PopularCars } from "@/components/home/PopularCars";
+import { Fleet } from "@/components/sections/fleet";
 import { BenefitsSection } from "@/components/home/BenefitsSection";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { BottomCTA } from "@/components/home/BottomCTA";
