@@ -45,7 +45,7 @@ export function Header() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-colors duration-200",
         scrolled
-          ? "bg-[hsl(var(--carbonus-dark)/0.94)] backdrop-blur-md border-b border-white/10"
+          ? "bg-[hsl(var(--carbonus-dark)/0.94)] backdrop-blur-md"
           : "bg-transparent"
       )}
     >
