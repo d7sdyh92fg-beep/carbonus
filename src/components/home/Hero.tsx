@@ -13,8 +13,8 @@ export function Hero() {
         <img
           src={heroBg.url}
           alt="Carbonus – premium automobilių nuoma"
-          className="w-full h-full object-cover"
-          style={{ objectPosition: "58% calc(50% - 20px)" }}
+          className="w-full h-full object-contain"
+          style={{ objectPosition: "center center" }}
           fetchPriority="high"
         />
       </div>
