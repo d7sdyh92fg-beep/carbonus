@@ -169,8 +169,8 @@ export function Footer() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Company Details */}
             <div>
-              <h4 className="font-semibold mb-3 text-primary">{t('footer.company.name')}</h4>
-              <div className="text-muted-foreground text-sm space-y-1">
+              <h4 className="font-semibold mb-3 text-[hsl(var(--carbonus-green))]">{t('footer.company.name')}</h4>
+              <div className="text-white/70 text-sm space-y-1">
                 <p>{t('footer.company.code')}</p>
                 <p>{t('footer.company.phone')}</p>
                 <p>{t('footer.company.email')}</p>
@@ -179,7 +179,7 @@ export function Footer() {
             
             {/* Copyright */}
             <div className="flex items-end">
-              <p className="text-muted-foreground text-sm">
+              <p className="text-white/70 text-sm">
                 {t('footer.copyright')}
               </p>
             </div>
