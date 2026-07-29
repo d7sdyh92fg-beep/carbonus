@@ -22,15 +22,14 @@ const cars: Car[] = [
 ];
 
 function CarShadow({ carId }: { carId: string }) {
-  const width = carId === "7" ? "w-[92%]" : carId === "8" ? "w-[96%]" : carId === "5" ? "w-[96%]" : carId === "6" ? "w-[78%]" : "w-[85%]";
-  const offset = carId === "8" || carId === "5" ? { bottom: "10%" } : { bottom: "14%" };
+  const width = carId === "6" ? "w-[78%]" : "w-[92%]";
   return (
     <div
-      className={`absolute left-1/2 -translate-x-1/2 ${width} h-4 rounded-[50%] z-0`}
+      className={`absolute left-1/2 -translate-x-1/2 ${width} h-5 rounded-[50%] z-0`}
       style={{
-        ...offset,
+        bottom: "10%",
         background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
-        filter: "blur(5px)",
+        filter: "blur(6px)",
       }}
       aria-hidden
     />
