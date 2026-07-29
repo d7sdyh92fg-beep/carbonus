@@ -133,13 +133,15 @@ export function Hero() {
           className="absolute inset-0 w-full h-full object-cover opacity-100 object-[82%_65%] sm:object-[80%_60%] md:object-[78%_center] lg:object-[72%_center] xl:object-[68%_center] 2xl:object-[68%_center]"
           style={{ filter: "brightness(1.08) contrast(1.06) saturate(1.08)" }}
         />
-        {/* Directional overlay — darker on the left where text sits, near-clear on the right so the vehicle stays bright */}
+        {/* Directional overlay — only behind the header, fades out at the header bottom */}
         <div
           aria-hidden
-          className="absolute inset-0"
+          className="absolute top-0 left-0 right-0 h-[78px]"
           style={{
             background:
               "linear-gradient(90deg, rgba(4,15,11,0.52) 0%, rgba(4,15,11,0.28) 42%, rgba(4,15,11,0.08) 74%, rgba(4,15,11,0.12) 100%)",
+            maskImage: "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
           }}
         />
         {/* Ambient background glows */}
