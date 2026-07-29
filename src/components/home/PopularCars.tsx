@@ -63,10 +63,11 @@ function CarCard({ car }: { car: Car }) {
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className={`w-[96%] max-w-[300px] max-h-[210px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] ${car.id === "8" || car.id === "5" ? "translate-y-6" : ""}`}
+          className={`w-[96%] max-w-[300px] max-h-[210px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] ${car.id === "8" || car.id === "5" ? "translate-y-7" : ""}`}
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
+
 
 
       {/* Title */}
