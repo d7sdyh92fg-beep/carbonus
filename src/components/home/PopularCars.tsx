@@ -22,7 +22,7 @@ const cars: Car[] = [
 ];
 
 function CarShadow({ carId }: { carId: string }) {
-  const width = carId === "6" ? "w-[78%]" : "w-[92%]";
+  const width = carId === "6" ? "w-[92%]" : "w-[96%]";
   return (
     <div
       className={`absolute left-1/2 -translate-x-1/2 ${width} h-5 rounded-[50%] z-0`}
