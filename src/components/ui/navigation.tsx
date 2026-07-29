@@ -6,7 +6,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "@/hooks/use-translations";
 import { getRoute } from "@/utils/routes";
-import logoWhite from "@/assets/logo-white.png";
+import logo from "@/assets/carbonus-logo-white.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ interface NavigationProps {
   logo?: string;
 }
 
-export function Navigation({ logo }: NavigationProps) {
+export function Navigation({ logo: logoProp }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -67,6 +67,8 @@ export function Navigation({ logo }: NavigationProps) {
     return location.pathname === ltPath || location.pathname === enPath;
   };
 
+  const logoSrc = logoProp || logo;
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
@@ -78,7 +80,7 @@ export function Navigation({ logo }: NavigationProps) {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="block">
-              <img src={logoWhite} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
+              <img src={logoSrc} alt="Carbonus" className="h-12 sm:h-14 md:h-16 w-auto" />
             </Link>
           </div>
 
