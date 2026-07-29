@@ -9,32 +9,34 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="bg-white pt-[70px] pb-[72px]">
+    <section className="bg-white pt-[78px] pb-[86px]">
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 text-center">
 
-        <div className="text-[12px] uppercase tracking-[0.10em] font-bold text-[hsl(var(--carbonus-green))]">
+        <div className="text-[13px] uppercase tracking-[0.12em] font-bold text-[hsl(var(--carbonus-green))]">
           Kaip tai veikia
         </div>
-        <h2 className="mt-2 font-extrabold text-[#12191A]" style={{ fontSize: "clamp(26px, 3.4vw, 34px)" }}>
+        <h2 className="mt-2.5 font-extrabold text-[#12191A]" style={{ fontSize: "clamp(26px, 3.4vw, 34px)" }}>
           Nuoma paprasta kaip 1–2–3–4
         </h2>
 
-        <div className="relative mt-10">
+        <div className="relative mt-12">
           {/* dotted line behind icons (desktop only) */}
-          <div aria-hidden className="hidden lg:block absolute top-8 left-[12%] right-[12%] border-t-2 border-dashed border-[hsl(var(--carbonus-green-dark)/0.28)]" />
-          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4">
+          <div aria-hidden className="hidden lg:block absolute top-10 left-[14%] right-[14%] border-t-2 border-dashed border-[hsl(var(--carbonus-green-dark)/0.45)]" />
+          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-4">
             {steps.map(({ icon: Icon, title, text }, i) => (
               <div key={title} className="flex flex-col items-center text-center">
-                <div className="relative h-16 w-16 rounded-full bg-[hsl(var(--carbonus-green-soft))] flex items-center justify-center">
-                  <Icon className="h-7 w-7 text-[hsl(var(--carbonus-green-dark))]" aria-hidden />
+                <div className="relative h-[72px] w-[72px] rounded-full bg-white border border-[#E2EAE5] shadow-[0_10px_25px_rgba(18,35,29,0.08)] flex items-center justify-center">
+                  <span className="inline-flex h-[46px] w-[46px] items-center justify-center rounded-full bg-[hsl(var(--carbonus-green-soft))]">
+                    <Icon className="h-6 w-6 text-[hsl(var(--carbonus-green-dark))]" aria-hidden />
+                  </span>
                 </div>
-                <div className="mt-4 flex items-center gap-2">
-                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[hsl(var(--carbonus-green))] text-white text-[11px] font-bold">
+                <div className="mt-5 flex items-center gap-2">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[hsl(var(--carbonus-green))] text-white text-[12px] font-bold">
                     {i + 1}
                   </span>
-                  <span className="text-sm font-bold text-[#12191A]">{title}</span>
+                  <span className="text-[15px] font-bold text-[#12191A]">{title}</span>
                 </div>
-                <p className="mt-2 text-[12px] leading-[1.55] text-[#687374] max-w-[210px]">{text}</p>
+                <p className="mt-2.5 text-[14px] leading-[1.65] text-[#4D5959] max-w-[220px]">{text}</p>
               </div>
             ))}
           </div>
@@ -43,3 +45,4 @@ export function HowItWorks() {
     </section>
   );
 }
+
