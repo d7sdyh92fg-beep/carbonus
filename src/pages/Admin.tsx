@@ -827,7 +827,7 @@ const Admin = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
               <img 
-                src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" 
+                src="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" 
                 alt="Carbonus" 
                 className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto flex-shrink-0"
               />

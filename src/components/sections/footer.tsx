@@ -70,29 +70,29 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#07191C] text-white">
+    <footer className="bg-gray-100 text-foreground">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
             <img 
-              src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" 
+              src="/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png" 
               alt="Carbonus Logo" 
               className="h-16 md:h-24 lg:h-36 mb-6"
             />
-            <p className="text-white/70 mb-6 max-w-md">
+            <p className="text-muted-foreground mb-6 max-w-md">
               {t('footer.brand.description')}
             </p>
             <div className="mt-4 max-w-sm">
-              <p className="text-white/70 text-sm mb-3">
+              <p className="text-muted-foreground text-sm mb-3">
                 {t('footer.newsletter.title')}
               </p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input 
                   type="email" 
                   placeholder={t('footer.newsletter.placeholder')}
-                  className="bg-white/10 border-white/10 text-white placeholder:text-white/50 focus:border-[hsl(var(--carbonus-green))]"
+                  className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isSubscribing}
@@ -100,7 +100,7 @@ export function Footer() {
                 />
                 <Button 
                   type="submit"
-                  className="bg-[hsl(var(--carbonus-green))] text-white hover:bg-[hsl(var(--carbonus-green-dark))] border-0 whitespace-nowrap"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 border-0 whitespace-nowrap"
                   disabled={isSubscribing}
                 >
                   {isSubscribing ? t('common.buttons.sending') : t('footer.newsletter.subscribe')}
@@ -111,25 +111,25 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4 text-[hsl(var(--carbonus-green))]">{t('footer.quickLinks.title')}</h4>
+            <h4 className="font-semibold mb-4 text-primary">{t('footer.quickLinks.title')}</h4>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleLinkClick("home")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("home")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.home')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("cars")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("cars")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.cars')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("about")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("about")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.about')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("contact")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("contact")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.quickLinks.contact')}
                 </button>
               </li>
@@ -138,25 +138,25 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold mb-4 text-[hsl(var(--carbonus-green))]">{t('footer.support.title')}</h4>
+            <h4 className="font-semibold mb-4 text-primary">{t('footer.support.title')}</h4>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleLinkClick("faq")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("faq")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.faq')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("privacy")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("privacy")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.privacy')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("leaseAgreement")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("leaseAgreement")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.terms')}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleLinkClick("blog")} className="text-white/70 hover:text-white transition-colors duration-200 text-left">
+                <button onClick={() => handleLinkClick("blog")} className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left">
                   {t('footer.support.blog')}
                 </button>
               </li>
@@ -165,12 +165,12 @@ export function Footer() {
         </div>
 
         {/* Company Information */}
-        <div className="border-t border-white/10 mt-12 pt-8">
+        <div className="border-t border-border mt-12 pt-8">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Company Details */}
             <div>
-              <h4 className="font-semibold mb-3 text-[hsl(var(--carbonus-green))]">{t('footer.company.name')}</h4>
-              <div className="text-white/70 text-sm space-y-1">
+              <h4 className="font-semibold mb-3 text-primary">{t('footer.company.name')}</h4>
+              <div className="text-muted-foreground text-sm space-y-1">
                 <p>{t('footer.company.code')}</p>
                 <p>{t('footer.company.phone')}</p>
                 <p>{t('footer.company.email')}</p>
@@ -179,7 +179,7 @@ export function Footer() {
             
             {/* Copyright */}
             <div className="flex items-end">
-              <p className="text-white/70 text-sm">
+              <p className="text-muted-foreground text-sm">
                 {t('footer.copyright')}
               </p>
             </div>
