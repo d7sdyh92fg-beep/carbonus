@@ -66,7 +66,7 @@ function CarCard({ car }: { car: Car }) {
           loading="lazy"
           className={[
             "w-[92%] max-w-[220px] max-h-[120px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]",
-            (car.id === "8" || car.id === "5") ? "scale-[1.14] translate-y-1.5" : "",
+            (car.id === "8" || car.id === "5") ? "scale-[1.24] translate-y-3.5" : "",
           ].join(" ")}
           onContextMenu={(e) => e.stopPropagation()}
         />
