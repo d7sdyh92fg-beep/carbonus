@@ -102,7 +102,8 @@ export function PopularCars() {
   const navigate = useNavigate();
   return (
     <section id="popular-cars" className="bg-white pt-[72px] pb-[84px]">
-      <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <div className="max-w-[1360px] mx-auto px-6 md:px-12">
+
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
           <div>
             <div className="text-[12px] uppercase tracking-[0.10em] font-bold text-[hsl(var(--carbonus-green))]">

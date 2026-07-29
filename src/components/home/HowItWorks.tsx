@@ -10,7 +10,8 @@ const steps = [
 export function HowItWorks() {
   return (
     <section className="bg-white pt-[70px] pb-[72px]">
-      <div className="max-w-[1120px] mx-auto px-5 md:px-8 text-center">
+      <div className="max-w-[1360px] mx-auto px-6 md:px-12 text-center">
+
         <div className="text-[12px] uppercase tracking-[0.10em] font-bold text-[hsl(var(--carbonus-green))]">
           Kaip tai veikia
         </div>
