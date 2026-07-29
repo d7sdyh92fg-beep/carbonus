@@ -22,18 +22,20 @@ const cars: Car[] = [
 ];
 
 function CarShadow({ carId }: { carId: string }) {
-  const width = carId === "7" ? "w-[96%]" : carId === "8" ? "w-[88%]" : "w-[90%]";
+  const width = carId === "7" ? "w-[92%]" : carId === "8" ? "w-[82%]" : carId === "6" ? "w-[78%]" : "w-[85%]";
   return (
     <div
-      className={`absolute left-1/2 -translate-x-1/2 ${width} h-3 rounded-[50%] blur-md`}
+      className={`absolute left-1/2 -translate-x-1/2 ${width} h-5 rounded-[50%]`}
       style={{
-        bottom: "6%",
-        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 45%, transparent 75%)",
+        bottom: "10%",
+        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.08) 70%, transparent 85%)",
+        filter: "blur(6px)",
       }}
       aria-hidden
     />
   );
 }
+
 
 function CarCard({ car }: { car: Car }) {
   const navigate = useNavigate();
