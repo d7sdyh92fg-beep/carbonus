@@ -10,7 +10,7 @@ export function BottomCTA() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[58%_42%] rounded-[18px] overflow-hidden shadow-[0_18px_55px_rgba(6,25,27,0.16)] bg-[hsl(var(--carbonus-dark-2))] min-h-[250px]">
           <div className="relative min-h-[220px] lg:min-h-[250px]">
-            <img src={ctaSuv} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+            <img src={ctaSuv.url} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[hsl(var(--carbonus-dark-2))]" />
           </div>
           <div className="p-8 md:p-10 flex flex-col justify-center text-white" style={{ background: "linear-gradient(135deg,#0A2729 0%,#061719 100%)" }}>
