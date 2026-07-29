@@ -48,7 +48,7 @@ export function Hero() {
             <button
               type="button"
               onClick={() => document.getElementById("popular-cars")?.scrollIntoView({ behavior: "smooth" })}
-              className="mt-9 inline-flex items-center gap-2 h-12 px-6 rounded-lg text-white text-sm font-bold bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:-translate-y-0.5 hover:brightness-110 transition-all shadow-[0_10px_30px_hsl(var(--carbonus-green)/0.3)]"
+              className="mt-[61px] inline-flex items-center gap-2 h-12 px-6 rounded-lg text-white text-sm font-bold bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:-translate-y-0.5 hover:brightness-110 transition-all shadow-[0_10px_30px_hsl(var(--carbonus-green)/0.3)]"
             >
               Rasti automobilį <ArrowRight className="h-4 w-4" />
             </button>
@@ -56,7 +56,7 @@ export function Hero() {
         </div>
 
         {/* Booking form at bottom */}
-        <div className="mt-16 lg:mt-24">
+        <div className="mt-[89px] lg:mt-[121px]">
           <HeroBookingForm />
           <HeroTrustRow />
         </div>
