@@ -85,14 +85,14 @@ export function Footer() {
               {t('footer.brand.description')}
             </p>
             <div className="mt-4 max-w-sm">
-              <p className="text-muted-foreground text-sm mb-3">
+              <p className="text-white/70 text-sm mb-3">
                 {t('footer.newsletter.title')}
               </p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input 
                   type="email" 
                   placeholder={t('footer.newsletter.placeholder')}
-                  className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
+                  className="bg-white/10 border-white/10 text-white placeholder:text-white/50 focus:border-[hsl(var(--carbonus-green))]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isSubscribing}
@@ -100,7 +100,7 @@ export function Footer() {
                 />
                 <Button 
                   type="submit"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 border-0 whitespace-nowrap"
+                  className="bg-[hsl(var(--carbonus-green))] text-white hover:bg-[hsl(var(--carbonus-green-dark))] border-0 whitespace-nowrap"
                   disabled={isSubscribing}
                 >
                   {isSubscribing ? t('common.buttons.sending') : t('footer.newsletter.subscribe')}
