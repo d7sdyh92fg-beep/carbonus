@@ -25,7 +25,7 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-[1520px] mx-auto px-6 md:px-12 pt-[120px] pb-[24px] flex-1 flex flex-col">
-        <div className="max-w-[510px]" style={{ marginTop: "min(130px, 12vh)" }}>
+        <div className="max-w-[510px] mt-[min(130px,12vh)] [@media(min-width:1920px)]:mt-[230px]">
           <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
             Keliaukite patogiai. Mokėkite protingai.
           </div>
