@@ -59,7 +59,7 @@ export function Header() {
         hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
-      <div className="max-w-[1360px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-[1520px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center shrink-0" aria-label="Carbonus" style={{ width: 170 }}>
           <img src={logo.url} alt="Carbonus" className="h-12 w-auto" />
