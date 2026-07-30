@@ -26,10 +26,10 @@ import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
 import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
-import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
-import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
+import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png.asset.json";
+import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png.asset.json";
+import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png.asset.json";
+import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png.asset.json";
 
 // Image mapping object for car images
 const imageMap: { [key: string]: string } = {
