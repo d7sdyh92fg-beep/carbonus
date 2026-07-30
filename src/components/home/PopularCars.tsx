@@ -43,14 +43,19 @@ function CarCard({ car }: { car: Car }) {
 
       {/* Image */}
       <div className={`relative mt-4 h-[190px] flex justify-center ${car.id === "8" ? "items-center" : "items-end"}`}>
-        <img
-          src={car.image}
-          alt={car.name}
-          data-allow-save="true"
-          loading="lazy"
-          className={`w-[96%] max-w-[340px] max-h-[250px] object-contain object-center relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] scale-[1.15] drop-shadow-[0_12px_10px_rgba(0,0,0,0.3)] ${car.id === "8" ? "" : car.id === "6" || car.id === "7" ? "translate-y-[-11px]" : car.id === "5" ? "translate-y-[44px]" : "translate-y-[24px]"}`}
-          onContextMenu={(e) => e.stopPropagation()}
-        />
+        <div className={`relative inline-block w-[96%] max-w-[340px] scale-[1.15] group-hover:scale-[1.04] transition-transform duration-300 ${car.id === "8" ? "" : car.id === "6" || car.id === "7" ? "translate-y-[-11px]" : car.id === "5" ? "translate-y-[44px]" : "translate-y-[24px]"}`}>
+          <img
+            src={car.image}
+            alt={car.name}
+            data-allow-save="true"
+            loading="lazy"
+            className="w-full max-h-[250px] object-contain object-center relative z-10 mix-blend-multiply"
+            onContextMenu={(e) => e.stopPropagation()}
+          />
+          {car.id !== "8" && (
+            <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-[80%] h-[12px] bg-gradient-to-r from-transparent via-black/20 to-transparent rounded-[100%] blur-[6px] pointer-events-none" />
+          )}
+        </div>
       </div>
 
       {/* Title */}
