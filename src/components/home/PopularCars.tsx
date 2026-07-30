@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Star, Users, Fuel, CalendarDays, Settings2 } from "lucide-react";
-import mercedesSlk from "@/assets/mercedes-slk-side-clean.png.asset.json";
-import citroen from "@/assets/citroen-spacetourer-side-clean.png.asset.json";
-import hyundai from "@/assets/hyundai-bayon-side-clean.png.asset.json";
-import kia from "@/assets/kia-ceed-hatchback-side-khaki.png.asset.json";
+import mercedesSlk from "@/assets/mercedes-slk-side-clean.png";
+import citroen from "@/assets/citroen-spacetourer-side-clean.png";
+import hyundai from "@/assets/hyundai-bayon-side-clean.png";
+import kia from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 
 
@@ -14,10 +14,10 @@ type Car = {
 };
 
 const cars: Car[] = [
-  { id: "6", name: "Mercedes-Benz SLK", category: "Kabrioletas", rating: 4.9, seats: 2, fuel: "Benzinas", year: 2015, transmission: "Automatinė", price: 100, image: mercedesSlk.url },
-  { id: "7", name: "Citroën SpaceTourer", category: "Vienatūris", rating: 4.8, seats: 8, fuel: "Dyzelinas", year: 2026, transmission: "Automatinė", price: 80, image: citroen.url },
-  { id: "8", name: "Hyundai Bayon Cross", category: "Visureigis", rating: 4.7, seats: 5, fuel: "Benzinas", year: 2020, transmission: "Automatinė", price: 30, image: hyundai.url },
-  { id: "5", name: "KIA CEED", category: "Hečbekas", rating: 4.6, seats: 5, fuel: "Dyzelinas", year: 2020, transmission: "Mechaninė", price: 30, image: kia.url },
+  { id: "6", name: "Mercedes-Benz SLK", category: "Kabrioletas", rating: 4.9, seats: 2, fuel: "Benzinas", year: 2015, transmission: "Automatinė", price: 100, image: mercedesSlk },
+  { id: "7", name: "Citroën SpaceTourer", category: "Vienatūris", rating: 4.8, seats: 8, fuel: "Dyzelinas", year: 2026, transmission: "Automatinė", price: 80, image: citroen },
+  { id: "8", name: "Hyundai Bayon Cross", category: "Visureigis", rating: 4.7, seats: 5, fuel: "Benzinas", year: 2020, transmission: "Automatinė", price: 30, image: hyundai },
+  { id: "5", name: "KIA CEED", category: "Hečbekas", rating: 4.6, seats: 5, fuel: "Dyzelinas", year: 2020, transmission: "Mechaninė", price: 30, image: kia },
 ];
 
 
