@@ -63,7 +63,7 @@ export function HeroBookingForm() {
         border: "1px solid rgba(255,255,255,0.16)",
       }}
     >
-      <div className="grid gap-[10px] grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(210px,1.15fr)_minmax(190px,1fr)_minmax(190px,1fr)_minmax(220px,1.15fr)]">
+      <div className="grid gap-[10px] grid-cols-1 md:grid-cols-2 min-[850px]:grid-cols-[minmax(170px,1.15fr)_minmax(160px,1fr)_minmax(160px,1fr)_minmax(170px,1.15fr)]">
 
 
         {/* Location */}
