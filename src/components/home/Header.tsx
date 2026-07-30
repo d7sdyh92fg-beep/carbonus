@@ -54,8 +54,9 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-colors duration-200",
-        "bg-black/25 backdrop-blur-[6px]"
+        "fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-out",
+        "bg-black/25 backdrop-blur-[6px]",
+        hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
       <div className="max-w-[1360px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
