@@ -26,7 +26,7 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-[1360px] mx-auto px-6 md:px-12 pt-[140px] pb-[64px] lg:pb-[92px] min-h-[700px] flex flex-col">
         <div className="flex-1 flex flex-col justify-center">
-          <div className="max-w-[510px] mt-[88px]">
+          <div className="max-w-[510px] mt-[150px]">
             <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-6">
               Keliaukite patogiai. Mokėkite protingai.
             </div>
