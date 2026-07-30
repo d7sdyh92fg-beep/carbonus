@@ -8,7 +8,7 @@ const items = [
 
 export function HeroTrustRow() {
   return (
-    <div className="w-full mt-8 grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-white/10">
+    <div className="w-full mt-[82px] grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-white/10">
       {items.map(({ icon: Icon, title, text }, i) => (
         <div
           key={title}
