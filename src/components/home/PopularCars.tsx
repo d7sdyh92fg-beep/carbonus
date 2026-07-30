@@ -27,7 +27,7 @@ function CarShadow({ carId }: { carId: string }) {
     <div
       className={`absolute left-1/2 -translate-x-1/2 ${width} h-5 rounded-[50%] z-0`}
       style={{
-        bottom: "10%",
+        bottom: "-4%",
         background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
         filter: "blur(6px)",
       }}
@@ -43,7 +43,7 @@ function CarCard({ car }: { car: Car }) {
   const open = () => navigate(slug ? `/automobiliai/${slug}` : "/automobiliai");
 
   return (
-    <div className="group flex flex-col rounded-2xl bg-white border border-[hsl(var(--border))] p-5 shadow-[0_8px_24px_rgba(18,35,29,0.06)] hover:shadow-[0_18px_40px_rgba(18,35,29,0.12)] hover:-translate-y-1 transition-all duration-200">
+    <div className="group flex flex-col rounded-2xl bg-white border border-[hsl(var(--border))] p-4 shadow-[0_8px_24px_rgba(18,35,29,0.06)] hover:shadow-[0_18px_40px_rgba(18,35,29,0.12)] hover:-translate-y-1 transition-all duration-200">
       {/* Top row */}
       <div className="flex items-center justify-between">
         <span className="inline-flex items-center h-7 rounded-full bg-[hsl(var(--carbonus-dark))] text-white text-[12px] font-semibold px-3">
@@ -56,25 +56,20 @@ function CarCard({ car }: { car: Car }) {
       </div>
 
       {/* Image */}
-      <div className="relative mt-4 h-[240px] flex items-end justify-center">
+      <div className="relative mt-4 h-[190px] flex items-center justify-center">
         <CarShadow carId={car.id} />
         <img
           src={car.image}
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className={`w-[96%] max-w-[300px] max-h-[200px] object-contain object-bottom relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] ${car.id === "8" ? "translate-y-[25px]" : car.id === "5" ? "translate-y-[30px]" : car.id === "6" || car.id === "7" ? "-translate-y-[4px]" : ""}`}
+          className="w-[96%] max-w-[340px] max-h-[250px] object-contain object-center relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] scale-[1.15]"
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
 
-
-
-
-
-
       {/* Title */}
-      <h3 className="mt-4 text-[17px] font-bold text-[#12191A]">{car.name}</h3>
+      <h3 className="mt-3 text-[17px] font-bold text-[#12191A]">{car.name}</h3>
 
       {/* Meta */}
       <div className="mt-3 grid grid-cols-2 gap-y-2.5 gap-x-3 text-[13px] text-[#697475]">
@@ -85,7 +80,7 @@ function CarCard({ car }: { car: Car }) {
       </div>
 
       {/* Bottom */}
-      <div className="mt-5 flex items-end justify-between">
+      <div className="mt-4 flex items-end justify-between">
         <div>
           <div className="text-[12px] text-[#8B9494] leading-none mb-1">nuo</div>
           <div className="text-[24px] font-extrabold text-[hsl(var(--carbonus-green))] leading-none">
@@ -94,7 +89,7 @@ function CarCard({ car }: { car: Car }) {
         </div>
         <button
           onClick={open}
-          className="h-[38px] px-5 rounded-lg text-white text-[13px] font-bold bg-[hsl(var(--carbonus-green))] hover:bg-[hsl(var(--carbonus-green-hover))] transition"
+          className="h-[36px] px-5 rounded-lg text-white text-[13px] font-bold bg-[hsl(var(--carbonus-green))] hover:bg-[hsl(var(--carbonus-green-hover))] transition"
         >
           Rinktis
         </button>
