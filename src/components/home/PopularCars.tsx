@@ -48,7 +48,7 @@ function CarCard({ car }: { car: Car }) {
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className={`w-[96%] max-w-[340px] max-h-[250px] object-contain object-center relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] scale-[1.15] ${car.id === "8" ? "" : car.id === "6" || car.id === "7" ? "translate-y-[14px]" : "translate-y-[24px]"}`}
+          className={`w-[96%] max-w-[340px] max-h-[250px] object-contain object-center relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] scale-[1.15] ${car.id === "8" ? "" : car.id === "6" || car.id === "7" ? "translate-y-[4px]" : "translate-y-[24px]"}`}
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
