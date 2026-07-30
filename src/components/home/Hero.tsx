@@ -4,7 +4,7 @@ import { HeroTrustRow } from "./HeroTrustRow";
 
 export function Hero() {
   return (
-    <section className="relative bg-[hsl(var(--carbonus-dark))] text-white overflow-hidden">
+    <section className="relative bg-[hsl(var(--carbonus-dark))] text-white overflow-hidden min-h-screen flex flex-col">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
