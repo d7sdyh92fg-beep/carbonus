@@ -1,11 +1,8 @@
-import { ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/carbonus-hero-suv.png.asset.json";
 import { HeroBookingForm } from "./HeroBookingForm";
 import { HeroTrustRow } from "./HeroTrustRow";
 
 export function Hero() {
-  const navigate = useNavigate();
   return (
     <section className="relative bg-[hsl(var(--carbonus-dark))] text-white overflow-hidden">
       {/* Background image */}
