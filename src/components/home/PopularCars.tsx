@@ -21,21 +21,6 @@ const cars: Car[] = [
 ];
 
 
-function CarShadow({ carId }: { carId: string }) {
-  const width = carId === "6" ? "w-[92%]" : "w-[96%]";
-  const bottom = carId === "8" ? "10%" : "2%";
-  return (
-    <div
-      className={`absolute left-1/2 -translate-x-1/2 ${width} h-5 rounded-[50%] z-0`}
-      style={{
-        bottom,
-        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
-        filter: "blur(6px)",
-      }}
-      aria-hidden
-    />
-  );
-}
 
 
 function CarCard({ car }: { car: Car }) {
@@ -58,13 +43,12 @@ function CarCard({ car }: { car: Car }) {
 
       {/* Image */}
       <div className={`relative mt-4 h-[190px] flex justify-center ${car.id === "8" ? "items-center" : "items-end"}`}>
-        <CarShadow carId={car.id} />
         <img
           src={car.image}
           alt={car.name}
           data-allow-save="true"
           loading="lazy"
-          className={`w-[96%] max-w-[340px] max-h-[250px] object-contain object-center relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] scale-[1.15] ${car.id === "8" ? "" : "translate-y-[24px]"}`}
+          className={`w-[96%] max-w-[340px] max-h-[250px] object-contain object-center relative z-10 mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04] scale-[1.15] ${car.id === "8" ? "" : car.id === "6" || car.id === "7" ? "translate-y-[14px]" : "translate-y-[24px]"}`}
           onContextMenu={(e) => e.stopPropagation()}
         />
       </div>
