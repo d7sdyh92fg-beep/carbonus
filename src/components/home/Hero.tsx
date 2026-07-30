@@ -24,10 +24,10 @@ export function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-[1360px] mx-auto px-6 md:px-12 pt-[140px] pb-[64px] lg:pb-[92px] min-h-[700px] flex flex-col">
+      <div className="relative z-10 max-w-[1360px] mx-auto px-6 md:px-12 pt-[100px] xl:pt-[140px] pb-[48px] xl:pb-[92px] min-h-[700px] flex flex-col">
         <div className="flex-1 flex flex-col justify-center">
           <div className="max-w-[510px] mt-[250px]">
-            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-6">
+            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
               Keliaukite patogiai. Mokėkite protingai.
             </div>
             <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.04, letterSpacing: "-0.01em", fontWeight: 800 }}>
@@ -35,14 +35,14 @@ export function Hero() {
               <span className="block">prasideda su</span>
               <span className="block text-[hsl(var(--carbonus-green))]">Carbonus.</span>
             </h1>
-            <p className="mt-7 text-white/75 text-base leading-[1.65] max-w-[450px]">
+            <p className="mt-5 text-white/75 text-base leading-[1.65] max-w-[450px]">
               Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
             </p>
           </div>
         </div>
 
         {/* Booking form at bottom */}
-        <div className="mt-[120px] lg:mt-[164px]">
+        <div className="mt-[40px] xl:mt-[120px]">
           <HeroBookingForm />
           <HeroTrustRow />
         </div>
