@@ -40,7 +40,7 @@ export function Hero() {
         </div>
 
         {/* Booking form at bottom */}
-        <div className="mt-auto">
+        <div className="mt-auto pt-[30px]">
           <HeroBookingForm />
           <HeroTrustRow />
         </div>
