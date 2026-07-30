@@ -44,9 +44,7 @@ export function Header() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-colors duration-200",
-        scrolled
-          ? "bg-[hsl(var(--carbonus-dark)/0.94)] backdrop-blur-md"
-          : "bg-transparent"
+        "bg-[hsl(var(--carbonus-dark)/0.94)] backdrop-blur-md"
       )}
     >
       <div className="max-w-[1360px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
