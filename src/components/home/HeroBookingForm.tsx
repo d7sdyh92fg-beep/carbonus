@@ -141,11 +141,12 @@ export function HeroBookingForm() {
         <button
           type="button"
           onClick={submit}
-          className="h-[56px] px-6 rounded-lg text-white text-sm font-bold inline-flex items-center justify-center gap-2 bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-hover))] hover:-translate-y-0.5 hover:brightness-110 transition-all shadow-[0_10px_30px_hsl(var(--carbonus-green)/0.3)]"
+          className="h-[56px] px-6 rounded-lg text-white text-sm font-bold inline-flex items-center justify-center gap-2 bg-[hsl(var(--carbonus-green))] hover:bg-[hsl(var(--carbonus-green-hover))] border-2 border-white ring-4 ring-white transition-colors"
         >
 
           <Search className="h-4 w-4" /> Ieškoti automobilių
         </button>
+
       </div>
     </div>
   );
