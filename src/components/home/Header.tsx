@@ -51,11 +51,13 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const onLightHero = pathname === "/";
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-out",
-        "bg-black/25 backdrop-blur-[6px]",
+        onLightHero ? "bg-[hsl(var(--carbonus-dark))]" : "bg-black/25 backdrop-blur-[6px]",
         hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
