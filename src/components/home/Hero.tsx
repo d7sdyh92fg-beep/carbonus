@@ -1,51 +1,79 @@
-import heroBg from "@/assets/carbonus-hero-suv.png.asset.json";
+import heroCar from "@/assets/hero-cutout-suv.png";
 import { HeroBookingForm } from "./HeroBookingForm";
 import { HeroTrustRow } from "./HeroTrustRow";
 
 export function Hero() {
   return (
-    <section className="relative bg-[hsl(var(--carbonus-dark))] text-white overflow-hidden min-h-screen flex flex-col">
-      {/* Background image */}
-      <div className="absolute inset-0">
-        <img
-          src={heroBg.url}
-          alt="Carbonus – premium automobilių nuoma"
-          className="w-full h-full object-cover"
-          style={{ objectPosition: "58% calc(50% - 20px)" }}
-          fetchPriority="high"
-        />
-        {/* Left gradient for readability — lighter on the right so vehicle stays visible */}
-        <div aria-hidden className="absolute inset-0" style={{
-          background: "linear-gradient(90deg, rgba(2,18,20,0.96) 0%, rgba(2,18,20,0.82) 30%, rgba(2,18,20,0.34) 57%, rgba(2,18,20,0.12) 100%)"
-        }} />
-        <div aria-hidden className="absolute inset-x-0 bottom-0 h-56" style={{
-          background: "linear-gradient(0deg, rgba(3,18,20,0.80) 0%, rgba(3,18,20,0) 100%)"
-        }} />
+    <section className="relative bg-[hsl(var(--carbonus-green-soft))] overflow-hidden pt-[110px] pb-14">
+      {/* subtle ambient */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-32 right-1/4 h-[60vh] w-[60vh] rounded-full bg-[hsl(var(--carbonus-green)/0.10)] blur-[130px]" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-[1520px] mx-auto px-6 md:px-12 pt-[120px] pb-[24px] flex-1 flex flex-col">
-        <div className="max-w-[510px] mt-[min(130px,12vh)] [@media(min-width:1920px)]:mt-[230px]">
-          <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-white/[0.68] mb-4">
-            Keliaukite patogiai. Mokėkite protingai.
+      <div className="relative z-10 w-full max-w-[1520px] mx-auto px-6 md:px-12">
+        <div className="grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 items-center">
+          {/* Left: copy */}
+          <div className="max-w-[560px] lg:pb-24">
+            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-[hsl(var(--carbonus-green-dark))] mb-4">
+              Keliaukite patogiai. Mokėkite protingai.
+            </div>
+            <h1
+              className="font-extrabold text-[hsl(var(--carbonus-dark))]"
+              style={{ fontSize: "clamp(36px, 4.2vw, 60px)", lineHeight: 1.05, letterSpacing: "-0.02em", fontWeight: 800 }}
+            >
+              <span className="block">Jūsų kelionė</span>
+              <span className="block">prasideda su</span>
+              <span className="block text-[hsl(var(--carbonus-green-dark))]">Carbonus.</span>
+            </h1>
+            <span className="mt-6 block h-1.5 w-16 rounded-full bg-[hsl(var(--carbonus-green))]" />
+            <p className="mt-5 text-[hsl(var(--carbonus-dark))]/70 text-base leading-[1.65] max-w-[470px]">
+              Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
+            </p>
           </div>
-          <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(38px, 4.4vw, 62px)", lineHeight: 1.04, letterSpacing: "-0.01em", fontWeight: 800 }}>
-            <span className="block">Jūsų kelionė</span>
-            <span className="block">prasideda su</span>
-            <span className="block text-[hsl(var(--carbonus-green))]">Carbonus.</span>
-          </h1>
-          <p className="mt-5 text-white/75 text-base leading-[1.65] max-w-[450px]">
-            Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
-          </p>
+
+          {/* Right: green panel with car */}
+          <div className="relative">
+            <div className="relative rounded-[28px] bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-dark))] aspect-[16/11] lg:aspect-[16/12] overflow-visible">
+              {/* decorative tyre-track hint */}
+              <div
+                aria-hidden
+                className="absolute inset-0 rounded-[28px] opacity-[0.12]"
+                style={{
+                  background:
+                    "repeating-linear-gradient(115deg, rgba(255,255,255,0.9) 0 2px, transparent 2px 16px)",
+                  maskImage: "radial-gradient(120% 80% at 80% 90%, black 0%, transparent 70%)",
+                  WebkitMaskImage: "radial-gradient(120% 80% at 80% 90%, black 0%, transparent 70%)",
+                }}
+              />
+              {/* Car — overflows the panel to the left, with a soft grounded shadow */}
+              <div className="absolute inset-y-0 -left-[16%] right-[-4%] flex items-center">
+                <div className="relative w-full group">
+                  <span
+                    aria-hidden
+                    className="absolute left-[12%] right-[12%] bottom-[6%] h-8 rounded-[50%] blur-2xl bg-black/45"
+                  />
+                  <img
+                    src={heroCar}
+                    alt="Carbonus – premium automobilių nuoma"
+                    width={1536}
+                    height={1024}
+                    fetchPriority="high"
+                    className="relative w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02] drop-shadow-[0_38px_45px_rgba(0,0,0,0.42)]"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Booking form at bottom */}
-        <div className="mt-auto pt-[30px]">
+        {/* Booking bar — overlaps the panel like in the reference */}
+        <div className="relative z-20 -mt-6 lg:-mt-24 lg:max-w-[1180px] rounded-2xl bg-[hsl(var(--carbonus-dark))] shadow-[0_24px_70px_rgba(2,18,20,0.28)] p-2 lg:p-3">
           <HeroBookingForm />
-          <HeroTrustRow />
+          <div className="px-2 pb-1">
+            <HeroTrustRow />
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
