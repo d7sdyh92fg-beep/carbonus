@@ -52,13 +52,13 @@ export function V3Hero() {
               alt="Carbonus nuomojamas visureigis"
               width={1200}
               height={800}
-              className="pointer-events-none absolute left-[-14%] top-1/2 w-[124%] max-w-none -translate-y-[58%] drop-shadow-[0_38px_36px_rgba(0,0,0,0.35)]"
+              className="pointer-events-none absolute left-[-30%] top-1/2 w-[136%] max-w-none -translate-y-[58%] drop-shadow-[0_38px_36px_rgba(0,0,0,0.35)]"
             />
           </div>
         </div>
 
         {/* Floating search bar */}
-        <div className="relative z-10 -mt-8 w-full lg:absolute lg:bottom-[-40px] lg:left-6 lg:right-auto lg:mt-0 lg:w-[640px]">
+        <div className="relative z-10 -mt-8 w-full lg:absolute lg:bottom-[-40px] lg:left-6 lg:right-auto lg:mt-0 lg:w-[720px]">
           <V3SearchBar />
         </div>
       </div>
