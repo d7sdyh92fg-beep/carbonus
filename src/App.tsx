@@ -10,6 +10,7 @@ import { LanguageProvider } from "@/hooks/use-language";
 import { BookingProvider } from "@/contexts/BookingContext";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import Index from "./pages/Index";
+import HomeV2 from "./pages/HomeV2";
 import Cars from "./pages/Cars";
 import AvailableCars from "./pages/AvailableCars";
 import About from "./pages/About";
@@ -55,7 +56,10 @@ const App = () => (
           <Routes>
             {/* Home */}
             <Route path="/" element={<Index />} />
-            
+
+            {/* Work-in-progress new homepage */}
+            <Route path="/home-v2" element={<HomeV2 />} />
+
             {/* Cars - Lithuanian & English */}
             <Route path="/automobiliai" element={<Cars />} />
             <Route path="/cars" element={<Cars />} />
