@@ -60,6 +60,8 @@ const App = () => (
 
             {/* Work-in-progress new homepage */}
             <Route path="/home-v2" element={<HomeV2 />} />
+            <Route path="/home-v3" element={<HomeV3 />} />
+
 
             {/* Cars - Lithuanian & English */}
             <Route path="/automobiliai" element={<Cars />} />
