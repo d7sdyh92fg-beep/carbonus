@@ -4,7 +4,7 @@ import { HeroTrustRow } from "./HeroTrustRow";
 
 export function Hero() {
   return (
-    <section className="relative bg-[hsl(var(--carbonus-green-soft))] overflow-hidden pt-[110px] pb-14">
+    <section className="relative bg-white overflow-hidden pt-[110px] pb-14">
       {/* subtle ambient */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -top-32 right-1/4 h-[60vh] w-[60vh] rounded-full bg-[hsl(var(--carbonus-green)/0.10)] blur-[130px]" />
@@ -19,17 +19,16 @@ export function Hero() {
             </div>
             <h1
               className="font-extrabold text-[hsl(var(--carbonus-dark))]"
-              style={{ fontSize: "clamp(36px, 4.2vw, 60px)", lineHeight: 1.05, letterSpacing: "-0.02em", fontWeight: 800 }}
+              style={{ fontSize: "clamp(30px, 3.2vw, 46px)", lineHeight: 1.08, letterSpacing: "-0.02em", fontWeight: 800 }}
             >
-              <span className="block">Jūsų kelionė</span>
-              <span className="block">prasideda su</span>
-              <span className="block text-[hsl(var(--carbonus-green-dark))]">Carbonus.</span>
+              <span className="block">Jūsų kelionė prasideda</span>
+              <span className="block">su <span className="text-[hsl(var(--carbonus-green-dark))]">Carbonus.</span></span>
             </h1>
-            <span className="mt-6 block h-1.5 w-16 rounded-full bg-[hsl(var(--carbonus-green))]" />
             <p className="mt-5 text-[hsl(var(--carbonus-dark))]/70 text-base leading-[1.65] max-w-[470px]">
               Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
             </p>
           </div>
+
 
           {/* Right: green panel with car */}
           <div className="relative">
