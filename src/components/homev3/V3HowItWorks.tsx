@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { MapPin, CalendarCheck, CalendarHeart } from "lucide-react";
 
 const STEPS = [
@@ -51,8 +52,8 @@ export function V3HowItWorks() {
 
         <div className="mt-14 flex flex-col items-center justify-center gap-10 md:flex-row md:items-start md:gap-2">
           {STEPS.map((step, i) => (
-            <>
-              <div key={step.title} className="max-w-[230px] text-center">
+            <Fragment key={step.title}>
+              <div className="max-w-[230px] text-center">
                 <div
                   className={`mx-auto flex h-[62px] w-[62px] items-center justify-center rounded-2xl ${
                     step.active
@@ -67,8 +68,8 @@ export function V3HowItWorks() {
                 <h3 className="mt-5 text-[16px] font-semibold text-foreground">{step.title}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{step.text}</p>
               </div>
-              {i < STEPS.length - 1 && <Dashes key={`d${i}`} flip={i === 1} />}
-            </>
+              {i < STEPS.length - 1 && <Dashes flip={i === 1} />}
+            </Fragment>
           ))}
         </div>
       </div>
