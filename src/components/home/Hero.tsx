@@ -1,4 +1,4 @@
-import heroCar from "@/assets/hero-cutout-suv.png";
+import heroCar from "@/assets/hero-suv-shadow.jpg";
 import { HeroBookingForm } from "./HeroBookingForm";
 import { HeroTrustRow } from "./HeroTrustRow";
 
@@ -14,7 +14,7 @@ export function Hero() {
         <div className="grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 items-center">
           {/* Left: copy */}
           <div className="max-w-[560px] lg:pb-24">
-            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-[hsl(var(--carbonus-green-dark))] mb-4">
+            <div className="text-[12px] font-semibold uppercase tracking-[0.13em] text-[hsl(var(--carbonus-green-dark))] mb-10">
               Keliaukite patogiai. Mokėkite protingai.
             </div>
             <h1
@@ -24,51 +24,32 @@ export function Hero() {
               <span className="block">Jūsų kelionė prasideda</span>
               <span className="block">su <span className="text-[hsl(var(--carbonus-green-dark))]">Carbonus.</span></span>
             </h1>
-            <p className="mt-5 text-[hsl(var(--carbonus-dark))]/70 text-base leading-[1.65] max-w-[470px]">
+            <p className="mt-10 text-[hsl(var(--carbonus-dark))]/70 text-base leading-[1.65] max-w-[470px]">
               Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
             </p>
           </div>
 
 
-          {/* Right: green panel with car */}
+          {/* Right: car with natural shadow */}
           <div className="relative">
-            <div className="relative rounded-[28px] bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-dark))] aspect-[16/11] lg:aspect-[16/12] overflow-visible">
-              {/* decorative tyre-track hint */}
-              <div
-                aria-hidden
-                className="absolute inset-0 rounded-[28px] opacity-[0.12]"
-                style={{
-                  background:
-                    "repeating-linear-gradient(115deg, rgba(255,255,255,0.9) 0 2px, transparent 2px 16px)",
-                  maskImage: "radial-gradient(120% 80% at 80% 90%, black 0%, transparent 70%)",
-                  WebkitMaskImage: "radial-gradient(120% 80% at 80% 90%, black 0%, transparent 70%)",
-                }}
+            <div className="relative group">
+              <img
+                src={heroCar}
+                alt="Carbonus – premium automobilių nuoma"
+                width={1536}
+                height={1024}
+                fetchPriority="high"
+                className="w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02]"
               />
-              {/* Car — overflows the panel to the left, with a soft grounded shadow */}
-              <div className="absolute inset-y-0 -left-[16%] right-[-4%] flex items-center">
-                <div className="relative w-full group">
-                  <span
-                    aria-hidden
-                    className="absolute left-[12%] right-[12%] bottom-[6%] h-8 rounded-[50%] blur-2xl bg-black/45"
-                  />
-                  <img
-                    src={heroCar}
-                    alt="Carbonus – premium automobilių nuoma"
-                    width={1536}
-                    height={1024}
-                    fetchPriority="high"
-                    className="relative w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02] drop-shadow-[0_38px_45px_rgba(0,0,0,0.42)]"
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Booking bar — overlaps the panel like in the reference */}
-        <div className="relative z-20 -mt-6 lg:-mt-24 lg:max-w-[1180px] rounded-2xl bg-white shadow-[0_24px_70px_rgba(2,18,20,0.14)] border border-[hsl(var(--carbonus-dark))]/[0.05] p-2 lg:p-3">
+        {/* Booking bar — centered */}
+        <div className="relative z-20 mx-auto -mt-6 lg:-mt-16 lg:max-w-[1180px] rounded-2xl bg-white shadow-[0_24px_70px_rgba(2,18,20,0.14)] border border-[hsl(var(--carbonus-dark))]/[0.05] p-2 lg:p-3">
           <HeroBookingForm />
         </div>
+
       </div>
 
       {/* Trust band below hero */}
