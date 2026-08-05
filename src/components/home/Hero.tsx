@@ -1,4 +1,4 @@
-import heroCar from "@/assets/hero-suv-shadow.jpg";
+import heroCar from "@/assets/hero-car-green.png";
 import { HeroBookingForm } from "./HeroBookingForm";
 import { HeroTrustRow } from "./HeroTrustRow";
 
