@@ -63,7 +63,7 @@ export function Hero() {
             </div>
 
             {/* Floating white search bar overlapping the lower-left of the card */}
-            <div className="relative z-20 -mt-10 lg:absolute lg:-bottom-2 lg:-left-[22%] lg:right-[8%] lg:mt-0 rounded-[22px] bg-white shadow-[0_24px_70px_rgba(2,18,20,0.14)] p-2 lg:p-3">
+            <div className="relative z-20 -mt-10 lg:absolute lg:bottom-6 lg:-left-[34%] lg:right-[10%] lg:mt-0 rounded-[22px] bg-white shadow-[0_24px_70px_rgba(2,18,20,0.14)] p-2 lg:p-3">
               <HeroBookingForm />
             </div>
           </div>
