@@ -30,19 +30,39 @@ export function Hero() {
           </div>
 
 
-          {/* Right: car with natural shadow */}
+          {/* Right: green panel with real car overflowing it */}
           <div className="relative">
-            <div className="relative group">
-              <img
-                src={heroCar}
-                alt="Carbonus – premium automobilių nuoma"
-                width={1536}
-                height={1024}
-                fetchPriority="high"
-                className="w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02]"
+            <div className="relative rounded-[32px] bg-gradient-to-br from-[hsl(var(--carbonus-green))] to-[hsl(var(--carbonus-green-dark))] aspect-[16/11] lg:aspect-[16/12] overflow-visible">
+              {/* decorative tyre-track hint */}
+              <div
+                aria-hidden
+                className="absolute inset-0 rounded-[32px] opacity-[0.12]"
+                style={{
+                  background:
+                    "repeating-linear-gradient(115deg, rgba(255,255,255,0.9) 0 2px, transparent 2px 16px)",
+                  maskImage: "radial-gradient(120% 80% at 80% 90%, black 0%, transparent 70%)",
+                  WebkitMaskImage: "radial-gradient(120% 80% at 80% 90%, black 0%, transparent 70%)",
+                }}
               />
+              <div className="absolute inset-y-0 -left-[16%] right-[-4%] flex items-center">
+                <div className="relative w-full group">
+                  <span
+                    aria-hidden
+                    className="absolute left-[14%] right-[14%] bottom-[10%] h-8 rounded-[50%] blur-2xl bg-black/45"
+                  />
+                  <img
+                    src={heroCar}
+                    alt="Carbonus – premium automobilių nuoma"
+                    width={1536}
+                    height={1024}
+                    fetchPriority="high"
+                    className="relative w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02] drop-shadow-[0_38px_45px_rgba(0,0,0,0.42)]"
+                  />
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
 
         {/* Booking bar — centered */}
