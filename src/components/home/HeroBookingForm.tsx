@@ -24,14 +24,14 @@ function FieldShell({ label, icon, trailing, onClick, children }: {
     <button
       type="button"
       onClick={onClick}
-      className="w-full text-left rounded-lg bg-white/[0.055] border border-white/[0.06] hover:bg-white/[0.09] transition-colors h-[56px] px-3.5 py-2 flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--carbonus-green)/0.4)]"
+      className="w-full text-left rounded-lg bg-[hsl(var(--carbonus-green-soft))]/70 border border-[hsl(var(--carbonus-dark))]/[0.07] hover:bg-[hsl(var(--carbonus-green-soft))] transition-colors h-[56px] px-3.5 py-2 flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--carbonus-green)/0.4)]"
     >
       <span className="text-[hsl(var(--carbonus-green))] shrink-0">{icon}</span>
       <span className="flex-1 min-w-0">
-        <span className="block text-[11px] font-medium text-white/60">{label}</span>
-        <span className="block text-sm font-semibold text-white truncate">{children}</span>
+        <span className="block text-[11px] font-medium text-[hsl(var(--carbonus-dark))]/55">{label}</span>
+        <span className="block text-sm font-semibold text-[hsl(var(--carbonus-dark))] truncate">{children}</span>
       </span>
-      {trailing && <span className="text-white/50 shrink-0">{trailing}</span>}
+      {trailing && <span className="text-[hsl(var(--carbonus-dark))]/40 shrink-0">{trailing}</span>}
     </button>
   );
 }
@@ -54,13 +54,13 @@ export function HeroBookingForm() {
 
   return (
     <div
-      className="w-full backdrop-blur-2xl shadow-[0_16px_50px_rgba(0,0,0,0.28)]"
+      className="w-full"
       style={{
         minHeight: 82,
         padding: 13,
         borderRadius: 14,
-        background: "rgba(12, 14, 16, 0.38)",
-        border: "1px solid rgba(255,255,255,0.16)",
+        background: "#ffffff",
+        border: "1px solid rgba(2,18,20,0.06)",
       }}
     >
       <div className="grid gap-[10px] grid-cols-1 md:grid-cols-2 min-[850px]:grid-cols-[minmax(170px,1.15fr)_minmax(160px,1fr)_minmax(160px,1fr)_minmax(170px,1.15fr)]">

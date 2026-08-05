@@ -67,7 +67,7 @@ export function Hero() {
         </div>
 
         {/* Booking bar — overlaps the panel like in the reference */}
-        <div className="relative z-20 -mt-6 lg:-mt-24 lg:max-w-[1180px] rounded-2xl bg-[hsl(var(--carbonus-dark))] shadow-[0_24px_70px_rgba(2,18,20,0.28)] p-2 lg:p-3">
+        <div className="relative z-20 -mt-6 lg:-mt-24 lg:max-w-[1180px] rounded-2xl bg-white shadow-[0_24px_70px_rgba(2,18,20,0.14)] border border-[hsl(var(--carbonus-dark))]/[0.05] p-2 lg:p-3">
           <HeroBookingForm />
           <div className="px-2 pb-1">
             <HeroTrustRow />
