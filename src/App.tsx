@@ -11,6 +11,7 @@ import { BookingProvider } from "@/contexts/BookingContext";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import Index from "./pages/Index";
 import HomeV2 from "./pages/HomeV2";
+import HomeV3 from "./pages/HomeV3";
 import Cars from "./pages/Cars";
 import AvailableCars from "./pages/AvailableCars";
 import About from "./pages/About";
