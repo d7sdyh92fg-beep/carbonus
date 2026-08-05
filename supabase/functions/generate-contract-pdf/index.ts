@@ -722,6 +722,25 @@ const handler = async (req: Request): Promise<Response> => {
       } catch (e) { console.warn("Failed to store signature:", e); }
     }
 
+    // Fallback: reuse a previously stored customer signature when regenerating
+    if (!signatureBytes) {
+      try {
+        const { data: sigRow } = await supabase
+          .from('contract_signatures')
+          .select('signature_data')
+          .eq('reservation_id', reservationId)
+          .order('signed_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (sigRow?.signature_data?.startsWith('data:image')) {
+          signatureBytes = dataUrlToUint8Array(sigRow.signature_data);
+        } else {
+          const { data: dl } = await supabase.storage.from('contracts').download(`signatures/${reservationId}.png`);
+          if (dl) signatureBytes = new Uint8Array(await dl.arrayBuffer());
+        }
+      } catch (e) { console.warn('No stored signature found:', e); }
+    }
+
     let contractPath: string | null = null;
     let generatedPdfBytes: Uint8Array | null = null;
     try {
