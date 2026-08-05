@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/logo-white.png.asset.json";
+import logoDark from "@/assets/logo-dark.png.asset.json";
 
 const NAV = [
   { to: "/", label: "Pradžia" },
@@ -57,14 +58,14 @@ export function Header() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-out",
-        onLightHero ? "bg-[hsl(var(--carbonus-dark))]" : "bg-black/25 backdrop-blur-[6px]",
+        onLightHero ? "bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(2,18,20,0.06)]" : "bg-black/25 backdrop-blur-[6px]",
         hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
       <div className="max-w-[1520px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center shrink-0" aria-label="Carbonus" style={{ width: 170 }}>
-          <img src={logo.url} alt="Carbonus" className="h-12 w-auto" />
+          <img src={onLightHero ? logoDark.url : logo.url} alt="Carbonus" className="h-12 w-auto" />
         </Link>
 
 
@@ -78,7 +79,9 @@ export function Header() {
                 to={item.to}
                 className={cn(
                   "relative text-[14px] font-medium transition-colors",
-                  active ? "text-white" : "text-white/80 hover:text-white"
+                  active
+                    ? onLightHero ? "text-[hsl(var(--carbonus-dark))]" : "text-white"
+                    : onLightHero ? "text-[hsl(var(--carbonus-dark))]/65 hover:text-[hsl(var(--carbonus-dark))]" : "text-white/80 hover:text-white"
                 )}
               >
                 {item.label}
@@ -93,7 +96,7 @@ export function Header() {
         {/* Right */}
         <div className="hidden lg:flex items-center gap-3">
           <DropdownMenu>
-            <DropdownMenuTrigger className="inline-flex items-center gap-1.5 h-[40px] px-4 rounded-full bg-white/[0.06] border border-white/10 text-white text-sm font-medium hover:bg-white/[0.10] transition-colors">
+            <DropdownMenuTrigger className={cn("inline-flex items-center gap-1.5 h-[40px] px-4 rounded-full text-sm font-medium transition-colors", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))] hover:bg-[hsl(var(--carbonus-dark))]/10" : "bg-white/[0.06] border border-white/10 text-white hover:bg-white/[0.10]")}>
               {language.toUpperCase()} <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[hsl(var(--carbonus-dark-2))] border-white/10 text-white min-w-[100px]">
@@ -113,7 +116,7 @@ export function Header() {
 
         {/* Mobile toggle */}
         <button
-          className="lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-full bg-white/[0.06] border border-white/10 text-white"
+          className={cn("lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-full", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))]" : "bg-white/[0.06] border border-white/10 text-white")}
           onClick={() => setMobileOpen(true)}
           aria-label="Meniu"
         >
