@@ -56,7 +56,10 @@ const App = () => (
           <Routes>
             {/* Home */}
             <Route path="/" element={<Index />} />
-            
+
+            {/* Work-in-progress new homepage */}
+            <Route path="/home-v2" element={<HomeV2 />} />
+
             {/* Cars - Lithuanian & English */}
             <Route path="/automobiliai" element={<Cars />} />
             <Route path="/cars" element={<Cars />} />
