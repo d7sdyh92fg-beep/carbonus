@@ -68,11 +68,16 @@ export function Hero() {
         {/* Booking bar — overlaps the panel like in the reference */}
         <div className="relative z-20 -mt-6 lg:-mt-24 lg:max-w-[1180px] rounded-2xl bg-white shadow-[0_24px_70px_rgba(2,18,20,0.14)] border border-[hsl(var(--carbonus-dark))]/[0.05] p-2 lg:p-3">
           <HeroBookingForm />
-          <div className="px-2 pb-1">
-            <HeroTrustRow />
-          </div>
+        </div>
+      </div>
+
+      {/* Trust band below hero */}
+      <div className="relative z-10 mt-12 border-y border-[hsl(var(--carbonus-dark))]/10 bg-[hsl(var(--carbonus-green-soft))]/60">
+        <div className="w-full max-w-[1520px] mx-auto px-6 md:px-12">
+          <HeroTrustRow />
         </div>
       </div>
     </section>
   );
 }
+
