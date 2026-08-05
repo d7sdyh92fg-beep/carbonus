@@ -31,8 +31,6 @@ import ReservationTerms from "./pages/ReservationTerms";
 import ReservationReview from "./pages/ReservationReview";
 import SEOChecklist from "./pages/SEOChecklist";
 import PixelTester from "./pages/PixelTester";
-import OAuthConsent from "./pages/OAuthConsent";
-
 
 const queryClient = new QueryClient();
 
@@ -127,10 +125,6 @@ const App = () => (
             <Route path="/payment-canceled" element={<PaymentCanceled />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
-
-            {/* MCP / OAuth consent */}
-            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
-
             
             {/* SEO Checklist */}
             <Route path="/seo-checklist" element={<SEOChecklist />} />

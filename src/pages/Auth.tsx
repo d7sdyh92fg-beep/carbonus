@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,24 +9,18 @@ import { useToast } from '@/hooks/use-toast';
 import { Navigation } from '@/components/ui/navigation';
 import { Footer } from '@/components/sections/footer';
 
-// Only allow same-origin relative paths as post-login redirect targets
-const safeNext = (value: string | null) =>
-  value && value.startsWith('/') && !value.startsWith('//') ? value : null;
-
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { user, signIn, loading } = useAuth();
   const { toast } = useToast();
-  const [params] = useSearchParams();
-  const next = safeNext(params.get('next'));
 
   // Redirect if already authenticated
   if (!loading && user) {
-    return <Navigate to={next ?? '/admin'} replace />;
+    console.log('Auth page - Redirecting to admin:', { user: !!user, email: user?.email, loading });
+    return <Navigate to="/admin" replace />;
   }
-
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();

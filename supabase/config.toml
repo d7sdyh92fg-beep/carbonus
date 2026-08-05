@@ -47,6 +47,3 @@ verify_jwt = false
 
 [functions.send-invoice-email]
 verify_jwt = false
-
-[functions.mcp]
-verify_jwt = false
