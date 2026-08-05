@@ -746,7 +746,9 @@ const handler = async (req: Request): Promise<Response> => {
     try {
       const pdfDoc = await PDFDocument.create();
       const { font, fontBold } = await loadFonts(pdfDoc);
-      const todayStr = new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : 'lt-LT');
+      // Contract date = rental start date (fallback: today)
+      const contractDateSource = resData.start_date ? new Date(`${resData.start_date}T12:00:00`) : new Date();
+      const todayStr = contractDateSource.toLocaleDateString(lang === 'en' ? 'en-GB' : 'lt-LT');
       const lessorSignatureImage = await loadLessorSignature(pdfDoc);
 
       const pdfData = {
