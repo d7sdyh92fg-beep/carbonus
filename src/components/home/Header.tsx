@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/logo-white.png.asset.json";
-import logoDark from "@/assets/logo-dark.png.asset.json";
+import headerLogo from "@/assets/brand-header-car-silhouette.png";
 
 const NAV = [
   { to: "/", label: "Pradžia" },
@@ -64,8 +64,8 @@ export function Header() {
     >
       <div className="max-w-[1520px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center shrink-0" aria-label="Carbonus" style={{ width: 170 }}>
-          <img src={onLightHero ? logoDark.url : logo.url} alt="Carbonus" className="h-12 w-auto" />
+        <Link to="/" className="flex items-center shrink-0" aria-label="Carbonus" style={{ width: 180 }}>
+          <img src={onLightHero ? headerLogo : logo.url} alt="Carbonus" className="h-14 w-auto object-contain" />
         </Link>
 
 

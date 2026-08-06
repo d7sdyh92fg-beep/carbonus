@@ -41,8 +41,8 @@ function Dashes({ flip }: { flip?: boolean }) {
 
 export function V3HowItWorks() {
   return (
-    <section className="bg-white py-16">
-      <div className="mx-auto max-w-[1180px] px-6 text-center">
+    <section className="bg-white pb-24 pt-20 lg:pb-28 lg:pt-24">
+      <div className="mx-auto max-w-[1060px] px-6 text-center">
         <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           Kaip tai veikia
         </p>
@@ -50,19 +50,19 @@ export function V3HowItWorks() {
           Carbonus nuoma – trys paprasti žingsniai
         </h2>
 
-        <div className="mt-14 flex flex-col items-center justify-center gap-10 md:flex-row md:items-start md:gap-2">
+        <div className="mt-16 flex flex-col items-center justify-center gap-10 md:flex-row md:items-start md:gap-3">
           {STEPS.map((step, i) => (
             <Fragment key={step.title}>
               <div className="max-w-[230px] text-center">
                 <div
-                  className={`mx-auto flex h-[62px] w-[62px] items-center justify-center rounded-2xl ${
+                  className={`mx-auto flex h-[76px] w-[76px] items-center justify-center rounded-xl border-2 border-white ${
                     step.active
-                      ? "bg-[hsl(var(--carbonus-green))] shadow-[0_14px_30px_hsl(var(--carbonus-green)/0.45)]"
-                      : "bg-muted"
+                      ? "bg-carbonus-green shadow-[0_14px_30px_hsl(var(--carbonus-green)/0.38)]"
+                      : "bg-muted shadow-[0_12px_26px_rgba(16,24,40,0.10)]"
                   }`}
                 >
                   <step.icon
-                    className={`h-7 w-7 ${step.active ? "text-white" : "text-[hsl(var(--carbonus-green))]"}`}
+                    className={`h-7 w-7 ${step.active ? "text-white" : "text-carbonus-green"}`}
                   />
                 </div>
                 <h3 className="mt-5 text-[16px] font-semibold text-foreground">{step.title}</h3>

@@ -1,27 +1,64 @@
-import { ArrowRight, Star, Facebook, Instagram, Youtube, Send } from "lucide-react";
-import logoDark from "@/assets/logo-dark.png.asset.json";
+import { Link } from "react-router-dom";
+import { ArrowRight, Star, Facebook, Instagram, Send } from "lucide-react";
+import footerLogo from "@/assets/brand-footer-carplus.png";
 
 const COLUMNS = [
-  { title: "Mūsų paslaugos", links: ["Trumpalaikė nuoma", "Ilgalaikė nuoma", "Nuoma su vairuotoju", "Vestuvėms", "Verslui", "Pervežimai"] },
-  { title: "Apie Carbonus", title2: true, links: ["Kodėl Carbonus", "Mūsų istorija", "Karjera", "Spauda", "Reklama"] },
-  { title: "Ištekliai", links: ["Patarimai ir gidas", "Pagalbos centras", "DUK", "Partneriams", "Nuomos sutartis", "Privatumo politika"] },
-  { title: "Papildomai", links: ["Pasiūlymai", "Draudimas", "Peržiūrėti rezervaciją", "Įmonėms", "Naujienos"] },
+  {
+    title: "Nuoma",
+    links: [
+      { label: "Visi automobiliai", to: "/automobiliai" },
+      { label: "Laisvi automobiliai", to: "/laisvi-automobiliai" },
+    ],
+  },
+  {
+    title: "Mūsų autoparkas",
+    links: [
+      { label: "Mercedes-Benz SLK", to: "/automobiliai/mercedes-benz-slk-nuoma" },
+      { label: "Hyundai Bayon Cross", to: "/automobiliai/hyundai-bayon-cross-nuoma" },
+      { label: "Citroën SpaceTourer", to: "/automobiliai/citroen-spacetourer-nuoma" },
+      { label: "KIA CEED 2020", to: "/automobiliai/kia-ceed-hecbekas-nuoma" },
+    ],
+  },
+  {
+    title: "Apie Carbonus",
+    links: [
+      { label: "Apie mus", to: "/apie-mus" },
+      { label: "Kontaktai", to: "/kontaktai" },
+      { label: "DUK", to: "/duk" },
+    ],
+  },
+  {
+    title: "Informacija",
+    links: [
+      { label: "Patarimai ir gidas", to: "/naujienos" },
+      { label: "Nuomos sutartis", to: "/nuomos-sutartis" },
+      { label: "Privatumo politika", to: "/privatumo-politika" },
+    ],
+  },
+];
+
+const BOTTOM_LINKS = [
+  { label: "Pradžia", to: "/" },
+  { label: "Automobiliai", to: "/automobiliai" },
+  { label: "Apie mus", to: "/apie-mus" },
+  { label: "Kontaktai", to: "/kontaktai" },
+  { label: "DUK", to: "/duk" },
 ];
 
 export function V3Footer() {
   return (
-    <footer className="bg-white pb-10 pt-16">
-      <div className="mx-auto max-w-[1180px] px-6">
+    <footer className="bg-white pb-10 pt-14">
+      <div className="mx-auto max-w-[1140px] px-6">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {COLUMNS.map((col) => (
             <div key={col.title}>
               <h3 className="text-[15px] font-bold text-foreground">{col.title}</h3>
               <ul className="mt-4 space-y-2.5">
-                {col.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-[13px] text-muted-foreground transition-colors hover:text-[hsl(var(--carbonus-green))]">
-                      {l}
-                    </a>
+                {col.links.map((link) => (
+                  <li key={link.to}>
+                    <Link to={link.to} className="text-[13px] text-muted-foreground transition-colors hover:text-[hsl(var(--carbonus-green))]">
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -44,14 +81,19 @@ export function V3Footer() {
               </button>
             </div>
 
-            <p className="mt-6 text-[14px] font-semibold text-foreground">4,9</p>
-            <p className="text-[13px] text-muted-foreground">įvertinimas, 320+ klientų</p>
+            <p className="mt-6 text-[16px] font-bold text-foreground">5,0</p>
+            <p className="text-[13px] text-muted-foreground">Google įvertinimas</p>
             <div className="mt-2 flex gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-[hsl(var(--carbonus-green))] text-[hsl(var(--carbonus-green))]" />
               ))}
             </div>
-            <a href="#" className="mt-4 inline-flex items-center gap-2 text-[13px] font-medium text-foreground underline">
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Carbonus+Druskininkai"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-[13px] font-medium text-foreground underline"
+            >
               <Send className="h-4 w-4 text-[hsl(var(--carbonus-green))]" />
               Google atsiliepimai
             </a>
@@ -59,20 +101,25 @@ export function V3Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center gap-6 border-t border-border pt-8 md:flex-row md:justify-between">
-          <img src={logoDark.url} alt="Carbonus" className="h-6 w-auto" />
+          <img src={footerLogo} alt="Carbonus" className="h-9 w-auto sm:h-10" />
           <nav className="flex flex-wrap justify-center gap-6 text-[13px] text-muted-foreground">
-            {["Atsiliepimai", "Paslaugos", "Partneriai", "Kontaktai", "Rezervacija"].map((l) => (
-              <a key={l} href="#" className="transition-colors hover:text-[hsl(var(--carbonus-green))]">
-                {l}
-              </a>
+            {BOTTOM_LINKS.map((link) => (
+              <Link key={link.to} to={link.to} className="transition-colors hover:text-[hsl(var(--carbonus-green))]">
+                {link.label}
+              </Link>
             ))}
           </nav>
           <div className="flex gap-3">
-            {[Facebook, Instagram, Youtube].map((Icon, i) => (
+            {[
+              { Icon: Facebook, label: "Facebook", href: "https://facebook.com" },
+              { Icon: Instagram, label: "Instagram", href: "https://instagram.com" },
+            ].map(({ Icon, label, href }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="Socialinis tinklas"
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-foreground transition-colors hover:bg-[hsl(var(--carbonus-green))] hover:text-white"
               >
                 <Icon className="h-4 w-4" />
