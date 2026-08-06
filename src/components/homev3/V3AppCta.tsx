@@ -1,72 +1,81 @@
 import { Link } from "react-router-dom";
-import citroen from "@/assets/citroen-spacetourer-side-clean.png";
-import { ArrowRight, Check, MessageCircle } from "lucide-react";
+import { ArrowRight, Calendar, Shield, Phone } from "lucide-react";
+import ctaSuv from "@/assets/cta-suv.png.asset.json";
 
 export function V3AppCta() {
   return (
-    <section className="bg-white px-6 pb-28 pt-24 lg:pb-36 lg:pt-32">
-      <div className="relative mx-auto min-h-[360px] max-w-[1140px] overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,hsl(var(--carbonus-green-dark))_0%,hsl(var(--carbonus-green))_58%,hsl(var(--carbonus-green-light))_100%)] shadow-[0_28px_70px_rgba(5,122,70,0.20)]">
-        <div className="pointer-events-none absolute -right-16 -top-28 h-[340px] w-[340px] rounded-full border-[70px] border-white/10" />
-        <div className="pointer-events-none absolute -bottom-28 left-[42%] h-[280px] w-[280px] rounded-full border-[55px] border-white/[0.07]" />
+    <section className="bg-[hsl(210_20%_97%)] px-6 py-24 lg:py-32">
+      <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[32px] bg-[hsl(var(--carbonus-dark))] shadow-[0_32px_80px_rgba(6,25,27,0.22)]">
+        {/* Decorative gradient glow */}
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[48%] opacity-[0.09] lg:block"
-          style={{
-            backgroundImage: "repeating-linear-gradient(90deg,#fff 0 10px,transparent 10px 28px)",
-            maskImage: "repeating-linear-gradient(0deg,#000 0 14px,transparent 14px 27px)",
-            WebkitMaskImage: "repeating-linear-gradient(0deg,#000 0 14px,transparent 14px 27px)",
-            transform: "skewX(-18deg)",
-          }}
+          aria-hidden
+          className="pointer-events-none absolute -left-24 top-0 h-[420px] w-[420px] rounded-full opacity-[0.18]"
+          style={{ background: "radial-gradient(circle, hsl(var(--carbonus-green)) 0%, transparent 70%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-32 -right-32 h-[520px] w-[520px] rounded-full opacity-[0.10]"
+          style={{ background: "radial-gradient(circle, hsl(var(--carbonus-green)) 0%, transparent 70%)" }}
         />
 
-        <div className="relative z-10 flex min-h-[360px] flex-col justify-center px-8 py-12 sm:px-14 lg:w-[58%] lg:px-16">
-          <div className="mb-5 flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em] text-white/75">
-            <span className="h-2 w-2 rounded-full bg-white" />
-            Laikas keliauti
-          </div>
-          <h2 className="max-w-[520px] text-[32px] font-extrabold leading-[1.12] tracking-[-0.025em] text-white sm:text-[40px] lg:text-[44px]">
-            Jūsų kitas automobilis jau laukia
-          </h2>
-          <p className="mt-5 max-w-[510px] text-[15px] leading-7 text-white/80 sm:text-[16px]">
-            Išsirinkite prižiūrėtą, pilnai apdraustą automobilį ir rezervuokite jį vos per kelias minutes.
-          </p>
+        <div className="relative z-10 grid items-center lg:grid-cols-[1fr_46%]">
+          {/* Left content */}
+          <div className="px-8 py-14 sm:px-12 lg:px-16 lg:py-20">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-white/70">
+              <Calendar className="h-3.5 w-3.5" />
+              Rezervuokite per 2 minutes
+            </div>
 
-          <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-medium text-white/85">
-            {["Aiškios kainos", "Greitas užsakymas", "Jokių paslėptų mokesčių"].map((item) => (
-              <span key={item} className="flex items-center gap-1.5">
-                <Check className="h-4 w-4" strokeWidth={2.5} />
-                {item}
+            <h2 className="max-w-[520px] text-[32px] font-extrabold leading-[1.1] tracking-[-0.025em] text-white sm:text-[40px] lg:text-[46px]">
+              Pasiruošę keliauti? <span className="text-[hsl(var(--carbonus-green))]">Jūsų automobilis laukia.</span>
+            </h2>
+
+            <p className="mt-5 max-w-[500px] text-[15px] leading-7 text-white/70 sm:text-[16px]">
+              Išsirinkite patikrintą automobilį, užsakykite internetu ir atsiimkite patogiu metu. Visos kainos matomos iš karto.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                to="/automobiliai"
+                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[hsl(var(--carbonus-green))] px-7 py-3 text-[14px] font-bold text-[hsl(var(--carbonus-dark))] shadow-[0_12px_28px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[hsl(var(--carbonus-green-hover))] hover:shadow-[0_16px_34px_rgba(0,0,0,0.22)]"
+              >
+                Rodyti automobilius
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                to="/kontaktai"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/[0.06] px-6 py-3 text-[14px] font-bold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
+              >
+                <Phone className="h-4 w-4" />
+                +370 6XX XXXXX
+              </Link>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-white/70">
+              <span className="inline-flex items-center gap-1.5">
+                <Shield className="h-4 w-4 text-[hsl(var(--carbonus-green))]" />
+                Pilnas draudimas
               </span>
-            ))}
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar className="h-4 w-4 text-[hsl(var(--carbonus-green))]" />
+                Lankstus atšaukimas
+              </span>
+            </div>
           </div>
 
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link
-              to="/automobiliai"
-              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-[14px] font-bold text-[hsl(var(--carbonus-green-dark))] shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,0,0,0.18)]"
-            >
-              Rinktis automobilį
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <Link
-              to="/kontaktai"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/35 bg-white/10 px-6 py-3 text-[14px] font-bold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/20"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Susisiekti
-            </Link>
+          {/* Right car image */}
+          <div className="relative hidden items-center justify-center lg:flex lg:min-h-[420px]">
+            <div className="absolute bottom-[10%] h-[18%] w-[78%] rounded-[50%] bg-black/40 blur-2xl" />
+            <img
+              src={ctaSuv.url}
+              alt="Premium automobilis nuomai"
+              loading="lazy"
+              width={800}
+              height={500}
+              className="relative z-10 w-[108%] max-w-none object-contain drop-shadow-[0_28px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 hover:scale-[1.02] hover:-translate-y-1"
+              style={{ transform: "translateX(-4%)" }}
+            />
           </div>
-        </div>
-
-        <div className="relative z-10 mx-auto -mt-5 w-[88%] max-w-[520px] pb-8 lg:absolute lg:-right-8 lg:bottom-3 lg:mt-0 lg:w-[52%] lg:max-w-none lg:pb-0">
-          <div className="absolute bottom-[12%] left-[8%] h-[17%] w-[82%] rounded-[50%] bg-black/30 blur-2xl" />
-          <img
-            src={citroen}
-            alt="Citroën SpaceTourer automobilis"
-            loading="lazy"
-            width={1376}
-            height={768}
-            className="relative w-full object-contain drop-shadow-[0_24px_24px_rgba(0,0,0,0.25)] transition-transform duration-500 hover:-translate-y-1 hover:scale-[1.015]"
-          />
         </div>
       </div>
     </section>
