@@ -19,12 +19,12 @@ export function V3AppCta() {
           {/* Subtle gradient overlay on the right edge blending into green panel */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-y-0 right-0 hidden w-24 bg-gradient-to-r from-transparent to-[hsl(var(--carbonus-green))] lg:block"
+            className="pointer-events-none absolute inset-y-0 right-0 hidden w-24 bg-gradient-to-r from-transparent to-[hsl(var(--carbonus-green-dark))] lg:block"
           />
         </div>
 
         {/* Right: green content panel */}
-        <div className="bg-[hsl(var(--carbonus-green))] px-8 py-12 sm:px-12 lg:px-14 lg:py-16">
+        <div className="bg-[hsl(var(--carbonus-green-dark))] px-8 py-12 sm:px-12 lg:px-14 lg:py-16">
           <h2 className="max-w-[360px] text-[30px] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[38px] lg:text-[44px]">
             Pasiruošę kelionei?
           </h2>
@@ -36,7 +36,7 @@ export function V3AppCta() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               to="/automobiliai"
-              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[hsl(var(--carbonus-dark))] px-7 py-3 text-[14px] font-bold text-white shadow-[0_12px_28px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[hsl(var(--carbonus-dark-2))]"
+              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-[14px] font-bold text-[hsl(var(--carbonus-dark))] shadow-[0_12px_28px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/90"
             >
               Rodyti automobilius
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
