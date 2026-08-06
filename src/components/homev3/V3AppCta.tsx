@@ -5,7 +5,7 @@ import ctaCar from "@/assets/car-mustang.jpg";
 export function V3AppCta() {
   return (
     <section className="bg-white px-6 py-20 lg:py-28">
-      <div className="relative mx-auto grid max-w-[1520px] items-center overflow-hidden rounded-[32px] bg-[hsl(210_20%_97%)] shadow-[0_24px_70px_rgba(2,18,20,0.10)] lg:grid-cols-[1fr_1.15fr]">
+      <div className="relative mx-auto grid max-w-[1520px] items-center overflow-hidden rounded-[32px] bg-[hsl(210_20%_97%)] shadow-[0_24px_70px_rgba(2,18,20,0.10)] lg:grid-cols-[1fr_1.35fr]">
         {/* Left: car image */}
         <div className="relative h-[300px] overflow-hidden sm:h-[360px] lg:h-[420px]">
           <img
