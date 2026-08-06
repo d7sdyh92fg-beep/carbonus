@@ -1,34 +1,32 @@
-import heroCar from "@/assets/hero-suv-green.png";
-import { V3StoreButtons } from "./V3StoreButtons";
+import heroCar from "@/assets/hero-citroen-spacetourer-reference.png";
+import plateLogo from "@/assets/carplus-plate-logo.png";
 import { V3SearchBar } from "./V3SearchBar";
 
 export function V3Hero() {
   return (
-    <section className="relative bg-[hsl(210_20%_96%)] pb-24 lg:pb-0">
-      <div className="relative mx-auto max-w-[1180px] px-6">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-          {/* Left copy */}
-          <div className="pt-8 lg:pb-40 lg:pt-4">
-            <h1 className="max-w-[460px] text-[34px] font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-[42px]">
-              Ieškote, kaip sutaupyti
-              <br className="hidden sm:block" /> nuomojantis automobilį?
-            </h1>
-            <div className="mt-5 h-[3px] w-10 rounded-full bg-[hsl(var(--carbonus-green))]" />
-            <p className="mt-5 max-w-[400px] text-[14px] leading-relaxed text-muted-foreground">
-              Atraskite Carbonus automobilių nuomos pasiūlymus visoje Lietuvoje.
-              Rinkitės iš plataus automobilių pasirinkimo ir vietinių akcijų.
+    <section className="relative bg-white pt-8 sm:pt-10 lg:pt-[72px]">
+      <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[612px]" />
+
+      <div className="relative mx-auto max-w-[1140px] px-6 lg:min-h-[660px]">
+        <div className="grid gap-10 lg:h-[642px] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
+          <div className="pt-10 lg:pt-[112px]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--carbonus-green-dark))] sm:text-[12px]">
+              Keliaukite patogiai. Mokėkite protingai.
             </p>
-            <div className="mt-7">
-              <V3StoreButtons />
-            </div>
+            <h1 className="mt-6 max-w-[440px] text-[34px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:text-[42px]">
+              Jūsų kelionė prasideda
+              <br className="hidden sm:block" /> su Carbonus.
+            </h1>
+            <div className="mt-5 h-[4px] w-10 rounded-full bg-carbonus-green" />
+            <p className="mt-5 max-w-[430px] text-[14px] leading-[1.8] text-muted-foreground">
+              Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
+            </p>
           </div>
 
-          {/* Right green card */}
-          <div className="relative">
-            <div className="relative h-[300px] overflow-hidden rounded-[28px] bg-[hsl(var(--carbonus-green-dark))] sm:h-[400px] lg:h-[480px]">
-              {/* tire tread graphic, lower-right */}
+          <div className="relative lg:pt-3">
+            <div className="relative h-[330px] overflow-hidden rounded-[28px] bg-carbonus-green sm:h-[430px] lg:h-[630px]">
               <div
-                className="pointer-events-none absolute -bottom-10 right-[-40px] h-[320px] w-[320px] rotate-[28deg] opacity-[0.10]"
+                className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
                 style={{
                   backgroundImage:
                     "repeating-linear-gradient(90deg, #fff 0 14px, transparent 14px 34px)",
@@ -38,31 +36,48 @@ export function V3Hero() {
                     "repeating-linear-gradient(0deg, #000 0 18px, transparent 18px 30px)",
                 }}
               />
-              {/* decorative dashes, top-left */}
-              <div className="pointer-events-none absolute left-8 top-8 grid grid-cols-4 gap-2 opacity-25">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <span key={i} className="block h-3 w-[3px] rounded-full bg-white" />
+              <div className="pointer-events-none absolute left-14 top-10 grid grid-cols-4 gap-2 opacity-25">
+                {Array.from({ length: 12 }).map((_, index) => (
+                  <span key={index} className="block h-3 w-[3px] rounded-full bg-white" />
                 ))}
               </div>
             </div>
 
-            {/* Car overlapping the left edge */}
-            <img
-              src={heroCar}
-              alt="Carbonus nuomojamas visureigis"
-              width={1200}
-              height={800}
-              className="pointer-events-none absolute left-[-30%] top-1/2 w-[136%] max-w-none -translate-y-[58%] drop-shadow-[0_38px_36px_rgba(0,0,0,0.35)]"
-            />
+            <div className="pointer-events-none absolute left-[-33%] top-1/2 w-[170%] max-w-none -translate-y-[60%]">
+              <span
+                aria-hidden="true"
+                className="absolute bottom-[13%] left-[17%] z-0 h-[10%] w-[69%] rounded-full bg-black/35 blur-[18px]"
+              />
+              <img
+                src={heroCar}
+                alt="Carbonus nuomojamas Citroën SpaceTourer keleivinis mikroautobusas"
+                width={1280}
+                height={720}
+                className="relative z-10 w-full"
+              />
+              <span
+                aria-hidden="true"
+                className="absolute left-[19.35%] top-[62.8%] z-20 flex h-[5.15%] w-[10.1%] items-center justify-center overflow-hidden bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.85),inset_0_-1px_2px_rgba(20,28,23,0.13),0_2px_3px_rgba(0,0,0,0.12)]"
+                style={{
+                  clipPath: "polygon(1% 0, 100% 9%, 96% 100%, 0 87%)",
+                  transform: "perspective(220px) rotateY(11deg) rotateZ(1.6deg) skewY(0.7deg)",
+                  transformOrigin: "left center",
+                }}
+              >
+                <img
+                  src={plateLogo}
+                  alt=""
+                  className="h-[76%] w-[78%] object-contain opacity-95"
+                />
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Floating search bar */}
-        <div className="relative z-10 -mt-8 w-full lg:absolute lg:bottom-[-40px] lg:left-6 lg:right-auto lg:mt-0 lg:w-[720px]">
+        <div className="relative z-20 -mt-7 w-full pb-10 lg:absolute lg:bottom-[54px] lg:left-6 lg:mt-0 lg:w-[780px] lg:pb-0">
           <V3SearchBar />
         </div>
       </div>
-      <div className="hidden h-[40px] lg:block" />
     </section>
   );
 }

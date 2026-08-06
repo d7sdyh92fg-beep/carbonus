@@ -1,4 +1,4 @@
-import servicesCar from "@/assets/homev3-car-services.png";
+import servicesCar from "@/assets/homev3-services-skoda-hero-v3.png";
 import { Tag, Wallet, Headphones } from "lucide-react";
 
 const ITEMS = [
@@ -21,20 +21,20 @@ const ITEMS = [
 
 export function V3BestServices() {
   return (
-    <section className="overflow-hidden bg-white py-16 lg:py-24">
-      <div className="mx-auto grid max-w-[1180px] items-center gap-12 px-6 lg:grid-cols-2">
-        <div className="relative lg:-ml-[22%] lg:w-[122%]">
+    <section className="overflow-hidden bg-white py-16 lg:py-20">
+      <div className="mx-auto grid max-w-[1580px] items-center gap-12 px-6 lg:min-h-[700px] lg:grid-cols-[minmax(0,3fr)_minmax(400px,2fr)] lg:gap-0 lg:px-0">
+        <div className="relative mx-auto aspect-[3/2] w-full overflow-hidden rounded-[26px] lg:h-[650px] lg:aspect-auto lg:rounded-none lg:rounded-r-[36px]">
           <img
             src={servicesCar}
-            alt="Carbonus nuomos automobilis"
+            alt="Žalias Škoda nuomos automobilis"
             loading="lazy"
-            width={1408}
-            height={1008}
-            className="w-full drop-shadow-[0_30px_28px_rgba(0,0,0,0.22)]"
+            width={1536}
+            height={1024}
+            className="h-full w-full object-cover object-center"
           />
         </div>
 
-        <div>
+        <div className="lg:px-14 xl:px-20">
           <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Geriausios paslaugos
           </p>
@@ -43,10 +43,10 @@ export function V3BestServices() {
           </h2>
           <div className="mt-5 h-[3px] w-10 rounded-full bg-[hsl(var(--carbonus-green))]" />
 
-          <div className="mt-9 space-y-7">
+          <div className="mt-10 space-y-8">
             {ITEMS.map((item) => (
               <div key={item.title} className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-muted shadow-[0_8px_18px_rgba(16,24,40,0.06)]">
                   <item.icon className="h-5 w-5 text-[hsl(var(--carbonus-green))]" />
                 </div>
                 <div>
