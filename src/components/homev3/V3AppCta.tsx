@@ -42,13 +42,13 @@ export function V3AppCta() {
                 Rodyti automobilius
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-              <Link
-                to="/kontaktai"
+              <a
+                href="tel:+37069818781"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/[0.06] px-6 py-3 text-[14px] font-bold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
               >
                 <Phone className="h-4 w-4" />
-                +370 6XX XXXXX
-              </Link>
+                +370 698 18 781
+              </a>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-white/70">
