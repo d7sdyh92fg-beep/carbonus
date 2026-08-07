@@ -67,7 +67,7 @@ const COPY = {
     heading: "Išsirinkite automobilį savo kelionei",
     sub: "Visi mūsų automobiliai prižiūrėti, apdrausti ir paruošti saugiai kelionei.",
     from: "nuo",
-    perDay: "",
+    perDay: "/ dieną",
     seats: "vietos",
     view: "Peržiūrėti automobilį",
     viewAll: "Peržiūrėti visą autoparką",
