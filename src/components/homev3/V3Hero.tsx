@@ -35,27 +35,27 @@ export function V3Hero() {
   const c = heroCopy[language] ?? heroCopy.lt;
 
   return (
-    <section className="relative bg-white pt-8 sm:pt-10 lg:pt-[78px]">
+    <section className="relative bg-white pt-[96px] sm:pt-[104px] lg:pt-[78px]">
       <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[612px]" />
 
-      <div className="relative mx-auto max-w-[1140px] px-6 lg:min-h-[660px]">
-        <div className="grid gap-10 lg:h-[642px] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
-          <div className="pt-10 lg:pt-[112px]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--carbonus-green-dark))] sm:text-[12px]">
+      <div className="relative mx-auto max-w-[1140px] px-5 sm:px-6 lg:min-h-[660px]">
+        <div className="grid gap-8 sm:gap-10 lg:h-[642px] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
+          <div className="pt-2 sm:pt-6 lg:pt-[112px]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[12px] sm:tracking-[0.18em]">
               {c.eyebrow}
             </p>
-            <h1 className="mt-6 max-w-[440px] text-[34px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:text-[42px]">
+            <h1 className="mt-4 max-w-[440px] text-[30px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:mt-6 sm:text-[42px]">
               {c.title1}
               <br className="hidden sm:block" /> {c.title2}
             </h1>
-            <div className="mt-5 h-[4px] w-10 rounded-full bg-carbonus-green" />
-            <p className="mt-5 max-w-[430px] text-[14px] leading-[1.8] text-muted-foreground">
+            <div className="mt-4 h-[4px] w-10 rounded-full bg-carbonus-green sm:mt-5" />
+            <p className="mt-4 max-w-[430px] text-[14px] leading-[1.75] text-muted-foreground sm:mt-5 sm:leading-[1.8]">
               {c.description}
             </p>
           </div>
 
           <div className="relative">
-            <div className="relative h-[330px] overflow-hidden rounded-[28px] bg-carbonus-green sm:h-[430px] lg:h-[630px] lg:rounded-t-none">
+            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[630px] lg:rounded-t-none">
               <div
                 className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
                 style={{
@@ -67,14 +67,14 @@ export function V3Hero() {
                     "repeating-linear-gradient(0deg, #000 0 18px, transparent 18px 30px)",
                 }}
               />
-              <div className="pointer-events-none absolute left-14 top-10 grid grid-cols-4 gap-2 opacity-25">
+              <div className="pointer-events-none absolute left-6 top-6 grid grid-cols-4 gap-2 opacity-25 sm:left-14 sm:top-10">
                 {Array.from({ length: 12 }).map((_, index) => (
                   <span key={index} className="block h-3 w-[3px] rounded-full bg-white" />
                 ))}
               </div>
             </div>
 
-            <div className="pointer-events-none absolute left-[-33%] top-1/2 w-[170%] max-w-none -translate-y-[60%]">
+            <div className="pointer-events-none absolute left-[-4%] top-1/2 w-[108%] max-w-none -translate-y-1/2 lg:left-[-20%] lg:w-[120%] lg:-translate-y-[58%] xl:left-[-33%] xl:w-[170%] xl:-translate-y-[60%]">
               <span
                 aria-hidden="true"
                 className="absolute bottom-[13%] left-[17%] z-0 h-[10%] w-[69%] rounded-full bg-black/35 blur-[18px]"
@@ -105,10 +105,11 @@ export function V3Hero() {
           </div>
         </div>
 
-        <div className="relative z-20 -mt-7 w-full pb-10 lg:absolute lg:bottom-[54px] lg:left-6 lg:mt-0 lg:w-[780px] lg:pb-0">
+        <div className="relative z-20 mt-6 w-full pb-10 sm:mt-8 lg:absolute lg:bottom-[54px] lg:left-6 lg:mt-0 lg:w-[780px] lg:pb-0">
           <V3SearchBar />
         </div>
       </div>
     </section>
+
   );
 }

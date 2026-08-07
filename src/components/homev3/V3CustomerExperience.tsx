@@ -148,9 +148,10 @@ export function V3CustomerExperience() {
           </p>
         </div>
 
-        <div className="mt-14 grid items-center gap-10 lg:grid-cols-[1fr_380px_1fr] lg:gap-0">
+        <div className="mt-12 grid grid-cols-2 items-start gap-8 sm:mt-14 sm:gap-10 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-0">
           {/* left column */}
-          <div className="grid grid-cols-2 gap-8 lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+          <div className="contents lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+
             {LEFT.map((item, index) => (
               <div
                 key={item.title}
@@ -169,7 +170,7 @@ export function V3CustomerExperience() {
 
           {/* car */}
           <div
-            className={`order-first mx-auto w-[250px] transition-all duration-1000 ease-out lg:order-none lg:w-[370px] ${
+            className={`order-first col-span-2 mx-auto w-[220px] transition-all duration-1000 ease-out sm:w-[250px] lg:order-none lg:col-span-1 lg:w-[370px] ${
               isVisible ? "translate-y-0 scale-100 opacity-100" : "translate-y-10 scale-[0.96] opacity-0"
             }`}
             style={{ transitionDelay: "220ms" }}
@@ -186,7 +187,8 @@ export function V3CustomerExperience() {
           </div>
 
           {/* right column */}
-          <div className="grid grid-cols-2 gap-8 lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+          <div className="contents lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+
             {RIGHT.map((item, index) => (
               <div
                 key={item.title}
