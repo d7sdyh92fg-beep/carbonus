@@ -4,7 +4,7 @@ import { HeroTrustRow } from "./HeroTrustRow";
 
 export function Hero() {
   return (
-    <section className="relative bg-[hsl(210_20%_97%)] overflow-hidden pt-[73px] pb-16">
+    <section className="relative bg-[hsl(210_20%_97%)] overflow-hidden pt-[78px] pb-16">
       <div className="relative z-10 w-full max-w-[1520px] mx-auto px-6 md:px-12">
         <div className="grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-14 items-start">
           {/* Left: copy */}
