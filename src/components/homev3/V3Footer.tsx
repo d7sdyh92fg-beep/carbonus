@@ -1,51 +1,58 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Facebook, Instagram, Send } from "lucide-react";
 import footerLogo from "@/assets/brand-footer-carplus.png";
+import { useLanguage } from "@/hooks/use-language";
 
-const COLUMNS = [
-  {
-    title: "Nuoma",
-    links: [
-      { label: "Visi automobiliai", to: "/automobiliai" },
-      { label: "Laisvi automobiliai", to: "/laisvi-automobiliai" },
+const COPY = {
+  lt: {
+    columns: [
+      { title: "Nuoma", links: [["Visi automobiliai", "/automobiliai"], ["Laisvi automobiliai", "/laisvi-automobiliai"]] },
+      { title: "Mūsų autoparkas", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"]] },
+      { title: "Apie Carbonus", links: [["Apie mus", "/apie-mus"], ["Kontaktai", "/kontaktai"], ["DUK", "/duk"]] },
+      { title: "Informacija", links: [["Patarimai ir gidas", "/naujienos"], ["Nuomos sutartis", "/nuomos-sutartis"], ["Privatumo politika", "/privatumo-politika"]] },
     ],
+    newsletter: "Naujienlaiškis",
+    emailPlaceholder: "El. pašto adresas",
+    subscribe: "Prenumeruoti",
+    rating: "Google įvertinimas",
+    reviews: "Google atsiliepimai",
+    bottom: [["Pradžia", "/"], ["Automobiliai", "/automobiliai"], ["Apie mus", "/apie-mus"], ["Kontaktai", "/kontaktai"], ["DUK", "/duk"]],
   },
-  {
-    title: "Mūsų autoparkas",
-    links: [
-      { label: "Mercedes-Benz SLK", to: "/automobiliai/mercedes-benz-slk-nuoma" },
-      { label: "Hyundai Bayon Cross", to: "/automobiliai/hyundai-bayon-cross-nuoma" },
-      { label: "Citroën SpaceTourer", to: "/automobiliai/citroen-spacetourer-nuoma" },
-      { label: "KIA CEED 2020", to: "/automobiliai/kia-ceed-hecbekas-nuoma" },
+  en: {
+    columns: [
+      { title: "Rental", links: [["All cars", "/automobiliai"], ["Available cars", "/laisvi-automobiliai"]] },
+      { title: "Our fleet", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"]] },
+      { title: "About Carbonus", links: [["About us", "/apie-mus"], ["Contact", "/kontaktai"], ["FAQ", "/duk"]] },
+      { title: "Information", links: [["Tips & guide", "/naujienos"], ["Rental agreement", "/nuomos-sutartis"], ["Privacy policy", "/privatumo-politika"]] },
     ],
+    newsletter: "Newsletter",
+    emailPlaceholder: "Email address",
+    subscribe: "Subscribe",
+    rating: "Google rating",
+    reviews: "Google reviews",
+    bottom: [["Home", "/"], ["Cars", "/automobiliai"], ["About us", "/apie-mus"], ["Contact", "/kontaktai"], ["FAQ", "/duk"]],
   },
-  {
-    title: "Apie Carbonus",
-    links: [
-      { label: "Apie mus", to: "/apie-mus" },
-      { label: "Kontaktai", to: "/kontaktai" },
-      { label: "DUK", to: "/duk" },
+  ru: {
+    columns: [
+      { title: "Аренда", links: [["Все автомобили", "/automobiliai"], ["Свободные автомобили", "/laisvi-automobiliai"]] },
+      { title: "Наш автопарк", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"]] },
+      { title: "О Carbonus", links: [["О нас", "/apie-mus"], ["Контакты", "/kontaktai"], ["ЧаВо", "/duk"]] },
+      { title: "Информация", links: [["Советы и гид", "/naujienos"], ["Договор аренды", "/nuomos-sutartis"], ["Политика конфиденциальности", "/privatumo-politika"]] },
     ],
+    newsletter: "Рассылка",
+    emailPlaceholder: "Адрес эл. почты",
+    subscribe: "Подписаться",
+    rating: "Рейтинг Google",
+    reviews: "Отзывы Google",
+    bottom: [["Главная", "/"], ["Автомобили", "/automobiliai"], ["О нас", "/apie-mus"], ["Контакты", "/kontaktai"], ["ЧаВо", "/duk"]],
   },
-  {
-    title: "Informacija",
-    links: [
-      { label: "Patarimai ir gidas", to: "/naujienos" },
-      { label: "Nuomos sutartis", to: "/nuomos-sutartis" },
-      { label: "Privatumo politika", to: "/privatumo-politika" },
-    ],
-  },
-];
-
-const BOTTOM_LINKS = [
-  { label: "Pradžia", to: "/" },
-  { label: "Automobiliai", to: "/automobiliai" },
-  { label: "Apie mus", to: "/apie-mus" },
-  { label: "Kontaktai", to: "/kontaktai" },
-  { label: "DUK", to: "/duk" },
-];
+} as const;
 
 export function V3Footer() {
+  const { language } = useLanguage();
+  const c = COPY[language] ?? COPY.lt;
+  const COLUMNS = c.columns.map((col) => ({ title: col.title, links: col.links.map(([label, to]) => ({ label, to })) }));
+  const BOTTOM_LINKS = c.bottom.map(([label, to]) => ({ label, to }));
   return (
     <footer className="bg-white pb-10 pt-14">
       <div className="mx-auto max-w-[1140px] px-6">
@@ -66,15 +73,15 @@ export function V3Footer() {
           ))}
 
           <div>
-            <h3 className="text-[15px] font-bold text-foreground">Naujienlaiškis</h3>
+            <h3 className="text-[15px] font-bold text-foreground">{c.newsletter}</h3>
             <div className="mt-4 flex overflow-hidden rounded-lg bg-muted">
               <input
                 type="email"
-                placeholder="El. pašto adresas"
+                placeholder={c.emailPlaceholder}
                 className="w-full bg-transparent px-3 py-2.5 text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
               />
               <button
-                aria-label="Prenumeruoti"
+                aria-label={c.subscribe}
                 className="flex w-11 shrink-0 items-center justify-center bg-[hsl(var(--carbonus-green))] text-white"
               >
                 <ArrowRight className="h-4 w-4" />
@@ -82,7 +89,7 @@ export function V3Footer() {
             </div>
 
             <p className="mt-6 text-[16px] font-bold text-foreground">5,0</p>
-            <p className="text-[13px] text-muted-foreground">Google įvertinimas</p>
+            <p className="text-[13px] text-muted-foreground">{c.rating}</p>
             <div className="mt-2 flex gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-[hsl(var(--carbonus-green))] text-[hsl(var(--carbonus-green))]" />
@@ -95,7 +102,7 @@ export function V3Footer() {
               className="mt-4 inline-flex items-center gap-2 text-[13px] font-medium text-foreground underline"
             >
               <Send className="h-4 w-4 text-[hsl(var(--carbonus-green))]" />
-              Google atsiliepimai
+              {c.reviews}
             </a>
           </div>
         </div>
