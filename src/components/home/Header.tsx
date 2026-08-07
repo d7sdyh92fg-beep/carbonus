@@ -62,7 +62,7 @@ export function Header() {
         hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
-      <div className="max-w-[1520px] mx-auto h-[78px] px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-[1320px] mx-auto h-[78px] px-6 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center shrink-0" aria-label="Carbonus" style={{ width: 180 }}>
           <img src={onLightHero ? headerLogo : logo.url} alt="Carbonus" className="h-14 w-auto object-contain" />
