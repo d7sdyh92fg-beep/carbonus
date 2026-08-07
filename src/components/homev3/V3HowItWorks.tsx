@@ -1,24 +1,38 @@
 import { Fragment } from "react";
 import { MapPin, CalendarCheck, CalendarHeart } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 
-const STEPS = [
-  {
-    icon: MapPin,
-    title: "Pasirinkite vietą",
-    text: "Peržiūrėkite populiariausias paėmimo vietas visoje Lietuvoje.",
+const COPY = {
+  lt: {
+    eyebrow: "Kaip tai veikia",
+    heading: "Carbonus nuoma – trys paprasti žingsniai",
+    steps: [
+      { title: "Pasirinkite vietą", text: "Peržiūrėkite populiariausias paėmimo vietas visoje Lietuvoje." },
+      { title: "Paėmimo data", text: "Nurodykite datas ir laiką – laisvus automobilius parodysime iškart." },
+      { title: "Rezervuokite", text: "Patvirtinkite užsakymą ir gaukite sutartį el. paštu." },
+    ],
   },
-  {
-    icon: CalendarCheck,
-    title: "Paėmimo data",
-    text: "Nurodykite datas ir laiką – laisvus automobilius parodysime iškart.",
-    active: true,
+  en: {
+    eyebrow: "How it works",
+    heading: "Carbonus rental – three simple steps",
+    steps: [
+      { title: "Choose a location", text: "Browse the most popular pickup locations across Lithuania." },
+      { title: "Pickup date", text: "Set your dates and time – we show available cars instantly." },
+      { title: "Book it", text: "Confirm your booking and receive the contract by email." },
+    ],
   },
-  {
-    icon: CalendarHeart,
-    title: "Rezervuokite",
-    text: "Patvirtinkite užsakymą ir gaukite sutartį el. paštu.",
+  ru: {
+    eyebrow: "Как это работает",
+    heading: "Аренда Carbonus – три простых шага",
+    steps: [
+      { title: "Выберите место", text: "Посмотрите самые популярные места получения по всей Литве." },
+      { title: "Дата получения", text: "Укажите даты и время – свободные автомобили покажем сразу." },
+      { title: "Забронируйте", text: "Подтвердите заказ и получите договор на эл. почту." },
+    ],
   },
-];
+} as const;
+
+const ICONS = [MapPin, CalendarCheck, CalendarHeart];
 
 function Dashes({ flip }: { flip?: boolean }) {
   return (
@@ -40,37 +54,42 @@ function Dashes({ flip }: { flip?: boolean }) {
 }
 
 export function V3HowItWorks() {
+  const { language } = useLanguage();
+  const c = COPY[language] ?? COPY.lt;
+
   return (
     <section className="bg-white pb-24 pt-20 lg:pb-28 lg:pt-24">
       <div className="mx-auto max-w-[1060px] px-6 text-center">
         <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Kaip tai veikia
+          {c.eyebrow}
         </p>
         <h2 className="mt-3 text-[28px] font-extrabold tracking-tight text-foreground sm:text-[32px]">
-          Carbonus nuoma – trys paprasti žingsniai
+          {c.heading}
         </h2>
 
         <div className="mt-16 flex flex-col items-center justify-center gap-10 md:flex-row md:items-start md:gap-3">
-          {STEPS.map((step, i) => (
-            <Fragment key={step.title}>
-              <div className="max-w-[230px] text-center">
-                <div
-                  className={`mx-auto flex h-[76px] w-[76px] items-center justify-center rounded-xl border-2 border-white ${
-                    step.active
-                      ? "bg-carbonus-green shadow-[0_14px_30px_hsl(var(--carbonus-green)/0.38)]"
-                      : "bg-muted shadow-[0_12px_26px_rgba(16,24,40,0.10)]"
-                  }`}
-                >
-                  <step.icon
-                    className={`h-7 w-7 ${step.active ? "text-white" : "text-carbonus-green"}`}
-                  />
+          {c.steps.map((step, i) => {
+            const Icon = ICONS[i];
+            const active = i === 1;
+            return (
+              <Fragment key={step.title}>
+                <div className="max-w-[230px] text-center">
+                  <div
+                    className={`mx-auto flex h-[76px] w-[76px] items-center justify-center rounded-xl border-2 border-white ${
+                      active
+                        ? "bg-carbonus-green shadow-[0_14px_30px_hsl(var(--carbonus-green)/0.38)]"
+                        : "bg-muted shadow-[0_12px_26px_rgba(16,24,40,0.10)]"
+                    }`}
+                  >
+                    <Icon className={`h-7 w-7 ${active ? "text-white" : "text-carbonus-green"}`} />
+                  </div>
+                  <h3 className="mt-5 text-[16px] font-semibold text-foreground">{step.title}</h3>
+                  <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{step.text}</p>
                 </div>
-                <h3 className="mt-5 text-[16px] font-semibold text-foreground">{step.title}</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{step.text}</p>
-              </div>
-              {i < STEPS.length - 1 && <Dashes flip={i === 1} />}
-            </Fragment>
-          ))}
+                {i < c.steps.length - 1 && <Dashes flip={i === 1} />}
+              </Fragment>
+            );
+          })}
         </div>
       </div>
     </section>
