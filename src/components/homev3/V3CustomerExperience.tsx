@@ -148,9 +148,10 @@ export function V3CustomerExperience() {
           </p>
         </div>
 
-        <div className="mt-14 grid items-center gap-10 lg:grid-cols-[1fr_380px_1fr] lg:gap-0">
+        <div className="mt-12 grid grid-cols-2 items-start gap-8 sm:mt-14 sm:gap-10 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-0">
           {/* left column */}
-          <div className="grid grid-cols-2 gap-8 lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+          <div className="contents lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+
             {LEFT.map((item, index) => (
               <div
                 key={item.title}
