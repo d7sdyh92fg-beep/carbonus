@@ -96,12 +96,12 @@ export function Header() {
         {/* Right */}
         <div className="hidden lg:flex items-center gap-3">
           <DropdownMenu>
-            <DropdownMenuTrigger className={cn("inline-flex items-center gap-1.5 h-[40px] px-4 rounded-full text-sm font-medium transition-colors", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))] hover:bg-[hsl(var(--carbonus-dark))]/10" : "bg-white/[0.06] border border-white/10 text-white hover:bg-white/[0.10]")}>
+            <DropdownMenuTrigger className={cn("inline-flex items-center justify-center gap-1.5 h-[40px] w-[70px] px-4 rounded-full text-sm font-medium transition-colors", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))] hover:bg-[hsl(var(--carbonus-dark))]/10" : "bg-white/[0.06] border border-white/10 text-white hover:bg-white/[0.10]")}>
               {language.toUpperCase()} <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className={cn("min-w-[100px]", onLightHero ? "bg-white/95 backdrop-blur-xl border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))]" : "bg-black/80 backdrop-blur-[6px] border-white/10 text-white")}>
-              <DropdownMenuItem onClick={() => setLanguage("lt")} className={cn("focus:text-current", onLightHero ? "focus:bg-[hsl(var(--carbonus-dark))]/10" : "focus:bg-white/10")}>LT</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage("en")} className={cn("focus:text-current", onLightHero ? "focus:bg-[hsl(var(--carbonus-dark))]/10" : "focus:bg-white/10")}>EN</DropdownMenuItem>
+            <DropdownMenuContent className={cn("w-[var(--radix-dropdown-menu-trigger-width)] p-0 shadow-none rounded-t-none rounded-b-lg", onLightHero ? "bg-white border border-[hsl(var(--carbonus-dark))]/10 border-t-0 text-[hsl(var(--carbonus-dark))]" : "bg-[hsl(var(--carbonus-dark-2))] border border-white/10 border-t-0 text-white")}>
+              <DropdownMenuItem onClick={() => setLanguage("lt")} className={cn("justify-center rounded-none focus:text-current", onLightHero ? "focus:bg-[hsl(var(--carbonus-dark))]/10" : "focus:bg-white/10")}>LT</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("en")} className={cn("justify-center rounded-none focus:text-current", onLightHero ? "focus:bg-[hsl(var(--carbonus-dark))]/10" : "focus:bg-white/10")}>EN</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
