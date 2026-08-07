@@ -17,6 +17,7 @@ const HomeV3 = () => {
       <V3TopDeals />
       <V3BestServices />
       <V3CustomerExperience />
+      <V3SimpleCta />
       <V3Footer />
     </div>
   );
