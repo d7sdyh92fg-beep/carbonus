@@ -3,16 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import { CalendarCheck, CreditCard, MapPin, ShieldCheck, Wrench, FileText, type LucideIcon } from "lucide-react";
 
 const LEFT = [
-  { icon: Tag, title: "Konkurencingos kainos" },
-  { icon: PiggyBank, title: "Nuoma pagal jūsų biudžetą" },
-  { icon: CreditCard, title: "Lankstūs atsiskaitymo būdai" },
+  { icon: CalendarCheck, title: "Paprasta rezervacija" },
+  { icon: CreditCard, title: "Lankstus atsiskaitymas" },
+  { icon: MapPin, title: "Patogus atsiėmimas" },
 ];
 const RIGHT = [
-  { icon: Award, title: "Pilnai apdraustas parkas" },
-  { icon: MousePointerClick, title: "Lengvas užsakymas" },
-  { icon: Wrench, title: "Prižiūrėti automobiliai" },
+  { icon: ShieldCheck, title: "Apdraustas autoparkas" },
+  { icon: Wrench, title: "Reguliariai prižiūrėtas parkas" },
+  { icon: FileText, title: "Aiškios nuomos sąlygos" },
 ];
-function Item({
   icon: Icon,
   title,
   align,
