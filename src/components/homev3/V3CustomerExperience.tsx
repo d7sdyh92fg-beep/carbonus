@@ -1,6 +1,6 @@
 import topCar from "@/assets/homev3-car-topdown.png";
 import { useEffect, useRef, useState } from "react";
-import { Tag, Award, PiggyBank, MousePointerClick, CreditCard, Wrench } from "lucide-react";
+import { CalendarCheck, CreditCard, MapPin, ShieldCheck, Wrench, FileText, type LucideIcon } from "lucide-react";
 
 const LEFT = [
   { icon: Tag, title: "Konkurencingos kainos" },
