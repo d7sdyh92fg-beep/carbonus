@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Cog, Fuel, Heart, UsersRound } from "lucide-react";
+import { ArrowUpRight, Cog, Fuel, UsersRound } from "lucide-react";
 import mercedesSlk from "@/assets/fleet-mercedes-slk-open-top-v3.png";
 import kiaHatchback from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
 import citroenSpaceTourer from "@/assets/fleet-citroen-spacetourer-side-v2.png";
