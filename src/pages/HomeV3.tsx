@@ -13,8 +13,8 @@ const HomeV3 = () => {
       <Header />
       <V3Hero />
       <V3HowItWorks />
-      <V3BestServices />
       <V3TopDeals />
+      <V3BestServices />
       <V3CustomerExperience />
       <V3Footer />
     </div>
