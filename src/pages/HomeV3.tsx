@@ -4,6 +4,7 @@ import { V3HowItWorks } from "@/components/homev3/V3HowItWorks";
 import { V3BestServices } from "@/components/homev3/V3BestServices";
 import { V3TopDeals } from "@/components/homev3/V3TopDeals";
 import { V3CustomerExperience } from "@/components/homev3/V3CustomerExperience";
+import { V3SimpleCta } from "@/components/homev3/V3SimpleCta";
 import { V3Footer } from "@/components/homev3/V3Footer";
 
 /** Design mockup page (v3) — route: /home-v3 */
@@ -16,6 +17,7 @@ const HomeV3 = () => {
       <V3TopDeals />
       <V3BestServices />
       <V3CustomerExperience />
+      <V3SimpleCta />
       <V3Footer />
     </div>
   );
