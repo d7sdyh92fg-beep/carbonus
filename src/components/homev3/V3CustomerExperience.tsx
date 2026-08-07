@@ -45,8 +45,8 @@ function Item({
         <Icon className="h-6 w-6 text-[hsl(var(--carbonus-green))]" />
       </div>
       <p
-        className={`mt-4 flex min-h-[54px] items-center justify-center text-center text-[16px] font-semibold leading-[1.35] text-foreground ${
-          align === "right" ? "lg:justify-start lg:text-left" : "lg:justify-end lg:text-right"
+        className={`mt-4 flex min-h-[54px] w-full max-w-[190px] items-start justify-center text-center text-[16px] font-semibold leading-[1.35] text-foreground ${
+          align === "right" ? "lg:items-start lg:justify-start lg:text-left" : "lg:items-start lg:justify-end lg:text-right"
         }`}
       >
         {title}
