@@ -6,6 +6,40 @@ import { lt } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { useLanguage } from "@/hooks/use-language";
+
+const barCopy = {
+  lt: {
+    pickupLocation: "Paėmimo vieta",
+    office: "Carbonus ofisas",
+    delivery: "Pristatymas kitur",
+    placeholder: "Įrašykite adresą ar viešbutį",
+    pickupDate: "Paėmimo data",
+    returnDate: "Grąžinimo data",
+    search: "Ieškoti",
+    info: "Automobilio pristatymui taikomas papildomas mokestis. Pristatome Druskininkuose ir visoje Lietuvoje.",
+  },
+  en: {
+    pickupLocation: "Pick-up location",
+    office: "Carbonus office",
+    delivery: "Delivery elsewhere",
+    placeholder: "Enter an address or hotel",
+    pickupDate: "Pick-up date",
+    returnDate: "Return date",
+    search: "Search",
+    info: "An additional fee applies for car delivery. We deliver in Druskininkai and all across Lithuania.",
+  },
+  ru: {
+    pickupLocation: "Место получения",
+    office: "Офис Carbonus",
+    delivery: "Доставка в другое место",
+    placeholder: "Укажите адрес или отель",
+    pickupDate: "Дата получения",
+    returnDate: "Дата возврата",
+    search: "Искать",
+    info: "За доставку автомобиля взимается дополнительная плата. Доставляем в Друскининкай и по всей Литве.",
+  },
+} as const;
 
 const toISO = (d: Date) => {
   const y = d.getFullYear();
@@ -18,6 +52,8 @@ const fmt = (s: string) => format(new Date(`${s}T12:00:00`), "yyyy-MM-dd", { loc
 
 export function V3SearchBar() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const c = barCopy[language] ?? barCopy.lt;
   const today = toISO(new Date());
   const tomorrow = toISO(new Date(Date.now() + 86400000));
 
@@ -43,7 +79,7 @@ export function V3SearchBar() {
         <div className="flex min-w-0 flex-1 items-start gap-3 rounded-lg px-3 py-3">
           <MapPin className="mt-1 h-5 w-5 shrink-0 text-carbonus-green" />
           <div className="min-w-0 flex-1">
-            <label className="block text-[11px] font-medium text-muted-foreground">Paėmimo vieta</label>
+            <label className="block text-[11px] font-medium text-muted-foreground">{c.pickupLocation}</label>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               <button
                 type="button"
@@ -55,7 +91,7 @@ export function V3SearchBar() {
                     : "bg-muted text-foreground hover:bg-muted/80"
                 )}
               >
-                Carbonus ofisas
+                {c.office}
               </button>
               <button
                 type="button"
@@ -67,7 +103,7 @@ export function V3SearchBar() {
                     : "bg-muted text-foreground hover:bg-muted/80"
                 )}
               >
-                Pristatymas kitur
+                {c.delivery}
               </button>
             </div>
             {locationMode === "custom" && (
@@ -78,7 +114,7 @@ export function V3SearchBar() {
                 maxLength={120}
                 onChange={(e) => setCustomLocation(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && submit()}
-                placeholder="Įrašykite adresą ar viešbutį"
+                placeholder={c.placeholder}
                 className="mt-2 w-full bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
               />
             )}
@@ -94,7 +130,7 @@ export function V3SearchBar() {
             >
               <CalendarDays className="h-5 w-5 shrink-0 text-carbonus-green" />
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-medium text-muted-foreground">Paėmimo data</span>
+                <span className="block text-[11px] font-medium text-muted-foreground">{c.pickupDate}</span>
                 <span className="block truncate text-[14px] font-semibold text-foreground">{fmt(pickup)}</span>
               </span>
             </button>
@@ -135,7 +171,7 @@ export function V3SearchBar() {
             >
               <CalendarDays className="h-5 w-5 shrink-0 text-carbonus-green" />
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-medium text-muted-foreground">Grąžinimo data</span>
+                <span className="block text-[11px] font-medium text-muted-foreground">{c.returnDate}</span>
                 <span className="block truncate text-[14px] font-semibold text-foreground">{fmt(ret)}</span>
               </span>
             </button>
@@ -163,14 +199,14 @@ export function V3SearchBar() {
           onClick={submit}
           className="h-16 rounded-[10px] bg-carbonus-green-dark px-10 text-[16px] font-semibold text-white ring-4 ring-white transition-colors hover:bg-carbonus-green-deep sm:h-20"
         >
-          Ieškoti
+          {c.search}
         </button>
       </div>
 
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-5 py-3">
         <Info className="mt-[2px] h-4 w-4 shrink-0 text-carbonus-green" />
         <p className="text-[12px] leading-[1.6] text-muted-foreground">
-          Automobilio pristatymui taikomas papildomas mokestis. Pristatome Druskininkuose ir visoje Lietuvoje.
+          {c.info}
         </p>
       </div>
     </div>

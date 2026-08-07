@@ -1,8 +1,39 @@
 import heroCar from "@/assets/hero-citroen-spacetourer-reference.png";
 import plateLogo from "@/assets/carplus-plate-logo.png";
 import { V3SearchBar } from "./V3SearchBar";
+import { useLanguage } from "@/hooks/use-language";
+
+const heroCopy = {
+  lt: {
+    eyebrow: "Keliaukite patogiai. Mokėkite protingai.",
+    title1: "Jūsų kelionė prasideda",
+    title2: "su Carbonus.",
+    description:
+      "Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.",
+    imageAlt: "Carbonus nuomojamas Citroën SpaceTourer keleivinis mikroautobusas",
+  },
+  en: {
+    eyebrow: "Travel comfortably. Pay smart.",
+    title1: "Your journey starts",
+    title2: "with Carbonus.",
+    description:
+      "Modern, reliable and economical rental cars in Druskininkai and all across Lithuania.",
+    imageAlt: "Citroën SpaceTourer passenger van rented from Carbonus",
+  },
+  ru: {
+    eyebrow: "Путешествуйте с комфортом. Платите разумно.",
+    title1: "Ваше путешествие начинается",
+    title2: "с Carbonus.",
+    description:
+      "Современные, надёжные и экономичные автомобили напрокат в Друскининкай и по всей Литве.",
+    imageAlt: "Пассажирский микроавтобус Citroën SpaceTourer в аренду от Carbonus",
+  },
+} as const;
 
 export function V3Hero() {
+  const { language } = useLanguage();
+  const c = heroCopy[language] ?? heroCopy.lt;
+
   return (
     <section className="relative bg-white pt-8 sm:pt-10 lg:pt-[78px]">
       <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[612px]" />
@@ -11,15 +42,15 @@ export function V3Hero() {
         <div className="grid gap-10 lg:h-[642px] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
           <div className="pt-10 lg:pt-[112px]">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--carbonus-green-dark))] sm:text-[12px]">
-              Keliaukite patogiai. Mokėkite protingai.
+              {c.eyebrow}
             </p>
             <h1 className="mt-6 max-w-[440px] text-[34px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:text-[42px]">
-              Jūsų kelionė prasideda
-              <br className="hidden sm:block" /> su Carbonus.
+              {c.title1}
+              <br className="hidden sm:block" /> {c.title2}
             </h1>
             <div className="mt-5 h-[4px] w-10 rounded-full bg-carbonus-green" />
             <p className="mt-5 max-w-[430px] text-[14px] leading-[1.8] text-muted-foreground">
-              Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.
+              {c.description}
             </p>
           </div>
 
@@ -50,7 +81,7 @@ export function V3Hero() {
               />
               <img
                 src={heroCar}
-                alt="Carbonus nuomojamas Citroën SpaceTourer keleivinis mikroautobusas"
+                alt={c.imageAlt}
                 width={1280}
                 height={720}
                 className="relative z-10 w-full"
