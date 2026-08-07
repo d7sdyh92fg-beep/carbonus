@@ -12,11 +12,12 @@ const RIGHT = [
   { icon: Wrench, title: "Reguliariai prižiūrėtas parkas" },
   { icon: FileText, title: "Aiškios nuomos sąlygos" },
 ];
+function Item({
   icon: Icon,
   title,
   align,
 }: {
-  icon: typeof Tag;
+  icon: LucideIcon;
   title: string;
   align: "left" | "right";
 }) {
