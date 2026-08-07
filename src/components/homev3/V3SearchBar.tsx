@@ -40,22 +40,48 @@ export function V3SearchBar() {
     <div className="rounded-[14px] bg-white shadow-[0_18px_50px_rgba(16,24,40,0.14)]">
       <div className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:gap-0 sm:p-2 sm:pl-5">
         {/* Location */}
-        <div className="flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-3">
-          <MapPin className="h-5 w-5 shrink-0 text-carbonus-green" />
+        <div className="flex min-w-0 flex-1 items-start gap-3 rounded-lg px-3 py-3">
+          <MapPin className="mt-1 h-5 w-5 shrink-0 text-carbonus-green" />
           <div className="min-w-0 flex-1">
-            <label htmlFor="v3-location" className="block text-[11px] font-medium text-muted-foreground">
-              Paėmimo vieta
-            </label>
-            <input
-              id="v3-location"
-              type="text"
-              value={location}
-              maxLength={120}
-              onChange={(e) => setLocation(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && submit()}
-              placeholder="Įrašykite adresą ar viešbutį"
-              className="w-full bg-transparent text-[14px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
-            />
+            <label className="block text-[11px] font-medium text-muted-foreground">Paėmimo vieta</label>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                onClick={() => setLocationMode("office")}
+                className={cn(
+                  "rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+                  locationMode === "office"
+                    ? "bg-carbonus-green-dark text-white"
+                    : "bg-muted text-foreground hover:bg-muted/80"
+                )}
+              >
+                Carbonus ofisas
+              </button>
+              <button
+                type="button"
+                onClick={() => setLocationMode("custom")}
+                className={cn(
+                  "rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+                  locationMode === "custom"
+                    ? "bg-carbonus-green-dark text-white"
+                    : "bg-muted text-foreground hover:bg-muted/80"
+                )}
+              >
+                Pristatymas kitur
+              </button>
+            </div>
+            {locationMode === "custom" && (
+              <input
+                id="v3-location"
+                type="text"
+                value={customLocation}
+                maxLength={120}
+                onChange={(e) => setCustomLocation(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && submit()}
+                placeholder="Įrašykite adresą ar viešbutį"
+                className="mt-2 w-full bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
+              />
+            )}
           </div>
         </div>
 
