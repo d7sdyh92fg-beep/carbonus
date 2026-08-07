@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Cog, Fuel, Heart, UsersRound } from "lucide-react";
+import { ArrowUpRight, Cog, Fuel, UsersRound } from "lucide-react";
 import mercedesSlk from "@/assets/fleet-mercedes-slk-open-top-v3.png";
 import kiaHatchback from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
 import citroenSpaceTourer from "@/assets/fleet-citroen-spacetourer-side-v2.png";
@@ -62,8 +61,6 @@ const CARS = [
 ];
 
 export function V3TopDeals() {
-  const [likedCar, setLikedCar] = useState<string | null>(null);
-
   return (
     <section id="autoparkas" className="overflow-hidden bg-[hsl(210_20%_99%)] py-20 lg:py-28">
       <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
@@ -94,20 +91,6 @@ export function V3TopDeals() {
                   height={1024}
                   className="h-full w-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.025]"
                 />
-                <button
-                  type="button"
-                  onClick={() => setLikedCar(likedCar === car.id ? null : car.id)}
-                  aria-label={`Įsiminti ${car.name}`}
-                  className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-white/95 shadow-[0_6px_18px_rgba(16,24,40,0.1)] transition-transform hover:scale-105"
-                >
-                  <Heart
-                    className={`h-[18px] w-[18px] ${
-                      likedCar === car.id
-                        ? "fill-[hsl(var(--carbonus-green))] text-[hsl(var(--carbonus-green))]"
-                        : "text-foreground/50"
-                    }`}
-                  />
-                </button>
               </div>
 
               <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
