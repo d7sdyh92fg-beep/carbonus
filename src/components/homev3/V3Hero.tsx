@@ -4,7 +4,7 @@ import { V3SearchBar } from "./V3SearchBar";
 
 export function V3Hero() {
   return (
-    <section className="relative bg-white pt-8 sm:pt-10 lg:pt-[72px]">
+    <section className="relative bg-white pt-8 sm:pt-10 lg:pt-[78px]">
       <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[612px]" />
 
       <div className="relative mx-auto max-w-[1140px] px-6 lg:min-h-[660px]">
@@ -23,8 +23,8 @@ export function V3Hero() {
             </p>
           </div>
 
-          <div className="relative lg:pt-3">
-            <div className="relative h-[330px] overflow-hidden rounded-[28px] bg-carbonus-green sm:h-[430px] lg:h-[630px]">
+          <div className="relative">
+            <div className="relative h-[330px] overflow-hidden rounded-[28px] bg-carbonus-green sm:h-[430px] lg:h-[630px] lg:rounded-t-none">
               <div
                 className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
                 style={{
