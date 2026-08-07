@@ -141,8 +141,7 @@ export function V3SearchBar() {
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-5 py-3">
         <Info className="mt-[2px] h-4 w-4 shrink-0 text-carbonus-green" />
         <p className="text-[12px] leading-[1.6] text-muted-foreground">
-          Už automobilio pristatymą taikomas papildomas mokestis — mielai pristatysime į viešbučius Druskininkuose ar
-          bet kur kitur Lietuvoje.
+          Automobilio pristatymui taikomas papildomas mokestis. Pristatome Druskininkuose ir visoje Lietuvoje.
         </p>
       </div>
     </div>
