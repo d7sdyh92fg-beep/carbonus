@@ -13,6 +13,7 @@ import { getEquivalentPath } from "@/utils/routes";
 const languages = [
   { code: 'lt', name: 'LT', flag: '🇱🇹' },
   { code: 'en', name: 'EN', flag: '🇬🇧' },
+  { code: 'ru', name: 'RU', flag: '🇷🇺' },
 ] as const;
 
 export function LanguageSwitcher() {
@@ -22,7 +23,7 @@ export function LanguageSwitcher() {
   
   const currentLanguage = languages.find(lang => lang.code === language);
 
-  const handleLanguageChange = (newLanguage: 'lt' | 'en') => {
+  const handleLanguageChange = (newLanguage: 'lt' | 'en' | 'ru') => {
     setLanguage(newLanguage);
     
     // Navigate to the equivalent path in the new language

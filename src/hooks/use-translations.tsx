@@ -6,7 +6,7 @@ export function useTranslations() {
 
   const t = (key: string): any => {
     const keys = key.split('.');
-    let value: any = translations[language];
+    let value: any = (translations as any)[language];
 
     for (const k of keys) {
       if (value && typeof value === 'object' && k in value) {
