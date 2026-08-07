@@ -13,20 +13,42 @@ import {
 import logo from "@/assets/logo-white.png.asset.json";
 import headerLogo from "@/assets/brand-header-car-silhouette.png";
 
-const NAV = [
-  { to: "/", label: "Pradžia" },
-  { to: "/automobiliai", label: "Automobiliai" },
-  { to: "/apie-mus", label: "Apie mus" },
-  { to: "/kontaktai", label: "Kontaktai" },
-  { to: "/duk", label: "DUK" },
-  { to: "/naujienos", label: "Patarimai ir gidas" },
-];
+const NAV_COPY = {
+  lt: [
+    { to: "/", label: "Pradžia" },
+    { to: "/automobiliai", label: "Automobiliai" },
+    { to: "/apie-mus", label: "Apie mus" },
+    { to: "/kontaktai", label: "Kontaktai" },
+    { to: "/duk", label: "DUK" },
+    { to: "/naujienos", label: "Patarimai ir gidas" },
+  ],
+  en: [
+    { to: "/", label: "Home" },
+    { to: "/automobiliai", label: "Cars" },
+    { to: "/apie-mus", label: "About us" },
+    { to: "/kontaktai", label: "Contact" },
+    { to: "/duk", label: "FAQ" },
+    { to: "/naujienos", label: "Tips & guide" },
+  ],
+  ru: [
+    { to: "/", label: "Главная" },
+    { to: "/automobiliai", label: "Автомобили" },
+    { to: "/apie-mus", label: "О нас" },
+    { to: "/kontaktai", label: "Контакты" },
+    { to: "/duk", label: "ЧаВо" },
+    { to: "/naujienos", label: "Советы и гид" },
+  ],
+} as const;
+
+const MENU_LABEL = { lt: "Meniu", en: "Menu", ru: "Меню" } as const;
+const CLOSE_LABEL = { lt: "Uždaryti", en: "Close", ru: "Закрыть" } as const;
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const { isAdmin } = useAuth();
   const { language, setLanguage } = useLanguage();
+  const NAV = NAV_COPY[language] ?? NAV_COPY.lt;
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -119,7 +141,7 @@ export function Header() {
         <button
           className={cn("lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-full", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))]" : "bg-white/[0.06] border border-white/10 text-white")}
           onClick={() => setMobileOpen(true)}
-          aria-label="Meniu"
+          aria-label={MENU_LABEL[language] ?? MENU_LABEL.lt}
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -130,7 +152,7 @@ export function Header() {
         <div className="fixed inset-0 z-[60] bg-[hsl(var(--carbonus-dark))] flex flex-col">
           <div className="h-[68px] px-5 flex items-center justify-between border-b border-white/10">
             <img src={logo.url} alt="Carbonus" className="h-10 w-auto" />
-            <button onClick={() => setMobileOpen(false)} aria-label="Uždaryti" className="h-11 w-11 inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 text-white">
+            <button onClick={() => setMobileOpen(false)} aria-label={CLOSE_LABEL[language] ?? CLOSE_LABEL.lt} className="h-11 w-11 inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 text-white">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -147,7 +169,7 @@ export function Header() {
             ))}
           </nav>
           <div className="px-6 pb-8 flex items-center gap-3">
-            <button onClick={() => { setLanguage(language === "lt" ? "en" : "lt"); }} className="flex-1 h-12 rounded-full bg-white/[0.06] border border-white/10 text-white font-medium">
+            <button onClick={() => { setLanguage(language === "lt" ? "en" : language === "en" ? "ru" : "lt"); }} className="flex-1 h-12 rounded-full bg-white/[0.06] border border-white/10 text-white font-medium">
               {language.toUpperCase()}
             </button>
             <button

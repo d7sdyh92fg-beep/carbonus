@@ -1,17 +1,35 @@
 import topCar from "@/assets/homev3-car-topdown.png";
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/hooks/use-language";
 import { CalendarCheck, CreditCard, MapPin, ShieldCheck, Wrench, FileText, type LucideIcon } from "lucide-react";
 
-const LEFT = [
-  { icon: CalendarCheck, title: "Paprasta rezervacija" },
-  { icon: CreditCard, title: "Lankstus atsiskaitymas" },
-  { icon: MapPin, title: "Patogus atsiėmimas" },
-];
-const RIGHT = [
-  { icon: ShieldCheck, title: "Apdraustas autoparkas" },
-  { icon: Wrench, title: "Reguliariai prižiūrėtas parkas" },
-  { icon: FileText, title: "Aiškios nuomos sąlygos" },
-];
+const COPY = {
+  lt: {
+    heading: "Viskas, ko reikia sklandžiai nuomai",
+    sub: "Kiekvieną kelionę pradedame nuo paprastos rezervacijos ir patikimo automobilio.",
+    carAlt: "Automobilis iš viršaus",
+    left: ["Paprasta rezervacija", "Lankstus atsiskaitymas", "Patogus atsiėmimas"],
+    right: ["Apdraustas autoparkas", "Reguliariai prižiūrėtas parkas", "Aiškios nuomos sąlygos"],
+  },
+  en: {
+    heading: "Everything you need for a smooth rental",
+    sub: "Every trip starts with a simple booking and a reliable car.",
+    carAlt: "Car seen from above",
+    left: ["Simple booking", "Flexible payment", "Convenient pickup"],
+    right: ["Fully insured fleet", "Regularly serviced cars", "Clear rental terms"],
+  },
+  ru: {
+    heading: "Всё, что нужно для комфортной аренды",
+    sub: "Каждая поездка начинается с простого бронирования и надёжного автомобиля.",
+    carAlt: "Автомобиль сверху",
+    left: ["Простое бронирование", "Гибкая оплата", "Удобное получение"],
+    right: ["Застрахованный автопарк", "Регулярное обслуживание", "Понятные условия аренды"],
+  },
+} as const;
+
+const LEFT_ICONS = [CalendarCheck, CreditCard, MapPin];
+const RIGHT_ICONS = [ShieldCheck, Wrench, FileText];
+
 function Item({
   icon: Icon,
   title,
@@ -84,6 +102,10 @@ function Connector({ dir, active, delay }: { dir: "left" | "right"; active: bool
 }
 
 export function V3CustomerExperience() {
+  const { language } = useLanguage();
+  const c = COPY[language] ?? COPY.lt;
+  const LEFT = c.left.map((title, i) => ({ icon: LEFT_ICONS[i], title }));
+  const RIGHT = c.right.map((title, i) => ({ icon: RIGHT_ICONS[i], title }));
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -119,10 +141,10 @@ export function V3CustomerExperience() {
           }`}
         >
           <h2 className="mx-auto max-w-[580px] text-[30px] font-extrabold leading-[1.16] tracking-[-0.025em] text-foreground sm:text-[36px] lg:text-[40px]">
-            Viskas, ko reikia sklandžiai nuomai
+            {c.heading}
           </h2>
           <p className="mx-auto mt-5 max-w-[500px] text-[14px] leading-[1.75] text-muted-foreground">
-            Kiekvieną kelionę pradedame nuo paprastos rezervacijos ir patikimo automobilio.
+            {c.sub}
           </p>
         </div>
 
@@ -154,7 +176,7 @@ export function V3CustomerExperience() {
           >
             <img
               src={`${topCar}?v=3`}
-              alt="Automobilis iš viršaus"
+              alt={c.carAlt}
               loading="eager"
               decoding="async"
               width={912}

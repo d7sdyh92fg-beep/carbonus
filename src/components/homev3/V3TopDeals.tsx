@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Cog, Fuel, UsersRound } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 import mercedesSlk from "@/assets/fleet-mercedes-slk-open-top-v3.png";
 import kiaHatchback from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
 import citroenSpaceTourer from "@/assets/fleet-citroen-spacetourer-side-v2.png";
@@ -60,19 +61,81 @@ const CARS = [
   },
 ];
 
+const COPY = {
+  lt: {
+    eyebrow: "Mūsų autoparkas",
+    heading: "Išsirinkite automobilį savo kelionei",
+    sub: "Visi mūsų automobiliai prižiūrėti, apdrausti ir paruošti saugiai kelionei.",
+    from: "nuo",
+    perDay: "/ dieną",
+    seats: "vietos",
+    view: "Peržiūrėti automobilį",
+    viewAll: "Peržiūrėti visą autoparką",
+    sideAlt: (n: string) => `${n} automobilis iš šono`,
+    categories: {
+      Kabrioletas: "Kabrioletas",
+      Krosoveris: "Krosoveris",
+      Vienatūris: "Vienatūris",
+      Hečbekas: "Hečbekas",
+    } as Record<string, string>,
+    transmissions: { "Automatinė": "Automatinė", "Mechaninė": "Mechaninė" } as Record<string, string>,
+    fuels: { Benzinas: "Benzinas", Dyzelinas: "Dyzelinas" } as Record<string, string>,
+  },
+  en: {
+    eyebrow: "Our fleet",
+    heading: "Pick the right car for your trip",
+    sub: "All our cars are maintained, insured and ready for a safe journey.",
+    from: "from",
+    perDay: "/ day",
+    seats: "seats",
+    view: "View car",
+    viewAll: "View the whole fleet",
+    sideAlt: (n: string) => `${n} car side view`,
+    categories: {
+      Kabrioletas: "Convertible",
+      Krosoveris: "Crossover",
+      Vienatūris: "Minivan",
+      Hečbekas: "Hatchback",
+    } as Record<string, string>,
+    transmissions: { "Automatinė": "Automatic", "Mechaninė": "Manual" } as Record<string, string>,
+    fuels: { Benzinas: "Petrol", Dyzelinas: "Diesel" } as Record<string, string>,
+  },
+  ru: {
+    eyebrow: "Наш автопарк",
+    heading: "Выберите автомобиль для своей поездки",
+    sub: "Все наши автомобили обслужены, застрахованы и готовы к безопасной поездке.",
+    from: "от",
+    perDay: "/ сутки",
+    seats: "мест",
+    view: "Смотреть автомобиль",
+    viewAll: "Смотреть весь автопарк",
+    sideAlt: (n: string) => `${n} — вид сбоку`,
+    categories: {
+      Kabrioletas: "Кабриолет",
+      Krosoveris: "Кроссовер",
+      Vienatūris: "Минивэн",
+      Hečbekas: "Хэтчбек",
+    } as Record<string, string>,
+    transmissions: { "Automatinė": "Автомат", "Mechaninė": "Механика" } as Record<string, string>,
+    fuels: { Benzinas: "Бензин", Dyzelinas: "Дизель" } as Record<string, string>,
+  },
+} as const;
+
 export function V3TopDeals() {
+  const { language } = useLanguage();
+  const c = COPY[language] ?? COPY.lt;
   return (
     <section id="autoparkas" className="overflow-hidden bg-[hsl(210_20%_99%)] py-20 lg:py-28">
       <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
         <div className="text-center">
           <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Mūsų autoparkas
+            {c.eyebrow}
           </p>
           <h2 className="mx-auto mt-3 max-w-[620px] text-[30px] font-extrabold leading-[1.16] tracking-[-0.025em] text-foreground sm:text-[36px] lg:text-[40px]">
-            Išsirinkite automobilį savo kelionei
+            {c.heading}
           </h2>
           <p className="mx-auto mt-4 max-w-[560px] text-[14px] leading-relaxed text-muted-foreground">
-            Visi mūsų automobiliai prižiūrėti, apdrausti ir paruošti saugiai kelionei.
+            {c.sub}
           </p>
         </div>
 
@@ -85,7 +148,7 @@ export function V3TopDeals() {
               <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden rounded-[15px] bg-[#f4f6f5]">
                 <img
                   src={car.img}
-                  alt={`${car.name} automobilis iš šono`}
+                  alt={c.sideAlt(car.name)}
                   loading="lazy"
                   width={1536}
                   height={1024}
@@ -99,7 +162,7 @@ export function V3TopDeals() {
                     {car.year}
                   </span>
                   <span className="rounded-md bg-[hsl(var(--carbonus-green)/0.08)] px-2 py-1 text-[11px] font-semibold text-[hsl(var(--carbonus-green-dark))]">
-                    {car.category}
+                    {c.categories[car.category] ?? car.category}
                   </span>
                 </div>
 
@@ -108,22 +171,22 @@ export function V3TopDeals() {
                 </h3>
 
                 <p className="mt-2.5 flex items-baseline gap-1.5 text-[19px] font-extrabold text-[hsl(var(--carbonus-green))]">
-                  nuo {car.price} €
-                  <span className="text-[12px] font-medium text-muted-foreground">/ dieną</span>
+                  {c.from} {car.price} €
+                  <span className="text-[12px] font-medium text-muted-foreground">{c.perDay}</span>
                 </p>
 
                 <div className="mt-4 grid grid-cols-3 gap-1 border-t border-border pt-3.5 text-[10px] text-muted-foreground">
                   <span className="flex flex-col items-center gap-1.5 text-center">
                     <UsersRound className="h-4 w-4 text-[hsl(var(--carbonus-green-dark))]" />
-                    {car.seats} vietos
+                    {car.seats} {c.seats}
                   </span>
                   <span className="flex flex-col items-center gap-1.5 text-center">
                     <Cog className="h-4 w-4 text-[hsl(var(--carbonus-green-dark))]" />
-                    {car.transmission}
+                    {c.transmissions[car.transmission] ?? car.transmission}
                   </span>
                   <span className="flex flex-col items-center gap-1.5 text-center">
                     <Fuel className="h-4 w-4 text-[hsl(var(--carbonus-green-dark))]" />
-                    {car.fuel}
+                    {c.fuels[car.fuel] ?? car.fuel}
                   </span>
                 </div>
 
@@ -131,7 +194,7 @@ export function V3TopDeals() {
                   to={`/automobiliai/${car.slug}`}
                   className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-4 py-2.5 text-[12px] font-semibold text-white shadow-[0_10px_22px_hsl(var(--carbonus-green)/0.18)] transition-colors hover:bg-[hsl(var(--carbonus-green-deep))]"
                 >
-                  Peržiūrėti automobilį
+                  {c.view}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -144,7 +207,7 @@ export function V3TopDeals() {
             to="/automobiliai"
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[hsl(var(--carbonus-green)/0.28)] bg-white px-7 py-3 text-[14px] font-semibold text-[hsl(var(--carbonus-green-dark))] transition-colors hover:bg-[hsl(var(--carbonus-green)/0.06)]"
           >
-            Peržiūrėti visą autoparką
+            {c.viewAll}
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
