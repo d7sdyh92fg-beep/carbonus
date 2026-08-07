@@ -23,8 +23,8 @@ export function V3Hero() {
             </p>
           </div>
 
-          <div className="relative lg:pt-3">
-            <div className="relative h-[330px] overflow-hidden rounded-[28px] bg-carbonus-green sm:h-[430px] lg:h-[630px]">
+          <div className="relative">
+            <div className="relative h-[330px] overflow-hidden rounded-[28px] bg-carbonus-green sm:h-[430px] lg:h-[630px] lg:rounded-t-none">
               <div
                 className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
                 style={{
