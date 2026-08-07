@@ -17,7 +17,7 @@ const barCopy = {
     pickupDate: "Paėmimo data",
     returnDate: "Grąžinimo data",
     search: "Ieškoti",
-    info: "Automobilio pristatymui taikomas papildomas mokestis. Pristatome Druskininkuose ir visoje Lietuvoje.",
+    info: "Esame Druskininkuose. Jei automobilį norite atsiimti kitur Lietuvoje, taikomas papildomas atvežimo mokestis. Mielai pristatysime į jūsų pasirinktą vietą.",
   },
   en: {
     pickupLocation: "Pick-up location",
@@ -27,7 +27,7 @@ const barCopy = {
     pickupDate: "Pick-up date",
     returnDate: "Return date",
     search: "Search",
-    info: "An additional fee applies for car delivery. We deliver in Druskininkai and all across Lithuania.",
+    info: "We are based in Druskininkai. If you would like to pick up the car elsewhere in Lithuania, an additional delivery fee applies. We will gladly deliver it to your chosen location.",
   },
   ru: {
     pickupLocation: "Место получения",
@@ -37,7 +37,7 @@ const barCopy = {
     pickupDate: "Дата получения",
     returnDate: "Дата возврата",
     search: "Искать",
-    info: "За доставку автомобиля взимается дополнительная плата. Доставляем в Друскининкай и по всей Литве.",
+    info: "Мы находимся в Друскининкай. Если вы хотите забрать автомобиль в другом месте Литвы, взимается дополнительная плата за доставку. Мы с удовольствием доставим его по указанному вами адресу.",
   },
 } as const;
 
