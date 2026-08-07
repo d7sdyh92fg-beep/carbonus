@@ -36,7 +36,7 @@ export function V3BestServices() {
 
         <div className="lg:px-14 xl:px-20">
           <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Geriausios paslaugos
+            Kodėl rinktis Carbonus?
           </p>
           <h2 className="mt-3 max-w-[420px] text-[28px] font-extrabold leading-[1.2] tracking-tight text-foreground sm:text-[32px]">
             Patirkite geriausią nuomos patirtį su Carbonus

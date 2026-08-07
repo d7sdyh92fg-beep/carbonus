@@ -1,23 +1,23 @@
 import topCar from "@/assets/homev3-car-topdown.png";
 import { useEffect, useRef, useState } from "react";
-import { Tag, Award, PiggyBank, MousePointerClick, CreditCard, Wrench } from "lucide-react";
+import { CalendarCheck, CreditCard, MapPin, ShieldCheck, Wrench, FileText, type LucideIcon } from "lucide-react";
 
 const LEFT = [
-  { icon: Tag, title: "Konkurencingos kainos" },
-  { icon: PiggyBank, title: "Nuoma pagal jūsų biudžetą" },
-  { icon: CreditCard, title: "Lankstūs atsiskaitymo būdai" },
+  { icon: CalendarCheck, title: "Paprasta rezervacija" },
+  { icon: CreditCard, title: "Lankstus atsiskaitymas" },
+  { icon: MapPin, title: "Patogus atsiėmimas" },
 ];
 const RIGHT = [
-  { icon: Award, title: "Pilnai apdraustas parkas" },
-  { icon: MousePointerClick, title: "Lengvas užsakymas" },
-  { icon: Wrench, title: "Prižiūrėti automobiliai" },
+  { icon: ShieldCheck, title: "Apdraustas autoparkas" },
+  { icon: Wrench, title: "Reguliariai prižiūrėtas parkas" },
+  { icon: FileText, title: "Aiškios nuomos sąlygos" },
 ];
 function Item({
   icon: Icon,
   title,
   align,
 }: {
-  icon: typeof Tag;
+  icon: LucideIcon;
   title: string;
   align: "left" | "right";
 }) {
@@ -119,11 +119,10 @@ export function V3CustomerExperience() {
           }`}
         >
           <h2 className="mx-auto max-w-[580px] text-[30px] font-extrabold leading-[1.16] tracking-[-0.025em] text-foreground sm:text-[36px] lg:text-[40px]">
-            Užtikriname geriausią klientų patirtį
+            Viskas, ko reikia sklandžiai nuomai
           </h2>
           <p className="mx-auto mt-5 max-w-[500px] text-[14px] leading-[1.75] text-muted-foreground">
-            Jūsų ir jūsų šeimos saugumas kelyje neturi kainos. Pasirūpiname viskuo,
-            kad kelionė būtų sklandi.
+            Kiekvieną kelionę pradedame nuo paprastos rezervacijos ir patikimo automobilio.
           </p>
         </div>
 
