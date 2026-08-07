@@ -169,7 +169,7 @@ export function Header() {
             ))}
           </nav>
           <div className="px-6 pb-8 flex items-center gap-3">
-            <button onClick={() => { setLanguage(language === "lt" ? "en" : "lt"); }} className="flex-1 h-12 rounded-full bg-white/[0.06] border border-white/10 text-white font-medium">
+            <button onClick={() => { setLanguage(language === "lt" ? "en" : language === "en" ? "ru" : "lt"); }} className="flex-1 h-12 rounded-full bg-white/[0.06] border border-white/10 text-white font-medium">
               {language.toUpperCase()}
             </button>
             <button
