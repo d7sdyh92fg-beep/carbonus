@@ -119,11 +119,10 @@ export function V3CustomerExperience() {
           }`}
         >
           <h2 className="mx-auto max-w-[580px] text-[30px] font-extrabold leading-[1.16] tracking-[-0.025em] text-foreground sm:text-[36px] lg:text-[40px]">
-            Užtikriname geriausią klientų patirtį
+            Viskas, ko reikia sklandžiai nuomai
           </h2>
           <p className="mx-auto mt-5 max-w-[500px] text-[14px] leading-[1.75] text-muted-foreground">
-            Jūsų ir jūsų šeimos saugumas kelyje neturi kainos. Pasirūpiname viskuo,
-            kad kelionė būtų sklandi.
+            Kiekvieną kelionę pradedame nuo paprastos rezervacijos ir patikimo automobilio.
           </p>
         </div>
 
