@@ -15,10 +15,10 @@ export function Footer() {
               Modernios automobilių nuomos paslaugos Druskininkuose ir visoje Lietuvoje.
             </p>
             <div className="mt-5 flex items-center gap-3">
-              <a href="https://facebook.com" aria-label="Facebook" className="h-[30px] w-[30px] inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 hover:text-[hsl(var(--carbonus-green))] transition">
+              <a href="https://www.facebook.com/profile.php?id=61578519851950" aria-label="Facebook" className="h-[30px] w-[30px] inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 hover:text-[hsl(var(--carbonus-green))] transition">
                 <Facebook className="h-4 w-4" />
               </a>
-              <a href="https://instagram.com" aria-label="Instagram" className="h-[30px] w-[30px] inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 hover:text-[hsl(var(--carbonus-green))] transition">
+              <a href="https://www.instagram.com/carbonusautonuoma/" aria-label="Instagram" className="h-[30px] w-[30px] inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 hover:text-[hsl(var(--carbonus-green))] transition">
                 <Instagram className="h-4 w-4" />
               </a>
             </div>

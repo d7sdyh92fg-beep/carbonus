@@ -111,8 +111,8 @@ export function V3Footer() {
           </nav>
           <div className="flex gap-3">
             {[
-              { Icon: Facebook, label: "Facebook", href: "https://facebook.com" },
-              { Icon: Instagram, label: "Instagram", href: "https://instagram.com" },
+              { Icon: Facebook, label: "Facebook", href: "https://www.facebook.com/profile.php?id=61578519851950" },
+              { Icon: Instagram, label: "Instagram", href: "https://www.instagram.com/carbonusautonuoma/" },
             ].map(({ Icon, label, href }) => (
               <a
                 key={label}
