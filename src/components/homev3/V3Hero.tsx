@@ -4,7 +4,7 @@ import { V3SearchBar } from "./V3SearchBar";
 
 export function V3Hero() {
   return (
-    <section className="relative bg-white pt-8 sm:pt-10 lg:pt-[72px]">
+    <section className="relative bg-white pt-8 sm:pt-10 lg:pt-[78px]">
       <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[612px]" />
 
       <div className="relative mx-auto max-w-[1140px] px-6 lg:min-h-[660px]">
