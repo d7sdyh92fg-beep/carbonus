@@ -21,7 +21,8 @@ export function V3SearchBar() {
   const today = toISO(new Date());
   const tomorrow = toISO(new Date(Date.now() + 86400000));
 
-  const [location, setLocation] = useState("");
+  const [locationMode, setLocationMode] = useState<"office" | "custom">("office");
+  const [customLocation, setCustomLocation] = useState("");
   const [pickup, setPickup] = useState(today);
   const [ret, setRet] = useState(tomorrow);
   const [openP, setOpenP] = useState(false);
@@ -29,7 +30,8 @@ export function V3SearchBar() {
 
   const submit = () => {
     const params = new URLSearchParams({ pickup, return: ret, mode: "cars" });
-    if (location.trim()) params.set("location", location.trim().slice(0, 120));
+    const location = locationMode === "office" ? "Carbonus ofisas" : customLocation.trim().slice(0, 120);
+    if (location) params.set("location", location);
     navigate(`/laisvi-automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
   };
