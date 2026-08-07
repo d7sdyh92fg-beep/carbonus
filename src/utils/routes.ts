@@ -1,4 +1,4 @@
-type Language = 'lt' | 'en';
+type Language = 'lt' | 'en' | 'ru';
 
 export const routes = {
   home: { lt: '/', en: '/' },

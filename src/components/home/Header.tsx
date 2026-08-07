@@ -102,6 +102,7 @@ export function Header() {
             <DropdownMenuContent className={cn("w-[var(--radix-dropdown-menu-trigger-width)] p-0 shadow-none rounded-t-none rounded-b-lg", onLightHero ? "bg-white border border-[hsl(var(--carbonus-dark))]/10 border-t-0 text-[hsl(var(--carbonus-dark))]" : "bg-[hsl(var(--carbonus-dark-2))] border border-white/10 border-t-0 text-white")}>
               <DropdownMenuItem onClick={() => setLanguage("lt")} className={cn("justify-center rounded-none focus:text-current", onLightHero ? "focus:bg-[hsl(var(--carbonus-dark))]/10" : "focus:bg-white/10")}>LT</DropdownMenuItem>
               <DropdownMenuItem onClick={() => setLanguage("en")} className={cn("justify-center rounded-none focus:text-current", onLightHero ? "focus:bg-[hsl(var(--carbonus-dark))]/10" : "focus:bg-white/10")}>EN</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("ru")} className={cn("justify-center rounded-none focus:text-current", onLightHero ? "focus:bg-[hsl(var(--carbonus-dark))]/10" : "focus:bg-white/10")}>RU</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
