@@ -38,6 +38,16 @@ import { getCarSlugFromId } from "@/utils/carSlugs";
 import { useTranslations } from "@/hooks/use-translations";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { cn } from "@/lib/utils";
+import {
+  CITIES,
+  PickupMode,
+  ReturnMode,
+  RentalLocation,
+  calculateLogisticsTotal,
+  emptyLocation,
+  locationLabel,
+  readSearchParams,
+} from "@/lib/rentalSearch";
 
 const toISO = (d: Date) => {
   const y = d.getFullYear();
@@ -103,6 +113,10 @@ const AvailableCars = () => {
   const returnTime = params.get("returnTime") || "10:00";
   const rentalDays = daysBetween(pickup, ret);
 
+  // Delivery / collection search context (persisted in the URL)
+  const search = useMemo(() => readSearchParams(params), [params]);
+  const { deliveryFee, collectionFee, logisticsTotal } = search.pricing;
+
   const updateParam = (updates: Record<string, string>) => {
     const p = new URLSearchParams(params);
     Object.entries(updates).forEach(([k, v]) => p.set(k, v));
@@ -123,15 +137,51 @@ const AvailableCars = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [editPickup, setEditPickup] = useState(pickup);
   const [editReturn, setEditReturn] = useState(ret);
-  useEffect(() => { setEditPickup(pickup); setEditReturn(ret); }, [pickup, ret]);
+  const [editPickupMode, setEditPickupMode] = useState<PickupMode>(search.pickupMode);
+  const [editPickupCity, setEditPickupCity] = useState(search.pickup.city);
+  const [editPickupAddress, setEditPickupAddress] = useState(search.pickup.address);
+  const [editReturnMode, setEditReturnMode] = useState<ReturnMode>(search.returnMode);
+  const [editReturnCity, setEditReturnCity] = useState(search.returnLocation.city);
+  const [editReturnAddress, setEditReturnAddress] = useState(search.returnLocation.address);
+  useEffect(() => {
+    setEditPickup(pickup);
+    setEditReturn(ret);
+    setEditPickupMode(search.pickupMode);
+    setEditPickupCity(search.pickup.city);
+    setEditPickupAddress(search.pickup.address);
+    setEditReturnMode(search.returnMode);
+    setEditReturnCity(search.returnLocation.city);
+    setEditReturnAddress(search.returnLocation.address);
+  }, [pickup, ret, params]);
 
   const applySearch = () => {
+    const pickupLoc: RentalLocation =
+      editPickupMode === "office"
+        ? emptyLocation("office")
+        : { ...emptyLocation("delivery"), city: editPickupCity, address: editPickupAddress };
+    const returnLoc: RentalLocation =
+      editReturnMode === "same"
+        ? { ...pickupLoc }
+        : editReturnMode === "office"
+        ? emptyLocation("office")
+        : { ...emptyLocation("delivery"), city: editReturnCity, address: editReturnAddress };
+    const fees = calculateLogisticsTotal(pickupLoc, returnLoc);
     const p = new URLSearchParams(params);
     p.set("pickup", editPickup);
     p.set("return", editReturn);
+    p.set("pickupMode", pickupLoc.type);
+    p.set("pickupCity", pickupLoc.city);
+    p.set("pickupAddress", pickupLoc.address);
+    p.set("returnMode", editReturnMode);
+    p.set("returnCity", returnLoc.city);
+    p.set("returnAddress", returnLoc.address);
+    p.set("deliveryFee", String(fees.status === "success" ? fees.deliveryFee : 0));
+    p.set("collectionFee", String(fees.status === "success" ? fees.collectionFee : 0));
     setParams(p);
     setEditOpen(false);
   };
+
+
 
   // DB data: pricing + premium
   const {
@@ -289,7 +339,20 @@ const AvailableCars = () => {
       }
       const slug = getCarSlugFromId(id, language as "lt" | "en");
       const base = language === "en" ? "/cars" : "/automobiliai";
-      const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
+      const qs = new URLSearchParams({
+        pickup,
+        return: ret,
+        pickupTime,
+        returnTime,
+        pickupMode: search.pickupMode,
+        pickupCity: search.pickup.city,
+        pickupAddress: search.pickup.address,
+        returnMode: search.returnMode,
+        returnCity: search.returnLocation.city,
+        returnAddress: search.returnLocation.address,
+        deliveryFee: String(deliveryFee),
+        collectionFee: String(collectionFee),
+      }).toString();
       navigate(slug ? `${base}/${slug}?${qs}` : base);
     } catch (e) {
       toast({
@@ -324,7 +387,16 @@ const AvailableCars = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-card border border-border p-4 md:p-5">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr_auto_1.3fr_1fr_auto] gap-4 md:gap-6 items-center">
-              <SummaryItem icon={<MapPin className="h-5 w-5 text-primary" />} label="Atsiėmimo vieta" value="Druskininkai" />
+              <SummaryItem
+                icon={<MapPin className="h-5 w-5 text-primary" />}
+                label={search.returnMode === "same" ? "Paėmimas ir grąžinimas" : "Paėmimas → grąžinimas"}
+                value={
+                  search.returnMode === "same"
+                    ? locationLabel(search.pickup)
+                    : `${locationLabel(search.pickup)} → ${locationLabel(search.returnLocation)}`
+                }
+              />
+
               <EditableDateTimeSummary
                 label="Atsiėmimas"
                 date={pickup}
@@ -350,8 +422,19 @@ const AvailableCars = () => {
                     Keisti paiešką
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[320px] p-4 z-[80]" align="end">
+                <PopoverContent className="w-[340px] max-w-[92vw] p-4 z-[80] max-h-[80vh] overflow-y-auto" align="end">
                   <div className="space-y-3">
+                    <LocationEditor
+                      title="Kur gauti automobilį?"
+                      mode={editPickupMode}
+                      onMode={(m) => setEditPickupMode(m as PickupMode)}
+                      options={[{ v: "office", l: "Carbonus ofisas" }, { v: "delivery", l: "Pristatymas į vietą" }]}
+                      showFields={editPickupMode === "delivery"}
+                      city={editPickupCity}
+                      address={editPickupAddress}
+                      onCity={setEditPickupCity}
+                      onAddress={setEditPickupAddress}
+                    />
                     <DatePickField
                       label="Atsiėmimo data"
                       value={editPickup}
@@ -367,12 +450,46 @@ const AvailableCars = () => {
                       }}
                     />
                     <DatePickField label="Grąžinimo data" value={editReturn} onChange={setEditReturn} minDate={new Date(`${editPickup}T12:00:00`)} />
+                    <LocationEditor
+                      title="Kur grąžinsite automobilį?"
+                      mode={editReturnMode}
+                      onMode={(m) => setEditReturnMode(m as ReturnMode)}
+                      options={[
+                        { v: "same", l: "Ta pati vieta" },
+                        { v: "office", l: "Carbonus ofisas" },
+                        { v: "delivery", l: "Kita vieta" },
+                      ]}
+                      showFields={editReturnMode === "delivery"}
+                      city={editReturnCity}
+                      address={editReturnAddress}
+                      onCity={setEditReturnCity}
+                      onAddress={setEditReturnAddress}
+                    />
                     <Button variant="hero" className="w-full" onClick={applySearch}>Taikyti</Button>
                   </div>
                 </PopoverContent>
               </Popover>
             </div>
+
+            {logisticsTotal > 0 && (
+              <div className="mt-4 border-t border-border pt-3 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
+                {deliveryFee > 0 && (
+                  <span className="text-muted-foreground">
+                    Pristatymas <span className="font-semibold text-foreground">{deliveryFee} €</span>
+                  </span>
+                )}
+                {collectionFee > 0 && (
+                  <span className="text-muted-foreground">
+                    Atsiėmimas <span className="font-semibold text-foreground">{collectionFee} €</span>
+                  </span>
+                )}
+                <span className="text-muted-foreground">
+                  Logistika iš viso <span className="font-bold text-primary">{logisticsTotal} €</span>
+                </span>
+              </div>
+            )}
           </div>
+
 
           <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
             <div>
@@ -604,16 +721,50 @@ const AvailableCars = () => {
                           ))}
                         </div>
 
-                        <div className="flex items-end justify-between pt-4">
+                        {logisticsTotal > 0 ? (
+                          <div className="pt-3 border-t border-border space-y-1 text-sm">
+                            <div className="flex items-center justify-between">
+                              <span className="text-muted-foreground">
+                                Nuoma · {rentalDays} {rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}
+                              </span>
+                              <span className="font-semibold text-foreground">
+                                {daily != null ? `${daily * rentalDays} €` : "—"}
+                              </span>
+                            </div>
+                            {deliveryFee > 0 && (
+                              <div className="flex items-center justify-between">
+                                <span className="text-muted-foreground">
+                                  Pristatymas{search.pickup.city ? ` (${search.pickup.city})` : ""}
+                                </span>
+                                <span className="font-semibold text-foreground">{deliveryFee} €</span>
+                              </div>
+                            )}
+                            {collectionFee > 0 && (
+                              <div className="flex items-center justify-between">
+                                <span className="text-muted-foreground">
+                                  Atsiėmimas{search.returnLocation.city ? ` (${search.returnLocation.city})` : ""}
+                                </span>
+                                <span className="font-semibold text-foreground">{collectionFee} €</span>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="pt-3 border-t border-border text-xs text-muted-foreground">
+                            Atsiėmimas Carbonus ofise · nemokamai
+                          </p>
+                        )}
+
+                        <div className="flex items-end justify-between pt-3">
                           <div>
-                            <p className="text-xs text-muted-foreground">Kaina {rentalDays} {rentalDays === 1 ? "dienai" : "dienoms"}</p>
+                            <p className="text-xs text-muted-foreground">Iš viso</p>
                             <p className="text-2xl font-bold text-primary leading-tight">
-                              {daily != null ? `${daily * rentalDays} €` : "—"}
+                              {daily != null ? `${daily * rentalDays + logisticsTotal} €` : "—"}
                             </p>
                             <p className="text-xs text-muted-foreground">
                               {daily != null ? `${daily} €/dieną` : "kaina pateikiama"} · Užstatas {deposit} €
                             </p>
                           </div>
+
                           <Button
                             className="bg-primary hover:bg-primary/90 text-primary-foreground"
                             onClick={() => openCar(car.id)}
@@ -648,6 +799,70 @@ const AvailableCars = () => {
 };
 
 /* ---------- Helpers ---------- */
+
+function LocationEditor({
+  title,
+  mode,
+  onMode,
+  options,
+  showFields,
+  city,
+  address,
+  onCity,
+  onAddress,
+}: {
+  title: string;
+  mode: string;
+  onMode: (m: string) => void;
+  options: { v: string; l: string }[];
+  showFields: boolean;
+  city: string;
+  address: string;
+  onCity: (v: string) => void;
+  onAddress: (v: string) => void;
+}) {
+  return (
+    <div>
+      <div className="text-xs text-muted-foreground mb-1.5">{title}</div>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map((o) => (
+          <button
+            key={o.v}
+            type="button"
+            onClick={() => onMode(o.v)}
+            className={cn(
+              "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+              mode === o.v ? "bg-primary text-primary-foreground" : "bg-muted text-foreground hover:bg-muted/80",
+            )}
+          >
+            {o.l}
+          </button>
+        ))}
+      </div>
+      {showFields && (
+        <div className="mt-2 space-y-2">
+          <Select value={city || undefined} onValueChange={onCity}>
+            <SelectTrigger className="h-10"><SelectValue placeholder="Pasirinkite miestą" /></SelectTrigger>
+            <SelectContent className="z-[100]">
+              {CITIES.map((ct) => (
+                <SelectItem key={ct.id} value={ct.label}>{ct.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <input
+            type="text"
+            value={address}
+            maxLength={140}
+            onChange={(e) => onAddress(e.target.value)}
+            placeholder="Viešbutis, gatvė arba adresas"
+            className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-primary"
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function SummaryItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
