@@ -98,12 +98,13 @@ export function V3SearchBar() {
 
   const pillClass = (activeMode: LocationMode) =>
     cn(
-      "min-h-[28px] rounded-full border px-3 py-1 text-[11px] font-medium transition-all duration-200",
+      "min-h-[28px] whitespace-nowrap rounded-full border px-3 py-1 text-[11px] font-semibold transition-colors duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1",
       locationMode === activeMode
-        ? "border-carbonus-green-dark bg-carbonus-green-dark font-semibold text-white shadow-sm"
+        ? "border-carbonus-green-dark bg-carbonus-green-dark text-white shadow-sm"
         : "border-carbonus-green/35 bg-white text-foreground hover:border-carbonus-green hover:bg-carbonus-green/10"
     );
+
 
   const fieldClass =
     "flex min-h-[48px] min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors duration-200 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1 sm:border-l sm:border-border";
