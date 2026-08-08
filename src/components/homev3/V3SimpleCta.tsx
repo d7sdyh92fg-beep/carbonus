@@ -50,19 +50,19 @@ export function V3SimpleCta() {
               </h2>
               <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{c.text}</p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  to="/laisvi-automobiliai"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[hsl(var(--carbonus-green-dark))] px-6 py-3 text-[14px] font-semibold text-white transition-colors duration-200 hover:bg-[hsl(var(--carbonus-green-deep))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))] focus-visible:ring-offset-2"
+                >
+                  {c.book}
+                </Link>
                 <a
                   href="tel:+37069818781"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[hsl(var(--carbonus-green-dark))] px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[hsl(var(--carbonus-green-deep))]"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-white px-6 py-3 text-[14px] font-semibold text-foreground transition-colors duration-200 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))] focus-visible:ring-offset-2"
                 >
                   <Phone className="h-4 w-4" />
                   {c.call}
                 </a>
-                <Link
-                  to="/laisvi-automobiliai"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-white px-6 py-3 text-[14px] font-semibold text-foreground transition-colors hover:bg-muted/60"
-                >
-                  {c.book}
-                </Link>
               </div>
             </div>
           </div>

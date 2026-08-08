@@ -108,7 +108,7 @@ export function Header() {
               >
                 {item.label}
                 {active && (
-                  <span className="absolute -bottom-2 left-0 right-0 h-0.5 bg-[hsl(var(--carbonus-green))] rounded-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[hsl(var(--carbonus-green))] rounded-full" />
                 )}
               </Link>
             );
