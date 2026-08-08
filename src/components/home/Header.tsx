@@ -100,10 +100,10 @@ export function Header() {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "relative text-[14px] font-medium transition-colors",
+                  "relative py-2 text-[14px] transition-colors duration-200 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))] focus-visible:ring-offset-2",
                   active
-                    ? onLightHero ? "text-[hsl(var(--carbonus-dark))]" : "text-white"
-                    : onLightHero ? "text-[hsl(var(--carbonus-dark))]/65 hover:text-[hsl(var(--carbonus-dark))]" : "text-white/80 hover:text-white"
+                    ? onLightHero ? "font-semibold text-[hsl(var(--carbonus-dark))]" : "font-semibold text-white"
+                    : onLightHero ? "font-medium text-[hsl(var(--carbonus-dark))]/70 hover:text-[hsl(var(--carbonus-dark))]" : "font-medium text-white/80 hover:text-white"
                 )}
               >
                 {item.label}
