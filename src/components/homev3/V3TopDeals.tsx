@@ -170,8 +170,9 @@ export function V3TopDeals() {
                   {car.name}
                 </h3>
 
-                <p className="mt-2.5 flex items-baseline gap-1.5 text-[19px] font-extrabold text-[hsl(var(--carbonus-green))]">
-                  {c.from} {car.price} €
+                <p className="mt-2 flex items-baseline gap-1.5 text-[24px] font-extrabold leading-tight tracking-[-0.02em] text-[hsl(var(--carbonus-green-dark))]">
+                  <span className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">{c.from}</span>
+                  {car.price} €
                   <span className="text-[12px] font-medium text-muted-foreground">{c.perDay}</span>
                 </p>
 
@@ -205,7 +206,7 @@ export function V3TopDeals() {
         <div className="mt-12 text-center">
           <Link
             to="/automobiliai"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[hsl(var(--carbonus-green)/0.28)] bg-white px-7 py-3 text-[14px] font-semibold text-[hsl(var(--carbonus-green-dark))] transition-colors hover:bg-[hsl(var(--carbonus-green)/0.06)]"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-[hsl(var(--carbonus-green-dark))] bg-white px-8 py-3 text-[15px] font-bold text-[hsl(var(--carbonus-green-dark))] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[hsl(var(--carbonus-green-dark))] hover:text-white hover:shadow-[0_12px_26px_hsl(var(--carbonus-green)/0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2"
           >
             {c.viewAll}
             <ArrowUpRight className="h-4 w-4" />
