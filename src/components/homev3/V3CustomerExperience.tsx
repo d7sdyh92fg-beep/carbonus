@@ -133,22 +133,23 @@ export function V3CustomerExperience() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="overflow-hidden bg-white py-12 sm:py-20 lg:py-24">
+    <section ref={sectionRef} className="overflow-hidden bg-white pb-12 pt-8 sm:pb-16 sm:pt-10 lg:pb-20 lg:pt-12">
       <div className="mx-auto max-w-[1240px] px-6">
         <div
           className={`text-center transition-all duration-700 ease-out ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
           }`}
         >
-          <h2 className="mx-auto max-w-[580px] text-[30px] font-extrabold leading-[1.16] tracking-[-0.025em] text-foreground sm:text-[36px] lg:text-[40px]">
+          <h2 className="mx-auto max-w-[820px] text-balance text-[30px] font-extrabold leading-[1.16] tracking-[-0.025em] text-foreground sm:text-[36px] lg:text-[40px]">
             {c.heading}
           </h2>
-          <p className="mx-auto mt-5 max-w-[500px] text-[14px] leading-[1.75] text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-[500px] text-[14px] leading-[1.7] text-muted-foreground">
             {c.sub}
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 items-start gap-8 sm:mt-14 sm:gap-10 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-0">
+
+        <div className="mt-8 grid grid-cols-2 items-start gap-8 sm:mt-10 sm:gap-10 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-0">
           {/* left column */}
           <div className="contents lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
 

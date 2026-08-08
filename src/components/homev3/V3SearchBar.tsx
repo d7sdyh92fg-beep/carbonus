@@ -102,7 +102,7 @@ export function V3SearchBar() {
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1",
       locationMode === activeMode
         ? "border-carbonus-green-dark bg-carbonus-green-dark font-semibold text-white shadow-sm"
-        : "border-transparent bg-muted text-foreground hover:border-carbonus-green/40 hover:bg-muted/70"
+        : "border-carbonus-green/35 bg-white text-foreground hover:border-carbonus-green hover:bg-carbonus-green/10"
     );
 
   const fieldClass =
@@ -225,7 +225,7 @@ export function V3SearchBar() {
 
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
         <Info className="mt-[2px] h-3 w-3 shrink-0 text-carbonus-green" />
-        <p className="text-[10px] leading-[1.45] text-muted-foreground">{modeDescription}</p>
+        <p className="text-[10px] font-medium leading-[1.45] text-foreground/80">{modeDescription}</p>
       </div>
     </div>
   );

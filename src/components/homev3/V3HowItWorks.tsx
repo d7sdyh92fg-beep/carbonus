@@ -73,7 +73,7 @@ export function V3HowItWorks() {
             const active = i === 1;
             return (
               <Fragment key={step.title}>
-                <div className="max-w-[230px] text-center">
+                <div className="max-w-[250px] text-center">
                   <div
                     className={`mx-auto flex h-[76px] w-[76px] items-center justify-center rounded-xl border-2 border-white ${
                       active
@@ -83,8 +83,8 @@ export function V3HowItWorks() {
                   >
                     <Icon className={`h-7 w-7 ${active ? "text-white" : "text-carbonus-green"}`} />
                   </div>
-                  <h3 className="mt-5 text-[16px] font-semibold text-foreground">{step.title}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{step.text}</p>
+                  <h3 className="mt-5 text-[17px] font-semibold text-foreground">{step.title}</h3>
+                  <p className="mt-2 text-[14px] leading-[1.6] text-foreground/70 sm:text-[15px]">{step.text}</p>
                 </div>
                 {i < c.steps.length - 1 && <Dashes flip={i === 1} />}
               </Fragment>
