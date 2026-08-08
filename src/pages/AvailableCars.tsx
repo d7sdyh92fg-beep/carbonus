@@ -38,17 +38,6 @@ import { getCarSlugFromId } from "@/utils/carSlugs";
 import { useTranslations } from "@/hooks/use-translations";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { cn } from "@/lib/utils";
-import {
-  CITIES,
-  PickupMode,
-  ReturnMode,
-  RentalLocation,
-  calculateLogisticsTotal,
-  emptyLocation,
-  locationLabel,
-  readSearchParams,
-} from "@/lib/rentalSearch";
-import { FullSearchForm, FullSearchValue } from "@/components/search/FullSearchForm";
 
 const toISO = (d: Date) => {
   const y = d.getFullYear();
@@ -114,10 +103,6 @@ const AvailableCars = () => {
   const returnTime = params.get("returnTime") || "10:00";
   const rentalDays = daysBetween(pickup, ret);
 
-  // Delivery / collection search context (persisted in the URL)
-  const search = useMemo(() => readSearchParams(params), [params]);
-  const { deliveryFee, collectionFee, logisticsTotal } = search.pricing;
-
   const updateParam = (updates: Record<string, string>) => {
     const p = new URLSearchParams(params);
     Object.entries(updates).forEach(([k, v]) => p.set(k, v));
@@ -134,29 +119,19 @@ const AvailableCars = () => {
     updateParam({ pickup: v, return: toISO(newR) });
   };
 
-  // Expanded search form (locations + dates) shown at the top of results
+  // Edit-search state
   const [editOpen, setEditOpen] = useState(false);
+  const [editPickup, setEditPickup] = useState(pickup);
+  const [editReturn, setEditReturn] = useState(ret);
+  useEffect(() => { setEditPickup(pickup); setEditReturn(ret); }, [pickup, ret]);
 
-  const applyFullSearch = (next: FullSearchValue & { pricing: { deliveryFee: number; collectionFee: number } }) => {
+  const applySearch = () => {
     const p = new URLSearchParams(params);
-    p.set("pickup", next.period.pickupDate);
-    p.set("return", next.period.returnDate);
-    p.set("pickupTime", next.period.pickupTime);
-    p.set("returnTime", next.period.returnTime);
-    p.set("pickupMode", next.pickup.type);
-    p.set("pickupCity", next.pickup.city);
-    p.set("pickupAddress", next.pickup.address);
-    p.set("returnMode", next.returnMode);
-    p.set("returnCity", next.returnLocation.city);
-    p.set("returnAddress", next.returnLocation.address);
-    p.set("deliveryFee", String(next.pricing.deliveryFee));
-    p.set("collectionFee", String(next.pricing.collectionFee));
+    p.set("pickup", editPickup);
+    p.set("return", editReturn);
     setParams(p);
     setEditOpen(false);
   };
-
-
-
 
   // DB data: pricing + premium
   const {
@@ -314,20 +289,7 @@ const AvailableCars = () => {
       }
       const slug = getCarSlugFromId(id, language as "lt" | "en");
       const base = language === "en" ? "/cars" : "/automobiliai";
-      const qs = new URLSearchParams({
-        pickup,
-        return: ret,
-        pickupTime,
-        returnTime,
-        pickupMode: search.pickupMode,
-        pickupCity: search.pickup.city,
-        pickupAddress: search.pickup.address,
-        returnMode: search.returnMode,
-        returnCity: search.returnLocation.city,
-        returnAddress: search.returnLocation.address,
-        deliveryFee: String(deliveryFee),
-        collectionFee: String(collectionFee),
-      }).toString();
+      const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
       navigate(slug ? `${base}/${slug}?${qs}` : base);
     } catch (e) {
       toast({
@@ -362,16 +324,7 @@ const AvailableCars = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-card border border-border p-4 md:p-5">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr_auto_1.3fr_1fr_auto] gap-4 md:gap-6 items-center">
-              <SummaryItem
-                icon={<MapPin className="h-5 w-5 text-primary" />}
-                label={search.returnMode === "same" ? "Paėmimas ir grąžinimas" : "Paėmimas → grąžinimas"}
-                value={
-                  search.returnMode === "same"
-                    ? locationLabel(search.pickup)
-                    : `${locationLabel(search.pickup)} → ${locationLabel(search.returnLocation)}`
-                }
-              />
-
+              <SummaryItem icon={<MapPin className="h-5 w-5 text-primary" />} label="Atsiėmimo vieta" value="Druskininkai" />
               <EditableDateTimeSummary
                 label="Atsiėmimas"
                 date={pickup}
@@ -390,51 +343,36 @@ const AvailableCars = () => {
               />
               
               <SummaryItem icon={<Clock className="h-5 w-5 text-primary" />} label="Nuomos trukmė" value={`${rentalDays} ${rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}`} />
-              <Button
-                variant="hero"
-                className="gap-2 h-12 rounded-xl"
-                onClick={() => setEditOpen((v) => !v)}
-              >
-                <Pencil className="h-4 w-4" />
-                {editOpen ? "Slėpti paiešką" : "Keisti paiešką"}
-              </Button>
+              <Popover open={editOpen} onOpenChange={setEditOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="hero" className="gap-2 h-12 rounded-xl">
+                    <Pencil className="h-4 w-4" />
+                    Keisti paiešką
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[320px] p-4 z-[80]" align="end">
+                  <div className="space-y-3">
+                    <DatePickField
+                      label="Atsiėmimo data"
+                      value={editPickup}
+                      onChange={(v) => {
+                        const oldP = new Date(`${editPickup}T12:00:00`).getTime();
+                        const oldR = new Date(`${editReturn}T12:00:00`).getTime();
+                        const diffDays = Math.max(1, Math.round((oldR - oldP) / 86400000));
+                        const newP = new Date(`${v}T12:00:00`);
+                        const newR = new Date(newP);
+                        newR.setDate(newR.getDate() + diffDays);
+                        setEditPickup(v);
+                        setEditReturn(toISO(newR));
+                      }}
+                    />
+                    <DatePickField label="Grąžinimo data" value={editReturn} onChange={setEditReturn} minDate={new Date(`${editPickup}T12:00:00`)} />
+                    <Button variant="hero" className="w-full" onClick={applySearch}>Taikyti</Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
-
-            {editOpen && (
-              <div className="mt-4 border-t border-border pt-4">
-                <FullSearchForm
-                  value={{
-                    pickupMode: search.pickupMode,
-                    pickup: search.pickup,
-                    returnMode: search.returnMode,
-                    returnLocation: search.returnLocation,
-                    period: { pickupDate: pickup, pickupTime, returnDate: ret, returnTime },
-                  }}
-                  onApply={applyFullSearch}
-                />
-              </div>
-            )}
-
-            {logisticsTotal > 0 && (
-              <div className="mt-4 border-t border-border pt-3 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
-                {deliveryFee > 0 && (
-                  <span className="text-muted-foreground">
-                    Pristatymas <span className="font-semibold text-foreground">{deliveryFee} €</span>
-                  </span>
-                )}
-                {collectionFee > 0 && (
-                  <span className="text-muted-foreground">
-                    Atsiėmimas <span className="font-semibold text-foreground">{collectionFee} €</span>
-                  </span>
-                )}
-                <span className="text-muted-foreground">
-                  Logistika iš viso <span className="font-bold text-primary">{logisticsTotal} €</span>
-                </span>
-              </div>
-            )}
-
           </div>
-
 
           <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
             <div>
@@ -666,50 +604,16 @@ const AvailableCars = () => {
                           ))}
                         </div>
 
-                        {logisticsTotal > 0 ? (
-                          <div className="pt-3 border-t border-border space-y-1 text-sm">
-                            <div className="flex items-center justify-between">
-                              <span className="text-muted-foreground">
-                                Nuoma · {rentalDays} {rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}
-                              </span>
-                              <span className="font-semibold text-foreground">
-                                {daily != null ? `${daily * rentalDays} €` : "—"}
-                              </span>
-                            </div>
-                            {deliveryFee > 0 && (
-                              <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground">
-                                  Pristatymas{search.pickup.city ? ` (${search.pickup.city})` : ""}
-                                </span>
-                                <span className="font-semibold text-foreground">{deliveryFee} €</span>
-                              </div>
-                            )}
-                            {collectionFee > 0 && (
-                              <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground">
-                                  Atsiėmimas{search.returnLocation.city ? ` (${search.returnLocation.city})` : ""}
-                                </span>
-                                <span className="font-semibold text-foreground">{collectionFee} €</span>
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <p className="pt-3 border-t border-border text-xs text-muted-foreground">
-                            Atsiėmimas Carbonus ofise · nemokamai
-                          </p>
-                        )}
-
-                        <div className="flex items-end justify-between pt-3">
+                        <div className="flex items-end justify-between pt-4">
                           <div>
-                            <p className="text-xs text-muted-foreground">Iš viso</p>
+                            <p className="text-xs text-muted-foreground">Kaina {rentalDays} {rentalDays === 1 ? "dienai" : "dienoms"}</p>
                             <p className="text-2xl font-bold text-primary leading-tight">
-                              {daily != null ? `${daily * rentalDays + logisticsTotal} €` : "—"}
+                              {daily != null ? `${daily * rentalDays} €` : "—"}
                             </p>
                             <p className="text-xs text-muted-foreground">
                               {daily != null ? `${daily} €/dieną` : "kaina pateikiama"} · Užstatas {deposit} €
                             </p>
                           </div>
-
                           <Button
                             className="bg-primary hover:bg-primary/90 text-primary-foreground"
                             onClick={() => openCar(car.id)}
@@ -744,70 +648,6 @@ const AvailableCars = () => {
 };
 
 /* ---------- Helpers ---------- */
-
-function LocationEditor({
-  title,
-  mode,
-  onMode,
-  options,
-  showFields,
-  city,
-  address,
-  onCity,
-  onAddress,
-}: {
-  title: string;
-  mode: string;
-  onMode: (m: string) => void;
-  options: { v: string; l: string }[];
-  showFields: boolean;
-  city: string;
-  address: string;
-  onCity: (v: string) => void;
-  onAddress: (v: string) => void;
-}) {
-  return (
-    <div>
-      <div className="text-xs text-muted-foreground mb-1.5">{title}</div>
-      <div className="flex flex-wrap gap-1.5">
-        {options.map((o) => (
-          <button
-            key={o.v}
-            type="button"
-            onClick={() => onMode(o.v)}
-            className={cn(
-              "rounded-full px-3 py-1 text-xs font-medium transition-colors",
-              mode === o.v ? "bg-primary text-primary-foreground" : "bg-muted text-foreground hover:bg-muted/80",
-            )}
-          >
-            {o.l}
-          </button>
-        ))}
-      </div>
-      {showFields && (
-        <div className="mt-2 space-y-2">
-          <Select value={city || undefined} onValueChange={onCity}>
-            <SelectTrigger className="h-10"><SelectValue placeholder="Pasirinkite miestą" /></SelectTrigger>
-            <SelectContent className="z-[100]">
-              {CITIES.map((ct) => (
-                <SelectItem key={ct.id} value={ct.label}>{ct.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <input
-            type="text"
-            value={address}
-            maxLength={140}
-            onChange={(e) => onAddress(e.target.value)}
-            placeholder="Viešbutis, gatvė arba adresas"
-            className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-primary"
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
 
 function SummaryItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
