@@ -20,7 +20,7 @@ const barCopy = {
     placeholder: "Įrašykite miestą, adresą ar viešbutį",
     pickupDate: "Paėmimo data",
     returnDate: "Grąžinimo data",
-    search: "Ieškoti",
+    search: "Ieškoti automobilių",
     info: "Atsiėmimas Carbonus ofise Druskininkuose ir pristatymas Druskininkuose – nemokama. Kitur Lietuvoje taikomas papildomas atvežimo mokestis, kurį patvirtinsime kitame žingsnyje.",
   },
   en: {
@@ -34,7 +34,7 @@ const barCopy = {
     placeholder: "Enter city, address or hotel",
     pickupDate: "Pick-up date",
     returnDate: "Return date",
-    search: "Search",
+    search: "Search cars",
     info: "Pick-up at the Carbonus office in Druskininkai and delivery within Druskininkai are free. An additional delivery fee applies to other cities in Lithuania; the exact price will be confirmed in the next step.",
   },
   ru: {
@@ -48,7 +48,7 @@ const barCopy = {
     placeholder: "Укажите город, адрес или отель",
     pickupDate: "Дата получения",
     returnDate: "Дата возврата",
-    search: "Искать",
+    search: "Найти автомобиль",
     info: "Получение автомобиля в офисе Carbonus в Друскининкай и доставка по Друскининкай – бесплатно. В другие города Литвы взимается дополнительная плата за доставку; точная цена будет подтверждена на следующем шаге.",
   },
 } as const;
