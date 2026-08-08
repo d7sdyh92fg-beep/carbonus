@@ -800,6 +800,70 @@ const AvailableCars = () => {
 
 /* ---------- Helpers ---------- */
 
+function LocationEditor({
+  title,
+  mode,
+  onMode,
+  options,
+  showFields,
+  city,
+  address,
+  onCity,
+  onAddress,
+}: {
+  title: string;
+  mode: string;
+  onMode: (m: string) => void;
+  options: { v: string; l: string }[];
+  showFields: boolean;
+  city: string;
+  address: string;
+  onCity: (v: string) => void;
+  onAddress: (v: string) => void;
+}) {
+  return (
+    <div>
+      <div className="text-xs text-muted-foreground mb-1.5">{title}</div>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map((o) => (
+          <button
+            key={o.v}
+            type="button"
+            onClick={() => onMode(o.v)}
+            className={cn(
+              "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+              mode === o.v ? "bg-primary text-primary-foreground" : "bg-muted text-foreground hover:bg-muted/80",
+            )}
+          >
+            {o.l}
+          </button>
+        ))}
+      </div>
+      {showFields && (
+        <div className="mt-2 space-y-2">
+          <Select value={city || undefined} onValueChange={onCity}>
+            <SelectTrigger className="h-10"><SelectValue placeholder="Pasirinkite miestą" /></SelectTrigger>
+            <SelectContent className="z-[100]">
+              {CITIES.map((ct) => (
+                <SelectItem key={ct.id} value={ct.label}>{ct.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <input
+            type="text"
+            value={address}
+            maxLength={140}
+            onChange={(e) => onAddress(e.target.value)}
+            placeholder="Viešbutis, gatvė arba adresas"
+            className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-primary"
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 function SummaryItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="flex items-center gap-3 min-w-0">
