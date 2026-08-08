@@ -90,7 +90,7 @@ export function V3SearchBar() {
         ? "Carbonus ofisas"
         : locationMode === "druskininkai"
         ? "Druskininkai"
-        : customLocation.trim().slice(0, 120) || c.otherCityLabel;
+        : c.otherCityLabel;
     if (location) params.set("location", location);
     navigate(`/laisvi-automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
