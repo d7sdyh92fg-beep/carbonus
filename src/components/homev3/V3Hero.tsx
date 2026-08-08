@@ -21,6 +21,7 @@ const heroCopy = {
     description:
       "Modern, reliable and economical rental cars in Druskininkai and all across Lithuania.",
     imageAlt: "Citroën SpaceTourer passenger van rented from Carbonus",
+    googleRating: "Google rating",
   },
   ru: {
     eyebrow: "Путешествуйте с комфортом. Платите разумно.",
@@ -29,6 +30,7 @@ const heroCopy = {
     description:
       "Современные, надёжные и экономичные автомобили напрокат в Друскининкай и по всей Литве.",
     imageAlt: "Пассажирский микроавтобус Citroën SpaceTourer в аренду от Carbonus",
+    googleRating: "Рейтинг Google",
   },
 } as const;
 
