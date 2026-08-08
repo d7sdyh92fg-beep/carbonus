@@ -189,10 +189,10 @@ export function V3SearchBar() {
         <Popover open={openR} onOpenChange={setOpenR}>
           <PopoverTrigger asChild>
             <button type="button" aria-label={`${c.returnDate}: ${fmt(ret)}`} className={fieldClass}>
-              <CalendarDays className="h-5 w-5 shrink-0 text-carbonus-green" />
+              <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-medium text-muted-foreground">{c.returnDate}</span>
-                <span className="block truncate text-[14px] font-semibold text-foreground">{fmt(ret)}</span>
+                <span className="block text-[10px] font-medium text-muted-foreground">{c.returnDate}</span>
+                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(ret)}</span>
               </span>
             </button>
           </PopoverTrigger>
