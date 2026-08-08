@@ -253,7 +253,7 @@ export const searchCopy = {
     filtersFuel: "Тип топлива",
     clearFilters: "Очистить фильтры",
   },
-} as const;
+};
 
 type DeepMutable<T> = T extends readonly (infer U)[]
   ? DeepMutable<U>[]
