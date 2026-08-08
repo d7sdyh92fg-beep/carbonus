@@ -143,7 +143,7 @@ export function V3SearchBar() {
                 {c.otherCityLabel}
               </button>
             </div>
-            <p className="mt-2 max-w-[360px] text-[12px] leading-[1.5] text-muted-foreground">{modeDescription}</p>
+            
             {locationMode === "custom" && (
               <input
                 id="v3-location"
