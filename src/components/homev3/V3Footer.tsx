@@ -63,7 +63,7 @@ export function V3Footer() {
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
                   <li key={link.to}>
-                    <Link to={link.to} className="text-[13px] text-muted-foreground transition-colors hover:text-[hsl(var(--carbonus-green))]">
+                    <Link to={link.to} className="text-[13px] text-foreground/80 transition-colors duration-200 hover:text-[hsl(var(--carbonus-green))]">
                       {link.label}
                     </Link>
                   </li>
@@ -78,7 +78,7 @@ export function V3Footer() {
               <input
                 type="email"
                 placeholder={c.emailPlaceholder}
-                className="w-full bg-transparent px-3 py-2.5 text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
+                className="w-full bg-transparent px-3 py-2.5 text-[13px] text-foreground outline-none placeholder:text-foreground/60"
               />
               <button
                 aria-label={c.subscribe}
@@ -89,7 +89,7 @@ export function V3Footer() {
             </div>
 
             <p className="mt-6 text-[16px] font-bold text-foreground">5,0</p>
-            <p className="text-[13px] text-muted-foreground">{c.rating}</p>
+            <p className="text-[13px] text-foreground/80">{c.rating}</p>
             <div className="mt-2 flex gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-[hsl(var(--carbonus-green))] text-[hsl(var(--carbonus-green))]" />
@@ -109,7 +109,7 @@ export function V3Footer() {
 
         <div className="mt-14 flex flex-col items-center gap-6 border-t border-border pt-8 md:flex-row md:justify-between">
           <img src={footerLogo} alt="Carbonus" className="h-9 w-auto sm:h-10" />
-          <nav className="flex flex-wrap justify-center gap-6 text-[13px] text-muted-foreground">
+          <nav className="flex flex-wrap justify-center gap-6 text-[13px] text-foreground/80">
             {BOTTOM_LINKS.map((link) => (
               <Link key={link.to} to={link.to} className="transition-colors hover:text-[hsl(var(--carbonus-green))]">
                 {link.label}

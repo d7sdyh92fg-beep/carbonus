@@ -8,21 +8,21 @@ const COPY = {
     title: "Rezervuokite automobilį jau šiandien",
     text: "Turite klausimų? Paskambinkite mums arba rezervuokite automobilį tiesiogiai internetu.",
     call: "Susisiekite su mumis",
-    book: "Rezervuok dabar",
+    book: "Rasti automobilį",
     imageAlt: "Prabangus automobilis",
   },
   en: {
     title: "Book your car today",
     text: "Have questions? Give us a call or book your car directly online.",
     call: "Contact us",
-    book: "Book now",
+    book: "Find a car",
     imageAlt: "Premium rental car",
   },
   ru: {
     title: "Забронируйте автомобиль уже сегодня",
     text: "Есть вопросы? Позвоните нам или забронируйте автомобиль онлайн.",
     call: "Свяжитесь с нами",
-    book: "Забронировать",
+    book: "Найти автомобиль",
     imageAlt: "Автомобиль премиум-класса",
   },
 } as const;
@@ -32,7 +32,7 @@ export function V3SimpleCta() {
   const c = COPY[language] ?? COPY.lt;
 
   return (
-    <section className="bg-[hsl(210_20%_99%)] py-16 lg:py-24">
+    <section className="bg-[hsl(210_20%_99%)] py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
         <div className="overflow-hidden rounded-[24px] border border-black/[0.04] bg-white shadow-[0_14px_38px_rgba(16,24,40,0.08)]">
           <div className="grid lg:grid-cols-2">
@@ -50,19 +50,19 @@ export function V3SimpleCta() {
               </h2>
               <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{c.text}</p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  to="/laisvi-automobiliai"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[hsl(var(--carbonus-green-dark))] px-6 py-3 text-[14px] font-semibold text-white transition-colors duration-200 hover:bg-[hsl(var(--carbonus-green-deep))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))] focus-visible:ring-offset-2"
+                >
+                  {c.book}
+                </Link>
                 <a
                   href="tel:+37069818781"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[hsl(var(--carbonus-green-dark))] px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[hsl(var(--carbonus-green-deep))]"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-white px-6 py-3 text-[14px] font-semibold text-foreground transition-colors duration-200 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))] focus-visible:ring-offset-2"
                 >
                   <Phone className="h-4 w-4" />
                   {c.call}
                 </a>
-                <Link
-                  to="/laisvi-automobiliai"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-white px-6 py-3 text-[14px] font-semibold text-foreground transition-colors hover:bg-muted/60"
-                >
-                  {c.book}
-                </Link>
               </div>
             </div>
           </div>

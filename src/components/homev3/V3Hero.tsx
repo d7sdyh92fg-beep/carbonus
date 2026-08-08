@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import heroCar from "@/assets/hero-citroen-spacetourer-reference.png";
 import plateLogo from "@/assets/carplus-plate-logo.png";
 import { V3SearchBar } from "./V3SearchBar";
@@ -11,6 +12,7 @@ const heroCopy = {
     description:
       "Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.",
     imageAlt: "Carbonus nuomojamas Citroën SpaceTourer keleivinis mikroautobusas",
+    googleRating: "Google įvertinimas",
   },
   en: {
     eyebrow: "Travel comfortably. Pay smart.",
@@ -19,6 +21,7 @@ const heroCopy = {
     description:
       "Modern, reliable and economical rental cars in Druskininkai and all across Lithuania.",
     imageAlt: "Citroën SpaceTourer passenger van rented from Carbonus",
+    googleRating: "Google rating",
   },
   ru: {
     eyebrow: "Путешествуйте с комфортом. Платите разумно.",
@@ -27,6 +30,7 @@ const heroCopy = {
     description:
       "Современные, надёжные и экономичные автомобили напрокат в Друскининкай и по всей Литве.",
     imageAlt: "Пассажирский микроавтобус Citroën SpaceTourer в аренду от Carbonus",
+    googleRating: "Рейтинг Google",
   },
 } as const;
 
@@ -106,8 +110,22 @@ export function V3Hero() {
           </div>
         </div>
 
-        <div className="relative z-20 mt-4 w-full pb-10 sm:mt-6 lg:absolute lg:bottom-[clamp(16px,1.7vw,30px)] lg:left-6 lg:mt-0 lg:w-[clamp(640px,54vw,850px)] lg:pb-0">
+        <div className="relative z-20 mt-4 w-full pb-8 sm:mt-6 lg:absolute lg:bottom-[clamp(14px,1.6vw,28px)] lg:left-6 lg:mt-0 lg:w-[clamp(640px,54vw,850px)] lg:pb-0">
           <V3SearchBar />
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Carbonus+Druskininkai"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-flex items-center gap-2 rounded-full px-1 py-1 text-[12px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2"
+          >
+            <span className="flex items-center gap-[2px]" aria-hidden="true">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-3.5 w-3.5 fill-carbonus-green text-carbonus-green" />
+              ))}
+            </span>
+            <span className="font-bold text-foreground">5.0</span>
+            <span>{c.googleRating}</span>
+          </a>
         </div>
       </div>
     </section>

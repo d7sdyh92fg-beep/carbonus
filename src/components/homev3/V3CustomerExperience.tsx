@@ -133,7 +133,7 @@ export function V3CustomerExperience() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="overflow-hidden bg-white py-20 lg:py-28">
+    <section ref={sectionRef} className="overflow-hidden bg-white py-12 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-[1240px] px-6">
         <div
           className={`text-center transition-all duration-700 ease-out ${

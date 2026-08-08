@@ -7,27 +7,27 @@ const COPY = {
     eyebrow: "Kaip tai veikia",
     heading: "Carbonus nuoma – trys paprasti žingsniai",
     steps: [
-      { title: "Pasirinkite vietą", text: "Peržiūrėkite populiariausias paėmimo vietas visoje Lietuvoje." },
-      { title: "Paėmimo data", text: "Nurodykite datas ir laiką – laisvus automobilius parodysime iškart." },
-      { title: "Rezervuokite", text: "Patvirtinkite užsakymą ir gaukite sutartį el. paštu." },
+      { title: "Pasirinkite vietą", text: "Atsiimkite Druskininkuose arba rinkitės pristatymą." },
+      { title: "Pasirinkite datas", text: "Nurodykite nuomos laikotarpį." },
+      { title: "Rezervuokite", text: "Pasirinkite automobilį ir patvirtinkite rezervaciją." },
     ],
   },
   en: {
     eyebrow: "How it works",
     heading: "Carbonus rental – three simple steps",
     steps: [
-      { title: "Choose a location", text: "Browse the most popular pickup locations across Lithuania." },
-      { title: "Pickup date", text: "Set your dates and time – we show available cars instantly." },
-      { title: "Book it", text: "Confirm your booking and receive the contract by email." },
+      { title: "Choose a location", text: "Pick up in Druskininkai or choose delivery." },
+      { title: "Choose your dates", text: "Set your rental period." },
+      { title: "Book it", text: "Pick a car and confirm your reservation." },
     ],
   },
   ru: {
     eyebrow: "Как это работает",
     heading: "Аренда Carbonus – три простых шага",
     steps: [
-      { title: "Выберите место", text: "Посмотрите самые популярные места получения по всей Литве." },
-      { title: "Дата получения", text: "Укажите даты и время – свободные автомобили покажем сразу." },
-      { title: "Забронируйте", text: "Подтвердите заказ и получите договор на эл. почту." },
+      { title: "Выберите место", text: "Заберите в Друскининкай или выберите доставку." },
+      { title: "Выберите даты", text: "Укажите период аренды." },
+      { title: "Забронируйте", text: "Выберите автомобиль и подтвердите бронирование." },
     ],
   },
 } as const;
@@ -58,7 +58,7 @@ export function V3HowItWorks() {
   const c = COPY[language] ?? COPY.lt;
 
   return (
-    <section className="bg-white pb-24 pt-20 lg:pb-28 lg:pt-24">
+    <section className="bg-white py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1060px] px-6 text-center">
         <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           {c.eyebrow}
@@ -67,7 +67,7 @@ export function V3HowItWorks() {
           {c.heading}
         </h2>
 
-        <div className="mt-16 flex flex-col items-center justify-center gap-10 md:flex-row md:items-start md:gap-3">
+        <div className="mt-12 flex flex-col items-center justify-center gap-10 md:flex-row md:items-start md:gap-3">
           {c.steps.map((step, i) => {
             const Icon = ICONS[i];
             const active = i === 1;

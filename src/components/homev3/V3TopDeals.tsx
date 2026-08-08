@@ -125,7 +125,7 @@ export function V3TopDeals() {
   const { language } = useLanguage();
   const c = COPY[language] ?? COPY.lt;
   return (
-    <section id="autoparkas" className="overflow-hidden bg-[hsl(210_20%_99%)] py-20 lg:py-28">
+    <section id="autoparkas" className="overflow-hidden bg-[hsl(210_20%_99%)] py-12 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
         <div className="text-center">
           <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
