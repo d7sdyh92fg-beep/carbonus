@@ -143,19 +143,6 @@ export function V3SearchBar() {
                 {c.otherCityLabel}
               </button>
             </div>
-            
-            {locationMode === "custom" && (
-              <input
-                id="v3-location"
-                type="text"
-                value={customLocation}
-                maxLength={120}
-                onChange={(e) => setCustomLocation(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && submit()}
-                placeholder={c.placeholder}
-                className="mt-2 w-full bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
-              />
-            )}
           </div>
         </div>
 
