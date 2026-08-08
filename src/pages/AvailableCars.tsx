@@ -389,61 +389,30 @@ const AvailableCars = () => {
               />
               
               <SummaryItem icon={<Clock className="h-5 w-5 text-primary" />} label="Nuomos trukmė" value={`${rentalDays} ${rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}`} />
-              <Popover open={editOpen} onOpenChange={setEditOpen}>
-                <PopoverTrigger asChild>
-                  <Button variant="hero" className="gap-2 h-12 rounded-xl">
-                    <Pencil className="h-4 w-4" />
-                    Keisti paiešką
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[340px] max-w-[92vw] p-4 z-[80] max-h-[80vh] overflow-y-auto" align="end">
-                  <div className="space-y-3">
-                    <LocationEditor
-                      title="Kur gauti automobilį?"
-                      mode={editPickupMode}
-                      onMode={(m) => setEditPickupMode(m as PickupMode)}
-                      options={[{ v: "office", l: "Carbonus ofisas" }, { v: "delivery", l: "Pristatymas į vietą" }]}
-                      showFields={editPickupMode === "delivery"}
-                      city={editPickupCity}
-                      address={editPickupAddress}
-                      onCity={setEditPickupCity}
-                      onAddress={setEditPickupAddress}
-                    />
-                    <DatePickField
-                      label="Atsiėmimo data"
-                      value={editPickup}
-                      onChange={(v) => {
-                        const oldP = new Date(`${editPickup}T12:00:00`).getTime();
-                        const oldR = new Date(`${editReturn}T12:00:00`).getTime();
-                        const diffDays = Math.max(1, Math.round((oldR - oldP) / 86400000));
-                        const newP = new Date(`${v}T12:00:00`);
-                        const newR = new Date(newP);
-                        newR.setDate(newR.getDate() + diffDays);
-                        setEditPickup(v);
-                        setEditReturn(toISO(newR));
-                      }}
-                    />
-                    <DatePickField label="Grąžinimo data" value={editReturn} onChange={setEditReturn} minDate={new Date(`${editPickup}T12:00:00`)} />
-                    <LocationEditor
-                      title="Kur grąžinsite automobilį?"
-                      mode={editReturnMode}
-                      onMode={(m) => setEditReturnMode(m as ReturnMode)}
-                      options={[
-                        { v: "same", l: "Ta pati vieta" },
-                        { v: "office", l: "Carbonus ofisas" },
-                        { v: "delivery", l: "Kita vieta" },
-                      ]}
-                      showFields={editReturnMode === "delivery"}
-                      city={editReturnCity}
-                      address={editReturnAddress}
-                      onCity={setEditReturnCity}
-                      onAddress={setEditReturnAddress}
-                    />
-                    <Button variant="hero" className="w-full" onClick={applySearch}>Taikyti</Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
+              <Button
+                variant="hero"
+                className="gap-2 h-12 rounded-xl"
+                onClick={() => setEditOpen((v) => !v)}
+              >
+                <Pencil className="h-4 w-4" />
+                {editOpen ? "Slėpti paiešką" : "Keisti paiešką"}
+              </Button>
             </div>
+
+            {editOpen && (
+              <div className="mt-4 border-t border-border pt-4">
+                <FullSearchForm
+                  value={{
+                    pickupMode: search.pickupMode,
+                    pickup: search.pickup,
+                    returnMode: search.returnMode,
+                    returnLocation: search.returnLocation,
+                    period: { pickupDate: pickup, pickupTime, returnDate: ret, returnTime },
+                  }}
+                  onApply={applyFullSearch}
+                />
+              </div>
+            )}
 
             {logisticsTotal > 0 && (
               <div className="mt-4 border-t border-border pt-3 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
@@ -462,6 +431,7 @@ const AvailableCars = () => {
                 </span>
               </div>
             )}
+
           </div>
 
 
