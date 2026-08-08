@@ -374,7 +374,16 @@ const AvailableCars = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-card border border-border p-4 md:p-5">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr_auto_1.3fr_1fr_auto] gap-4 md:gap-6 items-center">
-              <SummaryItem icon={<MapPin className="h-5 w-5 text-primary" />} label="Atsiėmimo vieta" value="Druskininkai" />
+              <SummaryItem
+                icon={<MapPin className="h-5 w-5 text-primary" />}
+                label={search.returnMode === "same" ? "Paėmimas ir grąžinimas" : "Paėmimas → grąžinimas"}
+                value={
+                  search.returnMode === "same"
+                    ? locationLabel(search.pickup)
+                    : `${locationLabel(search.pickup)} → ${locationLabel(search.returnLocation)}`
+                }
+              />
+
               <EditableDateTimeSummary
                 label="Atsiėmimas"
                 date={pickup}
