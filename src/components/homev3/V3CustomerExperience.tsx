@@ -149,7 +149,7 @@ export function V3CustomerExperience() {
         </div>
 
 
-        <div className="mt-12 grid grid-cols-2 items-start gap-8 sm:mt-14 sm:gap-10 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-0">
+        <div className="mt-8 grid grid-cols-2 items-start gap-8 sm:mt-10 sm:gap-10 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-0">
           {/* left column */}
           <div className="contents lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
 

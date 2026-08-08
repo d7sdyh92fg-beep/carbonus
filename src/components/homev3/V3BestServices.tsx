@@ -42,7 +42,7 @@ export function V3BestServices() {
   const c = COPY[language] ?? COPY.lt;
 
   return (
-    <section className="overflow-hidden bg-white py-12 sm:py-16 lg:py-20">
+    <section className="overflow-hidden bg-white pb-8 pt-12 sm:pb-10 sm:pt-16 lg:pb-12 lg:pt-20">
       <div className="mx-auto grid max-w-[1580px] items-center gap-8 px-6 lg:min-h-[600px] lg:grid-cols-[minmax(0,3fr)_minmax(400px,2fr)] lg:gap-0 lg:px-0">
         <div className="relative mx-auto aspect-[3/2] w-full overflow-hidden rounded-[26px] lg:h-[560px] lg:aspect-auto lg:rounded-none lg:rounded-r-[36px]">
           <img
