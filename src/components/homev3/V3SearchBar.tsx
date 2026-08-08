@@ -72,7 +72,6 @@ export function V3SearchBar() {
   const tomorrow = toISO(new Date(Date.now() + 86400000));
 
   const [locationMode, setLocationMode] = useState<LocationMode>("office");
-  const [customLocation, setCustomLocation] = useState("");
   const [pickup, setPickup] = useState(today);
   const [ret, setRet] = useState(tomorrow);
   const [openP, setOpenP] = useState(false);
