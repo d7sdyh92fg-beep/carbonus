@@ -255,4 +255,12 @@ export const searchCopy = {
   },
 } as const;
 
-export type SearchCopy = (typeof searchCopy)["lt"];
+type DeepMutable<T> = T extends readonly (infer U)[]
+  ? DeepMutable<U>[]
+  : T extends object
+  ? { -readonly [K in keyof T]: DeepMutable<T[K]> }
+  : T extends string
+  ? string
+  : T;
+
+export type SearchCopy = DeepMutable<(typeof searchCopy)["lt"]>;
