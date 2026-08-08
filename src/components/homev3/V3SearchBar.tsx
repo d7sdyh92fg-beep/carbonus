@@ -225,7 +225,7 @@ export function V3SearchBar() {
 
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
         <Info className="mt-[2px] h-3 w-3 shrink-0 text-carbonus-green" />
-        <p className="text-[10px] font-medium leading-[1.45] text-foreground/80">{modeDescription}</p>
+        <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">{modeDescription}</p>
       </div>
     </div>
   );

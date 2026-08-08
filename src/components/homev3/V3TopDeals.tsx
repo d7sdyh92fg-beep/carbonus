@@ -170,9 +170,8 @@ export function V3TopDeals() {
                   {car.name}
                 </h3>
 
-                <p className="mt-2 flex items-baseline gap-1.5 text-[24px] font-extrabold leading-tight tracking-[-0.02em] text-[hsl(var(--carbonus-green-dark))]">
-                  <span className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">{c.from}</span>
-                  {car.price} €
+                <p className="mt-2.5 flex items-baseline gap-1.5 text-[19px] font-extrabold text-[hsl(var(--carbonus-green))]">
+                  {c.from} {car.price} €
                   <span className="text-[12px] font-medium text-muted-foreground">{c.perDay}</span>
                 </p>
 
