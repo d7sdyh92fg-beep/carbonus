@@ -103,6 +103,10 @@ const AvailableCars = () => {
   const returnTime = params.get("returnTime") || "10:00";
   const rentalDays = daysBetween(pickup, ret);
 
+  // Delivery / collection search context (persisted in the URL)
+  const search = useMemo(() => readSearchParams(params), [params]);
+  const { deliveryFee, collectionFee, logisticsTotal } = search.pricing;
+
   const updateParam = (updates: Record<string, string>) => {
     const p = new URLSearchParams(params);
     Object.entries(updates).forEach(([k, v]) => p.set(k, v));
@@ -123,15 +127,51 @@ const AvailableCars = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [editPickup, setEditPickup] = useState(pickup);
   const [editReturn, setEditReturn] = useState(ret);
-  useEffect(() => { setEditPickup(pickup); setEditReturn(ret); }, [pickup, ret]);
+  const [editPickupMode, setEditPickupMode] = useState<PickupMode>(search.pickupMode);
+  const [editPickupCity, setEditPickupCity] = useState(search.pickup.city);
+  const [editPickupAddress, setEditPickupAddress] = useState(search.pickup.address);
+  const [editReturnMode, setEditReturnMode] = useState<ReturnMode>(search.returnMode);
+  const [editReturnCity, setEditReturnCity] = useState(search.returnLocation.city);
+  const [editReturnAddress, setEditReturnAddress] = useState(search.returnLocation.address);
+  useEffect(() => {
+    setEditPickup(pickup);
+    setEditReturn(ret);
+    setEditPickupMode(search.pickupMode);
+    setEditPickupCity(search.pickup.city);
+    setEditPickupAddress(search.pickup.address);
+    setEditReturnMode(search.returnMode);
+    setEditReturnCity(search.returnLocation.city);
+    setEditReturnAddress(search.returnLocation.address);
+  }, [pickup, ret, params]);
 
   const applySearch = () => {
+    const pickupLoc: RentalLocation =
+      editPickupMode === "office"
+        ? emptyLocation("office")
+        : { ...emptyLocation("delivery"), city: editPickupCity, address: editPickupAddress };
+    const returnLoc: RentalLocation =
+      editReturnMode === "same"
+        ? { ...pickupLoc }
+        : editReturnMode === "office"
+        ? emptyLocation("office")
+        : { ...emptyLocation("delivery"), city: editReturnCity, address: editReturnAddress };
+    const fees = calculateLogisticsTotal(pickupLoc, returnLoc);
     const p = new URLSearchParams(params);
     p.set("pickup", editPickup);
     p.set("return", editReturn);
+    p.set("pickupMode", pickupLoc.type);
+    p.set("pickupCity", pickupLoc.city);
+    p.set("pickupAddress", pickupLoc.address);
+    p.set("returnMode", editReturnMode);
+    p.set("returnCity", returnLoc.city);
+    p.set("returnAddress", returnLoc.address);
+    p.set("deliveryFee", String(fees.status === "success" ? fees.deliveryFee : 0));
+    p.set("collectionFee", String(fees.status === "success" ? fees.collectionFee : 0));
     setParams(p);
     setEditOpen(false);
   };
+
+
 
   // DB data: pricing + premium
   const {
