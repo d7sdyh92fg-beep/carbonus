@@ -11,33 +11,45 @@ import { useLanguage } from "@/hooks/use-language";
 const barCopy = {
   lt: {
     pickupLocation: "Paėmimo vieta",
-    office: "Carbonus ofisas",
-    delivery: "Pristatymas kitur",
-    placeholder: "Įrašykite adresą ar viešbutį",
+    officeLabel: "Carbonus ofisas",
+    officeDesc: "Automobilį atsiimsite ir grąžinsite Carbonus ofise Druskininkuose be papildomo mokesčio.",
+    druskininkaiLabel: "Druskininkai",
+    druskininkaiDesc: "Druskininkuose automobilį nemokamai pristatysime į jūsų viešbutį ar kitą pasirinktą adresą.",
+    otherCityLabel: "Kitas miestas",
+    otherCityDesc: "Automobilį galime pristatyti į kitą miestą už papildomą mokestį. Tikslią vietą ir kainą pasirinksite kitame žingsnyje.",
+    placeholder: "Įrašykite miestą, adresą ar viešbutį",
     pickupDate: "Paėmimo data",
     returnDate: "Grąžinimo data",
     search: "Ieškoti",
-    info: "Esame Druskininkuose. Jei automobilį norite atsiimti kitur Lietuvoje, taikomas papildomas atvežimo mokestis. Mielai pristatysime į jūsų pasirinktą vietą.",
+    info: "Atsiėmimas Carbonus ofise Druskininkuose ir pristatymas Druskininkuose – nemokama. Kitur Lietuvoje taikomas papildomas atvežimo mokestis, kurį patvirtinsime kitame žingsnyje.",
   },
   en: {
     pickupLocation: "Pick-up location",
-    office: "Carbonus office",
-    delivery: "Delivery elsewhere",
-    placeholder: "Enter an address or hotel",
+    officeLabel: "Carbonus office",
+    officeDesc: "Pick up and return the car at the Carbonus office in Druskininkai with no extra fee.",
+    druskininkaiLabel: "Druskininkai",
+    druskininkaiDesc: "In Druskininkai, we will deliver the car for free to your hotel or chosen address.",
+    otherCityLabel: "Other city",
+    otherCityDesc: "We can deliver the car to another city for an additional fee. The exact location and price will be selected in the next step.",
+    placeholder: "Enter city, address or hotel",
     pickupDate: "Pick-up date",
     returnDate: "Return date",
     search: "Search",
-    info: "We are based in Druskininkai. If you would like to pick up the car elsewhere in Lithuania, an additional delivery fee applies. We will gladly deliver it to your chosen location.",
+    info: "Pick-up at the Carbonus office in Druskininkai and delivery within Druskininkai are free. An additional delivery fee applies to other cities in Lithuania; the exact price will be confirmed in the next step.",
   },
   ru: {
     pickupLocation: "Место получения",
-    office: "Офис Carbonus",
-    delivery: "Доставка в другое место",
-    placeholder: "Укажите адрес или отель",
+    officeLabel: "Офис Carbonus",
+    officeDesc: "Заберите и верните автомобиль в офисе Carbonus в Друскининкай без дополнительной платы.",
+    druskininkaiLabel: "Друскининкай",
+    druskininkaiDesc: "В Друскининкай мы бесплатно доставим автомобиль в ваш отель или по указанному адресу.",
+    otherCityLabel: "Другой город",
+    otherCityDesc: "Мы можем доставить автомобиль в другой город за дополнительную плату. Точное место и цену вы выберете на следующем шаге.",
+    placeholder: "Укажите город, адрес или отель",
     pickupDate: "Дата получения",
     returnDate: "Дата возврата",
     search: "Искать",
-    info: "Мы находимся в Друскининкай. Если вы хотите забрать автомобиль в другом месте Литвы, взимается дополнительная плата за доставку. Мы с удовольствием доставим его по указанному вами адресу.",
+    info: "Получение автомобиля в офисе Carbonus в Друскининкай и доставка по Друскининкай – бесплатно. В другие города Литвы взимается дополнительная плата за доставку; точная цена будет подтверждена на следующем шаге.",
   },
 } as const;
 
@@ -50,6 +62,8 @@ const toISO = (d: Date) => {
 
 const fmt = (s: string) => format(new Date(`${s}T12:00:00`), "yyyy-MM-dd", { locale: lt });
 
+type LocationMode = "office" | "druskininkai" | "custom";
+
 export function V3SearchBar() {
   const navigate = useNavigate();
   const { language } = useLanguage();
@@ -57,16 +71,27 @@ export function V3SearchBar() {
   const today = toISO(new Date());
   const tomorrow = toISO(new Date(Date.now() + 86400000));
 
-  const [locationMode, setLocationMode] = useState<"office" | "custom">("office");
+  const [locationMode, setLocationMode] = useState<LocationMode>("office");
   const [customLocation, setCustomLocation] = useState("");
   const [pickup, setPickup] = useState(today);
   const [ret, setRet] = useState(tomorrow);
   const [openP, setOpenP] = useState(false);
   const [openR, setOpenR] = useState(false);
 
+  const modeDescription = {
+    office: c.officeDesc,
+    druskininkai: c.druskininkaiDesc,
+    custom: c.otherCityDesc,
+  }[locationMode];
+
   const submit = () => {
     const params = new URLSearchParams({ pickup, return: ret, mode: "cars" });
-    const location = locationMode === "office" ? "Carbonus ofisas" : customLocation.trim().slice(0, 120);
+    const location =
+      locationMode === "office"
+        ? "Carbonus ofisas"
+        : locationMode === "druskininkai"
+        ? "Druskininkai"
+        : customLocation.trim().slice(0, 120) || c.otherCityLabel;
     if (location) params.set("location", location);
     navigate(`/laisvi-automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
@@ -91,7 +116,19 @@ export function V3SearchBar() {
                     : "bg-muted text-foreground hover:bg-muted/80"
                 )}
               >
-                {c.office}
+                {c.officeLabel}
+              </button>
+              <button
+                type="button"
+                onClick={() => setLocationMode("druskininkai")}
+                className={cn(
+                  "rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+                  locationMode === "druskininkai"
+                    ? "bg-carbonus-green-dark text-white"
+                    : "bg-muted text-foreground hover:bg-muted/80"
+                )}
+              >
+                {c.druskininkaiLabel}
               </button>
               <button
                 type="button"
@@ -103,9 +140,10 @@ export function V3SearchBar() {
                     : "bg-muted text-foreground hover:bg-muted/80"
                 )}
               >
-                {c.delivery}
+                {c.otherCityLabel}
               </button>
             </div>
+            <p className="mt-2 max-w-[360px] text-[12px] leading-[1.5] text-muted-foreground">{modeDescription}</p>
             {locationMode === "custom" && (
               <input
                 id="v3-location"
@@ -205,9 +243,7 @@ export function V3SearchBar() {
 
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-5 py-3">
         <Info className="mt-[2px] h-4 w-4 shrink-0 text-carbonus-green" />
-        <p className="text-[12px] leading-[1.6] text-muted-foreground">
-          {c.info}
-        </p>
+        <p className="text-[12px] leading-[1.6] text-muted-foreground">{c.info}</p>
       </div>
     </div>
   );
