@@ -72,7 +72,6 @@ export function V3SearchBar() {
   const tomorrow = toISO(new Date(Date.now() + 86400000));
 
   const [locationMode, setLocationMode] = useState<LocationMode>("office");
-  const [customLocation, setCustomLocation] = useState("");
   const [pickup, setPickup] = useState(today);
   const [ret, setRet] = useState(tomorrow);
   const [openP, setOpenP] = useState(false);
@@ -91,7 +90,7 @@ export function V3SearchBar() {
         ? "Carbonus ofisas"
         : locationMode === "druskininkai"
         ? "Druskininkai"
-        : customLocation.trim().slice(0, 120) || c.otherCityLabel;
+        : c.otherCityLabel;
     if (location) params.set("location", location);
     navigate(`/laisvi-automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
@@ -143,19 +142,6 @@ export function V3SearchBar() {
                 {c.otherCityLabel}
               </button>
             </div>
-            
-            {locationMode === "custom" && (
-              <input
-                id="v3-location"
-                type="text"
-                value={customLocation}
-                maxLength={120}
-                onChange={(e) => setCustomLocation(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && submit()}
-                placeholder={c.placeholder}
-                className="mt-2 w-full bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
-              />
-            )}
           </div>
         </div>
 
