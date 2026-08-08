@@ -223,9 +223,9 @@ export function V3SearchBar() {
         </button>
       </div>
 
-      <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-4 py-2">
-        <Info className="mt-[2px] h-3.5 w-3.5 shrink-0 text-carbonus-green" />
-        <p className="text-[11px] leading-[1.5] text-muted-foreground">{modeDescription}</p>
+      <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
+        <Info className="mt-[2px] h-3 w-3 shrink-0 text-carbonus-green" />
+        <p className="text-[10px] leading-[1.45] text-muted-foreground">{modeDescription}</p>
       </div>
     </div>
   );
