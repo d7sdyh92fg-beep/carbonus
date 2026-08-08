@@ -84,14 +84,9 @@ export function V3SearchBar() {
   }[locationMode];
 
   const submit = () => {
-    const params = new URLSearchParams({ pickup, return: ret, mode: "cars" });
-    const location =
-      locationMode === "office"
-        ? "Carbonus ofisas"
-        : locationMode === "druskininkai"
-        ? "Druskininkai"
-        : c.otherCityLabel;
-    if (location) params.set("location", location);
+    const mode =
+      locationMode === "office" ? "office" : locationMode === "druskininkai" ? "druskininkai" : "other";
+    const params = new URLSearchParams({ pickup, return: ret, mode });
     navigate(`/laisvi-automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
   };
