@@ -339,7 +339,20 @@ const AvailableCars = () => {
       }
       const slug = getCarSlugFromId(id, language as "lt" | "en");
       const base = language === "en" ? "/cars" : "/automobiliai";
-      const qs = new URLSearchParams({ pickup, return: ret, pickupTime, returnTime }).toString();
+      const qs = new URLSearchParams({
+        pickup,
+        return: ret,
+        pickupTime,
+        returnTime,
+        pickupMode: search.pickupMode,
+        pickupCity: search.pickup.city,
+        pickupAddress: search.pickup.address,
+        returnMode: search.returnMode,
+        returnCity: search.returnLocation.city,
+        returnAddress: search.returnLocation.address,
+        deliveryFee: String(deliveryFee),
+        collectionFee: String(collectionFee),
+      }).toString();
       navigate(slug ? `${base}/${slug}?${qs}` : base);
     } catch (e) {
       toast({
