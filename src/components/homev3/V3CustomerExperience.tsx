@@ -149,20 +149,20 @@ export function V3CustomerExperience() {
         </div>
 
 
-        <div className="mt-8 grid grid-cols-2 items-start gap-8 sm:mt-10 sm:gap-10 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-0">
+        <div className="mt-8 grid grid-cols-2 items-start gap-8 sm:mt-10 sm:gap-10 md:grid-cols-[1fr_280px_1fr] md:items-center md:gap-0 lg:grid-cols-[1fr_380px_1fr]">
           {/* left column */}
-          <div className="contents lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+          <div className="contents md:flex md:h-[480px] md:flex-col md:justify-between md:gap-0 lg:h-[590px]">
 
             {LEFT.map((item, index) => (
               <div
                 key={item.title}
-                className={`flex items-start justify-center gap-3 transition-all duration-700 ease-out lg:justify-end ${
+                className={`flex items-start justify-center gap-3 transition-all duration-700 ease-out md:justify-end ${
                   isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
                 }`}
                 style={{ transitionDelay: `${200 + index * 140}ms` }}
               >
                 <Item {...item} align="left" />
-                <div className="lg:mt-5">
+                <div className="md:mt-5">
                   <Connector dir="left" active={isVisible} delay={300 + index * 140} />
                 </div>
               </div>
@@ -171,7 +171,7 @@ export function V3CustomerExperience() {
 
           {/* car */}
           <div
-            className={`order-first col-span-2 mx-auto w-[220px] transition-all duration-1000 ease-out sm:w-[250px] lg:order-none lg:col-span-1 lg:w-[370px] ${
+            className={`order-first col-span-2 mx-auto w-[220px] transition-all duration-1000 ease-out sm:w-[250px] md:order-none md:col-span-1 md:w-[270px] lg:w-[370px] ${
               isVisible ? "translate-y-0 scale-100 opacity-100" : "translate-y-10 scale-[0.96] opacity-0"
             }`}
             style={{ transitionDelay: "220ms" }}
@@ -188,23 +188,24 @@ export function V3CustomerExperience() {
           </div>
 
           {/* right column */}
-          <div className="contents lg:flex lg:h-[590px] lg:flex-col lg:justify-between lg:gap-0">
+          <div className="contents md:flex md:h-[480px] md:flex-col md:justify-between md:gap-0 lg:h-[590px]">
 
             {RIGHT.map((item, index) => (
               <div
                 key={item.title}
-                className={`flex items-start justify-center gap-3 transition-all duration-700 ease-out lg:justify-start ${
+                className={`flex items-start justify-center gap-3 transition-all duration-700 ease-out md:justify-start ${
                   isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
                 }`}
                 style={{ transitionDelay: `${270 + index * 140}ms` }}
               >
-                <div className="lg:mt-5">
+                <div className="md:mt-5">
                   <Connector dir="right" active={isVisible} delay={370 + index * 140} />
                 </div>
                 <Item {...item} align="right" />
               </div>
             ))}
           </div>
+
         </div>
 
       </div>
