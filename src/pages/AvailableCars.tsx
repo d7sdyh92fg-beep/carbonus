@@ -48,6 +48,7 @@ import {
   locationLabel,
   readSearchParams,
 } from "@/lib/rentalSearch";
+import { FullSearchForm, FullSearchValue } from "@/components/search/FullSearchForm";
 
 const toISO = (d: Date) => {
   const y = d.getFullYear();
