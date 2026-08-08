@@ -42,7 +42,7 @@ function Item({
   return (
     <div
       className={`flex w-[150px] shrink-0 flex-col items-center sm:w-[190px] ${
-        align === "right" ? "lg:items-start" : "lg:items-end"
+        align === "right" ? "md:items-start" : "md:items-end"
       }`}
     >
       <div className="flex h-16 w-16 items-center justify-center rounded-[14px] border-2 border-white bg-[hsl(210_16%_96%)] shadow-[0_12px_28px_rgba(16,24,40,0.10)] transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
@@ -50,7 +50,7 @@ function Item({
       </div>
       <p
         className={`mt-4 flex min-h-[54px] w-full items-start justify-center text-center text-[15px] font-semibold leading-[1.35] text-foreground sm:text-[16px] ${
-          align === "right" ? "lg:items-start lg:justify-start lg:text-left" : "lg:items-start lg:justify-end lg:text-right"
+          align === "right" ? "md:items-start md:justify-start md:text-left" : "md:items-start md:justify-end md:text-right"
         }`}
       >
         {title}
@@ -72,7 +72,7 @@ function Connector({ dir, active, delay }: { dir: "left" | "right"; active: bool
   };
 
   return (
-    <svg viewBox="0 0 160 38" className="hidden h-10 w-[160px] lg:block" fill="none">
+    <svg viewBox="0 0 160 38" className="hidden h-10 w-[90px] md:block lg:w-[160px]" fill="none">
       {dir === "left" ? (
         <>
           <path
