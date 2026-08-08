@@ -38,6 +38,16 @@ import { getCarSlugFromId } from "@/utils/carSlugs";
 import { useTranslations } from "@/hooks/use-translations";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { cn } from "@/lib/utils";
+import {
+  CITIES,
+  PickupMode,
+  ReturnMode,
+  RentalLocation,
+  calculateLogisticsTotal,
+  emptyLocation,
+  locationLabel,
+  readSearchParams,
+} from "@/lib/rentalSearch";
 
 const toISO = (d: Date) => {
   const y = d.getFullYear();
