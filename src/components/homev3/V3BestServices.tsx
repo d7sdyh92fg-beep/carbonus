@@ -1,5 +1,5 @@
 import servicesCar from "@/assets/homev3-services-skoda-hero-v3.png";
-import { Tag, Wallet, Headphones } from "lucide-react";
+import { Truck, MapPinned, ReceiptText } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 
 const COPY = {
@@ -8,9 +8,9 @@ const COPY = {
     heading: "Patirkite geriausią nuomos patirtį su Carbonus",
     imageAlt: "Žalias Škoda nuomos automobilis",
     items: [
-      { title: "Pasiūlymai kiekvienam biudžetui", text: "Konkurencingos kainos nuo ekonomiškų iki premium klasės automobilių." },
-      { title: "Geriausios kainos garantija", text: "Radote pigiau? Pasiūlysime tokią pačią arba geresnę kainą." },
-      { title: "Pagalba 24/7", text: "Susisiekite bet kuriuo paros metu – padėsime kelyje ir konsultuosime." },
+      { title: "Nemokamas pristatymas Druskininkuose", text: "Automobilį atvešime į jūsų viešbutį ar kitą pasirinktą adresą Druskininkuose – be papildomo mokesčio." },
+      { title: "Pristatymas į kitus miestus", text: "Pristatome ir atsiimame visoje Lietuvoje už aiškiai nurodytą papildomą mokestį." },
+      { title: "Aiški kainodara be paslėptų mokesčių", text: "Galutinę kainą matote iš karto – jokių netikėtų priemokų rezervuojant ar atsiimant." },
     ],
   },
   en: {
@@ -18,9 +18,9 @@ const COPY = {
     heading: "Enjoy the best rental experience with Carbonus",
     imageAlt: "Green Škoda rental car",
     items: [
-      { title: "Options for every budget", text: "Competitive prices from economy to premium class cars." },
-      { title: "Best price guarantee", text: "Found it cheaper? We will match or beat that price." },
-      { title: "24/7 support", text: "Contact us any time of day – we help on the road and advise you." },
+      { title: "Free delivery in Druskininkai", text: "We bring the car to your hotel or any chosen address in Druskininkai at no extra cost." },
+      { title: "Delivery to other cities", text: "We deliver and collect across Lithuania for a clearly stated additional fee." },
+      { title: "Clear pricing, no hidden fees", text: "You see the final price upfront – no surprise charges when booking or picking up." },
     ],
   },
   ru: {
@@ -28,23 +28,23 @@ const COPY = {
     heading: "Получите лучший опыт аренды с Carbonus",
     imageAlt: "Зелёный автомобиль Škoda напрокат",
     items: [
-      { title: "Предложения для любого бюджета", text: "Конкурентные цены от эконом- до премиум-класса." },
-      { title: "Гарантия лучшей цены", text: "Нашли дешевле? Предложим такую же или лучшую цену." },
-      { title: "Поддержка 24/7", text: "Свяжитесь в любое время суток – поможем в дороге и проконсультируем." },
+      { title: "Бесплатная доставка в Друскининкай", text: "Привезём автомобиль в ваш отель или по указанному адресу в Друскининкай без доплаты." },
+      { title: "Доставка в другие города", text: "Доставляем и забираем по всей Литве за чётко указанную дополнительную плату." },
+      { title: "Прозрачные цены без скрытых платежей", text: "Итоговую цену видите сразу – никаких неожиданных доплат." },
     ],
   },
 } as const;
 
-const ICONS = [Tag, Wallet, Headphones];
+const ICONS = [Truck, MapPinned, ReceiptText];
 
 export function V3BestServices() {
   const { language } = useLanguage();
   const c = COPY[language] ?? COPY.lt;
 
   return (
-    <section className="overflow-hidden bg-white py-16 lg:py-20">
-      <div className="mx-auto grid max-w-[1580px] items-center gap-12 px-6 lg:min-h-[700px] lg:grid-cols-[minmax(0,3fr)_minmax(400px,2fr)] lg:gap-0 lg:px-0">
-        <div className="relative mx-auto aspect-[3/2] w-full overflow-hidden rounded-[26px] lg:h-[650px] lg:aspect-auto lg:rounded-none lg:rounded-r-[36px]">
+    <section className="overflow-hidden bg-white py-12 sm:py-16 lg:py-20">
+      <div className="mx-auto grid max-w-[1580px] items-center gap-8 px-6 lg:min-h-[600px] lg:grid-cols-[minmax(0,3fr)_minmax(400px,2fr)] lg:gap-0 lg:px-0">
+        <div className="relative mx-auto aspect-[3/2] w-full overflow-hidden rounded-[26px] lg:h-[560px] lg:aspect-auto lg:rounded-none lg:rounded-r-[36px]">
           <img
             src={servicesCar}
             alt={c.imageAlt}
@@ -64,7 +64,7 @@ export function V3BestServices() {
           </h2>
           <div className="mt-5 h-[3px] w-10 rounded-full bg-[hsl(var(--carbonus-green))]" />
 
-          <div className="mt-10 space-y-8">
+          <div className="mt-8 space-y-6">
             {c.items.map((item, i) => {
               const Icon = ICONS[i];
               return (

@@ -8,21 +8,21 @@ const COPY = {
     title: "Rezervuokite automobilį jau šiandien",
     text: "Turite klausimų? Paskambinkite mums arba rezervuokite automobilį tiesiogiai internetu.",
     call: "Susisiekite su mumis",
-    book: "Rezervuok dabar",
+    book: "Rasti automobilį",
     imageAlt: "Prabangus automobilis",
   },
   en: {
     title: "Book your car today",
     text: "Have questions? Give us a call or book your car directly online.",
     call: "Contact us",
-    book: "Book now",
+    book: "Find a car",
     imageAlt: "Premium rental car",
   },
   ru: {
     title: "Забронируйте автомобиль уже сегодня",
     text: "Есть вопросы? Позвоните нам или забронируйте автомобиль онлайн.",
     call: "Свяжитесь с нами",
-    book: "Забронировать",
+    book: "Найти автомобиль",
     imageAlt: "Автомобиль премиум-класса",
   },
 } as const;
@@ -32,7 +32,7 @@ export function V3SimpleCta() {
   const c = COPY[language] ?? COPY.lt;
 
   return (
-    <section className="bg-[hsl(210_20%_99%)] py-16 lg:py-24">
+    <section className="bg-[hsl(210_20%_99%)] py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
         <div className="overflow-hidden rounded-[24px] border border-black/[0.04] bg-white shadow-[0_14px_38px_rgba(16,24,40,0.08)]">
           <div className="grid lg:grid-cols-2">
