@@ -133,53 +133,27 @@ const AvailableCars = () => {
     updateParam({ pickup: v, return: toISO(newR) });
   };
 
-  // Edit-search state
+  // Expanded search form (locations + dates) shown at the top of results
   const [editOpen, setEditOpen] = useState(false);
-  const [editPickup, setEditPickup] = useState(pickup);
-  const [editReturn, setEditReturn] = useState(ret);
-  const [editPickupMode, setEditPickupMode] = useState<PickupMode>(search.pickupMode);
-  const [editPickupCity, setEditPickupCity] = useState(search.pickup.city);
-  const [editPickupAddress, setEditPickupAddress] = useState(search.pickup.address);
-  const [editReturnMode, setEditReturnMode] = useState<ReturnMode>(search.returnMode);
-  const [editReturnCity, setEditReturnCity] = useState(search.returnLocation.city);
-  const [editReturnAddress, setEditReturnAddress] = useState(search.returnLocation.address);
-  useEffect(() => {
-    setEditPickup(pickup);
-    setEditReturn(ret);
-    setEditPickupMode(search.pickupMode);
-    setEditPickupCity(search.pickup.city);
-    setEditPickupAddress(search.pickup.address);
-    setEditReturnMode(search.returnMode);
-    setEditReturnCity(search.returnLocation.city);
-    setEditReturnAddress(search.returnLocation.address);
-  }, [pickup, ret, params]);
 
-  const applySearch = () => {
-    const pickupLoc: RentalLocation =
-      editPickupMode === "office"
-        ? emptyLocation("office")
-        : { ...emptyLocation("delivery"), city: editPickupCity, address: editPickupAddress };
-    const returnLoc: RentalLocation =
-      editReturnMode === "same"
-        ? { ...pickupLoc }
-        : editReturnMode === "office"
-        ? emptyLocation("office")
-        : { ...emptyLocation("delivery"), city: editReturnCity, address: editReturnAddress };
-    const fees = calculateLogisticsTotal(pickupLoc, returnLoc);
+  const applyFullSearch = (next: FullSearchValue & { pricing: { deliveryFee: number; collectionFee: number } }) => {
     const p = new URLSearchParams(params);
-    p.set("pickup", editPickup);
-    p.set("return", editReturn);
-    p.set("pickupMode", pickupLoc.type);
-    p.set("pickupCity", pickupLoc.city);
-    p.set("pickupAddress", pickupLoc.address);
-    p.set("returnMode", editReturnMode);
-    p.set("returnCity", returnLoc.city);
-    p.set("returnAddress", returnLoc.address);
-    p.set("deliveryFee", String(fees.status === "success" ? fees.deliveryFee : 0));
-    p.set("collectionFee", String(fees.status === "success" ? fees.collectionFee : 0));
+    p.set("pickup", next.period.pickupDate);
+    p.set("return", next.period.returnDate);
+    p.set("pickupTime", next.period.pickupTime);
+    p.set("returnTime", next.period.returnTime);
+    p.set("pickupMode", next.pickup.type);
+    p.set("pickupCity", next.pickup.city);
+    p.set("pickupAddress", next.pickup.address);
+    p.set("returnMode", next.returnMode);
+    p.set("returnCity", next.returnLocation.city);
+    p.set("returnAddress", next.returnLocation.address);
+    p.set("deliveryFee", String(next.pricing.deliveryFee));
+    p.set("collectionFee", String(next.pricing.collectionFee));
     setParams(p);
     setEditOpen(false);
   };
+
 
 
 
