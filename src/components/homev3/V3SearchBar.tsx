@@ -143,7 +143,7 @@ export function V3SearchBar() {
                 {c.otherCityLabel}
               </button>
             </div>
-            <p className="mt-2 max-w-[360px] text-[12px] leading-[1.5] text-muted-foreground">{modeDescription}</p>
+            
             {locationMode === "custom" && (
               <input
                 id="v3-location"
@@ -243,7 +243,7 @@ export function V3SearchBar() {
 
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-5 py-3">
         <Info className="mt-[2px] h-4 w-4 shrink-0 text-carbonus-green" />
-        <p className="text-[12px] leading-[1.6] text-muted-foreground">{c.info}</p>
+        <p className="text-[12px] leading-[1.6] text-muted-foreground">{modeDescription}</p>
       </div>
     </div>
   );
