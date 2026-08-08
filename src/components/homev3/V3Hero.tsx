@@ -116,7 +116,7 @@ export function V3Hero() {
             href="https://www.google.com/maps/search/?api=1&query=Carbonus+Druskininkai"
             target="_blank"
             rel="noreferrer"
-            className="mt-3 inline-flex items-center gap-2 rounded-full px-1 py-1 text-[12px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2"
+            className="mt-1.5 inline-flex items-center gap-2 rounded-full px-1 py-1 text-[12px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2"
           >
             <span className="flex items-center gap-[2px]" aria-hidden="true">
               {Array.from({ length: 5 }).map((_, i) => (
