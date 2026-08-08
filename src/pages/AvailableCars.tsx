@@ -708,16 +708,50 @@ const AvailableCars = () => {
                           ))}
                         </div>
 
-                        <div className="flex items-end justify-between pt-4">
+                        {logisticsTotal > 0 ? (
+                          <div className="pt-3 border-t border-border space-y-1 text-sm">
+                            <div className="flex items-center justify-between">
+                              <span className="text-muted-foreground">
+                                Nuoma · {rentalDays} {rentalDays === 1 ? "diena" : rentalDays < 10 ? "dienos" : "dienų"}
+                              </span>
+                              <span className="font-semibold text-foreground">
+                                {daily != null ? `${daily * rentalDays} €` : "—"}
+                              </span>
+                            </div>
+                            {deliveryFee > 0 && (
+                              <div className="flex items-center justify-between">
+                                <span className="text-muted-foreground">
+                                  Pristatymas{search.pickup.city ? ` (${search.pickup.city})` : ""}
+                                </span>
+                                <span className="font-semibold text-foreground">{deliveryFee} €</span>
+                              </div>
+                            )}
+                            {collectionFee > 0 && (
+                              <div className="flex items-center justify-between">
+                                <span className="text-muted-foreground">
+                                  Atsiėmimas{search.returnLocation.city ? ` (${search.returnLocation.city})` : ""}
+                                </span>
+                                <span className="font-semibold text-foreground">{collectionFee} €</span>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="pt-3 border-t border-border text-xs text-muted-foreground">
+                            Atsiėmimas Carbonus ofise · nemokamai
+                          </p>
+                        )}
+
+                        <div className="flex items-end justify-between pt-3">
                           <div>
-                            <p className="text-xs text-muted-foreground">Kaina {rentalDays} {rentalDays === 1 ? "dienai" : "dienoms"}</p>
+                            <p className="text-xs text-muted-foreground">Iš viso</p>
                             <p className="text-2xl font-bold text-primary leading-tight">
-                              {daily != null ? `${daily * rentalDays} €` : "—"}
+                              {daily != null ? `${daily * rentalDays + logisticsTotal} €` : "—"}
                             </p>
                             <p className="text-xs text-muted-foreground">
                               {daily != null ? `${daily} €/dieną` : "kaina pateikiama"} · Užstatas {deposit} €
                             </p>
                           </div>
+
                           <Button
                             className="bg-primary hover:bg-primary/90 text-primary-foreground"
                             onClick={() => openCar(car.id)}
