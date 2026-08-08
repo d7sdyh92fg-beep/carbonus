@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import heroCar from "@/assets/hero-citroen-spacetourer-reference.png";
 import plateLogo from "@/assets/carplus-plate-logo.png";
 import { V3SearchBar } from "./V3SearchBar";
@@ -11,6 +12,7 @@ const heroCopy = {
     description:
       "Modernūs, patikimi ir ekonomiški automobiliai nuomai Druskininkuose ir visoje Lietuvoje.",
     imageAlt: "Carbonus nuomojamas Citroën SpaceTourer keleivinis mikroautobusas",
+    googleRating: "Google įvertinimas",
   },
   en: {
     eyebrow: "Travel comfortably. Pay smart.",
