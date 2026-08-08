@@ -36,26 +36,27 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[96px] sm:pt-[104px] lg:pt-[78px]">
-      <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[612px]" />
+      <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[clamp(510px,42.5vw,668px)]" />
 
-      <div className="relative mx-auto max-w-[1140px] px-5 pb-10 sm:px-6 lg:min-h-[660px] lg:pb-12">
-        <div className="grid gap-8 sm:gap-10 lg:h-[642px] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
-          <div className="pt-2 sm:pt-6 lg:pt-[112px]">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[12px] sm:tracking-[0.18em]">
+      <div className="relative mx-auto max-w-[1140px] px-5 pb-10 sm:px-6 lg:min-h-[clamp(560px,45.8vw,720px)] lg:pb-12">
+        <div className="grid gap-8 sm:gap-10 lg:h-[clamp(545px,44.6vw,700px)] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
+          <div className="pt-2 sm:pt-6 lg:pt-[clamp(72px,7.8vw,122px)]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
               {c.eyebrow}
             </p>
-            <h1 className="mt-4 max-w-[440px] text-[30px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:mt-6 sm:text-[42px]">
+            <h1 className="mt-4 max-w-[440px] text-[30px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:mt-6 sm:text-[clamp(30px,2.92vw,46px)]">
               {c.title1}
               <br className="hidden sm:block" /> {c.title2}
             </h1>
             <div className="mt-4 h-[4px] w-10 rounded-full bg-carbonus-green sm:mt-5" />
-            <p className="mt-4 max-w-[430px] text-[14px] leading-[1.75] text-muted-foreground sm:mt-5 sm:leading-[1.8]">
+            <p className="mt-4 max-w-[430px] text-[14px] leading-[1.75] text-muted-foreground sm:mt-5 sm:text-[clamp(13px,0.98vw,16px)] sm:leading-[1.8]">
               {c.description}
             </p>
           </div>
 
           <div className="relative">
-            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[630px] lg:rounded-t-none">
+            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(535px,43.75vw,688px)] lg:rounded-t-none">
+
               <div
                 className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
                 style={{
@@ -105,7 +106,7 @@ export function V3Hero() {
           </div>
         </div>
 
-        <div className="relative z-20 mt-4 w-full pb-10 sm:mt-6 lg:absolute lg:bottom-[24px] lg:left-6 lg:mt-0 lg:w-[780px] lg:pb-0">
+        <div className="relative z-20 mt-4 w-full pb-10 sm:mt-6 lg:absolute lg:bottom-[clamp(16px,1.7vw,30px)] lg:left-6 lg:mt-0 lg:w-[clamp(640px,54vw,850px)] lg:pb-0">
           <V3SearchBar />
         </div>
       </div>
