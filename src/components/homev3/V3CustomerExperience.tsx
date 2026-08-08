@@ -161,13 +161,13 @@ export function V3CustomerExperience() {
             {LEFT.map((item, index) => (
               <div
                 key={item.title}
-                className={`flex items-start justify-center gap-3 transition-all md:gap-2 lg:gap-3 duration-700 ease-out md:justify-end ${
+                className={`flex items-start justify-center gap-0 transition-all md:gap-2 lg:gap-3 duration-700 ease-out md:justify-end ${
                   isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
                 }`}
                 style={{ transitionDelay: `${200 + index * 140}ms` }}
               >
                 <Item {...item} align="left" />
-                <div className="md:mt-5">
+                <div className="hidden md:mt-5 md:block">
                   <Connector dir="left" active={isVisible} delay={300 + index * 140} />
                 </div>
               </div>
@@ -198,12 +198,12 @@ export function V3CustomerExperience() {
             {RIGHT.map((item, index) => (
               <div
                 key={item.title}
-                className={`flex items-start justify-center gap-3 transition-all md:gap-2 lg:gap-3 duration-700 ease-out md:justify-start ${
+                className={`flex items-start justify-center gap-0 transition-all md:gap-2 lg:gap-3 duration-700 ease-out md:justify-start ${
                   isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
                 }`}
                 style={{ transitionDelay: `${270 + index * 140}ms` }}
               >
-                <div className="md:mt-5">
+                <div className="hidden md:mt-5 md:block">
                   <Connector dir="right" active={isVisible} delay={370 + index * 140} />
                 </div>
                 <Item {...item} align="right" />
