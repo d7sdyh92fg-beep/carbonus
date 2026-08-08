@@ -56,9 +56,8 @@ function Item({
         {title}
       </p>
     </div>
-
-    </div>
   );
+
 }
 
 function Connector({ dir, active, delay }: { dir: "left" | "right"; active: boolean; delay: number }) {
