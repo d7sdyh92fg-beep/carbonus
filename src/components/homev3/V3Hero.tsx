@@ -105,7 +105,7 @@ export function V3Hero() {
           </div>
         </div>
 
-        <div className="relative z-20 mt-6 w-full pb-10 sm:mt-8 lg:absolute lg:bottom-0 lg:left-6 lg:mt-0 lg:w-[780px] lg:pb-0">
+        <div className="relative z-20 mt-6 w-full pb-10 sm:mt-8 lg:absolute lg:bottom-0 lg:left-6 lg:mt-0 lg:w-[780px] lg:translate-y-3 lg:pb-0">
           <V3SearchBar />
         </div>
       </div>
