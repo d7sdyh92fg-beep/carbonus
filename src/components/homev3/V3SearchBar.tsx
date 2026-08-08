@@ -110,15 +110,15 @@ export function V3SearchBar() {
 
   return (
     <div className="rounded-[14px] bg-white shadow-[0_18px_50px_rgba(16,24,40,0.14)]">
-      <div className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:gap-0 sm:p-2 sm:pl-4">
+      <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
         {/* Location */}
-        <div className="flex min-w-0 flex-1 items-start gap-3 rounded-lg px-3 py-2.5">
-          <MapPin className="mt-1 h-5 w-5 shrink-0 text-carbonus-green" />
+        <div className="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-2 py-1.5">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green" />
           <div className="min-w-0 flex-1">
-            <span id="pickup-location-label" className="block text-[11px] font-medium text-muted-foreground">
+            <span id="pickup-location-label" className="block text-[10px] font-medium text-muted-foreground">
               {c.pickupLocation}
             </span>
-            <div className="mt-1.5 flex flex-wrap gap-1.5" role="group" aria-labelledby="pickup-location-label">
+            <div className="mt-1 flex flex-wrap gap-1" role="group" aria-labelledby="pickup-location-label">
               <button
                 type="button"
                 aria-pressed={locationMode === "office"}
