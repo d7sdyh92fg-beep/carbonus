@@ -98,27 +98,27 @@ export function V3SearchBar() {
 
   const pillClass = (activeMode: LocationMode) =>
     cn(
-      "min-h-[36px] rounded-full border px-3.5 py-1.5 text-[12px] font-medium transition-all duration-200",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2",
+      "min-h-[28px] rounded-full border px-3 py-1 text-[11px] font-medium transition-all duration-200",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1",
       locationMode === activeMode
         ? "border-carbonus-green-dark bg-carbonus-green-dark font-semibold text-white shadow-sm"
         : "border-transparent bg-muted text-foreground hover:border-carbonus-green/40 hover:bg-muted/70"
     );
 
   const fieldClass =
-    "flex min-h-[56px] min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors duration-200 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:border-l sm:border-border";
+    "flex min-h-[48px] min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors duration-200 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1 sm:border-l sm:border-border";
 
   return (
     <div className="rounded-[14px] bg-white shadow-[0_18px_50px_rgba(16,24,40,0.14)]">
-      <div className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:gap-0 sm:p-2 sm:pl-4">
+      <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
         {/* Location */}
-        <div className="flex min-w-0 flex-1 items-start gap-3 rounded-lg px-3 py-2.5">
-          <MapPin className="mt-1 h-5 w-5 shrink-0 text-carbonus-green" />
+        <div className="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-2 py-1.5">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green" />
           <div className="min-w-0 flex-1">
-            <span id="pickup-location-label" className="block text-[11px] font-medium text-muted-foreground">
+            <span id="pickup-location-label" className="block text-[10px] font-medium text-muted-foreground">
               {c.pickupLocation}
             </span>
-            <div className="mt-1.5 flex flex-wrap gap-1.5" role="group" aria-labelledby="pickup-location-label">
+            <div className="mt-1 flex flex-wrap gap-1" role="group" aria-labelledby="pickup-location-label">
               <button
                 type="button"
                 aria-pressed={locationMode === "office"}
@@ -151,10 +151,10 @@ export function V3SearchBar() {
         <Popover open={openP} onOpenChange={setOpenP}>
           <PopoverTrigger asChild>
             <button type="button" aria-label={`${c.pickupDate}: ${fmt(pickup)}`} className={fieldClass}>
-              <CalendarDays className="h-5 w-5 shrink-0 text-carbonus-green" />
+              <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-medium text-muted-foreground">{c.pickupDate}</span>
-                <span className="block truncate text-[14px] font-semibold text-foreground">{fmt(pickup)}</span>
+                <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
+                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(pickup)}</span>
               </span>
             </button>
           </PopoverTrigger>
@@ -189,10 +189,10 @@ export function V3SearchBar() {
         <Popover open={openR} onOpenChange={setOpenR}>
           <PopoverTrigger asChild>
             <button type="button" aria-label={`${c.returnDate}: ${fmt(ret)}`} className={fieldClass}>
-              <CalendarDays className="h-5 w-5 shrink-0 text-carbonus-green" />
+              <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-medium text-muted-foreground">{c.returnDate}</span>
-                <span className="block truncate text-[14px] font-semibold text-foreground">{fmt(ret)}</span>
+                <span className="block text-[10px] font-medium text-muted-foreground">{c.returnDate}</span>
+                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(ret)}</span>
               </span>
             </button>
           </PopoverTrigger>
@@ -217,15 +217,15 @@ export function V3SearchBar() {
         <button
           type="button"
           onClick={submit}
-          className="h-12 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-7 text-[15px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[56px] sm:w-auto"
+          className="h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[48px] sm:w-auto"
         >
           {c.search}
         </button>
       </div>
 
-      <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-4 py-2">
-        <Info className="mt-[2px] h-3.5 w-3.5 shrink-0 text-carbonus-green" />
-        <p className="text-[11px] leading-[1.5] text-muted-foreground">{modeDescription}</p>
+      <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
+        <Info className="mt-[2px] h-3 w-3 shrink-0 text-carbonus-green" />
+        <p className="text-[10px] leading-[1.45] text-muted-foreground">{modeDescription}</p>
       </div>
     </div>
   );
