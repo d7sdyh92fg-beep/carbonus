@@ -217,7 +217,7 @@ export function V3SearchBar() {
         <button
           type="button"
           onClick={submit}
-          className="h-12 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-7 text-[15px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[56px] sm:w-auto"
+          className="h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[48px] sm:w-auto"
         >
           {c.search}
         </button>
