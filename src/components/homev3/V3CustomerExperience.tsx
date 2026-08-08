@@ -40,17 +40,23 @@ function Item({
   align: "left" | "right";
 }) {
   return (
-    <div className={`flex flex-col items-center ${align === "right" ? "lg:items-start" : "lg:items-end"}`}>
+    <div
+      className={`flex w-[150px] shrink-0 flex-col items-center sm:w-[190px] ${
+        align === "right" ? "lg:items-start" : "lg:items-end"
+      }`}
+    >
       <div className="flex h-16 w-16 items-center justify-center rounded-[14px] border-2 border-white bg-[hsl(210_16%_96%)] shadow-[0_12px_28px_rgba(16,24,40,0.10)] transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
         <Icon className="h-6 w-6 text-[hsl(var(--carbonus-green))]" />
       </div>
       <p
-        className={`mt-4 flex min-h-[54px] w-full max-w-[190px] items-start justify-center text-center text-[16px] font-semibold leading-[1.35] text-foreground ${
+        className={`mt-4 flex min-h-[54px] w-full items-start justify-center text-center text-[15px] font-semibold leading-[1.35] text-foreground sm:text-[16px] ${
           align === "right" ? "lg:items-start lg:justify-start lg:text-left" : "lg:items-start lg:justify-end lg:text-right"
         }`}
       >
         {title}
       </p>
+    </div>
+
     </div>
   );
 }
