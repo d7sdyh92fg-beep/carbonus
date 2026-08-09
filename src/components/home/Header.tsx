@@ -74,7 +74,7 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const onLightHero = pathname === "/";
+  const onLightHero = true;
 
   return (
     <header
