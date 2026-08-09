@@ -4,7 +4,7 @@ import { PopularCars } from "@/components/home/PopularCars";
 import { BenefitsSection } from "@/components/home/BenefitsSection";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { BottomCTA } from "@/components/home/BottomCTA";
-import { Footer } from "@/components/home/Footer";
+import { V3Footer } from "@/components/homev3/V3Footer";
 
 /**
  * Work-in-progress homepage (v2).
@@ -19,7 +19,7 @@ const HomeV2 = () => {
       <BenefitsSection />
       <HowItWorks />
       <BottomCTA />
-      <Footer />
+      <V3Footer />
     </div>
   );
 };
