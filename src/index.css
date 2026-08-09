@@ -61,10 +61,10 @@
     --card-foreground: 210 40% 98%;
     --popover: 220 27% 8%;
     --popover-foreground: 210 40% 98%;
-    --primary: 147 50% 35%;
+    --primary: var(--carbonus-green);
     --primary-foreground: 0 0% 100%;
-    --primary-light: 147 40% 45%;
-    --primary-dark: 147 83% 19%;
+    --primary-light: var(--carbonus-green);
+    --primary-dark: var(--carbonus-green-dark);
     --secondary: 220 20% 15%;
     --secondary-foreground: 210 40% 98%;
     --muted: 220 20% 15%;
@@ -75,7 +75,8 @@
     --destructive-foreground: 210 40% 98%;
     --border: 220 20% 15%;
     --input: 220 20% 15%;
-    --ring: 147 50% 35%;
+    --ring: var(--carbonus-green);
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
