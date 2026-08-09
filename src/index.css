@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Carbonus brand tokens */
+    /* Carbonus brand tokens — single source of truth for green */
     --carbonus-green: 147 63% 46%;
     --carbonus-green-hover: 147 63% 40%;
     --carbonus-green-dark: 152 89% 24%;
@@ -14,27 +14,35 @@
     --carbonus-dark-2: 187 51% 9%;
     --carbonus-dark-3: 184 47% 12%;
 
+    /* Semantic aliases (use these in new code) */
+    --brand-green: var(--carbonus-green);
+    --action: var(--carbonus-green-dark);
+    --action-hover: var(--carbonus-green-deep);
+    --accent-soft: var(--carbonus-green-soft);
+
     --background: 0 0% 100%;
     --foreground: 220 13% 15%;
     --card: 0 0% 100%;
     --card-foreground: 220 13% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 13% 15%;
-    --primary: 147 83% 19%;
+    /* primary* mapped onto Carbonus tokens — no second green palette */
+    --primary: var(--carbonus-green-dark);
     --primary-foreground: 0 0% 100%;
-    --primary-light: 147 50% 35%;
-    --primary-dark: 147 100% 12%;
-    --secondary: 147 15% 92%;
-    --secondary-foreground: 147 83% 19%;
+    --primary-light: var(--carbonus-green);
+    --primary-dark: var(--carbonus-green-deep);
+    --secondary: var(--carbonus-green-soft);
+    --secondary-foreground: var(--carbonus-green-deep);
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 147 15% 92%;
-    --accent-foreground: 147 83% 19%;
+    --accent: var(--carbonus-green-soft);
+    --accent-foreground: var(--carbonus-green-deep);
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 147 83% 19%;
+    --ring: var(--carbonus-green-dark);
+
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
