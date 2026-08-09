@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Navigation } from "@/components/ui/navigation";
-import { Footer } from "@/components/sections/footer";
+import { Header } from "@/components/home/Header";
+import { V3Footer } from "@/components/homev3/V3Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Mail, Phone, MapPin, Calendar } from "lucide-react";
@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
   }, [t, language]);
   return (
     <div className="min-h-screen bg-background">
-      <Navigation logo="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" />
+      <Header />
       
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
@@ -189,7 +189,7 @@ const PrivacyPolicy = () => {
         </div>
       </section>
 
-      <Footer />
+      <V3Footer />
     </div>
   );
 };

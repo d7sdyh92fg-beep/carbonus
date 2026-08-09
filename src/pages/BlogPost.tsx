@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Navigation } from "@/components/ui/navigation";
-import { Footer } from "@/components/sections/footer";
+import { Header } from "@/components/home/Header";
+import { V3Footer } from "@/components/homev3/V3Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -153,7 +153,7 @@ const BlogPost = () => {
         <meta property="og:url" content={`https://carbonus.lt/naujienos/${post.slug}`} />
         <meta property="og:image" content={post.image} />
       </Helmet>
-      <Navigation logo="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" />
+      <Header />
       
       {/* Breadcrumb */}
       <section className="pt-24 pb-6 bg-background">
@@ -256,7 +256,7 @@ const BlogPost = () => {
         </div>
       </section>
 
-      <Footer />
+      <V3Footer />
     </div>
   );
 };

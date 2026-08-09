@@ -18,7 +18,7 @@ import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit,
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { useToast } from '@/hooks/use-toast';
-import { Footer } from '@/components/sections/footer';
+import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
 
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
@@ -1724,7 +1724,7 @@ const Admin = () => {
         />
       )}
 
-      <Footer />
+      <V3Footer />
     </div>
   );
 };

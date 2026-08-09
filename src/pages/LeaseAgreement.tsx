@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Navigation } from "@/components/ui/navigation";
-import { Footer } from "@/components/sections/footer";
+import { Header } from "@/components/home/Header";
+import { V3Footer } from "@/components/homev3/V3Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -88,7 +88,7 @@ const LeaseAgreement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation logo="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" />
+      <Header />
       
       {/* Hero Section */}
       <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8">
@@ -455,7 +455,7 @@ const LeaseAgreement = () => {
         </div>
       </section>
 
-      <Footer />
+      <V3Footer />
     </div>
   );
 };
