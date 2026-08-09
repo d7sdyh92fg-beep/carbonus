@@ -27,9 +27,14 @@ export default {
 				'carbonus-green-dark': 'hsl(var(--carbonus-green-dark))',
 				'carbonus-green-deep': 'hsl(var(--carbonus-green-deep))',
 				'carbonus-green-soft': 'hsl(var(--carbonus-green-soft))',
+				'brand-green': 'hsl(var(--brand-green))',
+				'action': 'hsl(var(--action))',
+				'action-hover': 'hsl(var(--action-hover))',
+				'accent-soft': 'hsl(var(--accent-soft))',
 				'carbonus-dark': 'hsl(var(--carbonus-dark))',
 				'carbonus-dark-2': 'hsl(var(--carbonus-dark-2))',
 				'carbonus-dark-3': 'hsl(var(--carbonus-dark-3))',
+
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -137,13 +142,14 @@ export default {
 				'scale-in': 'scale-in 0.4s ease-out'
 			},
 			backgroundImage: {
-				'gradient-primary': 'linear-gradient(135deg, hsl(147 83% 19%), hsl(147 50% 35%))',
-				'gradient-hero': 'linear-gradient(120deg, hsl(147 83% 19%) 0%, hsl(147 50% 35%) 100%)'
+				'gradient-primary': 'linear-gradient(135deg, hsl(var(--action)), hsl(var(--brand-green)))',
+				'gradient-hero': 'linear-gradient(120deg, hsl(var(--action-hover)) 0%, hsl(var(--action)) 100%)'
 			},
 			boxShadow: {
-				'elegant': '0 10px 30px -10px hsl(147 83% 19% / 0.3)',
-				'card': '0 4px 20px -2px hsl(147 83% 19% / 0.1)'
+				'elegant': '0 10px 30px -10px hsl(var(--action) / 0.3)',
+				'card': '0 4px 20px -2px hsl(var(--action) / 0.1)'
 			}
+
 		}
 	},
 	plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
