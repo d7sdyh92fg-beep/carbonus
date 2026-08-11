@@ -40,10 +40,10 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[96px] sm:pt-[104px] lg:pt-[78px]">
-      <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[clamp(480px,39.5vw,620px)]" />
+      <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[clamp(440px,36.5vw,580px)]" />
 
-      <div className="relative mx-auto max-w-[1320px] px-6 pb-10 lg:min-h-[clamp(520px,43vw,680px)] lg:pb-12">
-        <div className="grid gap-8 sm:gap-10 lg:h-[clamp(500px,41.5vw,650px)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.0fr)] lg:items-start">
+      <div className="relative mx-auto max-w-[1320px] px-6 pb-10 lg:min-h-[clamp(480px,40vw,640px)] lg:pb-12">
+        <div className="grid gap-8 sm:gap-10 lg:h-[clamp(480px,39.5vw,620px)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.0fr)] lg:items-start">
           <div className="pt-2 sm:pt-6 lg:pt-[clamp(72px,7.8vw,122px)]">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
               {c.eyebrow}
