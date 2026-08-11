@@ -102,7 +102,7 @@ export function V3SearchBar() {
 
 
   const fieldClass =
-    "flex min-h-[48px] min-w-0 flex-1 items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 py-1.5 text-left transition-colors duration-200 hover:border-carbonus-green hover:bg-carbonus-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1 mx-1";
+    "flex min-h-[48px] min-w-0 flex-1 items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 py-1.5 text-left transition-colors duration-200 hover:border-carbonus-green hover:bg-carbonus-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1 mx-1 sm:ml-0 sm:mr-2";
 
   return (
     <div className="rounded-[14px] bg-white shadow-[0_18px_50px_rgba(16,24,40,0.14)]">
