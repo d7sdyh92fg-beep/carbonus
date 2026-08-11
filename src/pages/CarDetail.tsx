@@ -2,8 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Header } from "@/components/home/Header";
-import { V3Footer } from "@/components/homev3/V3Footer";
+import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,12 +26,21 @@ import kiaCeedRear5 from "@/assets/kia-ceed-rear-5.png";
 import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
 import kiaCeedHatchbackFrontNoShadow from "@/assets/kia-ceed-hatchback-front-studio.png";
 import kiaCeedHatchbackRearClean from "@/assets/kia-ceed-hatchback-rear-studio.png";
+import kiaCeedHatchbackFrontWhite from "@/assets/kia-ceed-hatchback-front-studio.png";
+import kiaCeedHatchbackRearWhite from "@/assets/kia-ceed-hatchback-rear-studio.png";
+import kiaCeedHatchbackFrontWhiteNoPlate from "@/assets/kia-ceed-hatchback-front-studio.png";
+import kiaCeedHatchbackRearWhiteNoPlate from "@/assets/kia-ceed-hatchback-rear-studio.png";
+import kiaCeedHatchbackFrontBlankPlate from "@/assets/kia-ceed-hatchback-front-studio.png";
+import kiaCeedHatchbackRearBlankPlate from "@/assets/kia-ceed-hatchback-rear-studio.png";
 import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
 import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
 import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
 import chryslerEnhanced2WithPlate from "@/assets/chrysler-enhanced-2.png";
 import vwPassatEnhanced1 from "@/assets/vw-passat-enhanced-1.png";
 import vwPassatEnhanced2 from "@/assets/vw-passat-enhanced-2.png";
+import vwPassatInterior from "@/assets/car-interior.jpg";
+import kiaCeedWagonInterior from "@/assets/car-interior.jpg";
+import kiaCeedHatchbackInterior from "@/assets/car-interior.jpg";
 import mercedesSlkFront from "@/assets/mercedes-slk-front-studio.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
 import mercedesSlkRear from "@/assets/mercedes-slk-rear-studio.png";
@@ -39,10 +48,14 @@ import mercedesSlkSideRight from "@/assets/mercedes-slk-side-right-studio.png";
 import citroenSpacetourerFront from "@/assets/citroen-spacetourer-front-studio.png";
 import citroenSpacetourerRear from "@/assets/citroen-spacetourer-rear-studio.png";
 import hyundaiBayonFront from "@/assets/hyundai-bayon-front-studio.png";
-import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
+import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-side-v2.png";
 import hyundaiBayonRear from "@/assets/hyundai-bayon-rear-studio.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { SlkDetailPage } from "@/components/car/SlkDetailPage";
+import { SpaceTourerDetailPage } from "@/components/car/SpaceTourerDetailPage";
+import { BayonDetailPage } from "@/components/car/BayonDetailPage";
+import { LegacyCarDetailPage } from "@/components/car/LegacyCarDetailPage";
 
 
 interface CarDetail {
@@ -193,7 +206,8 @@ const CarDetail = () => {
       image: vwPassatEnhanced1,
       images: [
         vwPassatEnhanced1,
-        vwPassatEnhanced2
+        vwPassatEnhanced2,
+        vwPassatInterior
       ],
       category: "Sedanas",
       passengers: 5,
@@ -212,7 +226,8 @@ const CarDetail = () => {
       image: kiaCeedFrontEnhanced,
       images: [
         kiaCeedFrontEnhanced,
-        kiaCeedRearEnhanced
+        kiaCeedRearEnhanced,
+        kiaCeedWagonInterior
       ],
       category: "Universalas",
       passengers: 5,
@@ -228,10 +243,11 @@ const CarDetail = () => {
       id: "5",
       name: "KIA CEED",
       price: "nuo 30 EUR",
-      image: kiaCeedHatchbackFrontNoShadow,
+      image: kiaCeedHatchbackFrontBlankPlate,
       images: [
-        kiaCeedHatchbackFrontNoShadow,
-        kiaCeedHatchbackRearClean
+        kiaCeedHatchbackFrontBlankPlate,
+        kiaCeedHatchbackRearBlankPlate,
+        kiaCeedHatchbackInterior
       ],
       category: "Hecbekas",
       passengers: 5,
@@ -353,6 +369,47 @@ const CarDetail = () => {
     );
   }
 
+  if (car.id === "6") {
+    return (
+      <SlkDetailPage
+        pricing={dbCarData}
+        selectedPackage={selectedPackage}
+        onSelectedPackageChange={setSelectedPackage}
+      />
+    );
+  }
+
+  if (car.id === "7") {
+    return (
+      <SpaceTourerDetailPage
+        pricing={dbCarData}
+        selectedPackage={selectedPackage}
+        onSelectedPackageChange={setSelectedPackage}
+      />
+    );
+  }
+
+  if (car.id === "8") {
+    return (
+      <BayonDetailPage
+        pricing={dbCarData}
+        selectedPackage={selectedPackage}
+        onSelectedPackageChange={setSelectedPackage}
+      />
+    );
+  }
+
+  if (["3", "4", "5"].includes(car.id)) {
+    return (
+      <LegacyCarDetailPage
+        car={car}
+        pricing={dbCarData}
+        selectedPackage={selectedPackage}
+        onSelectedPackageChange={setSelectedPackage}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* SEO Meta Tags */}
@@ -393,7 +450,7 @@ const CarDetail = () => {
         ]}
       />
       
-      <Header />
+      <Navigation logo="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" />
       
       {/* Simple Breadcrumb Section */}
       <section className="pt-24 pb-6 bg-background">
@@ -708,7 +765,7 @@ const CarDetail = () => {
         </div>
       </section>
 
-      <V3Footer />
+      <Footer />
     </div>
   );
 };

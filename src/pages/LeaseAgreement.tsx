@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { LanguageLinks } from "@/components/seo/LanguageLinks";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   FileText, 
@@ -34,6 +34,23 @@ const LeaseAgreement = () => {
   const pageUrl = language === 'en' 
     ? `${baseUrl}/rental-agreement`
     : `${baseUrl}/nuomos-sutartis`;
+
+  const isEnglish = language === 'en';
+  const copy = isEnglish
+    ? {
+        eyebrow: "RENTAL TERMS",
+        title: "Clear terms before you book",
+        subtitle: "Review the most important rental rules online or download the full agreement as a PDF.",
+        download: "Download PDF",
+        print: "Open to print",
+      }
+    : {
+        eyebrow: "NUOMOS SĄLYGOS",
+        title: "Aiškios sąlygos prieš rezervuojant",
+        subtitle: "Svarbiausias nuomos taisykles peržiūrėkite internete arba atsisiųskite visą sutartį PDF formatu.",
+        download: "Atsisiųsti PDF",
+        print: "Atidaryti spausdinimui",
+      };
 
   useEffect(() => {
     document.title = t('leaseAgreement.meta.title');
@@ -87,23 +104,25 @@ const LeaseAgreement = () => {
   }, [t, language, pageUrl]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f7f9f8] text-[#111b18]">
+      <SEOHead title={t('leaseAgreement.meta.title')} description={t('leaseAgreement.meta.description')} canonical={pageUrl} keywords="automobilio nuomos sutartis, nuomos sąlygos, Carbonus" />
+      <LanguageLinks ltPath="/nuomos-sutartis" enPath="/rental-agreement" />
       <Header />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <Badge variant="outline" className="mb-4">
-            {t('leaseAgreement.hero.badge')}
-          </Badge>
-          <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-            {t('leaseAgreement.hero.title')}
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            {t('leaseAgreement.hero.description')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={() => {
+      <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
+        <div className="pointer-events-none absolute -right-36 -top-44 h-[600px] w-[600px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
+        <div className="relative mx-auto grid max-w-[1280px] gap-12 px-6 pb-4 pt-16 md:px-10 lg:grid-cols-[1fr_0.7fr] lg:items-end lg:pt-20">
+          <div className="max-w-[790px]">
+            <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">{copy.eyebrow}</p>
+            <h1 className="mt-5 text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[64px]">{copy.title}</h1>
+            <p className="mt-6 max-w-[680px] text-[16px] leading-7 text-[#64756e] sm:text-[17px]">{copy.subtitle}</p>
+          </div>
+          <div className="rounded-[26px] bg-[hsl(var(--carbonus-green-deep))] p-6 text-white shadow-[0_22px_60px_rgba(3,53,34,0.2)] sm:p-7">
+            <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-white/10 text-[hsl(var(--carbonus-green))]"><FileText className="h-5 w-5" /></span>
+            <p className="mt-5 text-[12px] font-bold uppercase tracking-[0.16em] text-white/55">PDF</p>
+            <div className="mt-4 grid gap-3">
+              <button className="inline-flex h-12 items-center justify-center gap-2 rounded-[14px] bg-white px-5 text-[13px] font-bold text-[hsl(var(--carbonus-green-deep))] transition hover:bg-[#edf8f2]" onClick={() => {
               const link = document.createElement('a');
               link.href = pdfFileName;
               link.download = pdfDisplayName;
@@ -111,10 +130,9 @@ const LeaseAgreement = () => {
               link.click();
               document.body.removeChild(link);
             }}>
-              <Download className="w-5 h-5 mr-2" />
-              {t('leaseAgreement.hero.downloadPdf')}
-            </Button>
-            <Button variant="outline" size="lg" onClick={() => {
+              <Download className="h-4 w-4" />{copy.download}
+              </button>
+              <button className="inline-flex h-12 items-center justify-center gap-2 rounded-[14px] border border-white/15 px-5 text-[13px] font-semibold text-white transition hover:bg-white/10" onClick={() => {
               const printWindow = window.open(pdfFileName, '_blank');
               if (printWindow) {
                 printWindow.onload = () => {
@@ -122,19 +140,20 @@ const LeaseAgreement = () => {
                 };
               }
             }}>
-              <FileText className="w-5 h-5 mr-2" />
-              {t('leaseAgreement.hero.print')}
-            </Button>
+              <FileText className="h-4 w-4" />{copy.print}
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Agreement Content */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+      <section className="py-16 lg:py-24">
+        <div className="mx-auto max-w-[1280px] px-6 md:px-10">
+          <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
           
           {/* Important Notice */}
-          <Card className="mb-8 border-amber-200 bg-amber-50">
+          <Card className="border-amber-200 bg-amber-50 shadow-[0_14px_40px_rgba(14,47,35,0.04)]">
             <CardContent className="p-6">
               <div className="flex items-start gap-3">
                 <AlertTriangle className="w-6 h-6 text-amber-600 mt-1 flex-shrink-0" />
@@ -149,7 +168,7 @@ const LeaseAgreement = () => {
           </Card>
 
           {/* Quick Navigation */}
-          <Card className="mb-8">
+          <Card className="border-[#e0e8e4] shadow-[0_14px_40px_rgba(14,47,35,0.04)]">
             <CardContent className="p-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5" />
@@ -170,9 +189,10 @@ const LeaseAgreement = () => {
               </div>
             </CardContent>
           </Card>
+          </div>
 
           {/* Agreement Sections */}
-          <div className="space-y-8">
+          <div className="mx-auto mt-8 max-w-[980px] space-y-8 [&>div]:scroll-mt-28 [&_.text-muted-foreground]:leading-7 [&_.rounded-xl]:rounded-[13px]">
             
             {/* Section 1: Reservation */}
             <Card id="reservation">
