@@ -72,7 +72,7 @@ function Connector({ dir, active, delay }: { dir: "left" | "right"; active: bool
   };
 
   return (
-    <svg viewBox="0 0 160 38" className="hidden h-10 w-[55px] md:block lg:w-[160px]" fill="none">
+    <svg viewBox="0 0 160 38" className="hidden h-10 w-[55px] md:block md:w-[80px] lg:w-[160px]" fill="none">
       {dir === "left" ? (
         <>
           <path
