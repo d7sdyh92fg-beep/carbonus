@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Fuel, Settings, Star, Calendar, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
@@ -24,6 +24,7 @@ import kiaCeedHatchbackSideBrown from "@/assets/fleet-kia-ceed-hatchback-side-v2
 import mercedesSlkSide from "@/assets/fleet-mercedes-slk-open-top-v3.png";
 import citroenSpacetourerSide from "@/assets/fleet-citroen-spacetourer-side-v2.png";
 import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-side-v2.png";
+import { CarCard } from "@/components/CarCard";
 
 
 interface Car {
