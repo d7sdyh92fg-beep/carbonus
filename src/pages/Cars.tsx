@@ -57,7 +57,6 @@ const Cars = () => {
       return data || [];
     },
   });
-  const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
   const getCarDbPrice = (carId: string) => {
     const dbCar = (dbCars || []).find(c => c.id === carId);
     if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
