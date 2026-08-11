@@ -18,20 +18,13 @@ import { trackViewCarList, trackSearch, trackFilterCars, trackViewCar } from "@/
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
-import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
-import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
-import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
-import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
-import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
-import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
-import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
-import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
-import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
+import vwPassatSideClean from "@/assets/fleet-volkswagen-passat-side-v2.png";
+import kiaCeedWagonSideClean from "@/assets/fleet-kia-ceed-wagon-side-v2.png";
+import kiaCeedHatchbackSideBrown from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
+import mercedesSlkSide from "@/assets/fleet-mercedes-slk-open-top-v3.png";
+import citroenSpacetourerSide from "@/assets/fleet-citroen-spacetourer-side-v2.png";
+import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-side-v2.png";
+
 
 interface Car {
   id: string;
