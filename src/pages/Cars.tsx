@@ -184,32 +184,6 @@ const Cars = () => {
 
   const cars: Car[] = [
     {
-      id: "1",
-      name: "BMW 3 series",
-      price: "nuo 30 EUR",
-      image: bmw3Clean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.8,
-      year: 2017,
-      features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
-    },
-    {
-      id: "2",
-      name: "Chrysler Town & Country",
-      price: "nuo 30 EUR",
-      image: chryslerTownCountrySide,
-      category: "Miniautobusas",
-      passengers: 7,
-      fuel: "Benzinas",
-      transmission: "Automatinė",
-      rating: 4.6,
-      year: 2014,
-      features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
-    },
-    {
       id: "6",
       name: "Mercedes-Benz SLK",
       price: "90 EUR",
@@ -224,6 +198,40 @@ const Cars = () => {
         "Atidaromas stogas",
         "Automatinė pavarų dėžė",
         "Sportinis dizainas"
+      ],
+    },
+    {
+      id: "7",
+      name: "Citroën SpaceTourer",
+      price: "nuo 60 EUR",
+      image: citroenSpacetourerSide,
+      category: "Vienatūris",
+      passengers: 8,
+      fuel: "Dyzelinas",
+      transmission: "Automatinė",
+      rating: 4.8,
+      year: 2026,
+      features: [
+        "8 keleivių vietos",
+        "Slankiosios durys",
+        "Erdvus salonas"
+      ],
+    },
+    {
+      id: "8",
+      name: "Hyundai Bayon Cross",
+      price: "nuo 50 EUR",
+      image: hyundaiBayonSide,
+      category: "Krosoveris",
+      passengers: 5,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 5.0,
+      year: 2026,
+      features: [
+        "Automatinė pavarų dėžė",
+        "Modernus LED apšvietimas",
+        "Naujas automobilis"
       ],
     },
     {
@@ -274,39 +282,31 @@ const Cars = () => {
       features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
     },
     {
-      id: "7",
-      name: "Citroën SpaceTourer",
-      price: "nuo 60 EUR",
-      image: citroenSpacetourerSide,
-      category: "Vienatūris",
-      passengers: 8,
-      fuel: "Dyzelinas",
-      transmission: "Automatinė",
-      rating: 4.8,
-      year: 2026,
-      features: [
-        "8 keleivių vietos",
-        "Slankiosios durys",
-        "Erdvus salonas"
-      ],
-    },
-    {
-      id: "8",
-      name: "Hyundai Bayon Cross",
-      price: "nuo 50 EUR",
-      image: hyundaiBayonSide,
-      category: "Krosoveris",
+      id: "1",
+      name: "BMW 3 series",
+      price: "nuo 30 EUR",
+      image: bmw3Clean,
+      category: "Sedanas",
       passengers: 5,
       fuel: "Benzinas",
       transmission: "Automatinė",
-      rating: 5.0,
-      year: 2026,
-      features: [
-        "Automatinė pavarų dėžė",
-        "Modernus LED apšvietimas",
-        "Naujas automobilis"
-      ],
-    }
+      rating: 4.8,
+      year: 2017,
+      features: ["Kondicionierius", "Bluetooth", "GPS navigacija"]
+    },
+    {
+      id: "2",
+      name: "Chrysler Town & Country",
+      price: "nuo 30 EUR",
+      image: chryslerTownCountrySide,
+      category: "Miniautobusas",
+      passengers: 7,
+      fuel: "Benzinas",
+      transmission: "Automatinė",
+      rating: 4.6,
+      year: 2014,
+      features: ["7 vietos", "Bagažinė", "Šeimos automobilis"]
+    },
   ];
 
   const categories = ["all", "Sedanas", "Miniautobusas", "Universalas", "Hecbekas", "Kabrioletas", "Vienatūris", "Krosoveris"];
