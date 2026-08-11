@@ -58,7 +58,7 @@ export function V3Hero() {
             </p>
           </div>
 
-          <div className="relative overflow-hidden">
+          <div className="relative">
             <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(540px,43.5vw,680px)] lg:rounded-t-none">
 
               <div
