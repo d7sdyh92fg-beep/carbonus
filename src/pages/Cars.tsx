@@ -417,12 +417,6 @@ const Cars = () => {
                     onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
                     className="h-full w-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.025]"
                   />
-                  {premiumCarIds.has(car.id) && (
-                    <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-md bg-amber-500 px-2 py-1 text-[11px] font-semibold text-white">
-                      <Crown className="h-3 w-3" />
-                      Premium
-                    </span>
-                  )}
 
                 </div>
 
