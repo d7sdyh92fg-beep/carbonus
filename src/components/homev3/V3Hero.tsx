@@ -79,7 +79,7 @@ export function V3Hero() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute left-0 top-1/2 w-full max-w-none -translate-y-1/2 scale-[1.18] lg:left-[-9%] lg:w-[118%] lg:-translate-y-[60%] lg:scale-[1.14] xl:left-[-16%] xl:w-[130%] xl:-translate-y-[62%] xl:scale-[1.08]">
+            <div className="pointer-events-none absolute left-0 top-1/2 w-full max-w-none -translate-y-1/2 scale-[1.24] lg:left-[-11%] lg:w-[122%] lg:-translate-y-[62%] lg:scale-[1.20] xl:left-[-18%] xl:w-[134%] xl:-translate-y-[64%] xl:scale-[1.14]">
               <span
                 aria-hidden="true"
                 className="absolute bottom-[13%] left-[17%] z-0 h-[10%] w-[69%] rounded-full bg-black/35 blur-[18px]"
