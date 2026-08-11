@@ -34,7 +34,6 @@ import {
   calculateDeliveryFee,
   calculateLogisticsTotal,
 } from "@/lib/logisticsPricing";
-import { cn } from "@/lib/utils";
 
 const ACTIVE_STATUSES = ["paid", "pending", "requested", "picked_up", "awaiting_payment"];
 
@@ -110,7 +109,6 @@ const AvailableCars = () => {
   const collectionFee = calculateCollectionFee(pickupMode, returnMode, pickupLocation, returnLocation);
   const logisticsTotal = calculateLogisticsTotal(deliveryFee, collectionFee);
   const logisticsKnown = logisticsTotal.status === "free" || logisticsTotal.status === "priced";
-  const logisticsAmount = logisticsKnown ? logisticsTotal.amount ?? 0 : null;
 
   const deliveryTarget =
     pickupMode === "office"
@@ -545,14 +543,5 @@ const AvailableCars = () => {
     </div>
   );
 };
-
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-2">
-      <dt className="truncate text-muted-foreground">{label}</dt>
-      <dd className="shrink-0 font-semibold text-foreground">{value}</dd>
-    </div>
-  );
-}
 
 export default AvailableCars;
