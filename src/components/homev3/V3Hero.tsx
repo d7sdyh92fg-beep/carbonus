@@ -43,7 +43,7 @@ export function V3Hero() {
       <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[clamp(440px,36.5vw,580px)]" />
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-10 lg:min-h-[clamp(480px,40vw,640px)] lg:pb-12">
-        <div className="grid gap-8 sm:gap-10 lg:h-[clamp(480px,39.5vw,620px)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.0fr)] lg:items-start">
+        <div className="grid gap-8 sm:gap-10 lg:h-[clamp(480px,39.5vw,620px)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
           <div className="pt-2 sm:pt-6 lg:pt-[clamp(72px,7.8vw,122px)]">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
               {c.eyebrow}
@@ -59,7 +59,7 @@ export function V3Hero() {
           </div>
 
           <div className="relative overflow-hidden">
-            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(460px,37.5vw,600px)] lg:rounded-t-none">
+            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(540px,43.5vw,680px)] lg:rounded-t-none">
 
               <div
                 className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
@@ -79,7 +79,7 @@ export function V3Hero() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute left-0 top-1/2 w-full max-w-none -translate-y-1/2 scale-[17.45] lg:left-[-5%] lg:w-[110%] lg:-translate-y-[56%] lg:scale-[17.40] xl:left-[-10%] xl:w-[120%] xl:-translate-y-[58%] xl:scale-[17.36]">
+            <div className="pointer-events-none absolute left-0 top-1/2 w-full max-w-none -translate-y-1/2 scale-[1.30] lg:left-[-13%] lg:w-[126%] lg:-translate-y-[64%] lg:scale-[1.26] xl:left-[-20%] xl:w-[138%] xl:-translate-y-[66%] xl:scale-[1.20]">
               <span
                 aria-hidden="true"
                 className="absolute bottom-[13%] left-[17%] z-0 h-[10%] w-[69%] rounded-full bg-black/35 blur-[18px]"
