@@ -59,7 +59,7 @@ export function V3Hero() {
           </div>
 
           <div className="relative overflow-hidden">
-            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(460px,37.5vw,600px)] lg:rounded-t-none">
+            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(480px,39vw,620px)] lg:rounded-t-none">
 
               <div
                 className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
