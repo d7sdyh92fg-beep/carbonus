@@ -59,7 +59,7 @@ export function V3Hero() {
           </div>
 
           <div className="relative overflow-hidden">
-            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(500px,40.5vw,640px)] lg:rounded-t-none">
+            <div className="relative h-[220px] overflow-hidden rounded-[24px] bg-carbonus-green sm:h-[360px] sm:rounded-[28px] lg:h-[clamp(460px,37.5vw,600px)] lg:rounded-t-none">
 
               <div
                 className="pointer-events-none absolute -bottom-10 right-[-45px] h-[380px] w-[380px] rotate-[28deg] opacity-[0.12]"
@@ -79,7 +79,7 @@ export function V3Hero() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute left-0 top-1/2 w-full max-w-none -translate-y-1/2 scale-[0.92] lg:left-[-5%] lg:w-[110%] lg:-translate-y-[56%] lg:scale-[0.88] xl:left-[-10%] xl:w-[120%] xl:-translate-y-[58%] xl:scale-[0.85]">
+            <div className="pointer-events-none absolute left-0 top-1/2 w-full max-w-none -translate-y-1/2 scale-[0.90] lg:left-[-5%] lg:w-[110%] lg:-translate-y-[56%] lg:scale-[0.86] xl:left-[-10%] xl:w-[120%] xl:-translate-y-[58%] xl:scale-[0.82]">
               <span
                 aria-hidden="true"
                 className="absolute bottom-[13%] left-[17%] z-0 h-[10%] w-[69%] rounded-full bg-black/35 blur-[18px]"
