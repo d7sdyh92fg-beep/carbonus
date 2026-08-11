@@ -51,7 +51,7 @@ export function Fleet() {
     queryFn: async () => {
       const { data } = await supabase
         .from('cars')
-        .select('id, is_premium, price_tier1, price_tier3');
+        .select('id, price_tier1, price_tier3');
       return data || [];
     },
   });
