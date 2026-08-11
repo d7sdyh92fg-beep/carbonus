@@ -6,17 +6,15 @@ import {
   ArrowUpRight,
   Check,
   ChevronDown,
-  Cog,
-  Fuel,
   Info,
   MapPin,
   SlidersHorizontal,
-  UsersRound,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { CarCard } from "@/components/CarCard";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -36,7 +34,6 @@ import {
   calculateDeliveryFee,
   calculateLogisticsTotal,
 } from "@/lib/logisticsPricing";
-import { cn } from "@/lib/utils";
 
 const ACTIVE_STATUSES = ["paid", "pending", "requested", "picked_up", "awaiting_payment"];
 
@@ -112,7 +109,6 @@ const AvailableCars = () => {
   const collectionFee = calculateCollectionFee(pickupMode, returnMode, pickupLocation, returnLocation);
   const logisticsTotal = calculateLogisticsTotal(deliveryFee, collectionFee);
   const logisticsKnown = logisticsTotal.status === "free" || logisticsTotal.status === "priced";
-  const logisticsAmount = logisticsKnown ? logisticsTotal.amount ?? 0 : null;
 
   const deliveryTarget =
     pickupMode === "office"
@@ -495,90 +491,31 @@ const AvailableCars = () => {
           ) : (
             <>
               <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                {filtered.slice(0, visibleCount).map(({ car, daily }) => {
-                  const rental = daily != null ? daily * rentalDays : null;
-                  const total = rental != null && logisticsAmount != null ? rental + logisticsAmount : null;
-                  return (
-                    <article
-                      key={car.id}
-                      className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-black/[0.04] bg-white p-3 shadow-[0_14px_38px_rgba(16,24,40,0.08)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_48px_rgba(16,24,40,0.12)]"
-                    >
-                      <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden rounded-[15px] bg-[#f4f6f5]">
-                        <img
-                          src={car.image}
-                          alt={car.name}
-                          loading="lazy"
-                          data-allow-save="true"
-                          onLoad={() => setLoadedImages((prev) => new Set(prev).add(car.id))}
-                          className={cn(
-                            "h-full w-full object-contain mix-blend-multiply transition-all duration-500 group-hover:scale-[1.03]",
-                            loadedImages.has(car.id) ? "opacity-100" : "opacity-0",
-                          )}
-                        />
-                      </div>
-
-                      <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
-                        <div className="flex items-center gap-2">
-                          <span className="rounded-md border border-border px-2 py-1 text-[11px] font-medium text-muted-foreground">
-                            {car.year}
-                          </span>
-                          <span className="rounded-md bg-[hsl(var(--carbonus-green)/0.08)] px-2 py-1 text-[11px] font-semibold text-[hsl(var(--carbonus-green-dark))]">
-                            {catLabel(car.category)}
-                          </span>
-                        </div>
-
-                        <h3 className="mt-3 text-[16px] font-bold tracking-[-0.02em] text-foreground">
-                          {car.name}
-                        </h3>
-
-                        <p className="mt-2.5 flex items-baseline gap-1.5 text-[19px] font-extrabold text-[hsl(var(--carbonus-green))]">
-                          {c.from} {daily != null ? `${daily} €` : "—"}
-                          <span className="text-[12px] font-medium text-muted-foreground">{c.perDay}</span>
-                        </p>
-
-                        <div className="mt-4 grid grid-cols-3 gap-1 border-t border-border pt-3.5 text-[10px] text-muted-foreground">
-                          <span className="flex flex-col items-center gap-1.5 text-center">
-                            <UsersRound className="h-4 w-4 text-[hsl(var(--carbonus-green-dark))]" />
-                            {car.passengers}
-                          </span>
-                          <span className="flex flex-col items-center gap-1.5 text-center">
-                            <Cog className="h-4 w-4 text-[hsl(var(--carbonus-green-dark))]" />
-                            {specLabel(car.transmission)}
-                          </span>
-                          <span className="flex flex-col items-center gap-1.5 text-center">
-                            <Fuel className="h-4 w-4 text-[hsl(var(--carbonus-green-dark))]" />
-                            {specLabel(car.fuel)}
-                          </span>
-                        </div>
-
-                        <dl className="mt-4 space-y-1.5 border-t border-border pt-3.5 text-[12px]">
-                          <Row label={c.carRental} value={rental != null ? `${rental} €` : "—"} />
-                          <Row label={c.logisticsDelivery} value={feeCell(deliveryFee)} />
-                          <Row label={c.logisticsCollection} value={feeCell(collectionFee)} />
-                        </dl>
-
-                        <div className="mt-3 flex items-baseline justify-between border-t border-border pt-3">
-                          <span className="text-[13px] font-bold text-foreground">
-                            {total != null ? c.total : c.priceFrom}
-                          </span>
-                          <span className="text-[18px] font-extrabold text-foreground">
-                            {total != null ? `${total} €` : rental != null ? `${rental} €` : "—"}
-                          </span>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => openCar(car.id)}
-                          disabled={checkingId === car.id}
-                          className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-4 py-2.5 text-[12px] font-semibold text-white shadow-[0_10px_22px_hsl(var(--carbonus-green)/0.18)] transition-colors hover:bg-[hsl(var(--carbonus-green-deep))] disabled:opacity-60"
-                        >
-                          {checkingId === car.id ? c.checking : c.viewCar}
-                          <ArrowUpRight className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </article>
-                  );
-                })}
+                {filtered.slice(0, visibleCount).map(({ car, daily }) => (
+                  <CarCard
+                    key={car.id}
+                    car={car}
+                    price={daily != null ? `${daily} €` : "—"}
+                    priceFrom={c.from}
+                    pricePerDay={c.perDay}
+                    categoryLabel={catLabel(car.category)}
+                    transmissionLabel={specLabel(car.transmission)}
+                    fuelLabel={specLabel(car.fuel)}
+                    imageLoaded={loadedImages.has(car.id)}
+                    onImageLoad={() => setLoadedImages((prev) => new Set(prev).add(car.id))}
+                    cta={
+                      <button
+                        type="button"
+                        onClick={() => openCar(car.id)}
+                        disabled={checkingId === car.id}
+                        className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-4 py-2.5 text-[12px] font-semibold text-white shadow-[0_10px_22px_hsl(var(--carbonus-green)/0.18)] transition-colors hover:bg-[hsl(var(--carbonus-green-deep))] disabled:opacity-60"
+                      >
+                        {checkingId === car.id ? c.checking : c.viewCar}
+                        <ArrowUpRight className="h-4 w-4" />
+                      </button>
+                    }
+                  />
+                ))}
               </div>
 
               {visibleCount < filtered.length && (
@@ -606,14 +543,5 @@ const AvailableCars = () => {
     </div>
   );
 };
-
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-2">
-      <dt className="truncate text-muted-foreground">{label}</dt>
-      <dd className="shrink-0 font-semibold text-foreground">{value}</dd>
-    </div>
-  );
-}
 
 export default AvailableCars;
