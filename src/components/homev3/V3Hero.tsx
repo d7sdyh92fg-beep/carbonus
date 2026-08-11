@@ -42,7 +42,7 @@ export function V3Hero() {
     <section className="relative bg-white pt-[96px] sm:pt-[104px] lg:pt-[78px]">
       <div className="absolute inset-0 bg-[hsl(210_20%_96%)] lg:bottom-auto lg:h-[clamp(510px,42.5vw,668px)]" />
 
-      <div className="relative mx-auto max-w-[1140px] px-5 pb-10 sm:px-6 lg:min-h-[clamp(560px,45.8vw,720px)] lg:pb-12">
+      <div className="relative mx-auto max-w-[1320px] px-6 pb-10 lg:min-h-[clamp(560px,45.8vw,720px)] lg:pb-12">
         <div className="grid gap-8 sm:gap-10 lg:h-[clamp(545px,44.6vw,700px)] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
           <div className="pt-2 sm:pt-6 lg:pt-[clamp(72px,7.8vw,122px)]">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
