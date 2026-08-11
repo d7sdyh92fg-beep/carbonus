@@ -441,7 +441,7 @@ const Cars = () => {
                   </h3>
 
                   <p className="mt-2.5 flex items-baseline gap-1.5 text-[19px] font-extrabold text-[hsl(var(--carbonus-green))]">
-                    {t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}
+                    {t('cars.from')} {(getCarDbPrice(car.id) || '30 EUR').replace('EUR', '€')}
                     <span className="text-[12px] font-medium text-muted-foreground">{t('cars.perDay')}</span>
                   </p>
 
