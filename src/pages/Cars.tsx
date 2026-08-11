@@ -18,20 +18,13 @@ import { trackViewCarList, trackSearch, trackFilterCars, trackViewCar } from "@/
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
-import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedSideClean from "@/assets/kia-ceed-side-clean.png";
-import kiaCeedSideDarkGray from "@/assets/kia-ceed-side-dark-gray.png";
-import kiaCeedWagonSide from "@/assets/kia-ceed-wagon-side.png";
-import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSide from "@/assets/kia-ceed-hatchback-side.png";
-import kiaCeedHatchbackSideFlipped from "@/assets/kia-ceed-hatchback-side-flipped.png";
-import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import kiaCeedHatchbackSideGrayBrown from "@/assets/kia-ceed-hatchback-side-gray-brown.png";
-import kiaCeedHatchbackFrontClean from "@/assets/kia-ceed-hatchback-front-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
-import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
-import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
+import vwPassatSideClean from "@/assets/fleet-volkswagen-passat-side-v2.png";
+import kiaCeedWagonSideClean from "@/assets/fleet-kia-ceed-wagon-side-v2.png";
+import kiaCeedHatchbackSideBrown from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
+import mercedesSlkSide from "@/assets/fleet-mercedes-slk-open-top-v3.png";
+import citroenSpacetourerSide from "@/assets/fleet-citroen-spacetourer-side-v2.png";
+import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-side-v2.png";
+
 
 interface Car {
   id: string;
@@ -418,11 +411,11 @@ const Cars = () => {
                     src={car.image}
                     alt={car.name}
                     loading="lazy"
+                    width={1536}
+                    height={1024}
                     data-allow-save="true"
                     onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
-                    className={`h-full w-full object-contain mix-blend-multiply transition-all duration-500 group-hover:scale-[1.03] ${
-                      loadedImages.has(car.id) ? "opacity-100" : "opacity-0"
-                    }`}
+                    className="h-full w-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.025]"
                   />
                   {premiumCarIds.has(car.id) && (
                     <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-md bg-amber-500 px-2 py-1 text-[11px] font-semibold text-white">
@@ -430,10 +423,7 @@ const Cars = () => {
                       Premium
                     </span>
                   )}
-                  <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[11px] font-semibold text-foreground">
-                    <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                    {car.rating}
-                  </span>
+
                 </div>
 
                 <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
@@ -451,7 +441,7 @@ const Cars = () => {
                   </h3>
 
                   <p className="mt-2.5 flex items-baseline gap-1.5 text-[19px] font-extrabold text-[hsl(var(--carbonus-green))]">
-                    {t('cars.from')} {getCarDbPrice(car.id) || '30 EUR'}
+                    {t('cars.from')} {(getCarDbPrice(car.id) || '30 EUR').replace('EUR', '€')}
                     <span className="text-[12px] font-medium text-muted-foreground">{t('cars.perDay')}</span>
                   </p>
 
