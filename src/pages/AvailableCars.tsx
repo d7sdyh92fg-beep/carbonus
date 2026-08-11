@@ -6,17 +6,15 @@ import {
   ArrowUpRight,
   Check,
   ChevronDown,
-  Cog,
-  Fuel,
   Info,
   MapPin,
   SlidersHorizontal,
-  UsersRound,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { CarCard } from "@/components/CarCard";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
