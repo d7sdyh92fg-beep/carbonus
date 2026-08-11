@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Header } from "@/components/home/Header";
-import { V3Footer } from "@/components/homev3/V3Footer";
+import { Navigation } from '@/components/ui/navigation';
+import { Footer } from '@/components/sections/footer';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -57,7 +57,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Navigation logo="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" />
       <main className="container mx-auto px-4 py-24">
         <div className="max-w-md mx-auto">
           <Card>
@@ -101,7 +101,7 @@ const Auth = () => {
           </Card>
         </div>
       </main>
-      <V3Footer />
+      <Footer />
     </div>
   );
 };

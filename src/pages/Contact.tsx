@@ -1,480 +1,246 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import {
+  ArrowRight,
+  CalendarDays,
+  CarFront,
+  Clock3,
+  Headphones,
+  Mail,
+  MapPin,
+  MessageSquareText,
+  Phone,
+  Send,
+  ShieldCheck,
+} from "lucide-react";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { LanguageLinks } from "@/components/seo/LanguageLinks";
+import { SEOHead } from "@/components/seo/SEOHead";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { useTranslations } from "@/hooks/use-translations";
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  MessageSquare, 
-  Car, 
-  Calendar,
-  Headphones
-} from "lucide-react";
-import { 
-  trackPhoneCall, 
-  trackWhatsAppClick, 
-  trackEmailClick, 
-  trackContactForm 
-} from "@/lib/analytics";
+import { supabase } from "@/integrations/supabase/client";
+import { trackContactForm, trackEmailClick, trackPhoneCall } from "@/lib/analytics";
 
 const Contact = () => {
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
   const { toast } = useToast();
+  const isEnglish = language === "en";
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
   });
 
-  useEffect(() => {
-    // Set page title and meta tags
-    document.title = "Kontaktai - Carbonus | Automobilių nuoma Druskininkuose +370 698 18 781";
-    
-    // Update meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Susisiekite su Carbonus dėl automobilių nuomos Druskininkuose ir visoje Lietuvoje. Tel: +370 698 18 781, El. paštas: info@carbonus.lt. Pagrindinis biuras Druskininkuose.');
-    }
-    
-    // Update canonical URL
-    const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      canonical.setAttribute('href', 'https://carbonus.lt/kontaktai');
-    }
-    
-    // Update Open Graph tags
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) {
-      ogTitle.setAttribute('content', 'Kontaktai - Carbonus');
-    }
-    
-    const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) {
-      ogUrl.setAttribute('content', 'https://carbonus.lt/kontaktai');
-    }
-  }, []);
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const copy = isEnglish
+    ? {
+        eyebrow: "GET IN TOUCH",
+        title: "We are ready to help",
+        subtitle: "Ask about a car, dates or rental terms. We will respond clearly and help you choose the best option.",
+        direct: "Choose the most convenient way to reach us",
+        response: "We usually reply within 2 hours during business hours.",
+        formEyebrow: "SEND A MESSAGE",
+        mapEyebrow: "DRUSKININKAI",
+        mapTitle: "Our home base",
+        mapText: "We arrange car pickup and return in Druskininkai, and provide rental services throughout Lithuania.",
+        directions: "Get directions",
+        emergencyLabel: "Help on the road",
+        required: "Fields marked with * are required.",
+      }
+    : {
+        eyebrow: "SUSISIEKITE",
+        title: "Esame pasiruošę jums padėti",
+        subtitle: "Klauskite apie automobilį, datas ar nuomos sąlygas. Atsakysime aiškiai ir padėsime pasirinkti tinkamiausią variantą.",
+        direct: "Pasirinkite patogiausią būdą susisiekti",
+        response: "Darbo metu dažniausiai atsakome per 2 valandas.",
+        formEyebrow: "PARAŠYKITE MUMS",
+        mapEyebrow: "DRUSKININKAI",
+        mapTitle: "Mūsų namai",
+        mapText: "Automobilių atsiėmimą ir grąžinimą organizuojame Druskininkuose, o nuomos paslaugas teikiame visoje Lietuvoje.",
+        directions: "Rodyti maršrutą",
+        emergencyLabel: "Pagalba kelyje",
+        required: "* pažymėtus laukus būtina užpildyti.",
+      };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((previous) => ({ ...previous, [field]: value }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // Validate required fields
       if (!formData.firstName || !formData.lastName || !formData.email || !formData.subject || !formData.message) {
-        toast({
-          title: t('contact.errorTitle'),
-          description: t('contact.errorDesc'),
-          variant: "destructive",
-        });
+        toast({ title: t("contact.errorTitle"), description: t("contact.errorDesc"), variant: "destructive" });
         return;
       }
 
-      // Call the edge function
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
-      });
+      const { error } = await supabase.functions.invoke("send-contact-email", { body: formData });
+      if (error) throw error;
 
-      if (error) {
-        throw error;
-      }
-
-      // Success
-      toast({
-        title: t('contact.successTitle'),
-        description: t('contact.successDesc'),
-      });
-      
-      // Track contact form submission
+      toast({ title: t("contact.successTitle"), description: t("contact.successDesc") });
       trackContactForm({
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
-        subject: formData.subject
+        subject: formData.subject,
       });
-
-      // Reset form
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      });
-
-    } catch (error: any) {
-      console.error("Error submitting contact form:", error);
-      toast({
-        title: t('contact.errorTitle'),
-        description: error.message || t('contact.errorNetwork'),
-        variant: "destructive",
-      });
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : t("contact.errorNetwork");
+      toast({ title: t("contact.errorTitle"), description: message, variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const contactInfo = [
+  const details = [
     {
-      icon: Phone,
-      title: t('contact.info.phone.title'),
-      details: ["+370 698 18 781"],
-      description: t('contact.info.phone.description')
+      Icon: Phone,
+      label: t("contact.info.phone.title"),
+      value: "+370 698 18 781",
+      note: t("contact.info.phone.description"),
+      href: "tel:+37069818781",
+      onClick: () => trackPhoneCall("+370 698 18 781"),
     },
     {
-      icon: Mail,
-      title: t('contact.info.email.title'),
-      details: ["info@carbonus.lt"],
-      description: t('contact.info.email.description')
+      Icon: Mail,
+      label: t("contact.info.email.title"),
+      value: "info@carbonus.lt",
+      note: t("contact.info.email.description"),
+      href: "mailto:info@carbonus.lt",
+      onClick: () => trackEmailClick("info@carbonus.lt"),
     },
     {
-      icon: MapPin,
-      title: t('contact.info.address.title'),
-      details: [t('contact.info.address.location')],
-      description: t('contact.info.address.description')
+      Icon: MapPin,
+      label: t("contact.info.address.title"),
+      value: t("contact.info.address.location"),
+      note: t("contact.info.address.description"),
+      href: "https://www.google.com/maps/dir//Druskininkai",
+      onClick: undefined,
     },
-    {
-      icon: Clock,
-      title: t('contact.info.hours.title'),
-      details: [
-        t('contact.info.hours.weekdays'),
-        t('contact.info.hours.weekends')
-      ],
-      description: t('contact.info.hours.description')
-    }
-  ];
-
-  const locations = [
-    {
-      city: t('contact.locations.city'),
-      address: t('contact.info.address.location'),
-      phone: "+370 698 18 781",
-      hours: `${t('contact.info.hours.weekdays')}, ${t('contact.info.hours.weekends')}`
-    }
   ];
 
   const services = [
-    {
-      icon: Car,
-      title: t('contact.services.booking.title'),
-      description: t('contact.services.booking.description')
-    },
-    {
-      icon: Headphones,
-      title: t('contact.services.support.title'),
-      description: t('contact.services.support.description')
-    },
-    {
-      icon: Calendar,
-      title: t('contact.services.consultation.title'),
-      description: t('contact.services.consultation.description')
-    }
+    { Icon: CarFront, title: t("contact.services.booking.title"), text: t("contact.services.booking.description") },
+    { Icon: Headphones, title: t("contact.services.support.title"), text: t("contact.services.support.description") },
+    { Icon: CalendarDays, title: t("contact.services.consultation.title"), text: t("contact.services.consultation.description") },
   ];
 
+  const fieldClass = "mt-2 h-12 w-full rounded-[14px] border border-[#dce6e1] bg-[#f8faf9] px-4 text-[14px] text-[#17231f] outline-none transition placeholder:text-[#94a29c] focus:border-[hsl(var(--carbonus-green))]/60 focus:ring-4 focus:ring-[hsl(var(--carbonus-green))]/10";
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f7f9f8] text-[#111b18]">
+      <SEOHead
+        title={isEnglish ? "Contact Carbonus car rental" : "Kontaktai – Carbonus automobilių nuoma"}
+        description={isEnglish ? "Contact Carbonus about car rental in Druskininkai and across Lithuania." : "Susisiekite su Carbonus dėl automobilių nuomos Druskininkuose ir visoje Lietuvoje."}
+        canonical={`https://carbonus.lt/${isEnglish ? "contact" : "kontaktai"}`}
+        keywords="Carbonus kontaktai, automobilių nuoma Druskininkuose, automobilio rezervacija"
+      />
+      <LanguageLinks ltPath="/kontaktai" enPath="/contact" />
       <Header />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4">
-              {t('contact.badge')}
-            </Badge>
-            <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-              {t('contact.title')}
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              {t('contact.subtitle')}
-            </p>
-          </div>
 
-          {/* Contact Info Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-            {contactInfo.map((item, index) => {
-              const IconComponent = item.icon;
-              return (
-                <Card key={index} className="text-center p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <CardContent className="p-0">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-4">
-                      <IconComponent className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-3">
-                      {item.title}
-                    </h3>
-                    <div className="space-y-1 mb-3">
-                      {item.details.map((detail, idx) => (
-                        <p key={idx} className="font-medium text-foreground">
-                          {detail}
-                        </p>
-                      ))}
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      {item.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <main>
+        <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
+          <div className="pointer-events-none absolute -right-40 -top-40 h-[600px] w-[600px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
+          <div className="relative mx-auto grid max-w-[1280px] gap-12 px-6 pb-4 pt-16 md:px-10 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pt-20">
+            <div className="max-w-[760px]">
+              <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">{copy.eyebrow}</p>
+              <h1 className="mt-5 text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[66px]">{copy.title}</h1>
+              <p className="mt-6 max-w-[650px] text-[16px] leading-7 text-[#64756e] sm:text-[17px]">{copy.subtitle}</p>
+            </div>
 
-      {/* Main Content */}
-      <section className="py-20 bg-muted/50 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <Card className="shadow-lg">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <MessageSquare className="w-6 h-6 text-primary" />
-                  <h2 className="text-3xl font-bold text-foreground">{t('contact.form.title')}</h2>
+            <div className="rounded-[26px] bg-[hsl(var(--carbonus-green-deep))] p-6 text-white shadow-[0_22px_60px_rgba(3,53,34,0.2)] sm:p-7">
+              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white/55">{copy.direct}</p>
+              <a href="tel:+37069818781" onClick={() => trackPhoneCall("+370 698 18 781")} className="mt-5 flex items-center justify-between rounded-[16px] bg-white px-5 py-4 text-[hsl(var(--carbonus-green-deep))] transition hover:bg-[#edf8f2]">
+                <span className="flex items-center gap-3 text-[16px] font-bold"><Phone className="h-5 w-5" />+370 698 18 781</span>
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <a href="mailto:info@carbonus.lt" onClick={() => trackEmailClick("info@carbonus.lt")} className="mt-3 flex items-center gap-3 rounded-[16px] border border-white/15 px-5 py-4 text-[14px] font-semibold text-white transition hover:bg-white/10">
+                <Mail className="h-5 w-5 text-[hsl(var(--carbonus-green))]" />info@carbonus.lt
+              </a>
+              <p className="mt-4 text-[12px] leading-5 text-white/58">{copy.response}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-[1280px] px-6 py-14 md:px-10 lg:py-18">
+          <div className="grid gap-4 md:grid-cols-3">
+            {details.map(({ Icon, label, value, note, href, onClick }) => (
+              <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined} onClick={onClick} className="group rounded-[22px] border border-[#e0e8e4] bg-white p-5 shadow-[0_12px_36px_rgba(14,47,35,0.05)] transition hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(14,47,35,0.09)]">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[hsl(var(--carbonus-green-soft))] text-[hsl(var(--carbonus-green-dark))]"><Icon className="h-5 w-5" /></span>
+                <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#7b8b84]">{label}</p>
+                <p className="mt-1 text-[18px] font-bold text-[#17231f] transition group-hover:text-[hsl(var(--carbonus-green-dark))]">{value}</p>
+                <p className="mt-2 text-[12px] leading-5 text-[#7b8b84]">{note}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-y border-[#e1e9e5] bg-white py-20 lg:py-24">
+          <div className="mx-auto grid max-w-[1280px] gap-10 px-6 md:px-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
+            <div className="rounded-[28px] border border-[#e0e8e4] bg-white p-6 shadow-[0_20px_60px_rgba(14,47,35,0.07)] sm:p-8 lg:p-10">
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[hsl(var(--carbonus-green-soft))] text-[hsl(var(--carbonus-green-dark))]"><MessageSquareText className="h-5 w-5" /></span>
+                <div><p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))]">{copy.formEyebrow}</p><h2 className="mt-1 text-[28px] font-bold tracking-[-0.03em]">{t("contact.form.title")}</h2></div>
+              </div>
+              <p className="mt-5 max-w-[650px] text-[14px] leading-6 text-[#6a7b74]">{t("contact.form.description")}</p>
+
+              <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className="text-[12px] font-semibold text-[#34463f]">{t("contact.form.firstName")}<input className={fieldClass} value={formData.firstName} onChange={(event) => handleInputChange("firstName", event.target.value)} placeholder={t("contact.form.placeholders.firstName")} required /></label>
+                  <label className="text-[12px] font-semibold text-[#34463f]">{t("contact.form.lastName")}<input className={fieldClass} value={formData.lastName} onChange={(event) => handleInputChange("lastName", event.target.value)} placeholder={t("contact.form.placeholders.lastName")} required /></label>
                 </div>
-                <p className="text-muted-foreground mb-8">
-                  {t('contact.form.description')}
-                </p>
-                
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName">{t('contact.form.firstName')}</Label>
-                      <Input 
-                        id="firstName" 
-                        placeholder={t('contact.form.placeholders.firstName')}
-                        required
-                        className="mt-1"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="lastName">{t('contact.form.lastName')}</Label>
-                      <Input 
-                        id="lastName" 
-                        placeholder={t('contact.form.placeholders.lastName')}
-                        required
-                        className="mt-1"
-                        value={formData.lastName}
-                        onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="email">{t('contact.form.email')}</Label>
-                      <Input 
-                        id="email" 
-                        type="email"
-                        placeholder={t('contact.form.placeholders.email')}
-                        required
-                        className="mt-1"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone">{t('contact.form.phone')}</Label>
-                      <Input 
-                        id="phone" 
-                        type="tel"
-                        placeholder={t('contact.form.placeholders.phone')}
-                        className="mt-1"
-                        value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="subject">{t('contact.form.subject')}</Label>
-                    <Input 
-                      id="subject" 
-                      placeholder={t('contact.form.placeholders.subject')}
-                      required
-                      className="mt-1"
-                      value={formData.subject}
-                      onChange={(e) => handleInputChange('subject', e.target.value)}
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="message">{t('contact.form.message')}</Label>
-                    <Textarea 
-                      id="message" 
-                      placeholder={t('contact.form.placeholders.message')}
-                      required
-                      rows={6}
-                      className="mt-1"
-                      value={formData.message}
-                      onChange={(e) => handleInputChange('message', e.target.value)}
-                    />
-                  </div>
-                  
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? t('contact.form.sending') : t('contact.form.submit')}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className="text-[12px] font-semibold text-[#34463f]">{t("contact.form.email")}<input type="email" className={fieldClass} value={formData.email} onChange={(event) => handleInputChange("email", event.target.value)} placeholder={t("contact.form.placeholders.email")} required /></label>
+                  <label className="text-[12px] font-semibold text-[#34463f]">{t("contact.form.phone")}<input type="tel" className={fieldClass} value={formData.phone} onChange={(event) => handleInputChange("phone", event.target.value)} placeholder={t("contact.form.placeholders.phone")} /></label>
+                </div>
+                <label className="block text-[12px] font-semibold text-[#34463f]">{t("contact.form.subject")}<input className={fieldClass} value={formData.subject} onChange={(event) => handleInputChange("subject", event.target.value)} placeholder={t("contact.form.placeholders.subject")} required /></label>
+                <label className="block text-[12px] font-semibold text-[#34463f]">{t("contact.form.message")}<textarea className={`${fieldClass} h-auto min-h-[145px] resize-y py-3.5`} value={formData.message} onChange={(event) => handleInputChange("message", event.target.value)} placeholder={t("contact.form.placeholders.message")} required /></label>
+                <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-[11px] text-[#87968f]">{copy.required}</p>
+                  <button type="submit" disabled={isSubmitting} className="inline-flex h-12 items-center justify-center gap-2 rounded-[14px] bg-[hsl(var(--carbonus-green-dark))] px-7 text-[13px] font-bold text-white transition hover:bg-[hsl(var(--carbonus-green-deep))] disabled:cursor-not-allowed disabled:opacity-60">
+                    {isSubmitting ? t("contact.form.sending") : t("contact.form.submit")}<Send className="h-4 w-4" />
+                  </button>
+                </div>
+              </form>
+            </div>
 
-            {/* Services & Additional Info */}
-            <div className="space-y-8">
-              {/* Services */}
-              <Card className="shadow-lg">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-foreground mb-6">
-                    {t('contact.services.title')}
-                  </h3>
-                  <div className="space-y-6">
-                    {services.map((service, index) => {
-                      const IconComponent = service.icon;
-                      return (
-                        <div key={index} className="flex gap-4">
-                          <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center flex-shrink-0">
-                            <IconComponent className="w-6 h-6" />
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-foreground mb-1">
-                              {service.title}
-                            </h4>
-                            <p className="text-muted-foreground text-sm">
-                              {service.description}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="flex flex-col gap-5">
+              <div className="overflow-hidden rounded-[28px] border border-[#e0e8e4] bg-[#f3f7f5] shadow-[0_20px_60px_rgba(14,47,35,0.07)]">
+                <div className="h-[300px] overflow-hidden lg:h-[345px]">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d148840.77893341!2d23.7739!3d54.0165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e0243f0ebefebf%3A0x71e8f0c8a6c6a6a!2sDruskininkai!5e0!3m2!1sen!2slt!4v1234567890123!5m2!1sen!2slt" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Carbonus Druskininkai" />
+                </div>
+                <div className="p-6 sm:p-7">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.17em] text-[hsl(var(--carbonus-green-dark))]">{copy.mapEyebrow}</p>
+                  <h2 className="mt-2 text-[26px] font-bold tracking-[-0.03em]">{copy.mapTitle}</h2>
+                  <p className="mt-3 text-[13px] leading-6 text-[#6a7b74]">{copy.mapText}</p>
+                  <div className="mt-5 flex flex-wrap gap-3 text-[12px] font-semibold text-[#53645d]"><span className="inline-flex items-center gap-2"><Clock3 className="h-4 w-4 text-[hsl(var(--carbonus-green))]" />{t("contact.info.hours.weekdays")}</span><span>{t("contact.info.hours.weekends")}</span></div>
+                  <a href="https://www.google.com/maps/dir//Druskininkai" target="_blank" rel="noreferrer" className="mt-6 inline-flex h-11 items-center gap-2 rounded-full border border-[hsl(var(--carbonus-green))]/30 bg-white px-5 text-[12px] font-bold text-[hsl(var(--carbonus-green-dark))] transition hover:bg-[hsl(var(--carbonus-green-soft))]">{copy.directions}<ArrowRight className="h-4 w-4" /></a>
+                </div>
+              </div>
 
-              {/* Emergency Contact */}
-              <Card className="shadow-lg bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Phone className="w-6 h-6 text-red-600" />
-                    <h3 className="text-xl font-bold text-red-800">
-                      {t('contact.emergency.title')}
-                    </h3>
-                  </div>
-                  <p className="text-red-700 mb-4">
-                    {t('contact.emergency.description')}
-                  </p>
-                    <div className="space-y-2">
-                      <p className="font-bold text-red-800 text-lg">
-                        📞 +370 698 18 781
-                      </p>
-                    <p className="text-red-700 text-sm">
-                      {t('contact.emergency.availability')}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="rounded-[24px] bg-[hsl(var(--carbonus-green-deep))] p-6 text-white">
+                <div className="flex items-start gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[13px] bg-white/10 text-[hsl(var(--carbonus-green))]"><ShieldCheck className="h-5 w-5" /></span>
+                  <div><p className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/55">{copy.emergencyLabel}</p><p className="mt-2 text-[15px] font-semibold">{t("contact.emergency.description")}</p><a href="tel:+37069818781" onClick={() => trackPhoneCall("+370 698 18 781")} className="mt-3 inline-block text-[20px] font-bold">+370 698 18 781</a><p className="mt-1 text-[11px] text-white/55">{t("contact.emergency.availability")}</p></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Locations */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <Badge variant="outline" className="mb-4">
-              {t('contact.locations.badge')}
-            </Badge>
-            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-12">
-              {t('contact.locations.title')}
-            </h2>
+        <section className="mx-auto max-w-[1280px] px-6 py-20 md:px-10 lg:py-24">
+          <div className="mb-10 max-w-[620px]"><p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--carbonus-green-dark))]">{t("contact.services.title")}</p><h2 className="mt-3 text-[30px] font-bold tracking-[-0.035em] sm:text-[38px]">{isEnglish ? "From your first question to the road" : "Nuo pirmo klausimo iki kelionės"}</h2></div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {services.map(({ Icon, title, text }) => <article key={title} className="rounded-[24px] border border-[#e0e8e4] bg-white p-6 shadow-[0_14px_40px_rgba(14,47,35,0.05)]"><span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[hsl(var(--carbonus-green-soft))] text-[hsl(var(--carbonus-green-dark))]"><Icon className="h-5 w-5" /></span><h3 className="mt-5 text-[18px] font-bold">{title}</h3><p className="mt-3 text-[13px] leading-6 text-[#6a7b74]">{text}</p></article>)}
           </div>
-
-          <div className="flex justify-center">
-            <div className="w-full max-w-4xl space-y-6">
-              {/* Location Card */}
-              {locations.map((location, index) => (
-                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <CardContent className="p-0">
-                    {/* Google Maps Embed */}
-                    <div className="w-full h-96 rounded-t-lg overflow-hidden">
-                      <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d148840.77893341!2d23.7739!3d54.0165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e0243f0ebefebf%3A0x71e8f0c8a6c6a6a!2sDruskininkai!5e0!3m2!1sen!2slt!4v1234567890123!5m2!1sen!2slt"
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title="Carbonus Druskininkai Location"
-                      />
-                    </div>
-                    
-                    {/* Location Info */}
-                    <div className="p-8 text-center">
-                      <div className="flex items-center justify-center gap-3 mb-4">
-                        <MapPin className="w-6 h-6 text-primary" />
-                        <h3 className="text-2xl font-bold text-foreground">
-                          {location.city}
-                        </h3>
-                      </div>
-                      <div className="space-y-3 text-muted-foreground mb-6">
-                        <p>
-                          <strong>{t('contact.locations.addressLabel')}</strong><br />
-                          {location.address}
-                        </p>
-                        <p>
-                          <strong>{t('contact.locations.phoneLabel')}</strong><br />
-                          <a href="tel:+37069818781" className="text-primary hover:underline">
-                            {location.phone}
-                          </a>
-                        </p>
-                        <p>
-                          <strong>{t('contact.locations.hoursLabel')}</strong><br />
-                          {location.hours}
-                        </p>
-                      </div>
-                      <Button 
-                        className="w-full"
-                        onClick={() => window.open('https://www.google.com/maps/dir//Druskininkai', '_blank')}
-                      >
-                        <MapPin className="h-4 w-4 mr-2" />
-                        {t('contact.locations.routeButton')}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
+        </section>
+      </main>
 
       <V3Footer />
     </div>
