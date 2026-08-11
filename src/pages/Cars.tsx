@@ -411,11 +411,11 @@ const Cars = () => {
                     src={car.image}
                     alt={car.name}
                     loading="lazy"
+                    width={1536}
+                    height={1024}
                     data-allow-save="true"
                     onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
-                    className={`h-full w-full object-contain mix-blend-multiply transition-all duration-500 group-hover:scale-[1.03] ${
-                      loadedImages.has(car.id) ? "opacity-100" : "opacity-0"
-                    }`}
+                    className="h-full w-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.025]"
                   />
                   {premiumCarIds.has(car.id) && (
                     <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-md bg-amber-500 px-2 py-1 text-[11px] font-semibold text-white">
@@ -423,10 +423,7 @@ const Cars = () => {
                       Premium
                     </span>
                   )}
-                  <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[11px] font-semibold text-foreground">
-                    <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                    {car.rating}
-                  </span>
+
                 </div>
 
                 <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
