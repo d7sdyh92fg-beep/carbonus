@@ -72,7 +72,7 @@ function Connector({ dir, active, delay }: { dir: "left" | "right"; active: bool
   };
 
   return (
-    <svg viewBox="0 0 160 38" className="hidden h-10 w-[55px] md:block lg:w-[160px]" fill="none">
+    <svg viewBox="0 0 160 38" className="hidden h-10 w-[55px] md:block md:w-[80px] lg:w-[160px]" fill="none">
       {dir === "left" ? (
         <>
           <path
@@ -156,7 +156,7 @@ export function V3CustomerExperience() {
 
         <div className="mt-8 grid grid-cols-2 items-start gap-8 sm:mt-10 sm:gap-10 md:grid-cols-[1fr_240px_1fr] md:items-center md:gap-0 lg:grid-cols-[1fr_380px_1fr]">
           {/* left column */}
-          <div className="contents md:flex md:h-[480px] md:flex-col md:justify-between md:gap-0 lg:h-[590px]">
+          <div className="contents md:flex md:h-[440px] md:flex-col md:justify-between md:gap-0 lg:h-[590px]">
 
             {LEFT.map((item, index) => (
               <div
@@ -176,7 +176,7 @@ export function V3CustomerExperience() {
 
           {/* car */}
           <div
-            className={`order-first col-span-2 mx-auto w-[220px] transition-all duration-1000 ease-out sm:w-[250px] md:order-none md:col-span-1 md:w-[230px] lg:w-[370px] ${
+            className={`order-first col-span-2 mx-auto w-[220px] transition-all duration-1000 ease-out sm:w-[250px] md:order-none md:col-span-1 md:w-[240px] lg:w-[370px] ${
               isVisible ? "translate-y-0 scale-100 opacity-100" : "translate-y-10 scale-[0.96] opacity-0"
             }`}
             style={{ transitionDelay: "220ms" }}
@@ -193,7 +193,7 @@ export function V3CustomerExperience() {
           </div>
 
           {/* right column */}
-          <div className="contents md:flex md:h-[480px] md:flex-col md:justify-between md:gap-0 lg:h-[590px]">
+          <div className="contents md:flex md:h-[440px] md:flex-col md:justify-between md:gap-0 lg:h-[590px]">
 
             {RIGHT.map((item, index) => (
               <div
