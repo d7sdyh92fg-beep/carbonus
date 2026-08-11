@@ -79,7 +79,7 @@ export function V3Hero() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute left-0 top-[70%] w-full max-w-none -translate-y-1/2 scale-[1.11] lg:left-[-13%] lg:top-[62%] lg:w-[126%] lg:-translate-y-[64%] lg:scale-[1.07] xl:left-[-20%] xl:top-[58%] xl:w-[138%] xl:-translate-y-[66%] xl:scale-[1.02]">
+            <div className="pointer-events-none absolute left-0 top-[72%] w-full max-w-none -translate-y-1/2 scale-[0.86] sm:top-[70%] sm:scale-[0.93] md:top-[68%] md:scale-[0.98] lg:left-[-13%] lg:top-[62%] lg:w-[126%] lg:-translate-y-[64%] lg:scale-[1.07] xl:left-[-20%] xl:top-[58%] xl:w-[138%] xl:-translate-y-[66%] xl:scale-[1.02]">
               <span
                 aria-hidden="true"
                 className="absolute bottom-[13%] left-[17%] z-0 h-[10%] w-[69%] rounded-full bg-black/35 blur-[18px]"
@@ -110,7 +110,7 @@ export function V3Hero() {
           </div>
         </div>
 
-        <div className="relative z-20 mt-4 w-full pb-8 sm:mt-6 lg:absolute lg:bottom-[-30px] lg:left-6 lg:mt-0 lg:w-[clamp(640px,54vw,850px)] lg:pb-0">
+        <div className="relative z-20 mt-4 w-full pb-8 sm:mt-6 lg:absolute lg:bottom-[-25px] lg:left-6 lg:mt-0 lg:w-[clamp(640px,54vw,850px)] lg:pb-0">
           <V3SearchBar />
           <a
             href="https://www.google.com/maps/search/?api=1&query=Carbonus+Druskininkai"
