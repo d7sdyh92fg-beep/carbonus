@@ -110,7 +110,7 @@ export function V3Hero() {
           </div>
         </div>
 
-        <div className="relative z-20 mt-4 w-full pb-8 sm:mt-6 lg:absolute lg:bottom-[clamp(14px,1.6vw,28px)] lg:left-6 lg:mt-0 lg:w-[clamp(640px,54vw,850px)] lg:pb-0">
+        <div className="relative z-20 mt-4 w-full pb-8 sm:mt-6 lg:absolute lg:bottom-[clamp(14px,1.6vw,28px)] lg:left-4 lg:mt-0 lg:w-[clamp(640px,54vw,850px)] lg:pb-0">
           <V3SearchBar />
           <a
             href="https://www.google.com/maps/search/?api=1&query=Carbonus+Druskininkai"
