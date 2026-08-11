@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { Users, Fuel, Settings, Star, Calendar, Crown } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import { useTranslations } from "@/hooks/use-translations";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
