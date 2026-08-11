@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Fuel, Settings, Star, Calendar, Crown, ArrowUpRight } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar, ArrowUpRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { TermsAcceptanceModal } from "@/components/ui/terms-acceptance-modal";
@@ -53,11 +53,10 @@ const Cars = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from('cars')
-        .select('id, is_premium, price_tier1, price_tier3');
+        .select('id, price_tier1, price_tier3');
       return data || [];
     },
   });
-  const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
   const getCarDbPrice = (carId: string) => {
     const dbCar = (dbCars || []).find(c => c.id === carId);
     if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
@@ -417,12 +416,6 @@ const Cars = () => {
                     onLoad={() => setLoadedImages(prev => new Set(prev).add(car.id))}
                     className="h-full w-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.025]"
                   />
-                  {premiumCarIds.has(car.id) && (
-                    <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-md bg-amber-500 px-2 py-1 text-[11px] font-semibold text-white">
-                      <Crown className="h-3 w-3" />
-                      Premium
-                    </span>
-                  )}
 
                 </div>
 

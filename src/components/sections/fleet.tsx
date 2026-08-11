@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { Users, Fuel, Settings, Star, Calendar, Crown } from "lucide-react";
+import { Users, Fuel, Settings, Star, Calendar } from "lucide-react";
 import { useTranslations } from "@/hooks/use-translations";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -51,11 +51,10 @@ export function Fleet() {
     queryFn: async () => {
       const { data } = await supabase
         .from('cars')
-        .select('id, is_premium, price_tier1, price_tier3');
+        .select('id, price_tier1, price_tier3');
       return data || [];
     },
   });
-  const premiumCarIds = new Set((dbCars || []).filter(c => c.is_premium).map(c => c.id));
   const getCarDbPrice = (carId: string) => {
     const dbCar = (dbCars || []).find(c => c.id === carId);
     if (dbCar?.price_tier3) return `${dbCar.price_tier3} EUR`;
@@ -241,12 +240,6 @@ export function Fleet() {
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
                       {t(`car.categories.${normalizeForTranslation(car.category)}`)}
                     </Badge>
-                    {premiumCarIds.has(car.id) && (
-                      <Badge variant="secondary" className="bg-amber-500 text-white flex items-center gap-1">
-                        <Crown className="w-3 h-3" />
-                        Premium
-                      </Badge>
-                    )}
                   </div>
                   <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/90 rounded-full px-2 py-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
