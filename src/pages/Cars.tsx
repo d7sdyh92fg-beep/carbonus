@@ -288,7 +288,7 @@ const Cars = () => {
             <div className="absolute bottom-0 right-28 h-32 w-56 rounded-t-[80px] bg-white/50" />
           </div>
 
-          <div className="relative mx-auto grid max-w-[1320px] gap-10 px-6 pb-16 pt-16 md:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pb-20 lg:pt-20">
+          <div className="relative mx-auto grid max-w-[1320px] gap-10 px-6 pb-16 pt-16 md:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-start lg:pb-20 lg:pt-20">
             <div className="max-w-[760px]">
               <p className="mb-5 text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">
                 {text.eyebrow}
