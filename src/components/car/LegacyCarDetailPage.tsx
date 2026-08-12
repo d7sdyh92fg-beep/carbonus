@@ -218,7 +218,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
                       aria-current={activeImage === index ? "true" : undefined}
                       className={`relative h-[110px] overflow-hidden rounded-2xl border-2 bg-white transition sm:h-[132px] ${activeImage === index ? "border-[hsl(var(--carbonus-green))] shadow-[0_10px_24px_hsl(var(--carbonus-green)/0.18)]" : "border-transparent opacity-75 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]"}`}
                     >
-                      <img src={image} alt="" width={420} height={260} loading="lazy" decoding="async" className={`h-full w-full ${index === 2 ? "object-cover" : "object-contain p-1 scale-[1.45]"}`} />
+                      <img src={image} alt="" width={420} height={260} loading="lazy" decoding="async" className={`h-full w-full ${index === 2 ? "object-cover" : (car.id === "3" || car.id === "4" ? "object-contain p-1 scale-[1.15]" : "object-contain p-1 scale-[1.45]")}`} />
                       {index === 2 && <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">{isEnglish ? "Interior" : "Salonas"}</span>}
                     </button>
                   ))}
