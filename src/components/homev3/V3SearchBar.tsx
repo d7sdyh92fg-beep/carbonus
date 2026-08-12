@@ -130,7 +130,7 @@ export function V3SearchBar() {
   const submit = () => {
     const mode =
       locationMode === "office" ? "office" : locationMode === "druskininkai" ? "druskininkai" : "other";
-    const params = new URLSearchParams({ pickup, return: ret, mode });
+    const params = new URLSearchParams({ pickup, return: ret, mode, pickupTime, returnTime });
     navigate(`/laisvi-automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
   };
