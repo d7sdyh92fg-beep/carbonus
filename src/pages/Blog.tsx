@@ -12,7 +12,7 @@ import blogCarInsurance from "@/assets/blog-car-insurance-new.jpg";
 import blogBusinessTravel from "@/assets/blog-business-travel.jpg";
 import blogWinterDriving from "/lovable-uploads/7e8ac90d-43ea-4124-b0a3-07cb11da3447.png";
 import blogFamilyTravel from "@/assets/blog-family-travel.jpg";
-import blogGroupTravel from "@/assets/citroen-druskininkai-v3.png";
+import blogGroupTravel from "@/assets/carbonus-journal-spacetourer.png.asset.json";
 
 interface BlogPost {
   id: string;
@@ -32,7 +32,7 @@ const Blog = () => {
   const [activeCategory, setActiveCategory] = useState("all");
 
   const blogPosts: BlogPost[] = [
-    { id: "7", title: t("blog.posts.groupTravel.title"), excerpt: t("blog.posts.groupTravel.excerpt"), author: t("blog.author"), publishDate: "2026-03-30", readTime: `6 ${t("blog.readTime")}`, category: t("blog.posts.groupTravel.category"), image: blogGroupTravel, slug: "kelione-didelei-grupei-8-vietu-mikroautobusas" },
+    { id: "7", title: t("blog.posts.groupTravel.title"), excerpt: t("blog.posts.groupTravel.excerpt"), author: t("blog.author"), publishDate: "2026-03-30", readTime: `6 ${t("blog.readTime")}`, category: t("blog.posts.groupTravel.category"), image: blogGroupTravel.url, slug: "kelione-didelei-grupei-8-vietu-mikroautobusas" },
     { id: "1", title: t("blog.posts.savings.title"), excerpt: t("blog.posts.savings.excerpt"), author: t("blog.author"), publishDate: "2025-12-15", readTime: `5 ${t("blog.readTime")}`, category: t("blog.posts.savings.category"), image: blogSavingsTips, slug: "10-patarimu-kaip-sutaupyti-nuomojant-automobili" },
     { id: "2", title: t("blog.posts.travel.title"), excerpt: t("blog.posts.travel.excerpt"), author: t("blog.author"), publishDate: "2025-12-10", readTime: `8 ${t("blog.readTime")}`, category: t("blog.posts.travel.category"), image: blogLithuaniaTravel, slug: "kelioniu-po-lietuva-gidas-geriausi-marsrutai" },
     { id: "3", title: t("blog.posts.insurance.title"), excerpt: t("blog.posts.insurance.excerpt"), author: t("blog.author"), publishDate: "2025-12-05", readTime: `6 ${t("blog.readTime")}`, category: t("blog.posts.insurance.category"), image: blogCarInsurance, slug: "automobiliu-nuomos-draudimas-kas-reikia-zinoti" },
