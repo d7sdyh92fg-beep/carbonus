@@ -194,6 +194,8 @@ function DateTimeField({
   onDateChange: (v: string) => void;
   onTimeChange: (v: string) => void;
 }) {
+  const allowedTimes = TIMES.filter((t) => isTimeAllowed(date, t));
+  const timeOptions = allowedTimes.length ? allowedTimes : [time];
   return (
     <div>
       <p className="text-[13px] font-semibold text-foreground">{label}</p>
@@ -214,7 +216,7 @@ function DateTimeField({
               selected={new Date(`${date}T12:00:00`)}
               defaultMonth={new Date(`${date}T12:00:00`)}
               onSelect={(d) => d && onDateChange(toISO(d))}
-              disabled={minDate ? { before: minDate } : { before: new Date() }}
+              disabled={{ before: minDate ?? minBookingDay() }}
               className="pointer-events-auto p-3"
             />
           </PopoverContent>
@@ -226,7 +228,7 @@ function DateTimeField({
           aria-label={`${label} – laikas`}
           className="min-h-[46px] rounded-xl border border-border bg-white px-3 text-[14px] font-medium text-foreground outline-none transition-colors hover:border-carbonus-green"
         >
-          {TIMES.map((t) => (
+          {timeOptions.map((t) => (
             <option key={t} value={t}>
               {t}
             </option>
@@ -234,5 +236,6 @@ function DateTimeField({
         </select>
       </div>
     </div>
+
   );
 }
