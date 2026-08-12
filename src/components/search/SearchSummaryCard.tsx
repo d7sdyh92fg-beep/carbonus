@@ -52,10 +52,27 @@ export function SearchSummaryCard({
   open,
   onOpenChange,
 }: Props) {
+  // Enforce the 1-hour lead time: bump invalid selections to the first allowed slot.
+  useEffect(() => {
+    if (!isTimeAllowed(pickupDate, pickupTime)) {
+      const next = firstAllowedTime(pickupDate, TIMES);
+      if (next) onPickupTimeChange(next);
+    }
+  }, [pickupDate, pickupTime, onPickupTimeChange]);
+
+  useEffect(() => {
+    if (!isTimeAllowed(returnDate, returnTime)) {
+      const next = firstAllowedTime(returnDate, TIMES);
+      if (next) onReturnTimeChange(next);
+    }
+  }, [returnDate, returnTime, onReturnTimeChange]);
+
   const locationTitle =
     pickupMode === "office" ? c.modeOffice : pickupMode === "druskininkai" ? c.modeDruskininkai : c.modeOther;
   const locationSub =
     pickupMode === "office" ? c.officeSummary : pickupMode === "druskininkai" ? c.druskininkaiSummary : c.otherSummary;
+
+
 
   const modePill = (mode: PickupMode, label: string) => (
     <button
