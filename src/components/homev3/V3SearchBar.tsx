@@ -193,21 +193,21 @@ export function V3SearchBar() {
       {service === "pickup_and_rental" ? (
       <>
       <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
-        {/* Where to pick you up */}
-        <div className={cn(fieldClass, "sm:flex-[1.4]")}>
-          <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
-          <span className="min-w-0 flex-1">
-            <label htmlFor="transfer-address" className="block text-[10px] font-medium text-muted-foreground">
+        {/* Where to pick you up — same width as rental location section */}
+        <div className="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-2 py-1.5">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green" />
+          <div className="min-w-0 flex-1">
+            <span className="block text-[10px] font-medium text-muted-foreground">
               {c.pickupWhere}
-            </label>
+            </span>
             <input
-              id="transfer-address"
               value={pickupAddress}
               onChange={(e) => setPickupAddress(e.target.value)}
               placeholder={c.pickupWherePlaceholder}
-              className="block w-full border-0 bg-transparent p-0 text-[13px] font-semibold text-foreground outline-none placeholder:font-medium placeholder:text-muted-foreground"
+              aria-label={c.pickupWhere}
+              className="mt-0.5 block w-full border-0 bg-transparent p-0 text-[13px] font-semibold text-foreground outline-none placeholder:font-medium placeholder:text-muted-foreground"
             />
-          </span>
+          </div>
         </div>
 
         {/* Pickup date */}
@@ -239,7 +239,7 @@ export function V3SearchBar() {
         </Popover>
 
         {/* Time */}
-        <div className={cn(fieldClass, "sm:max-w-[110px] sm:flex-none")}>
+        <div className={fieldClass}>
           <Clock className="h-4 w-4 shrink-0 text-carbonus-green" />
           <span className="min-w-0 flex-1">
             <label htmlFor="transfer-time" className="block text-[10px] font-medium text-muted-foreground">
@@ -258,18 +258,6 @@ export function V3SearchBar() {
           </span>
         </div>
 
-        {/* Rental location (read-only) */}
-        <div
-          aria-readonly="true"
-          className="mx-1 flex min-h-[48px] min-w-0 flex-1 cursor-default items-center gap-2 rounded-lg border border-border bg-muted/60 px-2 py-1.5 text-left sm:ml-0 sm:mr-2"
-        >
-          <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
-          <span className="min-w-0 flex-1">
-            <span className="block text-[10px] font-medium text-muted-foreground">{c.rentalLocation}</span>
-            <span className="block truncate text-[13px] font-semibold text-muted-foreground">{c.officeFixed}</span>
-          </span>
-        </div>
-
         <button
           type="button"
           onClick={submitTransfer}
@@ -281,13 +269,13 @@ export function V3SearchBar() {
 
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
         <Car className="mt-[2px] h-3 w-3 shrink-0 text-carbonus-green" />
-        <div className="min-w-0">
-          <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">{c.transferInfo}</p>
-          <p className="mt-0.5 text-[9px] font-medium leading-[1.45] text-muted-foreground">{c.flow}</p>
-        </div>
+        <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">
+          {c.rentalLocation}: {c.officeFixed}. {c.flow}
+        </p>
       </div>
       </>
       ) : (
+
       <>
       <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
         {/* Location */}
