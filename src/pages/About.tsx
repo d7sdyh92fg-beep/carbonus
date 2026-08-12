@@ -122,7 +122,7 @@ const About = () => {
               <h1 className="mt-5 max-w-[600px] text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[66px]">
                 {copy.heroTitle}
               </h1>
-              <div className="mt-6 h-1 w-12 rounded-full bg-[hsl(var(--carbonus-green))]" />
+              <div className="mt-[34px] h-1 w-12 rounded-full bg-[hsl(var(--carbonus-green))]" />
               <p className="mt-6 max-w-[500px] text-[16px] leading-[1.8] text-muted-foreground sm:text-[17px]">
                 {copy.heroText}
               </p>
