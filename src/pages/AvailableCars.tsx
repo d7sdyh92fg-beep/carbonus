@@ -289,6 +289,30 @@ const AvailableCars = () => {
         retryAll();
         return;
       }
+      const catalogCar = CARS_CATALOG.find((x) => x.id === id);
+      const { daily } = pricingFor(id);
+      const dbCar = (dbCars || []).find((x: any) => String(x.id) === id);
+
+      if (catalogCar && daily != null) {
+        setBookingData({
+          carId: id,
+          carName: catalogCar.name,
+          carImage: catalogCar.image,
+          startDate: pickupDate,
+          endDate: returnDate,
+          pickupTime,
+          returnTime,
+          rentalDays,
+          basePrice: daily * rentalDays,
+          depositAmount: dbCar?.deposit_amount ? Number(dbCar.deposit_amount) : 200,
+          services: [],
+        });
+        navigate(
+          language === "en" ? `/reservation/${id}/services` : `/rezervacija/${id}/paslaugos`,
+        );
+        return;
+      }
+
       const slug = getCarSlugFromId(id, language === "en" ? "en" : "lt");
       const base = language === "en" ? "/cars" : "/automobiliai";
       const qs = new URLSearchParams({
