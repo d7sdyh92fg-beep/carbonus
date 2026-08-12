@@ -26,13 +26,6 @@ const barCopy = {
     info: "Atsiėmimas Carbonus ofise Druskininkuose ir pristatymas Druskininkuose – nemokama. Kitur Lietuvoje taikomas papildomas atvežimo mokestis, kurį patvirtinsime kitame žingsnyje.",
     serviceRental: "Automobilio nuoma",
     servicePickupRental: "Paėmimas + nuoma",
-    pickupFrom: "Kur jus paimti?",
-    pickupFromPlaceholder: "Miestas, oro uostas arba adresas",
-    rentalLocation: "Nuomos vieta",
-    officeLocked: "Carbonus ofisas, Druskininkai",
-    findCar: "Rasti automobilį",
-    returnInfo: "Mūsų vairuotojas atvyks jūsų pasiimti ir parveš į Druskininkus, kur pasiimsite nuomojamą automobilį.",
-    flow: "Jūsų vieta → Vairuotojo paėmimas → Druskininkai → Automobilio nuoma",
     time: "Laikas",
   },
   en: {
@@ -50,13 +43,6 @@ const barCopy = {
     info: "Pick-up at the Carbonus office in Druskininkai and delivery within Druskininkai are free. An additional delivery fee applies to other cities in Lithuania; the exact price will be confirmed in the next step.",
     serviceRental: "Car rental",
     servicePickupRental: "Pickup + rental",
-    pickupFrom: "Where should we pick you up?",
-    pickupFromPlaceholder: "City, airport or address",
-    rentalLocation: "Rental location",
-    officeLocked: "Carbonus office, Druskininkai",
-    findCar: "Find a car",
-    returnInfo: "Our driver will pick you up and bring you to Druskininkai, where you will collect the rental car.",
-    flow: "Your location → Driver pick-up → Druskininkai → Car rental",
     time: "Time",
   },
   ru: {
@@ -74,13 +60,6 @@ const barCopy = {
     info: "Получение автомобиля в офисе Carbonus в Друскининкай и доставка по Друскининкай – бесплатно. В другие города Литвы взимается дополнительная плата за доставку; точная цена будет подтверждена на следующем шаге.",
     serviceRental: "Аренда автомобиля",
     servicePickupRental: "Забор + аренда",
-    pickupFrom: "Откуда вас забрать?",
-    pickupFromPlaceholder: "Город, аэропорт или адрес",
-    rentalLocation: "Место аренды",
-    officeLocked: "Офис Carbonus, Друскининкай",
-    findCar: "Найти автомобиль",
-    returnInfo: "Наш водитель приедет за вами и отвезёт в Друскининкай, где вы получите автомобиль в аренду.",
-    flow: "Ваше местоположение → Забор водителем → Друскининкай → Аренда автомобиля",
     time: "Время",
   },
 } as const;
@@ -97,12 +76,6 @@ const fmt = (s: string) => format(new Date(`${s}T12:00:00`), "yyyy-MM-dd", { loc
 type LocationMode = "office" | "druskininkai" | "custom";
 type ServiceType = "rental" | "return";
 
-const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
-  const h = String(Math.floor(i / 2)).padStart(2, "0");
-  const m = i % 2 === 0 ? "00" : "30";
-  return `${h}:${m}`;
-});
-
 export function V3SearchBar() {
   const navigate = useNavigate();
   const { language } = useLanguage();
@@ -113,8 +86,6 @@ export function V3SearchBar() {
 
   const [service, setService] = useState<ServiceType>("rental");
   const [locationMode, setLocationMode] = useState<LocationMode>("office");
-  const [pickupFrom, setPickupFrom] = useState("");
-  const [pickupTime, setPickupTime] = useState("10:00");
   const [pickup, setPickup] = useState(today);
   const [ret, setRet] = useState(tomorrow);
   const [openP, setOpenP] = useState(false);
@@ -125,27 +96,6 @@ export function V3SearchBar() {
     druskininkai: c.druskininkaiDesc,
     custom: c.otherCityDesc,
   }[locationMode];
-
-  const submitReturnTrip = () => {
-    const nR = new Date(`${pickup}T12:00:00`);
-    nR.setDate(nR.getDate() + 1);
-    const params = new URLSearchParams({
-      pickup,
-      return: toISO(nR),
-      mode: "other",
-      returnMode: "office",
-      pickupTime,
-      service: "return",
-    });
-    if (pickupFrom.trim()) {
-      params.set("pickupPlace", pickupFrom.trim());
-      params.set("pickupAddress", pickupFrom.trim());
-      params.set("pickupCity", pickupFrom.trim());
-      params.set("pickupCountry", "Lietuva");
-    }
-    navigate(`/laisvi-automobiliai?${params.toString()}`);
-    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-  };
 
   const submit = () => {
     const mode =
@@ -194,88 +144,6 @@ export function V3SearchBar() {
         ))}
       </div>
 
-      {service === "return" ? (
-        <>
-          <div className="flex flex-col gap-1 p-2 sm:gap-1 sm:p-1.5 sm:pl-3">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
-              <label className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
-                <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupFrom}</span>
-                <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 py-1.5">
-                  <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
-                  <input
-                    value={pickupFrom}
-                    onChange={(e) => setPickupFrom(e.target.value)}
-                    placeholder={c.pickupFromPlaceholder}
-                    className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
-                  />
-                </div>
-              </label>
-
-              <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
-                <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
-                <div className="mt-1 flex gap-1">
-                  <Popover open={openP} onOpenChange={setOpenP}>
-                    <PopoverTrigger asChild>
-                      <button type="button" className="flex min-h-[48px] flex-1 items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 text-left hover:border-carbonus-green">
-                        <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
-                        <span className="truncate text-[13px] font-semibold text-foreground">{fmt(pickup)}</span>
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent className="z-[80] w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={new Date(`${pickup}T12:00:00`)}
-                        defaultMonth={new Date(`${pickup}T12:00:00`)}
-                        onSelect={(d) => {
-                          if (!d) return;
-                          setPickup(toISO(d));
-                          setOpenP(false);
-                        }}
-                        disabled={{ before: minBookingDay() }}
-                        locale={lt}
-                        className="pointer-events-auto p-3"
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <select
-                    aria-label={c.time}
-                    value={pickupTime}
-                    onChange={(e) => setPickupTime(e.target.value)}
-                    className="min-h-[48px] rounded-lg border border-carbonus-green/40 bg-white px-2 text-[13px] font-semibold text-foreground outline-none hover:border-carbonus-green"
-                  >
-                    {TIME_OPTIONS.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
-                <span className="block text-[10px] font-medium text-muted-foreground">{c.rentalLocation}</span>
-                <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/80 px-2 py-1.5">
-                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
-                  <span className="truncate text-[13px] font-semibold text-muted-foreground">{c.officeLocked}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-0 sm:py-1">
-              <button
-                type="button"
-                onClick={submitReturnTrip}
-                className="mx-1 h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white transition-colors duration-200 hover:bg-carbonus-green-deep sm:ml-0 sm:mr-3 sm:h-[48px] sm:w-[172px]"
-              >
-                {c.findCar}
-              </button>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
-            <p className="text-[11px] font-bold text-foreground">{c.flow}</p>
-            <p className="text-[10px] leading-[1.45] text-muted-foreground">{c.returnInfo}</p>
-          </div>
-        </>
-      ) : (
       <>
       <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
         {/* Location */}
@@ -392,7 +260,6 @@ export function V3SearchBar() {
         <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">{modeDescription}</p>
       </div>
       </>
-      )}
     </div>
   );
 }
