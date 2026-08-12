@@ -380,9 +380,10 @@ const Cars = () => {
                 const fuel = activeLanguage === "en" ? car.fuelEn : car.fuel;
                 const transmission = activeLanguage === "en" ? car.transmissionEn : car.transmission;
                 return (
-                  <article key={car.id} className="group overflow-hidden rounded-[26px] border border-[#e2e9e5] bg-white shadow-[0_16px_45px_rgba(14,47,35,0.06)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(14,47,35,0.11)]">
+                  <article key={car.id} className="group overflow-hidden rounded-[26px] border border-[#e2e9e5] bg-white p-3 shadow-[0_16px_45px_rgba(14,47,35,0.06)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(14,47,35,0.11)]">
                     <Link to={carPath(car)} onClick={() => registerCarView(car)} className="block" aria-label={displayName}>
-                      <div className="relative h-[245px] overflow-hidden bg-[linear-gradient(145deg,#f6f8f7_0%,#edf2ef_100%)] sm:h-[265px]">
+                      <div className="relative h-[245px] overflow-hidden rounded-[18px] bg-[linear-gradient(145deg,#f6f8f7_0%,#edf2ef_100%)] sm:h-[265px]">
+
                         <span className="absolute left-5 top-5 z-20 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#53645d] shadow-sm backdrop-blur-sm">
                           {car.year}
                         </span>
@@ -399,7 +400,7 @@ const Cars = () => {
                       </div>
                     </Link>
 
-                    <div className="p-5 sm:p-6">
+                    <div className="p-2 pt-5 sm:p-3 sm:pt-5">
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-[hsl(var(--carbonus-green-dark))]">{category}</p>
