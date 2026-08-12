@@ -130,7 +130,7 @@ export function Header() {
 
           <button
             onClick={() => navigate(isAdmin ? "/admin" : "/auth")}
-            className="inline-flex items-center gap-2 h-[40px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
+            className="absolute left-full top-1/2 ml-3 -translate-y-1/2 inline-flex items-center gap-2 h-[40px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
           >
             <UserCircle className="h-4 w-4" />
             Admin
