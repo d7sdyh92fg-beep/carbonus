@@ -28,7 +28,6 @@ const barCopy = {
     servicePickupRental: "Paėmimas + nuoma",
     pickupFrom: "Kur jus paimti?",
     pickupFromPlaceholder: "Miestas, oro uostas arba adresas",
-    pickupDate: "Paėmimo data",
     rentalLocation: "Nuomos vieta",
     officeLocked: "Carbonus ofisas, Druskininkai",
     findCar: "Rasti automobilį",
