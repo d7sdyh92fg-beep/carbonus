@@ -196,7 +196,7 @@ export function V3SearchBar() {
 
       {service === "return" ? (
         <>
-          <div className="flex flex-col gap-2 p-2 sm:flex-row sm:items-end sm:gap-2 sm:p-2 sm:pl-3">
+          <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
             <label className="min-w-0 flex-1">
               <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupFrom}</span>
               <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2">
