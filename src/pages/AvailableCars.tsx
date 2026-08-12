@@ -105,10 +105,31 @@ const AvailableCars = () => {
   const daysLabel = rentalDays === 1 ? c.day : rentalDays < 10 ? c.days : c.daysMany;
 
   // ---- Logistics pricing -------------------------------------------------
-  const deliveryFee = calculateDeliveryFee(pickupMode, pickupLocation);
-  const collectionFee = calculateCollectionFee(pickupMode, returnMode, pickupLocation, returnLocation);
-  const logisticsTotal = calculateLogisticsTotal(deliveryFee, collectionFee);
-  const logisticsKnown = logisticsTotal.status === "free" || logisticsTotal.status === "priced";
+  // Driving distance from / to the Carbonus base in Druskininkai.
+  const { distanceKm: deliveryDistanceKm, loading: deliveryDistanceLoading } =
+    useDrivingDistance(pickupMode === "other" ? pickupLocation : null, "from_base");
+  const { distanceKm: returnDistanceKm, loading: returnDistanceLoading } = useDrivingDistance(
+    pickupMode === "other" && returnMode === "different" ? returnLocation : null,
+    "to_base",
+  );
+
+  const returnType: LogisticsReturnType =
+    returnMode === "office" ? "office" : returnMode === "different" ? "other" : "same_location";
+
+  const quote = buildLogisticsQuote({
+    pickupType: pickupMode,
+    returnType,
+    deliveryLocation: pickupLocation,
+    returnLocation,
+    deliveryDistanceKm,
+    returnDistanceKm,
+  });
+
+  const deliveryFee = quote.delivery;
+  const collectionFee = quote.collection;
+  const logisticsTotal = quote.total;
+  const logisticsKnown = logisticsTotal.status !== "unknown";
+  const distancesLoading = deliveryDistanceLoading || returnDistanceLoading;
 
   const deliveryTarget =
     pickupMode === "office"
