@@ -74,6 +74,7 @@ const AvailableCars = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { language } = useLanguage();
+  const { setBookingData } = useBooking();
   const c = searchCopy[language] ?? searchCopy.lt;
   const catLabel = (v: string) => CATEGORY_LABELS[language]?.[v] ?? v;
   const specLabel = (v: string) => SPEC_LABELS[language]?.[v] ?? v;
