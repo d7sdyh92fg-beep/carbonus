@@ -126,7 +126,7 @@ const BlogPost = () => {
       publishDate: "2026-03-30",
       readTime: t('blog.posts.groupTravel.readTime'),
       category: t('blog.posts.groupTravel.category'),
-      image: blogGroupTravel.url,
+      image: blogGroupTravel,
       slug: "kelione-didelei-grupei-8-vietu-mikroautobusas",
       content: t('blogPost.content.groupTravel')
     }
