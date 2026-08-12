@@ -260,6 +260,22 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     console.log('Stripe session status:', session.payment_status);
 
+    // Bind the Stripe session to the reservation it was created for.
+    // Without this check anyone could pass an arbitrary paid session id
+    // together with someone else's reservation id and mark it as paid.
+    const sessionReservationId =
+      (session.metadata?.reservationId as string | undefined) ??
+      (session.client_reference_id as string | undefined);
+
+    if (!sessionReservationId || sessionReservationId !== reservationId) {
+      console.error('Session/reservation mismatch', { sessionReservationId, reservationId });
+      return new Response(JSON.stringify({
+        success: false, error: 'SESSION_RESERVATION_MISMATCH'
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 403,
+      });
+    }
+
     const isCompleted = session.payment_status === 'paid' || session.status === 'complete';
     
     if (isCompleted && session.payment_intent) {
