@@ -184,7 +184,7 @@ const BlogPost = () => {
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f2f7f4] pt-[78px]">
           <div className="pointer-events-none absolute -right-40 -top-32 h-[580px] w-[580px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto max-w-[1320px] px-6 pb-14 pt-10 md:px-6 lg:pb-20 lg:pt-14">
+          <div className="relative mx-auto max-w-[1320px] px-6 pb-14 pt-16 md:px-6 lg:pb-20 lg:pt-20">
             <Link to={postBase} className="inline-flex items-center gap-2 text-[12px] font-bold text-[#64756e] transition hover:text-[hsl(var(--carbonus-green-dark))]">
               <ArrowLeft className="h-4 w-4" />
               {t('blogPost.backToNews')}
