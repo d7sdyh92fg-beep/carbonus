@@ -313,7 +313,6 @@ const AvailableCars = () => {
   const feeCell = (fee: typeof deliveryFee) => {
     if (fee.status === "free") return "0 €";
     if (fee.status === "priced") return `${fee.amount} €`;
-    if (fee.status === "quote") return c.quote;
     return `— ${c.notSelected}`;
   };
 
@@ -473,7 +472,7 @@ const AvailableCars = () => {
           {pickupMode !== "office" && !logisticsKnown && (
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-[13px] text-amber-900">
               <Info className="mt-0.5 h-4 w-4 shrink-0" />
-              {logisticsTotal.status === "quote" ? c.quoteNote : c.warning}
+              {c.warning}
             </div>
           )}
 
