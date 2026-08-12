@@ -259,7 +259,7 @@ export function V3SearchBar() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-0 sm:py-1">
+            <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-0 sm:py-1">
               <button
                 type="button"
                 onClick={submitReturnTrip}
