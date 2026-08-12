@@ -47,6 +47,20 @@ export const DELIVERY_CONFIG = {
   localDeliveryPrice: 0,
 };
 
+/** Radius (km, driving) around the base still considered "Druskininkai area". */
+export const LOCAL_RADIUS_KM = 15;
+
+/** True when a place belongs to the Druskininkai area → logistics is free. */
+export function isLocalLocation(
+  location: PlaceLocation | null | undefined,
+  distanceKm?: number | null,
+): boolean {
+  if (typeof distanceKm === "number" && distanceKm > 0 && distanceKm <= LOCAL_RADIUS_KM) return true;
+  if (!location) return false;
+  const haystack = `${location.placeName} ${location.address} ${location.city}`.toLowerCase();
+  return haystack.includes("druskinink");
+}
+
 export type PickupType = "office" | "druskininkai" | "other";
 export type ReturnType = "same_location" | "office" | "other";
 
@@ -158,9 +172,18 @@ export function buildLogisticsQuote(input: LogisticsInput): LogisticsQuote {
   const deliveryKnown = !needsDeliveryLocation || Boolean(deliveryLocation?.address);
   const returnKnown = !needsReturnLocation || Boolean(returnLocation?.address);
 
-  const deliveryPrice = deliveryKnown ? calculateDeliveryPrice(pickupType, deliveryDistanceKm) : 0;
+  const deliveryLocal = isLocalLocation(deliveryLocation, deliveryDistanceKm);
+  const returnLocal = isLocalLocation(returnLocation, returnDistanceKm);
+
+  const deliveryPrice = deliveryKnown
+    ? deliveryLocal && pickupType === "other"
+      ? DELIVERY_CONFIG.localDeliveryPrice
+      : calculateDeliveryPrice(pickupType, deliveryDistanceKm)
+    : 0;
   const returnPrice = returnKnown
-    ? calculateReturnPrice(returnType, deliveryPrice, returnDistanceKm, pickupType)
+    ? returnType === "other" && returnLocal
+      ? DELIVERY_CONFIG.localDeliveryPrice
+      : calculateReturnPrice(returnType, deliveryPrice, returnDistanceKm, pickupType)
     : 0;
 
   const delivery: FeeResult = deliveryKnown ? toFee(deliveryPrice) : { status: "unknown", amount: null };
