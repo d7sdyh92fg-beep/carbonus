@@ -184,7 +184,7 @@ const BlogPost = () => {
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f2f7f4] pt-[78px]">
           <div className="pointer-events-none absolute -right-40 -top-32 h-[580px] w-[580px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto max-w-[1280px] px-6 pb-14 pt-10 md:px-10 lg:pb-20 lg:pt-14">
+          <div className="relative mx-auto max-w-[1320px] px-6 pb-14 pt-10 md:px-6 lg:pb-20 lg:pt-14">
             <Link to={postBase} className="inline-flex items-center gap-2 text-[12px] font-bold text-[#64756e] transition hover:text-[hsl(var(--carbonus-green-dark))]">
               <ArrowLeft className="h-4 w-4" />
               {t('blogPost.backToNews')}
@@ -219,7 +219,7 @@ const BlogPost = () => {
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1180px] px-6 py-14 md:px-10 lg:py-20">
+        <section className="mx-auto max-w-[1180px] px-6 py-14 md:px-6 lg:py-20">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,780px)_280px] lg:justify-between">
             <article className="min-w-0 rounded-[28px] border border-[#e0e8e4] bg-white px-6 py-8 shadow-[0_18px_55px_rgba(14,47,35,0.055)] sm:px-10 sm:py-12 lg:px-14">
               <div className="mb-10 border-l-2 border-[hsl(var(--carbonus-green))] pl-5 text-[16px] font-medium leading-7 text-[#40524a]">
@@ -270,7 +270,7 @@ const BlogPost = () => {
         </section>
 
         <section className="border-t border-[#e0e8e4] bg-white py-16 lg:py-20">
-          <div className="mx-auto max-w-[1280px] px-6 md:px-10">
+          <div className="mx-auto max-w-[1320px] px-6 md:px-6">
             <div className="mb-9 flex items-end justify-between gap-6">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.17em] text-[hsl(var(--carbonus-green-dark))]">Skaitykite toliau</p>

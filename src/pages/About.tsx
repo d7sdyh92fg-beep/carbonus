@@ -114,7 +114,7 @@ const About = () => {
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-14 pt-[126px] sm:pb-16 lg:pt-[150px]">
           <div className="pointer-events-none absolute -right-48 -top-40 h-[620px] w-[620px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto grid max-w-[1280px] items-center gap-12 px-6 md:px-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-20">
+          <div className="relative mx-auto grid max-w-[1320px] items-center gap-12 px-6 md:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-20">
             <div className="relative z-10">
               <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--carbonus-green-dark))]">
                 {copy.eyebrow}
@@ -161,7 +161,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="relative mx-auto mt-12 grid max-w-[1280px] gap-3 px-6 md:grid-cols-3 md:px-10 lg:mt-14">
+          <div className="relative mx-auto mt-12 grid max-w-[1320px] gap-3 px-6 md:grid-cols-3 md:px-6 lg:mt-14">
             {copy.stats.map((stat) => (
               <div key={stat.label} className="flex items-center gap-4 rounded-[20px] border border-white bg-white/85 px-5 py-4 shadow-[0_14px_38px_rgba(12,55,38,0.06)] backdrop-blur-sm">
                 <span className="text-[28px] font-extrabold tracking-[-0.04em] text-[hsl(var(--carbonus-green-dark))]">{stat.value}</span>
@@ -172,7 +172,7 @@ const About = () => {
         </section>
 
         <section className="py-20 sm:py-24 lg:py-28">
-          <div className="mx-auto grid max-w-[1280px] items-center gap-12 px-6 md:px-10 lg:grid-cols-[1.04fr_0.96fr] lg:gap-24">
+          <div className="mx-auto grid max-w-[1320px] items-center gap-12 px-6 md:px-6 lg:grid-cols-[1.04fr_0.96fr] lg:gap-24">
             <div className="relative">
               <div className="overflow-hidden rounded-[30px] shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
                 <img src={carInterior} alt="Modernus nuomojamo automobilio interjeras" className="h-[360px] w-full object-cover sm:h-[460px]" />
@@ -205,7 +205,7 @@ const About = () => {
         </section>
 
         <section className="bg-[hsl(210_20%_97%)] py-20 sm:py-24">
-          <div className="mx-auto max-w-[1280px] px-6 md:px-10">
+          <div className="mx-auto max-w-[1320px] px-6 md:px-6">
             <div className="mx-auto max-w-[660px] text-center">
               <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--carbonus-green-dark))]">{copy.valuesEyebrow}</p>
               <h2 className="mt-4 text-[32px] font-extrabold leading-tight tracking-[-0.025em] sm:text-[40px]">{copy.valuesTitle}</h2>
@@ -227,7 +227,7 @@ const About = () => {
         </section>
 
         <section className="py-20 sm:py-24">
-          <div className="mx-auto max-w-[1280px] px-6 md:px-10">
+          <div className="mx-auto max-w-[1320px] px-6 md:px-6">
             <div className="relative overflow-hidden rounded-[32px] bg-[hsl(var(--carbonus-green-dark))] px-7 py-12 text-white sm:px-12 lg:px-16 lg:py-16">
               <div className="pointer-events-none absolute -bottom-36 -right-20 h-[440px] w-[440px] rotate-[28deg] opacity-[0.08]" style={{ backgroundImage: "repeating-linear-gradient(90deg, #fff 0 14px, transparent 14px 34px)", maskImage: "repeating-linear-gradient(0deg, #000 0 18px, transparent 18px 30px)", WebkitMaskImage: "repeating-linear-gradient(0deg, #000 0 18px, transparent 18px 30px)" }} />
               <div className="relative grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
@@ -250,7 +250,7 @@ const About = () => {
         </section>
 
         <section className="pb-20 sm:pb-24">
-          <div className="mx-auto max-w-[1280px] px-6 md:px-10">
+          <div className="mx-auto max-w-[1320px] px-6 md:px-6">
             <div className="flex flex-col items-start justify-between gap-6 rounded-[28px] bg-[hsl(210_20%_96%)] px-7 py-10 sm:px-10 lg:flex-row lg:items-center lg:px-12">
               <div>
                 <h2 className="text-[28px] font-extrabold tracking-tight sm:text-[34px]">{copy.ctaTitle}</h2>

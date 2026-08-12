@@ -112,7 +112,7 @@ const LeaseAgreement = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
         <div className="pointer-events-none absolute -right-36 -top-44 h-[600px] w-[600px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-        <div className="relative mx-auto grid max-w-[1280px] gap-12 px-6 pb-4 pt-16 md:px-10 lg:grid-cols-[1fr_0.7fr] lg:items-end lg:pt-20">
+        <div className="relative mx-auto grid max-w-[1320px] gap-12 px-6 pb-4 pt-16 md:px-6 lg:grid-cols-[1fr_0.7fr] lg:items-end lg:pt-20">
           <div className="max-w-[790px]">
             <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">{copy.eyebrow}</p>
             <h1 className="mt-5 text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[64px]">{copy.title}</h1>
@@ -149,7 +149,7 @@ const LeaseAgreement = () => {
 
       {/* Agreement Content */}
       <section className="py-16 lg:py-24">
-        <div className="mx-auto max-w-[1280px] px-6 md:px-10">
+        <div className="mx-auto max-w-[1320px] px-6 md:px-6">
           <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
           
           {/* Important Notice */}

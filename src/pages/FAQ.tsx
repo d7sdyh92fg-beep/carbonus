@@ -126,7 +126,7 @@ const FAQ = () => {
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
           <div className="pointer-events-none absolute -right-40 -top-40 h-[590px] w-[590px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto grid max-w-[1280px] gap-12 px-6 pb-4 pt-16 md:px-10 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pt-20">
+          <div className="relative mx-auto grid max-w-[1320px] gap-12 px-6 pb-4 pt-16 md:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pt-20">
             <div className="max-w-[780px]">
               <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">{copy.eyebrow}</p>
               <h1 className="mt-5 text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[66px]">{copy.title}</h1>
@@ -145,7 +145,7 @@ const FAQ = () => {
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1280px] px-6 py-16 md:px-10 lg:py-24">
+        <section className="mx-auto max-w-[1320px] px-6 py-16 md:px-6 lg:py-24">
           <div className="grid gap-10 lg:grid-cols-[285px_1fr] lg:items-start lg:gap-14">
             <aside className="lg:sticky lg:top-[104px]">
               <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-[#778880]">{isEnglish ? "Browse by topic" : "Pasirinkite temą"}</p>
@@ -201,8 +201,8 @@ const FAQ = () => {
           </div>
         </section>
 
-        <section className="px-6 pb-24 md:px-10 lg:pb-28">
-          <div className="relative mx-auto grid max-w-[1280px] gap-9 overflow-hidden rounded-[32px] bg-[hsl(var(--carbonus-green-deep))] px-7 py-12 text-white sm:px-12 lg:grid-cols-[1fr_auto] lg:items-center lg:px-16 lg:py-14">
+        <section className="px-6 pb-24 md:px-6 lg:pb-28">
+          <div className="relative mx-auto grid max-w-[1320px] gap-9 overflow-hidden rounded-[32px] bg-[hsl(var(--carbonus-green-deep))] px-7 py-12 text-white sm:px-12 lg:grid-cols-[1fr_auto] lg:items-center lg:px-16 lg:py-14">
             <div className="pointer-events-none absolute -right-12 -top-24 h-72 w-72 rounded-full border-[42px] border-white/[0.045]" />
             <div className="relative max-w-[720px]">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/55">{copy.contactEyebrow}</p>

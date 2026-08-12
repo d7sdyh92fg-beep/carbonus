@@ -170,7 +170,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
 
       <main className="pt-[78px]">
         <section className="bg-[hsl(210_20%_96%)] pb-12 pt-7 sm:pt-9">
-          <div className="mx-auto max-w-[1240px] px-5 sm:px-6">
+          <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
             <nav className="flex flex-wrap items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.07em] text-foreground/60" aria-label="Breadcrumb">
               <Link to={isEnglish ? "/cars" : "/automobiliai"} className="inline-flex min-h-10 items-center gap-2 rounded-lg pr-2 transition hover:text-[hsl(var(--carbonus-green-dark))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">
                 <ArrowLeft className="h-3.5 w-3.5" /> {copy.back}
@@ -277,7 +277,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
         </section>
 
         <section id="booking-section" className="scroll-mt-24 bg-[hsl(210_20%_97%)] py-16 sm:py-[72px]">
-          <div className="mx-auto max-w-[1240px] px-5 sm:px-6">
+          <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
             <div className="mx-auto mb-7 max-w-[650px] text-center">
               <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-[hsl(var(--carbonus-green)/0.1)] text-[hsl(var(--carbonus-green))]"><CalendarDays className="h-5 w-5" /></span>
               <h2 className="mt-5 text-[30px] font-extrabold tracking-[-0.025em] sm:text-[38px]">{copy.bookingTitle}</h2>
