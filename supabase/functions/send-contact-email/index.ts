@@ -25,7 +25,22 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { firstName, lastName, email, phone, subject, message }: ContactEmailRequest = await req.json();
+    const raw: ContactEmailRequest = await req.json();
+
+    const esc = (v: unknown, max = 2000) =>
+      String(v ?? "")
+        .slice(0, max)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+
+    const firstName = esc(raw.firstName, 100);
+    const lastName = esc(raw.lastName, 100);
+    const email = esc(raw.email, 200);
+    const phone = raw.phone ? esc(raw.phone, 50) : "";
+    const subject = esc(raw.subject, 200);
+    const message = esc(raw.message, 5000);
 
     console.log("Received contact form submission:", { firstName, lastName, email, subject });
 
@@ -39,6 +54,17 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(
+        JSON.stringify({ error: "Neteisingas el. pašto adresas" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
 
     // Send email to company
     const emailResponse = await resend.emails.send({

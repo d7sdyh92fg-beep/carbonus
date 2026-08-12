@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { requireAdmin, adminAuthFailureResponse } from "../_shared/adminAuth.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -16,6 +17,9 @@ serve(async (req) => {
   }
 
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) return adminAuthFailureResponse(auth, corsHeaders);
+
     const { invoiceId } = await req.json();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;

@@ -33,10 +33,65 @@ serve(async (req) => {
       currency = 'eur', 
       customerEmail, 
       customerName,
-      carName,
-      carId,
       paymentType 
     }: PaymentRequest = await req.json();
+
+    if (!reservationId || typeof reservationId !== 'string') {
+      return new Response(JSON.stringify({ error: 'reservationId is required' }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ---- Server-side amount validation (never trust client-provided price) ----
+    const admin = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+      { auth: { persistSession: false } }
+    );
+
+    const { data: reservation, error: reservationError } = await admin
+      .from('reservations')
+      .select('id, car_id, car_name, total_amount, status, deleted_at')
+      .eq('id', reservationId)
+      .maybeSingle();
+
+    if (reservationError || !reservation || reservation.deleted_at) {
+      return new Response(JSON.stringify({ error: 'Reservation not found' }), {
+        status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (['cancelled', 'completed'].includes(String(reservation.status))) {
+      return new Response(JSON.stringify({ error: 'Reservation is not payable' }), {
+        status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const total = Number(reservation.total_amount ?? 0);
+    const requested = Number(amount ?? 0);
+    let chargeAmount: number;
+
+    if (paymentType === 'full') {
+      chargeAmount = total;
+    } else {
+      // Advance: must be a positive amount not exceeding the reservation total.
+      if (!(requested > 0) || requested > total + 0.01) {
+        return new Response(JSON.stringify({ error: 'Invalid advance amount' }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      chargeAmount = requested;
+    }
+
+    if (!(chargeAmount > 0)) {
+      return new Response(JSON.stringify({ error: 'Invalid payment amount' }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Car identity comes from the database, not from the client (Stripe account routing).
+    const carId = String(reservation.car_id ?? '');
+    const carName = reservation.car_name ?? '';
 
     // Select Stripe key based on car ID (Sanlab for SpaceTourer)
     const isSanlabCar = SANLAB_CAR_IDS.includes(carId);
@@ -44,9 +99,10 @@ serve(async (req) => {
       ? Deno.env.get("SANLAB_STRIPE_SECRET_KEY") 
       : Deno.env.get("STRIPE_SECRET_KEY");
 
+
     console.log('Creating Stripe payment session:', { 
       reservationId, 
-      amount, 
+      amount: chargeAmount,
       paymentType,
       isSanlabCar,
       stripeAccount: isSanlabCar ? 'sanlab' : 'carbonus'
@@ -82,7 +138,7 @@ serve(async (req) => {
             name: `Automobilių nuoma - ${carName}`,
             description: paymentType === 'full' ? 'Pilna nuomos suma' : 'Avansas',
           },
-          unit_amount: Math.round(amount * 100), // Amount in cents
+          unit_amount: Math.round(chargeAmount * 100), // Amount in cents
         },
         quantity: 1,
       },
@@ -98,14 +154,14 @@ serve(async (req) => {
       payment_intent_data: {
         metadata: {
           reservationId: reservationId,
-          amount: amount.toString(),
+          amount: chargeAmount.toString(),
           paymentType: paymentType,
         },
       },
       metadata: {
         reservationId: reservationId,
         paymentType: paymentType,
-        amount: amount.toString(),
+        amount: chargeAmount.toString(),
       },
     };
 

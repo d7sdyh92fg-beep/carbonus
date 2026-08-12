@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.55.0";
+import { requireAdmin, adminAuthFailureResponse } from "../_shared/adminAuth.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -263,6 +264,9 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) return adminAuthFailureResponse(auth, corsHeaders);
+
     const { reservationId, reminderType }: PaymentReminderRequest = await req.json();
     console.log("Sending payment reminder:", { reservationId, reminderType });
 

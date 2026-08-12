@@ -4,6 +4,7 @@ import { Resend } from "https://esm.sh/resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument, rgb } from "npm:pdf-lib@1.17.1";
 import fontkit from "npm:@pdf-lib/fontkit@1.1.1";
+import { requireAdmin, adminAuthFailureResponse } from "../_shared/adminAuth.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -668,6 +669,9 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) return adminAuthFailureResponse(auth, corsHeaders);
+
     const body = await req.json();
     const {
       reservationId, customerName, customerEmail, carName,

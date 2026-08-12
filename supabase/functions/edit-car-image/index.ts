@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireAdmin, adminAuthFailureResponse } from "../_shared/adminAuth.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,6 +12,9 @@ serve(async (req) => {
   }
 
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) return adminAuthFailureResponse(auth, corsHeaders);
+
     const { imageData, instruction } = await req.json();
     
     if (!imageData || !instruction) {
