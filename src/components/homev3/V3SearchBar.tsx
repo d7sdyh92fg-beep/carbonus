@@ -170,11 +170,8 @@ export function V3SearchBar() {
                 }
                 setOpenP(false);
               }}
-              disabled={(d) => {
-                const t = new Date();
-                t.setHours(0, 0, 0, 0);
-                return d < t;
-              }}
+              disabled={{ before: minBookingDay() }}
+
               locale={lt}
               className="pointer-events-auto p-3"
             />
