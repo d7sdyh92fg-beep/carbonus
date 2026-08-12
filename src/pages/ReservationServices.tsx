@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Plus, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
+import { ChevronLeft, Plus, Package, Baby, Shield, Navigation, Users, UserCircle } from 'lucide-react';
 import { useBooking, AdditionalService } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -24,30 +24,6 @@ export default function ReservationServices() {
       price: 4.01,
       unit: 'perDay',
       icon: Users,
-    },
-    {
-      id: 'abroad-zone3',
-      title: t('services.items.abroadZone3.title'),
-      description: t('services.items.abroadZone3.description'),
-      price: 500,
-      unit: 'oneTime',
-      icon: Map,
-    },
-    {
-      id: 'abroad-zone2',
-      title: t('services.items.abroadZone2.title'),
-      description: t('services.items.abroadZone2.description'),
-      price: 300,
-      unit: 'oneTime',
-      icon: Map,
-    },
-    {
-      id: 'abroad-zone1',
-      title: t('services.items.abroadZone1.title'),
-      description: t('services.items.abroadZone1.description'),
-      price: 150,
-      unit: 'oneTime',
-      icon: Map,
     },
     {
       id: 'roadside-assistance',
