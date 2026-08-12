@@ -54,19 +54,33 @@ const FAQ = () => {
   );
 
   const visibleCategories = useMemo(() => {
-    const query = searchTerm.trim().toLocaleLowerCase(language);
+    const terms = normalize(searchTerm).split(/\s+/).filter(Boolean);
+    const searching = terms.length > 0;
     return faqCategories
-      .filter((category) => activeCategory === "all" || category.id === activeCategory)
+      .filter((category) => searching || activeCategory === "all" || category.id === activeCategory)
       .map((category) => ({
         ...category,
-        questions: category.questions.filter((faq) =>
-          !query || `${faq.question} ${faq.answer}`.toLocaleLowerCase(language).includes(query),
-        ),
+        questions: category.questions.filter((faq) => {
+          if (!searching) return true;
+          const haystack = normalize(`${faq.question} ${faq.answer} ${category.title}`);
+          return terms.every((term) => haystack.includes(term));
+        }),
       }))
       .filter((category) => category.questions.length > 0);
-  }, [activeCategory, faqCategories, language, searchTerm]);
+  }, [activeCategory, faqCategories, searchTerm]);
 
   const visibleQuestionCount = visibleCategories.reduce((sum, category) => sum + category.questions.length, 0);
+
+  // Auto-expand results while searching
+  useEffect(() => {
+    if (!normalize(searchTerm)) return;
+    setOpenItems(
+      visibleCategories.flatMap((category) =>
+        category.questions.map((_, index) => `${category.id}-${index}`),
+      ),
+    );
+  }, [searchTerm, visibleCategories]);
+
 
   const toggleItem = (id: string) => {
     setOpenItems((items) => items.includes(id) ? items.filter((item) => item !== id) : [...items, id]);
