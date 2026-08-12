@@ -288,7 +288,7 @@ const Cars = () => {
             <div className="absolute bottom-0 right-28 h-32 w-56 rounded-t-[80px] bg-white/50" />
           </div>
 
-          <div className="relative mx-auto grid max-w-[1280px] gap-10 px-6 pb-16 pt-16 md:px-10 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pb-20 lg:pt-20">
+          <div className="relative mx-auto grid max-w-[1320px] gap-10 px-6 pb-16 pt-16 md:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pb-20 lg:pt-20">
             <div className="max-w-[760px]">
               <p className="mb-5 text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">
                 {text.eyebrow}
@@ -318,7 +318,7 @@ const Cars = () => {
           </div>
         </section>
 
-        <section className="relative z-10 mx-auto max-w-[1280px] px-6 pb-5 pt-10 md:px-10 lg:pt-12">
+        <section className="relative z-10 mx-auto max-w-[1320px] px-6 pb-5 pt-10 md:px-6 lg:pt-12">
           <div className="rounded-[24px] border border-[#e0e8e4] bg-white p-3 shadow-[0_18px_55px_rgba(12,55,38,0.07)] sm:p-4">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="relative min-w-0 flex-1 xl:max-w-[310px]">
@@ -361,7 +361,7 @@ const Cars = () => {
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1280px] px-6 pb-24 pt-8 md:px-10 lg:pb-28">
+        <section className="mx-auto max-w-[1320px] px-6 pb-24 pt-8 md:px-6 lg:pb-28">
           <div className="mb-7 flex items-center justify-between">
             <p className="text-[14px] font-semibold text-[#53645d]">
               {text.found}: <span className="text-[#111b18]">{filteredCars.length}</span>
@@ -454,8 +454,8 @@ const Cars = () => {
           )}
         </section>
 
-        <section className="px-6 pb-24 md:px-10 lg:pb-28">
-          <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[32px] bg-[hsl(var(--carbonus-green-deep))] px-7 py-12 text-white sm:px-12 lg:flex lg:items-center lg:justify-between lg:px-16 lg:py-14">
+        <section className="px-6 pb-24 md:px-6 lg:pb-28">
+          <div className="relative mx-auto max-w-[1320px] overflow-hidden rounded-[32px] bg-[hsl(var(--carbonus-green-deep))] px-7 py-12 text-white sm:px-12 lg:flex lg:items-center lg:justify-between lg:px-16 lg:py-14">
             <div className="pointer-events-none absolute -right-14 -top-20 h-72 w-72 rounded-full border-[42px] border-white/[0.045]" />
             <div className="pointer-events-none absolute bottom-0 right-[28%] h-32 w-32 rounded-t-full bg-[hsl(var(--carbonus-green))]/20" />
             <div className="relative max-w-[690px]">

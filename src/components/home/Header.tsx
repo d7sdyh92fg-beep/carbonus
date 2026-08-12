@@ -116,7 +116,7 @@ export function Header() {
         </nav>
 
         {/* Right */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="relative hidden lg:flex items-center gap-3">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger className={cn("inline-flex items-center justify-center gap-1.5 h-[40px] w-[70px] px-4 rounded-full text-sm font-medium transition-colors", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))] hover:bg-[hsl(var(--carbonus-dark))]/10" : "bg-white/[0.06] border border-white/10 text-white hover:bg-white/[0.10]")}>
               {language.toUpperCase()} <ChevronDown className="h-4 w-4" />
@@ -130,7 +130,7 @@ export function Header() {
 
           <button
             onClick={() => navigate(isAdmin ? "/admin" : "/auth")}
-            className="inline-flex items-center gap-2 h-[40px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
+            className="absolute left-full top-1/2 ml-3 -translate-y-1/2 inline-flex items-center gap-2 h-[40px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
           >
             <UserCircle className="h-4 w-4" />
             Admin
