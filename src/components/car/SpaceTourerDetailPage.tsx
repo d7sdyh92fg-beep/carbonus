@@ -19,10 +19,10 @@ import BookingCalendar from "@/components/booking/BookingCalendar";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { useTranslations } from "@/hooks/use-translations";
-import spaceFront from "@/assets/citroen-spacetourer-front-studio.png";
-import spaceInterior from "@/assets/citroen-spacetourer-front-cabin-v3.png";
-import spacePassengerCabin from "@/assets/citroen-spacetourer-interior-v2.png";
-import spaceRear from "@/assets/citroen-spacetourer-rear-studio.png";
+import spaceFront from "@/assets/car-galleries/citroen-spacetourer/01-EXTERIOR-FRONT.png";
+import spaceRear from "@/assets/car-galleries/citroen-spacetourer/02-EXTERIOR-REAR.png";
+import spaceInterior from "@/assets/car-galleries/citroen-spacetourer/03-INTERIOR-FRONT-CABIN.png";
+import spacePassengerCabin from "@/assets/car-galleries/citroen-spacetourer/04-INTERIOR-PASSENGER-CABIN.png";
 import spaceScenic from "@/assets/citroen-druskininkai-v3.png";
 
 type SelectedPackage = {
