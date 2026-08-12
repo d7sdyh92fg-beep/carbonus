@@ -20,10 +20,10 @@ import BookingCalendar from "@/components/booking/BookingCalendar";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { useTranslations } from "@/hooks/use-translations";
-import slkFront from "@/assets/mercedes-slk-front-studio.png";
-import slkInterior from "@/assets/car-interior.jpg";
-import slkRear from "@/assets/mercedes-slk-rear-studio.png";
-import slkScenic from "@/assets/mercedes-slk-scenic.jpg";
+import slkFront from "@/assets/mercedes-slk-front-white-v2.png";
+import slkInterior from "@/assets/mercedes-slk-interior-v2.png";
+import slkRear from "@/assets/mercedes-slk-rear-white-v2.png";
+import slkScenic from "@/assets/mercedes-slk-scenic-v2.png";
 
 type SelectedPackage = {
   type: "romantic" | "wedding";
