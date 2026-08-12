@@ -132,6 +132,7 @@ export function SearchSummaryCard({
               label={c.pickupLabel}
               date={pickupDate}
               time={pickupTime}
+              minDate={minBookingDay()}
               onDateChange={onPickupDateChange}
               onTimeChange={onPickupTimeChange}
             />
@@ -139,10 +140,15 @@ export function SearchSummaryCard({
               label={c.returnLabel}
               date={returnDate}
               time={returnTime}
-              minDate={new Date(`${pickupDate}T12:00:00`)}
+              minDate={
+                new Date(`${pickupDate}T12:00:00`) > minBookingDay()
+                  ? new Date(`${pickupDate}T12:00:00`)
+                  : minBookingDay()
+              }
               onDateChange={onReturnDateChange}
               onTimeChange={onReturnTimeChange}
             />
+
           </div>
 
           <div className="mt-4 flex justify-end">
