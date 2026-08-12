@@ -23,6 +23,14 @@ import { FAQSchema } from "@/components/seo/StructuredData";
 import { useTranslations } from "@/hooks/use-translations";
 import { translations } from "@/i18n/translations";
 
+/** Lowercases and strips diacritics so "ieskoti" matches "ieškoti". */
+const normalize = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
 const FAQ = () => {
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
