@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import { CalendarDays, ChevronDown, MapPin, Pencil } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { SearchCopy } from "./searchCopy";
 import { PickupMode } from "@/hooks/use-search-state";
+import { firstAllowedTime, isTimeAllowed, minBookingDay } from "@/lib/bookingTime";
+
 
 const toISO = (d: Date) => {
   const y = d.getFullYear();
