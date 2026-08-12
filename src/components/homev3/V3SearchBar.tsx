@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useLanguage } from "@/hooks/use-language";
+import { minBookingDay, minBookingDayISO } from "@/lib/bookingTime";
+
 
 const barCopy = {
   lt: {
@@ -68,8 +70,9 @@ export function V3SearchBar() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const c = barCopy[language] ?? barCopy.lt;
-  const today = toISO(new Date());
-  const tomorrow = toISO(new Date(Date.now() + 86400000));
+  const today = minBookingDayISO();
+  const tomorrow = toISO(new Date(new Date(`${today}T12:00:00`).getTime() + 86400000));
+
 
   const [locationMode, setLocationMode] = useState<LocationMode>("office");
   const [pickup, setPickup] = useState(today);
@@ -170,11 +173,8 @@ export function V3SearchBar() {
                 }
                 setOpenP(false);
               }}
-              disabled={(d) => {
-                const t = new Date();
-                t.setHours(0, 0, 0, 0);
-                return d < t;
-              }}
+              disabled={{ before: minBookingDay() }}
+
               locale={lt}
               className="pointer-events-auto p-3"
             />
@@ -203,7 +203,7 @@ export function V3SearchBar() {
                   setOpenR(false);
                 }
               }}
-              disabled={(d) => d < new Date(`${pickup}T12:00:00`)}
+              disabled={(d) => d < new Date(`${pickup}T12:00:00`) || d < minBookingDay()}
               locale={lt}
               className="pointer-events-auto p-3"
             />

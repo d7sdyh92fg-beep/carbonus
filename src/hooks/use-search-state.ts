@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { EMPTY_LOCATION, PlaceLocation } from "@/lib/logisticsPricing";
+import { minBookingDayISO } from "@/lib/bookingTime";
+
 
 export type PickupMode = "office" | "druskininkai" | "other";
 export type ReturnMode = "same" | "office" | "different";
@@ -47,8 +49,9 @@ const writeLocation = (
 export function useSearchState() {
   const [params, setParams] = useSearchParams();
 
-  const today = toISO(new Date());
-  const tomorrow = toISO(new Date(Date.now() + 86400000));
+  const today = minBookingDayISO();
+  const tomorrow = toISO(new Date(new Date(`${today}T12:00:00`).getTime() + 86400000));
+
 
   const rawMode = params.get("mode");
   const pickupMode: PickupMode =

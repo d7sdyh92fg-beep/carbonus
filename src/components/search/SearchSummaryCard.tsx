@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import { CalendarDays, ChevronDown, MapPin, Pencil } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { SearchCopy } from "./searchCopy";
 import { PickupMode } from "@/hooks/use-search-state";
+import { firstAllowedTime, isTimeAllowed, minBookingDay } from "@/lib/bookingTime";
+
 
 const toISO = (d: Date) => {
   const y = d.getFullYear();
@@ -49,10 +52,27 @@ export function SearchSummaryCard({
   open,
   onOpenChange,
 }: Props) {
+  // Enforce the 1-hour lead time: bump invalid selections to the first allowed slot.
+  useEffect(() => {
+    if (!isTimeAllowed(pickupDate, pickupTime)) {
+      const next = firstAllowedTime(pickupDate, TIMES);
+      if (next) onPickupTimeChange(next);
+    }
+  }, [pickupDate, pickupTime, onPickupTimeChange]);
+
+  useEffect(() => {
+    if (!isTimeAllowed(returnDate, returnTime)) {
+      const next = firstAllowedTime(returnDate, TIMES);
+      if (next) onReturnTimeChange(next);
+    }
+  }, [returnDate, returnTime, onReturnTimeChange]);
+
   const locationTitle =
     pickupMode === "office" ? c.modeOffice : pickupMode === "druskininkai" ? c.modeDruskininkai : c.modeOther;
   const locationSub =
     pickupMode === "office" ? c.officeSummary : pickupMode === "druskininkai" ? c.druskininkaiSummary : c.otherSummary;
+
+
 
   const modePill = (mode: PickupMode, label: string) => (
     <button
@@ -112,6 +132,7 @@ export function SearchSummaryCard({
               label={c.pickupLabel}
               date={pickupDate}
               time={pickupTime}
+              minDate={minBookingDay()}
               onDateChange={onPickupDateChange}
               onTimeChange={onPickupTimeChange}
             />
@@ -119,10 +140,15 @@ export function SearchSummaryCard({
               label={c.returnLabel}
               date={returnDate}
               time={returnTime}
-              minDate={new Date(`${pickupDate}T12:00:00`)}
+              minDate={
+                new Date(`${pickupDate}T12:00:00`) > minBookingDay()
+                  ? new Date(`${pickupDate}T12:00:00`)
+                  : minBookingDay()
+              }
               onDateChange={onReturnDateChange}
               onTimeChange={onReturnTimeChange}
             />
+
           </div>
 
           <div className="mt-4 flex justify-end">
@@ -168,6 +194,8 @@ function DateTimeField({
   onDateChange: (v: string) => void;
   onTimeChange: (v: string) => void;
 }) {
+  const allowedTimes = TIMES.filter((t) => isTimeAllowed(date, t));
+  const timeOptions = allowedTimes.length ? allowedTimes : [time];
   return (
     <div>
       <p className="text-[13px] font-semibold text-foreground">{label}</p>
@@ -188,7 +216,7 @@ function DateTimeField({
               selected={new Date(`${date}T12:00:00`)}
               defaultMonth={new Date(`${date}T12:00:00`)}
               onSelect={(d) => d && onDateChange(toISO(d))}
-              disabled={minDate ? { before: minDate } : { before: new Date() }}
+              disabled={{ before: minDate ?? minBookingDay() }}
               className="pointer-events-auto p-3"
             />
           </PopoverContent>
@@ -200,7 +228,7 @@ function DateTimeField({
           aria-label={`${label} – laikas`}
           className="min-h-[46px] rounded-xl border border-border bg-white px-3 text-[14px] font-medium text-foreground outline-none transition-colors hover:border-carbonus-green"
         >
-          {TIMES.map((t) => (
+          {timeOptions.map((t) => (
             <option key={t} value={t}>
               {t}
             </option>
@@ -208,5 +236,6 @@ function DateTimeField({
         </select>
       </div>
     </div>
+
   );
 }
