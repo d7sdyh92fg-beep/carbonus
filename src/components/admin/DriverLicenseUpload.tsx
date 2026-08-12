@@ -229,8 +229,8 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
     };
   }, [cameraStream]);
 
-  const frontImageUrl = uploadedUrls?.front || frontPreview;
-  const backImageUrl = uploadedUrls?.back || backPreview;
+  const frontImageUrl = useSignedLicenseUrl(uploadedUrls?.front || frontPreview);
+  const backImageUrl = useSignedLicenseUrl(uploadedUrls?.back || backPreview);
 
   return (
     <div className="space-y-6">
