@@ -1,4 +1,4 @@
-import groupTravelCover from "@/assets/carbonus-journal-spacetourer.png.asset.json";
+import groupTravelCover from "@/assets/blog-group-travel.jpg";
 
 export const translations = {
   lt: {
@@ -1909,7 +1909,7 @@ export const translations = {
           <p>Kelionė didelei grupei – ar tai draugų išvyka, šeimos susibūrimas, ar verslo komandos renginys – visada kelia klausimą: kaip visi patogiai nuvyks į vietą? Keliems automobiliams nuomoti brangoka, viešasis transportas nepatogus, o taksi didelei grupei – per brangu. Atsakymas paprastas: <strong>8 vietų mikroautobusas</strong>.</p>
 
           <figure class="my-10 overflow-hidden rounded-[24px] border border-[#e0e8e4]">
-            <img src="${groupTravelCover.url}" alt="Citroën SpaceTourer miško kelyje – Carbonus žurnalas" class="h-auto w-full object-cover" />
+            <img src="${groupTravelCover}" alt="Citroën SpaceTourer miško kelyje – Carbonus žurnalas" class="h-auto w-full object-cover" />
           </figure>
 
 
@@ -3779,7 +3779,7 @@ export const translations = {
           <p>Traveling in a large group – whether it's a friends' getaway, family reunion, or a team event – always raises the question: how will everyone get there comfortably? Renting several cars is expensive, public transport is inconvenient, and taxis for a large group are too costly. The answer is simple: <strong>an 8-seat minivan</strong>.</p>
 
           <figure class="my-10 overflow-hidden rounded-[24px] border border-[#e0e8e4]">
-            <img src="${groupTravelCover.url}" alt="Citroën SpaceTourer on a forest road – Carbonus Journal" class="h-auto w-full object-cover" />
+            <img src="${groupTravelCover}" alt="Citroën SpaceTourer on a forest road – Carbonus Journal" class="h-auto w-full object-cover" />
           </figure>
 
 
