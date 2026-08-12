@@ -380,17 +380,15 @@ const Cars = () => {
                 const fuel = activeLanguage === "en" ? car.fuelEn : car.fuel;
                 const transmission = activeLanguage === "en" ? car.transmissionEn : car.transmission;
                 return (
-                  <article key={car.id} className="group overflow-hidden rounded-[26px] border border-[#e2e9e5] bg-white p-3 shadow-[0_16px_45px_rgba(14,47,35,0.06)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(14,47,35,0.11)]">
+                  <article key={car.id} className="group overflow-hidden rounded-[20px] border border-[#e2e9e5] bg-white p-3 shadow-[0_14px_38px_rgba(16,24,40,0.08)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_48px_rgba(16,24,40,0.12)]">
                     <Link to={carPath(car)} onClick={() => registerCarView(car)} className="block" aria-label={displayName}>
-                      <div className="relative h-[245px] overflow-hidden rounded-[18px] bg-[linear-gradient(145deg,#f6f8f7_0%,#edf2ef_100%)] sm:h-[265px]">
-
-                        <span className="absolute left-5 top-5 z-20 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#53645d] shadow-sm backdrop-blur-sm">
+                      <div className="relative aspect-[3/2] overflow-hidden rounded-[15px] bg-[#f4f6f5]">
+                        <span className="absolute left-4 top-4 z-20 rounded-full border border-black/[0.04] bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#53645d]">
                           {car.year}
                         </span>
-                        <span className="absolute right-5 top-5 z-20 rounded-full bg-[hsl(var(--carbonus-green-soft))] px-3 py-1.5 text-[11px] font-bold text-[hsl(var(--carbonus-green-dark))]">
+                        <span className="absolute right-4 top-4 z-20 rounded-full bg-[hsl(var(--carbonus-green-soft))] px-3 py-1.5 text-[11px] font-bold text-[hsl(var(--carbonus-green-dark))]">
                           {category}
                         </span>
-                        <div className="absolute bottom-[13%] left-1/2 h-7 w-[74%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(17,35,28,0.27)_0%,rgba(17,35,28,0)_72%)] blur-[2px]" />
                         <img
                           src={car.image}
                           alt={displayName}
@@ -400,29 +398,29 @@ const Cars = () => {
                       </div>
                     </Link>
 
-                    <div className="p-2 pt-5 sm:p-3 sm:pt-5">
+                    <div className="p-2 pt-4 sm:p-3 sm:pt-4">
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-[hsl(var(--carbonus-green-dark))]">{category}</p>
-                          <h2 className="mt-1.5 text-[21px] font-bold tracking-[-0.025em] text-[#111b18]">{displayName}</h2>
+                          <h2 className="mt-1 text-[17px] font-bold tracking-[-0.025em] text-[#111b18]">{displayName}</h2>
                         </div>
                         <div className="shrink-0 text-right">
                           <p className="text-[11px] text-[#7b8b84]">{text.from}</p>
-                          <p className="text-[24px] font-bold tracking-[-0.035em] text-[hsl(var(--carbonus-green))]">{carPrice(car)} €</p>
+                          <p className="text-[21px] font-bold tracking-[-0.035em] text-[hsl(var(--carbonus-green))]">{carPrice(car)} €</p>
                           <p className="text-[11px] text-[#7b8b84]">{text.day}</p>
                         </div>
                       </div>
 
-                      <div className="mt-5 grid grid-cols-3 divide-x divide-[#e3ebe7] border-y border-[#e3ebe7] py-4">
-                        <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+                      <div className="mt-4 grid grid-cols-3 divide-x divide-[#e3ebe7] border-y border-[#e3ebe7] py-3">
+                        <div className="flex flex-col items-center gap-1 px-2 text-center">
                           <Users className="h-[17px] w-[17px] text-[hsl(var(--carbonus-green-dark))]" />
                           <span className="text-[11px] font-medium text-[#64756e]">{car.passengers} {text.seats}</span>
                         </div>
-                        <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+                        <div className="flex flex-col items-center gap-1 px-2 text-center">
                           <Settings2 className="h-[17px] w-[17px] text-[hsl(var(--carbonus-green-dark))]" />
                           <span className="text-[11px] font-medium text-[#64756e]">{transmission}</span>
                         </div>
-                        <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+                        <div className="flex flex-col items-center gap-1 px-2 text-center">
                           <Fuel className="h-[17px] w-[17px] text-[hsl(var(--carbonus-green-dark))]" />
                           <span className="text-[11px] font-medium text-[#64756e]">{fuel}</span>
                         </div>
@@ -431,7 +429,7 @@ const Cars = () => {
                       <Link
                         to={carPath(car)}
                         onClick={() => registerCarView(car)}
-                        className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-[14px] bg-[hsl(var(--carbonus-green-dark))] text-[13px] font-bold text-white transition hover:bg-[hsl(var(--carbonus-green-deep))]"
+                        className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-[14px] bg-[hsl(var(--carbonus-green-dark))] text-[13px] font-bold text-white transition hover:bg-[hsl(var(--carbonus-green-deep))]"
                       >
                         {text.view}
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
