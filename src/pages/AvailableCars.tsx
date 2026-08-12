@@ -30,10 +30,10 @@ import { LogisticsSummary } from "@/components/search/LogisticsSummary";
 import { TrustStrip } from "@/components/search/TrustStrip";
 import {
   CARBONUS_OFFICE,
-  calculateCollectionFee,
-  calculateDeliveryFee,
-  calculateLogisticsTotal,
+  buildLogisticsQuote,
+  ReturnType as LogisticsReturnType,
 } from "@/lib/logisticsPricing";
+import { useDrivingDistance } from "@/hooks/use-driving-distance";
 
 const ACTIVE_STATUSES = ["paid", "pending", "requested", "picked_up", "awaiting_payment"];
 
