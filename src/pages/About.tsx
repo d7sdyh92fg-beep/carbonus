@@ -112,14 +112,14 @@ const About = () => {
       <Header />
 
       <main>
-        <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-14 pt-[126px] sm:pb-16 lg:pt-[150px]">
+        <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
           <div className="pointer-events-none absolute -right-48 -top-40 h-[620px] w-[620px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto grid max-w-[1320px] items-center gap-12 px-6 md:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-20">
+          <div className="relative mx-auto grid max-w-[1320px] items-center gap-12 px-6 pb-4 pt-16 md:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-20 lg:pt-20">
             <div className="relative z-10">
               <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--carbonus-green-dark))]">
                 {copy.eyebrow}
               </p>
-              <h1 className="mt-6 max-w-[600px] text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-[52px] lg:text-[64px]">
+              <h1 className="mt-5 max-w-[600px] text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[66px]">
                 {copy.heroTitle}
               </h1>
               <div className="mt-6 h-1 w-12 rounded-full bg-[hsl(var(--carbonus-green))]" />
