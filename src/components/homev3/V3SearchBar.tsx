@@ -7,7 +7,46 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useLanguage } from "@/hooks/use-language";
-import { minBookingDay, minBookingDayISO } from "@/lib/bookingTime";
+import { minBookingDay, minBookingDayISO, isTimeAllowed, firstAllowedTime } from "@/lib/bookingTime";
+
+const TIMES = Array.from({ length: 48 }, (_, i) => {
+  const h = String(Math.floor(i / 2)).padStart(2, "0");
+  const m = i % 2 === 0 ? "00" : "30";
+  return `${h}:${m}`;
+});
+
+function TimeRow({
+  label,
+  date,
+  time,
+  onTimeChange,
+}: {
+  label: string;
+  date: string;
+  time: string;
+  onTimeChange: (v: string) => void;
+}) {
+  const allowed = TIMES.filter((t) => isTimeAllowed(date, t));
+  const options = allowed.length ? allowed : [time];
+  return (
+    <div className="flex items-center gap-2 border-t border-border px-3 py-2">
+      <Clock className="h-4 w-4 shrink-0 text-carbonus-green" />
+      <span className="flex-1 text-[12px] font-medium text-muted-foreground">{label}</span>
+      <select
+        value={time}
+        onChange={(e) => onTimeChange(e.target.value)}
+        aria-label={label}
+        className="min-h-[34px] rounded-lg border border-carbonus-green/40 bg-white px-2 text-[13px] font-semibold text-foreground outline-none hover:border-carbonus-green"
+      >
+        {options.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
 
 
 const barCopy = {
