@@ -24,6 +24,15 @@ export interface SelectedPackage {
   priceDisplay: string; // e.g. "70-90"
 }
 
+export interface DeliveryInfo {
+  /** Total logistics fee (delivery + collection legs). */
+  fee: number;
+  deliveryFee: number;
+  collectionFee: number;
+  pickupAddress?: string;
+  returnAddress?: string;
+}
+
 export interface BookingData {
   carId: string;
   carName: string;
@@ -38,6 +47,7 @@ export interface BookingData {
   insurance?: InsuranceOption;
   services: AdditionalService[];
   selectedPackage?: SelectedPackage;
+  delivery?: DeliveryInfo;
 }
 
 interface BookingContextType {
@@ -85,6 +95,11 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
     if (!bookingData) return 0;
 
     let total = bookingData.basePrice;
+
+    // Add delivery / collection logistics fee
+    if (bookingData.delivery?.fee) {
+      total += bookingData.delivery.fee;
+    }
 
     // Add insurance cost
     if (bookingData.insurance) {
