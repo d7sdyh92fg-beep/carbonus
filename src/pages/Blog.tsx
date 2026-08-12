@@ -78,7 +78,7 @@ const Blog = () => {
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
           <div className="pointer-events-none absolute -right-40 -top-44 h-[600px] w-[600px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto max-w-[1280px] px-6 pb-3 pt-16 md:px-10 lg:pt-20">
+          <div className="relative mx-auto max-w-[1320px] px-6 pb-3 pt-16 md:px-6 lg:pt-20">
             <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">{copy.eyebrow}</p>
             <h1 className="mt-5 max-w-[820px] text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[66px]">{copy.title}</h1>
             <p className="mt-6 max-w-[680px] text-[16px] leading-7 text-[#64756e] sm:text-[17px]">{copy.subtitle}</p>
@@ -90,7 +90,7 @@ const Blog = () => {
         </section>
 
         {featured && (
-          <section className="mx-auto max-w-[1280px] px-6 py-14 md:px-10 lg:py-20">
+          <section className="mx-auto max-w-[1320px] px-6 py-14 md:px-6 lg:py-20">
             <Link to={`${postBase}/${featured.slug}`} className="group grid overflow-hidden rounded-[30px] border border-[#e0e8e4] bg-white shadow-[0_20px_60px_rgba(14,47,35,0.08)] lg:grid-cols-[1.12fr_0.88fr]">
               <div className="relative min-h-[330px] overflow-hidden lg:min-h-[460px]"><img src={featured.image} alt={featured.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]" /><span className="absolute left-5 top-5 rounded-full border border-white/80 bg-white/95 px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[hsl(var(--carbonus-green-dark))] shadow-[0_8px_24px_rgba(12,45,34,0.16)] backdrop-blur-md">{copy.featured}</span></div>
               <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
@@ -105,7 +105,7 @@ const Blog = () => {
         )}
 
         {remaining.length > 0 && (
-          <section className="mx-auto max-w-[1280px] px-6 pb-24 md:px-10 lg:pb-28">
+          <section className="mx-auto max-w-[1320px] px-6 pb-24 md:px-6 lg:pb-28">
             <div className="mb-9 flex items-end justify-between gap-8"><div><p className="text-[11px] font-bold uppercase tracking-[0.17em] text-[hsl(var(--carbonus-green-dark))]">{copy.latest}</p><h2 className="mt-2 text-[29px] font-bold tracking-[-0.03em] sm:text-[36px]">{copy.latestText}</h2></div><Newspaper className="hidden h-8 w-8 text-[hsl(var(--carbonus-green))] sm:block" /></div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {remaining.map((post) => (

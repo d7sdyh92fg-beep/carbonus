@@ -147,7 +147,7 @@ const Contact = () => {
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
           <div className="pointer-events-none absolute -right-40 -top-40 h-[600px] w-[600px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto grid max-w-[1280px] gap-12 px-6 pb-4 pt-16 md:px-10 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pt-20">
+          <div className="relative mx-auto grid max-w-[1320px] gap-12 px-6 pb-4 pt-16 md:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:pt-20">
             <div className="max-w-[760px]">
               <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">{copy.eyebrow}</p>
               <h1 className="mt-5 text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[66px]">{copy.title}</h1>
@@ -168,7 +168,7 @@ const Contact = () => {
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1280px] px-6 py-14 md:px-10 lg:py-18">
+        <section className="mx-auto max-w-[1320px] px-6 py-14 md:px-6 lg:py-18">
           <div className="grid gap-4 md:grid-cols-3">
             {details.map(({ Icon, label, value, note, href, onClick }) => (
               <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined} onClick={onClick} className="group rounded-[22px] border border-[#e0e8e4] bg-white p-5 shadow-[0_12px_36px_rgba(14,47,35,0.05)] transition hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(14,47,35,0.09)]">
@@ -182,7 +182,7 @@ const Contact = () => {
         </section>
 
         <section className="border-y border-[#e1e9e5] bg-white py-20 lg:py-24">
-          <div className="mx-auto grid max-w-[1280px] gap-10 px-6 md:px-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
+          <div className="mx-auto grid max-w-[1320px] gap-10 px-6 md:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
             <div className="rounded-[28px] border border-[#e0e8e4] bg-white p-6 shadow-[0_20px_60px_rgba(14,47,35,0.07)] sm:p-8 lg:p-10">
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[hsl(var(--carbonus-green-soft))] text-[hsl(var(--carbonus-green-dark))]"><MessageSquareText className="h-5 w-5" /></span>
@@ -234,7 +234,7 @@ const Contact = () => {
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1280px] px-6 py-20 md:px-10 lg:py-24">
+        <section className="mx-auto max-w-[1320px] px-6 py-20 md:px-6 lg:py-24">
           <div className="mb-10 max-w-[620px]"><p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--carbonus-green-dark))]">{t("contact.services.title")}</p><h2 className="mt-3 text-[30px] font-bold tracking-[-0.035em] sm:text-[38px]">{isEnglish ? "From your first question to the road" : "Nuo pirmo klausimo iki kelionės"}</h2></div>
           <div className="grid gap-5 md:grid-cols-3">
             {services.map(({ Icon, title, text }) => <article key={title} className="rounded-[24px] border border-[#e0e8e4] bg-white p-6 shadow-[0_14px_40px_rgba(14,47,35,0.05)]"><span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[hsl(var(--carbonus-green-soft))] text-[hsl(var(--carbonus-green-dark))]"><Icon className="h-5 w-5" /></span><h3 className="mt-5 text-[18px] font-bold">{title}</h3><p className="mt-3 text-[13px] leading-6 text-[#6a7b74]">{text}</p></article>)}
