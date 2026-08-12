@@ -195,7 +195,7 @@ const BlogPost = () => {
                 <span className="inline-flex rounded-full bg-[hsl(var(--carbonus-green-soft))] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--carbonus-green-dark))]">
                   {post.category}
                 </span>
-                <h1 className="mt-6 text-[40px] font-bold leading-[1.07] tracking-[-0.045em] sm:text-[50px] lg:text-[58px]">
+                <h1 className="mt-6 text-[40px] font-bold leading-[1.07] tracking-[-0.045em] sm:text-[42px] lg:text-[50px]">
                   {post.title}
                 </h1>
                 <p className="mt-6 max-w-[650px] text-[16px] leading-7 text-[#64756e]">
