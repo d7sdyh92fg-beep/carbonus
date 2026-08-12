@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, CalendarDays, Info } from "lucide-react";
+import { MapPin, CalendarDays, Info, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { lt } from "date-fns/locale";
