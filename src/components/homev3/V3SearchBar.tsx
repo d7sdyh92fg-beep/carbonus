@@ -174,7 +174,7 @@ export function V3SearchBar() {
       <div className="flex gap-1 border-b border-border px-2 pt-2 sm:px-3" role="tablist">
         {([
           { id: "rental" as ServiceType, label: c.serviceRental },
-          { id: "return" as ServiceType, label: c.serviceReturn },
+          { id: "return" as ServiceType, label: c.servicePickupRental },
         ]).map((t) => (
           <button
             key={t.id}
@@ -211,7 +211,7 @@ export function V3SearchBar() {
             </label>
 
             <div className="min-w-0 flex-1">
-              <span className="block text-[10px] font-medium text-muted-foreground">{c.arrivalDate}</span>
+              <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
               <div className="mt-1 flex gap-1">
                 <Popover open={openP} onOpenChange={setOpenP}>
                   <PopoverTrigger asChild>
@@ -250,10 +250,10 @@ export function V3SearchBar() {
             </div>
 
             <div className="min-w-0 flex-1">
-              <span className="block text-[10px] font-medium text-muted-foreground">{c.returnQuestion}</span>
-              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/50 px-2">
-                <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
-                <span className="truncate text-[13px] font-semibold text-foreground">{c.officeLocked}</span>
+              <span className="block text-[10px] font-medium text-muted-foreground">{c.rentalLocation}</span>
+              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/80 px-2">
+                <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="truncate text-[13px] font-semibold text-muted-foreground">{c.officeLocked}</span>
               </div>
             </div>
 
@@ -267,12 +267,7 @@ export function V3SearchBar() {
           </div>
 
           <div className="flex flex-col gap-1 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
-            <p className="text-[11px] font-bold text-foreground">
-              {(pickupFrom.trim() || c.yourCity)} → 🚘 → Druskininkai
-            </p>
-            <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">
-              {c.flowFrom.replace("{city}", pickupFrom.trim() || c.yourCity)} · {c.flowTo}
-            </p>
+            <p className="text-[11px] font-bold text-foreground">{c.flow}</p>
             <p className="text-[10px] leading-[1.45] text-muted-foreground">{c.returnInfo}</p>
           </div>
         </>
