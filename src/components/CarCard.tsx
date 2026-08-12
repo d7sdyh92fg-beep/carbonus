@@ -23,6 +23,7 @@ interface CarCardProps {
   cta: React.ReactNode;
   imageLoaded?: boolean;
   onImageLoad?: () => void;
+  size?: "default" | "lg";
 }
 
 export function CarCard({
@@ -36,7 +37,9 @@ export function CarCard({
   cta,
   imageLoaded = true,
   onImageLoad,
+  size = "default",
 }: CarCardProps) {
+  const isLg = size === "lg";
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-black/[0.04] bg-white p-3 shadow-[0_14px_38px_rgba(16,24,40,0.08)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_48px_rgba(16,24,40,0.12)]">
       <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden rounded-[15px] bg-[#f4f6f5]">
