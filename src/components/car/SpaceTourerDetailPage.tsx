@@ -205,7 +205,7 @@ export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPack
                       aria-current={activeImage === index ? "true" : undefined}
                       className={`relative h-[96px] overflow-hidden rounded-2xl border-2 bg-white transition sm:h-[118px] ${activeImage === index ? "border-[hsl(var(--carbonus-green))] bg-[hsl(var(--carbonus-green)/0.06)] shadow-[0_10px_24px_hsl(var(--carbonus-green)/0.18)]" : "border-transparent opacity-75 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]"}`}
                     >
-                      <img src={image.src} alt="" width={320} height={220} loading="lazy" decoding="async" className={`h-full w-full ${image.cover ? "object-cover" : "object-contain p-1"}`} />
+                      <img src={image.src} alt="" width={320} height={220} loading="lazy" decoding="async" className={`h-full w-full ${image.cover ? "object-cover" : "object-contain p-1 scale-[1.45]"}`} />
                       {index >= 2 && (
                         <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
                           {index === 2 ? (isEnglish ? "Front cabin" : "Priekinis salonas") : (isEnglish ? "Rear cabin" : "Galinė salono dalis")}
