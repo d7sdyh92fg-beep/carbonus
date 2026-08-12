@@ -398,29 +398,29 @@ const Cars = () => {
                       </div>
                     </Link>
 
-                    <div className="p-2 pt-5 sm:p-3 sm:pt-5">
+                    <div className="p-2 pt-4 sm:p-3 sm:pt-4">
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-[hsl(var(--carbonus-green-dark))]">{category}</p>
-                          <h2 className="mt-1.5 text-[21px] font-bold tracking-[-0.025em] text-[#111b18]">{displayName}</h2>
+                          <h2 className="mt-1 text-[17px] font-bold tracking-[-0.025em] text-[#111b18]">{displayName}</h2>
                         </div>
                         <div className="shrink-0 text-right">
                           <p className="text-[11px] text-[#7b8b84]">{text.from}</p>
-                          <p className="text-[24px] font-bold tracking-[-0.035em] text-[hsl(var(--carbonus-green))]">{carPrice(car)} €</p>
+                          <p className="text-[21px] font-bold tracking-[-0.035em] text-[hsl(var(--carbonus-green))]">{carPrice(car)} €</p>
                           <p className="text-[11px] text-[#7b8b84]">{text.day}</p>
                         </div>
                       </div>
 
-                      <div className="mt-5 grid grid-cols-3 divide-x divide-[#e3ebe7] border-y border-[#e3ebe7] py-4">
-                        <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+                      <div className="mt-4 grid grid-cols-3 divide-x divide-[#e3ebe7] border-y border-[#e3ebe7] py-3">
+                        <div className="flex flex-col items-center gap-1 px-2 text-center">
                           <Users className="h-[17px] w-[17px] text-[hsl(var(--carbonus-green-dark))]" />
                           <span className="text-[11px] font-medium text-[#64756e]">{car.passengers} {text.seats}</span>
                         </div>
-                        <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+                        <div className="flex flex-col items-center gap-1 px-2 text-center">
                           <Settings2 className="h-[17px] w-[17px] text-[hsl(var(--carbonus-green-dark))]" />
                           <span className="text-[11px] font-medium text-[#64756e]">{transmission}</span>
                         </div>
-                        <div className="flex flex-col items-center gap-1.5 px-2 text-center">
+                        <div className="flex flex-col items-center gap-1 px-2 text-center">
                           <Fuel className="h-[17px] w-[17px] text-[hsl(var(--carbonus-green-dark))]" />
                           <span className="text-[11px] font-medium text-[#64756e]">{fuel}</span>
                         </div>
@@ -429,7 +429,7 @@ const Cars = () => {
                       <Link
                         to={carPath(car)}
                         onClick={() => registerCarView(car)}
-                        className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-[14px] bg-[hsl(var(--carbonus-green-dark))] text-[13px] font-bold text-white transition hover:bg-[hsl(var(--carbonus-green-deep))]"
+                        className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-[14px] bg-[hsl(var(--carbonus-green-dark))] text-[13px] font-bold text-white transition hover:bg-[hsl(var(--carbonus-green-deep))]"
                       >
                         {text.view}
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
