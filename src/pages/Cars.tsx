@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
+  ArrowUpRight,
   CarFront,
   Check,
   Fuel,
@@ -21,6 +22,7 @@ import { useTranslations } from "@/hooks/use-translations";
 import { supabase } from "@/integrations/supabase/client";
 import { trackFilterCars, trackSearch, trackViewCar, trackViewCarList } from "@/lib/analytics";
 import { getCarSlugFromId } from "@/utils/carSlugs";
+import { CarCard, CarCardData } from "@/components/CarCard";
 import citroenSpacetourerSide from "@/assets/fleet-citroen-spacetourer-side-v2.png";
 import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-white-roof-v3.png";
 import kiaCeedHatchbackSide from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
