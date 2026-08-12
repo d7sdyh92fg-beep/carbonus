@@ -7,6 +7,7 @@ import { Camera, Upload, X, Eye, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { detectDevice, getCameraConstraints, getDeviceSpecificErrorMessage } from '@/lib/deviceDetection';
 import { compressImage, convertHEICtoJPEG, shouldCompress } from '@/lib/imageProcessing';
+import { useSignedLicenseUrl } from '@/hooks/use-signed-url';
 
 interface DriverLicenseUploadProps {
   onUpload: (urls: { front?: string; back?: string }) => void;
@@ -94,18 +95,17 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
 
       if (error) throw error;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('driver-licenses')
-        .getPublicUrl(data.path);
+      // Bucket is private: store the object path, previews use signed URLs.
+      const storedPath = data.path;
 
       if (side === 'front') {
-        setFrontPreview(publicUrl);
+        setFrontPreview(storedPath);
       } else {
-        setBackPreview(publicUrl);
+        setBackPreview(storedPath);
       }
 
       const currentUrls = uploadedUrls || {};
-      const newUrls = { ...currentUrls, [side]: publicUrl };
+      const newUrls = { ...currentUrls, [side]: storedPath };
       onUpload(newUrls);
       
       toast.success(`Vairuotojo pažymėjimo ${side === 'front' ? 'priekis' : 'galas'} sėkmingai įkeltas!`);
@@ -229,8 +229,8 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
     };
   }, [cameraStream]);
 
-  const frontImageUrl = uploadedUrls?.front || frontPreview;
-  const backImageUrl = uploadedUrls?.back || backPreview;
+  const frontImageUrl = useSignedLicenseUrl(uploadedUrls?.front || frontPreview);
+  const backImageUrl = useSignedLicenseUrl(uploadedUrls?.back || backPreview);
 
   return (
     <div className="space-y-6">

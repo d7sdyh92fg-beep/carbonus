@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { lt } from 'date-fns/locale';
 import { calculateRentalDays } from '@/utils/rentalDuration';
+import { SignedLicenseImage } from '@/components/admin/SignedLicenseImage';
 import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { CustomerPicker } from './CustomerPicker';
@@ -1652,29 +1653,21 @@ export function InPersonBooking() {
                     {previousDocs.licenseFront && (
                       <div className="space-y-2">
                         <Label className="text-sm">Vairuotojo pažymėjimas (priekis)</Label>
-                        <a href={previousDocs.licenseFront} target="_blank" rel="noopener noreferrer" className="block">
-                          <img
-                            src={previousDocs.licenseFront}
-                            alt="Vairuotojo pažymėjimas priekis"
-                            className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
-                            onContextMenu={(e) => e.preventDefault()}
-                            onDragStart={(e) => e.preventDefault()}
-                          />
-                        </a>
+                        <SignedLicenseImage
+                          path={previousDocs.licenseFront}
+                          alt="Vairuotojo pažymėjimas priekis"
+                          className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
+                        />
                       </div>
                     )}
                     {previousDocs.licenseBack && (
                       <div className="space-y-2">
                         <Label className="text-sm">Vairuotojo pažymėjimas (galas)</Label>
-                        <a href={previousDocs.licenseBack} target="_blank" rel="noopener noreferrer" className="block">
-                          <img
-                            src={previousDocs.licenseBack}
-                            alt="Vairuotojo pažymėjimas galas"
-                            className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
-                            onContextMenu={(e) => e.preventDefault()}
-                            onDragStart={(e) => e.preventDefault()}
-                          />
-                        </a>
+                        <SignedLicenseImage
+                          path={previousDocs.licenseBack}
+                          alt="Vairuotojo pažymėjimas galas"
+                          className="w-full h-40 object-cover rounded-lg border hover:opacity-80 transition"
+                        />
                       </div>
                     )}
                     {previousDocs.signature && (
