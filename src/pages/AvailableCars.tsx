@@ -308,6 +308,13 @@ const AvailableCars = () => {
           basePrice: daily * rentalDays,
           depositAmount: dbCar?.deposit_amount ? Number(dbCar.deposit_amount) : 200,
           services: [],
+          delivery: {
+            fee: quote.totalLogisticsPrice,
+            deliveryFee: quote.deliveryPrice,
+            collectionFee: quote.returnPrice,
+            pickupAddress: pickupMode === "office" ? CARBONUS_OFFICE.address : pickupLocation?.address,
+            returnAddress: collectionTarget,
+          },
         });
         navigate(
           language === "en" ? `/reservation/${id}/services` : `/rezervacija/${id}/paslaugos`,
