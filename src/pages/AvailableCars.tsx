@@ -30,10 +30,10 @@ import { LogisticsSummary } from "@/components/search/LogisticsSummary";
 import { TrustStrip } from "@/components/search/TrustStrip";
 import {
   CARBONUS_OFFICE,
-  calculateCollectionFee,
-  calculateDeliveryFee,
-  calculateLogisticsTotal,
+  buildLogisticsQuote,
+  ReturnType as LogisticsReturnType,
 } from "@/lib/logisticsPricing";
+import { useDrivingDistance } from "@/hooks/use-driving-distance";
 
 const ACTIVE_STATUSES = ["paid", "pending", "requested", "picked_up", "awaiting_payment"];
 
@@ -105,10 +105,31 @@ const AvailableCars = () => {
   const daysLabel = rentalDays === 1 ? c.day : rentalDays < 10 ? c.days : c.daysMany;
 
   // ---- Logistics pricing -------------------------------------------------
-  const deliveryFee = calculateDeliveryFee(pickupMode, pickupLocation);
-  const collectionFee = calculateCollectionFee(pickupMode, returnMode, pickupLocation, returnLocation);
-  const logisticsTotal = calculateLogisticsTotal(deliveryFee, collectionFee);
-  const logisticsKnown = logisticsTotal.status === "free" || logisticsTotal.status === "priced";
+  // Driving distance from / to the Carbonus base in Druskininkai.
+  const { distanceKm: deliveryDistanceKm, loading: deliveryDistanceLoading } =
+    useDrivingDistance(pickupMode === "other" ? pickupLocation : null, "from_base");
+  const { distanceKm: returnDistanceKm, loading: returnDistanceLoading } = useDrivingDistance(
+    pickupMode === "other" && returnMode === "different" ? returnLocation : null,
+    "to_base",
+  );
+
+  const returnType: LogisticsReturnType =
+    returnMode === "office" ? "office" : returnMode === "different" ? "other" : "same_location";
+
+  const quote = buildLogisticsQuote({
+    pickupType: pickupMode,
+    returnType,
+    deliveryLocation: pickupLocation,
+    returnLocation,
+    deliveryDistanceKm,
+    returnDistanceKm,
+  });
+
+  const deliveryFee = quote.delivery;
+  const collectionFee = quote.collection;
+  const logisticsTotal = quote.total;
+  const logisticsKnown = logisticsTotal.status !== "unknown";
+  const distancesLoading = deliveryDistanceLoading || returnDistanceLoading;
 
   const deliveryTarget =
     pickupMode === "office"
@@ -292,7 +313,6 @@ const AvailableCars = () => {
   const feeCell = (fee: typeof deliveryFee) => {
     if (fee.status === "free") return "0 €";
     if (fee.status === "priced") return `${fee.amount} €`;
-    if (fee.status === "quote") return c.quote;
     return `— ${c.notSelected}`;
   };
 
@@ -371,6 +391,16 @@ const AvailableCars = () => {
                 total={logisticsTotal}
                 deliveryTarget={deliveryTarget}
                 collectionTarget={collectionTarget}
+                collectionLabel={quote.carbonusCollects ? c.logisticsPickup : c.logisticsCollection}
+                deliveryDistanceKm={pickupMode === "other" ? deliveryDistanceKm : null}
+                collectionDistanceKm={
+                  pickupMode === "other" && quote.carbonusCollects
+                    ? returnMode === "same"
+                      ? deliveryDistanceKm
+                      : returnDistanceKm
+                    : null
+                }
+                loading={distancesLoading}
               />
             </div>
           </div>
@@ -452,7 +482,7 @@ const AvailableCars = () => {
           {pickupMode !== "office" && !logisticsKnown && (
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-[13px] text-amber-900">
               <Info className="mt-0.5 h-4 w-4 shrink-0" />
-              {logisticsTotal.status === "quote" ? c.quoteNote : c.warning}
+              {c.warning}
             </div>
           )}
 

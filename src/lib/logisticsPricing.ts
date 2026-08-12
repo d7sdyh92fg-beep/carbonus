@@ -1,9 +1,11 @@
 /**
- * Temporary (frontend-only) logistics pricing for car delivery / collection.
+ * Logistics pricing for car delivery / collection.
  *
- * One flat fee per operation (delivery OR collection), based on city zones.
- * When a real backend pricing API exists, only `feeForLocation` needs to change –
- * the whole UI keeps working unchanged.
+ * Everything is calculated relative to the Carbonus base in Druskininkai and
+ * always uses DRIVING distance (never straight-line), km × tariff.
+ *
+ * Delivery and collection are two independent legs:
+ *   totalLogisticsPrice = deliveryPrice + returnPrice
  */
 
 export interface PlaceLocation {
@@ -33,44 +35,67 @@ export const CARBONUS_OFFICE = {
   lng: 23.9723,
 } satisfies PlaceLocation;
 
-/** Fee per single operation (delivery or collection), in EUR. */
-const CITY_FEES: Record<string, number> = {
-  druskininkai: 0,
-  vilnius: 50,
-  kaunas: 50,
-  alytus: 50,
-  varena: 50,
-  lazdijai: 50,
-  marijampole: 50,
-  panevezys: 100,
-  siauliai: 100,
-  klaipeda: 100,
-  utena: 100,
-  telsiai: 100,
-  taurage: 100,
-  palanga: 100,
-  riga: 150,
-  ryga: 150,
-  warsaw: 200,
-  warszawa: 200,
-  varsuva: 200,
+/**
+ * Single place to change tariffs. The per-km rate already covers the full real
+ * logistics cost (car delivery, a second car for the employee, the drive back,
+ * fuel, staff time, wear) — the customer only ever sees the final price.
+ */
+export const DELIVERY_CONFIG = {
+  pricePerKm: 1.6,
+  minDeliveryPrice: 40,
+  /** Fixed fee for deliveries inside Druskininkai. */
+  localDeliveryPrice: 0,
 };
 
-const normalizeCity = (city: string) =>
-  city
-    .toLowerCase()
-    .trim()
-    .replace(/ė/g, "e")
-    .replace(/ą/g, "a")
-    .replace(/į/g, "i")
-    .replace(/ų/g, "u")
-    .replace(/ū/g, "u")
-    .replace(/č/g, "c")
-    .replace(/š/g, "s")
-    .replace(/ž/g, "z")
-    .replace(/[^a-z]/g, "");
+export type PickupType = "office" | "druskininkai" | "other";
+export type ReturnType = "same_location" | "office" | "other";
 
-const distanceKm = (lat: number, lng: number) => {
+/** Rounds to whole euros (prices are always shown without cents). */
+const round = (value: number) => Math.round(value);
+
+/** Price for one logistics leg to/from a location at `distanceKm` from the base. */
+export function calculateLocationPrice(distanceKm: number | null | undefined): number {
+  if (!distanceKm || distanceKm <= 0) return 0;
+  return round(Math.max(DELIVERY_CONFIG.minDeliveryPrice, distanceKm * DELIVERY_CONFIG.pricePerKm));
+}
+
+export function calculateDeliveryPrice(
+  pickupType: PickupType,
+  distanceKm: number | null | undefined,
+): number {
+  if (pickupType === "office") return 0;
+  if (pickupType === "druskininkai") return DELIVERY_CONFIG.localDeliveryPrice;
+  if (pickupType === "other") return calculateLocationPrice(distanceKm);
+  return 0;
+}
+
+export function calculateReturnPrice(
+  returnType: ReturnType,
+  deliveryPrice: number,
+  returnDistanceKm: number | null | undefined,
+  pickupType: PickupType = "other",
+): number {
+  // Nothing was delivered → nothing to collect.
+  if (pickupType === "office") return 0;
+  // Customer brings the car back to the Carbonus office himself.
+  if (returnType === "office") return 0;
+  // Carbonus collects the car from where it was delivered.
+  if (returnType === "same_location") return deliveryPrice;
+  if (returnType === "other") {
+    if (pickupType === "druskininkai" && !returnDistanceKm) {
+      return DELIVERY_CONFIG.localDeliveryPrice;
+    }
+    return calculateLocationPrice(returnDistanceKm);
+  }
+  return 0;
+}
+
+export function calculateTotalLogisticsPrice(deliveryPrice: number, returnPrice: number): number {
+  return deliveryPrice + returnPrice;
+}
+
+/** Straight-line distance in km — only used as a fallback when routing fails. */
+export function haversineKm(lat: number, lng: number): number {
   const R = 6371;
   const dLat = ((lat - CARBONUS_OFFICE.lat) * Math.PI) / 180;
   const dLng = ((lng - CARBONUS_OFFICE.lng) * Math.PI) / 180;
@@ -80,78 +105,79 @@ const distanceKm = (lat: number, lng: number) => {
       Math.cos((lat * Math.PI) / 180) *
       Math.sin(dLng / 2) ** 2;
   return 2 * R * Math.asin(Math.sqrt(a));
-};
+}
+
+/** Rough road-distance estimate used when the Routes API is unavailable. */
+export const ROAD_FACTOR = 1.28;
+
+// ---------------------------------------------------------------------------
+// UI-facing result helpers
+// ---------------------------------------------------------------------------
 
 export type FeeResult =
   | { status: "free"; amount: 0 }
   | { status: "priced"; amount: number }
-  | { status: "quote"; amount: null }
   | { status: "unknown"; amount: null };
 
-/** Fee for a single operation at a given location. */
-export function feeForLocation(location: PlaceLocation | null): FeeResult {
-  if (!location || (!location.city && !location.address && location.lat == null)) {
-    return { status: "unknown", amount: null };
-  }
+const toFee = (amount: number): FeeResult =>
+  amount === 0 ? { status: "free", amount: 0 } : { status: "priced", amount };
 
-  const key = normalizeCity(location.city || location.address);
-  if (key in CITY_FEES) {
-    const amount = CITY_FEES[key];
-    return amount === 0 ? { status: "free", amount: 0 } : { status: "priced", amount };
-  }
-
-  // Try a partial match (e.g. "Vilniaus m. sav.")
-  const partial = Object.keys(CITY_FEES).find((c) => key.includes(c));
-  if (partial) {
-    const amount = CITY_FEES[partial];
-    return amount === 0 ? { status: "free", amount: 0 } : { status: "priced", amount };
-  }
-
-  if (location.lat != null && location.lng != null) {
-    const km = distanceKm(location.lat, location.lng);
-    if (km <= 15) return { status: "free", amount: 0 };
-    if (km <= 150) return { status: "priced", amount: 50 };
-    if (km <= 300) return { status: "priced", amount: 100 };
-    if (km <= 450) return { status: "priced", amount: 150 };
-    return { status: "quote", amount: null };
-  }
-
-  return { status: "quote", amount: null };
+export interface LogisticsInput {
+  pickupType: PickupType;
+  returnType: ReturnType;
+  deliveryLocation: PlaceLocation | null;
+  returnLocation: PlaceLocation | null;
+  deliveryDistanceKm: number | null;
+  returnDistanceKm: number | null;
 }
 
-export function calculateDeliveryFee(
-  pickupMode: "office" | "druskininkai" | "other",
-  location: PlaceLocation | null,
-): FeeResult {
-  if (pickupMode === "office") return { status: "free", amount: 0 };
-  if (pickupMode === "druskininkai") {
-    return location?.address ? { status: "free", amount: 0 } : { status: "unknown", amount: null };
-  }
-  return feeForLocation(location);
+export interface LogisticsQuote {
+  deliveryPrice: number;
+  returnPrice: number;
+  totalLogisticsPrice: number;
+  delivery: FeeResult;
+  collection: FeeResult;
+  total: FeeResult;
+  /** True when Carbonus physically collects the car (label: "Automobilio paėmimas"). */
+  carbonusCollects: boolean;
 }
 
-export function calculateCollectionFee(
-  pickupMode: "office" | "druskininkai" | "other",
-  returnMode: "same" | "office" | "different",
-  pickupLocation: PlaceLocation | null,
-  returnLocation: PlaceLocation | null,
-): FeeResult {
-  if (pickupMode === "office") return { status: "free", amount: 0 };
-  if (returnMode === "office") return { status: "free", amount: 0 };
-  const target = returnMode === "same" ? pickupLocation : returnLocation;
-  if (pickupMode === "druskininkai") {
-    return target?.address ? { status: "free", amount: 0 } : { status: "unknown", amount: null };
-  }
-  return feeForLocation(target);
-}
+export function buildLogisticsQuote(input: LogisticsInput): LogisticsQuote {
+  const {
+    pickupType,
+    returnType,
+    deliveryLocation,
+    returnLocation,
+    deliveryDistanceKm,
+    returnDistanceKm,
+  } = input;
 
-export function calculateLogisticsTotal(delivery: FeeResult, collection: FeeResult): FeeResult {
-  if (delivery.status === "quote" || collection.status === "quote") {
-    return { status: "quote", amount: null };
-  }
-  if (delivery.status === "unknown" || collection.status === "unknown") {
-    return { status: "unknown", amount: null };
-  }
-  const total = (delivery.amount ?? 0) + (collection.amount ?? 0);
-  return total === 0 ? { status: "free", amount: 0 } : { status: "priced", amount: total };
+  const needsDeliveryLocation = pickupType !== "office";
+  const needsReturnLocation = pickupType !== "office" && returnType === "other";
+
+  const deliveryKnown = !needsDeliveryLocation || Boolean(deliveryLocation?.address);
+  const returnKnown = !needsReturnLocation || Boolean(returnLocation?.address);
+
+  const deliveryPrice = deliveryKnown ? calculateDeliveryPrice(pickupType, deliveryDistanceKm) : 0;
+  const returnPrice = returnKnown
+    ? calculateReturnPrice(returnType, deliveryPrice, returnDistanceKm, pickupType)
+    : 0;
+
+  const delivery: FeeResult = deliveryKnown ? toFee(deliveryPrice) : { status: "unknown", amount: null };
+  const collection: FeeResult =
+    deliveryKnown && returnKnown ? toFee(returnPrice) : { status: "unknown", amount: null };
+  const total: FeeResult =
+    deliveryKnown && returnKnown
+      ? toFee(calculateTotalLogisticsPrice(deliveryPrice, returnPrice))
+      : { status: "unknown", amount: null };
+
+  return {
+    deliveryPrice,
+    returnPrice,
+    totalLogisticsPrice: deliveryPrice + returnPrice,
+    delivery,
+    collection,
+    total,
+    carbonusCollects: pickupType !== "office" && returnType !== "office",
+  };
 }

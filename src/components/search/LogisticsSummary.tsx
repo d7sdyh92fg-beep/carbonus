@@ -9,13 +9,16 @@ interface Props {
   total: FeeResult;
   deliveryTarget: string;
   collectionTarget: string;
+  /** Label for the second leg – differs when Carbonus physically collects the car. */
+  collectionLabel?: string;
+  deliveryDistanceKm?: number | null;
+  collectionDistanceKm?: number | null;
   loading?: boolean;
 }
 
-const feeText = (fee: FeeResult, c: SearchCopy) => {
+const feeText = (fee: FeeResult) => {
   if (fee.status === "free") return "0 €";
   if (fee.status === "priced") return `${fee.amount} €`;
-  if (fee.status === "quote") return c.quote;
   return "—";
 };
 
@@ -26,20 +29,26 @@ export function LogisticsSummary({
   total,
   deliveryTarget,
   collectionTarget,
+  collectionLabel,
+  deliveryDistanceKm,
+  collectionDistanceKm,
   loading,
 }: Props) {
+  const distanceNote = (km?: number | null) =>
+    km && km > 0 ? ` · ${Math.round(km)} km` : "";
+
   return (
     <div className="grid grid-cols-1 divide-y divide-border rounded-[18px] border border-black/[0.04] bg-white p-5 shadow-[0_14px_38px_rgba(16,24,40,0.08)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
       <Column
         label={c.logisticsDelivery}
-        sub={deliveryTarget}
-        value={loading ? c.calculating : feeText(delivery, c)}
+        sub={`${deliveryTarget}${distanceNote(deliveryDistanceKm)}`}
+        value={loading ? c.calculating : feeText(delivery)}
         loading={loading}
       />
       <Column
-        label={c.logisticsCollection}
-        sub={collectionTarget}
-        value={loading ? c.calculating : feeText(collection, c)}
+        label={collectionLabel ?? c.logisticsCollection}
+        sub={`${collectionTarget}${distanceNote(collectionDistanceKm)}`}
+        value={loading ? c.calculating : feeText(collection)}
         loading={loading}
         inset
       />
@@ -51,11 +60,13 @@ export function LogisticsSummary({
             {c.freeUpper}
           </p>
         ) : (
-          <p className="mt-1 text-[20px] font-extrabold text-foreground">{feeText(total, c)}</p>
+          <p className="mt-1 text-[20px] font-extrabold text-foreground">
+            {loading ? "…" : feeText(total)}
+          </p>
         )}
-        <p className="mt-0.5 text-[12px] text-muted-foreground">
-          {total.status === "quote" ? c.quoteNote : total.status === "unknown" ? c.warning : "0 €".replace("0 €", feeText(total, c))}
-        </p>
+        {total.status === "unknown" && (
+          <p className="mt-0.5 text-[12px] text-muted-foreground">{c.warning}</p>
+        )}
       </div>
     </div>
   );
