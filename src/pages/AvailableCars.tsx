@@ -20,6 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
+import { useBooking } from "@/contexts/BookingContext";
 import { useSearchState } from "@/hooks/use-search-state";
 import { CARS_CATALOG, HIDDEN_CAR_IDS, CatalogCar } from "@/data/carsCatalog";
 import { getCarSlugFromId } from "@/utils/carSlugs";
