@@ -196,74 +196,78 @@ export function V3SearchBar() {
 
       {service === "return" ? (
         <>
-          <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
-            <label className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
-              <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupFrom}</span>
-              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 py-1.5">
-                <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
-                <input
-                  value={pickupFrom}
-                  onChange={(e) => setPickupFrom(e.target.value)}
-                  placeholder={c.pickupFromPlaceholder}
-                  className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
-                />
-              </div>
-            </label>
+          <div className="flex flex-col gap-1 p-2 sm:gap-1 sm:p-1.5 sm:pl-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
+              <label className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
+                <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupFrom}</span>
+                <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 py-1.5">
+                  <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
+                  <input
+                    value={pickupFrom}
+                    onChange={(e) => setPickupFrom(e.target.value)}
+                    placeholder={c.pickupFromPlaceholder}
+                    className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground"
+                  />
+                </div>
+              </label>
 
-            <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
-              <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
-              <div className="mt-1 flex gap-1">
-                <Popover open={openP} onOpenChange={setOpenP}>
-                  <PopoverTrigger asChild>
-                    <button type="button" className="flex min-h-[48px] flex-1 items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 text-left hover:border-carbonus-green">
-                      <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
-                      <span className="truncate text-[13px] font-semibold text-foreground">{fmt(pickup)}</span>
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent className="z-[80] w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={new Date(`${pickup}T12:00:00`)}
-                      defaultMonth={new Date(`${pickup}T12:00:00`)}
-                      onSelect={(d) => {
-                        if (!d) return;
-                        setPickup(toISO(d));
-                        setOpenP(false);
-                      }}
-                      disabled={{ before: minBookingDay() }}
-                      locale={lt}
-                      className="pointer-events-auto p-3"
-                    />
-                  </PopoverContent>
-                </Popover>
-                <select
-                  aria-label={c.time}
-                  value={pickupTime}
-                  onChange={(e) => setPickupTime(e.target.value)}
-                  className="min-h-[48px] rounded-lg border border-carbonus-green/40 bg-white px-2 text-[13px] font-semibold text-foreground outline-none hover:border-carbonus-green"
-                >
-                  {TIME_OPTIONS.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
+              <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
+                <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
+                <div className="mt-1 flex gap-1">
+                  <Popover open={openP} onOpenChange={setOpenP}>
+                    <PopoverTrigger asChild>
+                      <button type="button" className="flex min-h-[48px] flex-1 items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 text-left hover:border-carbonus-green">
+                        <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
+                        <span className="truncate text-[13px] font-semibold text-foreground">{fmt(pickup)}</span>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="z-[80] w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={new Date(`${pickup}T12:00:00`)}
+                        defaultMonth={new Date(`${pickup}T12:00:00`)}
+                        onSelect={(d) => {
+                          if (!d) return;
+                          setPickup(toISO(d));
+                          setOpenP(false);
+                        }}
+                        disabled={{ before: minBookingDay() }}
+                        locale={lt}
+                        className="pointer-events-auto p-3"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <select
+                    aria-label={c.time}
+                    value={pickupTime}
+                    onChange={(e) => setPickupTime(e.target.value)}
+                    className="min-h-[48px] rounded-lg border border-carbonus-green/40 bg-white px-2 text-[13px] font-semibold text-foreground outline-none hover:border-carbonus-green"
+                  >
+                    {TIME_OPTIONS.map((t) => (
+                      <option key={t} value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
+                <span className="block text-[10px] font-medium text-muted-foreground">{c.rentalLocation}</span>
+                <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/80 px-2 py-1.5">
+                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span className="truncate text-[13px] font-semibold text-muted-foreground">{c.officeLocked}</span>
+                </div>
               </div>
             </div>
 
-            <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
-              <span className="block text-[10px] font-medium text-muted-foreground">{c.rentalLocation}</span>
-              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/80 px-2 py-1.5">
-                <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
-                <span className="truncate text-[13px] font-semibold text-muted-foreground">{c.officeLocked}</span>
-              </div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-0 sm:py-1">
+              <button
+                type="button"
+                onClick={submitReturnTrip}
+                className="mx-1 h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white transition-colors duration-200 hover:bg-carbonus-green-deep sm:ml-0 sm:mr-3 sm:h-[48px] sm:w-[172px]"
+              >
+                {c.findCar}
+              </button>
             </div>
-
-            <button
-              type="button"
-              onClick={submitReturnTrip}
-              className="h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white transition-colors duration-200 hover:bg-carbonus-green-deep sm:h-[48px] sm:w-auto"
-            >
-              {c.findCar}
-            </button>
           </div>
 
           <div className="flex flex-col gap-1 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
