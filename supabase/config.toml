@@ -46,4 +46,8 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.send-invoice-email]
+[functions.send-invoice-email]
+verify_jwt = false
+
+[functions.driving-distance]
 verify_jwt = false
