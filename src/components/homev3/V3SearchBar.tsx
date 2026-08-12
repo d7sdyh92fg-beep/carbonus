@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, CalendarDays, Info } from "lucide-react";
+import { MapPin, CalendarDays, Info, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { lt } from "date-fns/locale";
@@ -7,7 +7,46 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useLanguage } from "@/hooks/use-language";
-import { minBookingDay, minBookingDayISO } from "@/lib/bookingTime";
+import { minBookingDay, minBookingDayISO, isTimeAllowed, firstAllowedTime } from "@/lib/bookingTime";
+
+const TIMES = Array.from({ length: 48 }, (_, i) => {
+  const h = String(Math.floor(i / 2)).padStart(2, "0");
+  const m = i % 2 === 0 ? "00" : "30";
+  return `${h}:${m}`;
+});
+
+function TimeRow({
+  label,
+  date,
+  time,
+  onTimeChange,
+}: {
+  label: string;
+  date: string;
+  time: string;
+  onTimeChange: (v: string) => void;
+}) {
+  const allowed = TIMES.filter((t) => isTimeAllowed(date, t));
+  const options = allowed.length ? allowed : [time];
+  return (
+    <div className="flex items-center gap-2 border-t border-border px-3 py-2">
+      <Clock className="h-4 w-4 shrink-0 text-carbonus-green" />
+      <span className="flex-1 text-[12px] font-medium text-muted-foreground">{label}</span>
+      <select
+        value={time}
+        onChange={(e) => onTimeChange(e.target.value)}
+        aria-label={label}
+        className="min-h-[34px] rounded-lg border border-carbonus-green/40 bg-white px-2 text-[13px] font-semibold text-foreground outline-none hover:border-carbonus-green"
+      >
+        {options.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
 
 
 const barCopy = {
@@ -22,6 +61,8 @@ const barCopy = {
     placeholder: "Įrašykite miestą, adresą ar viešbutį",
     pickupDate: "Paėmimo data",
     returnDate: "Grąžinimo data",
+    pickupTime: "Paėmimo laikas",
+    returnTime: "Grąžinimo laikas",
     search: "Ieškoti automobilių",
     info: "Atsiėmimas Carbonus ofise Druskininkuose ir pristatymas Druskininkuose – nemokama. Kitur Lietuvoje taikomas papildomas atvežimo mokestis, kurį patvirtinsime kitame žingsnyje.",
   },
@@ -36,6 +77,8 @@ const barCopy = {
     placeholder: "Enter city, address or hotel",
     pickupDate: "Pick-up date",
     returnDate: "Return date",
+    pickupTime: "Pick-up time",
+    returnTime: "Return time",
     search: "Search cars",
     info: "Pick-up at the Carbonus office in Druskininkai and delivery within Druskininkai are free. An additional delivery fee applies to other cities in Lithuania; the exact price will be confirmed in the next step.",
   },
@@ -50,6 +93,8 @@ const barCopy = {
     placeholder: "Укажите город, адрес или отель",
     pickupDate: "Дата получения",
     returnDate: "Дата возврата",
+    pickupTime: "Время получения",
+    returnTime: "Время возврата",
     search: "Найти автомобиль",
     info: "Получение автомобиля в офисе Carbonus в Друскининкай и доставка по Друскининкай – бесплатно. В другие города Литвы взимается дополнительная плата за доставку; точная цена будет подтверждена на следующем шаге.",
   },
@@ -79,6 +124,8 @@ export function V3SearchBar() {
   const [ret, setRet] = useState(tomorrow);
   const [openP, setOpenP] = useState(false);
   const [openR, setOpenR] = useState(false);
+  const [pickupTime, setPickupTime] = useState(firstAllowedTime(today, TIMES) ?? "10:00");
+  const [returnTime, setReturnTime] = useState("10:00");
 
   const modeDescription = {
     office: c.officeDesc,
@@ -89,7 +136,7 @@ export function V3SearchBar() {
   const submit = () => {
     const mode =
       locationMode === "office" ? "office" : locationMode === "druskininkai" ? "druskininkai" : "other";
-    const params = new URLSearchParams({ pickup, return: ret, mode });
+    const params = new URLSearchParams({ pickup, return: ret, mode, pickupTime, returnTime });
     navigate(`/laisvi-automobiliai?${params.toString()}`);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
   };
@@ -149,11 +196,11 @@ export function V3SearchBar() {
         {/* Pickup date */}
         <Popover open={openP} onOpenChange={setOpenP}>
           <PopoverTrigger asChild>
-            <button type="button" aria-label={`${c.pickupDate}: ${fmt(pickup)}`} className={fieldClass}>
+            <button type="button" aria-label={`${c.pickupDate}: ${fmt(pickup)} ${pickupTime}`} className={fieldClass}>
               <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
               <span className="min-w-0 flex-1">
                 <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
-                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(pickup)}</span>
+                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(pickup)} · {pickupTime}</span>
               </span>
             </button>
           </PopoverTrigger>
@@ -166,29 +213,33 @@ export function V3SearchBar() {
                 if (!d) return;
                 const nP = toISO(d);
                 setPickup(nP);
+                if (!isTimeAllowed(nP, pickupTime)) {
+                  const next = firstAllowedTime(nP, TIMES);
+                  if (next) setPickupTime(next);
+                }
                 if (new Date(`${ret}T12:00:00`) <= d) {
                   const nR = new Date(d);
                   nR.setDate(nR.getDate() + 1);
                   setRet(toISO(nR));
                 }
-                setOpenP(false);
               }}
               disabled={{ before: minBookingDay() }}
 
               locale={lt}
               className="pointer-events-auto p-3"
             />
+            <TimeRow label={c.pickupTime} date={pickup} time={pickupTime} onTimeChange={setPickupTime} />
           </PopoverContent>
         </Popover>
 
         {/* Return date */}
         <Popover open={openR} onOpenChange={setOpenR}>
           <PopoverTrigger asChild>
-            <button type="button" aria-label={`${c.returnDate}: ${fmt(ret)}`} className={fieldClass}>
+            <button type="button" aria-label={`${c.returnDate}: ${fmt(ret)} ${returnTime}`} className={fieldClass}>
               <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
               <span className="min-w-0 flex-1">
                 <span className="block text-[10px] font-medium text-muted-foreground">{c.returnDate}</span>
-                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(ret)}</span>
+                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(ret)} · {returnTime}</span>
               </span>
             </button>
           </PopoverTrigger>
@@ -198,15 +249,19 @@ export function V3SearchBar() {
               selected={new Date(`${ret}T12:00:00`)}
               defaultMonth={new Date(`${ret}T12:00:00`)}
               onSelect={(d) => {
-                if (d) {
-                  setRet(toISO(d));
-                  setOpenR(false);
+                if (!d) return;
+                const nR = toISO(d);
+                setRet(nR);
+                if (!isTimeAllowed(nR, returnTime)) {
+                  const next = firstAllowedTime(nR, TIMES);
+                  if (next) setReturnTime(next);
                 }
               }}
               disabled={(d) => d < new Date(`${pickup}T12:00:00`) || d < minBookingDay()}
               locale={lt}
               className="pointer-events-auto p-3"
             />
+            <TimeRow label={c.returnTime} date={ret} time={returnTime} onTimeChange={setReturnTime} />
           </PopoverContent>
         </Popover>
 
