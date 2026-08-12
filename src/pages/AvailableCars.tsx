@@ -391,6 +391,16 @@ const AvailableCars = () => {
                 total={logisticsTotal}
                 deliveryTarget={deliveryTarget}
                 collectionTarget={collectionTarget}
+                collectionLabel={quote.carbonusCollects ? c.logisticsPickup : c.logisticsCollection}
+                deliveryDistanceKm={pickupMode === "other" ? deliveryDistanceKm : null}
+                collectionDistanceKm={
+                  pickupMode === "other" && quote.carbonusCollects
+                    ? returnMode === "same"
+                      ? deliveryDistanceKm
+                      : returnDistanceKm
+                    : null
+                }
+                loading={distancesLoading}
               />
             </div>
           </div>
