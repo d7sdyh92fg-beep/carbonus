@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { lt } from 'date-fns/locale';
 import { calculateRentalDays } from '@/utils/rentalDuration';
+import { SignedLicenseImage } from '@/components/admin/SignedLicenseImage';
 import { Camera, Upload, FileText, CreditCard, Banknote, CheckCircle, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
 import { DriverLicenseUpload } from './DriverLicenseUpload';
 import { CustomerPicker } from './CustomerPicker';
