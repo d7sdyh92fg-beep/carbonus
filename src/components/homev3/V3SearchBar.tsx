@@ -70,8 +70,9 @@ export function V3SearchBar() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const c = barCopy[language] ?? barCopy.lt;
-  const today = toISO(new Date());
-  const tomorrow = toISO(new Date(Date.now() + 86400000));
+  const today = minBookingDayISO();
+  const tomorrow = toISO(new Date(new Date(`${today}T12:00:00`).getTime() + 86400000));
+
 
   const [locationMode, setLocationMode] = useState<LocationMode>("office");
   const [pickup, setPickup] = useState(today);
