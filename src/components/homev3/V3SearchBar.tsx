@@ -25,17 +25,14 @@ const barCopy = {
     search: "Ieškoti automobilių",
     info: "Atsiėmimas Carbonus ofise Druskininkuose ir pristatymas Druskininkuose – nemokama. Kitur Lietuvoje taikomas papildomas atvežimo mokestis, kurį patvirtinsime kitame žingsnyje.",
     serviceRental: "Automobilio nuoma",
-    serviceReturn: "Automobilis grįžimui",
-    pickupFrom: "Jus paimti iš",
+    servicePickupRental: "Paėmimas + nuoma",
+    pickupFrom: "Kur jus paimti?",
     pickupFromPlaceholder: "Miestas, oro uostas arba adresas",
-    arrivalDate: "Atvykimo / paėmimo data",
-    returnQuestion: "Kur grįšite automobiliu?",
+    rentalLocation: "Nuomos vieta",
     officeLocked: "Carbonus ofisas, Druskininkai",
     findCar: "Rasti automobilį",
-    returnInfo: "Mūsų vairuotojas atvyks jūsų pasiimti, o į Druskininkus grįšite pasirinktu Carbonus automobiliu.",
-    flowFrom: "Mes atvykstame į {city}",
-    flowTo: "Jūs grįžtate automobiliu į Druskininkus",
-    yourCity: "Jūsų miestas",
+    returnInfo: "Mūsų vairuotojas atvyks jūsų pasiimti ir parveš į Druskininkus, kur pasiimsite nuomojamą automobilį.",
+    flow: "Jūsų vieta → Vairuotojo paėmimas → Druskininkai → Automobilio nuoma",
     time: "Laikas",
   },
   en: {
@@ -52,17 +49,14 @@ const barCopy = {
     search: "Search cars",
     info: "Pick-up at the Carbonus office in Druskininkai and delivery within Druskininkai are free. An additional delivery fee applies to other cities in Lithuania; the exact price will be confirmed in the next step.",
     serviceRental: "Car rental",
-    serviceReturn: "Car for the return trip",
-    pickupFrom: "Pick you up from",
+    servicePickupRental: "Pickup + rental",
+    pickupFrom: "Where should we pick you up?",
     pickupFromPlaceholder: "City, airport or address",
-    arrivalDate: "Arrival / pick-up date",
-    returnQuestion: "Where will you return the car?",
+    rentalLocation: "Rental location",
     officeLocked: "Carbonus office, Druskininkai",
     findCar: "Find a car",
-    returnInfo: "Our driver will come to pick you up, and you will drive back to Druskininkai in the Carbonus car you choose.",
-    flowFrom: "We come to {city}",
-    flowTo: "You drive back to Druskininkai",
-    yourCity: "Your city",
+    returnInfo: "Our driver will pick you up and bring you to Druskininkai, where you will collect the rental car.",
+    flow: "Your location → Driver pick-up → Druskininkai → Car rental",
     time: "Time",
   },
   ru: {
@@ -79,17 +73,14 @@ const barCopy = {
     search: "Найти автомобиль",
     info: "Получение автомобиля в офисе Carbonus в Друскининкай и доставка по Друскининкай – бесплатно. В другие города Литвы взимается дополнительная плата за доставку; точная цена будет подтверждена на следующем шаге.",
     serviceRental: "Аренда автомобиля",
-    serviceReturn: "Автомобиль для возврата",
-    pickupFrom: "Забрать вас из",
+    servicePickupRental: "Забор + аренда",
+    pickupFrom: "Откуда вас забрать?",
     pickupFromPlaceholder: "Город, аэропорт или адрес",
-    arrivalDate: "Дата прибытия / подачи",
-    returnQuestion: "Куда вы вернёте автомобиль?",
+    rentalLocation: "Место аренды",
     officeLocked: "Офис Carbonus, Друскининкай",
     findCar: "Найти автомобиль",
-    returnInfo: "Наш водитель приедет за вами, а в Друскининкай вы вернётесь на выбранном автомобиле Carbonus.",
-    flowFrom: "Мы приезжаем в {city}",
-    flowTo: "Вы возвращаетесь на автомобиле в Друскининкай",
-    yourCity: "Ваш город",
+    returnInfo: "Наш водитель приедет за вами и отвезёт в Друскининкай, где вы получите автомобиль в аренду.",
+    flow: "Ваше местоположение → Забор водителем → Друскининкай → Аренда автомобиля",
     time: "Время",
   },
 } as const;
@@ -183,7 +174,7 @@ export function V3SearchBar() {
       <div className="flex gap-1 border-b border-border px-2 pt-2 sm:px-3" role="tablist">
         {([
           { id: "rental" as ServiceType, label: c.serviceRental },
-          { id: "return" as ServiceType, label: c.serviceReturn },
+          { id: "return" as ServiceType, label: c.servicePickupRental },
         ]).map((t) => (
           <button
             key={t.id}
@@ -220,7 +211,7 @@ export function V3SearchBar() {
             </label>
 
             <div className="min-w-0 flex-1">
-              <span className="block text-[10px] font-medium text-muted-foreground">{c.arrivalDate}</span>
+              <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
               <div className="mt-1 flex gap-1">
                 <Popover open={openP} onOpenChange={setOpenP}>
                   <PopoverTrigger asChild>
@@ -259,10 +250,10 @@ export function V3SearchBar() {
             </div>
 
             <div className="min-w-0 flex-1">
-              <span className="block text-[10px] font-medium text-muted-foreground">{c.returnQuestion}</span>
-              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/50 px-2">
-                <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
-                <span className="truncate text-[13px] font-semibold text-foreground">{c.officeLocked}</span>
+              <span className="block text-[10px] font-medium text-muted-foreground">{c.rentalLocation}</span>
+              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/80 px-2">
+                <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="truncate text-[13px] font-semibold text-muted-foreground">{c.officeLocked}</span>
               </div>
             </div>
 
@@ -276,12 +267,7 @@ export function V3SearchBar() {
           </div>
 
           <div className="flex flex-col gap-1 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
-            <p className="text-[11px] font-bold text-foreground">
-              {(pickupFrom.trim() || c.yourCity)} → 🚘 → Druskininkai
-            </p>
-            <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">
-              {c.flowFrom.replace("{city}", pickupFrom.trim() || c.yourCity)} · {c.flowTo}
-            </p>
+            <p className="text-[11px] font-bold text-foreground">{c.flow}</p>
             <p className="text-[10px] leading-[1.45] text-muted-foreground">{c.returnInfo}</p>
           </div>
         </>
