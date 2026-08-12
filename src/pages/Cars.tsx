@@ -400,7 +400,7 @@ const Cars = () => {
                       </div>
                     </Link>
 
-                    <div className="p-5 sm:p-6">
+                    <div className="p-2 pt-5 sm:p-3 sm:pt-5">
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-[hsl(var(--carbonus-green-dark))]">{category}</p>
