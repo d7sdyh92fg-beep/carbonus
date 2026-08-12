@@ -47,8 +47,9 @@ const writeLocation = (
 export function useSearchState() {
   const [params, setParams] = useSearchParams();
 
-  const today = toISO(new Date());
-  const tomorrow = toISO(new Date(Date.now() + 86400000));
+  const today = minBookingDayISO();
+  const tomorrow = toISO(new Date(new Date(`${today}T12:00:00`).getTime() + 86400000));
+
 
   const rawMode = params.get("mode");
   const pickupMode: PickupMode =
