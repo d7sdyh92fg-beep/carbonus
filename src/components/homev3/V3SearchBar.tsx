@@ -118,6 +118,8 @@ export function V3SearchBar() {
   const [ret, setRet] = useState(tomorrow);
   const [openP, setOpenP] = useState(false);
   const [openR, setOpenR] = useState(false);
+  const [pickupTime, setPickupTime] = useState(firstAllowedTime(today, TIMES) ?? "10:00");
+  const [returnTime, setReturnTime] = useState("10:00");
 
   const modeDescription = {
     office: c.officeDesc,
