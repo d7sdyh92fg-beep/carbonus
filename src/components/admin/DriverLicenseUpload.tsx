@@ -7,6 +7,7 @@ import { Camera, Upload, X, Eye, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { detectDevice, getCameraConstraints, getDeviceSpecificErrorMessage } from '@/lib/deviceDetection';
 import { compressImage, convertHEICtoJPEG, shouldCompress } from '@/lib/imageProcessing';
+import { useSignedLicenseUrl } from '@/hooks/use-signed-url';
 
 interface DriverLicenseUploadProps {
   onUpload: (urls: { front?: string; back?: string }) => void;
