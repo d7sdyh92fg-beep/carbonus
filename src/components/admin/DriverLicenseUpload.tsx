@@ -95,18 +95,17 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
 
       if (error) throw error;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('driver-licenses')
-        .getPublicUrl(data.path);
+      // Bucket is private: store the object path, previews use signed URLs.
+      const storedPath = data.path;
 
       if (side === 'front') {
-        setFrontPreview(publicUrl);
+        setFrontPreview(storedPath);
       } else {
-        setBackPreview(publicUrl);
+        setBackPreview(storedPath);
       }
 
       const currentUrls = uploadedUrls || {};
-      const newUrls = { ...currentUrls, [side]: publicUrl };
+      const newUrls = { ...currentUrls, [side]: storedPath };
       onUpload(newUrls);
       
       toast.success(`Vairuotojo pažymėjimo ${side === 'front' ? 'priekis' : 'galas'} sėkmingai įkeltas!`);
