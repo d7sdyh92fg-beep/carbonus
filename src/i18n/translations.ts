@@ -1,4 +1,4 @@
-import groupTravelCover from "@/assets/carbonus-journal-spacetourer.png.asset.json";
+import groupTravelCover from "@/assets/blog-group-travel.jpg";
 
 export const translations = {
   lt: {
