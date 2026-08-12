@@ -248,6 +248,13 @@ export default function ReservationServices() {
                     <span>{servicesTotal.toFixed(2)} €</span>
                   </div>
                 )}
+
+                {!!bookingData.delivery?.fee && (
+                  <div className="flex justify-between text-sm">
+                    <span>{language === 'lt' ? 'Pristatymas / paėmimas' : 'Delivery / collection'}</span>
+                    <span>{bookingData.delivery.fee.toFixed(2)} €</span>
+                  </div>
+                )}
               </div>
 
               <Separator className="my-4" />

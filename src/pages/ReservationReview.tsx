@@ -207,7 +207,7 @@ export default function ReservationReview() {
         p_insurance_code: bookingData.insurance?.id ?? null,
         p_service_codes: (bookingData.services || []).map(s => s.id),
         p_package_code: packageCode,
-        p_delivery_fee: 0,
+        p_delivery_fee: Math.min(200, Math.max(0, Math.round(bookingData.delivery?.fee || 0))),
         p_payment_method: paymentMethod,
         p_payment_provider: 'stripe',
         p_status: 'awaiting_payment',
@@ -293,7 +293,8 @@ export default function ReservationReview() {
   const servicesTotal = bookingData.services.reduce((sum, service) => {
     return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
   }, 0);
-  const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal;
+  const deliveryFee = bookingData.delivery?.fee || 0;
+  const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal + deliveryFee;
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
   const displayAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
   const dateLocale = language === 'en' ? enUS : lt;
@@ -554,6 +555,13 @@ export default function ReservationReview() {
                   <div className="flex justify-between text-sm">
                     <span>{t('review.summary.services')}</span>
                     <span>{servicesTotal.toFixed(2)} €</span>
+                  </div>
+                )}
+
+                {deliveryFee > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span>{language === 'lt' ? 'Pristatymas / paėmimas' : 'Delivery / collection'}</span>
+                    <span>{deliveryFee.toFixed(2)} €</span>
                   </div>
                 )}
               </div>
