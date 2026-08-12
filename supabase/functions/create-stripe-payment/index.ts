@@ -102,7 +102,7 @@ serve(async (req) => {
 
     console.log('Creating Stripe payment session:', { 
       reservationId, 
-      amount, 
+      amount: chargeAmount,
       paymentType,
       isSanlabCar,
       stripeAccount: isSanlabCar ? 'sanlab' : 'carbonus'
@@ -138,7 +138,7 @@ serve(async (req) => {
             name: `Automobilių nuoma - ${carName}`,
             description: paymentType === 'full' ? 'Pilna nuomos suma' : 'Avansas',
           },
-          unit_amount: Math.round(amount * 100), // Amount in cents
+          unit_amount: Math.round(chargeAmount * 100), // Amount in cents
         },
         quantity: 1,
       },
@@ -154,14 +154,14 @@ serve(async (req) => {
       payment_intent_data: {
         metadata: {
           reservationId: reservationId,
-          amount: amount.toString(),
+          amount: chargeAmount.toString(),
           paymentType: paymentType,
         },
       },
       metadata: {
         reservationId: reservationId,
         paymentType: paymentType,
-        amount: amount.toString(),
+        amount: chargeAmount.toString(),
       },
     };
 
