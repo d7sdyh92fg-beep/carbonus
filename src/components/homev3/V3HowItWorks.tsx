@@ -58,7 +58,7 @@ export function V3HowItWorks() {
   const c = COPY[language] ?? COPY.lt;
 
   return (
-    <section className="bg-white py-12 sm:py-16 lg:py-20">
+    <section className="bg-white py-12 sm:py-16 lg:py-20 mt-[15px]">
       <div className="mx-auto max-w-[1060px] px-6 text-center">
         <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           {c.eyebrow}
