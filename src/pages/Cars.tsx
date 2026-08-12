@@ -293,7 +293,7 @@ const Cars = () => {
               <p className="mb-5 text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">
                 {text.eyebrow}
               </p>
-              <h1 className="max-w-[720px] text-[42px] font-bold leading-[1.04] tracking-[-0.045em] text-[#111b18] sm:text-[54px] lg:text-[66px]">
+              <h1 className="max-w-[720px] text-[34px] font-bold leading-[1.06] tracking-[-0.04em] text-[#111b18] sm:text-[44px] lg:text-[54px]">
                 {text.title}
               </h1>
               <p className="mt-6 max-w-[650px] text-[16px] leading-7 text-[#64756e] sm:text-[17px]">

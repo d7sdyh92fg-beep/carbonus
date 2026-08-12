@@ -48,7 +48,7 @@ export function V3Hero() {
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
               {c.eyebrow}
             </p>
-            <h1 className="mt-4 max-w-[440px] text-[30px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:mt-6 sm:text-[clamp(30px,2.92vw,46px)]">
+            <h1 className="mt-4 max-w-[440px] text-[30px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:mt-6 sm:text-[clamp(34px,3.4vw,54px)]">
               {c.title1}
               <br className="hidden sm:block" /> {c.title2}
             </h1>

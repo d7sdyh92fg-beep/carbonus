@@ -119,7 +119,7 @@ const About = () => {
               <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--carbonus-green-dark))]">
                 {copy.eyebrow}
               </p>
-              <h1 className="mt-5 max-w-[600px] text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[66px]">
+              <h1 className="mt-5 max-w-[600px] text-[34px] font-bold leading-[1.06] tracking-[-0.04em] sm:text-[44px] lg:text-[54px]">
                 {copy.heroTitle}
               </h1>
               <div className="mt-[34px] h-1 w-12 rounded-full bg-[hsl(var(--carbonus-green))]" />

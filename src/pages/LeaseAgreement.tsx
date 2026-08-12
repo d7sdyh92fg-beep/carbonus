@@ -115,7 +115,7 @@ const LeaseAgreement = () => {
         <div className="relative mx-auto grid max-w-[1320px] gap-12 px-6 pb-4 pt-16 md:px-6 lg:grid-cols-[1fr_0.7fr] lg:items-end lg:pt-20">
           <div className="max-w-[790px]">
             <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[hsl(var(--carbonus-green-dark))]">{copy.eyebrow}</p>
-            <h1 className="mt-5 text-[42px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[54px] lg:text-[64px]">{copy.title}</h1>
+            <h1 className="mt-5 text-[34px] font-bold leading-[1.06] tracking-[-0.04em] sm:text-[44px] lg:text-[54px]">{copy.title}</h1>
             <p className="mt-6 max-w-[680px] text-[16px] leading-7 text-[#64756e] sm:text-[17px]">{copy.subtitle}</p>
           </div>
           <div className="rounded-[26px] bg-[hsl(var(--carbonus-green-deep))] p-6 text-white shadow-[0_22px_60px_rgba(3,53,34,0.2)] sm:p-7">
