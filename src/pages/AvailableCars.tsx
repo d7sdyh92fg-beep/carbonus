@@ -314,11 +314,6 @@ const AvailableCars = () => {
           {c.back}
         </Link>
 
-        <h1 className="mt-4 text-[30px] font-extrabold leading-[1.15] tracking-[-0.025em] text-foreground sm:text-[38px]">
-          {c.heading}
-        </h1>
-        <p className="mt-2 text-[14px] text-muted-foreground">{c.sub}</p>
-
         <div className="mt-6">
           <SearchSummaryCard
             c={c}
