@@ -197,9 +197,9 @@ export function V3SearchBar() {
       {service === "return" ? (
         <>
           <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
-            <label className="min-w-0 flex-1">
+            <label className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
               <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupFrom}</span>
-              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2">
+              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 py-1.5">
                 <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
                 <input
                   value={pickupFrom}
@@ -210,7 +210,7 @@ export function V3SearchBar() {
               </div>
             </label>
 
-            <div className="min-w-0 flex-1">
+            <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
               <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
               <div className="mt-1 flex gap-1">
                 <Popover open={openP} onOpenChange={setOpenP}>
@@ -249,9 +249,9 @@ export function V3SearchBar() {
               </div>
             </div>
 
-            <div className="min-w-0 flex-1">
+            <div className="mx-1 min-w-0 flex-1 sm:ml-0 sm:mr-2">
               <span className="block text-[10px] font-medium text-muted-foreground">{c.rentalLocation}</span>
-              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/80 px-2">
+              <div className="mt-1 flex min-h-[48px] items-center gap-2 rounded-lg border border-border bg-muted/80 px-2 py-1.5">
                 <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
                 <span className="truncate text-[13px] font-semibold text-muted-foreground">{c.officeLocked}</span>
               </div>
