@@ -20,6 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
+import { useBooking } from "@/contexts/BookingContext";
 import { useSearchState } from "@/hooks/use-search-state";
 import { CARS_CATALOG, HIDDEN_CAR_IDS, CatalogCar } from "@/data/carsCatalog";
 import { getCarSlugFromId } from "@/utils/carSlugs";
@@ -74,6 +75,7 @@ const AvailableCars = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { language } = useLanguage();
+  const { setBookingData } = useBooking();
   const c = searchCopy[language] ?? searchCopy.lt;
   const catLabel = (v: string) => CATEGORY_LABELS[language]?.[v] ?? v;
   const specLabel = (v: string) => SPEC_LABELS[language]?.[v] ?? v;
@@ -289,6 +291,30 @@ const AvailableCars = () => {
         retryAll();
         return;
       }
+      const catalogCar = CARS_CATALOG.find((x) => x.id === id);
+      const { daily } = pricingFor(id);
+      const dbCar = (dbCars || []).find((x: any) => String(x.id) === id);
+
+      if (catalogCar && daily != null) {
+        setBookingData({
+          carId: id,
+          carName: catalogCar.name,
+          carImage: catalogCar.image,
+          startDate: pickupDate,
+          endDate: returnDate,
+          pickupTime,
+          returnTime,
+          rentalDays,
+          basePrice: daily * rentalDays,
+          depositAmount: dbCar?.deposit_amount ? Number(dbCar.deposit_amount) : 200,
+          services: [],
+        });
+        navigate(
+          language === "en" ? `/reservation/${id}/services` : `/rezervacija/${id}/paslaugos`,
+        );
+        return;
+      }
+
       const slug = getCarSlugFromId(id, language === "en" ? "en" : "lt");
       const base = language === "en" ? "/cars" : "/automobiliai";
       const qs = new URLSearchParams({
