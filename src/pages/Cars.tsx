@@ -22,7 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { trackFilterCars, trackSearch, trackViewCar, trackViewCarList } from "@/lib/analytics";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import citroenSpacetourerSide from "@/assets/fleet-citroen-spacetourer-side-v2.png";
-import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-side-v2.png";
+import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-white-roof-v3.png";
 import kiaCeedHatchbackSide from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
 import kiaCeedWagonSide from "@/assets/fleet-kia-ceed-wagon-side-v2.png";
 import mercedesSlkSide from "@/assets/fleet-mercedes-slk-open-top-v3.png";
