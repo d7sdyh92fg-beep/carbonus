@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useLanguage } from "@/hooks/use-language";
+import { minBookingDay, minBookingDayISO } from "@/lib/bookingTime";
+
 
 const barCopy = {
   lt: {
