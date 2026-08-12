@@ -19,10 +19,10 @@ import BookingCalendar from "@/components/booking/BookingCalendar";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { useTranslations } from "@/hooks/use-translations";
-import bayonFront from "@/assets/hyundai-bayon-front-studio.png";
-import bayonInterior from "@/assets/hyundai-bayon-front-cabin-v2.png";
-import bayonPassengerCabin from "@/assets/hyundai-bayon-rear-cabin-v2.png";
-import bayonRear from "@/assets/hyundai-bayon-rear-studio.png";
+import bayonFront from "@/assets/car-galleries/hyundai-bayon-cross/01-EXTERIOR-FRONT.png";
+import bayonRear from "@/assets/car-galleries/hyundai-bayon-cross/02-EXTERIOR-REAR.png";
+import bayonInterior from "@/assets/car-galleries/hyundai-bayon-cross/03-INTERIOR-FRONT-CABIN.png";
+import bayonPassengerCabin from "@/assets/car-galleries/hyundai-bayon-cross/04-INTERIOR-REAR-CABIN.png";
 import bayonScenic from "@/assets/hyundai-bayon-scenic-v2.png";
 
 type SelectedPackage = {
