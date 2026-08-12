@@ -203,7 +203,7 @@ export function V3SearchBar() {
                   setOpenR(false);
                 }
               }}
-              disabled={(d) => d < new Date(`${pickup}T12:00:00`)}
+              disabled={(d) => d < new Date(`${pickup}T12:00:00`) || d < minBookingDay()}
               locale={lt}
               className="pointer-events-auto p-3"
             />
