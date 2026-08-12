@@ -114,7 +114,7 @@ const About = () => {
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
           <div className="pointer-events-none absolute -right-48 -top-40 h-[620px] w-[620px] rounded-full bg-[hsl(var(--carbonus-green))]/10 blur-3xl" />
-          <div className="relative mx-auto grid max-w-[1320px] items-center gap-12 px-6 pb-4 pt-16 md:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-20 lg:pt-20">
+          <div className="relative mx-auto grid max-w-[1320px] items-start gap-12 px-6 pb-4 pt-16 md:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-20 lg:pt-20">
             <div className="relative z-10">
               <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--carbonus-green-dark))]">
                 {copy.eyebrow}
