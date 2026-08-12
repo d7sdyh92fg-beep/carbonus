@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Plus, Package, Baby, Shield, Map, Navigation, Users, UserCircle } from 'lucide-react';
+import { ChevronLeft, Plus, Package, Baby, Shield, Navigation, Users, UserCircle } from 'lucide-react';
 import { useBooking, AdditionalService } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
