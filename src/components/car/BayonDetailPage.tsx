@@ -20,10 +20,10 @@ import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { useTranslations } from "@/hooks/use-translations";
 import bayonFront from "@/assets/hyundai-bayon-front-studio.png";
-import bayonInterior from "@/assets/car-interior.jpg";
-import bayonPassengerCabin from "@/assets/fleet-hyundai-bayon-side-v2.png";
+import bayonInterior from "@/assets/hyundai-bayon-front-cabin-v2.png";
+import bayonPassengerCabin from "@/assets/hyundai-bayon-rear-cabin-v2.png";
 import bayonRear from "@/assets/hyundai-bayon-rear-studio.png";
-import bayonScenic from "@/assets/hyundai-bayon-side-clean.png";
+import bayonScenic from "@/assets/hyundai-bayon-scenic-v2.png";
 
 type SelectedPackage = {
   type: "romantic" | "wedding";

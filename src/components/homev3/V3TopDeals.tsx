@@ -4,7 +4,7 @@ import { useLanguage } from "@/hooks/use-language";
 import mercedesSlk from "@/assets/fleet-mercedes-slk-open-top-v3.png";
 import kiaHatchback from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
 import citroenSpaceTourer from "@/assets/fleet-citroen-spacetourer-side-v2.png";
-import hyundaiBayon from "@/assets/fleet-hyundai-bayon-side-v2.png";
+import hyundaiBayon from "@/assets/fleet-hyundai-bayon-white-roof-v3.png";
 
 const CARS = [
   {
