@@ -380,22 +380,20 @@ const Cars = () => {
                 const fuel = activeLanguage === "en" ? car.fuelEn : car.fuel;
                 const transmission = activeLanguage === "en" ? car.transmissionEn : car.transmission;
                 return (
-                  <article key={car.id} className="group overflow-hidden rounded-[26px] border border-[#e2e9e5] bg-white p-3 shadow-[0_16px_45px_rgba(14,47,35,0.06)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(14,47,35,0.11)]">
+                  <article key={car.id} className="group overflow-hidden rounded-[20px] border border-[#e2e9e5] bg-white p-3 shadow-[0_14px_38px_rgba(16,24,40,0.08)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_48px_rgba(16,24,40,0.12)]">
                     <Link to={carPath(car)} onClick={() => registerCarView(car)} className="block" aria-label={displayName}>
-                      <div className="relative h-[245px] overflow-hidden rounded-[18px] bg-[linear-gradient(145deg,#f6f8f7_0%,#edf2ef_100%)] sm:h-[265px]">
-
-                        <span className="absolute left-5 top-5 z-20 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#53645d] shadow-sm backdrop-blur-sm">
+                      <div className="relative aspect-[3/2] overflow-hidden rounded-[15px] bg-[#f4f6f5]">
+                        <span className="absolute left-4 top-4 z-20 rounded-md border border-black/[0.04] bg-white px-2 py-1 text-[11px] font-medium text-muted-foreground">
                           {car.year}
                         </span>
-                        <span className="absolute right-5 top-5 z-20 rounded-full bg-[hsl(var(--carbonus-green-soft))] px-3 py-1.5 text-[11px] font-bold text-[hsl(var(--carbonus-green-dark))]">
+                        <span className="absolute right-4 top-4 z-20 rounded-md bg-[hsl(var(--carbonus-green)/0.08)] px-2 py-1 text-[11px] font-semibold text-[hsl(var(--carbonus-green-dark))]">
                           {category}
                         </span>
-                        <div className="absolute bottom-[13%] left-1/2 h-7 w-[74%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(17,35,28,0.27)_0%,rgba(17,35,28,0)_72%)] blur-[2px]" />
                         <img
                           src={car.image}
                           alt={displayName}
                           loading="lazy"
-                          className={`relative z-10 h-full w-full object-cover object-center transition-transform duration-500 ease-out ${car.imageClass}`}
+                          className="relative z-10 h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.025]"
                         />
                       </div>
                     </Link>
