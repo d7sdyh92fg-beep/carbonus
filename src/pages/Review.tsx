@@ -86,7 +86,14 @@ const Review = () => {
         thanksText: "Dėkojame — peržiūrėsime ir prireikus susisieksime.",
         again: "Keisti įvertinimą",
         stars: (n: number) => `${n} iš 5`,
+        promoBanner: "Palikite atsiliepimą ir gaukite 10% nuolaidos kodą kitai nuomai",
+        promoTitle: "Jūsų 10% nuolaidos kodas",
+        promoText: "Panaudokite šį kodą užsakydami kitą nuomą. Galioja 6 mėn., vienam klientui – vieną kartą.",
+        promoReveal: "Palikau atsiliepimą — rodyti kodą",
+        promoCopy: "Kopijuoti kodą",
+        promoCopied: "Nukopijuota",
       };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
