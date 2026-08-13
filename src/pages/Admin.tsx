@@ -135,6 +135,7 @@ const Admin = () => {
 
   const [cars, setCars] = useState<any[]>([]);
   const [isLoadingCars, setIsLoadingCars] = useState(true);
+  const [carSearchQuery, setCarSearchQuery] = useState('');
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
