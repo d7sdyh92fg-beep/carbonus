@@ -858,11 +858,17 @@ const Admin = () => {
                 <span className="hidden sm:inline">Sąskaitos</span>
                 <span className="sm:hidden text-[10px] text-center leading-3">Sąskaitos</span>
               </TabsTrigger>
+              <TabsTrigger value="promos" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <Gift className="h-4 w-4" />
+                <span className="hidden sm:inline">Nuolaidos</span>
+                <span className="sm:hidden text-[10px] text-center leading-3">Nuolaidos</span>
+              </TabsTrigger>
               <TabsTrigger value="email-test" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <Mail className="h-4 w-4" />
                 <span className="hidden sm:inline">El. paštas</span>
                 <span className="sm:hidden text-[10px] text-center leading-3">El. paštas</span>
               </TabsTrigger>
+
             </TabsList>
 
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
