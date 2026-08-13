@@ -141,7 +141,12 @@ const Review = () => {
             <p className="text-xs font-semibold tracking-[0.24em] text-carbonus-green">{copy.eyebrow}</p>
             <h1 className="mt-3 text-[38px] font-bold leading-tight text-foreground lg:text-[54px]">{copy.title}</h1>
             <p className="mt-4 text-base text-muted-foreground">{copy.subtitle}</p>
+            <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full bg-carbonus-green-soft px-4 py-2 text-sm font-semibold text-carbonus-green-dark">
+              <Gift className="h-4 w-4" />
+              {copy.promoBanner}
+            </div>
           </div>
+
 
           <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-border bg-card p-6 shadow-sm lg:p-10">
             {/* Stars */}
