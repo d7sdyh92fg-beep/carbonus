@@ -986,12 +986,7 @@ const Admin = () => {
                               name: car.name,
                               image: getCarImage(car),
                               year: car.year,
-                              category: car.category,
-                              passengers: car.passengers,
-                              transmission: car.transmission,
-                              fuel: car.fuel,
                             }}
-                            price={`${car.price_tier3 || 30} €`}
                             onManage={() => handleCarClick({ id: car.id, name: car.name })}
                           />
                         </div>
