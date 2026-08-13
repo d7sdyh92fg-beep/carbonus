@@ -167,6 +167,42 @@ const Review = () => {
     }
   };
 
+  const termsTrigger = (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-carbonus-green-dark underline underline-offset-4"
+        >
+          <Info className="h-4 w-4" />
+          {copy.termsLink}
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{copy.termsTitle}</DialogTitle>
+          <DialogDescription>{copy.termsIntro}</DialogDescription>
+        </DialogHeader>
+        <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+          {copy.termsList.map((item) => (
+            <li key={item} className="flex gap-2">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green-dark" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <Link
+          to={isEnglish ? "/rental-agreement" : "/nuomos-sutartis"}
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-carbonus-green-dark underline underline-offset-4"
+        >
+          {copy.termsRulesLink}
+          <ExternalLink className="h-3.5 w-3.5" />
+        </Link>
+      </DialogContent>
+    </Dialog>
+  );
+
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
