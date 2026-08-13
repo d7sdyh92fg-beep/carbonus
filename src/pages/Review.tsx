@@ -180,13 +180,48 @@ const Review = () => {
                 <h2 className="text-xl font-semibold text-foreground">{copy.greatTitle}</h2>
                 <p className="mt-2 text-sm text-muted-foreground">{copy.greatText}</p>
                 <Button asChild size="lg" className="mt-5 bg-carbonus-green-dark hover:bg-carbonus-green-deep">
-                  <a href={GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={GOOGLE_REVIEW_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setRevealed(true)}
+                  >
                     {copy.greatCta}
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
+                {!revealed && (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setRevealed(true)}
+                      className="mt-4 text-sm font-medium text-carbonus-green-dark underline underline-offset-4"
+                    >
+                      {copy.promoReveal}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
+
+            {/* Reward code */}
+            {(revealed || sent) && (
+              <div className="mt-6 rounded-2xl border border-carbonus-green/30 bg-carbonus-green-soft p-6 text-center">
+                <Gift className="mx-auto h-8 w-8 text-carbonus-green-dark" />
+                <h3 className="mt-3 text-lg font-semibold text-foreground">{copy.promoTitle}</h3>
+                <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                  <span className="rounded-xl border border-dashed border-carbonus-green-dark bg-card px-6 py-3 text-2xl font-bold tracking-[0.2em] text-carbonus-green-dark">
+                    {PROMO_CODE}
+                  </span>
+                  <Button variant="outline" onClick={copyCode}>
+                    {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                    {copied ? copy.promoCopied : copy.promoCopy}
+                  </Button>
+                </div>
+                <p className="mt-3 text-sm text-muted-foreground">{copy.promoText}</p>
+              </div>
+            )}
+
 
             {/* 1-4 stars -> internal form */}
             {rating > 0 && rating < 5 && !sent && (
