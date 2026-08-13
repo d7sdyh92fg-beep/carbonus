@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Cog, Fuel, UsersRound } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import mercedesSlk from "@/assets/car-galleries/mercedes-slk/01-EXTERIOR-FRONT.png";
-import kiaHatchback from "@/assets/car-galleries/kia-ceed-hecbekas/01-EXTERIOR-FRONT.png";
-import citroenSpaceTourer from "@/assets/car-galleries/citroen-spacetourer/01-EXTERIOR-FRONT.png";
-import hyundaiBayon from "@/assets/car-galleries/hyundai-bayon-cross/01-EXTERIOR-FRONT.png";
+import mercedesSlk from "@/assets/fleet-mercedes-slk-open-top-v3.png";
+import kiaHatchback from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
+import citroenSpaceTourer from "@/assets/fleet-citroen-spacetourer-side-v2.png";
+import hyundaiBayon from "@/assets/fleet-hyundai-bayon-white-roof-v3.png";
 
 const CARS = [
   {

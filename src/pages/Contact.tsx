@@ -137,7 +137,7 @@ const Contact = () => {
     <div className="min-h-screen bg-[#f7f9f8] text-[#111b18]">
       <SEOHead
         title={isEnglish ? "Contact Carbonus car rental" : "Kontaktai – Carbonus automobilių nuoma"}
-        description={isEnglish ? "Questions about a booking, delivery or rental terms? Reach the Carbonus team by phone or email." : "Kilo klausimų dėl rezervacijos, pristatymo ar nuomos sąlygų? Susisiekite su Carbonus telefonu arba el. paštu."}
+        description={isEnglish ? "Contact Carbonus about car rental in Druskininkai and across Lithuania." : "Susisiekite su Carbonus dėl automobilių nuomos Druskininkuose ir visoje Lietuvoje."}
         canonical={`https://carbonus.lt/${isEnglish ? "contact" : "kontaktai"}`}
         keywords="Carbonus kontaktai, automobilių nuoma Druskininkuose, automobilio rezervacija"
       />

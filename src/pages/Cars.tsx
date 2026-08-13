@@ -20,12 +20,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { trackFilterCars, trackSearch, trackViewCar, trackViewCarList } from "@/lib/analytics";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import { CarCard, CarCardData } from "@/components/CarCard";
-import citroenSpacetourerSide from "@/assets/car-galleries/citroen-spacetourer/01-EXTERIOR-FRONT.png";
-import hyundaiBayonSide from "@/assets/car-galleries/hyundai-bayon-cross/01-EXTERIOR-FRONT.png";
-import kiaCeedHatchbackSide from "@/assets/car-galleries/kia-ceed-hecbekas/01-EXTERIOR-FRONT.png";
-import kiaCeedWagonSide from "@/assets/car-galleries/kia-ceed-universalas/01-EXTERIOR-FRONT.png";
-import mercedesSlkSide from "@/assets/car-galleries/mercedes-slk/01-EXTERIOR-FRONT.png";
-import vwPassatSide from "@/assets/car-galleries/volkswagen-passat/01-EXTERIOR-FRONT.png";
+import citroenSpacetourerSide from "@/assets/fleet-citroen-spacetourer-side-v2.png";
+import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-white-roof-v3.png";
+import kiaCeedHatchbackSide from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
+import kiaCeedWagonSide from "@/assets/fleet-kia-ceed-wagon-side-v2.png";
+import mercedesSlkSide from "@/assets/fleet-mercedes-slk-open-top-v3.png";
+import vwPassatSide from "@/assets/fleet-volkswagen-passat-side-v2.png";
 
 type Language = "lt" | "en";
 
@@ -271,10 +271,10 @@ const Cars = () => {
   return (
     <div className="min-h-screen bg-[#f7f9f8] text-[#111b18]">
       <SEOHead
-        title={activeLanguage === "en" ? "Car rental fleet | Carbonus" : "Nuomojami automobiliai | Carbonus autoparkas"}
-        description={activeLanguage === "en" ? "See every car in the Carbonus fleet, with prices per day and delivery anywhere in Lithuania." : "Visi Carbonus automobiliai vienoje vietoje: kainos už parą, techninė informacija ir pristatymas visoje Lietuvoje."}
+        title={activeLanguage === "en" ? "Car rental fleet in Druskininkai | Carbonus" : "Automobilių nuoma Druskininkuose | Carbonus autoparkas"}
+        description={activeLanguage === "en" ? "Explore the Carbonus rental fleet and choose a car for your trip in Druskininkai and across Lithuania." : "Atraskite Carbonus automobilių parką ir išsirinkite automobilį kelionei Druskininkuose bei visoje Lietuvoje."}
         canonical={`https://carbonus.lt/${activeLanguage === "en" ? "cars" : "automobiliai"}`}
-        keywords="automobilių nuoma, automobilių parkas, kabrioleto nuoma, mikroautobuso nuoma, automobilių nuoma druskininkuose"
+        keywords="automobilių nuoma Druskininkuose, automobilių parkas, kabrioleto nuoma, mikroautobuso nuoma"
       />
       <LanguageLinks ltPath="/automobiliai" enPath="/cars" />
       <Header />

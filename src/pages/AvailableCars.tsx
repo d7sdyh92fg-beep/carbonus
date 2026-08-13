@@ -350,8 +350,8 @@ const AvailableCars = () => {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[hsl(210_20%_98%)] font-sans text-foreground">
       <SEOHead
-        title="Laisvi automobiliai pasirinktomis datomis | Carbonus"
-        description="Pasirinkite datas ir iš karto matykite, kurie automobiliai laisvi bei kiek kainuos nuoma su pristatymu."
+        title="Laisvi automobiliai jūsų datoms | Carbonus"
+        description="Peržiūrėkite laisvus automobilius pasirinktomis datomis. Nemokamas pristatymas Druskininkuose, skaidrios kainos."
         canonical="https://carbonus.lt/laisvi-automobiliai"
       />
       <Header />
