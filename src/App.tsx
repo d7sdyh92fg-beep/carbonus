@@ -98,6 +98,11 @@ const App = () => (
             {/* Contact - Lithuanian & English */}
             <Route path="/kontaktai" element={<Contact />} />
             <Route path="/contact" element={<Contact />} />
+
+            {/* Reviews - Lithuanian & English */}
+            <Route path="/atsiliepimas" element={<Review />} />
+            <Route path="/review" element={<Review />} />
+            
             
             {/* Blog - Lithuanian & English */}
             <Route path="/naujienos" element={<Blog />} />
