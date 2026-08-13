@@ -63,6 +63,49 @@ export default function ReservationReview() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleApplyPromo = async () => {
+    const code = promoInput.trim().toUpperCase();
+    if (!code) return;
+    setPromoChecking(true);
+    setPromoError(null);
+    try {
+      const { data, error } = await supabase.rpc('validate_promo_code' as any, {
+        p_code: code,
+        p_rental_days: bookingData.rentalDays,
+      });
+      if (error) throw error;
+      const res = data as any;
+      if (res?.valid) {
+        setAppliedPromo({ code: res.code, percent: Number(res.discount_percent) });
+        setPromoError(null);
+        toast({
+          title: language === 'lt' ? 'Nuolaidos kodas pritaikytas' : 'Promo code applied',
+          description: language === 'lt'
+            ? `-${Number(res.discount_percent)}% nuomos kainai`
+            : `-${Number(res.discount_percent)}% off the rental price`,
+        });
+      } else {
+        setAppliedPromo(null);
+        const reason = res?.reason;
+        setPromoError(
+          reason === 'MIN_DAYS'
+            ? (language === 'lt'
+                ? `Kodas galioja tik nuo ${res.min_rental_days} parų nuomos.`
+                : `Code requires a minimum rental of ${res.min_rental_days} days.`)
+            : reason === 'EXPIRED'
+              ? (language === 'lt' ? 'Kodo galiojimas pasibaigęs.' : 'This code has expired.')
+              : (language === 'lt' ? 'Neteisingas nuolaidos kodas.' : 'Invalid promo code.')
+        );
+      }
+    } catch (e: any) {
+      setAppliedPromo(null);
+      setPromoError(language === 'lt' ? 'Nepavyko patikrinti kodo.' : 'Could not verify the code.');
+    } finally {
+      setPromoChecking(false);
+    }
+  };
+
+
   const handleCorporateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCorporateData(prev => ({ ...prev, [name]: value }));
