@@ -9,6 +9,6 @@
  * Alternatyva: Google Maps -> Carbonus kortelė -> Share -> Copy link.
  */
 export const GOOGLE_REVIEW_URL =
-  "https://www.google.com/maps/search/?api=1&query=Carbonus+automobili%C5%B3+nuoma+Druskininkai";
+  "https://g.page/r/CbTRzKzClv78EBM/review";
 
 export const GOOGLE_REVIEW_URL_IS_PLACEHOLDER = GOOGLE_REVIEW_URL.includes("google.com/maps/search");
