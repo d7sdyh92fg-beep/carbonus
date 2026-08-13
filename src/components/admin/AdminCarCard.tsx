@@ -21,12 +21,12 @@ export function AdminCarCard({ car, onManage, className }: AdminCarCardProps) {
         className
       )}
     >
-      <div className="relative aspect-[4/3] h-[56px] w-auto flex-shrink-0 overflow-hidden rounded-[10px] bg-[#f4f6f5] sm:h-[64px] sm:rounded-[12px] lg:h-[72px]">
+      <div className="relative aspect-[16/10] h-[50px] w-auto flex-shrink-0 overflow-hidden rounded-[10px] bg-[#f4f6f5] p-1 sm:h-[56px] sm:rounded-[12px] lg:h-[60px]">
         <img
           src={car.image}
           alt={car.name}
           loading="lazy"
-          className="h-full w-full object-cover mix-blend-multiply"
+          className="h-full w-full object-contain object-center mix-blend-multiply"
         />
       </div>
 
