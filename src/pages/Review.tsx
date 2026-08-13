@@ -268,6 +268,9 @@ const Review = () => {
                   </Button>
                 </div>
                 <p className="mt-3 text-sm text-muted-foreground">{copy.promoText}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{copy.termsShort}</p>
+                <div className="mt-3">{termsTrigger}</div>
+
               </div>
             )}
 
