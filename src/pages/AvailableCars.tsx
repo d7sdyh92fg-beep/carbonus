@@ -36,7 +36,6 @@ import {
 } from "@/lib/logisticsPricing";
 import { useDrivingDistance } from "@/hooks/use-driving-distance";
 
-const ACTIVE_STATUSES = ["paid", "pending", "requested", "picked_up", "awaiting_payment"];
 
 const daysBetween = (a: string, b: string) => {
   const ms = new Date(`${b}T12:00:00`).getTime() - new Date(`${a}T12:00:00`).getTime();
@@ -174,13 +173,12 @@ const AvailableCars = () => {
   } = useQuery({
     queryKey: ["available-cars-reservations", pickupDate, returnDate],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("reservations")
-        .select("car_id, start_date, end_date, status, deleted_at")
-        .lte("start_date", returnDate)
-        .gte("end_date", pickupDate);
+      const { data, error } = await supabase.rpc("get_booked_ranges", {
+        p_start: pickupDate,
+        p_end: returnDate,
+      } as any);
       if (error) throw error;
-      return (data || []).filter((r: any) => !r.deleted_at && ACTIVE_STATUSES.includes(r.status));
+      return (data as any[]) || [];
     },
   });
 

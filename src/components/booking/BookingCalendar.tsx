@@ -87,13 +87,12 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   const fetchBookedDates = async () => {
     setIsLoadingDates(true);
     try {
-      // Fetch reservations
-      const { data: reservations, error } = await supabase
-        .from("reservations")
-        .select("start_date, end_date")
-        .eq("car_id", carId)
-        .in("status", ["paid", "pending", "requested", "picked_up"])
-        .is("deleted_at", null);
+      // Fetch reservations (public-safe RPC: only car_id + date range)
+      const { data: reservations, error } = await supabase.rpc("get_booked_ranges", {
+        p_start: null,
+        p_end: null,
+        p_car_id: carId,
+      } as any);
 
       if (error) {
         console.error("Error fetching booked dates:", error);

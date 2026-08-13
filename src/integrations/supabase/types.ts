@@ -715,6 +715,14 @@ export type Database = {
         }
         Returns: Json
       }
+      get_booked_ranges: {
+        Args: { p_car_id?: string; p_end: string; p_start: string }
+        Returns: {
+          car_id: string
+          end_date: string
+          start_date: string
+        }[]
+      }
       get_next_invoice_number: {
         Args: { p_prefix?: string }
         Returns: {
