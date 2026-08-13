@@ -109,7 +109,13 @@ const About = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-white font-sans text-foreground">
+      <SEOHead
+        title={t("about.meta.title")}
+        description={t("about.meta.description")}
+        canonical={`https://carbonus.lt/${language === "en" ? "about" : "apie-mus"}`}
+      />
       <Header />
+
 
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">
