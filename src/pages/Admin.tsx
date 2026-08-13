@@ -22,42 +22,22 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
 
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
+import { CarCard } from '@/components/CarCard';
+import { CARS_CATALOG } from '@/data/carsCatalog';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
-import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
-import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
-import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
-// Image mapping object for car images
-const imageMap: { [key: string]: string } = {
-  bmw3Clean,
-  chryslerTownCountrySide,
-  vwPassatSideClean,
-  kiaCeedWagonSideClean,
-  kiaCeedHatchbackSideCleanGray,
-  mercedesSlkSideClean,
-  citroenSpacetourerSide,
-  hyundaiBayonSide,
-};
-
-// Function to get the correct image for a car
+// Function to get the correct image for a car (same assets as public fleet cards)
 const getCarImage = (car: any) => {
-  // Map car names to image keys
-  const nameToImageMap: { [key: string]: string } = {
-    'BMW 3 series': 'bmw3Clean',
-    'Chrysler Town & Country': 'chryslerTownCountrySide',
-    'Volkswagen Passat': 'vwPassatSideClean',
-    'KIA CEED': car.category === 'Universalas' ? 'kiaCeedWagonSideClean' : 'kiaCeedHatchbackSideCleanGray',
-    'Mercedes-Benz SLK': 'mercedesSlkSideClean',
-    'Citroën SpaceTourer': 'citroenSpacetourerSide',
-    'Hyundai Bayon Cross': 'hyundaiBayonSide',
-  };
-  
-  const imageKey = nameToImageMap[car.name] || 'bmw3Clean';
-  return imageMap[imageKey] || car.image_url || '';
+  const byId = CARS_CATALOG.find((c) => String(c.id) === String(car.id));
+  if (byId) return byId.image;
+  const byName = CARS_CATALOG.find(
+    (c) => c.name.toLowerCase() === String(car.name || '').toLowerCase()
+  );
+  if (byName) return byName.image;
+  if (String(car.name).includes('BMW')) return bmw3Clean;
+  if (String(car.name).includes('Chrysler')) return chryslerTownCountrySide;
+  return car.image_url || '';
 };
 
 // Function to parse pricing notes from JSON to readable text
