@@ -371,6 +371,8 @@ const Cars = () => {
             </span>
           </div>
 
+          <h2 className="sr-only">{activeLanguage === "en" ? "Available rental cars" : "Nuomojami automobiliai"}</h2>
+
           {filteredCars.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {filteredCars.map((car) => {

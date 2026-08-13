@@ -166,6 +166,10 @@ const BlogPost = () => {
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:url" content={`https://carbonus.lt/${isEnglish ? "blog" : "naujienos"}/${post.slug}`} />
         <meta property="og:image" content={post.image} />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.excerpt} />
       </Helmet>
       <ArticleSchema
         title={post.title}
