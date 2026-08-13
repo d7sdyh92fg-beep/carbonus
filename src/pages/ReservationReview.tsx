@@ -261,6 +261,8 @@ export default function ReservationReview() {
         p_status: 'awaiting_payment',
         p_language: language,
         p_pricing_notes: pricingNotes,
+        p_promo_code: appliedPromo?.code ?? null,
+
       } as any);
 
       if (reservationError || !rpcData) {
