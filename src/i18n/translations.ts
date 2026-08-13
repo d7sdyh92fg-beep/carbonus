@@ -595,7 +595,7 @@ export const translations = {
       specsTitle: "Specifikacijos",
       bookingTitle: "Užsakyti automobilį",
       bookingSubtitle: "Pasirinkite datas ir pamatykite tikslią kainą",
-      metaTitle: "{carName} - Carbonus | Premium automobilio nuoma nuo 30€/dieną",
+      metaTitle: "{carName} nuoma | Carbonus",
       metaDescription: "{carName} nuomai Carbonus automobilių parke. Premium klasės automobilis su visais patogumais. Rezervuokite online ir užsisakykite šiandien.",
       specs: {
         year: "Metai",
@@ -2518,7 +2518,7 @@ export const translations = {
       specsTitle: "Specifications",
       bookingTitle: "Order Car",
       bookingSubtitle: "Select dates and see the exact price",
-      metaTitle: "{carName} - Carbonus | Premium Car Rental from €30/day",
+      metaTitle: "{carName} rental | Carbonus",
       metaDescription: "{carName} for rent in Carbonus car fleet. Premium class car with all amenities. Reserve online and order today.",
       specs: {
         year: "Year",

@@ -18,6 +18,7 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useTranslations } from "@/hooks/use-translations";
 import spaceFront from "@/assets/car-galleries/citroen-spacetourer/01-EXTERIOR-FRONT.png";
 import spaceRear from "@/assets/car-galleries/citroen-spacetourer/02-EXTERIOR-REAR.png";
@@ -155,6 +156,21 @@ export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPack
         ogImage={spaceFront}
         ogType="product"
         keywords="Citroën SpaceTourer nuoma, aštuonviečio nuoma, vienatūrio nuoma Druskininkuose, Carbonus"
+      />
+      <ProductSchema
+        name={copy.title}
+        description={t("carDetail.metaDescription").replace("{carName}", copy.title)}
+        image={spaceFront}
+        brand="Citroën"
+        price={String(lowestPrice)}
+        currency="EUR"
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: isEnglish ? "Home" : "Pradžia", url: "/" },
+          { name: isEnglish ? "Cars" : "Automobiliai", url: isEnglish ? "/cars" : "/automobiliai" },
+          { name: copy.title, url: isEnglish ? "/cars/citroen-spacetourer-rental" : "/automobiliai/citroen-spacetourer-nuoma" },
+        ]}
       />
       <LanguageLinks ltPath="/automobiliai/citroen-spacetourer-nuoma" enPath="/cars/citroen-spacetourer-rental" />
       <Header />
