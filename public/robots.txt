@@ -20,7 +20,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://carbonus.lt/sitemap.xml
+Sitemap: https://carbonus.lovable.app/sitemap.xml
 
 # Crawl-delay for all other bots
 Crawl-delay: 1
