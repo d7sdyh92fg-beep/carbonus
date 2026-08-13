@@ -1,17 +1,27 @@
 import { useState } from "react";
-import { Star, ExternalLink, Send, CheckCircle2, Gift, Copy, Check } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Star, ExternalLink, Send, CheckCircle2, Gift, Copy, Check, Info } from "lucide-react";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/hooks/use-translations";
 import { supabase } from "@/integrations/supabase/client";
 import { GOOGLE_REVIEW_URL } from "@/lib/reviewLink";
 
 const PROMO_CODE = "ACIU10";
+
 
 const Review = () => {
   const { language } = useTranslations();
