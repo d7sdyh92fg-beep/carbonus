@@ -604,6 +604,15 @@ export default function ReservationReview() {
                   <span>{t('review.summary.rental')}</span>
                   <span>{bookingData.basePrice.toFixed(2)} €</span>
                 </div>
+
+                {discountAmount > 0 && appliedPromo && (
+                  <div className="flex justify-between text-sm text-primary font-medium">
+                    <span>{language === 'lt' ? 'Nuolaida' : 'Discount'} ({appliedPromo.code} −{appliedPromo.percent}%)</span>
+                    <span>−{discountAmount.toFixed(2)} €</span>
+                  </div>
+                )}
+                
+
                 
                 {servicesTotal > 0 && (
                   <div className="flex justify-between text-sm">
