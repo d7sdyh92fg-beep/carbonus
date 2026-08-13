@@ -271,10 +271,10 @@ const Cars = () => {
   return (
     <div className="min-h-screen bg-[#f7f9f8] text-[#111b18]">
       <SEOHead
-        title={activeLanguage === "en" ? "Car rental fleet in Druskininkai | Carbonus" : "Automobilių nuoma Druskininkuose | Carbonus autoparkas"}
-        description={activeLanguage === "en" ? "Explore the Carbonus rental fleet and choose a car for your trip in Druskininkai and across Lithuania." : "Atraskite Carbonus automobilių parką ir išsirinkite automobilį kelionei Druskininkuose bei visoje Lietuvoje."}
+        title={activeLanguage === "en" ? "Car rental fleet | Carbonus" : "Nuomojami automobiliai | Carbonus autoparkas"}
+        description={activeLanguage === "en" ? "See every car in the Carbonus fleet, with prices per day and delivery anywhere in Lithuania." : "Visi Carbonus automobiliai vienoje vietoje: kainos už parą, techninė informacija ir pristatymas visoje Lietuvoje."}
         canonical={`https://carbonus.lt/${activeLanguage === "en" ? "cars" : "automobiliai"}`}
-        keywords="automobilių nuoma Druskininkuose, automobilių parkas, kabrioleto nuoma, mikroautobuso nuoma"
+        keywords="automobilių nuoma, automobilių parkas, kabrioleto nuoma, mikroautobuso nuoma, automobilių nuoma druskininkuose"
       />
       <LanguageLinks ltPath="/automobiliai" enPath="/cars" />
       <Header />
