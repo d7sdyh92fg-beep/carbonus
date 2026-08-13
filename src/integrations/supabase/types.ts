@@ -509,6 +509,39 @@ export type Database = {
           },
         ]
       }
+      promo_codes: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          description: string | null
+          discount_percent: number
+          min_rental_days: number
+          updated_at: string
+          valid_until: string | null
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          min_rental_days?: number
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          min_rental_days?: number
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
       rate_limits: {
         Row: {
           created_at: string | null
@@ -555,6 +588,7 @@ export type Database = {
           deleted_by: string | null
           deposit_amount: number
           deposit_payment_intent_id: string | null
+          discount_amount: number
           driver_license_back_url: string | null
           driver_license_url: string | null
           end_date: string
@@ -571,6 +605,7 @@ export type Database = {
           pickup_date: string | null
           pickup_time: string | null
           pricing_notes: string | null
+          promo_code: string | null
           rental_days: number
           return_date: string | null
           return_notes: string | null
@@ -602,6 +637,7 @@ export type Database = {
           deleted_by?: string | null
           deposit_amount?: number
           deposit_payment_intent_id?: string | null
+          discount_amount?: number
           driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date: string
@@ -618,6 +654,7 @@ export type Database = {
           pickup_date?: string | null
           pickup_time?: string | null
           pricing_notes?: string | null
+          promo_code?: string | null
           rental_days: number
           return_date?: string | null
           return_notes?: string | null
@@ -649,6 +686,7 @@ export type Database = {
           deleted_by?: string | null
           deposit_amount?: number
           deposit_payment_intent_id?: string | null
+          discount_amount?: number
           driver_license_back_url?: string | null
           driver_license_url?: string | null
           end_date?: string
@@ -665,6 +703,7 @@ export type Database = {
           pickup_date?: string | null
           pickup_time?: string | null
           pricing_notes?: string | null
+          promo_code?: string | null
           rental_days?: number
           return_date?: string | null
           return_notes?: string | null
@@ -757,26 +796,48 @@ export type Database = {
             }
             Returns: string
           }
-      create_reservation: {
-        Args: {
-          p_car_id: string
-          p_customer_id: string
-          p_delivery_fee?: number
-          p_end_date: string
-          p_insurance_code?: string
-          p_language?: string
-          p_package_code?: string
-          p_payment_method?: string
-          p_payment_provider?: string
-          p_pickup_time: string
-          p_pricing_notes?: string
-          p_return_time: string
-          p_service_codes?: string[]
-          p_start_date: string
-          p_status?: string
-        }
-        Returns: Json
-      }
+      create_reservation:
+        | {
+            Args: {
+              p_car_id: string
+              p_customer_id: string
+              p_delivery_fee?: number
+              p_end_date: string
+              p_insurance_code?: string
+              p_language?: string
+              p_package_code?: string
+              p_payment_method?: string
+              p_payment_provider?: string
+              p_pickup_time: string
+              p_pricing_notes?: string
+              p_return_time: string
+              p_service_codes?: string[]
+              p_start_date: string
+              p_status?: string
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_car_id: string
+              p_customer_id: string
+              p_delivery_fee?: number
+              p_end_date: string
+              p_insurance_code?: string
+              p_language?: string
+              p_package_code?: string
+              p_payment_method?: string
+              p_payment_provider?: string
+              p_pickup_time: string
+              p_pricing_notes?: string
+              p_promo_code?: string
+              p_return_time: string
+              p_service_codes?: string[]
+              p_start_date: string
+              p_status?: string
+            }
+            Returns: Json
+          }
       get_booked_ranges: {
         Args: { p_car_id?: string; p_end: string; p_start: string }
         Returns: {
@@ -801,6 +862,10 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_admin: { Args: never; Returns: boolean }
+      validate_promo_code: {
+        Args: { p_code: string; p_rental_days?: number }
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "admin" | "user"

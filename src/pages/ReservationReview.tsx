@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, User, Mail, Phone, FileText, CreditCard } from 'lucide-react';
+import { ChevronLeft, User, Mail, Phone, FileText, CreditCard, Tag } from 'lucide-react';
 import { useBooking } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -23,6 +23,11 @@ export default function ReservationReview() {
   const { t, language } = useTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
+  const [promoInput, setPromoInput] = useState('');
+  const [promoChecking, setPromoChecking] = useState(false);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; percent: number } | null>(null);
+
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -57,6 +62,49 @@ export default function ReservationReview() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  const handleApplyPromo = async () => {
+    const code = promoInput.trim().toUpperCase();
+    if (!code) return;
+    setPromoChecking(true);
+    setPromoError(null);
+    try {
+      const { data, error } = await supabase.rpc('validate_promo_code' as any, {
+        p_code: code,
+        p_rental_days: bookingData.rentalDays,
+      });
+      if (error) throw error;
+      const res = data as any;
+      if (res?.valid) {
+        setAppliedPromo({ code: res.code, percent: Number(res.discount_percent) });
+        setPromoError(null);
+        toast({
+          title: language === 'lt' ? 'Nuolaidos kodas pritaikytas' : 'Promo code applied',
+          description: language === 'lt'
+            ? `-${Number(res.discount_percent)}% nuomos kainai`
+            : `-${Number(res.discount_percent)}% off the rental price`,
+        });
+      } else {
+        setAppliedPromo(null);
+        const reason = res?.reason;
+        setPromoError(
+          reason === 'MIN_DAYS'
+            ? (language === 'lt'
+                ? `Kodas galioja tik nuo ${res.min_rental_days} parų nuomos.`
+                : `Code requires a minimum rental of ${res.min_rental_days} days.`)
+            : reason === 'EXPIRED'
+              ? (language === 'lt' ? 'Kodo galiojimas pasibaigęs.' : 'This code has expired.')
+              : (language === 'lt' ? 'Neteisingas nuolaidos kodas.' : 'Invalid promo code.')
+        );
+      }
+    } catch (e: any) {
+      setAppliedPromo(null);
+      setPromoError(language === 'lt' ? 'Nepavyko patikrinti kodo.' : 'Could not verify the code.');
+    } finally {
+      setPromoChecking(false);
+    }
+  };
+
 
   const handleCorporateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -213,6 +261,8 @@ export default function ReservationReview() {
         p_status: 'awaiting_payment',
         p_language: language,
         p_pricing_notes: pricingNotes,
+        p_promo_code: appliedPromo?.code ?? null,
+
       } as any);
 
       if (reservationError || !rpcData) {
@@ -294,7 +344,11 @@ export default function ReservationReview() {
     return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
   }, 0);
   const deliveryFee = bookingData.delivery?.fee || 0;
-  const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal + deliveryFee;
+  const discountAmount = appliedPromo
+    ? Math.round(bookingData.basePrice * appliedPromo.percent) / 100
+    : 0;
+  const totalPrice = Math.max(0, bookingData.basePrice - discountAmount) + insuranceTotal + servicesTotal + deliveryFee;
+
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
   const displayAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
   const dateLocale = language === 'en' ? enUS : lt;
@@ -470,6 +524,58 @@ export default function ReservationReview() {
                 )}
               </Card>
 
+              {/* Promo code */}
+              <Card className="p-6">
+                <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                  <Tag className="h-5 w-5" />
+                  {language === 'lt' ? 'Nuolaidos kodas' : 'Promo code'}
+                </h3>
+                {appliedPromo ? (
+                  <div className="flex items-center justify-between gap-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+                    <div>
+                      <p className="font-semibold text-primary">{appliedPromo.code}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {language === 'lt'
+                          ? `Pritaikyta −${appliedPromo.percent}% nuomos kainai`
+                          : `Applied −${appliedPromo.percent}% off the rental price`}
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => { setAppliedPromo(null); setPromoInput(''); }}
+                    >
+                      {language === 'lt' ? 'Pašalinti' : 'Remove'}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Input
+                      value={promoInput}
+                      onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(null); }}
+                      placeholder={language === 'lt' ? 'pvz. ACIU10' : 'e.g. ACIU10'}
+                      className="uppercase"
+                    />
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={handleApplyPromo}
+                      disabled={promoChecking || !promoInput.trim()}
+                    >
+                      {promoChecking
+                        ? (language === 'lt' ? 'Tikrinama...' : 'Checking...')
+                        : (language === 'lt' ? 'Pritaikyti' : 'Apply')}
+                    </Button>
+                  </div>
+                )}
+                {promoError && (
+                  <p className="text-sm text-destructive mt-2">{promoError}</p>
+                )}
+              </Card>
+
+
+
               {/* Payment Method */}
               <Card className="p-6">
                 <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
@@ -550,6 +656,15 @@ export default function ReservationReview() {
                   <span>{t('review.summary.rental')}</span>
                   <span>{bookingData.basePrice.toFixed(2)} €</span>
                 </div>
+
+                {discountAmount > 0 && appliedPromo && (
+                  <div className="flex justify-between text-sm text-primary font-medium">
+                    <span>{language === 'lt' ? 'Nuolaida' : 'Discount'} ({appliedPromo.code} −{appliedPromo.percent}%)</span>
+                    <span>−{discountAmount.toFixed(2)} €</span>
+                  </div>
+                )}
+                
+
                 
                 {servicesTotal > 0 && (
                   <div className="flex justify-between text-sm">
