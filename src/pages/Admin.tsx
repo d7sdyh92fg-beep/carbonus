@@ -22,42 +22,22 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
 
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
+import { CarCard } from '@/components/CarCard';
+import { CARS_CATALOG } from '@/data/carsCatalog';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
-import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
-import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
-import kiaCeedHatchbackSideCleanGray from "@/assets/kia-ceed-hatchback-side-khaki.png";
-import mercedesSlkSideClean from "@/assets/mercedes-slk-side-clean.png";
-import citroenSpacetourerSide from "@/assets/citroen-spacetourer-side-clean.png";
-import hyundaiBayonSide from "@/assets/hyundai-bayon-side-clean.png";
 
-// Image mapping object for car images
-const imageMap: { [key: string]: string } = {
-  bmw3Clean,
-  chryslerTownCountrySide,
-  vwPassatSideClean,
-  kiaCeedWagonSideClean,
-  kiaCeedHatchbackSideCleanGray,
-  mercedesSlkSideClean,
-  citroenSpacetourerSide,
-  hyundaiBayonSide,
-};
-
-// Function to get the correct image for a car
+// Function to get the correct image for a car (same assets as public fleet cards)
 const getCarImage = (car: any) => {
-  // Map car names to image keys
-  const nameToImageMap: { [key: string]: string } = {
-    'BMW 3 series': 'bmw3Clean',
-    'Chrysler Town & Country': 'chryslerTownCountrySide',
-    'Volkswagen Passat': 'vwPassatSideClean',
-    'KIA CEED': car.category === 'Universalas' ? 'kiaCeedWagonSideClean' : 'kiaCeedHatchbackSideCleanGray',
-    'Mercedes-Benz SLK': 'mercedesSlkSideClean',
-    'Citroën SpaceTourer': 'citroenSpacetourerSide',
-    'Hyundai Bayon Cross': 'hyundaiBayonSide',
-  };
-  
-  const imageKey = nameToImageMap[car.name] || 'bmw3Clean';
-  return imageMap[imageKey] || car.image_url || '';
+  const byId = CARS_CATALOG.find((c) => String(c.id) === String(car.id));
+  if (byId) return byId.image;
+  const byName = CARS_CATALOG.find(
+    (c) => c.name.toLowerCase() === String(car.name || '').toLowerCase()
+  );
+  if (byName) return byName.image;
+  if (String(car.name).includes('BMW')) return bmw3Clean;
+  if (String(car.name).includes('Chrysler')) return chryslerTownCountrySide;
+  return car.image_url || '';
 };
 
 // Function to parse pricing notes from JSON to readable text
@@ -960,61 +940,40 @@ const Admin = () => {
                   <CardDescription>Mūsų turimų automobilių sąrašas</CardDescription>
                 </CardHeader>
                  <CardContent>
-                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
                      {cars.map((car) => (
-                       <Card 
-                         key={car.id} 
-                         className="overflow-hidden cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
-                         onClick={() => handleCarClick({ id: car.id, name: car.name })}
-                       >
-                          <div className="aspect-video relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f3f4f6 0%, #e9eaec 100%)' }}>
-                            <div className="relative w-full h-full">
-                              <img 
-                                src={getCarImage(car)} 
-                                alt={car.name}
-                                className={`w-full h-full object-contain mix-blend-multiply ${
-                                  car.name === "Volkswagen Passat" 
-                                    ? "scale-[1.0]" 
-                                    : car.name === "Mercedes-Benz SLK"
-                                    ? "scale-[0.92] translate-y-4"
-                                    : car.id === "5"
-                                    ? "scale-[1.35] translate-y-4"
-                                    : car.id === "4"
-                                    ? "scale-[1.08] translate-y-4"
-                                    : car.id === "8"
-                                    ? "scale-[1.45] translate-y-2"
-                                    : "scale-100 translate-y-2"
-                                }`}
-                              />
-                              {(car.id === "5" || car.id === "6") && (
-                                <div 
-                                  className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-[85%] h-5 rounded-[50%]"
-                                  style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%)' }}
-                                />
-                              )}
-                              {car.id === "7" && (
-                                <div 
-                                  className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-[98%] h-5 rounded-[50%]"
-                                  style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.8) 0%, transparent 70%)' }}
-                                />
-                              )}
-                            </div>
-                            <Badge className="absolute top-2 right-2 text-xs">{car.category}</Badge>
-                          </div>
-                         <CardContent className="p-3 sm:p-4">
-                           <h3 className="font-semibold mb-2 text-sm sm:text-base">{car.name}</h3>
-                           <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
-                             <div className="flex items-center gap-2">
-                               <Users className="h-3 w-3 flex-shrink-0" />
-                               <span>{car.passengers} vietos</span>
-                             </div>
-                               <div className="flex items-center justify-between">
-                                 <span>{car.fuel} • {car.transmission}</span>
-                                 <span className="font-semibold text-primary">{car.price_tier1 || 50}-{car.price_tier3 || 30}€/d.</span>
-                               </div>
-                           </div>
-                         </CardContent>
-                       </Card>
+                       <div key={car.id} onClick={() => handleCarClick({ id: car.id, name: car.name })} className="cursor-pointer">
+                         <CarCard
+                           car={{
+                             id: String(car.id),
+                             name: car.name,
+                             image: getCarImage(car),
+                             year: car.year,
+                             category: car.category,
+                             passengers: car.passengers,
+                             transmission: car.transmission,
+                             fuel: car.fuel,
+                           }}
+                           price={`${car.price_tier3 || 30} €`}
+                           priceFrom="nuo"
+                           pricePerDay="/ dieną"
+                           categoryLabel={car.category}
+                           transmissionLabel={car.transmission}
+                           fuelLabel={car.fuel}
+                           cta={
+                             <Button
+                               className="w-full"
+                               onClick={(e) => {
+                                 e.stopPropagation();
+                                 handleCarClick({ id: car.id, name: car.name });
+                               }}
+                             >
+                               <Settings className="h-4 w-4 mr-2" />
+                               Valdyti
+                             </Button>
+                           }
+                         />
+                       </div>
                      ))}
                   </div>
                 </CardContent>
