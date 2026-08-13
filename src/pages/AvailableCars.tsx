@@ -36,7 +36,6 @@ import {
 } from "@/lib/logisticsPricing";
 import { useDrivingDistance } from "@/hooks/use-driving-distance";
 
-const ACTIVE_STATUSES = ["paid", "pending", "requested", "picked_up", "awaiting_payment"];
 
 const daysBetween = (a: string, b: string) => {
   const ms = new Date(`${b}T12:00:00`).getTime() - new Date(`${a}T12:00:00`).getTime();
