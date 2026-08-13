@@ -19,6 +19,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/hooks/use-translations";
 import { supabase } from "@/integrations/supabase/client";
 import { GOOGLE_REVIEW_URL } from "@/lib/reviewLink";
+import { logPromoClaim } from "@/lib/promoClaims";
+
 
 const PROMO_CODE = "ACIU10";
 
@@ -154,7 +156,16 @@ const Review = () => {
         body: { rating, ...form },
       });
       if (error) throw error;
+      await logPromoClaim({
+        action: "feedback_sent",
+        rating,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        language,
+      });
       setSent(true);
+
     } catch (err) {
       console.error(err);
       toast({
@@ -272,7 +283,10 @@ const Review = () => {
                     href={GOOGLE_REVIEW_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => setRevealed(true)}
+                    onClick={() => {
+                      setRevealed(true);
+                      void logPromoClaim({ action: "google_click", rating, language });
+                    }}
                   >
                     {copy.greatCta}
                     <ExternalLink className="ml-2 h-4 w-4" />
@@ -282,13 +296,17 @@ const Review = () => {
                   <div>
                     <button
                       type="button"
-                      onClick={() => setRevealed(true)}
+                      onClick={() => {
+                        setRevealed(true);
+                        void logPromoClaim({ action: "revealed", rating, language });
+                      }}
                       className="mt-4 text-sm font-medium text-carbonus-green-dark underline underline-offset-4"
                     >
                       {copy.promoReveal}
                     </button>
                   </div>
                 )}
+
               </div>
             )}
 

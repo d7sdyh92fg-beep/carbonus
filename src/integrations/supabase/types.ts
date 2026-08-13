@@ -447,6 +447,68 @@ export type Database = {
         }
         Relationships: []
       }
+      promo_code_claims: {
+        Row: {
+          action: string
+          admin_notes: string | null
+          code: string
+          created_at: string
+          email: string | null
+          id: string
+          language: string
+          name: string | null
+          phone: string | null
+          rating: number | null
+          redeemed: boolean
+          redeemed_at: string | null
+          redeemed_reservation_id: string | null
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          action?: string
+          admin_notes?: string | null
+          code?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: string
+          name?: string | null
+          phone?: string | null
+          rating?: number | null
+          redeemed?: boolean
+          redeemed_at?: string | null
+          redeemed_reservation_id?: string | null
+          source?: string
+          updated_at?: string
+        }
+        Update: {
+          action?: string
+          admin_notes?: string | null
+          code?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: string
+          name?: string | null
+          phone?: string | null
+          rating?: number | null
+          redeemed?: boolean
+          redeemed_at?: string | null
+          redeemed_reservation_id?: string | null
+          source?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promo_code_claims_redeemed_reservation_id_fkey"
+            columns: ["redeemed_reservation_id"]
+            isOneToOne: false
+            referencedRelation: "reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rate_limits: {
         Row: {
           created_at: string | null

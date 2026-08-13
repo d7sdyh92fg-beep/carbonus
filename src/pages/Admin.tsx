@@ -14,9 +14,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
+import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
+
 import { useToast } from '@/hooks/use-toast';
 import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
@@ -832,7 +834,7 @@ const Admin = () => {
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
           <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-6 gap-1 h-auto p-1 bg-muted rounded-lg">
+            <TabsList className="grid grid-cols-4 gap-1 h-auto p-1 bg-muted rounded-lg sm:grid-cols-7">
               <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Skydelis</span>
@@ -858,11 +860,17 @@ const Admin = () => {
                 <span className="hidden sm:inline">Sąskaitos</span>
                 <span className="sm:hidden text-[10px] text-center leading-3">Sąskaitos</span>
               </TabsTrigger>
+              <TabsTrigger value="promos" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
+                <Gift className="h-4 w-4" />
+                <span className="hidden sm:inline">Nuolaidos</span>
+                <span className="sm:hidden text-[10px] text-center leading-3">Nuolaidos</span>
+              </TabsTrigger>
               <TabsTrigger value="email-test" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <Mail className="h-4 w-4" />
                 <span className="hidden sm:inline">El. paštas</span>
                 <span className="sm:hidden text-[10px] text-center leading-3">El. paštas</span>
               </TabsTrigger>
+
             </TabsList>
 
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
@@ -1625,7 +1633,12 @@ const Admin = () => {
                 <InvoiceList />
               </TabsContent>
 
+              <TabsContent value="promos" className="space-y-4">
+                <PromoClaimsPanel />
+              </TabsContent>
+
               <TabsContent value="email-test" className="space-y-4">
+
                 <EmailTester />
               </TabsContent>
             </Tabs>
