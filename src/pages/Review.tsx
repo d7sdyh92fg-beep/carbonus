@@ -58,7 +58,14 @@ const Review = () => {
         thanksText: "Thank you — we will look into it and contact you if needed.",
         again: "Change rating",
         stars: (n: number) => `${n} of 5`,
+        promoBanner: "Leave a review and get a 10% discount code for your next rental",
+        promoTitle: "Your 10% discount code",
+        promoText: "Use this code when booking your next rental. Valid for 6 months, one use per client.",
+        promoReveal: "I left the review — show my code",
+        promoCopy: "Copy code",
+        promoCopied: "Copied",
       }
+
     : {
         eyebrow: "JŪSŲ NUOMONĖ",
         title: "Kaip sekėsi nuoma?",
