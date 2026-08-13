@@ -24,7 +24,6 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
 
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
-import { CarCard } from '@/components/CarCard';
 import { AdminCarCard } from '@/components/admin/AdminCarCard';
 import { CARS_CATALOG } from '@/data/carsCatalog';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
