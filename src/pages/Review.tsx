@@ -1,17 +1,27 @@
 import { useState } from "react";
-import { Star, ExternalLink, Send, CheckCircle2, Gift, Copy, Check } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Star, ExternalLink, Send, CheckCircle2, Gift, Copy, Check, Info } from "lucide-react";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/hooks/use-translations";
 import { supabase } from "@/integrations/supabase/client";
 import { GOOGLE_REVIEW_URL } from "@/lib/reviewLink";
 
 const PROMO_CODE = "ACIU10";
+
 
 const Review = () => {
   const { language } = useTranslations();
@@ -64,6 +74,23 @@ const Review = () => {
         promoReveal: "I left the review — show my code",
         promoCopy: "Copy code",
         promoCopied: "Copied",
+        termsShort: "Valid 6 months · one use per client · minimum rental 3 days",
+        termsLink: "View terms",
+        termsTitle: "Discount code terms",
+        termsIntro: "The ACIU10 code gives a 10% discount on the rental price under these conditions:",
+        termsList: [
+          "Validity: 6 months from the day the review was left.",
+          "One-time use: one code per client and per reservation, non-transferable.",
+          "Minimum order: rental of at least 3 days (72 h).",
+          "The discount applies to the rental price only — it does not apply to delivery/return fees, deposit, fuel or fines.",
+          "Cannot be combined with other discounts or special offers.",
+          "The code has no cash value and cannot be exchanged for money.",
+          "Enter the code when booking or tell it to us before the contract is signed — it cannot be applied afterwards.",
+          "Carbonus may cancel the code in case of abuse or fake reviews.",
+        ],
+        termsRulesLink: "Full rental terms",
+        termsClose: "Got it",
+
       }
 
     : {
@@ -92,6 +119,23 @@ const Review = () => {
         promoReveal: "Palikau atsiliepimą — rodyti kodą",
         promoCopy: "Kopijuoti kodą",
         promoCopied: "Nukopijuota",
+        termsShort: "Galioja 6 mėn. · vienkartinis panaudojimas · min. nuoma 3 paros",
+        termsLink: "Peržiūrėti sąlygas",
+        termsTitle: "Nuolaidos kodo sąlygos",
+        termsIntro: "Kodas ACIU10 suteikia 10% nuolaidą nuomos kainai šiomis sąlygomis:",
+        termsList: [
+          "Galiojimo terminas: 6 mėn. nuo atsiliepimo palikimo dienos.",
+          "Vienkartinis naudojimas: vienas kodas vienam klientui ir vienai rezervacijai, neperleidžiamas.",
+          "Minimalus užsakymas: nuoma ne trumpesnė nei 3 paros (72 val.).",
+          "Nuolaida taikoma tik automobilio nuomos kainai — netaikoma pristatymo/grąžinimo mokesčiui, depozitui, kurui ar baudoms.",
+          "Nesumuojama su kitomis nuolaidomis ar akcijomis.",
+          "Kodas neturi piniginės vertės ir į pinigus nekeičiamas.",
+          "Kodą nurodykite rezervacijos metu arba pasakykite mums iki sutarties pasirašymo — vėliau pritaikyti nebegalima.",
+          "Carbonus turi teisę anuliuoti kodą piktnaudžiavimo ar netikrų atsiliepimų atveju.",
+        ],
+        termsRulesLink: "Pilnos nuomos taisyklės",
+        termsClose: "Supratau",
+
       };
 
 
@@ -123,6 +167,42 @@ const Review = () => {
     }
   };
 
+  const termsTrigger = (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-carbonus-green-dark underline underline-offset-4"
+        >
+          <Info className="h-4 w-4" />
+          {copy.termsLink}
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{copy.termsTitle}</DialogTitle>
+          <DialogDescription>{copy.termsIntro}</DialogDescription>
+        </DialogHeader>
+        <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+          {copy.termsList.map((item) => (
+            <li key={item} className="flex gap-2">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green-dark" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <Link
+          to={isEnglish ? "/rental-agreement" : "/nuomos-sutartis"}
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-carbonus-green-dark underline underline-offset-4"
+        >
+          {copy.termsRulesLink}
+          <ExternalLink className="h-3.5 w-3.5" />
+        </Link>
+      </DialogContent>
+    </Dialog>
+  );
+
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -145,7 +225,10 @@ const Review = () => {
               <Gift className="h-4 w-4" />
               {copy.promoBanner}
             </div>
+            <p className="mt-3 text-xs text-muted-foreground">{copy.termsShort}</p>
+            <div className="mt-2 flex justify-center">{termsTrigger}</div>
           </div>
+
 
 
           <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-border bg-card p-6 shadow-sm lg:p-10">
@@ -224,6 +307,9 @@ const Review = () => {
                   </Button>
                 </div>
                 <p className="mt-3 text-sm text-muted-foreground">{copy.promoText}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{copy.termsShort}</p>
+                <div className="mt-3">{termsTrigger}</div>
+
               </div>
             )}
 
