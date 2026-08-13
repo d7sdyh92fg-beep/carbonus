@@ -19,6 +19,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/hooks/use-translations";
 import { supabase } from "@/integrations/supabase/client";
 import { GOOGLE_REVIEW_URL } from "@/lib/reviewLink";
+import { logPromoClaim } from "@/lib/promoClaims";
+
 
 const PROMO_CODE = "ACIU10";
 
