@@ -20,12 +20,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { trackFilterCars, trackSearch, trackViewCar, trackViewCarList } from "@/lib/analytics";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import { CarCard, CarCardData } from "@/components/CarCard";
-import citroenSpacetourerSide from "@/assets/fleet-citroen-spacetourer-side-v2.png";
-import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-white-roof-v3.png";
-import kiaCeedHatchbackSide from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
-import kiaCeedWagonSide from "@/assets/fleet-kia-ceed-wagon-side-v2.png";
-import mercedesSlkSide from "@/assets/fleet-mercedes-slk-open-top-v3.png";
-import vwPassatSide from "@/assets/fleet-volkswagen-passat-side-v2.png";
+import citroenSpacetourerSide from "@/assets/car-galleries/citroen-spacetourer/01-EXTERIOR-FRONT.png";
+import hyundaiBayonSide from "@/assets/car-galleries/hyundai-bayon-cross/01-EXTERIOR-FRONT.png";
+import kiaCeedHatchbackSide from "@/assets/car-galleries/kia-ceed-hecbekas/01-EXTERIOR-FRONT.png";
+import kiaCeedWagonSide from "@/assets/car-galleries/kia-ceed-universalas/01-EXTERIOR-FRONT.png";
+import mercedesSlkSide from "@/assets/car-galleries/mercedes-slk/01-EXTERIOR-FRONT.png";
+import vwPassatSide from "@/assets/car-galleries/volkswagen-passat/01-EXTERIOR-FRONT.png";
 
 type Language = "lt" | "en";
 
