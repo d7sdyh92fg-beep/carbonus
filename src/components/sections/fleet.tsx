@@ -106,7 +106,7 @@ export function Fleet() {
     {
       id: "6",
       name: "Mercedes-Benz SLK",
-      price: "90 EUR",
+      price: "100 EUR",
       image: mercedesSlkSide,
       category: "Kabrioletas",
       passengers: 2,
@@ -119,7 +119,7 @@ export function Fleet() {
     {
       id: "7",
       name: "Citroën SpaceTourer",
-      price: "60 EUR",
+      price: "80 EUR",
       image: citroenSpacetourerSide,
       category: "Vienatūris",
       passengers: 8,
@@ -132,7 +132,7 @@ export function Fleet() {
     {
       id: "8",
       name: "Hyundai Bayon Cross",
-      price: "50 EUR",
+      price: "30 EUR",
       image: hyundaiBayonSide,
       category: "Krosoveris",
       passengers: 5,

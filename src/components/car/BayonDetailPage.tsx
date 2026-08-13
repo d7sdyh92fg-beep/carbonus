@@ -123,8 +123,8 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
         back: "Visi automobiliai",
       };
 
-  const lowestPrice = pricing?.price_tier3 ?? pricing?.price_tier1 ?? 50;
-  const highestPrice = pricing?.price_tier1 ?? 50;
+  const lowestPrice = pricing?.price_tier3 ?? pricing?.price_tier1 ?? 30;
+  const highestPrice = pricing?.price_tier1 ?? 30;
   const priceLabel = lowestPrice === highestPrice ? `€${lowestPrice}` : `€${lowestPrice}–€${highestPrice}`;
 
   const showPrevious = () => setActiveImage((current) => (current - 1 + GALLERY.length) % GALLERY.length);
