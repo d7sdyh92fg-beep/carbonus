@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, User, Mail, Phone, FileText, CreditCard } from 'lucide-react';
+import { ChevronLeft, User, Mail, Phone, FileText, CreditCard, Tag } from 'lucide-react';
 import { useBooking } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
