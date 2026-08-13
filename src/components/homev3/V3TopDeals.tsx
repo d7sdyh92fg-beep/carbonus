@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Cog, Fuel, UsersRound } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/hooks/use-language";
 import mercedesSlk from "@/assets/fleet-mercedes-slk-open-top-v3.png";
 import kiaHatchback from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
@@ -14,7 +16,7 @@ const CARS = [
     year: 2015,
     category: "Kabrioletas",
     name: "Mercedes-Benz SLK",
-    price: 90,
+    price: 100,
     seats: 2,
     transmission: "Automatinė",
     fuel: "Benzinas",
@@ -27,7 +29,7 @@ const CARS = [
     year: 2026,
     category: "Vienatūris",
     name: "Citroën SpaceTourer",
-    price: 60,
+    price: 80,
     seats: 8,
     transmission: "Automatinė",
     fuel: "Dyzelinas",
@@ -40,7 +42,7 @@ const CARS = [
     year: 2026,
     category: "Krosoveris",
     name: "Hyundai Bayon Cross",
-    price: 50,
+    price: 30,
     seats: 5,
     transmission: "Automatinė",
     fuel: "Benzinas",
@@ -124,6 +126,18 @@ const COPY = {
 export function V3TopDeals() {
   const { language } = useLanguage();
   const c = COPY[language] ?? COPY.lt;
+  const { data: dbCars = [] } = useQuery({
+    queryKey: ["cars-list-pricing"],
+    queryFn: async () => {
+      const { data } = await supabase.from("cars").select("id, price_tier3");
+      return data || [];
+    },
+  });
+  const priceFor = (id: string, fallback: number) => {
+    const found = dbCars.find((car) => String(car.id) === id);
+    const value = Number(found?.price_tier3);
+    return Number.isFinite(value) && value > 0 ? value : fallback;
+  };
   return (
     <section id="autoparkas" className="overflow-hidden bg-[hsl(210_20%_99%)] py-12 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-[1320px] px-5 sm:px-6">
@@ -171,7 +185,7 @@ export function V3TopDeals() {
                 </h3>
 
                 <p className="mt-2.5 flex items-baseline gap-1.5 text-[19px] font-extrabold text-[hsl(var(--carbonus-green))]">
-                  {c.from} {car.price} €
+                  {c.from} {priceFor(car.id, car.price)} €
                   <span className="text-[12px] font-medium text-muted-foreground">{c.perDay}</span>
                 </p>
 

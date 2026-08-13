@@ -122,8 +122,8 @@ export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChang
         back: "Visi automobiliai",
       };
 
-  const lowestPrice = pricing?.price_tier3 ?? pricing?.price_tier1 ?? 90;
-  const highestPrice = pricing?.price_tier1 ?? 90;
+  const lowestPrice = pricing?.price_tier3 ?? pricing?.price_tier1 ?? 100;
+  const highestPrice = pricing?.price_tier1 ?? 100;
   const priceLabel = lowestPrice === highestPrice ? `€${lowestPrice}` : `€${lowestPrice}–€${highestPrice}`;
 
   const showPrevious = () => setActiveImage((current) => (current - 1 + GALLERY.length) % GALLERY.length);

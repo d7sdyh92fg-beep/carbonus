@@ -123,8 +123,8 @@ export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPack
         back: "Visi automobiliai",
       };
 
-  const lowestPrice = pricing?.price_tier3 ?? pricing?.price_tier1 ?? 60;
-  const highestPrice = pricing?.price_tier1 ?? 60;
+  const lowestPrice = pricing?.price_tier3 ?? pricing?.price_tier1 ?? 80;
+  const highestPrice = pricing?.price_tier1 ?? 80;
   const priceLabel = lowestPrice === highestPrice ? `€${lowestPrice}` : `€${lowestPrice}–€${highestPrice}`;
 
   const showPrevious = () => setActiveImage((current) => (current - 1 + GALLERY.length) % GALLERY.length);
