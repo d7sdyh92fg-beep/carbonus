@@ -189,7 +189,10 @@ const Review = () => {
               <Gift className="h-4 w-4" />
               {copy.promoBanner}
             </div>
+            <p className="mt-3 text-xs text-muted-foreground">{copy.termsShort}</p>
+            <div className="mt-2 flex justify-center">{termsTrigger}</div>
           </div>
+
 
 
           <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-border bg-card p-6 shadow-sm lg:p-10">
