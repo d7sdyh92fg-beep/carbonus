@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Star, ExternalLink, Send, CheckCircle2 } from "lucide-react";
+import { Star, ExternalLink, Send, CheckCircle2, Gift, Copy, Check } from "lucide-react";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
 import { SEOHead } from "@/components/seo/SEOHead";
@@ -11,6 +11,8 @@ import { useTranslations } from "@/hooks/use-translations";
 import { supabase } from "@/integrations/supabase/client";
 import { GOOGLE_REVIEW_URL } from "@/lib/reviewLink";
 
+const PROMO_CODE = "ACIU10";
+
 const Review = () => {
   const { language } = useTranslations();
   const isEnglish = language === "en";
@@ -20,7 +22,20 @@ const Review = () => {
   const [hover, setHover] = useState(0);
   const [sent, setSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(PROMO_CODE);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  };
+
 
   const copy = isEnglish
     ? {
