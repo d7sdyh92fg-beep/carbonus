@@ -147,10 +147,10 @@ const Review = () => {
 
             {/* 5 stars -> Google */}
             {rating === 5 && !sent && (
-              <div className="mt-8 rounded-2xl bg-carbonus-soft p-6 text-center">
+              <div className="mt-8 rounded-2xl bg-carbonus-green-soft p-6 text-center">
                 <h2 className="text-xl font-semibold text-foreground">{copy.greatTitle}</h2>
                 <p className="mt-2 text-sm text-muted-foreground">{copy.greatText}</p>
-                <Button asChild size="lg" className="mt-5 bg-carbonus-dark hover:bg-carbonus-deep">
+                <Button asChild size="lg" className="mt-5 bg-carbonus-green-dark hover:bg-carbonus-green-deep">
                   <a href={GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer">
                     {copy.greatCta}
                     <ExternalLink className="ml-2 h-4 w-4" />
@@ -195,7 +195,7 @@ const Review = () => {
                   type="submit"
                   size="lg"
                   disabled={isSubmitting}
-                  className="w-full bg-carbonus-dark hover:bg-carbonus-deep"
+                  className="w-full bg-carbonus-green-dark hover:bg-carbonus-green-deep"
                 >
                   {copy.submit}
                   <Send className="ml-2 h-4 w-4" />
@@ -204,8 +204,8 @@ const Review = () => {
             )}
 
             {sent && (
-              <div className="mt-8 rounded-2xl bg-carbonus-soft p-8 text-center">
-                <CheckCircle2 className="mx-auto h-12 w-12 text-carbonus-dark" />
+              <div className="mt-8 rounded-2xl bg-carbonus-green-soft p-8 text-center">
+                <CheckCircle2 className="mx-auto h-12 w-12 text-carbonus-green-dark" />
                 <h2 className="mt-4 text-xl font-semibold text-foreground">{copy.thanksTitle}</h2>
                 <p className="mt-2 text-sm text-muted-foreground">{copy.thanksText}</p>
                 <Button
