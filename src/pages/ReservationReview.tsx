@@ -344,7 +344,11 @@ export default function ReservationReview() {
     return sum + (service.unit === 'perDay' ? service.price * bookingData.rentalDays : service.price);
   }, 0);
   const deliveryFee = bookingData.delivery?.fee || 0;
-  const totalPrice = bookingData.basePrice + insuranceTotal + servicesTotal + deliveryFee;
+  const discountAmount = appliedPromo
+    ? Math.round(bookingData.basePrice * appliedPromo.percent) / 100
+    : 0;
+  const totalPrice = Math.max(0, bookingData.basePrice - discountAmount) + insuranceTotal + servicesTotal + deliveryFee;
+
   const dailyRate = bookingData.basePrice / bookingData.rentalDays;
   const displayAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalPrice;
   const dateLocale = language === 'en' ? enUS : lt;
