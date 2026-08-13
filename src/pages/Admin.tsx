@@ -971,8 +971,9 @@ const Admin = () => {
                     />
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                <CardContent className="px-3 sm:px-6">
+                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+
                     {filteredCars.length === 0 ? (
                       <div className="col-span-full text-center py-8 text-muted-foreground">
                         Pagal paiešką automobilių nerasta
