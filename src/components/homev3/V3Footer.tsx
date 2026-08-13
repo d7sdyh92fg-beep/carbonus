@@ -77,6 +77,7 @@ export function V3Footer() {
             <div className="mt-4 flex overflow-hidden rounded-lg bg-muted">
               <input
                 type="email"
+                aria-label={c.newsletter}
                 placeholder={c.emailPlaceholder}
                 className="w-full bg-transparent px-3 py-2.5 text-[13px] text-foreground outline-none placeholder:text-foreground/60"
               />
