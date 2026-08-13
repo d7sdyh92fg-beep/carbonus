@@ -23,6 +23,11 @@ export default function ReservationReview() {
   const { t, language } = useTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
+  const [promoInput, setPromoInput] = useState('');
+  const [promoChecking, setPromoChecking] = useState(false);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; percent: number } | null>(null);
+
   
   const [formData, setFormData] = useState({
     firstName: '',
