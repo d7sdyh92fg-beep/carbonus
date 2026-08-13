@@ -1633,7 +1633,12 @@ const Admin = () => {
                 <InvoiceList />
               </TabsContent>
 
+              <TabsContent value="promos" className="space-y-4">
+                <PromoClaimsPanel />
+              </TabsContent>
+
               <TabsContent value="email-test" className="space-y-4">
+
                 <EmailTester />
               </TabsContent>
             </Tabs>
