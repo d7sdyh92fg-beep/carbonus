@@ -16,6 +16,7 @@ import Cars from "./pages/Cars";
 import AvailableCars from "./pages/AvailableCars";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Review from "./pages/Review";
 import FAQ from "./pages/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CarDetail from "./pages/CarDetail";
@@ -97,6 +98,11 @@ const App = () => (
             {/* Contact - Lithuanian & English */}
             <Route path="/kontaktai" element={<Contact />} />
             <Route path="/contact" element={<Contact />} />
+
+            {/* Reviews - Lithuanian & English */}
+            <Route path="/atsiliepimas" element={<Review />} />
+            <Route path="/review" element={<Review />} />
+            
             
             {/* Blog - Lithuanian & English */}
             <Route path="/naujienos" element={<Blog />} />
