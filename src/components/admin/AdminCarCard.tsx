@@ -21,7 +21,7 @@ export function AdminCarCard({ car, onManage, className }: AdminCarCardProps) {
         className
       )}
     >
-      <div className="relative aspect-[16/10] h-[50px] w-auto flex-shrink-0 overflow-hidden rounded-[10px] bg-[#f4f6f5] p-1 sm:h-[56px] sm:rounded-[12px] lg:h-[60px]">
+      <div className="relative aspect-[16/10] h-[50px] w-auto flex-shrink-0 overflow-hidden rounded-[10px] bg-card p-1 sm:h-[56px] sm:rounded-[12px] lg:h-[60px]">
         <img
           src={car.image}
           alt={car.name}
