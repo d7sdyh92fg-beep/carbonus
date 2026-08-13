@@ -74,6 +74,23 @@ const Review = () => {
         promoReveal: "I left the review — show my code",
         promoCopy: "Copy code",
         promoCopied: "Copied",
+        termsShort: "Valid 6 months · one use per client · minimum rental 3 days",
+        termsLink: "View terms",
+        termsTitle: "Discount code terms",
+        termsIntro: "The ACIU10 code gives a 10% discount on the rental price under these conditions:",
+        termsList: [
+          "Validity: 6 months from the day the review was left.",
+          "One-time use: one code per client and per reservation, non-transferable.",
+          "Minimum order: rental of at least 3 days (72 h).",
+          "The discount applies to the rental price only — it does not apply to delivery/return fees, deposit, fuel or fines.",
+          "Cannot be combined with other discounts or special offers.",
+          "The code has no cash value and cannot be exchanged for money.",
+          "Enter the code when booking or tell it to us before the contract is signed — it cannot be applied afterwards.",
+          "Carbonus may cancel the code in case of abuse or fake reviews.",
+        ],
+        termsRulesLink: "Full rental terms",
+        termsClose: "Got it",
+
       }
 
     : {
