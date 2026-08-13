@@ -119,6 +119,23 @@ const Review = () => {
         promoReveal: "Palikau atsiliepimą — rodyti kodą",
         promoCopy: "Kopijuoti kodą",
         promoCopied: "Nukopijuota",
+        termsShort: "Galioja 6 mėn. · vienkartinis panaudojimas · min. nuoma 3 paros",
+        termsLink: "Peržiūrėti sąlygas",
+        termsTitle: "Nuolaidos kodo sąlygos",
+        termsIntro: "Kodas ACIU10 suteikia 10% nuolaidą nuomos kainai šiomis sąlygomis:",
+        termsList: [
+          "Galiojimo terminas: 6 mėn. nuo atsiliepimo palikimo dienos.",
+          "Vienkartinis naudojimas: vienas kodas vienam klientui ir vienai rezervacijai, neperleidžiamas.",
+          "Minimalus užsakymas: nuoma ne trumpesnė nei 3 paros (72 val.).",
+          "Nuolaida taikoma tik automobilio nuomos kainai — netaikoma pristatymo/grąžinimo mokesčiui, depozitui, kurui ar baudoms.",
+          "Nesumuojama su kitomis nuolaidomis ar akcijomis.",
+          "Kodas neturi piniginės vertės ir į pinigus nekeičiamas.",
+          "Kodą nurodykite rezervacijos metu arba pasakykite mums iki sutarties pasirašymo — vėliau pritaikyti nebegalima.",
+          "Carbonus turi teisę anuliuoti kodą piktnaudžiavimo ar netikrų atsiliepimų atveju.",
+        ],
+        termsRulesLink: "Pilnos nuomos taisyklės",
+        termsClose: "Supratau",
+
       };
 
 
