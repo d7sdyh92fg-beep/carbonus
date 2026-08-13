@@ -524,6 +524,58 @@ export default function ReservationReview() {
                 )}
               </Card>
 
+              {/* Promo code */}
+              <Card className="p-6">
+                <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                  <Tag className="h-5 w-5" />
+                  {language === 'lt' ? 'Nuolaidos kodas' : 'Promo code'}
+                </h3>
+                {appliedPromo ? (
+                  <div className="flex items-center justify-between gap-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+                    <div>
+                      <p className="font-semibold text-primary">{appliedPromo.code}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {language === 'lt'
+                          ? `Pritaikyta −${appliedPromo.percent}% nuomos kainai`
+                          : `Applied −${appliedPromo.percent}% off the rental price`}
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => { setAppliedPromo(null); setPromoInput(''); }}
+                    >
+                      {language === 'lt' ? 'Pašalinti' : 'Remove'}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Input
+                      value={promoInput}
+                      onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(null); }}
+                      placeholder={language === 'lt' ? 'pvz. ACIU10' : 'e.g. ACIU10'}
+                      className="uppercase"
+                    />
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={handleApplyPromo}
+                      disabled={promoChecking || !promoInput.trim()}
+                    >
+                      {promoChecking
+                        ? (language === 'lt' ? 'Tikrinama...' : 'Checking...')
+                        : (language === 'lt' ? 'Pritaikyti' : 'Apply')}
+                    </Button>
+                  </div>
+                )}
+                {promoError && (
+                  <p className="text-sm text-destructive mt-2">{promoError}</p>
+                )}
+              </Card>
+
+
+
               {/* Payment Method */}
               <Card className="p-6">
                 <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
