@@ -803,6 +803,18 @@ const Admin = () => {
     );
   };
 
+  const filteredCars = cars.filter((car) => {
+    const query = carSearchQuery.trim().toLowerCase();
+    if (!query) return true;
+    return (
+      String(car.name || '').toLowerCase().includes(query) ||
+      String(car.category || '').toLowerCase().includes(query) ||
+      String(car.transmission || '').toLowerCase().includes(query) ||
+      String(car.fuel || '').toLowerCase().includes(query) ||
+      String(car.year || '').includes(query)
+    );
+  });
+
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
