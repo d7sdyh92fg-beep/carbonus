@@ -104,72 +104,74 @@
 
 <!-- Car Detail Pages - SEO-Friendly URLs (Lithuanian) -->
 <url>
-  <loc>https://carbonus.lt/automobiliai/bmw-3-series-nuoma</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/automobiliai/mercedes-benz-slk-nuoma</loc>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://carbonus.lt/automobiliai/chrysler-town-country-nuoma</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/automobiliai/citroen-spacetourer-nuoma</loc>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/automobiliai/hyundai-bayon-cross-nuoma</loc>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/automobiliai/volkswagen-passat-nuoma</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/automobiliai/kia-ceed-universalas-nuoma</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/automobiliai/kia-ceed-hecbekas-nuoma</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <!-- Car Detail Pages - SEO-Friendly URLs (English) -->
 <url>
-  <loc>https://carbonus.lt/cars/bmw-3-series-rental</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/cars/mercedes-benz-slk-rental</loc>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
-  <loc>https://carbonus.lt/cars/chrysler-town-country-rental</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/cars/citroen-spacetourer-rental</loc>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://carbonus.lt/cars/hyundai-bayon-cross-rental</loc>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/cars/volkswagen-passat-rental</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/cars/kia-ceed-wagon-rental</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/cars/kia-ceed-hatchback-rental</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
