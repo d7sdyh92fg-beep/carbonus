@@ -832,7 +832,7 @@ const Admin = () => {
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
 
           <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-6 gap-1 h-auto p-1 bg-muted rounded-lg">
+            <TabsList className="grid grid-cols-4 gap-1 h-auto p-1 bg-muted rounded-lg sm:grid-cols-7">
               <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Skydelis</span>
