@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Star, ExternalLink, Send, CheckCircle2 } from "lucide-react";
+import { Star, ExternalLink, Send, CheckCircle2, Gift, Copy, Check } from "lucide-react";
 import { Header } from "@/components/home/Header";
 import { V3Footer } from "@/components/homev3/V3Footer";
 import { SEOHead } from "@/components/seo/SEOHead";
@@ -11,6 +11,8 @@ import { useTranslations } from "@/hooks/use-translations";
 import { supabase } from "@/integrations/supabase/client";
 import { GOOGLE_REVIEW_URL } from "@/lib/reviewLink";
 
+const PROMO_CODE = "ACIU10";
+
 const Review = () => {
   const { language } = useTranslations();
   const isEnglish = language === "en";
@@ -20,7 +22,20 @@ const Review = () => {
   const [hover, setHover] = useState(0);
   const [sent, setSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(PROMO_CODE);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  };
+
 
   const copy = isEnglish
     ? {
@@ -43,7 +58,14 @@ const Review = () => {
         thanksText: "Thank you — we will look into it and contact you if needed.",
         again: "Change rating",
         stars: (n: number) => `${n} of 5`,
+        promoBanner: "Leave a review and get a 10% discount code for your next rental",
+        promoTitle: "Your 10% discount code",
+        promoText: "Use this code when booking your next rental. Valid for 6 months, one use per client.",
+        promoReveal: "I left the review — show my code",
+        promoCopy: "Copy code",
+        promoCopied: "Copied",
       }
+
     : {
         eyebrow: "JŪSŲ NUOMONĖ",
         title: "Kaip sekėsi nuoma?",
@@ -64,7 +86,14 @@ const Review = () => {
         thanksText: "Dėkojame — peržiūrėsime ir prireikus susisieksime.",
         again: "Keisti įvertinimą",
         stars: (n: number) => `${n} iš 5`,
+        promoBanner: "Palikite atsiliepimą ir gaukite 10% nuolaidos kodą kitai nuomai",
+        promoTitle: "Jūsų 10% nuolaidos kodas",
+        promoText: "Panaudokite šį kodą užsakydami kitą nuomą. Galioja 6 mėn., vienam klientui – vieną kartą.",
+        promoReveal: "Palikau atsiliepimą — rodyti kodą",
+        promoCopy: "Kopijuoti kodą",
+        promoCopied: "Nukopijuota",
       };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,7 +141,12 @@ const Review = () => {
             <p className="text-xs font-semibold tracking-[0.24em] text-carbonus-green">{copy.eyebrow}</p>
             <h1 className="mt-3 text-[38px] font-bold leading-tight text-foreground lg:text-[54px]">{copy.title}</h1>
             <p className="mt-4 text-base text-muted-foreground">{copy.subtitle}</p>
+            <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full bg-carbonus-green-soft px-4 py-2 text-sm font-semibold text-carbonus-green-dark">
+              <Gift className="h-4 w-4" />
+              {copy.promoBanner}
+            </div>
           </div>
+
 
           <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-border bg-card p-6 shadow-sm lg:p-10">
             {/* Stars */}
@@ -151,13 +185,48 @@ const Review = () => {
                 <h2 className="text-xl font-semibold text-foreground">{copy.greatTitle}</h2>
                 <p className="mt-2 text-sm text-muted-foreground">{copy.greatText}</p>
                 <Button asChild size="lg" className="mt-5 bg-carbonus-green-dark hover:bg-carbonus-green-deep">
-                  <a href={GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={GOOGLE_REVIEW_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setRevealed(true)}
+                  >
                     {copy.greatCta}
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
+                {!revealed && (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setRevealed(true)}
+                      className="mt-4 text-sm font-medium text-carbonus-green-dark underline underline-offset-4"
+                    >
+                      {copy.promoReveal}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
+
+            {/* Reward code */}
+            {(revealed || sent) && (
+              <div className="mt-6 rounded-2xl border border-carbonus-green/30 bg-carbonus-green-soft p-6 text-center">
+                <Gift className="mx-auto h-8 w-8 text-carbonus-green-dark" />
+                <h3 className="mt-3 text-lg font-semibold text-foreground">{copy.promoTitle}</h3>
+                <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                  <span className="rounded-xl border border-dashed border-carbonus-green-dark bg-card px-6 py-3 text-2xl font-bold tracking-[0.2em] text-carbonus-green-dark">
+                    {PROMO_CODE}
+                  </span>
+                  <Button variant="outline" onClick={copyCode}>
+                    {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                    {copied ? copy.promoCopied : copy.promoCopy}
+                  </Button>
+                </div>
+                <p className="mt-3 text-sm text-muted-foreground">{copy.promoText}</p>
+              </div>
+            )}
+
 
             {/* 1-4 stars -> internal form */}
             {rating > 0 && rating < 5 && !sent && (
