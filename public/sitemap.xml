@@ -55,52 +55,52 @@
 <!-- Blog/News Pages -->
 <url>
   <loc>https://carbonus.lt/naujienos</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
+  <loc>https://carbonus.lt/naujienos/kelione-didelei-grupei-8-vietu-mikroautobusas</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
   <loc>https://carbonus.lt/naujienos/10-patarimu-kaip-sutaupyti-nuomojant-automobili</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
-  <loc>https://carbonus.lt/naujienos/kelioniu-planavimas-lietuvoje</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/naujienos/kelioniu-po-lietuva-gidas-geriausi-marsrutai</loc>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
-  <loc>https://carbonus.lt/naujienos/automobiliu-draudimas-nuomojantis</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/naujienos/automobiliu-nuomos-draudimas-kas-reikia-zinoti</loc>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
-  <loc>https://carbonus.lt/naujienos/verslo-kelioniu-optimizavimas</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/naujienos/verslo-keliones-kaip-issirinkti-tinkama-automobili</loc>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
-  <loc>https://carbonus.lt/naujienos/saugus-vairavimas-ziema</loc>
-  <lastmod>2025-01-11</lastmod>
+  <loc>https://carbonus.lt/naujienos/ziemos-vairavimas-saugumas-kelyje</loc>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://carbonus.lt/naujienos/seimos-kelione-kaip-pasirinkti-idealu-automobili</loc>
-  <lastmod>2025-01-11</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
+
 
 <!-- Car Detail Pages - SEO-Friendly URLs (Lithuanian) -->
 <url>
