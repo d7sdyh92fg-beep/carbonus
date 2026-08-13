@@ -154,7 +154,16 @@ const Review = () => {
         body: { rating, ...form },
       });
       if (error) throw error;
+      await logPromoClaim({
+        action: "feedback_sent",
+        rating,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        language,
+      });
       setSent(true);
+
     } catch (err) {
       console.error(err);
       toast({
