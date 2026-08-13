@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -14,26 +13,10 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import carInterior from "@/assets/car-interior.jpg";
 import aboutCar from "@/assets/citroen-druskininkai-v3.png";
 import { useTranslations } from "@/hooks/use-translations";
+import { SEOHead } from "@/components/seo/SEOHead";
 
 const About = () => {
   const { t, language } = useTranslations();
-
-  useEffect(() => {
-    document.title = t("about.meta.title");
-
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", t("about.meta.description"));
-    document
-      .querySelector('link[rel="canonical"]')
-      ?.setAttribute("href", `https://carbonus.lt/${language === "en" ? "about" : "apie-mus"}`);
-    document
-      .querySelector('meta[property="og:title"]')
-      ?.setAttribute("content", t("about.meta.title"));
-    document
-      .querySelector('meta[property="og:url"]')
-      ?.setAttribute("content", `https://carbonus.lt/${language === "en" ? "about" : "apie-mus"}`);
-  }, [t, language]);
 
   const copy = language === "en"
     ? {
@@ -109,7 +92,13 @@ const About = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-white font-sans text-foreground">
+      <SEOHead
+        title={t("about.meta.title")}
+        description={t("about.meta.description")}
+        canonical={`https://carbonus.lt/${language === "en" ? "about" : "apie-mus"}`}
+      />
       <Header />
+
 
       <main>
         <section className="relative overflow-hidden border-b border-[#dce6e1] bg-[#f3f7f5] pb-16 pt-[78px]">

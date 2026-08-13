@@ -18,6 +18,7 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useTranslations } from "@/hooks/use-translations";
 import bayonFront from "@/assets/car-galleries/hyundai-bayon-cross/01-EXTERIOR-FRONT.png";
 import bayonRear from "@/assets/car-galleries/hyundai-bayon-cross/02-EXTERIOR-REAR.png";
@@ -155,6 +156,21 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
         ogImage={bayonFront}
         ogType="product"
         keywords="Hyundai Bayon Cross nuoma, miesto krosoverio nuoma, automobilio nuoma Druskininkuose, Carbonus"
+      />
+      <ProductSchema
+        name={copy.title}
+        description={t("carDetail.metaDescription").replace("{carName}", copy.title)}
+        image={bayonFront}
+        brand="Hyundai"
+        price={String(lowestPrice)}
+        currency="EUR"
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: isEnglish ? "Home" : "Pradžia", url: "/" },
+          { name: isEnglish ? "Cars" : "Automobiliai", url: isEnglish ? "/cars" : "/automobiliai" },
+          { name: copy.title, url: isEnglish ? "/cars/hyundai-bayon-cross-rental" : "/automobiliai/hyundai-bayon-cross-nuoma" },
+        ]}
       />
       <LanguageLinks ltPath="/automobiliai/hyundai-bayon-cross-nuoma" enPath="/cars/hyundai-bayon-cross-rental" />
       <Header />

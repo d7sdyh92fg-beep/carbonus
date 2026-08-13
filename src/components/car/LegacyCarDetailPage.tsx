@@ -18,6 +18,7 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useTranslations } from "@/hooks/use-translations";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 
@@ -164,6 +165,22 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
         ogImage={car.image}
         ogType="product"
         keywords={`${car.name} nuoma, automobilio nuoma Druskininkuose, Carbonus`}
+      />
+      <ProductSchema
+        name={car.name}
+        description={t("carDetail.metaDescription").replace("{carName}", car.name)}
+        image={car.image}
+        brand={car.name.split(" ")[0]}
+        price={car.price}
+        currency="EUR"
+        category={car.category}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: isEnglish ? "Home" : "Pradžia", url: "/" },
+          { name: isEnglish ? "Cars" : "Automobiliai", url: isEnglish ? "/cars" : "/automobiliai" },
+          { name: car.name, url: isEnglish ? `/cars/${enSlug}` : `/automobiliai/${ltSlug}` },
+        ]}
       />
       <LanguageLinks ltPath={`/automobiliai/${ltSlug}`} enPath={`/cars/${enSlug}`} />
       <Header />

@@ -441,9 +441,9 @@ const AvailableCars = () => {
         <section className="mt-12">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-[24px] font-extrabold tracking-[-0.02em] text-foreground sm:text-[28px]">
+              <h1 className="text-[24px] font-extrabold tracking-[-0.02em] text-foreground sm:text-[28px]">
                 {c.carsHeading}
-              </h2>
+              </h1>
               <p className="mt-1 text-[13px] text-muted-foreground">
                 {pickupDate} {pickupTime} – {returnDate} {returnTime} · {rentalDays} {daysLabel}
               </p>

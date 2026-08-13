@@ -19,6 +19,7 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import BookingCalendar from "@/components/booking/BookingCalendar";
 import { LanguageLinks } from "@/components/seo/LanguageLinks";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { ProductSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useTranslations } from "@/hooks/use-translations";
 import slkFront from "@/assets/car-galleries/mercedes-slk/01-EXTERIOR-FRONT.png";
 import slkRear from "@/assets/car-galleries/mercedes-slk/02-EXTERIOR-REAR.png";
@@ -154,6 +155,21 @@ export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChang
         ogImage={slkFront}
         ogType="product"
         keywords="Mercedes-Benz SLK nuoma, SLK kabrioleto nuoma, kabrioletas Druskininkuose, Carbonus"
+      />
+      <ProductSchema
+        name={copy.title}
+        description={t("carDetail.metaDescription").replace("{carName}", copy.title)}
+        image={slkFront}
+        brand="Mercedes-Benz"
+        price={String(lowestPrice)}
+        currency="EUR"
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: isEnglish ? "Home" : "Pradžia", url: "/" },
+          { name: isEnglish ? "Cars" : "Automobiliai", url: isEnglish ? "/cars" : "/automobiliai" },
+          { name: copy.title, url: isEnglish ? "/cars/mercedes-benz-slk-rental" : "/automobiliai/mercedes-benz-slk-nuoma" },
+        ]}
       />
       <LanguageLinks ltPath="/automobiliai/mercedes-benz-slk-nuoma" enPath="/cars/mercedes-benz-slk-rental" />
       <Header />

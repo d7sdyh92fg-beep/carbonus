@@ -206,8 +206,8 @@ export const translations = {
       viewButton: "Žiūrėti",
       from: "nuo",
       meta: {
-        title: "Automobiliai – Carbonus | Automobilių nuoma Druskininkuose",
-        description: "Peržiūrėkite Carbonus automobilių parką: Mercedes-Benz SLK, Citroën SpaceTourer, Volkswagen Passat, KIA CEED ir Hyundai Bayon. Aiški galutinė kaina prieš rezervuojant. Pristatymas visoje Lietuvoje."
+        title: "Automobilių parkas | Carbonus nuoma",
+        description: "Carbonus automobilių parkas: Mercedes-Benz SLK, Citroën SpaceTourer, VW Passat, KIA CEED, Hyundai Bayon. Aiški kaina, pristatymas visoje Lietuvoje."
 
       }
     },
@@ -262,8 +262,8 @@ export const translations = {
         satisfaction: "Pasitenkinimas"
       },
       meta: {
-        title: "Apie mus - Carbonus | Automobilių nuoma Druskininkuose ir visoje Lietuvoje",
-        description: "Carbonus - moderni automobilių nuomos įmonė Druskininkuose, siūlanti paslaugas visoje Lietuvoje. Aukščiausios kokybės automobiliai ir išskirtinis aptarnavimas."
+        title: "Apie mus | Carbonus automobilių nuoma",
+        description: "Carbonus – moderni automobilių nuomos įmonė, teikianti paslaugas visoje Lietuvoje. Kokybiški automobiliai ir asmeniškas aptarnavimas."
       }
     },
 
@@ -595,7 +595,7 @@ export const translations = {
       specsTitle: "Specifikacijos",
       bookingTitle: "Užsakyti automobilį",
       bookingSubtitle: "Pasirinkite datas ir pamatykite tikslią kainą",
-      metaTitle: "{carName} - Carbonus | Premium automobilio nuoma nuo 30€/dieną",
+      metaTitle: "{carName} nuoma | Carbonus",
       metaDescription: "{carName} nuomai Carbonus automobilių parke. Premium klasės automobilis su visais patogumais. Rezervuokite online ir užsisakykite šiandien.",
       specs: {
         year: "Metai",
@@ -2207,8 +2207,8 @@ export const translations = {
       viewButton: "View",
       from: "from",
       meta: {
-        title: "Cars – Carbonus | Car Rental in Druskininkai, Lithuania",
-        description: "Browse the Carbonus fleet: Mercedes-Benz SLK, Citroën SpaceTourer, Volkswagen Passat, KIA CEED and Hyundai Bayon. Clear final price before you book. Delivery across Lithuania."
+        title: "Rental fleet | Carbonus car rental",
+        description: "Carbonus fleet: Mercedes-Benz SLK, Citroën SpaceTourer, VW Passat, KIA CEED, Hyundai Bayon. Clear final price and delivery across Lithuania."
 
       }
     },
@@ -2263,8 +2263,8 @@ export const translations = {
         satisfaction: "Satisfaction"
       },
       meta: {
-        title: "About Us - Carbonus | Car Rental in Druskininkai and Throughout Lithuania",
-        description: "Carbonus - a modern car rental company in Druskininkai, offering services throughout Lithuania. Highest quality cars and exceptional service."
+        title: "About us | Carbonus car rental",
+        description: "Carbonus is a modern car rental company serving all of Lithuania. Quality cars, clear pricing and personal service."
       }
     },
 
@@ -2518,7 +2518,7 @@ export const translations = {
       specsTitle: "Specifications",
       bookingTitle: "Order Car",
       bookingSubtitle: "Select dates and see the exact price",
-      metaTitle: "{carName} - Carbonus | Premium Car Rental from €30/day",
+      metaTitle: "{carName} rental | Carbonus",
       metaDescription: "{carName} for rent in Carbonus car fleet. Premium class car with all amenities. Reserve online and order today.",
       specs: {
         year: "Year",
