@@ -341,18 +341,21 @@ const Review = () => {
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Input
+                    aria-label={copy.name}
                     placeholder={copy.name}
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                   />
                   <Input
                     type="email"
+                    aria-label={copy.email}
                     placeholder={copy.email}
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                   />
                 </div>
                 <Input
+                  aria-label={copy.phone}
                   placeholder={copy.phone}
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -360,6 +363,7 @@ const Review = () => {
                 <Textarea
                   required
                   rows={5}
+                  aria-label={copy.messagePh}
                   placeholder={copy.messagePh}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
