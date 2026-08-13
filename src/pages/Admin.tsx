@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -24,7 +24,7 @@ import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
 
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
-import { CarCard } from '@/components/CarCard';
+import { AdminCarCard } from '@/components/admin/AdminCarCard';
 import { CARS_CATALOG } from '@/data/carsCatalog';
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
@@ -134,6 +134,7 @@ const Admin = () => {
 
   const [cars, setCars] = useState<any[]>([]);
   const [isLoadingCars, setIsLoadingCars] = useState(true);
+  const [carSearchQuery, setCarSearchQuery] = useState('');
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
@@ -801,6 +802,18 @@ const Admin = () => {
     );
   };
 
+  const filteredCars = cars.filter((car) => {
+    const query = carSearchQuery.trim().toLowerCase();
+    if (!query) return true;
+    return (
+      String(car.name || '').toLowerCase().includes(query) ||
+      String(car.category || '').toLowerCase().includes(query) ||
+      String(car.transmission || '').toLowerCase().includes(query) ||
+      String(car.fuel || '').toLowerCase().includes(query) ||
+      String(car.year || '').includes(query)
+    );
+  });
+
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
@@ -940,50 +953,56 @@ const Admin = () => {
 
               {/* Cars Management Section */}
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Car className="h-5 w-5" />
-                    Automobilių parkas
-                  </CardTitle>
-                  <CardDescription>Mūsų turimų automobilių sąrašas</CardDescription>
-                </CardHeader>
-                 <CardContent>
-                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-                     {cars.map((car) => (
-                       <div key={car.id} onClick={() => handleCarClick({ id: car.id, name: car.name })} className="cursor-pointer">
-                         <CarCard
-                           car={{
-                             id: String(car.id),
-                             name: car.name,
-                             image: getCarImage(car),
-                             year: car.year,
-                             category: car.category,
-                             passengers: car.passengers,
-                             transmission: car.transmission,
-                             fuel: car.fuel,
-                           }}
-                           price={`${car.price_tier3 || 30} €`}
-                           priceFrom="nuo"
-                           pricePerDay="/ dieną"
-                           categoryLabel={car.category}
-                           transmissionLabel={car.transmission}
-                           fuelLabel={car.fuel}
-                           cta={
-                             <Button
-                               className="w-full"
-                               onClick={(e) => {
-                                 e.stopPropagation();
-                                 handleCarClick({ id: car.id, name: car.name });
-                               }}
-                             >
-                               <Settings className="h-4 w-4 mr-2" />
-                               Valdyti
-                             </Button>
-                           }
-                         />
-                       </div>
-                     ))}
+                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <Car className="h-5 w-5" />
+                      Automobilių parkas
+                    </CardTitle>
+                    <CardDescription>Mūsų turimų automobilių sąrašas</CardDescription>
                   </div>
+                  <div className="relative w-full sm:w-64">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Ieškoti automobilio..."
+                      value={carSearchQuery}
+                      onChange={(e) => setCarSearchQuery(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                    {filteredCars.length === 0 ? (
+                      <div className="col-span-full text-center py-8 text-muted-foreground">
+                        Pagal paiešką automobilių nerasta
+                      </div>
+                    ) : (
+                      filteredCars.map((car) => (
+                        <div key={car.id} onClick={() => handleCarClick({ id: car.id, name: car.name })} className="cursor-pointer">
+                          <AdminCarCard
+                            car={{
+                              id: String(car.id),
+                              name: car.name,
+                              image: getCarImage(car),
+                              year: car.year,
+                              category: car.category,
+                              passengers: car.passengers,
+                              transmission: car.transmission,
+                              fuel: car.fuel,
+                            }}
+                            price={`${car.price_tier3 || 30} €`}
+                            onManage={() => handleCarClick({ id: car.id, name: car.name })}
+                          />
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  {filteredCars.length > 0 && (
+                    <p className="mt-3 text-xs text-muted-foreground">
+                      Rodoma {filteredCars.length} iš {cars.length} automobilių
+                    </p>
+                  )}
                 </CardContent>
               </Card>
 
