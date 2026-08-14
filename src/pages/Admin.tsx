@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -819,7 +819,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-[#f6f7f6]">
       {/* Admin Header */}
-      <header className="sticky top-0 z-50 bg-carbonus-deep">
+      <header className="sticky top-0 z-50 bg-carbonus-green-deep">
         <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
             <img
@@ -837,7 +837,7 @@ const Admin = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 md:flex">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-carbonus-green text-xs font-bold text-carbonus-deep">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-carbonus-green text-xs font-bold text-carbonus-green-deep">
                 {(user?.email?.[0] || 'A').toUpperCase()}
               </span>
               <span className="max-w-[180px] truncate text-xs text-white/80">{user?.email}</span>
@@ -857,7 +857,7 @@ const Admin = () => {
 
       <main className="mx-auto w-full max-w-[1500px] px-3 py-5 sm:px-6 sm:py-7">
         {/* Hero banner */}
-        <section className="relative mb-5 overflow-hidden rounded-[22px] bg-gradient-to-br from-carbonus-deep via-carbonus-dark-green to-carbonus-green/80 px-5 py-7 shadow-[0_18px_40px_rgba(6,45,32,0.25)] sm:px-8 sm:py-9">
+        <section className="relative mb-5 overflow-hidden rounded-[22px] bg-gradient-to-br from-carbonus-green-deep via-carbonus-green-dark to-carbonus-green/80 px-5 py-7 shadow-[0_18px_40px_rgba(6,45,32,0.25)] sm:px-8 sm:py-9">
           <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
