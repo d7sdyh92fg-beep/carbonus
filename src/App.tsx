@@ -30,6 +30,7 @@ import ReservationInsurance from "./pages/ReservationInsurance";
 import ReservationServices from "./pages/ReservationServices";
 import ReservationTerms from "./pages/ReservationTerms";
 import ReservationReview from "./pages/ReservationReview";
+import Changelog from "./pages/Changelog";
 
 const queryClient = new QueryClient();
 
@@ -127,6 +128,8 @@ const App = () => (
             {/* Payment & Auth - Same for both languages */}
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-canceled" element={<PaymentCanceled />} />
+            <Route path="/pakeitimai" element={<Changelog />} />
+            <Route path="/changelog" element={<Changelog />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             
