@@ -554,7 +554,7 @@ export default function ReservationReview() {
                     <Input
                       value={promoInput}
                       onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(null); }}
-                      placeholder={language === 'lt' ? 'pvz. ACIU10' : 'e.g. ACIU10'}
+                      placeholder={language === 'lt' ? 'Įveskite nuolaidos kodą' : 'Enter promo code'}
                       className="uppercase"
                     />
                     <Button
