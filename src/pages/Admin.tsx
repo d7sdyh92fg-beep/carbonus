@@ -920,66 +920,74 @@ const Admin = () => {
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 sm:gap-4">
                 {[
                   {
-                    label: 'Aktyvios rezervacijos',
+                    label: 'Aktyvios',
+                    sub: 'rezervacijos',
                     value: String(activeReservations.length),
                     icon: BarChart3,
-                    tone: 'text-foreground',
+                    tint: 'bg-carbonus-green-soft text-carbonus-green-deep',
                   },
                   {
-                    label: 'Laukia patvirtinimo',
+                    label: 'Laukia',
+                    sub: 'patvirtinimo',
                     value: String(reservations.filter((r) => r.status === 'requested').length),
-                    icon: Users,
-                    tone: 'text-amber-600',
+                    icon: History,
+                    tint: 'bg-amber-50 text-amber-600',
                   },
                   {
                     label: 'Apmokėtos',
+                    sub: 'rezervacijos',
                     value: String(reservations.filter((r) => r.status === 'paid').length),
-                    icon: Car,
-                    tone: 'text-primary',
+                    icon: CheckCircle,
+                    tint: 'bg-blue-50 text-blue-600',
                   },
                   {
-                    label: 'Automobilių parke',
+                    label: 'Autoparkas',
+                    sub: 'automobiliai',
                     value: String(cars.length),
-                    icon: Settings,
-                    tone: 'text-foreground',
+                    icon: Car,
+                    tint: 'bg-slate-100 text-slate-600',
                   },
                   {
-                    label: 'Nuomos pajamos (be užstato)',
+                    label: 'Pajamos',
+                    sub: 'be užstatų',
                     value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}`,
                     icon: Receipt,
-                    tone: 'text-foreground',
+                    tint: 'bg-violet-50 text-violet-600',
                     wide: true,
                   },
-                ].map(({ label, value, icon: Icon, tone, wide }) => (
-                  <Card
+                ].map(({ label, sub, value, icon: Icon, tint, wide }) => (
+                  <div
                     key={label}
-                    className={`rounded-xl border-border/60 shadow-sm transition-shadow hover:shadow-md ${wide ? 'col-span-2 sm:col-span-1' : ''}`}
+                    className={`group relative overflow-hidden rounded-2xl border border-black/[0.04] bg-white p-4 shadow-[0_4px_14px_rgba(16,24,40,0.05)] transition-shadow hover:shadow-[0_14px_30px_rgba(16,24,40,0.1)] ${wide ? 'col-span-2 sm:col-span-1' : ''}`}
                   >
-                    <CardContent className="flex items-start justify-between gap-3 p-4">
-                      <div className="min-w-0">
-                        <p className={`text-xl font-bold leading-none sm:text-2xl ${tone}`}>{value}</p>
-                        <p className="mt-2 text-[11px] leading-tight text-muted-foreground sm:text-xs">
-                          {label}
-                        </p>
-                      </div>
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted">
-                        <Icon className="h-4 w-4 text-muted-foreground" />
-                      </span>
-                    </CardContent>
-                  </Card>
+                    <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${tint}`}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      {label}
+                    </p>
+                    <p className="mt-1 text-2xl font-bold leading-none tracking-tight text-foreground">
+                      {value}
+                    </p>
+                    <p className="mt-1.5 text-[11px] text-muted-foreground">{sub}</p>
+                  </div>
                 ))}
               </div>
 
 
               {/* Cars Management Section */}
-              <Card>
-                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <Car className="h-5 w-5" />
-                      Automobilių parkas
-                    </CardTitle>
-                    <CardDescription>Mūsų turimų automobilių sąrašas</CardDescription>
+              <Card className="rounded-2xl border-black/[0.04] shadow-[0_4px_14px_rgba(16,24,40,0.05)]">
+                <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-carbonus-green-soft text-carbonus-green-deep">
+                      <Car className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <CardTitle className="text-lg">Automobilių parkas</CardTitle>
+                      <CardDescription>
+                        Pasirinkite automobilį, kad valdytumėte jo užimtumą ir nustatymus
+                      </CardDescription>
+                    </div>
                   </div>
                   <div className="relative w-full sm:w-64">
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -987,12 +995,12 @@ const Admin = () => {
                       placeholder="Ieškoti automobilio..."
                       value={carSearchQuery}
                       onChange={(e) => setCarSearchQuery(e.target.value)}
-                      className="pl-9"
+                      className="rounded-xl pl-9"
                     />
                   </div>
                 </CardHeader>
                 <CardContent className="px-3 sm:px-6">
-                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
 
                     {filteredCars.length === 0 ? (
                       <div className="col-span-full text-center py-8 text-muted-foreground">
@@ -1000,17 +1008,22 @@ const Admin = () => {
                       </div>
                     ) : (
                       filteredCars.map((car) => (
-                        <div key={car.id} onClick={() => handleCarClick({ id: car.id, name: car.name })} className="cursor-pointer">
-                          <AdminCarCard
-                            car={{
-                              id: String(car.id),
-                              name: car.name,
-                              image: getCarImage(car),
-                              year: car.year,
-                            }}
-                            onManage={() => handleCarClick({ id: car.id, name: car.name })}
-                          />
-                        </div>
+                        <AdminCarCard
+                          key={car.id}
+                          car={{
+                            id: String(car.id),
+                            name: car.name,
+                            image: getCarImage(car),
+                            year: car.year,
+                            category: car.category,
+                            passengers: car.passengers,
+                            fuel: car.fuel,
+                            transmission: car.transmission,
+                            priceHigh: car.price_tier1 ?? car.price_per_day,
+                            priceLow: car.price_tier3 ?? null,
+                          }}
+                          onManage={() => handleCarClick({ id: car.id, name: car.name })}
+                        />
                       ))
                     )}
                   </div>
@@ -1024,14 +1037,16 @@ const Admin = () => {
 
 
               {/* Reservations Management */}
-              <Card>
+              <Card className="rounded-2xl border-black/[0.04] shadow-[0_4px_14px_rgba(16,24,40,0.05)]">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <BarChart3 className="h-5 w-5" />
-                      Aktyvios rezervacijos
-                    </CardTitle>
-                    <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-carbonus-green-soft text-carbonus-green-deep">
+                      <BarChart3 className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <CardTitle className="text-lg">Aktyvios rezervacijos</CardTitle>
+                      <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
+                    </div>
                   </div>
                 </CardHeader>
                  
