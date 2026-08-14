@@ -236,6 +236,7 @@ const Admin = () => {
         supabase
           .from('car_blocked_dates')
           .select('*')
+          .is('deleted_at', null)
           .eq('reservation_type', 'phone_reservation')
           .order('blocked_date', { ascending: true }),
         supabase.from('cars').select('id, name'),
@@ -337,7 +338,8 @@ const Admin = () => {
             if (seedRow) {
               const { error } = await supabase
                 .from('car_blocked_dates')
-                .delete()
+                .update({ deleted_at: new Date().toISOString() } as any)
+                .is('deleted_at', null)
                 .eq('car_id', (seedRow as any).car_id)
                 .eq('reservation_type', 'phone_reservation')
                 .eq('contact_name', (seedRow as any).contact_name)

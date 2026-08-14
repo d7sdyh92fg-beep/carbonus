@@ -22,6 +22,8 @@ export type Database = {
           contact_phone: string | null
           created_at: string
           created_by: string | null
+          deleted_at: string | null
+          deleted_by: string | null
           id: string
           reason: string | null
           reservation_type: string
@@ -33,6 +35,8 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string
           created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           id?: string
           reason?: string | null
           reservation_type?: string
@@ -44,6 +48,8 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string
           created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           id?: string
           reason?: string | null
           reservation_type?: string

@@ -193,6 +193,7 @@ const AvailableCars = () => {
       const { data, error } = await supabase
         .from("car_blocked_dates")
         .select("car_id, blocked_date")
+        .is("deleted_at", null)
         .gte("blocked_date", pickupDate)
         .lte("blocked_date", returnDate);
       if (error) throw error;
