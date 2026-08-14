@@ -817,24 +817,33 @@ const Admin = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/30">
       {/* Admin Header */}
-      <header className="border-b bg-card sticky top-0 z-50">
-        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
-              <img 
-                src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png" 
-                alt="Carbonus" 
-                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto flex-shrink-0"
+      <header className="sticky top-0 z-50 border-b border-border/60 bg-card/90 backdrop-blur supports-[backdrop-filter]:bg-card/70">
+        <div className="mx-auto w-full max-w-[1600px] px-4 py-3 sm:px-6">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <img
+                src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png"
+                alt="Carbonus"
+                className="h-9 w-auto flex-shrink-0 sm:h-11"
               />
-              <Badge variant="secondary" className="text-xs hidden sm:inline-flex">Admin</Badge>
+              <span className="hidden h-6 w-px bg-border sm:block" />
+              <div className="hidden min-w-0 sm:block">
+                <p className="text-sm font-semibold leading-tight">Valdymo sistema</p>
+                <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
+              </div>
             </div>
-            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
-              <span className="text-xs sm:text-sm text-muted-foreground hidden md:block truncate">
-                {user?.email}
-              </span>
-              <Button variant="outline" size="sm" onClick={() => window.location.href = '/'} className="text-xs sm:text-sm">
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="hidden text-xs md:inline-flex">
+                {activeReservations.length} aktyvios
+              </Badge>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => (window.location.href = '/')}
+                className="text-xs sm:text-sm"
+              >
                 <span className="hidden sm:inline">Grįžti į svetainę</span>
                 <span className="sm:hidden">Svetainė</span>
               </Button>
@@ -843,50 +852,38 @@ const Admin = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Administratoriaus skydelis</h1>
-          <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">Valdykite automobilių nuomą ir klientų duomenis</p>
+      <main className="mx-auto w-full max-w-[1600px] px-3 py-5 sm:px-6 sm:py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Administratoriaus skydelis</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Valdykite automobilių nuomą, rezervacijas ir klientų duomenis
+          </p>
+        </div>
 
-          <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid grid-cols-4 gap-1 h-auto p-1 bg-muted rounded-lg sm:grid-cols-7">
-              <TabsTrigger value="dashboard" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <BarChart3 className="h-4 w-4" />
-                <span className="hidden sm:inline">Skydelis</span>
-                <span className="sm:hidden text-[10px]">Duomenys</span>
-              </TabsTrigger>
-              <TabsTrigger value="in-person" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <Users className="h-4 w-4" />
-                <span className="hidden sm:inline">Vietinė rezervacija</span>
-                <span className="sm:hidden text-[10px] text-center leading-3">Vietinė</span>
-              </TabsTrigger>
-              <TabsTrigger value="recycle" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <Trash2 className="h-4 w-4" />
-                <span className="hidden sm:inline">Šiukšlinė</span>
-                <span className="sm:hidden text-[10px]">Šiukšlinė</span>
-              </TabsTrigger>
-              <TabsTrigger value="history" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <History className="h-4 w-4" />
-                <span className="hidden sm:inline">Istorija</span>
-                <span className="sm:hidden text-[10px]">Istorija</span>
-              </TabsTrigger>
-              <TabsTrigger value="invoices" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <Receipt className="h-4 w-4" />
-                <span className="hidden sm:inline">Sąskaitos</span>
-                <span className="sm:hidden text-[10px] text-center leading-3">Sąskaitos</span>
-              </TabsTrigger>
-              <TabsTrigger value="promos" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <Gift className="h-4 w-4" />
-                <span className="hidden sm:inline">Nuolaidos</span>
-                <span className="sm:hidden text-[10px] text-center leading-3">Nuolaidos</span>
-              </TabsTrigger>
-              <TabsTrigger value="email-test" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-card">
-                <Mail className="h-4 w-4" />
-                <span className="hidden sm:inline">El. paštas</span>
-                <span className="sm:hidden text-[10px] text-center leading-3">El. paštas</span>
-              </TabsTrigger>
-
+        <div>
+          <Tabs defaultValue="dashboard" className="flex flex-col gap-5 lg:flex-row lg:gap-8">
+            <TabsList className="h-auto w-full shrink-0 justify-start gap-1 overflow-x-auto rounded-xl bg-card p-1.5 shadow-sm ring-1 ring-border/60 lg:sticky lg:top-24 lg:w-60 lg:flex-col lg:overflow-visible">
+              {[
+                { value: 'dashboard', icon: BarChart3, label: 'Skydelis' },
+                { value: 'in-person', icon: Users, label: 'Vietinė rezervacija' },
+                { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
+                { value: 'history', icon: History, label: 'Istorija' },
+                { value: 'invoices', icon: Receipt, label: 'Sąskaitos' },
+                { value: 'promos', icon: Gift, label: 'Nuolaidos' },
+                { value: 'email-test', icon: Mail, label: 'El. paštas' },
+              ].map(({ value, icon: Icon, label }) => (
+                <TabsTrigger
+                  key={value}
+                  value={value}
+                  className="flex w-full shrink-0 items-center justify-start gap-2.5 rounded-lg px-3 py-2.5 text-xs font-medium text-muted-foreground transition-colors data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none sm:text-sm"
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="whitespace-nowrap">{label}</span>
+                </TabsTrigger>
+              ))}
             </TabsList>
+
+            <div className="min-w-0 flex-1 space-y-5">
 
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
