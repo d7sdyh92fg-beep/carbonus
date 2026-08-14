@@ -817,65 +817,94 @@ const Admin = () => {
   });
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-[#f6f7f6]">
       {/* Admin Header */}
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-card/90 backdrop-blur supports-[backdrop-filter]:bg-card/70">
-        <div className="mx-auto w-full max-w-[1600px] px-4 py-3 sm:px-6">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <img
-                src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png"
-                alt="Carbonus"
-                className="h-9 w-auto flex-shrink-0 sm:h-11"
-              />
-              <span className="hidden h-6 w-px bg-border sm:block" />
-              <div className="hidden min-w-0 sm:block">
-                <p className="text-sm font-semibold leading-tight">Valdymo sistema</p>
-                <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
-              </div>
+      <header className="sticky top-0 z-50 bg-carbonus-deep">
+        <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <img
+              src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png"
+              alt="Carbonus"
+              className="h-8 w-auto flex-shrink-0 sm:h-9"
+            />
+            <span className="hidden h-8 w-px bg-white/15 sm:block" />
+            <div className="hidden min-w-0 sm:block">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+                Administravimas
+              </p>
+              <p className="text-sm font-medium text-white/90">Valdymo centras</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="hidden text-xs md:inline-flex">
-                {activeReservations.length} aktyvios
-              </Badge>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => (window.location.href = '/')}
-                className="text-xs sm:text-sm"
-              >
-                <span className="hidden sm:inline">Grįžti į svetainę</span>
-                <span className="sm:hidden">Svetainė</span>
-              </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 md:flex">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-carbonus-green text-xs font-bold text-carbonus-deep">
+                {(user?.email?.[0] || 'A').toUpperCase()}
+              </span>
+              <span className="max-w-[180px] truncate text-xs text-white/80">{user?.email}</span>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => (window.location.href = '/')}
+              className="border-white/20 bg-transparent text-xs text-white hover:bg-white/10 hover:text-white"
+            >
+              <ExternalLink className="h-3.5 w-3.5 sm:mr-1.5" />
+              <span className="hidden sm:inline">Atidaryti svetainę</span>
+            </Button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-[1600px] px-3 py-5 sm:px-6 sm:py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Administratoriaus skydelis</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Valdykite automobilių nuomą, rezervacijas ir klientų duomenis
-          </p>
-        </div>
+      <main className="mx-auto w-full max-w-[1500px] px-3 py-5 sm:px-6 sm:py-7">
+        {/* Hero banner */}
+        <section className="relative mb-5 overflow-hidden rounded-[22px] bg-gradient-to-br from-carbonus-deep via-carbonus-dark-green to-carbonus-green/80 px-5 py-7 shadow-[0_18px_40px_rgba(6,45,32,0.25)] sm:px-8 sm:py-9">
+          <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0">
+              <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
+                <Sparkles className="h-3.5 w-3.5" />
+                Carbonus administravimas
+              </p>
+              <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-4xl">
+                Administratoriaus skydelis
+              </h1>
+              <p className="mt-2 max-w-xl text-sm text-white/75">
+                Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Šiandien</p>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' })}
+                </p>
+              </div>
+              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Reikia dėmesio</p>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {reservations.filter((r) => r.status === 'requested').length} laukia patvirtinimo
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div>
-          <Tabs defaultValue="dashboard" className="flex flex-col gap-5 lg:flex-row lg:gap-8">
-            <TabsList className="h-auto w-full shrink-0 justify-start gap-1 overflow-x-auto rounded-xl bg-card p-1.5 shadow-sm ring-1 ring-border/60 lg:sticky lg:top-24 lg:w-60 lg:flex-col lg:overflow-visible">
+          <Tabs defaultValue="dashboard" className="space-y-5">
+            <TabsList className="flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-2xl border border-black/[0.04] bg-white p-1.5 shadow-[0_4px_14px_rgba(16,24,40,0.05)]">
               {[
-                { value: 'dashboard', icon: BarChart3, label: 'Skydelis' },
-                { value: 'in-person', icon: Users, label: 'Vietinė rezervacija' },
-                { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
+                { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
+                { value: 'in-person', icon: Users, label: 'Nauja rezervacija' },
                 { value: 'history', icon: History, label: 'Istorija' },
                 { value: 'invoices', icon: Receipt, label: 'Sąskaitos' },
                 { value: 'promos', icon: Gift, label: 'Nuolaidos' },
+                { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
                 { value: 'email-test', icon: Mail, label: 'El. paštas' },
               ].map(({ value, icon: Icon, label }) => (
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="flex w-full shrink-0 items-center justify-start gap-2.5 rounded-lg px-3 py-2.5 text-xs font-medium text-muted-foreground transition-colors data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none sm:text-sm"
+                  className="flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-muted-foreground transition-colors data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm sm:text-[13px]"
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   <span className="whitespace-nowrap">{label}</span>
@@ -884,6 +913,7 @@ const Admin = () => {
             </TabsList>
 
             <div className="min-w-0 flex-1 space-y-5">
+
 
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
