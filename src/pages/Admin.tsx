@@ -887,68 +887,59 @@ const Admin = () => {
 
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
-                <Card className="hover:shadow-md transition-shadow">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs sm:text-sm font-medium">Bendra</CardTitle>
-                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-lg sm:text-2xl font-bold">{activeReservations.length}</div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">Aktyvios rezervacijos</p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-md transition-shadow">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs sm:text-sm font-medium">Prašomos</CardTitle>
-                    <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-lg sm:text-2xl font-bold text-yellow-600">
-                      {reservations.filter(r => r.status === 'requested').length}
-                    </div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">Laukia patvirtinimo</p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-md transition-shadow">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs sm:text-sm font-medium">Patvirtintos</CardTitle>
-                    <Car className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-lg sm:text-2xl font-bold text-green-600">
-                      {reservations.filter(r => r.status === 'paid').length}
-                    </div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">Apmokėtos</p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-md transition-shadow">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs sm:text-sm font-medium">Automobilių</CardTitle>
-                    <Settings className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-lg sm:text-2xl font-bold">{cars.length}</div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">Galimų auto</p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-md transition-shadow col-span-2 sm:col-span-1">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs sm:text-sm font-medium">Pajamos</CardTitle>
-                    <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-lg sm:text-2xl font-bold">
-                      €{reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}
-                    </div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">Nuomos pajamos (be užstato)</p>
-                  </CardContent>
-                </Card>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 sm:gap-4">
+                {[
+                  {
+                    label: 'Aktyvios rezervacijos',
+                    value: String(activeReservations.length),
+                    icon: BarChart3,
+                    tone: 'text-foreground',
+                  },
+                  {
+                    label: 'Laukia patvirtinimo',
+                    value: String(reservations.filter((r) => r.status === 'requested').length),
+                    icon: Users,
+                    tone: 'text-amber-600',
+                  },
+                  {
+                    label: 'Apmokėtos',
+                    value: String(reservations.filter((r) => r.status === 'paid').length),
+                    icon: Car,
+                    tone: 'text-primary',
+                  },
+                  {
+                    label: 'Automobilių parke',
+                    value: String(cars.length),
+                    icon: Settings,
+                    tone: 'text-foreground',
+                  },
+                  {
+                    label: 'Nuomos pajamos (be užstato)',
+                    value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}`,
+                    icon: Receipt,
+                    tone: 'text-foreground',
+                    wide: true,
+                  },
+                ].map(({ label, value, icon: Icon, tone, wide }) => (
+                  <Card
+                    key={label}
+                    className={`rounded-xl border-border/60 shadow-sm transition-shadow hover:shadow-md ${wide ? 'col-span-2 sm:col-span-1' : ''}`}
+                  >
+                    <CardContent className="flex items-start justify-between gap-3 p-4">
+                      <div className="min-w-0">
+                        <p className={`text-xl font-bold leading-none sm:text-2xl ${tone}`}>{value}</p>
+                        <p className="mt-2 text-[11px] leading-tight text-muted-foreground sm:text-xs">
+                          {label}
+                        </p>
+                      </div>
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted">
+                        <Icon className="h-4 w-4 text-muted-foreground" />
+                      </span>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
+
 
               {/* Cars Management Section */}
               <Card>
