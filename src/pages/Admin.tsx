@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -817,65 +817,94 @@ const Admin = () => {
   });
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-[#f6f7f6]">
       {/* Admin Header */}
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-card/90 backdrop-blur supports-[backdrop-filter]:bg-card/70">
-        <div className="mx-auto w-full max-w-[1600px] px-4 py-3 sm:px-6">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <img
-                src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png"
-                alt="Carbonus"
-                className="h-9 w-auto flex-shrink-0 sm:h-11"
-              />
-              <span className="hidden h-6 w-px bg-border sm:block" />
-              <div className="hidden min-w-0 sm:block">
-                <p className="text-sm font-semibold leading-tight">Valdymo sistema</p>
-                <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
-              </div>
+      <header className="sticky top-0 z-50 bg-carbonus-green-deep">
+        <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <img
+              src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png"
+              alt="Carbonus"
+              className="h-8 w-auto flex-shrink-0 sm:h-9"
+            />
+            <span className="hidden h-8 w-px bg-white/15 sm:block" />
+            <div className="hidden min-w-0 sm:block">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+                Administravimas
+              </p>
+              <p className="text-sm font-medium text-white/90">Valdymo centras</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="hidden text-xs md:inline-flex">
-                {activeReservations.length} aktyvios
-              </Badge>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => (window.location.href = '/')}
-                className="text-xs sm:text-sm"
-              >
-                <span className="hidden sm:inline">Grįžti į svetainę</span>
-                <span className="sm:hidden">Svetainė</span>
-              </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 md:flex">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-carbonus-green text-xs font-bold text-carbonus-green-deep">
+                {(user?.email?.[0] || 'A').toUpperCase()}
+              </span>
+              <span className="max-w-[180px] truncate text-xs text-white/80">{user?.email}</span>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => (window.location.href = '/')}
+              className="border-white/20 bg-transparent text-xs text-white hover:bg-white/10 hover:text-white"
+            >
+              <ExternalLink className="h-3.5 w-3.5 sm:mr-1.5" />
+              <span className="hidden sm:inline">Atidaryti svetainę</span>
+            </Button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-[1600px] px-3 py-5 sm:px-6 sm:py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Administratoriaus skydelis</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Valdykite automobilių nuomą, rezervacijas ir klientų duomenis
-          </p>
-        </div>
+      <main className="mx-auto w-full max-w-[1500px] px-3 py-5 sm:px-6 sm:py-7">
+        {/* Hero banner */}
+        <section className="relative mb-5 overflow-hidden rounded-[22px] bg-gradient-to-br from-carbonus-green-deep via-carbonus-green-dark to-carbonus-green/80 px-5 py-7 shadow-[0_18px_40px_rgba(6,45,32,0.25)] sm:px-8 sm:py-9">
+          <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0">
+              <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
+                <Sparkles className="h-3.5 w-3.5" />
+                Carbonus administravimas
+              </p>
+              <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-4xl">
+                Administratoriaus skydelis
+              </h1>
+              <p className="mt-2 max-w-xl text-sm text-white/75">
+                Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Šiandien</p>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' })}
+                </p>
+              </div>
+              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Reikia dėmesio</p>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {reservations.filter((r) => r.status === 'requested').length} laukia patvirtinimo
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div>
-          <Tabs defaultValue="dashboard" className="flex flex-col gap-5 lg:flex-row lg:gap-8">
-            <TabsList className="h-auto w-full shrink-0 justify-start gap-1 overflow-x-auto rounded-xl bg-card p-1.5 shadow-sm ring-1 ring-border/60 lg:sticky lg:top-24 lg:w-60 lg:flex-col lg:overflow-visible">
+          <Tabs defaultValue="dashboard" className="space-y-5">
+            <TabsList className="flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-2xl border border-black/[0.04] bg-white p-1.5 shadow-[0_4px_14px_rgba(16,24,40,0.05)]">
               {[
-                { value: 'dashboard', icon: BarChart3, label: 'Skydelis' },
-                { value: 'in-person', icon: Users, label: 'Vietinė rezervacija' },
-                { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
+                { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
+                { value: 'in-person', icon: Users, label: 'Nauja rezervacija' },
                 { value: 'history', icon: History, label: 'Istorija' },
                 { value: 'invoices', icon: Receipt, label: 'Sąskaitos' },
                 { value: 'promos', icon: Gift, label: 'Nuolaidos' },
+                { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
                 { value: 'email-test', icon: Mail, label: 'El. paštas' },
               ].map(({ value, icon: Icon, label }) => (
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="flex w-full shrink-0 items-center justify-start gap-2.5 rounded-lg px-3 py-2.5 text-xs font-medium text-muted-foreground transition-colors data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none sm:text-sm"
+                  className="flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-muted-foreground transition-colors data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm sm:text-[13px]"
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   <span className="whitespace-nowrap">{label}</span>
@@ -885,71 +914,80 @@ const Admin = () => {
 
             <div className="min-w-0 flex-1 space-y-5">
 
+
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 sm:gap-4">
                 {[
                   {
-                    label: 'Aktyvios rezervacijos',
+                    label: 'Aktyvios',
+                    sub: 'rezervacijos',
                     value: String(activeReservations.length),
                     icon: BarChart3,
-                    tone: 'text-foreground',
+                    tint: 'bg-carbonus-green-soft text-carbonus-green-deep',
                   },
                   {
-                    label: 'Laukia patvirtinimo',
+                    label: 'Laukia',
+                    sub: 'patvirtinimo',
                     value: String(reservations.filter((r) => r.status === 'requested').length),
-                    icon: Users,
-                    tone: 'text-amber-600',
+                    icon: History,
+                    tint: 'bg-amber-50 text-amber-600',
                   },
                   {
                     label: 'Apmokėtos',
+                    sub: 'rezervacijos',
                     value: String(reservations.filter((r) => r.status === 'paid').length),
-                    icon: Car,
-                    tone: 'text-primary',
+                    icon: CheckCircle,
+                    tint: 'bg-blue-50 text-blue-600',
                   },
                   {
-                    label: 'Automobilių parke',
+                    label: 'Autoparkas',
+                    sub: 'automobiliai',
                     value: String(cars.length),
-                    icon: Settings,
-                    tone: 'text-foreground',
+                    icon: Car,
+                    tint: 'bg-slate-100 text-slate-600',
                   },
                   {
-                    label: 'Nuomos pajamos (be užstato)',
+                    label: 'Pajamos',
+                    sub: 'be užstatų',
                     value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}`,
                     icon: Receipt,
-                    tone: 'text-foreground',
+                    tint: 'bg-violet-50 text-violet-600',
                     wide: true,
                   },
-                ].map(({ label, value, icon: Icon, tone, wide }) => (
-                  <Card
+                ].map(({ label, sub, value, icon: Icon, tint, wide }) => (
+                  <div
                     key={label}
-                    className={`rounded-xl border-border/60 shadow-sm transition-shadow hover:shadow-md ${wide ? 'col-span-2 sm:col-span-1' : ''}`}
+                    className={`group relative overflow-hidden rounded-2xl border border-black/[0.04] bg-white p-4 shadow-[0_4px_14px_rgba(16,24,40,0.05)] transition-shadow hover:shadow-[0_14px_30px_rgba(16,24,40,0.1)] ${wide ? 'col-span-2 sm:col-span-1' : ''}`}
                   >
-                    <CardContent className="flex items-start justify-between gap-3 p-4">
-                      <div className="min-w-0">
-                        <p className={`text-xl font-bold leading-none sm:text-2xl ${tone}`}>{value}</p>
-                        <p className="mt-2 text-[11px] leading-tight text-muted-foreground sm:text-xs">
-                          {label}
-                        </p>
-                      </div>
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted">
-                        <Icon className="h-4 w-4 text-muted-foreground" />
-                      </span>
-                    </CardContent>
-                  </Card>
+                    <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${tint}`}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      {label}
+                    </p>
+                    <p className="mt-1 text-2xl font-bold leading-none tracking-tight text-foreground">
+                      {value}
+                    </p>
+                    <p className="mt-1.5 text-[11px] text-muted-foreground">{sub}</p>
+                  </div>
                 ))}
               </div>
 
 
               {/* Cars Management Section */}
-              <Card>
-                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <Car className="h-5 w-5" />
-                      Automobilių parkas
-                    </CardTitle>
-                    <CardDescription>Mūsų turimų automobilių sąrašas</CardDescription>
+              <Card className="rounded-2xl border-black/[0.04] shadow-[0_4px_14px_rgba(16,24,40,0.05)]">
+                <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-carbonus-green-soft text-carbonus-green-deep">
+                      <Car className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <CardTitle className="text-lg">Automobilių parkas</CardTitle>
+                      <CardDescription>
+                        Pasirinkite automobilį, kad valdytumėte jo užimtumą ir nustatymus
+                      </CardDescription>
+                    </div>
                   </div>
                   <div className="relative w-full sm:w-64">
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -957,12 +995,12 @@ const Admin = () => {
                       placeholder="Ieškoti automobilio..."
                       value={carSearchQuery}
                       onChange={(e) => setCarSearchQuery(e.target.value)}
-                      className="pl-9"
+                      className="rounded-xl pl-9"
                     />
                   </div>
                 </CardHeader>
                 <CardContent className="px-3 sm:px-6">
-                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
 
                     {filteredCars.length === 0 ? (
                       <div className="col-span-full text-center py-8 text-muted-foreground">
@@ -970,17 +1008,22 @@ const Admin = () => {
                       </div>
                     ) : (
                       filteredCars.map((car) => (
-                        <div key={car.id} onClick={() => handleCarClick({ id: car.id, name: car.name })} className="cursor-pointer">
-                          <AdminCarCard
-                            car={{
-                              id: String(car.id),
-                              name: car.name,
-                              image: getCarImage(car),
-                              year: car.year,
-                            }}
-                            onManage={() => handleCarClick({ id: car.id, name: car.name })}
-                          />
-                        </div>
+                        <AdminCarCard
+                          key={car.id}
+                          car={{
+                            id: String(car.id),
+                            name: car.name,
+                            image: getCarImage(car),
+                            year: car.year,
+                            category: car.category,
+                            passengers: car.passengers,
+                            fuel: car.fuel,
+                            transmission: car.transmission,
+                            priceHigh: car.price_tier1 ?? car.price_per_day,
+                            priceLow: car.price_tier3 ?? null,
+                          }}
+                          onManage={() => handleCarClick({ id: car.id, name: car.name })}
+                        />
                       ))
                     )}
                   </div>
@@ -994,14 +1037,16 @@ const Admin = () => {
 
 
               {/* Reservations Management */}
-              <Card>
+              <Card className="rounded-2xl border-black/[0.04] shadow-[0_4px_14px_rgba(16,24,40,0.05)]">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <BarChart3 className="h-5 w-5" />
-                      Aktyvios rezervacijos
-                    </CardTitle>
-                    <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-carbonus-green-soft text-carbonus-green-deep">
+                      <BarChart3 className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <CardTitle className="text-lg">Aktyvios rezervacijos</CardTitle>
+                      <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
+                    </div>
                   </div>
                 </CardHeader>
                  
