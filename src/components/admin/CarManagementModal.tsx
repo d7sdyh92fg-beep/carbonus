@@ -121,7 +121,6 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
 
   useEffect(() => {
     if (isOpen) {
-      cleanupPastBlockedDates();
       fetchCarData();
       fetchCarReservations();
       fetchServiceRecords();
@@ -136,17 +135,6 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     return `${year}-${month}-${day}`;
   };
 
-  const cleanupPastBlockedDates = async () => {
-    try {
-      const today = getLocalDateKey(new Date());
-      await supabase
-        .from('car_blocked_dates')
-        .delete()
-        .lt('blocked_date', today);
-    } catch (error) {
-      console.error('Error cleaning up past blocked dates:', error);
-    }
-  };
 
   const fetchCarData = async () => {
     try {
