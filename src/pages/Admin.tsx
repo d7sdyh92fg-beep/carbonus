@@ -1646,6 +1646,7 @@ const Admin = () => {
 
                 <EmailTester />
               </TabsContent>
+            </div>
             </Tabs>
         </div>
       </main>
