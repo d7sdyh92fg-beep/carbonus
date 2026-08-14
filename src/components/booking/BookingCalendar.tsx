@@ -118,6 +118,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
       const { data: blockedDates } = await supabase
         .from("car_blocked_dates")
         .select("blocked_date")
+        .is("deleted_at", null)
         .eq("car_id", carId);
 
       blockedDates?.forEach((bd) => {

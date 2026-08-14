@@ -279,6 +279,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       const { data, error } = await supabase
         .from('car_blocked_dates')
         .select('*')
+        .is('deleted_at', null)
         .eq('car_id', carId)
         .order('blocked_date', { ascending: true });
 
@@ -317,6 +318,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
         reservation_type: blockType,
         contact_name: blockType === 'phone_reservation' ? contactName.trim() || null : null,
         contact_phone: blockType === 'phone_reservation' ? contactPhone.trim() || null : null,
+        deleted_at: null,
       }));
 
       const { error } = await supabase
@@ -356,7 +358,8 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
       
       const { error } = await supabase
         .from('car_blocked_dates')
-        .delete()
+        .update({ deleted_at: new Date().toISOString() } as any)
+        .is('deleted_at', null)
         .eq('car_id', carId)
         .in('blocked_date', datesToUnblock);
 
@@ -382,7 +385,7 @@ const CarManagementModal: React.FC<CarManagementModalProps> = ({ isOpen, onClose
     try {
       const { error } = await supabase
         .from('car_blocked_dates')
-        .delete()
+        .update({ deleted_at: new Date().toISOString() } as any)
         .eq('id', blockedDateId);
 
       if (error) throw error;
