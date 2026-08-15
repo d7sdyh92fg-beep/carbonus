@@ -47,8 +47,8 @@ export function V3Hero() {
         />
         {/* Ornaments on the green blob */}
         <svg
-          className="pointer-events-none absolute right-0 top-0 hidden h-[88%] w-[30%] md:block"
-          viewBox="0 0 300 500"
+          className="pointer-events-none absolute right-0 top-0 hidden h-[70%] w-[22%] md:block"
+          viewBox="0 0 220 460"
           fill="none"
           preserveAspectRatio="xMidYMid meet"
           aria-hidden="true"
@@ -59,19 +59,20 @@ export function V3Hero() {
               d="M0 6C0 2.7 2.7 0 6 0h30c14 0 24 10 24 23 0 12-8 21-19 24L7 58C3 59 0 56 0 52V6z"
             />
           </defs>
-          <g stroke="white" strokeOpacity="0.6" strokeWidth="3.5" fill="none">
+          <g stroke="white" strokeOpacity="0.7" strokeWidth="3.5" fill="none">
             {[
-              { x: 30, y: 40, s: 0.75, r: -18, d: 0.15 },
-              { x: 130, y: 20, s: 0.6, r: 24, d: 0.35 },
-              { x: 215, y: 60, s: 0.85, r: -8, d: 0.5 },
-              { x: 75, y: 130, s: 0.55, r: 40, d: 0.7 },
-              { x: 175, y: 155, s: 0.7, r: -30, d: 0.9 },
-              { x: 255, y: 200, s: 0.5, r: 12, d: 1.1 },
-              { x: 40, y: 235, s: 0.65, r: -50, d: 1.25 },
-              { x: 150, y: 285, s: 0.8, r: 18, d: 1.4 },
-              { x: 240, y: 345, s: 0.6, r: -22, d: 1.6 },
-              { x: 90, y: 380, s: 0.5, r: 60, d: 1.8 },
+              { x: 108, y: 24, s: 0.6, r: -18, d: 0.15 },
+              { x: 168, y: 48, s: 0.75, r: 26, d: 0.3 },
+              { x: 60, y: 92, s: 0.5, r: 40, d: 0.45 },
+              { x: 132, y: 118, s: 0.65, r: -34, d: 0.6 },
+              { x: 186, y: 156, s: 0.55, r: 10, d: 0.75 },
+              { x: 96, y: 196, s: 0.7, r: 52, d: 0.9 },
+              { x: 164, y: 246, s: 0.5, r: -24, d: 1.05 },
+              { x: 112, y: 306, s: 0.62, r: 16, d: 1.2 },
+              { x: 178, y: 352, s: 0.45, r: -46, d: 1.35 },
+              { x: 122, y: 402, s: 0.55, r: 30, d: 1.5 },
             ].map((o, i) => (
+
               <use
                 key={i}
                 href="#hero-petal"
