@@ -39,29 +39,37 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
-      {/* Background photo — fades into white with a curved mask below the booking form */}
+      {/* Background photo — cropped with a curved edge and soft fade below the booking form */}
       <div className="absolute inset-x-0 top-0 bottom-[46px] overflow-hidden lg:bottom-[60px]">
         <svg className="absolute size-0" aria-hidden="true">
           <defs>
-            <filter id="hero-mask-blur" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
-            </filter>
-            <mask id="hero-mask" maskUnits="objectBoundingBox">
-              <rect width="1" height="1" fill="white" />
-              <path
-                d="M0,1 C0.05,0.92 0.12,0.85 0.25,0.85 H0.55 C0.7,0.85 0.85,0.92 1,1 V1.2 H0 Z"
-                fill="black"
-                filter="url(#hero-mask-blur)"
-              />
-            </mask>
+            <clipPath id="hero-curve" clipPathUnits="objectBoundingBox">
+              <path d="M0,0 H1 V1 C0.85,0.92 0.7,0.85 0.55,0.85 H0.25 C0.12,0.85 0.05,0.92 0,1 Z" />
+            </clipPath>
+            <linearGradient id="hero-fade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="white" stop-opacity="0" />
+              <stop offset="55%" stop-color="white" stop-opacity="0.9" />
+              <stop offset="100%" stop-color="white" stop-opacity="1" />
+            </linearGradient>
           </defs>
         </svg>
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
-          style={{ maskImage: "url(#hero-mask)", WebkitMaskImage: "url(#hero-mask)" }}
+          style={{ clipPath: "url(#hero-curve)" }}
         />
+        <svg
+          className="absolute inset-0 h-full w-full"
+          preserveAspectRatio="none"
+          viewBox="0 0 1 1"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,1 C0.05,0.92 0.12,0.85 0.25,0.85 H0.55 C0.7,0.85 0.85,0.92 1,1 V1.2 H0 Z"
+            fill="url(#hero-fade)"
+          />
+        </svg>
       </div>
 
 
