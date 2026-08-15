@@ -83,8 +83,12 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-out",
-        onLightHero ? "bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(2,18,20,0.06)]" : "bg-black/25 backdrop-blur-[6px]",
+        "fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-out transition-colors",
+        transparentOverlay
+          ? "max-md:bg-transparent max-md:backdrop-blur-none max-md:shadow-none"
+          : onLightHero
+          ? "bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(2,18,20,0.06)]"
+          : "bg-black/25 backdrop-blur-[6px]",
         hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
