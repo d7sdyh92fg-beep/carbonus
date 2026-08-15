@@ -40,21 +40,24 @@ export function V3Hero() {
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
       {/* Background photo — cropped to a rounded shape around the booking form */}
-      <svg width="0" height="0" className="absolute">
-        <defs>
-          <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
-            <path d="M0,0 H1 V1 Q0.5,0.95 0,0.75 Z" />
-          </clipPath>
-        </defs>
-      </svg>
-      <div className="absolute inset-0 overflow-hidden" style={{ clipPath: "url(#hero-clip)" }}>
+      <div className="absolute inset-0 overflow-hidden">
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
         />
+        {/* left side fades to white */}
         <div className="absolute inset-0" style={{ background: "linear-gradient(to top right, white 0%, transparent 40%)" }} />
+        {/* soft white fade over the lower-left grass instead of a hard cut */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(200deg, transparent 45%, rgba(255,255,255,0.75) 62%, white 78%)",
+          }}
+        />
       </div>
+
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
         <div className="min-h-[360px] pt-6 sm:min-h-[440px] sm:pt-10 lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(40px,5vw,86px)]">
