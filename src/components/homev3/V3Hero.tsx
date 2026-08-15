@@ -39,14 +39,20 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
-      {/* Background photo */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Background photo — cropped to a rounded shape around the booking form */}
+      <svg width="0" height="0" className="absolute">
+        <defs>
+          <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
+            <path d="M0,0 H1 V1 C0.5,0.95 0.5,0.55 0,0.55 Z" />
+          </clipPath>
+        </defs>
+      </svg>
+      <div className="absolute inset-0 overflow-hidden" style={{ clipPath: "url(#hero-clip)" }}>
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right"
         />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
