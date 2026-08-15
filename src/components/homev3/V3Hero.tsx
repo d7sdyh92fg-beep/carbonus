@@ -48,7 +48,8 @@ export function V3Hero() {
       </div>
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
-        <div className="min-h-[360px] pt-[84px] sm:min-h-[440px] sm:pt-[100px] lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(100px,calc(5vw+60px),146px)]">
+        <div className="min-h-[360px] pt-[144px] sm:min-h-[440px] sm:pt-[160px] lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(160px,calc(5vw+120px),206px)]">
+
 
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
             {c.eyebrow}
