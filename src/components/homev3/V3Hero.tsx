@@ -46,7 +46,6 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent sm:via-white/70 lg:from-white lg:via-white/55 lg:to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </div>
 
