@@ -43,7 +43,7 @@ export function V3Hero() {
       <svg width="0" height="0" className="absolute">
         <defs>
           <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
-            <path d="M0,0 H1 V1 Q0.5,0.85 0,0.55 Z" />
+            <path d="M0,0 H1 V1 Q0.5,0.95 0,0.75 Z" />
           </clipPath>
         </defs>
       </svg>
@@ -53,6 +53,7 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
         />
+        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-white via-white/70 to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
