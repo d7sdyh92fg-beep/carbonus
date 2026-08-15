@@ -43,7 +43,7 @@ export function V3Hero() {
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
-          className="h-full w-full object-cover object-[72%_center] sm:object-[62%_center] lg:object-center"
+          className="h-full w-full object-cover object-[70%_15%] sm:object-[62%_center] lg:object-center"
         />
         {/* Left-side + bottom fade for text legibility */}
         <div className="pointer-events-none absolute inset-0">
