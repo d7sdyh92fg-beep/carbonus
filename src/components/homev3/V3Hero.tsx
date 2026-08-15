@@ -39,37 +39,20 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
-      {/* Background photo — cropped with a curved edge and soft fade below the booking form */}
+      {/* Full background photo with a localized white fade for left-side text readability */}
       <div className="absolute inset-x-0 top-0 bottom-[46px] overflow-hidden lg:bottom-[60px]">
-        <svg className="absolute size-0" aria-hidden="true">
-          <defs>
-            <clipPath id="hero-curve" clipPathUnits="objectBoundingBox">
-              <path d="M0,0 H1 V1 C0.85,0.92 0.7,0.85 0.55,0.85 H0.25 C0.12,0.85 0.05,0.92 0,1 Z" />
-            </clipPath>
-            <linearGradient id="hero-fade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="white" stop-opacity="0" />
-              <stop offset="42%" stop-color="white" stop-opacity="0.85" />
-              <stop offset="100%" stop-color="white" stop-opacity="1" />
-            </linearGradient>
-          </defs>
-        </svg>
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
-          style={{ clipPath: "url(#hero-curve)" }}
         />
-        <svg
-          className="absolute inset-0 h-full w-full"
-          preserveAspectRatio="none"
-          viewBox="0 0 1 1"
-          aria-hidden="true"
-        >
-          <path
-            d="M0,1 C0.05,0.92 0.12,0.85 0.25,0.85 H0.55 C0.7,0.85 0.85,0.92 1,1 V1.2 H0 Z"
-            fill="url(#hero-fade)"
-          />
-        </svg>
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(25deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 18%, transparent 32%)",
+          }}
+        />
       </div>
 
 
