@@ -45,6 +45,8 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-center"
         />
+        {/* Left-side fade for text legibility */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/80 via-white/40 to-transparent" />
       </div>
 
 
