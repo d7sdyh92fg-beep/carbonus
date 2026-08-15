@@ -143,57 +143,58 @@ export function V3SearchBar() {
 
   const pillClass = (activeMode: LocationMode) =>
     cn(
-      "min-h-[28px] whitespace-nowrap rounded-full border px-3 py-1 text-[11px] font-semibold transition-colors duration-200",
+      "min-h-[40px] whitespace-nowrap rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1",
       locationMode === activeMode
         ? "border-carbonus-green-dark bg-carbonus-green-dark text-white shadow-sm"
-        : "border-carbonus-green/35 bg-white text-foreground hover:border-carbonus-green hover:bg-carbonus-green/10"
+        : "border-carbonus-green/30 bg-white text-foreground hover:border-carbonus-green hover:bg-carbonus-green/10"
     );
 
 
   const fieldClass =
-    "flex min-h-[48px] min-w-0 flex-1 items-center gap-2 rounded-lg border border-carbonus-green/40 bg-white px-2 py-1.5 text-left transition-colors duration-200 hover:border-carbonus-green hover:bg-carbonus-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1 mx-1 sm:ml-0 sm:mr-2";
+    "flex min-h-[54px] min-w-0 flex-1 items-center gap-2.5 rounded-xl border border-carbonus-green/30 bg-white px-3.5 py-2 text-left transition-colors duration-200 hover:border-carbonus-green hover:bg-carbonus-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1 lg:max-w-[250px]";
 
   return (
-    <div className="rounded-[14px] bg-white shadow-[0_18px_50px_rgba(16,24,40,0.14)]">
-      <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
-        {/* Location */}
-        <div className="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-2 py-1.5">
-          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green" />
-          <div className="min-w-0 flex-1">
-            <span id="pickup-location-label" className="block text-[10px] font-medium text-muted-foreground">
-              {c.pickupLocation}
-            </span>
-            <div className="mt-1 flex flex-wrap gap-1" role="group" aria-labelledby="pickup-location-label">
-              <button
-                type="button"
-                aria-pressed={locationMode === "office"}
-                onClick={() => setLocationMode("office")}
-                className={pillClass("office")}
-              >
-                {c.officeLabel}
-              </button>
-              <button
-                type="button"
-                aria-pressed={locationMode === "druskininkai"}
-                onClick={() => setLocationMode("druskininkai")}
-                className={pillClass("druskininkai")}
-              >
-                {c.druskininkaiLabel}
-              </button>
-              <button
-                type="button"
-                aria-pressed={locationMode === "custom"}
-                onClick={() => setLocationMode("custom")}
-                className={pillClass("custom")}
-              >
-                {c.otherCityLabel}
-              </button>
-            </div>
-          </div>
+    <div className="rounded-[16px] bg-white p-3 shadow-[0_18px_50px_rgba(16,24,40,0.14)] sm:p-4">
+      {/* Label row */}
+      <div className="flex items-center gap-2 px-1 pb-2.5">
+        <MapPin className="h-4 w-4 shrink-0 text-carbonus-green" />
+        <span id="pickup-location-label" className="text-[13px] font-semibold text-foreground">
+          {c.pickupLocation}
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:gap-3">
+        {/* Location pills */}
+        <div className="flex flex-wrap gap-2" role="group" aria-labelledby="pickup-location-label">
+          <button
+            type="button"
+            aria-pressed={locationMode === "office"}
+            onClick={() => setLocationMode("office")}
+            className={pillClass("office")}
+          >
+            {c.officeLabel}
+          </button>
+          <button
+            type="button"
+            aria-pressed={locationMode === "druskininkai"}
+            onClick={() => setLocationMode("druskininkai")}
+            className={pillClass("druskininkai")}
+          >
+            {c.druskininkaiLabel}
+          </button>
+          <button
+            type="button"
+            aria-pressed={locationMode === "custom"}
+            onClick={() => setLocationMode("custom")}
+            className={pillClass("custom")}
+          >
+            {c.otherCityLabel}
+          </button>
         </div>
 
-        {/* Pickup date */}
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-3 lg:flex-1">
+
         <Popover open={openP} onOpenChange={setOpenP}>
           <PopoverTrigger asChild>
             <button type="button" aria-label={`${c.pickupDate}: ${fmt(pickup)} ${pickupTime}`} className={fieldClass}>
@@ -264,20 +265,21 @@ export function V3SearchBar() {
             <TimeRow label={c.returnTime} date={ret} time={returnTime} onTimeChange={setReturnTime} />
           </PopoverContent>
         </Popover>
-
-        <button
-          type="button"
-          onClick={submit}
-          className="h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[48px] sm:w-auto"
-        >
-          {c.search}
-        </button>
+          <button
+            type="button"
+            onClick={submit}
+            className="h-[54px] w-full shrink-0 rounded-xl bg-carbonus-green-dark px-7 text-[15px] font-semibold text-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:w-auto"
+          >
+            {c.search}
+          </button>
+        </div>
       </div>
 
-      <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
-        <Info className="mt-[2px] h-3 w-3 shrink-0 text-carbonus-green" />
-        <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">{modeDescription}</p>
+      <div className="mt-3 flex items-start gap-2 rounded-xl border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-2">
+        <Info className="mt-[2px] h-3.5 w-3.5 shrink-0 text-carbonus-green" />
+        <p className="text-[12px] font-medium leading-[1.45] text-foreground/90">{modeDescription}</p>
       </div>
     </div>
+
   );
 }
