@@ -44,7 +44,7 @@ export function V3Hero() {
         <svg className="absolute size-0" aria-hidden="true">
           <defs>
             <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
-              <path d="M0,0 H1 V1 Q0.5,0.85 0,0.55 Z" />
+              <path d="M0,0 H1 V1 C0.85,0.95 0.45,0.82 0,0.68 Z" />
             </clipPath>
           </defs>
         </svg>
@@ -54,12 +54,12 @@ export function V3Hero() {
             alt={c.imageAlt}
             className="h-full w-full object-cover object-right-bottom"
           />
-          {/* subtle localized white fade only over the bottom-left grass area */}
+          {/* soft fade along the bottom-left grass edge, following the crop curve */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(25deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 18%, transparent 32%)",
+                "linear-gradient(25deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.55) 10%, transparent 24%)",
             }}
           />
         </div>
