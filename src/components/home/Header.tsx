@@ -46,11 +46,14 @@ const CLOSE_LABEL = { lt: "Uždaryti", en: "Close", ru: "Закрыть" } as co
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { isAdmin } = useAuth();
   const { language, setLanguage } = useLanguage();
   const NAV = NAV_COPY[language] ?? NAV_COPY.lt;
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const isHome = pathname === "/";
+  const transparentOverlay = isHome && !scrolled && !mobileOpen;
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -61,6 +64,7 @@ export function Header() {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 10);
       if (currentScrollY <= 0) {
         setHidden(false);
       } else if (currentScrollY > lastScrollY) {
@@ -79,8 +83,12 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-out",
-        onLightHero ? "bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(2,18,20,0.06)]" : "bg-black/25 backdrop-blur-[6px]",
+        "fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-out transition-colors",
+        transparentOverlay
+          ? "max-md:bg-transparent max-md:backdrop-blur-none max-md:shadow-none"
+          : onLightHero
+          ? "bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(2,18,20,0.06)]"
+          : "bg-black/25 backdrop-blur-[6px]",
         hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
