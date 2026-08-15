@@ -40,7 +40,7 @@ export function V3Hero() {
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
       {/* Background photo — cropped to a rounded shape around the booking form */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-x-0 top-0 bottom-[46px] overflow-hidden lg:bottom-[60px]">
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
