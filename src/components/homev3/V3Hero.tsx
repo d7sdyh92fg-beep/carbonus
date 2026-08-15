@@ -65,7 +65,9 @@ export function V3Hero() {
           </h1>
           <div className="mt-4 h-[4px] w-10 rounded-full bg-carbonus-green sm:mt-5" />
           <p className="mt-4 max-w-[300px] text-[13px] leading-[1.7] text-muted-foreground sm:mt-5 sm:max-w-[430px] md:max-w-[340px] sm:text-[clamp(13px,0.98vw,16px)] sm:leading-[1.8]">
-            {c.description}
+            {c.description.split(" ").slice(0, 4).join(" ")}
+            <br className="hidden md:block lg:hidden" />
+            {" "}{c.description.split(" ").slice(4).join(" ")}
           </p>
 
 
