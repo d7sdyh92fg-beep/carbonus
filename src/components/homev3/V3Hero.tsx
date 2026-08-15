@@ -53,7 +53,7 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
         />
-        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-white via-white/70 to-transparent" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to top right, white 0%, transparent 40%)" }} />
       </div>
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
