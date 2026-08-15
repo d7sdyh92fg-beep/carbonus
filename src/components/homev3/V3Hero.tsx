@@ -45,8 +45,11 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-center"
         />
-        {/* Left-side fade for text legibility */}
-        <div className="pointer-events-none absolute inset-0 animate-hero-overlay-sweep bg-gradient-to-r from-white via-white/90 via-[45%] to-transparent to-[65%]" />
+        {/* Left-side + bottom fade for text legibility */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="animate-hero-overlay-sweep-left absolute inset-0 bg-gradient-to-r from-white via-white/90 via-[45%] to-transparent to-[65%]" />
+          <div className="animate-hero-overlay-sweep-bottom absolute inset-0 bg-gradient-to-t from-white via-white/60 via-[35%] to-transparent to-[55%]" />
+        </div>
       </div>
 
 
