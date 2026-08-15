@@ -44,7 +44,7 @@ export function V3Hero() {
         <svg className="absolute size-0" aria-hidden="true">
           <defs>
             <clipPath id="hero-curve" clipPathUnits="objectBoundingBox">
-              <path d="M0,0 H1 V1 Q0.65,0.93 0.5,0.85 H0 Z" />
+              <path d="M0,0 H1 V1 C0.85,0.92 0.7,0.85 0.55,0.85 H0.25 C0.12,0.85 0.05,0.92 0,1 Z" />
             </clipPath>
           </defs>
         </svg>
@@ -59,7 +59,7 @@ export function V3Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(25deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 18%, transparent 32%)",
+              "linear-gradient(25deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.2) 14%, transparent 26%)",
           }}
         />
       </div>
