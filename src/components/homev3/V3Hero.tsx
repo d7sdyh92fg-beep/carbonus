@@ -39,12 +39,20 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
-      {/* Background photo — cropped to a rounded shape around the booking form */}
+      {/* Background photo — cropped with a curved edge below the booking form */}
       <div className="absolute inset-x-0 top-0 bottom-[46px] overflow-hidden lg:bottom-[60px]">
+        <svg className="absolute size-0" aria-hidden="true">
+          <defs>
+            <clipPath id="hero-curve" clipPathUnits="objectBoundingBox">
+              <path d="M0,0 H1 V1 Q0.5,0.75 0,0.65 Z" />
+            </clipPath>
+          </defs>
+        </svg>
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
+          style={{ clipPath: "url(#hero-curve)" }}
         />
         {/* subtle localized white fade only over the bottom-left grass area */}
         <div
