@@ -44,7 +44,7 @@ export function V3Hero() {
         <svg className="absolute size-0" aria-hidden="true">
           <defs>
             <clipPath id="hero-curve" clipPathUnits="objectBoundingBox">
-              <path d="M0,0 H1 V1 C0.85,0.9 0.72,0.75 0.6,0.75 H0.2 C0.1,0.75 0.05,0.9 0,1 Z" />
+              <path d="M0,0 H1 V1 C0.85,0.92 0.7,0.85 0.55,0.85 H0.25 C0.12,0.85 0.05,0.92 0,1 Z" />
             </clipPath>
           </defs>
         </svg>
