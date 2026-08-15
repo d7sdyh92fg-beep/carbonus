@@ -45,7 +45,37 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-center"
         />
+        {/* Ornament: subtle grain texture */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+          }}
+        />
+        {/* Ornament: topographic lines + glows on the green blob area */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-[45%] select-none overflow-hidden">
+          <svg
+            viewBox="0 0 400 800"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0 h-full w-full stroke-white/15 fill-none opacity-25"
+            preserveAspectRatio="none"
+          >
+            <path d="M-50,100 Q150,50 450,150" strokeWidth="1.5" />
+            <path d="M-50,200 Q180,120 450,250" strokeWidth="1.5" />
+            <path d="M-50,300 Q200,200 450,350" strokeWidth="1.5" />
+            <path d="M-50,400 Q220,300 450,450" strokeWidth="1.5" />
+            <path d="M-50,500 Q240,400 450,550" strokeWidth="1.5" />
+            <path d="M-50,600 Q260,500 450,650" strokeWidth="1.5" />
+            <path d="M-50,700 Q280,600 450,750" strokeWidth="1.5" />
+            <path d="M100,150 Q120,130 140,150 T180,170" strokeWidth="0.5" opacity="0.5" />
+            <path d="M200,350 Q220,330 240,350 T280,370" strokeWidth="0.5" opacity="0.5" />
+          </svg>
+          <div className="absolute -right-16 top-0 h-64 w-64 rounded-full bg-carbonus-green/25 blur-[80px]" />
+          <div className="absolute bottom-1/4 left-0 h-48 w-48 rounded-full bg-carbonus-green-deep/30 blur-[60px]" />
+        </div>
       </div>
+
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
         <div className="min-h-[360px] pt-[144px] sm:min-h-[440px] sm:pt-[160px] lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(160px,calc(5vw+120px),206px)]">
