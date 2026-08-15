@@ -45,11 +45,50 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-center"
         />
+        {/* Ornaments on the green blob */}
+        <svg
+          className="pointer-events-none absolute right-0 top-0 hidden h-[88%] w-[30%] md:block"
+          viewBox="0 0 300 500"
+          fill="none"
+          preserveAspectRatio="xMaxYMin slice"
+          aria-hidden="true"
+        >
+          <defs>
+            <path
+              id="hero-petal"
+              d="M0 6C0 2.7 2.7 0 6 0h30c14 0 24 10 24 23 0 12-8 21-19 24L7 58C3 59 0 56 0 52V6z"
+            />
+          </defs>
+          <g stroke="hsl(var(--carbonus-green-deep))" strokeOpacity="0.5" strokeWidth="3.5" fill="none">
+            {[
+              { x: 30, y: 40, s: 0.75, r: -18, d: 0.15 },
+              { x: 130, y: 20, s: 0.6, r: 24, d: 0.35 },
+              { x: 215, y: 60, s: 0.85, r: -8, d: 0.5 },
+              { x: 75, y: 130, s: 0.55, r: 40, d: 0.7 },
+              { x: 175, y: 155, s: 0.7, r: -30, d: 0.9 },
+              { x: 255, y: 200, s: 0.5, r: 12, d: 1.1 },
+              { x: 40, y: 235, s: 0.65, r: -50, d: 1.25 },
+              { x: 150, y: 285, s: 0.8, r: 18, d: 1.4 },
+              { x: 240, y: 345, s: 0.6, r: -22, d: 1.6 },
+              { x: 90, y: 380, s: 0.5, r: 60, d: 1.8 },
+            ].map((o, i) => (
+              <use
+                key={i}
+                href="#hero-petal"
+                className="hero-ornament"
+                transform={`translate(${o.x} ${o.y}) rotate(${o.r}) scale(${o.s})`}
+                style={{ animationDelay: `${o.d}s, ${o.d + 0.9}s` }}
+              />
+            ))}
+          </g>
+        </svg>
+
         {/* Left-side + bottom fade for text legibility */}
         <div className="pointer-events-none absolute inset-0">
           <div className="animate-hero-overlay-sweep-left absolute inset-0 bg-gradient-to-r from-white via-white/90 via-[45%] to-transparent to-[65%]" />
           <div className="animate-hero-overlay-sweep-bottom absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/60 via-[25%] to-transparent to-[50%]" />
         </div>
+
       </div>
 
 
