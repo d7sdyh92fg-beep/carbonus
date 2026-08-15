@@ -47,8 +47,8 @@ export function V3Hero() {
         />
         {/* Ornaments on the green blob */}
         <svg
-          className="pointer-events-none absolute right-0 top-0 hidden h-[70%] w-[22%] md:block"
-          viewBox="0 0 220 460"
+          className="pointer-events-none absolute right-0 top-0 hidden h-[45%] w-[21%] md:block"
+          viewBox="0 0 220 300"
           fill="none"
           preserveAspectRatio="xMidYMid meet"
           aria-hidden="true"
@@ -61,17 +61,16 @@ export function V3Hero() {
           </defs>
           <g stroke="white" strokeOpacity="0.7" strokeWidth="3.5" fill="none">
             {[
-              { x: 108, y: 24, s: 0.6, r: -18, d: 0.15 },
-              { x: 168, y: 48, s: 0.75, r: 26, d: 0.3 },
-              { x: 60, y: 92, s: 0.5, r: 40, d: 0.45 },
-              { x: 132, y: 118, s: 0.65, r: -34, d: 0.6 },
-              { x: 186, y: 156, s: 0.55, r: 10, d: 0.75 },
-              { x: 96, y: 196, s: 0.7, r: 52, d: 0.9 },
-              { x: 164, y: 246, s: 0.5, r: -24, d: 1.05 },
-              { x: 112, y: 306, s: 0.62, r: 16, d: 1.2 },
-              { x: 178, y: 352, s: 0.45, r: -46, d: 1.35 },
-              { x: 122, y: 402, s: 0.55, r: 30, d: 1.5 },
+              { x: 118, y: 18, s: 0.6, r: -18, d: 0.15 },
+              { x: 176, y: 34, s: 0.72, r: 26, d: 0.3 },
+              { x: 96, y: 76, s: 0.5, r: 42, d: 0.45 },
+              { x: 158, y: 96, s: 0.62, r: -32, d: 0.6 },
+              { x: 190, y: 148, s: 0.5, r: 12, d: 0.75 },
+              { x: 132, y: 156, s: 0.55, r: 56, d: 0.9 },
+              { x: 172, y: 208, s: 0.6, r: -22, d: 1.05 },
+              { x: 194, y: 258, s: 0.45, r: 34, d: 1.2 },
             ].map((o, i) => (
+
               <g key={i} transform={`translate(${o.x} ${o.y}) rotate(${o.r}) scale(${o.s})`}>
                 <use
                   href="#hero-petal"
