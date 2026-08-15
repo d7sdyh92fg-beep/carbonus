@@ -39,41 +39,21 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
-      {/* Full background photo with a curve-following white fade for the booking area */}
-      <div className="absolute inset-x-0 top-0 bottom-[46px] overflow-hidden lg:bottom-[60px]">
+      {/* Background photo — cropped to a rounded shape around the booking form */}
+      <svg width="0" height="0" className="absolute">
+        <defs>
+          <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
+            <path d="M0,0 H1 V1 Q0.5,0.85 0,0.55 Z" />
+          </clipPath>
+        </defs>
+      </svg>
+      <div className="absolute inset-0 overflow-hidden" style={{ clipPath: "url(#hero-clip)" }}>
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
         />
-        <svg
-          className="pointer-events-none absolute inset-0 h-full w-full"
-          viewBox="0 0 1400 600"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient
-              id="hero-curve-fade"
-              x1="0"
-              y1="1"
-              x2="0"
-              y2="0"
-              gradientUnits="objectBoundingBox"
-            >
-              <stop offset="0%" stopColor="white" stopOpacity="1" />
-              <stop offset="72%" stopColor="white" stopOpacity="1" />
-              <stop offset="100%" stopColor="white" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M0,520 C120,420 280,230 480,230 C700,230 1000,340 1400,520 L1400,600 L0,600 Z"
-            fill="url(#hero-curve-fade)"
-          />
-        </svg>
       </div>
-
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
         <div className="min-h-[360px] pt-6 sm:min-h-[440px] sm:pt-10 lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(40px,5vw,86px)]">
