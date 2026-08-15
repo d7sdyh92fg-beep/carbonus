@@ -131,7 +131,7 @@ img {
 }
 
 /* Hero overlay sweep: stronger left-side reveal */
-@keyframes hero-overlay-sweep {
+@keyframes hero-overlay-sweep-left {
   0% {
     opacity: 0;
     transform: scaleX(1.08) translateX(-6%);
@@ -141,6 +141,20 @@ img {
     transform: scaleX(1) translateX(0);
   }
 }
-.animate-hero-overlay-sweep {
-  animation: hero-overlay-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.animate-hero-overlay-sweep-left {
+  animation: hero-overlay-sweep-left 1.0s ease-out forwards;
+}
+
+@keyframes hero-overlay-sweep-bottom {
+  0% {
+    opacity: 0;
+    transform: scaleY(1.08) translateY(6%);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+.animate-hero-overlay-sweep-bottom {
+  animation: hero-overlay-sweep-bottom 1.0s ease-out forwards;
 }
