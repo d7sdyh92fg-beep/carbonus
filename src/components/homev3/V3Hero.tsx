@@ -72,15 +72,15 @@ export function V3Hero() {
               { x: 178, y: 352, s: 0.45, r: -46, d: 1.35 },
               { x: 122, y: 402, s: 0.55, r: 30, d: 1.5 },
             ].map((o, i) => (
-
-              <use
-                key={i}
-                href="#hero-petal"
-                className="hero-ornament"
-                transform={`translate(${o.x} ${o.y}) rotate(${o.r}) scale(${o.s})`}
-                style={{ animationDelay: `${o.d}s, ${o.d + 0.9}s` }}
-              />
+              <g key={i} transform={`translate(${o.x} ${o.y}) rotate(${o.r}) scale(${o.s})`}>
+                <use
+                  href="#hero-petal"
+                  className="hero-ornament"
+                  style={{ animationDelay: `${o.d}s, ${o.d + 0.9}s` }}
+                />
+              </g>
             ))}
+
           </g>
         </svg>
 
