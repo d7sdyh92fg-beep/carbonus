@@ -39,20 +39,39 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
-      {/* Full background photo with a localized white fade for left-side text readability */}
+      {/* Full background photo with a curve-following white fade for the booking area */}
       <div className="absolute inset-x-0 top-0 bottom-[46px] overflow-hidden lg:bottom-[60px]">
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
         />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(25deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 18%, transparent 32%)",
-          }}
-        />
+        <svg
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          viewBox="0 0 1400 600"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient
+              id="hero-curve-fade"
+              x1="0"
+              y1="1"
+              x2="0"
+              y2="0"
+              gradientUnits="objectBoundingBox"
+            >
+              <stop offset="0%" stopColor="white" stopOpacity="1" />
+              <stop offset="72%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0,520 C120,420 280,230 480,230 C700,230 1000,340 1400,520 L1400,600 L0,600 Z"
+            fill="url(#hero-curve-fade)"
+          />
+        </svg>
       </div>
 
 
