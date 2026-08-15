@@ -158,3 +158,23 @@ img {
 .animate-hero-overlay-sweep-bottom {
   animation: hero-overlay-sweep-bottom 1.0s ease-out forwards;
 }
+/* Hero blob ornaments: staged reveal + slow float */
+@keyframes hero-ornament-in {
+  0% { opacity: 0; transform: translateY(14px) scale(0.9) rotate(-8deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+@keyframes hero-ornament-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(3deg); }
+}
+.hero-ornament {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation:
+    hero-ornament-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    hero-ornament-float 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-ornament { animation: hero-ornament-in 0.01s linear forwards; }
+}
