@@ -44,7 +44,7 @@ export function V3Hero() {
         <svg className="absolute size-0" aria-hidden="true">
           <defs>
             <filter id="hero-mask-blur" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="28" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
             </filter>
             <mask id="hero-mask" maskUnits="objectBoundingBox">
               <rect width="1" height="1" fill="white" />
