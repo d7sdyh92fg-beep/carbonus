@@ -59,7 +59,7 @@ export function V3Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(25deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 18%, transparent 32%)",
+              "linear-gradient(25deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.2) 14%, transparent 26%)",
           }}
         />
       </div>
