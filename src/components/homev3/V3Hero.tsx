@@ -43,12 +43,12 @@ export function V3Hero() {
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
-          className="h-full w-full object-cover object-[70%_10%] sm:object-[62%_center] lg:object-center"
+          className="h-full w-full object-cover object-[70%_15%] sm:object-[62%_center] lg:object-center"
         />
         {/* Left-side + bottom fade for text legibility */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="animate-hero-overlay-sweep-left absolute inset-0 bg-gradient-to-r from-white via-white/80 via-[50%] to-transparent to-[60%] sm:via-white/92 sm:via-[50%] sm:to-white/10 sm:to-[80%] lg:via-white/90 lg:via-[45%] lg:to-transparent lg:to-[65%]" />
-          <div className="animate-hero-overlay-sweep-bottom absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-white/90 via-white/60 via-[25%] to-transparent to-[50%] sm:h-1/2 sm:via-white/60 sm:via-[25%] sm:to-[50%]" />
+          <div className="animate-hero-overlay-sweep-left absolute inset-0 bg-gradient-to-r from-white via-white/95 via-[55%] to-white/25 sm:via-white/92 sm:via-[50%] sm:to-white/10 sm:to-[80%] lg:via-white/90 lg:via-[45%] lg:to-transparent lg:to-[65%]" />
+          <div className="animate-hero-overlay-sweep-bottom absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-white via-white/75 via-[30%] to-transparent to-[65%] sm:h-1/2 sm:via-white/60 sm:via-[25%] sm:to-[50%]" />
         </div>
       </div>
 
