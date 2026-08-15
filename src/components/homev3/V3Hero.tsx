@@ -48,7 +48,7 @@ export function V3Hero() {
             </clipPath>
             <linearGradient id="hero-fade" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="white" stop-opacity="0" />
-              <stop offset="55%" stop-color="white" stop-opacity="0.9" />
+              <stop offset="42%" stop-color="white" stop-opacity="0.85" />
               <stop offset="100%" stop-color="white" stop-opacity="1" />
             </linearGradient>
           </defs>
