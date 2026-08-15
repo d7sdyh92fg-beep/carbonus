@@ -265,20 +265,21 @@ export function V3SearchBar() {
             <TimeRow label={c.returnTime} date={ret} time={returnTime} onTimeChange={setReturnTime} />
           </PopoverContent>
         </Popover>
-
-        <button
-          type="button"
-          onClick={submit}
-          className="h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[48px] sm:w-auto"
-        >
-          {c.search}
-        </button>
+          <button
+            type="button"
+            onClick={submit}
+            className="h-[54px] w-full shrink-0 rounded-xl bg-carbonus-green-dark px-7 text-[15px] font-semibold text-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:w-auto"
+          >
+            {c.search}
+          </button>
+        </div>
       </div>
 
-      <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-1.5">
-        <Info className="mt-[2px] h-3 w-3 shrink-0 text-carbonus-green" />
-        <p className="text-[10px] font-semibold leading-[1.45] text-foreground/90">{modeDescription}</p>
+      <div className="mt-3 flex items-start gap-2 rounded-xl border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-2">
+        <Info className="mt-[2px] h-3.5 w-3.5 shrink-0 text-carbonus-green" />
+        <p className="text-[12px] font-medium leading-[1.45] text-foreground/90">{modeDescription}</p>
       </div>
     </div>
+
   );
 }
