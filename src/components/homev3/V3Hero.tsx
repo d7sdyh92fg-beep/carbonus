@@ -50,7 +50,6 @@ export function V3Hero() {
           <div className="animate-hero-overlay-sweep-left absolute inset-0 bg-gradient-to-r from-white via-white/90 via-[45%] to-transparent to-[65%]" />
           <div className="animate-hero-overlay-sweep-bottom absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/60 via-[25%] to-transparent to-[50%]" />
         </div>
-
       </div>
 
 
