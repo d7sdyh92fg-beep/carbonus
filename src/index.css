@@ -114,3 +114,33 @@ img {
 .animate-hero-fade-in {
   animation: hero-fade-in 1.2s ease-out forwards;
 }
+
+/* Hero content entrance: text, separator and booking form fade together */
+@keyframes hero-content-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-content-enter {
+  animation: hero-content-enter 1.0s ease-out forwards;
+}
+
+/* Hero overlay sweep: stronger left-side reveal */
+@keyframes hero-overlay-sweep {
+  0% {
+    opacity: 0;
+    transform: scaleX(1.08) translateX(-6%);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) translateX(0);
+  }
+}
+.animate-hero-overlay-sweep {
+  animation: hero-overlay-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
