@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import heroAsset from "@/assets/hero-spacetourer-road.png.asset.json";
+import heroAsset from "@/assets/hero-spacetourer-lake.png.asset.json";
 import { V3SearchBar } from "./V3SearchBar";
 import { useLanguage } from "@/hooks/use-language";
 
@@ -39,22 +39,12 @@ export function V3Hero() {
 
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
-      {/* Background photo — cropped to a rounded shape around the booking form */}
-      <svg width="0" height="0" className="absolute">
-        <defs>
-          <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
-            <path d="M0,0 H1 V1 Q0.5,0.85 0,0.55 Z" />
-          </clipPath>
-        </defs>
-      </svg>
-      <div className="absolute inset-0 overflow-hidden" style={{ clipPath: "url(#hero-clip)" }}>
+      <div className="absolute inset-0 overflow-hidden">
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
-          className="h-full w-full object-cover object-right-bottom"
+          className="h-full w-full object-cover object-center"
         />
-        {/* Soft white fade over the bottom edge of the photo to hide the sharp grass corner */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white via-white/55 to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
@@ -94,3 +84,4 @@ export function V3Hero() {
     </section>
   );
 }
+
