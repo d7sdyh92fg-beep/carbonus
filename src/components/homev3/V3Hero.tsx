@@ -46,7 +46,7 @@ export function V3Hero() {
           className="h-full w-full object-cover object-center"
         />
         {/* Left-side fade for text legibility */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 via-[40%] to-transparent to-[55%]" />
+        <div className="pointer-events-none absolute inset-0 animate-hero-fade-in bg-gradient-to-r from-white/95 via-white/70 via-[40%] to-transparent to-[55%]" />
       </div>
 
 
