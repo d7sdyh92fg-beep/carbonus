@@ -46,14 +46,12 @@ export function V3Hero() {
           className="h-full w-full object-cover object-center"
         />
         {/* Left-side fade for text legibility */}
-        <div className="pointer-events-none absolute inset-0 animate-hero-fade-in bg-gradient-to-r from-white/95 via-white/70 via-[40%] to-transparent to-[55%]" />
+        <div className="pointer-events-none absolute inset-0 animate-hero-overlay-sweep bg-gradient-to-r from-white via-white/90 via-[45%] to-transparent to-[65%]" />
       </div>
 
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
-        <div className="min-h-[360px] pt-[144px] sm:min-h-[440px] sm:pt-[160px] lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(160px,calc(5vw+120px),206px)]">
-
-
+        <div className="hero-content-enter min-h-[360px] pt-[144px] sm:min-h-[440px] sm:pt-[160px] lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(160px,calc(5vw+120px),206px)]">
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
             {c.eyebrow}
           </p>
@@ -66,24 +64,24 @@ export function V3Hero() {
           <p className="mt-4 max-w-[430px] text-[14px] leading-[1.75] text-muted-foreground sm:mt-5 sm:text-[clamp(13px,0.98vw,16px)] sm:leading-[1.8]">
             {c.description}
           </p>
-        </div>
 
-        <div className="relative z-20 mt-6 w-full translate-y-5 lg:mt-10 lg:w-[clamp(680px,58vw,900px)]">
-          <V3SearchBar />
-          <a
-            href="https://www.google.com/maps/search/?api=1&query=Carbonus+Druskininkai"
-            target="_blank"
-            rel="noreferrer"
-            className="mt-2 inline-flex items-center gap-2 rounded-full px-1 py-1 text-[12px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2"
-          >
-            <span className="flex items-center gap-[2px]" aria-hidden="true">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-3.5 w-3.5 fill-carbonus-green text-carbonus-green" />
-              ))}
-            </span>
-            <span className="font-bold text-foreground">5.0</span>
-            <span>{c.googleRating}</span>
-          </a>
+          <div className="relative z-20 mt-6 w-full translate-y-5 lg:mt-10 lg:w-[clamp(680px,58vw,900px)]">
+            <V3SearchBar />
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Carbonus+Druskininkai"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-flex items-center gap-2 rounded-full px-1 py-1 text-[12px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2"
+            >
+              <span className="flex items-center gap-[2px]" aria-hidden="true">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-carbonus-green text-carbonus-green" />
+                ))}
+              </span>
+              <span className="font-bold text-foreground">5.0</span>
+              <span>{c.googleRating}</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
