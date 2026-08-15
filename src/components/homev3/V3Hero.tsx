@@ -50,7 +50,7 @@ export function V3Hero() {
           className="pointer-events-none absolute right-0 top-0 hidden h-[88%] w-[30%] md:block"
           viewBox="0 0 300 500"
           fill="none"
-          preserveAspectRatio="xMaxYMin slice"
+          preserveAspectRatio="xMidYMid meet"
           aria-hidden="true"
         >
           <defs>
@@ -59,7 +59,7 @@ export function V3Hero() {
               d="M0 6C0 2.7 2.7 0 6 0h30c14 0 24 10 24 23 0 12-8 21-19 24L7 58C3 59 0 56 0 52V6z"
             />
           </defs>
-          <g stroke="white" strokeOpacity="0.45" strokeWidth="3.5" fill="none">
+          <g stroke="white" strokeOpacity="0.6" strokeWidth="3.5" fill="none">
             {[
               { x: 30, y: 40, s: 0.75, r: -18, d: 0.15 },
               { x: 130, y: 20, s: 0.6, r: 24, d: 0.35 },
