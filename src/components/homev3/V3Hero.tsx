@@ -40,29 +40,20 @@ export function V3Hero() {
   return (
     <section className="relative bg-white pt-[92px] sm:pt-[100px] lg:pt-[72px]">
       {/* Background photo — cropped to a rounded shape around the booking form */}
-      <div className="absolute inset-0 overflow-hidden bg-white">
-        <svg className="absolute size-0" aria-hidden="true">
-          <defs>
-            <clipPath id="hero-clip" clipPathUnits="objectBoundingBox">
-              <path d="M0,0 H1 V1 C0.85,0.95 0.45,0.82 0,0.68 Z" />
-            </clipPath>
-          </defs>
-        </svg>
-        <div className="absolute inset-0" style={{ clipPath: "url(#hero-clip)" }}>
-          <img
-            src={heroAsset.url}
-            alt={c.imageAlt}
-            className="h-full w-full object-cover object-right-bottom"
-          />
-          {/* soft fade along the bottom-left grass edge, following the crop curve */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(25deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.55) 10%, transparent 24%)",
-            }}
-          />
-        </div>
+      <div className="absolute inset-0 overflow-hidden">
+        <img
+          src={heroAsset.url}
+          alt={c.imageAlt}
+          className="h-full w-full object-cover object-right-bottom"
+        />
+        {/* subtle localized white fade only over the bottom-left grass area */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(25deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 18%, transparent 32%)",
+          }}
+        />
       </div>
 
 
