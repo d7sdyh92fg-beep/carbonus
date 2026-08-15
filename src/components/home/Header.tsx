@@ -52,6 +52,8 @@ export function Header() {
   const NAV = NAV_COPY[language] ?? NAV_COPY.lt;
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const isHome = pathname === "/";
+  const transparentOverlay = isHome && !scrolled && !mobileOpen;
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
