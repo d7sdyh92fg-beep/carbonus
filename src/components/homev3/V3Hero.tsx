@@ -53,6 +53,8 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
         />
+        {/* Soft white fade over the bottom edge of the photo to hide the sharp grass corner */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white via-white/55 to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
