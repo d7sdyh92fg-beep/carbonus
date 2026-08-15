@@ -62,6 +62,7 @@ export function Header() {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 10);
       if (currentScrollY <= 0) {
         setHidden(false);
       } else if (currentScrollY > lastScrollY) {
