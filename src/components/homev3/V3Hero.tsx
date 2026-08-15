@@ -46,14 +46,12 @@ export function V3Hero() {
           alt={c.imageAlt}
           className="h-full w-full object-cover object-right-bottom"
         />
-        {/* left side fades to white */}
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top right, white 0%, transparent 40%)" }} />
-        {/* soft white fade over the lower-left grass instead of a hard cut */}
+        {/* subtle localized white fade only over the bottom-left grass area */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(200deg, transparent 45%, rgba(255,255,255,0.75) 62%, white 78%)",
+              "linear-gradient(25deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 18%, transparent 32%)",
           }}
         />
       </div>
