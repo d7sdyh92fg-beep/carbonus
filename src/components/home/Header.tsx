@@ -46,6 +46,7 @@ const CLOSE_LABEL = { lt: "Uždaryti", en: "Close", ru: "Закрыть" } as co
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { isAdmin } = useAuth();
   const { language, setLanguage } = useLanguage();
   const NAV = NAV_COPY[language] ?? NAV_COPY.lt;
