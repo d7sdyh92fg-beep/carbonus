@@ -43,30 +43,31 @@ export function V3Hero() {
         <img
           src={heroAsset.url}
           alt={c.imageAlt}
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full object-cover object-[72%_center] sm:object-[62%_center] lg:object-center"
         />
         {/* Left-side + bottom fade for text legibility */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="animate-hero-overlay-sweep-left absolute inset-0 bg-gradient-to-r from-white via-white/90 via-[45%] to-transparent to-[65%]" />
-          <div className="animate-hero-overlay-sweep-bottom absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/60 via-[25%] to-transparent to-[50%]" />
+          <div className="animate-hero-overlay-sweep-left absolute inset-0 bg-gradient-to-r from-white via-white/95 via-[55%] to-white/25 sm:via-white/92 sm:via-[50%] sm:to-white/10 sm:to-[80%] lg:via-white/90 lg:via-[45%] lg:to-transparent lg:to-[65%]" />
+          <div className="animate-hero-overlay-sweep-bottom absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-white via-white/75 via-[30%] to-transparent to-[65%] sm:h-1/2 sm:via-white/60 sm:via-[25%] sm:to-[50%]" />
         </div>
       </div>
 
 
-      <div className="relative mx-auto max-w-[1320px] px-6 pb-8 lg:pb-14">
-        <div className="hero-content-enter min-h-[360px] pt-[144px] sm:min-h-[440px] sm:pt-[160px] lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(160px,calc(5vw+120px),206px)]">
-          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
+      <div className="relative mx-auto max-w-[1320px] px-5 pb-8 sm:px-6 lg:pb-14">
+        <div className="hero-content-enter min-h-[300px] pt-[72px] sm:min-h-[400px] sm:pt-[110px] lg:min-h-[clamp(420px,34vw,540px)] lg:pt-[clamp(160px,calc(5vw+120px),206px)]">
+          <p className="text-[10px] font-bold uppercase leading-[1.5] tracking-[0.12em] text-[hsl(var(--carbonus-green-dark))] sm:text-[clamp(10px,0.84vw,13px)] sm:tracking-[0.18em]">
             {c.eyebrow}
           </p>
-          <h1 className="mt-4 max-w-[420px] text-[32px] font-extrabold leading-[1.1] tracking-[-0.03em] text-foreground sm:mt-6 sm:text-[clamp(36px,3.6vw,56px)]">
+          <h1 className="mt-3 max-w-[320px] text-[30px] font-extrabold leading-[1.12] tracking-[-0.03em] text-foreground sm:mt-6 sm:max-w-none sm:text-[clamp(36px,3.6vw,56px)]">
             {c.title1}
             <br className="hidden sm:block" /> {c.title2}
             <span className="text-carbonus-green">.</span>
           </h1>
           <div className="mt-4 h-[4px] w-10 rounded-full bg-carbonus-green sm:mt-5" />
-          <p className="mt-4 max-w-[430px] text-[14px] leading-[1.75] text-muted-foreground sm:mt-5 sm:text-[clamp(13px,0.98vw,16px)] sm:leading-[1.8]">
+          <p className="mt-4 max-w-[300px] text-[13px] leading-[1.7] text-muted-foreground sm:mt-5 sm:max-w-[430px] sm:text-[clamp(13px,0.98vw,16px)] sm:leading-[1.8]">
             {c.description}
           </p>
+
 
           <div className="relative z-20 mt-6 w-full translate-y-5 lg:mt-10 lg:w-[clamp(680px,58vw,900px)]">
             <V3SearchBar />
