@@ -351,8 +351,19 @@
   margin-top: 16px;
 }
 
+.admin-workspace-tabs > .admin-sidebar-changelog {
+  grid-column: 1;
+  grid-row: 3;
+  margin-top: 16px;
+}
+
 @media (max-width: 1023px) {
   .admin-workspace-tabs > .admin-sidebar-status {
     margin: 0 0 20px;
   }
+
+  .admin-workspace-tabs > .admin-sidebar-changelog {
+    margin: 0 0 20px;
+  }
 }
+

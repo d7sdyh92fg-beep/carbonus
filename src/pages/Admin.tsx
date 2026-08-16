@@ -16,7 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -1109,13 +1109,25 @@ const Admin = () => {
               <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
               <p className="mt-1 text-[11px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
             </div>
-
-
-
-
+            {isOwner && (
+              <div className="admin-sidebar-changelog hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
+                <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                  <ScrollText className="h-4 w-4" />
+                  Pakeitimų žurnalas
+                </div>
+                <ul className="mt-3 space-y-2.5">
+                  <li className="text-[12px] leading-relaxed text-[#65776f]">
+                    <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
+                    Admino meniu juosta planšetėje – dvi eilutės be slankiklio.
+                  </li>
+                  <li className="text-[12px] leading-relaxed text-[#65776f]">
+                    <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
+                    Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.
+                  </li>
+                </ul>
+              </div>
+            )}
             <div className="min-w-0 flex-1 space-y-5">
-
-
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 sm:gap-4">
