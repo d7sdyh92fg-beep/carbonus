@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { lt, enUS } from 'date-fns/locale';
 import { useTranslations } from '@/hooks/use-translations';
+import { ReservationFlowShell } from '@/components/booking/ReservationFlowShell';
 import { getRoute } from '@/utils/routes';
 
 export default function ReservationReview() {
