@@ -139,6 +139,7 @@ const Admin = () => {
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [manualBlockedDates, setManualBlockedDates] = useState<any[]>([]);
 
 
   // IDs of sold cars to hide from admin panel
