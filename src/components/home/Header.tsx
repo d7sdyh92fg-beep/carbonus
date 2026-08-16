@@ -127,14 +127,15 @@ export function Header() {
         {/* Right */}
         <div className="relative hidden lg:flex items-center gap-3">
           <DropdownMenu modal={false}>
-            <DropdownMenuTrigger className="inline-flex items-center justify-center gap-1.5 h-[40px] w-[70px] px-4 rounded-full text-sm font-medium transition-colors bg-white/[0.06] border border-white/10 text-white hover:bg-white/[0.10]">
-              {language.toUpperCase()} <ChevronDown className="h-4 w-4" />
+            <DropdownMenuTrigger className="inline-flex items-center justify-center gap-1.5 h-[40px] w-[80px] px-3 rounded-full text-sm font-medium transition-colors bg-white/[0.06] border border-white/10 text-white hover:bg-white/[0.10]">
+              {language === "lt" ? "🇱🇹" : "🇬🇧"} {language.toUpperCase()} <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] p-0 shadow-none rounded-t-none rounded-b-lg bg-white/[0.08] backdrop-blur-xl border border-white/10 border-t-0 text-white">
-              <DropdownMenuItem onClick={() => setLanguage("lt")} className="justify-center rounded-none focus:text-white focus:bg-white/10">LT</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage("en")} className="justify-center rounded-none focus:text-white focus:bg-white/10">EN</DropdownMenuItem>
+            <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] p-0 shadow-none rounded-t-none rounded-b-lg bg-white border border-black/10 border-t-0 text-black">
+              <DropdownMenuItem onClick={() => setLanguage("lt")} className="justify-center gap-2 rounded-none focus:text-black focus:bg-black/5">🇱🇹 LT</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("en")} className="justify-center gap-2 rounded-none focus:text-black focus:bg-black/5">🇬🇧 EN</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
 
 
           <button
@@ -219,7 +220,7 @@ export function Header() {
                         : "bg-[hsl(var(--carbonus-dark))]/[0.04] text-[hsl(var(--carbonus-dark))]/70 border-[hsl(var(--carbonus-dark))]/10"
                     )}
                   >
-                    {lng.toUpperCase()}
+                    {lng === "lt" ? "🇱🇹" : "🇬🇧"} {lng.toUpperCase()}
                   </button>
                 ))}
               </div>
