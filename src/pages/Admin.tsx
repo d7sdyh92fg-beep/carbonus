@@ -140,6 +140,8 @@ const Admin = () => {
   const [cars, setCars] = useState<any[]>([]);
   const [isLoadingCars, setIsLoadingCars] = useState(true);
   const [carSearchQuery, setCarSearchQuery] = useState('');
+  const [activeSearchQuery, setActiveSearchQuery] = useState('');
+  const [historySearchQuery, setHistorySearchQuery] = useState('');
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -758,13 +760,31 @@ const Admin = () => {
   };
 
   // Filter reservations
+  const matchesReservationSearch = (r: Reservation, q: string) => {
+    const query = q.trim().toLowerCase();
+    if (!query) return true;
+    const haystack = [
+      r.customers?.first_name,
+      r.customers?.last_name,
+      r.customers?.email,
+      r.customers?.phone,
+      r.car_name,
+      r.start_date,
+      r.end_date,
+      r.status,
+    ].filter(Boolean).join(' ').toLowerCase();
+    return haystack.includes(query);
+  };
+
   const activeReservations = reservations.filter(r => 
     ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up', 'phone_reservation'].includes(r.status)
+    && matchesReservationSearch(r, activeSearchQuery)
   );
   
   const completedReservations = reservations.filter(r => 
-    r.status === 'completed'
+    r.status === 'completed' && matchesReservationSearch(r, historySearchQuery)
   );
+
 
   const getStatusBadge = (status: string, reservationId?: string, clickable: boolean = false) => {
     const variants = {
@@ -1229,9 +1249,19 @@ const Admin = () => {
                       <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
                     </div>
                   </div>
+                  <div className="relative w-full max-w-[240px]">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Ieškoti rezervacijų..."
+                      value={activeSearchQuery}
+                      onChange={(e) => setActiveSearchQuery(e.target.value)}
+                      className="pl-8"
+                    />
+                  </div>
                 </CardHeader>
                  
                  <CardContent>
+
                    {/* Desktop Table View */}
                    <div className="hidden lg:block">
                      <Table>
@@ -1571,7 +1601,7 @@ const Admin = () => {
 
                 {/* Completed Reservations */}
                 <Card>
-                  <CardHeader className="flex flex-row items-center justify-between">
+                  <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <CardTitle className="flex items-center gap-2">
                         <History className="h-5 w-5" />
@@ -1579,7 +1609,17 @@ const Admin = () => {
                       </CardTitle>
                       <CardDescription>Visos baigtos rezervacijos</CardDescription>
                     </div>
+                    <div className="relative w-full sm:max-w-[240px]">
+                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Ieškoti istorijoje..."
+                        value={historySearchQuery}
+                        onChange={(e) => setHistorySearchQuery(e.target.value)}
+                        className="pl-8"
+                      />
+                    </div>
                     {completedReservations.length > 0 && (
+
                       <div className="flex gap-2">
                         {isDeleteMode ? (
                           <>
