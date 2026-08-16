@@ -254,6 +254,7 @@ export function InPersonBooking() {
   const [pricingNotes, setPricingNotes] = useState('');
   const [isRetroactive, setIsRetroactive] = useState(false);
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [endMonth, setEndMonth] = useState<Date | undefined>(undefined);
   const [isReturningCustomer, setIsReturningCustomer] = useState(false);
   const [skipDocuments, setSkipDocuments] = useState(false);
   const [previousDocs, setPreviousDocs] = useState<{
@@ -1266,6 +1267,7 @@ export function InPersonBooking() {
                         mode="single"
                         selected={booking.startDate || undefined}
                         onSelect={(date) => {
+                          if (date) setEndMonth(date);
                           setBooking((prev) => {
                             if (!date) {
                               return { ...prev, startDate: null, endDate: null };
@@ -1313,6 +1315,8 @@ export function InPersonBooking() {
                       <Calendar
                         mode="single"
                         selected={booking.endDate || undefined}
+                        month={endMonth || booking.endDate || booking.startDate || undefined}
+                        onMonthChange={setEndMonth}
                         onSelect={(date) => {
                           if (!date) {
                             setBooking((prev) => ({ ...prev, endDate: null }));
