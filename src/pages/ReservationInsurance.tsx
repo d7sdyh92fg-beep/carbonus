@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Check, Shield } from 'lucide-react';
+import { Check, Shield } from 'lucide-react';
 import { useBooking, InsuranceOption } from '@/contexts/BookingContext';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/use-translations';
 import { getRoute, getReservationRoute } from '@/utils/routes';
+import { ReservationFlowShell } from '@/components/booking/ReservationFlowShell';
 
 const getInsuranceOptions = (t: (key: string) => string): InsuranceOption[] => [
   {
@@ -54,43 +54,9 @@ export default function ReservationInsurance() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-card border-b border-border">
-        <div className="container max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate(-1)}
-              className="gap-2"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              {t('insurance.back')}
-            </Button>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">{t('insurance.from')}</p>
-              <p className="text-2xl font-bold text-primary">
-                {bookingData.basePrice.toFixed(2)} €
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="container max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Shield className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">{t('insurance.title')}</h1>
-          </div>
-          <p className="text-muted-foreground">
-            {t('insurance.subtitle')}
-          </p>
-        </div>
-
-        <div className="space-y-4">
+    <ReservationFlowShell step={2} title={t('insurance.title')} subtitle={t('insurance.subtitle')} totalLabel={t('insurance.from')} total={bookingData.basePrice} backLabel={t('insurance.back')} onBack={() => navigate(-1)} language={language}>
+      <div className="mx-auto max-w-5xl">
+        <div className="grid gap-5 lg:grid-cols-3">
           {insuranceOptions.map((option) => {
             const isSelected = bookingData.insurance?.id === option.id;
             const dailyPrice = option.pricePerDay;
@@ -99,22 +65,26 @@ export default function ReservationInsurance() {
             return (
               <Card
                 key={option.id}
-                className={`p-6 cursor-pointer transition-all hover:border-primary ${
-                  isSelected ? 'border-primary border-2 bg-primary/5' : ''
+                role="button"
+                tabIndex={0}
+                className={`reservation-option-card p-6 ${
+                  isSelected ? 'is-selected' : ''
                 }`}
                 onClick={() => handleSelectInsurance(option)}
+                onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && handleSelectInsurance(option)}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
+                <div className="flex h-full flex-col justify-between gap-5">
+                  <div>
+                    <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#eaf7f0] text-[#0b7650]"><Shield className="h-5 w-5" /></span>
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">{option.title}</h3>
+                      <h3 className="text-[18px] font-extrabold tracking-[-0.02em]">{option.title}</h3>
                       {option.id === 'ldw-with-liability' && (
                         <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full">
                           {t('insurance.recommended')}
                         </span>
                       )}
                     </div>
-                    <p className="text-muted-foreground mb-4">
+                    <p className="min-h-[64px] text-sm leading-6 text-muted-foreground mb-4">
                       {option.description}
                     </p>
                     <div className="flex items-center gap-2 text-sm">
@@ -125,26 +95,26 @@ export default function ReservationInsurance() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-end gap-2">
+                  <div className="flex items-end justify-between gap-2 border-t border-[#e5ece8] pt-4">
                     {dailyPrice === 0 ? (
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-primary">{t('insurance.included')}</p>
+                        <p className="text-xl font-extrabold text-primary">{t('insurance.included')}</p>
                       </div>
                     ) : (
                       <div className="text-right">
                         <p className="text-sm text-muted-foreground">
                           +{dailyPrice.toFixed(2)} € / {t('insurance.perDay')}
                         </p>
-                        <p className="text-2xl font-bold text-primary">
+                        <p className="text-xl font-extrabold text-primary">
                           +{totalPrice.toFixed(2)} €
                         </p>
                       </div>
                     )}
-                    {isSelected && (
+                    {isSelected ? (
                       <div className="bg-primary text-primary-foreground rounded-full p-1">
                         <Check className="h-5 w-5" />
                       </div>
-                    )}
+                    ) : <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#cfddd6] text-[10px] font-bold text-muted-foreground">+</span>}
                   </div>
                 </div>
               </Card>
@@ -153,7 +123,7 @@ export default function ReservationInsurance() {
         </div>
 
         {/* Important Info */}
-        <Card className="mt-8 p-6 bg-muted/50">
+        <Card className="mt-6 p-6 bg-white/80">
           <h3 className="font-semibold mb-3">{t('insurance.importantInfo.title')}</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>• {t('insurance.importantInfo.liability')}</li>
@@ -163,6 +133,6 @@ export default function ReservationInsurance() {
           </ul>
         </Card>
       </div>
-    </div>
+    </ReservationFlowShell>
   );
 }

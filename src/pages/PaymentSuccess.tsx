@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslations } from '@/hooks/use-translations';
+import { getRoute } from '@/utils/routes';
+import { ReservationResultLayout } from '@/components/booking/ReservationResultLayout';
 
 const PaymentSuccess: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
   const [status, setStatus] = useState<'loading' | 'success' | 'processing' | 'error'>('loading');
   const [reservationId, setReservationId] = useState<string>('');
 
@@ -58,44 +59,44 @@ const PaymentSuccess: React.FC = () => {
     switch (status) {
       case 'loading':
         return (
-          <div className="text-center">
-            <Clock className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-spin" />
-            <h2 className="text-2xl font-semibold mb-2">{t('payment.loadingTitle')}</h2>
+          <div className="reservation-result-content text-center">
+            <span className="reservation-result-icon"><Clock className="h-9 w-9 animate-pulse" /></span>
+            <h1>{t('payment.loadingTitle')}</h1>
             <p className="text-muted-foreground">{t('payment.loadingDesc')}</p>
           </div>
         );
       
       case 'processing':
         return (
-          <div className="text-center">
-            <Clock className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
-            <h2 className="text-2xl font-semibold mb-2">{t('payment.processingTitle')}</h2>
+          <div className="reservation-result-content text-center">
+            <span className="reservation-result-icon is-warning"><Clock className="h-9 w-9" /></span>
+            <h1>{t('payment.processingTitle')}</h1>
             <p className="text-muted-foreground mb-4">
               {t('payment.processingDesc')}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <div className="reservation-result-reference">
               {t('payment.processingNote')}
-            </p>
+            </div>
           </div>
         );
       
       case 'success':
         return (
-          <div className="text-center">
-            <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-green-700">{t('payment.successTitle')}</h2>
+          <div className="reservation-result-content text-center">
+            <span className="reservation-result-icon"><CheckCircle className="h-10 w-10" /></span>
+            <h1>{t('payment.successTitle')}</h1>
             <p className="text-muted-foreground mb-4">
               {t('payment.successDesc')}
             </p>
             {reservationId && (
-              <p className="text-sm text-muted-foreground mb-4">
+              <div className="reservation-result-reference">
                 {t('payment.reservationId')} <strong>{reservationId}</strong>
-              </p>
+              </div>
             )}
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <p>📧 {t('payment.confirmEmail')}</p>
-              <p>📞 {t('payment.willContact')}</p>
-              <p>🚗 {t('payment.carReady')}</p>
+            <div className="reservation-result-next">
+              <div>{t('payment.confirmEmail')}</div>
+              <div>{t('payment.willContact')}</div>
+              <div>{t('payment.carReady')}</div>
             </div>
           </div>
         );
@@ -103,15 +104,15 @@ const PaymentSuccess: React.FC = () => {
       case 'error':
       default:
         return (
-          <div className="text-center">
-            <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-red-700">{t('payment.errorTitle')}</h2>
+          <div className="reservation-result-content text-center">
+            <span className="reservation-result-icon is-error"><AlertCircle className="h-9 w-9" /></span>
+            <h1>{t('payment.errorTitle')}</h1>
             <p className="text-muted-foreground mb-4">
               {t('payment.errorDesc')}
             </p>
-            <div className="text-sm text-muted-foreground">
-              <p>📞 {t('payment.phone')}</p>
-              <p>📧 {t('payment.email')}</p>
+            <div className="reservation-result-next !grid-cols-2">
+              <div>{t('payment.phone')}</div>
+              <div>{t('payment.email')}</div>
             </div>
           </div>
         );
@@ -119,19 +120,15 @@ const PaymentSuccess: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
-      <Card className="max-w-md w-full">
-        <CardHeader>
-          <CardTitle className="text-center">
-            {t('payment.title')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
+    <ReservationResultLayout
+      language={language}
+      eyebrow={language === 'en' ? 'Reservation status' : 'Rezervacijos būsena'}
+    >
           {renderContent()}
           
-          <div className="flex gap-3 pt-4">
+          <div className="reservation-result-actions px-8 pb-8">
             <Button
-              onClick={() => navigate('/')}
+              onClick={() => navigate(getRoute('home', language))}
               variant="outline"
               className="flex-1"
             >
@@ -139,16 +136,14 @@ const PaymentSuccess: React.FC = () => {
             </Button>
             {status === 'success' && (
               <Button
-                onClick={() => navigate('/cars')}
+                onClick={() => navigate(getRoute('cars', language))}
                 className="flex-1"
               >
                 {t('payment.viewCars')}
               </Button>
             )}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+    </ReservationResultLayout>
   );
 };
 

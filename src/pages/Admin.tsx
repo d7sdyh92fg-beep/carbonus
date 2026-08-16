@@ -22,6 +22,7 @@ import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
 import { useToast } from '@/hooks/use-toast';
 import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
+import '@/components/admin/admin-crm.css';
 
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
 import { AdminCarCard } from '@/components/admin/AdminCarCard';
@@ -817,55 +818,55 @@ const Admin = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#f6f7f6]">
+    <div className="admin-shell admin-crm min-h-screen bg-[#f3f7f5] text-[#11231c]">
       {/* Admin Header */}
-      <header className="sticky top-0 z-50 bg-carbonus-green-deep">
-        <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div className="flex min-w-0 items-center gap-3">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#082c22] text-white shadow-[0_8px_30px_rgba(3,42,31,0.14)]">
+        <div className="mx-auto flex h-[76px] w-full max-w-[1680px] items-center gap-3 px-4 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-5">
             <img
               src="/__l5e/assets-v1/eb52b609-dc60-4b38-b63c-1e1348dc083a/logo-white.png"
               alt="Carbonus"
-              className="h-8 w-auto flex-shrink-0 sm:h-9"
+              className="h-11 w-auto shrink-0 object-contain sm:h-12"
             />
-            <span className="hidden h-8 w-px bg-white/15 sm:block" />
+            <span className="hidden h-7 w-px bg-white/15 sm:block" />
             <div className="hidden min-w-0 sm:block">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-300/80">
                 Administravimas
               </p>
-              <p className="text-sm font-medium text-white/90">Valdymo centras</p>
+              <p className="mt-0.5 text-[13px] font-semibold text-white/75">Valdymo centras</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 md:flex">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-carbonus-green text-xs font-bold text-carbonus-green-deep">
+          <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="hidden items-center gap-3 rounded-full border border-white/10 bg-white/[0.06] py-1.5 pl-2 pr-4 lg:flex">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-300 text-[12px] font-extrabold text-[#073126]">
                 {(user?.email?.[0] || 'A').toUpperCase()}
               </span>
-              <span className="max-w-[180px] truncate text-xs text-white/80">{user?.email}</span>
+              <span className="max-w-[190px] truncate text-[12px] font-medium text-white/80">{user?.email}</span>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
+            <button
+              type="button"
               onClick={() => (window.location.href = '/')}
-              className="border-white/20 bg-transparent text-xs text-white hover:bg-white/10 hover:text-white"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3 text-[12px] font-semibold text-white transition hover:bg-white/20 sm:px-4"
             >
-              <ExternalLink className="h-3.5 w-3.5 sm:mr-1.5" />
+              <ExternalLink className="h-4 w-4" />
               <span className="hidden sm:inline">Atidaryti svetainę</span>
-            </Button>
+            </button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-[1500px] px-3 py-5 sm:px-6 sm:py-7">
+      <main className="mx-auto w-full max-w-[1680px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Hero banner */}
-        <section className="relative mb-5 overflow-hidden rounded-[22px] bg-gradient-to-br from-carbonus-green-deep via-carbonus-green-dark to-carbonus-green/80 px-5 py-7 shadow-[0_18px_40px_rgba(6,45,32,0.25)] sm:px-8 sm:py-9">
-          <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
-          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <section className="relative mb-6 overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0a3f30_0%,#076c45_62%,#16a566_100%)] px-6 py-7 text-white shadow-[0_22px_60px_rgba(5,91,58,0.16)] sm:px-8 sm:py-9 lg:px-10">
+          <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full border-[38px] border-white/[0.045]" />
+          <div className="pointer-events-none absolute bottom-0 right-[24%] h-28 w-40 rounded-t-full bg-white/[0.035]" />
+          <div className="relative flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
             <div className="min-w-0">
-              <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
-                <Sparkles className="h-3.5 w-3.5" />
+              <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-200/85">
+                <Sparkles className="h-4 w-4" />
                 Carbonus administravimas
               </p>
-              <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-4xl">
+              <h1 className="mt-4 text-[32px] font-bold leading-tight tracking-tight text-white sm:text-[38px]">
                 Administratoriaus skydelis
               </h1>
               <p className="mt-2 max-w-xl text-sm text-white/75">
@@ -873,13 +874,13 @@ const Admin = () => {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Šiandien</p>
                 <p className="mt-1 text-sm font-semibold text-white">
                   {new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' })}
                 </p>
               </div>
-              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Reikia dėmesio</p>
                 <p className="mt-1 text-sm font-semibold text-white">
                   {reservations.filter((r) => r.status === 'requested').length} laukia patvirtinimo
@@ -890,8 +891,8 @@ const Admin = () => {
         </section>
 
         <div>
-          <Tabs defaultValue="dashboard" className="space-y-5">
-            <TabsList className="flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-2xl border border-black/[0.04] bg-white p-1.5 shadow-[0_4px_14px_rgba(16,24,40,0.05)]">
+          <Tabs defaultValue="dashboard" className="admin-workspace-tabs space-y-5">
+            <TabsList className="admin-sidebar-nav flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:sticky lg:top-[96px] lg:flex-col lg:overflow-visible">
               {[
                 { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
                 { value: 'in-person', icon: Users, label: 'Nauja rezervacija' },
@@ -904,13 +905,14 @@ const Admin = () => {
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-muted-foreground transition-colors data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm sm:text-[13px]"
+                  className="admin-sidebar-trigger h-11 shrink-0 justify-start gap-3 rounded-[13px] px-3 text-[12px] font-bold text-[#65776f] data-[state=active]:bg-[#0b5d43] data-[state=active]:text-white data-[state=active]:shadow-[0_8px_24px_rgba(8,93,66,0.18)] lg:w-full"
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   <span className="whitespace-nowrap">{label}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
+
 
             <div className="min-w-0 flex-1 space-y-5">
 

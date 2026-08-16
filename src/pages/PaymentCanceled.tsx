@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { XCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslations } from '@/hooks/use-translations';
+import { getRoute } from '@/utils/routes';
+import { ReservationResultLayout } from '@/components/booking/ReservationResultLayout';
 
 const PaymentCanceled: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { t } = useTranslations();
+  const { t, language } = useTranslations();
 
   const provider = searchParams.get('provider');
   const reservationId = searchParams.get('reservation_id');
@@ -36,40 +37,33 @@ const PaymentCanceled: React.FC = () => {
   }, [reservationId, provider]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
-      <Card className="max-w-md w-full">
-        <CardHeader>
-          <CardTitle className="text-center">
-            {t('payment.canceledTitle')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="text-center">
-            <XCircle className="h-12 w-12 mx-auto mb-4 text-orange-500" />
-            <h2 className="text-2xl font-semibold mb-2 text-orange-700">{t('payment.canceledTitle')}</h2>
+    <ReservationResultLayout
+      language={language}
+      eyebrow={language === 'en' ? 'Payment interrupted' : 'Mokėjimas nebaigtas'}
+    >
+          <div className="reservation-result-content text-center">
+            <span className="reservation-result-icon is-warning"><XCircle className="h-10 w-10" /></span>
+            <h1>{t('payment.canceledTitle')}</h1>
             <p className="text-muted-foreground mb-4">
               {t('payment.canceledDesc')}
             </p>
             
-            <div className="bg-muted/50 p-4 rounded-lg mb-4">
-              <h3 className="font-semibold mb-2">{t('payment.whatNext')}</h3>
-              <div className="space-y-2 text-sm text-muted-foreground text-left">
-                <p>{t('payment.option1')}</p>
-                <p>{t('payment.option2')}</p>
-                <p>{t('payment.option3')}</p>
-              </div>
+            <h3 className="mt-7 font-semibold">{t('payment.whatNext')}</h3>
+            <div className="reservation-result-next">
+              <div>{t('payment.option1')}</div>
+              <div>{t('payment.option2')}</div>
+              <div>{t('payment.option3')}</div>
             </div>
 
-            <div className="text-sm text-muted-foreground">
+            <div className="reservation-result-reference">
               <p><strong>{t('payment.contactUs')}</strong></p>
-              <p>{t('payment.phone')}</p>
-              <p>{t('payment.email')}</p>
+              <span className="ml-2">{t('payment.phone')} · {t('payment.email')}</span>
             </div>
           </div>
           
-          <div className="flex gap-3 pt-4">
+          <div className="reservation-result-actions px-8 pb-8">
             <Button
-              onClick={() => navigate('/')}
+              onClick={() => navigate(getRoute('home', language))}
               variant="outline"
               className="flex-1"
             >
@@ -78,9 +72,9 @@ const PaymentCanceled: React.FC = () => {
             <Button
               onClick={() => {
                 if (reservationId) {
-                  navigate(`/cars?retry_reservation=${reservationId}`);
+                  navigate(`${getRoute('cars', language)}?retry_reservation=${reservationId}`);
                 } else {
-                  navigate('/cars');
+                  navigate(getRoute('cars', language));
                 }
               }}
               className="flex-1"
@@ -88,9 +82,7 @@ const PaymentCanceled: React.FC = () => {
               {t('payment.retryPayment')}
             </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+    </ReservationResultLayout>
   );
 };
 
