@@ -20,6 +20,7 @@ import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit,
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
+import { ReviewsPanel } from '@/components/admin/ReviewsPanel';
 
 import { useToast } from '@/hooks/use-toast';
 import { V3Footer } from "@/components/homev3/V3Footer";
@@ -146,7 +147,7 @@ const Admin = () => {
     () =>
       tabsForRole(role, [
         'dashboard', 'calendar', 'customers', 'in-person', 'history',
-        'invoices', 'promos', 'recycle', 'email-test', 'users',
+        'invoices', 'promos', 'reviews', 'recycle', 'email-test', 'users',
       ]),
     [role]
   );
@@ -935,6 +936,15 @@ const Admin = () => {
         { label: 'Šaltinis', value: '/atsiliepimas' },
       ],
     },
+    reviews: {
+      kicker: 'Reputacija',
+      title: 'Atsiliepimai',
+      subtitle: 'Nuoroda klientams, Google puslapis ir įvertinimų suvestinė vienoje vietoje.',
+      stats: [
+        { label: 'Puslapis', value: 'carbonus.lt/atsiliepimas' },
+        { label: 'Paskata', value: 'ACIU10 · -10%' },
+      ],
+    },
     recycle: {
       kicker: 'Duomenų valymas',
       title: 'Šiukšlinė',
@@ -1047,6 +1057,7 @@ const Admin = () => {
                 { value: 'history', icon: History, label: 'Istorija' },
                 { value: 'invoices', icon: Receipt, label: 'Sąskaitos' },
                 { value: 'promos', icon: Gift, label: 'Nuolaidos' },
+                { value: 'reviews', icon: Star, label: 'Atsiliepimai' },
                 { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
                 { value: 'email-test', icon: Mail, label: 'El. paštas' },
                 { value: 'users', icon: ShieldCheck, label: 'Naudotojai' },
@@ -1860,6 +1871,10 @@ const Admin = () => {
 
               <TabsContent value="promos" className="space-y-4">
                 <PromoClaimsPanel />
+              </TabsContent>
+
+              <TabsContent value="reviews" className="space-y-4">
+                <ReviewsPanel />
               </TabsContent>
 
               <TabsContent value="users" className="space-y-4">
