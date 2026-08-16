@@ -1067,11 +1067,11 @@ const Admin = () => {
                     tint: 'bg-blue-50 text-blue-600',
                   },
                   {
-                    label: 'Autoparkas',
-                    sub: 'automobiliai',
-                    value: String(cars.length),
+                    label: 'Laisvi',
+                    sub: 'šiandien',
+                    value: String(availableCarsToday),
                     icon: Car,
-                    tint: 'bg-slate-100 text-slate-600',
+                    tint: 'bg-carbonus-green-soft text-carbonus-green-deep',
                   },
                   {
                     label: 'Pajamos',
