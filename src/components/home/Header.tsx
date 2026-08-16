@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronRight, Phone, UserCircle, Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -156,8 +157,9 @@ export function Header() {
       </div>
 
       {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-[60] lg:hidden">
+      {mobileOpen && createPortal(
+        <div className="fixed inset-0 z-[100] lg:hidden">
+
           <div
             className="absolute inset-0 bg-[hsl(var(--carbonus-dark))]/40 backdrop-blur-sm animate-in fade-in duration-200"
             onClick={() => setMobileOpen(false)}
@@ -237,8 +239,10 @@ export function Header() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
+
 
     </header>
   );
