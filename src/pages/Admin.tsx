@@ -139,6 +139,7 @@ const Admin = () => {
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [manualBlockedDates, setManualBlockedDates] = useState<any[]>([]);
 
 
   // IDs of sold cars to hide from admin panel
@@ -166,6 +167,30 @@ const Admin = () => {
       setIsLoadingCars(false);
     }
   };
+
+  const todayKey = format(new Date(), 'yyyy-MM-dd');
+  const availableCarsToday = React.useMemo(() => {
+    const unavailableCarIds = new Set<string>();
+
+    reservations.forEach((r) => {
+      if (
+        r.car_id &&
+        r.start_date <= todayKey &&
+        r.end_date >= todayKey &&
+        !['completed', 'cancelled', 'denied'].includes(r.status)
+      ) {
+        unavailableCarIds.add(r.car_id);
+      }
+    });
+
+    manualBlockedDates.forEach((b) => {
+      if (b.car_id && b.blocked_date === todayKey) {
+        unavailableCarIds.add(b.car_id);
+      }
+    });
+
+    return Math.max(0, cars.length - unavailableCarIds.size);
+  }, [reservations, manualBlockedDates, cars, todayKey]);
 
   useEffect(() => {
     fetchCars();
@@ -220,7 +245,7 @@ const Admin = () => {
 
   const fetchReservations = async () => {
     try {
-      const [resResult, phoneResult, carsResult] = await Promise.all([
+      const [resResult, phoneResult, carsResult, manualBlocksResult] = await Promise.all([
         supabase
           .from('reservations')
           .select(`
@@ -243,7 +268,15 @@ const Admin = () => {
           .eq('reservation_type', 'phone_reservation')
           .order('blocked_date', { ascending: true }),
         supabase.from('cars').select('id, name'),
+        supabase
+          .from('car_blocked_dates')
+          .select('*')
+          .is('deleted_at', null)
+          .neq('reservation_type', 'phone_reservation')
+          .order('blocked_date', { ascending: true }),
       ]);
+
+      setManualBlockedDates(manualBlocksResult.data || []);
 
       if (resResult.error) throw resResult.error;
 
@@ -1034,11 +1067,11 @@ const Admin = () => {
                     tint: 'bg-blue-50 text-blue-600',
                   },
                   {
-                    label: 'Autoparkas',
-                    sub: 'automobiliai',
-                    value: String(cars.length),
+                    label: 'Laisvi',
+                    sub: 'šiandien',
+                    value: String(availableCarsToday),
                     icon: Car,
-                    tint: 'bg-slate-100 text-slate-600',
+                    tint: 'bg-carbonus-green-soft text-carbonus-green-deep',
                   },
                   {
                     label: 'Pajamos',
