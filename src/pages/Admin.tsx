@@ -1913,27 +1913,38 @@ function AdminFleetTimeline({
   onOpenCar: (car: { id: string; name: string }) => void;
   onOpenReservation: (reservation: Reservation) => void;
 }) {
+  const [offset, setOffset] = useState(0);
   const dates = Array.from({ length: 8 }, (_, index) => {
     const date = new Date();
     date.setHours(12, 0, 0, 0);
-    date.setDate(date.getDate() + index);
+    date.setDate(date.getDate() + offset + index);
     return { date, key: format(date, 'yyyy-MM-dd'), label: format(date, 'MM-dd') };
   });
 
   return (
     <div className="space-y-5">
       <Card className="overflow-hidden rounded-[24px] border-[#dfe8e3]">
-        <CardHeader className="flex flex-row items-center justify-between border-b border-[#e5ece8] px-5 py-5">
+        <CardHeader className="flex flex-col gap-3 border-b border-[#e5ece8] px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle className="text-[17px]">Artimiausios dienos</CardTitle>
+            <CardTitle className="text-[17px]">
+              {format(dates[0].date, 'yyyy-MM-dd')} – {format(dates[dates.length - 1].date, 'yyyy-MM-dd')}
+            </CardTitle>
             <CardDescription>Automobilių rezervacijų kalendorius</CardDescription>
           </div>
-          <div className="hidden items-center gap-3 text-[10px] font-bold text-muted-foreground sm:flex">
-            <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Laisva</span>
-            <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Rezervuota</span>
-            <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-amber-400" /> Laukia</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="hidden items-center gap-3 text-[10px] font-bold text-muted-foreground sm:flex">
+              <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Laisva</span>
+              <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Rezervuota</span>
+              <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-amber-400" /> Laukia</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Button variant="outline" size="sm" onClick={() => setOffset((v) => v - 8)}>‹ Atgal</Button>
+              <Button variant="outline" size="sm" onClick={() => setOffset(0)} disabled={offset === 0}>Šiandien</Button>
+              <Button variant="outline" size="sm" onClick={() => setOffset((v) => v + 8)}>Pirmyn ›</Button>
+            </div>
           </div>
         </CardHeader>
+
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <div className="min-w-[980px]">
