@@ -143,7 +143,8 @@ export function V3SearchBar() {
 
   const pillClass = (activeMode: LocationMode) =>
     cn(
-      "min-h-[28px] whitespace-nowrap rounded-full border px-3 py-1 text-[11px] font-semibold transition-colors duration-200",
+      "min-h-[26px] whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-semibold transition-colors duration-200",
+      "sm:min-h-[28px] sm:px-3 sm:py-1 sm:text-[11px]",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-1",
       locationMode === activeMode
         ? "border-carbonus-green-dark bg-carbonus-green-dark text-white shadow-sm"
@@ -168,7 +169,7 @@ export function V3SearchBar() {
             <span id="pickup-location-label" className="block text-[10px] font-medium text-muted-foreground sm:hidden">
               {c.pickupLocation}
             </span>
-            <div className="mt-1 flex flex-wrap gap-1 sm:mt-0" role="group" aria-labelledby="pickup-location-label">
+            <div className="mt-1 flex flex-wrap gap-0.5 sm:mt-0 sm:gap-1" role="group" aria-labelledby="pickup-location-label">
               <button
                 type="button"
                 aria-pressed={locationMode === "office"}
