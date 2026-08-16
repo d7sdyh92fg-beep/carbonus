@@ -56,6 +56,7 @@ export function CustomerPicker({
       let query = supabase
         .from('customers')
         .select('*')
+        .is('deleted_at', null)
         .order('first_name', { ascending: true })
         .limit(100);
 

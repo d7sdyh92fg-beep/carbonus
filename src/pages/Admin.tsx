@@ -2057,6 +2057,37 @@ function AdminCustomersView({
   onOpenReservation: (reservation: Reservation) => void;
 }) {
   const [query, setQuery] = useState('');
+  const { toast } = useToast();
+  const [deletedCustomerIds, setDeletedCustomerIds] = useState<Set<string>>(new Set());
+
+  const loadDeletedCustomers = async () => {
+    const { data } = await supabase
+      .from('customers')
+      .select('id')
+      .not('deleted_at', 'is', null);
+    setDeletedCustomerIds(new Set((data || []).map((c: any) => c.id)));
+  };
+
+  useEffect(() => {
+    loadDeletedCustomers();
+  }, []);
+
+  const moveCustomerToTrash = async (customerId: string, name: string) => {
+    if (!customerId) return;
+    if (!window.confirm(`Perkelti klientą „${name}“ į šiukšlinę? Vėliau galėsite jį atkurti.`)) return;
+    const { data: userData } = await supabase.auth.getUser();
+    const { error } = await supabase
+      .from('customers')
+      .update({ deleted_at: new Date().toISOString(), deleted_by: userData?.user?.id ?? null })
+      .eq('id', customerId);
+    if (error) {
+      toast({ title: 'Klaida', description: error.message, variant: 'destructive' });
+      return;
+    }
+    toast({ title: 'Perkelta į šiukšlinę', description: 'Klientą galite atkurti skiltyje „Šiukšlinė“.' });
+    setDeletedCustomerIds((prev) => new Set(prev).add(customerId));
+  };
+
   const customerMap = new Map<string, { customer: Reservation['customers']; reservations: Reservation[]; spent: number; latest: Reservation }>();
   reservations.forEach((reservation) => {
     if (!reservation.customers) return;
@@ -2077,6 +2108,7 @@ function AdminCustomersView({
     }
   });
   const customers = Array.from(customerMap.values())
+    .filter((entry) => !entry.customer.id || !deletedCustomerIds.has(entry.customer.id))
     .filter((entry) =>
       `${entry.customer.first_name} ${entry.customer.last_name} ${entry.customer.email} ${entry.customer.phone}`
         .toLowerCase()
@@ -2126,11 +2158,13 @@ function AdminCustomersView({
               {customers.map((entry) => {
                 const vip = entry.reservations.length >= 3 || entry.spent >= 1000;
                 return (
-                  <button
+                  <div
                     key={entry.customer.id || entry.customer.email}
-                    type="button"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => onOpenReservation(entry.latest)}
-                    className="grid w-full gap-3 px-5 py-4 text-left transition hover:bg-[#f7faf8] md:grid-cols-[minmax(220px,1.4fr)_minmax(160px,1fr)_120px_120px_32px] md:items-center"
+                    onKeyDown={(event) => { if (event.key === 'Enter') onOpenReservation(entry.latest); }}
+                    className="grid w-full cursor-pointer gap-3 px-5 py-4 text-left transition hover:bg-[#f7faf8] md:grid-cols-[minmax(220px,1.4fr)_minmax(160px,1fr)_120px_120px_72px] md:items-center"
                   >
                     <span className="flex min-w-0 items-center gap-3">
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9f6ef] text-[12px] font-black text-[#0b7750]">
@@ -2156,8 +2190,22 @@ function AdminCustomersView({
                       <span className="block text-[9px] font-bold uppercase tracking-[0.08em] text-muted-foreground">Vertė</span>
                       <span className="mt-1 block font-extrabold text-[#0b7a50]">€{entry.spent.toFixed(2)}</span>
                     </span>
-                    <ChevronRight className="hidden h-4 w-4 text-[#98a79f] md:block" />
-                  </button>
+                    <span className="flex items-center justify-end gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                        title="Perkelti į šiukšlinę"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          moveCustomerToTrash(entry.customer.id, `${entry.customer.first_name} ${entry.customer.last_name}`);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                      <ChevronRight className="hidden h-4 w-4 text-[#98a79f] md:block" />
+                    </span>
+                  </div>
                 );
               })}
             </div>

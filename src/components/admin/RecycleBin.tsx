@@ -278,6 +278,182 @@ export const RecycleBin: React.FC = () => {
           )}
         </CardContent>
       </Card>
+
+      <div className="mt-4">
+        <DeletedCustomersCard />
+      </div>
+    </>
+  );
+};
+
+interface DeletedCustomer {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  company_name: string | null;
+  deleted_at: string;
+}
+
+const DeletedCustomersCard: React.FC = () => {
+  const [customers, setCustomers] = useState<DeletedCustomer[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [confirmRestore, setConfirmRestore] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const fetchDeleted = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('customers')
+      .select('id, first_name, last_name, email, phone, company_name, deleted_at')
+      .not('deleted_at', 'is', null)
+      .order('deleted_at', { ascending: false });
+    if (error) {
+      toast({ title: 'Klaida', description: 'Nepavyko užkrauti ištrintų klientų', variant: 'destructive' });
+    } else {
+      setCustomers((data || []) as DeletedCustomer[]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchDeleted();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const restore = async (id: string) => {
+    const { error } = await supabase
+      .from('customers')
+      .update({ deleted_at: null, deleted_by: null })
+      .eq('id', id);
+    if (error) {
+      toast({ title: 'Klaida', description: 'Nepavyko atkurti kliento: ' + error.message, variant: 'destructive' });
+      return;
+    }
+    toast({ title: 'Klientas atkurtas' });
+    fetchDeleted();
+  };
+
+  const purge = async (id: string) => {
+    const { error } = await supabase.from('customers').delete().eq('id', id);
+    if (error) {
+      toast({
+        title: 'Nepavyko ištrinti',
+        description: 'Tikėtina, kad klientas turi rezervacijų. Pirmiausia pašalinkite jo rezervacijas.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    toast({ title: 'Klientas pašalintas visam laikui' });
+    fetchDeleted();
+  };
+
+  return (
+    <>
+      <ConfirmationDialog
+        isOpen={!!confirmRestore}
+        onClose={() => setConfirmRestore(null)}
+        onConfirm={() => {
+          if (confirmRestore) restore(confirmRestore);
+          setConfirmRestore(null);
+        }}
+        title="Atkurti klientą?"
+        description="Klientas vėl atsiras klientų sąraše ir paieškoje."
+        confirmText="Atkurti"
+        cancelText="Atšaukti"
+      />
+
+      <ConfirmationDialog
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={() => {
+          if (confirmDelete) purge(confirmDelete);
+          setConfirmDelete(null);
+        }}
+        title="Visam laikui ištrinti klientą?"
+        description="DĖMESIO: operacija negrįžtama. Kliento duomenys bus pašalinti iš duomenų bazės."
+        confirmText="Ištrinti visam laikui"
+        cancelText="Atšaukti"
+        variant="destructive"
+      />
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Trash2 className="h-5 w-5" />
+            Ištrinti klientai
+            <Badge variant="secondary">{customers.length}</Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="py-8 text-center">Kraunama...</div>
+          ) : customers.length === 0 ? (
+            <div className="py-8 text-center text-muted-foreground">
+              <Trash2 className="mx-auto mb-4 h-12 w-12 opacity-50" />
+              <p>Ištrintų klientų nėra</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Klientas</TableHead>
+                    <TableHead>Kontaktai</TableHead>
+                    <TableHead>Ištrinta</TableHead>
+                    <TableHead className="text-right">Veiksmai</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {customers.map((c) => (
+                    <TableRow key={c.id}>
+                      <TableCell>
+                        <div className="font-medium">
+                          {c.first_name} {c.last_name}
+                        </div>
+                        {c.company_name && (
+                          <div className="text-sm text-muted-foreground">{c.company_name}</div>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">{c.email}</div>
+                        <div className="text-sm text-muted-foreground">{c.phone || '—'}</div>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {format(new Date(c.deleted_at), 'yyyy-MM-dd HH:mm')}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => setConfirmRestore(c.id)}
+                          >
+                            <RotateCcw className="h-3 w-3" />
+                            Atkurti
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => setConfirmDelete(c.id)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                            Ištrinti visam laikui
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </>
   );
 };
