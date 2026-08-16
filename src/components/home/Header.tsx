@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, UserCircle, Menu, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Phone, UserCircle, Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
