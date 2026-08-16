@@ -1127,10 +1127,7 @@ const Admin = () => {
                 </ul>
               </div>
             )}
-
-
-
-
+            <div className="min-w-0 flex-1 space-y-5">
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 sm:gap-4">
