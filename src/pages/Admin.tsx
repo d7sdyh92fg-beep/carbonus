@@ -221,7 +221,7 @@ const Admin = () => {
 
   const fetchReservations = async () => {
     try {
-      const [resResult, phoneResult, carsResult] = await Promise.all([
+      const [resResult, phoneResult, carsResult, manualBlocksResult] = await Promise.all([
         supabase
           .from('reservations')
           .select(`
@@ -244,7 +244,15 @@ const Admin = () => {
           .eq('reservation_type', 'phone_reservation')
           .order('blocked_date', { ascending: true }),
         supabase.from('cars').select('id, name'),
+        supabase
+          .from('car_blocked_dates')
+          .select('*')
+          .is('deleted_at', null)
+          .neq('reservation_type', 'phone_reservation')
+          .order('blocked_date', { ascending: true }),
       ]);
+
+      setManualBlockedDates(manualBlocksResult.data || []);
 
       if (resResult.error) throw resResult.error;
 
