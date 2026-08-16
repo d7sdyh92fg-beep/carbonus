@@ -36,19 +36,22 @@ export function AdminCarCard({ car, onManage, className }: AdminCarCardProps) {
         className
       )}
     >
-      <div className="relative aspect-[16/10] w-full bg-[#f4f6f5] p-3">
-        {car.category && (
-          <span className="absolute right-2.5 top-2.5 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold capitalize text-muted-foreground shadow-sm">
-            {car.category}
-          </span>
-        )}
-        <img
-          src={car.image}
-          alt={car.name}
-          loading="lazy"
-          className="h-full w-full object-contain object-center mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.03]"
-        />
+      <div className="w-full bg-white p-3">
+        <div className="relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden rounded-[14px] bg-[#f4f6f5] p-3">
+          {car.category && (
+            <span className="absolute right-2.5 top-2.5 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold capitalize text-muted-foreground shadow-sm">
+              {car.category}
+            </span>
+          )}
+          <img
+            src={car.image}
+            alt={car.name}
+            loading="lazy"
+            className="h-full w-full object-contain object-center mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.03]"
+          />
+        </div>
       </div>
+
 
       <div className="flex flex-1 flex-col gap-1.5 p-3.5">
         <div className="flex items-start justify-between gap-2">
