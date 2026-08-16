@@ -156,15 +156,15 @@ export function V3SearchBar() {
 
   return (
     <div className="rounded-[14px] bg-white shadow-[0_18px_50px_rgba(16,24,40,0.14)]">
-      <div className="flex flex-col gap-1 p-2 sm:flex-row sm:items-center sm:gap-0 sm:p-1.5 sm:pl-3">
+      <div className="flex flex-col gap-3 p-3 sm:p-2 sm:pl-3">
         {/* Location */}
-        <div className="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-2 py-1.5">
-          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green" />
+        <div className="flex items-start gap-2 rounded-lg px-2 py-1 sm:items-center">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green sm:mt-0" />
           <div className="min-w-0 flex-1">
-            <span id="pickup-location-label" className="block text-[10px] font-medium text-muted-foreground">
+            <span id="pickup-location-label" className="block text-[10px] font-medium text-muted-foreground sm:hidden">
               {c.pickupLocation}
             </span>
-            <div className="mt-1 flex flex-wrap gap-1" role="group" aria-labelledby="pickup-location-label">
+            <div className="mt-1 flex flex-wrap gap-1 sm:mt-0" role="group" aria-labelledby="pickup-location-label">
               <button
                 type="button"
                 aria-pressed={locationMode === "office"}
@@ -193,85 +193,90 @@ export function V3SearchBar() {
           </div>
         </div>
 
-        {/* Pickup date */}
-        <Popover open={openP} onOpenChange={setOpenP}>
-          <PopoverTrigger asChild>
-            <button type="button" aria-label={`${c.pickupDate}: ${fmt(pickup)} ${pickupTime}`} className={fieldClass}>
-              <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
-              <span className="min-w-0 flex-1">
-                <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
-                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(pickup)} · {pickupTime}</span>
-              </span>
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="z-[80] w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={new Date(`${pickup}T12:00:00`)}
-              defaultMonth={new Date(`${pickup}T12:00:00`)}
-              onSelect={(d) => {
-                if (!d) return;
-                const nP = toISO(d);
-                setPickup(nP);
-                if (!isTimeAllowed(nP, pickupTime)) {
-                  const next = firstAllowedTime(nP, TIMES);
-                  if (next) setPickupTime(next);
-                }
-                if (new Date(`${ret}T12:00:00`) <= d) {
-                  const nR = new Date(d);
-                  nR.setDate(nR.getDate() + 1);
-                  setRet(toISO(nR));
-                }
-              }}
-              disabled={{ before: minBookingDay() }}
+        {/* Dates + search */}
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
+          <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
+            {/* Pickup date */}
+            <Popover open={openP} onOpenChange={setOpenP}>
+              <PopoverTrigger asChild>
+                <button type="button" aria-label={`${c.pickupDate}: ${fmt(pickup)} ${pickupTime}`} className={fieldClass}>
+                  <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[10px] font-medium text-muted-foreground">{c.pickupDate}</span>
+                    <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(pickup)} · {pickupTime}</span>
+                  </span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="z-[80] w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={new Date(`${pickup}T12:00:00`)}
+                  defaultMonth={new Date(`${pickup}T12:00:00`)}
+                  onSelect={(d) => {
+                    if (!d) return;
+                    const nP = toISO(d);
+                    setPickup(nP);
+                    if (!isTimeAllowed(nP, pickupTime)) {
+                      const next = firstAllowedTime(nP, TIMES);
+                      if (next) setPickupTime(next);
+                    }
+                    if (new Date(`${ret}T12:00:00`) <= d) {
+                      const nR = new Date(d);
+                      nR.setDate(nR.getDate() + 1);
+                      setRet(toISO(nR));
+                    }
+                  }}
+                  disabled={{ before: minBookingDay() }}
 
-              locale={lt}
-              className="pointer-events-auto p-3"
-            />
-            <TimeRow label={c.pickupTime} date={pickup} time={pickupTime} onTimeChange={setPickupTime} />
-          </PopoverContent>
-        </Popover>
+                  locale={lt}
+                  className="pointer-events-auto p-3"
+                />
+                <TimeRow label={c.pickupTime} date={pickup} time={pickupTime} onTimeChange={setPickupTime} />
+              </PopoverContent>
+            </Popover>
 
-        {/* Return date */}
-        <Popover open={openR} onOpenChange={setOpenR}>
-          <PopoverTrigger asChild>
-            <button type="button" aria-label={`${c.returnDate}: ${fmt(ret)} ${returnTime}`} className={fieldClass}>
-              <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
-              <span className="min-w-0 flex-1">
-                <span className="block text-[10px] font-medium text-muted-foreground">{c.returnDate}</span>
-                <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(ret)} · {returnTime}</span>
-              </span>
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="z-[80] w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={new Date(`${ret}T12:00:00`)}
-              defaultMonth={new Date(`${ret}T12:00:00`)}
-              onSelect={(d) => {
-                if (!d) return;
-                const nR = toISO(d);
-                setRet(nR);
-                if (!isTimeAllowed(nR, returnTime)) {
-                  const next = firstAllowedTime(nR, TIMES);
-                  if (next) setReturnTime(next);
-                }
-              }}
-              disabled={(d) => d < new Date(`${pickup}T12:00:00`) || d < minBookingDay()}
-              locale={lt}
-              className="pointer-events-auto p-3"
-            />
-            <TimeRow label={c.returnTime} date={ret} time={returnTime} onTimeChange={setReturnTime} />
-          </PopoverContent>
-        </Popover>
+            {/* Return date */}
+            <Popover open={openR} onOpenChange={setOpenR}>
+              <PopoverTrigger asChild>
+                <button type="button" aria-label={`${c.returnDate}: ${fmt(ret)} ${returnTime}`} className={fieldClass}>
+                  <CalendarDays className="h-4 w-4 shrink-0 text-carbonus-green" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[10px] font-medium text-muted-foreground">{c.returnDate}</span>
+                    <span className="block truncate text-[13px] font-semibold text-foreground">{fmt(ret)} · {returnTime}</span>
+                  </span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="z-[80] w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={new Date(`${ret}T12:00:00`)}
+                  defaultMonth={new Date(`${ret}T12:00:00`)}
+                  onSelect={(d) => {
+                    if (!d) return;
+                    const nR = toISO(d);
+                    setRet(nR);
+                    if (!isTimeAllowed(nR, returnTime)) {
+                      const next = firstAllowedTime(nR, TIMES);
+                      if (next) setReturnTime(next);
+                    }
+                  }}
+                  disabled={(d) => d < new Date(`${pickup}T12:00:00`) || d < minBookingDay()}
+                  locale={lt}
+                  className="pointer-events-auto p-3"
+                />
+                <TimeRow label={c.returnTime} date={ret} time={returnTime} onTimeChange={setReturnTime} />
+              </PopoverContent>
+            </Popover>
+          </div>
 
-        <button
-          type="button"
-          onClick={submit}
-          className="h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[48px] sm:w-auto"
-        >
-          {c.search}
-        </button>
+          <button
+            type="button"
+            onClick={submit}
+            className="h-11 w-full shrink-0 rounded-[10px] bg-carbonus-green-dark px-5 text-[14px] font-semibold text-white ring-4 ring-white transition-colors duration-200 hover:bg-carbonus-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-carbonus-green focus-visible:ring-offset-2 sm:h-[48px] sm:w-auto"
+          >
+            {c.search}
+          </button>
+        </div>
       </div>
 
       <div className="flex items-start gap-2 rounded-b-[14px] border-t border-border bg-[hsl(var(--carbonus-green-soft))]/60 px-3 py-3">
