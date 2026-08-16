@@ -1601,7 +1601,7 @@ const Admin = () => {
 
                 {/* Completed Reservations */}
                 <Card>
-                  <CardHeader className="flex flex-row items-center justify-between">
+                  <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <CardTitle className="flex items-center gap-2">
                         <History className="h-5 w-5" />
@@ -1609,7 +1609,17 @@ const Admin = () => {
                       </CardTitle>
                       <CardDescription>Visos baigtos rezervacijos</CardDescription>
                     </div>
+                    <div className="relative w-full sm:max-w-[240px]">
+                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Ieškoti istorijoje..."
+                        value={historySearchQuery}
+                        onChange={(e) => setHistorySearchQuery(e.target.value)}
+                        className="pl-8"
+                      />
+                    </div>
                     {completedReservations.length > 0 && (
+
                       <div className="flex gap-2">
                         {isDeleteMode ? (
                           <>
