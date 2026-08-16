@@ -138,6 +138,8 @@ const Admin = () => {
   const [carSearchQuery, setCarSearchQuery] = useState('');
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
+
 
   // IDs of sold cars to hide from admin panel
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
