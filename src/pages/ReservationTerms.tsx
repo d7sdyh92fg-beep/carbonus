@@ -1,16 +1,16 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, FileText, Download, ExternalLink, CheckCircle2 } from 'lucide-react';
+import { FileText, Download, ExternalLink, CheckCircle2 } from 'lucide-react';
 import { useBooking } from '@/contexts/BookingContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslations } from '@/hooks/use-translations';
 import { getRoute, getReservationRoute } from '@/utils/routes';
+import { ReservationFlowShell } from '@/components/booking/ReservationFlowShell';
 
 export default function ReservationTerms() {
   const navigate = useNavigate();
@@ -66,51 +66,8 @@ export default function ReservationTerms() {
   const totalPrice = getTotalPrice();
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-card border-b border-border">
-        <div className="container max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate(-1)}
-              className="gap-2"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              {t('terms.back')}
-            </Button>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">{t('terms.totalToPay')}</p>
-              <p className="text-2xl font-bold text-primary">
-                {totalPrice.toFixed(2)} €
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="container max-w-4xl mx-auto px-4 py-8">
-        {/* Progress indicator */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-muted-foreground">{t('terms.step')} 3 {t('terms.of')} 4</span>
-            <span className="text-sm font-medium">75%</span>
-          </div>
-          <Progress value={75} className="h-2" />
-        </div>
-
-        {/* Title */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-            <FileText className="h-8 w-8" />
-            {t('terms.title')}
-          </h1>
-          <p className="text-muted-foreground">
-            {t('terms.subtitle')}
-          </p>
-        </div>
+    <ReservationFlowShell step={3} title={t('terms.title')} subtitle={t('terms.subtitle')} totalLabel={t('terms.totalToPay')} total={totalPrice} backLabel={t('terms.back')} onBack={() => navigate(-1)} language={language}>
+      <div className="mx-auto max-w-4xl">
 
         {/* Important Notice */}
         <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950 dark:border-amber-800 mb-6">
@@ -149,10 +106,10 @@ export default function ReservationTerms() {
 
         {/* Terms content with scroll tracking */}
         {showFullTerms && (
-          <Card className="mb-6">
+          <Card className="mb-6 overflow-hidden">
             <CardContent className="p-6">
               <ScrollArea 
-                className="h-96 w-full border rounded-lg p-4"
+                className="reservation-flow-terms-scroll h-[460px] w-full p-5"
                 onScrollCapture={handleScroll}
               >
                 <div className="space-y-6 text-sm">
@@ -283,7 +240,7 @@ export default function ReservationTerms() {
         )}
 
         {/* Acceptance checkbox */}
-        <Card className="mb-6">
+        <Card className="reservation-summary-card mb-6">
           <CardContent className="p-6">
             <div className="flex items-start space-x-3">
               <Checkbox
@@ -353,12 +310,12 @@ export default function ReservationTerms() {
             size="lg"
             onClick={handleContinue}
             disabled={!hasAccepted || !hasScrolledToBottom}
-            className="flex-1"
+            className="reservation-primary-action flex-1"
           >
             {t('terms.agreeAndContinue')}
           </Button>
         </div>
       </div>
-    </div>
+    </ReservationFlowShell>
   );
 }
