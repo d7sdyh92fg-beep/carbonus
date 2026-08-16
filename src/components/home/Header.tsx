@@ -156,8 +156,9 @@ export function Header() {
       </div>
 
       {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-[60] lg:hidden">
+      {mobileOpen && createPortal(
+        <div className="fixed inset-0 z-[100] lg:hidden">
+
           <div
             className="absolute inset-0 bg-[hsl(var(--carbonus-dark))]/40 backdrop-blur-sm animate-in fade-in duration-200"
             onClick={() => setMobileOpen(false)}
