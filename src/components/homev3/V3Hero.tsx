@@ -64,11 +64,12 @@ export function V3Hero() {
             <span className="text-carbonus-green">.</span>
           </h1>
           <div className="mt-4 h-[4px] w-10 rounded-full bg-carbonus-green sm:mt-5" />
-          <p className="mt-4 max-w-[300px] text-[13px] leading-[1.7] text-muted-foreground sm:mt-5 sm:max-w-[430px] md:max-w-[340px] sm:text-[clamp(13px,0.98vw,16px)] sm:leading-[1.8]">
+          <p className="mt-4 max-w-[300px] text-[13px] leading-[1.7] text-muted-foreground sm:mt-5 sm:max-w-[340px] lg:max-w-[430px] sm:text-[clamp(13px,0.98vw,16px)] sm:leading-[1.8]">
             {c.description.split(" ").slice(0, 4).join(" ")}
-            <br className="hidden md:block lg:hidden" />
+            <br className="hidden sm:block lg:hidden" />
             {" "}{c.description.split(" ").slice(4).join(" ")}
           </p>
+
 
 
           <div className="relative z-20 mt-6 w-full translate-y-5 lg:mt-10 lg:w-[clamp(680px,58vw,900px)]">
