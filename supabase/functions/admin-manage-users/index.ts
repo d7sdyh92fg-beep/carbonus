@@ -41,11 +41,10 @@ Deno.serve(async (req) => {
     const action = String(body?.action ?? '');
 
     const setRole = async (userId: string, role: Role) => {
+      // one role per user (user_roles.user_id is unique); has_role() treats
+      // owner/fleet_manager as admin for RLS purposes
       await admin.from('user_roles').delete().eq('user_id', userId);
-      const rows = [{ user_id: userId, role }];
-      // every staff role also needs the base admin role for existing RLS policies
-      if (role !== 'admin') rows.push({ user_id: userId, role: 'admin' });
-      await admin.from('user_roles').insert(rows);
+      await admin.from('user_roles').insert([{ user_id: userId, role }]);
     };
 
     if (action === 'list') {
