@@ -953,7 +953,17 @@ const Admin = () => {
         { label: 'Kalbos', value: 'LT / EN' },
       ],
     },
+    users: {
+      kicker: 'Prieigos valdymas',
+      title: 'Sistemos naudotojai',
+      subtitle: 'Kurkite paskyras, keiskite roles ir nustatykite naujus slaptažodžius.',
+      stats: [
+        { label: 'Jūsų rolė', value: ROLE_LABELS[role] },
+        { label: 'Saugumas', value: 'Slaptažodžiai užšifruoti' },
+      ],
+    },
   };
+
 
   const hero = heroContent[activeTab] ?? heroContent.dashboard;
 
