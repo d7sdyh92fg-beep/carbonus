@@ -1267,6 +1267,7 @@ export function InPersonBooking() {
                         mode="single"
                         selected={booking.startDate || undefined}
                         onSelect={(date) => {
+                          if (date) setEndMonth(date);
                           setBooking((prev) => {
                             if (!date) {
                               return { ...prev, startDate: null, endDate: null };
@@ -1278,8 +1279,6 @@ export function InPersonBooking() {
                               !currentEnd ||
                               currentEnd <= nextStart ||
                               hasBookedDateInRange(nextStart, currentEnd);
-
-                            setEndMonth(date);
 
                             return {
                               ...prev,
