@@ -138,6 +138,8 @@ const Admin = () => {
   const [carSearchQuery, setCarSearchQuery] = useState('');
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
+
 
   // IDs of sold cars to hide from admin panel
   const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
@@ -817,6 +819,80 @@ const Admin = () => {
     );
   });
 
+  const todayLabel = new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' });
+  const pendingCount = reservations.filter((r) => r.status === 'requested').length;
+  const paidCount = reservations.filter((r) => r.status === 'paid').length;
+  const historyCount = reservations.filter((r) => ['completed', 'cancelled', 'returned'].includes(String(r.status))).length;
+
+  const heroContent: Record<string, { kicker: string; title: string; subtitle: string; stats: { label: string; value: string }[] }> = {
+    dashboard: {
+      kicker: 'Carbonus administravimas',
+      title: 'Administratoriaus skydelis',
+      subtitle: 'Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.',
+      stats: [
+        { label: 'Šiandien', value: todayLabel },
+        { label: 'Reikia dėmesio', value: `${pendingCount} laukia patvirtinimo` },
+      ],
+    },
+    'in-person': {
+      kicker: 'Vietinė rezervacija',
+      title: 'Nauja rezervacija',
+      subtitle: 'Suveskite kliento duomenis, pasirinkite automobilį ir užbaikite užsakymą vietoje.',
+      stats: [
+        { label: 'Laisvi automobiliai', value: `${cars.length} autoparke` },
+        { label: 'Aktyvios nuomos', value: `${activeReservations.length} šiuo metu` },
+      ],
+    },
+    history: {
+      kicker: 'Archyvas',
+      title: 'Rezervacijų istorija',
+      subtitle: 'Peržiūrėkite užbaigtas ir atšauktas rezervacijas, valykite įrašus saugiu režimu.',
+      stats: [
+        { label: 'Įrašai istorijoje', value: `${historyCount} rezervacijos` },
+        { label: 'Trynimo režimas', value: isDeleteMode ? 'Įjungtas' : 'Išjungtas' },
+      ],
+    },
+    invoices: {
+      kicker: 'Finansai',
+      title: 'Sąskaitos faktūros',
+      subtitle: 'Generuokite, koreguokite ir siųskite sąskaitas klientams.',
+      stats: [
+        { label: 'Apmokėtos', value: `${paidCount} rezervacijos` },
+        { label: 'Pajamos', value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}` },
+      ],
+    },
+    promos: {
+      kicker: 'Rinkodara',
+      title: 'Nuolaidų kodai',
+      subtitle: 'Sekite ACIU10 kodų išdavimą ir konversijas iš atsiliepimų puslapio.',
+      stats: [
+        { label: 'Aktyvus kodas', value: 'ACIU10 · -10%' },
+        { label: 'Šaltinis', value: '/atsiliepimas' },
+      ],
+    },
+    recycle: {
+      kicker: 'Duomenų valymas',
+      title: 'Šiukšlinė',
+      subtitle: 'Atkurkite arba galutinai pašalinkite ištrintus įrašus.',
+      stats: [
+        { label: 'Atkūrimas', value: 'Galimas bet kada' },
+        { label: 'Dėmesio', value: 'Trynimas negrįžtamas' },
+      ],
+    },
+    'email-test': {
+      kicker: 'Komunikacija',
+      title: 'El. laiškų testavimas',
+      subtitle: 'Peržiūrėkite ir išsiųskite bandomuosius laiškus prieš siunčiant klientams.',
+      stats: [
+        { label: 'Siuntėjas', value: 'info@carbonus.lt' },
+        { label: 'Kalbos', value: 'LT / EN' },
+      ],
+    },
+  };
+
+  const hero = heroContent[activeTab] ?? heroContent.dashboard;
+
+
   return (
     <div className="admin-shell admin-crm min-h-screen bg-[#f3f7f5] text-[#11231c]">
       {/* Admin Header */}
@@ -864,34 +940,29 @@ const Admin = () => {
             <div className="min-w-0">
               <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-200/85">
                 <Sparkles className="h-4 w-4" />
-                Carbonus administravimas
+                {hero.kicker}
               </p>
               <h1 className="mt-4 text-[32px] font-bold leading-tight tracking-tight text-white sm:text-[38px]">
-                Administratoriaus skydelis
+                {hero.title}
               </h1>
               <p className="mt-2 max-w-xl text-sm text-white/75">
-                Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.
+                {hero.subtitle}
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Šiandien</p>
-                <p className="mt-1 text-sm font-semibold text-white">
-                  {new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' })}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Reikia dėmesio</p>
-                <p className="mt-1 text-sm font-semibold text-white">
-                  {reservations.filter((r) => r.status === 'requested').length} laukia patvirtinimo
-                </p>
-              </div>
+              {hero.stats.map((stat) => (
+                <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">{stat.label}</p>
+                  <p className="mt-1 text-sm font-semibold text-white">{stat.value}</p>
+                </div>
+              ))}
             </div>
+
           </div>
         </section>
 
         <div>
-          <Tabs defaultValue="dashboard" className="admin-workspace-tabs space-y-5">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="admin-workspace-tabs space-y-5">
             <TabsList className="admin-sidebar-nav flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:sticky lg:top-[96px] lg:flex-col lg:overflow-visible">
               {[
                 { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
