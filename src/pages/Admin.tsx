@@ -1249,9 +1249,19 @@ const Admin = () => {
                       <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
                     </div>
                   </div>
+                  <div className="relative w-full max-w-[240px]">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Ieškoti rezervacijų..."
+                      value={activeSearchQuery}
+                      onChange={(e) => setActiveSearchQuery(e.target.value)}
+                      className="pl-8"
+                    />
+                  </div>
                 </CardHeader>
                  
                  <CardContent>
+
                    {/* Desktop Table View */}
                    <div className="hidden lg:block">
                      <Table>
