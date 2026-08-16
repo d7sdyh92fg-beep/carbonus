@@ -127,12 +127,12 @@ export function Header() {
         {/* Right */}
         <div className="relative hidden lg:flex items-center gap-3">
           <DropdownMenu modal={false}>
-            <DropdownMenuTrigger className="inline-flex items-center justify-center gap-1.5 h-[40px] w-[70px] px-4 rounded-full text-sm font-medium transition-colors bg-white/[0.06] border border-white/10 text-white hover:bg-white/[0.10]">
+            <DropdownMenuTrigger className="inline-flex items-center justify-center gap-1.5 h-[40px] w-[70px] px-4 rounded-full text-sm font-medium transition-colors bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))] hover:bg-[hsl(var(--carbonus-dark))]/[0.08]">
               {language.toUpperCase()} <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] p-0 shadow-none rounded-t-none rounded-b-lg bg-white/[0.08] backdrop-blur-xl border border-white/10 border-t-0 text-white">
-              <DropdownMenuItem onClick={() => setLanguage("lt")} className="justify-center rounded-none focus:text-white focus:bg-white/10">LT</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage("en")} className="justify-center rounded-none focus:text-white focus:bg-white/10">EN</DropdownMenuItem>
+            <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] p-0 shadow-none rounded-t-none rounded-b-lg bg-white/[0.08] backdrop-blur-xl border border-[hsl(var(--carbonus-dark))]/10 border-t-0 text-[hsl(var(--carbonus-dark))]">
+              <DropdownMenuItem onClick={() => setLanguage("lt")} className="justify-center rounded-none focus:text-[hsl(var(--carbonus-dark))] focus:bg-[hsl(var(--carbonus-dark))]/10">LT</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("en")} className="justify-center rounded-none focus:text-[hsl(var(--carbonus-dark))] focus:bg-[hsl(var(--carbonus-dark))]/10">EN</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
