@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useAdminRole, tabsForRole, ROLE_LABELS } from '@/hooks/use-admin-role';
+import UsersPanel from '@/components/admin/UsersPanel';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -108,6 +110,7 @@ interface Reservation {
 
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
+  const { role, isOwner } = useAdminRole();
   const { toast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -1025,7 +1028,8 @@ const Admin = () => {
                 { value: 'promos', icon: Gift, label: 'Nuolaidos' },
                 { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
                 { value: 'email-test', icon: Mail, label: 'El. paštas' },
-              ].map(({ value, icon: Icon, label }) => (
+                { value: 'users', icon: ShieldCheck, label: 'Naudotojai' },
+              ].filter(({ value }) => allowedTabs.includes(value)).map(({ value, icon: Icon, label }) => (
                 <TabsTrigger
                   key={value}
                   value={value}
@@ -1043,6 +1047,7 @@ const Admin = () => {
                 Sistemos būsena
               </div>
               <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
+              <p className="mt-1 text-[11px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
             </div>
 
 
@@ -1834,6 +1839,10 @@ const Admin = () => {
 
               <TabsContent value="promos" className="space-y-4">
                 <PromoClaimsPanel />
+              </TabsContent>
+
+              <TabsContent value="users" className="space-y-4">
+                <UsersPanel />
               </TabsContent>
 
               <TabsContent value="email-test" className="space-y-4">
