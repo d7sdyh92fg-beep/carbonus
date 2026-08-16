@@ -225,8 +225,7 @@ export default function ReservationServices() {
               </Button>
             </Card>
           </div>
-        </div>
       </div>
-    </div>
+    </ReservationFlowShell>
   );
 }
