@@ -142,6 +142,17 @@ const Admin = () => {
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const allowedTabs = useMemo(
+    () =>
+      tabsForRole(role, [
+        'dashboard', 'calendar', 'customers', 'in-person', 'history',
+        'invoices', 'promos', 'recycle', 'email-test', 'users',
+      ]),
+    [role]
+  );
+  useEffect(() => {
+    if (!allowedTabs.includes(activeTab)) setActiveTab(allowedTabs[0] ?? 'dashboard');
+  }, [allowedTabs, activeTab]);
   const [manualBlockedDates, setManualBlockedDates] = useState<any[]>([]);
 
 
