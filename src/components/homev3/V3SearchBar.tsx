@@ -159,7 +159,11 @@ export function V3SearchBar() {
       <div className="flex flex-col gap-3 p-3 sm:p-2 sm:pl-3">
         {/* Location */}
         <div className="flex items-start gap-2 rounded-lg px-2 py-1 sm:items-center">
-          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green sm:mt-0" />
+          <div className="hidden shrink-0 flex-col items-center gap-1 sm:flex">
+            <MapPin className="h-4 w-4 text-carbonus-green" />
+            <span className="text-[10px] font-medium text-muted-foreground">{c.pickupLocation}</span>
+          </div>
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-carbonus-green sm:hidden" />
           <div className="min-w-0 flex-1">
             <span id="pickup-location-label" className="block text-[10px] font-medium text-muted-foreground sm:hidden">
               {c.pickupLocation}
