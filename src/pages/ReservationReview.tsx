@@ -692,7 +692,6 @@ export default function ReservationReview() {
             </Card>
           </div>
         </div>
-      </div>
-    </div>
+    </ReservationFlowShell>
   );
 }
