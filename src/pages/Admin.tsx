@@ -22,6 +22,7 @@ import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
 import { useToast } from '@/hooks/use-toast';
 import { V3Footer } from "@/components/homev3/V3Footer";
 import CarManagementModal from '@/components/admin/CarManagementModal';
+import '@/components/admin/admin-crm.css';
 
 import { ConfirmationDialog } from '@/components/ui/alert-confirmation-dialog';
 import { AdminCarCard } from '@/components/admin/AdminCarCard';
