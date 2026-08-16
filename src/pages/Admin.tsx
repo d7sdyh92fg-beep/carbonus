@@ -1037,6 +1037,16 @@ const Admin = () => {
               ))}
             </TabsList>
 
+            <div className="admin-sidebar-status rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)]">
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                <ShieldCheck className="h-4 w-4" />
+                Sistemos būsena
+              </div>
+              <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
+            </div>
+
+
+
 
             <div className="min-w-0 flex-1 space-y-5">
 
