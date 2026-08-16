@@ -1071,9 +1071,17 @@ const Admin = () => {
                   <span className="whitespace-nowrap md:whitespace-normal lg:whitespace-nowrap">{label}</span>
                 </TabsTrigger>
               ))}
+              <div className="hidden shrink-0 flex-col justify-center gap-1 rounded-[13px] border border-[#dce7e1] bg-[#f7faf8] px-3 py-2 lg:hidden" aria-hidden="true">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  Sistemos būsena
+                </div>
+                <p className="text-[11px] text-[#65776f]">Visi procesai tvarkingi.</p>
+                <p className="text-[10px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
+              </div>
             </TabsList>
 
-            <div className="admin-sidebar-status rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)]">
+            <div className="admin-sidebar-status hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
               <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
                 <ShieldCheck className="h-4 w-4" />
                 Sistemos būsena
