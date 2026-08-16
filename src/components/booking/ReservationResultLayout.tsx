@@ -6,7 +6,7 @@ import './reservation-flow.css';
 interface ReservationResultLayoutProps {
   eyebrow: string;
   children: ReactNode;
-  language: 'lt' | 'en';
+  language: string;
 }
 
 export function ReservationResultLayout({ eyebrow, children, language }: ReservationResultLayoutProps) {

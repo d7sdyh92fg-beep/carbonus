@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import { lt, enUS } from 'date-fns/locale';
 import { useTranslations } from '@/hooks/use-translations';
 import { getRoute, getReservationRoute } from '@/utils/routes';
+import { ReservationFlowShell } from '@/components/booking/ReservationFlowShell';
 
 export default function ReservationServices() {
   const navigate = useNavigate();

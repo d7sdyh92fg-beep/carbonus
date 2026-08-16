@@ -11,7 +11,7 @@ interface ReservationFlowShellProps {
   total: number;
   backLabel: string;
   onBack: () => void;
-  language: 'lt' | 'en';
+  language: string;
   children: ReactNode;
 }
 
