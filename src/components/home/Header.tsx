@@ -157,38 +157,89 @@ export function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-[60] bg-[hsl(var(--carbonus-dark))] flex flex-col">
-          <div className="h-[68px] px-5 flex items-center justify-between border-b border-white/10">
-            <img src={logo.url} alt="Carbonus" className="h-10 w-auto" />
-            <button onClick={() => setMobileOpen(false)} aria-label={CLOSE_LABEL[language] ?? CLOSE_LABEL.lt} className="h-11 w-11 inline-flex items-center justify-center rounded-full bg-white/[0.06] border border-white/10 text-white">
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-          <nav className="flex-1 flex flex-col px-6 py-8 gap-2">
-            {NAV.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
+        <div className="fixed inset-0 z-[60] lg:hidden">
+          <div
+            className="absolute inset-0 bg-[hsl(var(--carbonus-dark))]/40 backdrop-blur-sm animate-in fade-in duration-200"
+            onClick={() => setMobileOpen(false)}
+          />
+          <div className="absolute inset-y-0 right-0 w-full max-w-[420px] bg-background flex flex-col overflow-hidden animate-in slide-in-from-right duration-300 ease-out">
+            {/* Decorative brand glow */}
+            <div className="pointer-events-none absolute -top-24 -right-20 h-64 w-64 rounded-full bg-[hsl(var(--carbonus-green))]/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-24 h-72 w-72 rounded-full bg-[hsl(var(--carbonus-green-deep))]/10 blur-3xl" />
+
+            <div className="relative h-[78px] px-5 flex items-center justify-between border-b border-[hsl(var(--carbonus-dark))]/10">
+              <img src={headerLogo} alt="Carbonus" className="h-12 w-auto object-contain" />
+              <button
                 onClick={() => setMobileOpen(false)}
-                className="text-white text-xl font-semibold py-3 border-b border-white/10"
+                aria-label={CLOSE_LABEL[language] ?? CLOSE_LABEL.lt}
+                className="h-11 w-11 inline-flex items-center justify-center rounded-full bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))] transition-colors hover:bg-[hsl(var(--carbonus-dark))]/10"
               >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="px-6 pb-8 flex items-center gap-3">
-            <button onClick={() => { setLanguage(language === "lt" ? "en" : language === "en" ? "ru" : "lt"); }} className="flex-1 h-12 rounded-full bg-white/[0.06] border border-white/10 text-white font-medium">
-              {language.toUpperCase()}
-            </button>
-            <button
-              onClick={() => { setMobileOpen(false); navigate(isAdmin ? "/admin" : "/auth"); }}
-              className="flex-1 h-12 rounded-full text-white font-semibold bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] inline-flex items-center justify-center gap-2"
-            >
-              <UserCircle className="h-4 w-4" /> Admin
-            </button>
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <nav className="relative flex-1 overflow-y-auto px-5 py-6 flex flex-col gap-1.5">
+              {NAV.map((item, i) => {
+                const active = pathname === item.to;
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setMobileOpen(false)}
+                    style={{ animationDelay: `${60 + i * 45}ms`, animationFillMode: "backwards" }}
+                    className={cn(
+                      "group flex items-center justify-between rounded-2xl px-4 py-4 text-[17px] transition-all animate-in fade-in slide-in-from-right-4 duration-300",
+                      active
+                        ? "bg-[hsl(var(--carbonus-green))]/12 text-[hsl(var(--carbonus-dark))] font-semibold"
+                        : "text-[hsl(var(--carbonus-dark))]/80 font-medium hover:bg-[hsl(var(--carbonus-dark))]/[0.04]"
+                    )}
+                  >
+                    <span className="flex items-center gap-3">
+                      {active && <span className="h-5 w-1 rounded-full bg-[hsl(var(--carbonus-green))]" />}
+                      {item.label}
+                    </span>
+                    <ChevronRight className="h-4 w-4 opacity-40 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="relative px-5 pb-[calc(env(safe-area-inset-bottom)+20px)] pt-4 border-t border-[hsl(var(--carbonus-dark))]/10 space-y-3">
+              <div className="flex items-center gap-2">
+                {(["lt", "en", "ru"] as const).map((lng) => (
+                  <button
+                    key={lng}
+                    onClick={() => setLanguage(lng)}
+                    className={cn(
+                      "flex-1 h-11 rounded-full text-sm font-semibold transition-colors border",
+                      language === lng
+                        ? "bg-[hsl(var(--carbonus-dark))] text-white border-transparent"
+                        : "bg-[hsl(var(--carbonus-dark))]/[0.04] text-[hsl(var(--carbonus-dark))]/70 border-[hsl(var(--carbonus-dark))]/10"
+                    )}
+                  >
+                    {lng.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+
+              <a
+                href="tel:+37069818781"
+                className="flex items-center justify-center gap-2 h-12 rounded-full border border-[hsl(var(--carbonus-dark))]/10 bg-[hsl(var(--carbonus-dark))]/[0.04] text-[hsl(var(--carbonus-dark))] text-sm font-semibold"
+              >
+                <Phone className="h-4 w-4" /> +370 698 18 781
+              </a>
+
+              <button
+                onClick={() => { setMobileOpen(false); navigate(isAdmin ? "/admin" : "/auth"); }}
+                className="w-full h-12 rounded-full text-white font-semibold bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] inline-flex items-center justify-center gap-2 hover:brightness-110 transition"
+              >
+                <UserCircle className="h-4 w-4" /> Admin
+              </button>
+            </div>
           </div>
         </div>
       )}
+
     </header>
   );
 }
