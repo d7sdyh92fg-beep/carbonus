@@ -940,29 +940,24 @@ const Admin = () => {
             <div className="min-w-0">
               <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-200/85">
                 <Sparkles className="h-4 w-4" />
-                Carbonus administravimas
+                {hero.kicker}
               </p>
               <h1 className="mt-4 text-[32px] font-bold leading-tight tracking-tight text-white sm:text-[38px]">
-                Administratoriaus skydelis
+                {hero.title}
               </h1>
               <p className="mt-2 max-w-xl text-sm text-white/75">
-                Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.
+                {hero.subtitle}
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Šiandien</p>
-                <p className="mt-1 text-sm font-semibold text-white">
-                  {new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' })}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">Reikia dėmesio</p>
-                <p className="mt-1 text-sm font-semibold text-white">
-                  {reservations.filter((r) => r.status === 'requested').length} laukia patvirtinimo
-                </p>
-              </div>
+              {hero.stats.map((stat) => (
+                <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">{stat.label}</p>
+                  <p className="mt-1 text-sm font-semibold text-white">{stat.value}</p>
+                </div>
+              ))}
             </div>
+
           </div>
         </section>
 
