@@ -819,6 +819,80 @@ const Admin = () => {
     );
   });
 
+  const todayLabel = new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' });
+  const pendingCount = reservations.filter((r) => r.status === 'requested').length;
+  const paidCount = reservations.filter((r) => r.status === 'paid').length;
+  const historyCount = reservations.filter((r) => ['completed', 'cancelled', 'returned'].includes(String(r.status))).length;
+
+  const heroContent: Record<string, { kicker: string; title: string; subtitle: string; stats: { label: string; value: string }[] }> = {
+    dashboard: {
+      kicker: 'Carbonus administravimas',
+      title: 'Administratoriaus skydelis',
+      subtitle: 'Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.',
+      stats: [
+        { label: 'Šiandien', value: todayLabel },
+        { label: 'Reikia dėmesio', value: `${pendingCount} laukia patvirtinimo` },
+      ],
+    },
+    'in-person': {
+      kicker: 'Vietinė rezervacija',
+      title: 'Nauja rezervacija',
+      subtitle: 'Suveskite kliento duomenis, pasirinkite automobilį ir užbaikite užsakymą vietoje.',
+      stats: [
+        { label: 'Laisvi automobiliai', value: `${cars.length} autoparke` },
+        { label: 'Aktyvios nuomos', value: `${activeReservations.length} šiuo metu` },
+      ],
+    },
+    history: {
+      kicker: 'Archyvas',
+      title: 'Rezervacijų istorija',
+      subtitle: 'Peržiūrėkite užbaigtas ir atšauktas rezervacijas, valykite įrašus saugiu režimu.',
+      stats: [
+        { label: 'Įrašai istorijoje', value: `${historyCount} rezervacijos` },
+        { label: 'Trynimo režimas', value: isDeleteMode ? 'Įjungtas' : 'Išjungtas' },
+      ],
+    },
+    invoices: {
+      kicker: 'Finansai',
+      title: 'Sąskaitos faktūros',
+      subtitle: 'Generuokite, koreguokite ir siųskite sąskaitas klientams.',
+      stats: [
+        { label: 'Apmokėtos', value: `${paidCount} rezervacijos` },
+        { label: 'Pajamos', value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}` },
+      ],
+    },
+    promos: {
+      kicker: 'Rinkodara',
+      title: 'Nuolaidų kodai',
+      subtitle: 'Sekite ACIU10 kodų išdavimą ir konversijas iš atsiliepimų puslapio.',
+      stats: [
+        { label: 'Aktyvus kodas', value: 'ACIU10 · -10%' },
+        { label: 'Šaltinis', value: '/atsiliepimas' },
+      ],
+    },
+    recycle: {
+      kicker: 'Duomenų valymas',
+      title: 'Šiukšlinė',
+      subtitle: 'Atkurkite arba galutinai pašalinkite ištrintus įrašus.',
+      stats: [
+        { label: 'Atkūrimas', value: 'Galimas bet kada' },
+        { label: 'Dėmesio', value: 'Trynimas negrįžtamas' },
+      ],
+    },
+    'email-test': {
+      kicker: 'Komunikacija',
+      title: 'El. laiškų testavimas',
+      subtitle: 'Peržiūrėkite ir išsiųskite bandomuosius laiškus prieš siunčiant klientams.',
+      stats: [
+        { label: 'Siuntėjas', value: 'info@carbonus.lt' },
+        { label: 'Kalbos', value: 'LT / EN' },
+      ],
+    },
+  };
+
+  const hero = heroContent[activeTab] ?? heroContent.dashboard;
+
+
   return (
     <div className="admin-shell admin-crm min-h-screen bg-[#f3f7f5] text-[#11231c]">
       {/* Admin Header */}
