@@ -345,3 +345,15 @@
     width: 100%;
   }
 }
+
+.admin-workspace-tabs > .admin-sidebar-status {
+  grid-column: 1;
+  grid-row: 2;
+  margin-top: 16px;
+}
+
+@media (max-width: 1023px) {
+  .admin-workspace-tabs > .admin-sidebar-status {
+    margin: 0 0 20px;
+  }
+}
