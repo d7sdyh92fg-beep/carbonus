@@ -758,13 +758,31 @@ const Admin = () => {
   };
 
   // Filter reservations
+  const matchesReservationSearch = (r: Reservation, q: string) => {
+    const query = q.trim().toLowerCase();
+    if (!query) return true;
+    const haystack = [
+      r.customers?.first_name,
+      r.customers?.last_name,
+      r.customers?.email,
+      r.customers?.phone,
+      r.car_name,
+      r.start_date,
+      r.end_date,
+      r.status,
+    ].filter(Boolean).join(' ').toLowerCase();
+    return haystack.includes(query);
+  };
+
   const activeReservations = reservations.filter(r => 
     ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up', 'phone_reservation'].includes(r.status)
+    && matchesReservationSearch(r, activeSearchQuery)
   );
   
   const completedReservations = reservations.filter(r => 
-    r.status === 'completed'
+    r.status === 'completed' && matchesReservationSearch(r, historySearchQuery)
   );
+
 
   const getStatusBadge = (status: string, reservationId?: string, clickable: boolean = false) => {
     const variants = {
