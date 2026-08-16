@@ -858,7 +858,7 @@ const Admin = () => {
       subtitle: 'Generuokite, koreguokite ir siųskite sąskaitas klientams.',
       stats: [
         { label: 'Apmokėtos', value: `${paidCount} rezervacijos` },
-        { label: 'Pajamos', value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}` },
+        { label: 'Pajamos', value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0).toFixed(2)}` },
       ],
     },
     promos: {
@@ -1023,7 +1023,7 @@ const Admin = () => {
                   {
                     label: 'Pajamos',
                     sub: 'be užstatų',
-                    value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0)}`,
+                    value: `€${reservations.reduce((sum, r) => sum + (r.total_rental_cost || 0), 0).toFixed(2)}`,
                     icon: Receipt,
                     tint: 'bg-violet-50 text-violet-600',
                     wide: true,
