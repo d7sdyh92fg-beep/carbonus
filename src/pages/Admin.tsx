@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -1036,6 +1036,16 @@ const Admin = () => {
                 </TabsTrigger>
               ))}
             </TabsList>
+
+            <div className="admin-sidebar-status rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)]">
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                <ShieldCheck className="h-4 w-4" />
+                Sistemos būsena
+              </div>
+              <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
+            </div>
+
+
 
 
             <div className="min-w-0 flex-1 space-y-5">
