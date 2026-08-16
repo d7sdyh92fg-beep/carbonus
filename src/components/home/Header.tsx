@@ -220,7 +220,7 @@ export function Header() {
                         : "bg-[hsl(var(--carbonus-dark))]/[0.04] text-[hsl(var(--carbonus-dark))]/70 border-[hsl(var(--carbonus-dark))]/10"
                     )}
                   >
-                    {lng.toUpperCase()}
+                    {lng === "lt" ? "🇱🇹" : "🇬🇧"} {lng.toUpperCase()}
                   </button>
                 ))}
               </div>
