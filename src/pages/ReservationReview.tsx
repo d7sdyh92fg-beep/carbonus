@@ -354,43 +354,20 @@ export default function ReservationReview() {
   const dateLocale = language === 'en' ? enUS : lt;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-card border-b border-border">
-        <div className="container max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate(-1)}
-              className="gap-2"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              {t('review.back')}
-            </Button>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">
-                {paymentMethod === 'pay_at_counter' ? t('review.reservationFee') : t('review.totalToPay')}
-              </p>
-              <p className="text-2xl font-bold text-primary">
-                {displayAmount.toFixed(2)} €
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="container max-w-6xl mx-auto px-4 py-8">
+    <ReservationFlowShell
+      step={4}
+      title={t('review.reviewTitle')}
+      subtitle={t('review.reviewSubtitle')}
+      totalLabel={paymentMethod === 'pay_at_counter' ? t('review.reservationFee') : t('review.totalToPay')}
+      total={displayAmount}
+      backLabel={t('review.back')}
+      onBack={() => navigate(-1)}
+      language={language}
+    >
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Form */}
           <div className="lg:col-span-2">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-4">{t('review.reviewTitle')}</h1>
-              <p className="text-muted-foreground">
-                {t('review.reviewSubtitle')}
-              </p>
-            </div>
+
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information */}
