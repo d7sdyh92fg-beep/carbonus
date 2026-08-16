@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -834,6 +834,24 @@ const Admin = () => {
         { label: 'Reikia dėmesio', value: `${pendingCount} laukia patvirtinimo` },
       ],
     },
+    calendar: {
+      kicker: 'Autoparko planas',
+      title: 'Kalendorius',
+      subtitle: 'Artimiausių 8 dienų automobilių užimtumo laiko juosta – iškart matomi laisvi ir užimti automobiliai.',
+      stats: [
+        { label: 'Automobiliai', value: `${cars.length} autoparke` },
+        { label: 'Aktyvios nuomos', value: `${activeReservations.length} šiuo metu` },
+      ],
+    },
+    customers: {
+      kicker: 'Klientų duomenys',
+      title: 'Klientai',
+      subtitle: 'Kontaktai, nuomos istorija ir bendra kliento vertė vienoje vietoje.',
+      stats: [
+        { label: 'Unikalūs klientai', value: `${new Set(reservations.map((r) => r.customers?.id || r.customers?.email)).size} kontaktai` },
+        { label: 'Rezervacijos', value: `${reservations.length} iš viso` },
+      ],
+    },
     'in-person': {
       kicker: 'Vietinė rezervacija',
       title: 'Nauja rezervacija',
@@ -966,6 +984,8 @@ const Admin = () => {
             <TabsList className="admin-sidebar-nav flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:sticky lg:top-[96px] lg:flex-col lg:overflow-visible">
               {[
                 { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
+                { value: 'calendar', icon: CalendarDays, label: 'Kalendorius' },
+                { value: 'customers', icon: ContactRound, label: 'Klientai' },
                 { value: 'in-person', icon: Users, label: 'Nauja rezervacija' },
                 { value: 'history', icon: History, label: 'Istorija' },
                 { value: 'invoices', icon: Receipt, label: 'Sąskaitos' },
@@ -1744,6 +1764,19 @@ const Admin = () => {
                 </Card>
               </TabsContent>
 
+              <TabsContent value="calendar" className="space-y-4 sm:space-y-6">
+                <AdminFleetTimeline
+                  cars={cars}
+                  reservations={reservations}
+                  onOpenCar={handleCarClick}
+                  onOpenReservation={handleReviewReservation}
+                />
+              </TabsContent>
+
+              <TabsContent value="customers" className="space-y-4 sm:space-y-6">
+                <AdminCustomersView reservations={reservations} onOpenReservation={handleReviewReservation} />
+              </TabsContent>
+
           <TabsContent value="in-person">
             <InPersonBooking />
           </TabsContent>
@@ -1824,5 +1857,216 @@ const Admin = () => {
     </div>
   );
 };
+
+
+function AdminFleetTimeline({
+  cars,
+  reservations,
+  onOpenCar,
+  onOpenReservation,
+}: {
+  cars: any[];
+  reservations: Reservation[];
+  onOpenCar: (car: { id: string; name: string }) => void;
+  onOpenReservation: (reservation: Reservation) => void;
+}) {
+  const dates = Array.from({ length: 8 }, (_, index) => {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() + index);
+    return { date, key: format(date, 'yyyy-MM-dd'), label: format(date, 'MM-dd') };
+  });
+
+  return (
+    <div className="space-y-5">
+      <Card className="overflow-hidden rounded-[24px] border-[#dfe8e3]">
+        <CardHeader className="flex flex-row items-center justify-between border-b border-[#e5ece8] px-5 py-5">
+          <div>
+            <CardTitle className="text-[17px]">Artimiausios dienos</CardTitle>
+            <CardDescription>Automobilių rezervacijų kalendorius</CardDescription>
+          </div>
+          <div className="hidden items-center gap-3 text-[10px] font-bold text-muted-foreground sm:flex">
+            <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Laisva</span>
+            <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Rezervuota</span>
+            <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-amber-400" /> Laukia</span>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <div className="min-w-[980px]">
+              <div className="grid grid-cols-[220px_repeat(8,minmax(86px,1fr))] border-b border-[#e4ebe7] bg-[#f5f8f6]">
+                <div className="px-5 py-4 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#6f8077]">Automobilis</div>
+                {dates.map(({ key, date, label }) => (
+                  <div key={key} className="border-l border-[#e2eae6] px-2 py-3 text-center">
+                    <p className="text-[9px] font-extrabold uppercase text-[#809087]">{date.toLocaleDateString('lt-LT', { weekday: 'short' })}</p>
+                    <p className="mt-1 text-xs font-bold">{label}</p>
+                  </div>
+                ))}
+              </div>
+              {cars.map((car) => (
+                <div key={car.id} className="grid grid-cols-[220px_repeat(8,minmax(86px,1fr))] border-b border-[#ebf0ed] last:border-b-0">
+                  <button
+                    type="button"
+                    onClick={() => onOpenCar({ id: car.id, name: car.name })}
+                    className="flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f2f8f5]"
+                  >
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eaf5ef] text-[#0b7952]"><Car className="h-4 w-4" /></span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-[12px] font-bold">{car.name}</span>
+                      <span className="block truncate text-[10px] text-muted-foreground">{car.license_plate || car.category}</span>
+                    </span>
+                  </button>
+                  {dates.map(({ key }) => {
+                    const reservation = reservations.find(
+                      (r) => r.car_id === car.id && r.start_date <= key && r.end_date >= key && !['completed', 'cancelled', 'denied'].includes(r.status)
+                    );
+                    const waiting = reservation && ['requested', 'awaiting_payment', 'pending'].includes(reservation.status);
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => (reservation ? onOpenReservation(reservation) : onOpenCar({ id: car.id, name: car.name }))}
+                        className={`relative min-h-[62px] border-l border-[#e7eeea] p-1.5 transition hover:brightness-[0.98] ${reservation ? (waiting ? 'bg-amber-50' : 'bg-blue-50') : 'bg-white hover:bg-emerald-50/60'}`}
+                        title={reservation ? `${reservation.customers?.first_name || ''} ${reservation.customers?.last_name || ''}` : 'Laisva'}
+                      >
+                        {reservation ? (
+                          <span className={`block h-full min-h-[48px] rounded-[10px] px-2 py-2 text-left ${waiting ? 'bg-amber-100 text-amber-900' : 'bg-blue-100 text-blue-900'}`}>
+                            <span className="block truncate text-[9px] font-extrabold">{reservation.customers?.first_name || 'Blokas'}</span>
+                            <span className="mt-1 block truncate text-[8px] opacity-70">€{reservation.total_amount}</span>
+                          </span>
+                        ) : (
+                          <span className="mx-auto block h-2 w-2 rounded-full bg-emerald-400" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function AdminCustomersView({
+  reservations,
+  onOpenReservation,
+}: {
+  reservations: Reservation[];
+  onOpenReservation: (reservation: Reservation) => void;
+}) {
+  const [query, setQuery] = useState('');
+  const customerMap = new Map<string, { customer: Reservation['customers']; reservations: Reservation[]; spent: number; latest: Reservation }>();
+  reservations.forEach((reservation) => {
+    if (!reservation.customers) return;
+    const key = reservation.customers.id || reservation.customers.email;
+    if (!key) return;
+    const current = customerMap.get(key);
+    if (current) {
+      current.reservations.push(reservation);
+      current.spent += Number(reservation.total_rental_cost || 0);
+      if (new Date(reservation.created_at) > new Date(current.latest.created_at)) current.latest = reservation;
+    } else {
+      customerMap.set(key, {
+        customer: reservation.customers,
+        reservations: [reservation],
+        spent: Number(reservation.total_rental_cost || 0),
+        latest: reservation,
+      });
+    }
+  });
+  const customers = Array.from(customerMap.values())
+    .filter((entry) =>
+      `${entry.customer.first_name} ${entry.customer.last_name} ${entry.customer.email} ${entry.customer.phone}`
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    )
+    .sort((a, b) => b.reservations.length - a.reservations.length);
+  const repeatCustomers = customers.filter((entry) => entry.reservations.length > 1).length;
+
+  const metrics = [
+    { icon: Users, label: 'Klientai', value: customers.length.toString(), detail: 'unikalūs kontaktai', tint: 'bg-carbonus-green-soft text-carbonus-green-deep' },
+    { icon: ContactRound, label: 'Sugrįžtantys', value: repeatCustomers.toString(), detail: 'daugiau nei 1 nuoma', tint: 'bg-blue-50 text-blue-600' },
+    { icon: CircleDollarSign, label: 'Vertė', value: `€${customers.reduce((sum, c) => sum + c.spent, 0).toFixed(2)}`, detail: 'nuomos pajamos', tint: 'bg-purple-50 text-purple-600' },
+    { icon: Sparkles, label: 'VIP', value: customers.filter((c) => c.reservations.length >= 3 || c.spent >= 1000).length.toString(), detail: 'vertingi klientai', tint: 'bg-amber-50 text-amber-600' },
+  ];
+
+  return (
+    <div className="space-y-5">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {metrics.map(({ icon: Icon, label, value, detail, tint }) => (
+          <div key={label} className="rounded-[20px] border border-[#dfe8e3] bg-white p-4 shadow-[0_10px_30px_rgba(14,47,35,0.05)]">
+            <span className={`flex h-9 w-9 items-center justify-center rounded-full ${tint}`}><Icon className="h-[18px] w-[18px]" /></span>
+            <p className="mt-3 text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted-foreground">{label}</p>
+            <p className="mt-1 text-[22px] font-black leading-none">{value}</p>
+            <p className="mt-1 text-[11px] text-muted-foreground">{detail}</p>
+          </div>
+        ))}
+      </div>
+      <Card className="overflow-hidden rounded-[24px] border-[#dfe8e3]">
+        <CardHeader className="flex flex-col gap-4 border-b border-[#e5ece8] px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <CardTitle className="text-[17px]">Klientų sąrašas</CardTitle>
+            <CardDescription>{customers.length} kontaktai pagal pasirinktą paiešką</CardDescription>
+          </div>
+          <div className="relative w-full sm:w-[320px]">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Vardas, el. paštas arba telefonas" className="pl-10" />
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          {customers.length === 0 ? (
+            <div className="m-5 rounded-[18px] border border-dashed border-[#cfe0d7] p-8 text-center">
+              <Users className="mx-auto h-8 w-8 text-[#78a28e]" />
+              <p className="mt-2 text-sm font-bold">Klientų nerasta</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-[#e8eeeb]">
+              {customers.map((entry) => {
+                const vip = entry.reservations.length >= 3 || entry.spent >= 1000;
+                return (
+                  <button
+                    key={entry.customer.id || entry.customer.email}
+                    type="button"
+                    onClick={() => onOpenReservation(entry.latest)}
+                    className="grid w-full gap-3 px-5 py-4 text-left transition hover:bg-[#f7faf8] md:grid-cols-[minmax(220px,1.4fr)_minmax(160px,1fr)_120px_120px_32px] md:items-center"
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9f6ef] text-[12px] font-black text-[#0b7750]">
+                        {entry.customer.first_name?.charAt(0)}{entry.customer.last_name?.charAt(0)}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="flex items-center gap-2">
+                          <span className="truncate text-[13px] font-bold">{entry.customer.first_name} {entry.customer.last_name}</span>
+                          {vip && <Badge className="border-0 bg-amber-100 text-[9px] text-amber-800">VIP</Badge>}
+                        </span>
+                        <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">{entry.customer.email}</span>
+                      </span>
+                    </span>
+                    <span className="hidden min-w-0 md:block">
+                      <span className="block truncate text-[11px] font-semibold"><Phone className="mr-1 inline h-3 w-3" />{entry.customer.phone || 'Nenurodyta'}</span>
+                      <span className="mt-1 block truncate text-[10px] text-muted-foreground">Paskutinė: {entry.latest.created_at.slice(0, 10)}</span>
+                    </span>
+                    <span className="text-[12px]">
+                      <span className="block text-[9px] font-bold uppercase tracking-[0.08em] text-muted-foreground">Nuomos</span>
+                      <span className="mt-1 block font-extrabold">{entry.reservations.length}</span>
+                    </span>
+                    <span className="text-[12px]">
+                      <span className="block text-[9px] font-bold uppercase tracking-[0.08em] text-muted-foreground">Vertė</span>
+                      <span className="mt-1 block font-extrabold text-[#0b7a50]">€{entry.spent.toFixed(2)}</span>
+                    </span>
+                    <ChevronRight className="hidden h-4 w-4 text-[#98a79f] md:block" />
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 export default Admin;
