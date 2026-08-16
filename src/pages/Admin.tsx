@@ -168,6 +168,30 @@ const Admin = () => {
     }
   };
 
+  const todayKey = format(new Date(), 'yyyy-MM-dd');
+  const availableCarsToday = React.useMemo(() => {
+    const unavailableCarIds = new Set<string>();
+
+    reservations.forEach((r) => {
+      if (
+        r.car_id &&
+        r.start_date <= todayKey &&
+        r.end_date >= todayKey &&
+        !['completed', 'cancelled', 'denied'].includes(r.status)
+      ) {
+        unavailableCarIds.add(r.car_id);
+      }
+    });
+
+    manualBlockedDates.forEach((b) => {
+      if (b.car_id && b.blocked_date === todayKey) {
+        unavailableCarIds.add(b.car_id);
+      }
+    });
+
+    return Math.max(0, cars.length - unavailableCarIds.size);
+  }, [reservations, manualBlockedDates, cars, todayKey]);
+
   useEffect(() => {
     fetchCars();
   }, []);
