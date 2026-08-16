@@ -852,6 +852,7 @@ export type Database = {
           start_date: string
         }[]
       }
+      get_my_admin_role: { Args: never; Returns: string }
       get_next_invoice_number: {
         Args: { p_prefix?: string }
         Returns: {
