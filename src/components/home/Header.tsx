@@ -208,7 +208,7 @@ export function Header() {
 
             <div className="relative px-5 pb-[calc(env(safe-area-inset-bottom)+20px)] pt-4 border-t border-[hsl(var(--carbonus-dark))]/10 space-y-3">
               <div className="flex items-center gap-2">
-                {(["lt", "en", "ru"] as const).map((lng) => (
+                {(["lt", "en"] as const).map((lng) => (
                   <button
                     key={lng}
                     onClick={() => setLanguage(lng)}
