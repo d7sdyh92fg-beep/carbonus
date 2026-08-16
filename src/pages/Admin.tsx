@@ -1038,7 +1038,7 @@ const Admin = () => {
 
         <div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="admin-workspace-tabs space-y-5">
-            <TabsList className="admin-sidebar-nav flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:sticky lg:top-[96px] lg:flex-col lg:overflow-visible">
+            <TabsList className="admin-sidebar-nav flex h-auto w-full flex-row justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] md:grid md:grid-cols-4 md:overflow-visible lg:sticky lg:top-[96px] lg:flex-col lg:overflow-visible">
               {[
                 { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
                 { value: 'calendar', icon: CalendarDays, label: 'Kalendorius' },
@@ -1054,10 +1054,10 @@ const Admin = () => {
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="admin-sidebar-trigger h-11 shrink-0 justify-start gap-3 rounded-[13px] px-3 text-[12px] font-bold text-[#65776f] data-[state=active]:bg-[#0b5d43] data-[state=active]:text-white data-[state=active]:shadow-[0_8px_24px_rgba(8,93,66,0.18)] lg:w-full"
+                  className="admin-sidebar-trigger h-auto min-h-11 shrink-0 justify-start gap-3 rounded-[13px] px-3 py-2.5 text-[11px] font-bold text-[#65776f] data-[state=active]:bg-[#0b5d43] data-[state=active]:text-white data-[state=active]:shadow-[0_8px_24px_rgba(8,93,66,0.18)] md:w-full lg:w-full lg:text-[12px]"
                 >
                   <Icon className="h-4 w-4 shrink-0" />
-                  <span className="whitespace-nowrap">{label}</span>
+                  <span className="whitespace-nowrap md:whitespace-normal lg:whitespace-nowrap">{label}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
