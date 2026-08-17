@@ -1,0 +1,1 @@
+SELECT cron.alter_job(jobid, active := false) FROM cron.job WHERE jobname = 'return-watchdog-every-5-min';
