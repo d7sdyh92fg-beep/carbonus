@@ -44,8 +44,9 @@ export async function requireAdmin(req: Request): Promise<AdminAuthResult> {
     .from("user_roles")
     .select("role")
     .eq("user_id", userData.user.id)
-    .eq("role", "admin")
+    .in("role", ["admin", "owner", "fleet_manager"])
     .maybeSingle();
+
 
   if (!roleData) {
     return { ok: false, status: 403, error: "Forbidden: admin access required" };
