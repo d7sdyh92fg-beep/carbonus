@@ -174,29 +174,29 @@ export function LocationSearchInput({
     }
     setStatus("loading");
     try {
-      const places: any = await (window as any).google.maps.importLibrary("places");
-      const place = new places.Place({ id: s.placeId, requestedLanguage: "lt" });
-      await place.fetchFields({
-        fields: ["displayName", "formattedAddress", "location", "addressComponents"],
+      const { data, error: fnError } = await supabase.functions.invoke("place-search", {
+        body: { action: "details", placeId: s.placeId },
       });
-      const loc: PlaceLocation = {
-        placeName: place.displayName || s.primary,
-        address: place.formattedAddress || s.secondary,
-        city: cityFromComponents(place.addressComponents) || "",
-        country: countryFromComponents(place.addressComponents) || "",
-        lat: place.location?.lat?.() ?? null,
-        lng: place.location?.lng?.() ?? null,
-      };
-      onChange(loc);
+      if (fnError || !data?.place?.address) throw fnError ?? new Error("NO_PLACE");
+      const p = data.place;
+      onChange({
+        placeName: p.placeName || s.primary,
+        address: p.address || s.secondary,
+        city: p.city || "",
+        country: p.country || "",
+        lat: p.lat ?? null,
+        lng: p.lng ?? null,
+      });
       setQuery("");
       setStatus("success");
-      sessionTokenRef.current = null;
-    } catch {
+    } catch (e) {
+      console.warn("Place details failed:", e);
       onChange({ ...EMPTY_LOCATION, placeName: s.primary, address: s.secondary });
       setQuery("");
       setStatus("error");
     }
   };
+
 
   return (
     <div ref={wrapRef} className="relative">
