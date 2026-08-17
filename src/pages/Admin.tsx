@@ -258,6 +258,8 @@ interface Reservation {
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
   const { role, isOwner } = useAdminRole();
+  // Fleet manager can create & view reservations, but not edit or delete them
+  const canManageReservations = role === 'owner' || role === 'admin';
   const { toast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
