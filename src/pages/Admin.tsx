@@ -79,6 +79,7 @@ import { ReservationReview } from "@/components/admin/ReservationReview";
 import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 import { EmailTester } from "@/components/admin/EmailTester";
+import SystemStatusDialog from "@/components/admin/SystemStatusDialog";
 
 // Pakeitimai nuo paskutinio publikavimo (naujausi viršuje)
 const LAST_PUBLISH_DATE = '2026-08-05';
