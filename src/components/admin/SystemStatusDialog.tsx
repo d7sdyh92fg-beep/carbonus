@@ -261,27 +261,27 @@ export async function runSystemChecks(): Promise<SystemCheck[]> {
     });
   }
 
-  // 10. Edge funkcijos
-  await Promise.all(
-    EDGE_FUNCTIONS.map(async (name) => {
-      const { result, error, ms } = await timed(async () => {
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, {
-          method: 'OPTIONS',
-          headers: { 'Access-Control-Request-Method': 'POST' },
-        });
-        return res.status;
+  // 10. Edge funkcijos (pasiekiamumo patikra be šalutinio poveikio)
+  const fnChecks = await Promise.all(
+    EDGE_FUNCTIONS.map(async ({ name, used, note }) => {
+      const { error, ms } = await timed(async () => {
+        // no-cors: patikriname tik ar endpointas atsako (jokių laiškų nesiunčiame)
+        await fetch(`${SUPABASE_URL}/functions/v1/${name}`, { method: 'GET', mode: 'no-cors' });
+        return true;
       });
-      const status = result ?? 0;
-      checks.push({
+      const reachable = !error;
+      const check: SystemCheck = {
         id: `fn-${name}`,
-        group: 'Edge funkcijos',
+        group: used ? 'Edge funkcijos (naudojamos)' : 'Edge funkcijos (nenaudojamos)',
         label: name,
-        state: error ? 'fail' : status >= 200 && status < 500 ? 'ok' : 'fail',
-        detail: error ? 'Nepasiekiama' : `HTTP ${status} · ${ms} ms`,
+        state: !reachable ? 'fail' : used ? 'ok' : 'warn',
+        detail: !reachable ? `Nepasiekiama · ${note}` : `${note} · ${ms} ms`,
         ms,
-      });
+      };
+      return check;
     }),
   );
+  checks.push(...fnChecks);
 
   return checks;
 }
