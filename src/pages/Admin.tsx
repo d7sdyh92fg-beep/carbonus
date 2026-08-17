@@ -196,7 +196,7 @@ const CHANGELOG: { date: string; items: string[] }[] = [
       'Sukurtas admin saskaitų faktūrų redagavimas: rankinis numerio ir datos keitimas.',
       'Sąskaitų išrašymo data pagal nutylėjimą nustatyta į nuomos pradžios datą.',
       'Sutarties šablonas suvienodintas: klientas ir adminas gauna tą pačią versiją.',
-      'Sukurtas invoice-system-architecture su CAR/CARW prefiksais.',
+      'Sukurtas invoice-system-architecture su CAR prefiksu.',
     ],
   },
   {
