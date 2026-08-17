@@ -137,13 +137,16 @@ export function Header() {
           </DropdownMenu>
 
 
-          <button
-            onClick={() => navigate(isAdmin ? "/admin" : "/auth")}
-            className="absolute left-full top-1/2 ml-3 -translate-y-1/2 inline-flex items-center gap-2 h-[40px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
-          >
-            <UserCircle className="h-4 w-4" />
-            Admin
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => navigate("/admin")}
+              className="absolute left-full top-1/2 ml-3 -translate-y-1/2 inline-flex items-center gap-2 h-[40px] px-[18px] rounded-full text-white text-sm font-semibold border border-white/10 bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] hover:brightness-110 transition"
+            >
+              <UserCircle className="h-4 w-4" />
+              Admin
+            </button>
+          )}
+
         </div>
 
         {/* Mobile toggle */}
@@ -231,12 +234,15 @@ export function Header() {
                 <Phone className="h-4 w-4" /> +370 698 18 781
               </a>
 
-              <button
-                onClick={() => { setMobileOpen(false); navigate(isAdmin ? "/admin" : "/auth"); }}
-                className="w-full h-12 rounded-full text-white font-semibold bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] inline-flex items-center justify-center gap-2 hover:brightness-110 transition"
-              >
-                <UserCircle className="h-4 w-4" /> Admin
-              </button>
+              {isAdmin && (
+                <button
+                  onClick={() => { setMobileOpen(false); navigate("/admin"); }}
+                  className="w-full h-12 rounded-full text-white font-semibold bg-gradient-to-br from-[hsl(var(--carbonus-green-dark))] to-[hsl(var(--carbonus-green-deep))] inline-flex items-center justify-center gap-2 hover:brightness-110 transition"
+                >
+                  <UserCircle className="h-4 w-4" /> Admin
+                </button>
+              )}
+
             </div>
           </div>
         </div>,
