@@ -96,8 +96,9 @@ export const ReturnsBoard = ({ reservations, onStartInspection }: Props) => {
                   <Badge className="border-red-300 bg-red-100 text-red-700">Vėluoja</Badge>
                 ) : (
                   <Badge className="border-carbonus-green/40 bg-carbonus-green-soft text-carbonus-green-deep">
-                    Šiandien
+                    {isToday ? 'Šiandien' : 'Rytoj'}
                   </Badge>
+
                 )}
               </div>
 
