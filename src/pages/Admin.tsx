@@ -2010,8 +2010,9 @@ const Admin = () => {
               Pakeitimų žurnalas
             </DialogTitle>
             <DialogDescription className="text-[13px] text-[#65776f]">
-              Visų atliktų sistemos atnaujinimų istorija.
+              Visi pakeitimai, atlikti nuo paskutinio publikavimo ({LAST_PUBLISH_DATE}).
             </DialogDescription>
+
           </DialogHeader>
           <div className="max-h-[60vh] overflow-y-auto px-6 pb-6">
             <div className="relative pl-4">
