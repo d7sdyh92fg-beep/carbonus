@@ -1073,11 +1073,11 @@ const Admin = () => {
                 {hero.subtitle}
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 lg:gap-3">
               {hero.stats.map((stat) => (
-                <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">{stat.label}</p>
-                  <p className="mt-1 text-sm font-semibold text-white">{stat.value}</p>
+                <div key={stat.label} className="w-[130px] rounded-xl border border-white/10 bg-white/10 px-2.5 py-2 backdrop-blur-sm md:w-[140px] lg:w-[156px] lg:rounded-2xl lg:px-4 lg:py-3">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/60 lg:text-[10px]">{stat.label}</p>
+                  <p className="mt-0.5 truncate text-[11px] font-semibold text-white lg:text-sm">{stat.value}</p>
                 </div>
               ))}
             </div>
