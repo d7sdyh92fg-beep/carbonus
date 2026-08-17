@@ -267,10 +267,6 @@
   margin-top: 0;
 }
 
-.admin-sidebar-nav {
-  max-height: calc(100vh - 112px);
-}
-
 .admin-sidebar-trigger[data-state="active"] svg {
   color: #7bf0b8;
 }
