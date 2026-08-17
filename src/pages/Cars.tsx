@@ -317,48 +317,8 @@ const Cars = () => {
           </div>
         </section>
 
-        <section className="relative z-10 mx-auto max-w-[1320px] px-6 pb-5 pt-10 md:px-6 lg:pt-12">
-          <div className="rounded-[24px] border border-[#e0e8e4] bg-white p-3 shadow-[0_18px_55px_rgba(12,55,38,0.07)] sm:p-4">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-              <div className="relative min-w-0 flex-1 xl:max-w-[310px]">
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#789087]" />
-                <input
-                  value={searchTerm}
-                  onChange={(event) => setSearchTerm(event.target.value)}
-                  placeholder={text.search}
-                  aria-label={text.search}
-                  className="h-12 w-full rounded-[14px] border border-[#dde6e1] bg-[#f8faf9] pl-11 pr-10 text-[14px] text-[#17231f] outline-none transition focus:border-[hsl(var(--carbonus-green))]/60 focus:ring-4 focus:ring-[hsl(var(--carbonus-green))]/10"
-                />
-                {searchTerm && (
-                  <button onClick={() => setSearchTerm("")} aria-label={text.clear} className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-[#789087] hover:bg-[#eef3f0]">
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
 
-              <div className="flex min-w-0 gap-2 overflow-x-auto pb-1 xl:pb-0">
-                {FILTERS.map((filter) => {
-                  const active = filter === selectedCategory;
-                  return (
-                    <button
-                      key={filter}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => selectCategory(filter)}
-                      className={`h-10 shrink-0 rounded-full px-4 text-[13px] font-semibold transition ${
-                        active
-                          ? "bg-[hsl(var(--carbonus-green-dark))] text-white shadow-[0_8px_24px_rgba(3,103,58,0.22)]"
-                          : "border border-[#e0e8e4] bg-white text-[#53645d] hover:border-[hsl(var(--carbonus-green))]/40 hover:text-[hsl(var(--carbonus-green-dark))]"
-                      }`}
-                    >
-                      {activeLanguage === "en" ? FILTER_LABELS_EN[filter] : filter}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
+
 
         <section className="mx-auto max-w-[1320px] px-6 pb-24 pt-8 md:px-6 lg:pb-28">
           <div className="mb-7 flex items-center justify-between">
