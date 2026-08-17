@@ -1121,6 +1121,15 @@ const Admin = () => {
         { label: 'Saugumas', value: 'Slaptažodžiai užšifruoti' },
       ],
     },
+    changelog: {
+      kicker: 'Versijos istorija',
+      title: 'Changelog',
+      subtitle: 'Peržiūrėkite visus sistemoje atliktus pakeitimus nuo paskutinio publikavimo.',
+      stats: [
+        { label: 'Publikavimas', value: LAST_PUBLISH_DATE },
+        { label: 'Įrašų', value: `${CHANGELOG.reduce((sum, e) => sum + e.items.length, 0)} pakeitimai` },
+      ],
+    },
   };
 
 
