@@ -211,7 +211,28 @@ const writeDraftsMap = (map: Record<string, DraftPayload>) => {
 
 
 
-export function InPersonBooking() {
+export interface InPersonPrefill {
+  /** unique key so the same phone reservation can be re-applied */
+  key: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  carId?: string;
+  carName?: string;
+  /** yyyy-MM-dd */
+  startDate?: string;
+  /** yyyy-MM-dd */
+  endDate?: string;
+  notes?: string;
+}
+
+interface InPersonBookingProps {
+  prefill?: InPersonPrefill | null;
+  onBookingCreated?: () => void;
+}
+
+export function InPersonBooking({ prefill, onBookingCreated }: InPersonBookingProps = {}) {
   const [step, setStep] = useState<'details' | 'services' | 'documents' | 'payment' | 'complete'>('details');
   const [selectedServices, setSelectedServices] = useState<AdditionalService[]>([]);
   const [customer, setCustomer] = useState<Customer>({
@@ -787,6 +808,7 @@ export function InPersonBooking() {
       toast.success('Rezervacija sėkmingai užbaigta!');
       discardDraft(currentDraftIdRef.current || undefined);
       setStep('complete');
+      onBookingCreated?.();
 
     } catch (error) {
       console.error('Error completing booking:', error);
