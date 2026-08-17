@@ -1053,11 +1053,16 @@ const Admin = () => {
   const heroContent: Record<string, { kicker: string; title: string; subtitle: string; stats: { label: string; value: string }[] }> = {
     dashboard: {
       kicker: 'Carbonus administravimas',
-      title: 'Administratoriaus skydelis',
-      subtitle: 'Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.',
+      title: returnsDueCount > 0 ? `Grąžinimai: ${returnsDueCount} laukia patikros` : 'Administratoriaus skydelis',
+      subtitle:
+        returnsDueCount > 0
+          ? 'Artimiausi automobilių grąžinimai iškelti į skydelio viršų – pradėkite priėmimo patikrą.'
+          : 'Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.',
       stats: [
         { label: 'Šiandien', value: todayLabel },
-        { label: 'Reikia dėmesio', value: `${pendingCount} laukia patvirtinimo` },
+        returnsDueCount > 0
+          ? { label: 'Grąžinimai', value: `${returnsDueCount} per 24 val.` }
+          : { label: 'Reikia dėmesio', value: `${pendingCount} laukia patvirtinimo` },
       ],
     },
     calendar: {
