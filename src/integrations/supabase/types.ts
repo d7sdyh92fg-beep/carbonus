@@ -883,6 +883,7 @@ export type Database = {
       }
     }
     Functions: {
+      can_manage_reservations: { Args: never; Returns: boolean }
       check_car_availability: {
         Args: { p_car_id: string; p_end_date: string; p_start_date: string }
         Returns: Json

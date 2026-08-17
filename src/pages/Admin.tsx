@@ -258,6 +258,8 @@ interface Reservation {
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
   const { role, isOwner } = useAdminRole();
+  // Fleet manager can create & view reservations, but not edit or delete them
+  const canManageReservations = role === 'owner' || role === 'admin';
   const { toast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -1093,7 +1095,7 @@ const Admin = () => {
       );
     }
 
-    if (clickable && reservationId) {
+    if (clickable && reservationId && canManageReservations) {
 
       return (
         <Select value={status} onValueChange={(value) => handleStatusChange(reservationId, value)}>
@@ -1727,58 +1729,64 @@ const Admin = () => {
                                        >
                                          <FileText className="h-4 w-4" />
                                        </Button>
+                                        {canManageReservations && (
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => handlePricingOverride(reservation)}
+                                          title="Nustatyti specialią kainą"
+                                        >
+                                          <DollarSign className="h-4 w-4" />
+                                        </Button>
+                                        )}
+                                        {canManageReservations && (
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                          title="Sąskaita faktūra"
+                                        >
+                                          <Receipt className="h-4 w-4" />
+                                        </Button>
+                                        )}
+                                      </>
+                                    )}
+                                    {canManageReservations && reservation.status === 'requested' && (
+                                     <>
                                        <Button
-                                         variant="outline"
+                                         variant="default"
                                          size="sm"
-                                         onClick={() => handlePricingOverride(reservation)}
-                                         title="Nustatyti specialią kainą"
+                                         onClick={() => approveReservation(reservation.id)}
                                        >
-                                         <DollarSign className="h-4 w-4" />
+                                         <CheckCircle className="h-4 w-4" />
                                        </Button>
                                        <Button
-                                         variant="outline"
+                                         variant="destructive"
                                          size="sm"
-                                         onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
-                                         title="Sąskaita faktūra"
+                                         onClick={() => denyReservation(reservation.id)}
                                        >
-                                         <Receipt className="h-4 w-4" />
+                                         <XCircle className="h-4 w-4" />
                                        </Button>
                                      </>
                                    )}
-                                   {reservation.status === 'requested' && (
-                                    <>
-                                      <Button
-                                        variant="default"
-                                        size="sm"
-                                        onClick={() => approveReservation(reservation.id)}
-                                      >
-                                        <CheckCircle className="h-4 w-4" />
-                                      </Button>
-                                      <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => denyReservation(reservation.id)}
-                                      >
-                                        <XCircle className="h-4 w-4" />
-                                      </Button>
-                                    </>
-                                  )}
-                                  {reservation.status === 'paid' && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => cancelReservation(reservation.id)}
-                                    >
-                                      <Ban className="h-4 w-4" />
-                                    </Button>
-                                  )}
-                                  <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() => deleteReservation(reservation.id)}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
+                                   {canManageReservations && reservation.status === 'paid' && (
+                                     <Button
+                                       variant="outline"
+                                       size="sm"
+                                       onClick={() => cancelReservation(reservation.id)}
+                                     >
+                                       <Ban className="h-4 w-4" />
+                                     </Button>
+                                   )}
+                                   {canManageReservations && (
+                                   <Button
+                                     variant="destructive"
+                                     size="sm"
+                                     onClick={() => deleteReservation(reservation.id)}
+                                   >
+                                     <Trash2 className="h-4 w-4" />
+                                   </Button>
+                                   )}
                                 </div>
                               </TableCell>
 
@@ -1855,68 +1863,74 @@ const Admin = () => {
                                  <FileText className="h-3 w-3 mr-1" />
                                  Peržiūrėti
                                </Button>
+                                {canManageReservations && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handlePricingOverride(reservation)}
+                                  className="text-xs"
+                                  title="Nustatyti specialią kainą"
+                                >
+                                  <DollarSign className="h-3 w-3 mr-1" />
+                                  Kaina
+                                </Button>
+                                )}
+                                {canManageReservations && (
+                                 <Button
+                                   variant="outline"
+                                   size="sm"
+                                   onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                   className="text-xs"
+                                   title="Sąskaita faktūra"
+                                 >
+                                   <Receipt className="h-3 w-3 mr-1" />
+                                   Sąskaita
+                                 </Button>
+                                )}
+                                {canManageReservations && reservation.status === 'requested' && (
+                                 <>
+                                   <Button
+                                     variant="default"
+                                     size="sm"
+                                     onClick={() => approveReservation(reservation.id)}
+                                     className="text-xs"
+                                   >
+                                     <CheckCircle className="h-3 w-3 mr-1" />
+                                     Patvirtinti
+                                   </Button>
+                                   <Button
+                                     variant="destructive"
+                                     size="sm"
+                                     onClick={() => denyReservation(reservation.id)}
+                                     className="text-xs"
+                                   >
+                                     <XCircle className="h-3 w-3 mr-1" />
+                                     Atmesti
+                                   </Button>
+                                 </>
+                               )}
+                               {canManageReservations && reservation.status === 'paid' && (
+                                 <Button
+                                   variant="outline"
+                                   size="sm"
+                                   onClick={() => cancelReservation(reservation.id)}
+                                   className="text-xs"
+                                 >
+                                   <Ban className="h-3 w-3 mr-1" />
+                                   Atšaukti
+                                 </Button>
+                               )}
+                               {canManageReservations && (
                                <Button
-                                 variant="outline"
+                                 variant="destructive"
                                  size="sm"
-                                 onClick={() => handlePricingOverride(reservation)}
+                                 onClick={() => deleteReservation(reservation.id)}
                                  className="text-xs"
-                                 title="Nustatyti specialią kainą"
                                >
-                                 <DollarSign className="h-3 w-3 mr-1" />
-                                 Kaina
+                                 <Trash2 className="h-3 w-3 mr-1" />
+                                 Ištrinti
                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
-                                  className="text-xs"
-                                  title="Sąskaita faktūra"
-                                >
-                                  <Receipt className="h-3 w-3 mr-1" />
-                                  Sąskaita
-                                </Button>
-                               {reservation.status === 'requested' && (
-                                <>
-                                  <Button
-                                    variant="default"
-                                    size="sm"
-                                    onClick={() => approveReservation(reservation.id)}
-                                    className="text-xs"
-                                  >
-                                    <CheckCircle className="h-3 w-3 mr-1" />
-                                    Patvirtinti
-                                  </Button>
-                                  <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() => denyReservation(reservation.id)}
-                                    className="text-xs"
-                                  >
-                                    <XCircle className="h-3 w-3 mr-1" />
-                                    Atmesti
-                                  </Button>
-                                </>
-                              )}
-                              {reservation.status === 'paid' && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => cancelReservation(reservation.id)}
-                                  className="text-xs"
-                                >
-                                  <Ban className="h-3 w-3 mr-1" />
-                                  Atšaukti
-                                </Button>
-                              )}
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                onClick={() => deleteReservation(reservation.id)}
-                                className="text-xs"
-                              >
-                                <Trash2 className="h-3 w-3 mr-1" />
-                                Ištrinti
-                              </Button>
+                               )}
                             </div>
                           </div>
                         </Card>
