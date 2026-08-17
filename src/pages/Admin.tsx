@@ -16,7 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText, Clock } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -1028,6 +1028,7 @@ const Admin = () => {
   });
 
   const todayLabel = new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' });
+  const returnsDueCount = getReturnsDueSoon(reservations as any).length;
   const pendingCount = reservations.filter((r) => r.status === 'requested').length;
   const paidCount = reservations.filter((r) => r.status === 'paid').length;
   const historyCount = reservations.filter((r) => ['completed', 'cancelled', 'returned'].includes(String(r.status))).length;
@@ -1309,6 +1310,15 @@ const Admin = () => {
             </div>
             <div className="min-w-0 flex-1 space-y-5">
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
+              {/* Grąžinimai, kuriuos reikia priimti */}
+              <ReturnsBoard
+                reservations={reservations as any}
+                onStartInspection={(r) => {
+                  setInspectionReservation(r as unknown as InspectionReservation);
+                  setShowInspection(true);
+                }}
+              />
+
               {/* Stats Cards */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 sm:gap-4">
                 {[
@@ -1332,6 +1342,13 @@ const Admin = () => {
                     value: String(reservations.filter((r) => r.status === 'paid').length),
                     icon: CheckCircle,
                     tint: 'bg-blue-50 text-blue-600',
+                  },
+                  {
+                    label: 'Grąžinimai',
+                    sub: 'per 24 val.',
+                    value: String(returnsDueCount),
+                    icon: Clock,
+                    tint: 'bg-red-50 text-red-600',
                   },
                   {
                     label: 'Laisvi',
@@ -2161,6 +2178,13 @@ const Admin = () => {
       </main>
       
       <SystemStatusDialog open={showSystemStatus} onOpenChange={setShowSystemStatus} />
+
+      <ReturnInspectionModal
+        reservation={inspectionReservation}
+        open={showInspection}
+        onOpenChange={setShowInspection}
+        onCompleted={fetchReservations}
+      />
 
       {/* Changelog Dialog */}
       <Dialog open={showChangelog} onOpenChange={setShowChangelog}>
