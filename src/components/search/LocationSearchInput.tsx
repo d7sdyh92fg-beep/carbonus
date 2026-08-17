@@ -35,21 +35,6 @@ const FALLBACK_PLACES: PlaceLocation[] = [
   { placeName: "Warsaw Marriott Hotel", address: "Al. Jerozolimskie 65/79, Varšuva", city: "Varšuva", country: "Lenkija", lat: 52.2288, lng: 21.0027 },
 ];
 
-const cityFromComponents = (components: any[]): string => {
-  if (!components) return "";
-  const byType = (type: string) =>
-    components.find((c: any) => (c.types || []).includes(type))?.longText ||
-    components.find((c: any) => (c.types || []).includes(type))?.long_name ||
-    "";
-  return byType("locality") || byType("postal_town") || byType("administrative_area_level_2") || "";
-};
-
-const countryFromComponents = (components: any[]): string => {
-  if (!components) return "";
-  const c = components.find((x: any) => (x.types || []).includes("country"));
-  return c?.longText || c?.long_name || "";
-};
-
 export type LocationSearchStatus = "idle" | "loading" | "success" | "error";
 
 interface Props {
@@ -81,7 +66,6 @@ export function LocationSearchInput({
   const [status, setStatus] = useState<LocationSearchStatus>("idle");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const sessionTokenRef = useRef<any>(null);
 
   const fallbackPool = useMemo(
     () =>
