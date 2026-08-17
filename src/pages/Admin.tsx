@@ -2007,7 +2007,7 @@ const Admin = () => {
       
       {/* Changelog Dialog */}
       <Dialog open={showChangelog} onOpenChange={setShowChangelog}>
-        <DialogContent className="max-w-2xl rounded-[24px] border-[#dce7e1] bg-white p-0">
+        <DialogContent className="max-w-3xl rounded-[24px] border-[#dce7e1] bg-white p-0">
           <DialogHeader className="px-6 pt-6">
             <DialogTitle className="flex items-center gap-2 text-[16px] font-bold text-[#0b5d43]">
               <ScrollText className="h-5 w-5" />
@@ -2016,9 +2016,8 @@ const Admin = () => {
             <DialogDescription className="text-[13px] text-[#65776f]">
               Visi pakeitimai, atlikti nuo paskutinio publikavimo ({LAST_PUBLISH_DATE}).
             </DialogDescription>
-
           </DialogHeader>
-          <div className="max-h-[60vh] overflow-y-auto px-6 pb-6">
+          <div className="max-h-[80vh] overflow-y-auto px-6 pb-6">
             <div className="relative pl-4">
               <div className="absolute bottom-2 left-[7px] top-2 w-px bg-[#dce7e1]" />
               <ul className="space-y-6">
@@ -2040,6 +2039,7 @@ const Admin = () => {
           </div>
         </DialogContent>
       </Dialog>
+
 
       {/* Car Management Modal */}
       {selectedCar && (
