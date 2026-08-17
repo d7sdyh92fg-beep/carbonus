@@ -16,7 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText, Clock } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -80,6 +80,8 @@ import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 import { EmailTester } from "@/components/admin/EmailTester";
 import SystemStatusDialog from "@/components/admin/SystemStatusDialog";
+import { ReturnsBoard, getReturnsDueSoon } from "@/components/admin/ReturnsBoard";
+import { ReturnInspectionModal, type InspectionReservation } from "@/components/admin/ReturnInspectionModal";
 
 // Pakeitimai nuo paskutinio publikavimo (naujausi viršuje)
 const LAST_PUBLISH_DATE = '2026-08-05';
@@ -228,6 +230,11 @@ interface Reservation {
   created_at: string;
   updated_at: string;
   returned_at?: string;
+  return_date?: string | null;
+  return_time?: string | null;
+  return_stage?: string | null;
+  deposit_status?: string | null;
+  language?: string | null;
   driver_license_url?: string;
   customers: {
     id: string;
@@ -251,6 +258,8 @@ const Admin = () => {
   const [showPricingOverride, setShowPricingOverride] = useState(false);
   const [pricingReservation, setPricingReservation] = useState<Reservation | null>(null);
   const [invoiceReservation, setInvoiceReservation] = useState<Reservation | null>(null);
+  const [inspectionReservation, setInspectionReservation] = useState<InspectionReservation | null>(null);
+  const [showInspection, setShowInspection] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
@@ -361,6 +370,20 @@ const Admin = () => {
       console.log('No user authenticated');
     }
   }, [user, isAdmin, loading]);
+
+  // Realtime: grąžinimų būsenų atnaujinimai (cron pakelia rezervaciją į viršų)
+  useEffect(() => {
+    if (!user || !isAdmin) return;
+    const channel = supabase
+      .channel('admin-reservations-returns')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reservations' }, () => {
+        fetchReservations();
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, isAdmin]);
 
   // Redirect non-admin users to auth page with better error handling
   if (!loading && !user) {
@@ -939,6 +962,7 @@ const Admin = () => {
       picked_up: 'Atsiimta',
       denied: 'Atmesta',
       awaiting_payment: 'Laukiama apmokėjimo',
+      needs_resolution: '⚠️ Reikia sprendimo',
       phone_reservation: '📞 Telefoninė',
     } as const;
 
@@ -951,6 +975,7 @@ const Admin = () => {
       completed: 'bg-gray-100 text-gray-800 border-gray-300',
       pending: 'bg-gray-100 text-gray-800 border-gray-300',
       awaiting_payment: 'bg-orange-100 text-orange-800 border-orange-300',
+      needs_resolution: 'bg-amber-100 text-amber-900 border-amber-400',
       phone_reservation: 'bg-blue-100 text-blue-800 border-blue-300',
     } as const;
 
@@ -959,6 +984,7 @@ const Admin = () => {
       { value: 'paid', label: 'Apmokėta' },
       { value: 'picked_up', label: 'Atsiimta' },
       { value: 'cancelled', label: 'Atšaukta' },
+      { value: 'needs_resolution', label: '⚠️ Reikia sprendimo' },
       { value: 'completed', label: 'Baigta' },
     ];
 
@@ -1019,6 +1045,7 @@ const Admin = () => {
   });
 
   const todayLabel = new Date().toLocaleDateString('lt-LT', { month: 'long', day: 'numeric', weekday: 'long' });
+  const returnsDueCount = getReturnsDueSoon(reservations as any).length;
   const pendingCount = reservations.filter((r) => r.status === 'requested').length;
   const paidCount = reservations.filter((r) => r.status === 'paid').length;
   const historyCount = reservations.filter((r) => ['completed', 'cancelled', 'returned'].includes(String(r.status))).length;
@@ -1026,11 +1053,16 @@ const Admin = () => {
   const heroContent: Record<string, { kicker: string; title: string; subtitle: string; stats: { label: string; value: string }[] }> = {
     dashboard: {
       kicker: 'Carbonus administravimas',
-      title: 'Administratoriaus skydelis',
-      subtitle: 'Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.',
+      title: returnsDueCount > 0 ? `Grąžinimai: ${returnsDueCount} laukia patikros` : 'Administratoriaus skydelis',
+      subtitle:
+        returnsDueCount > 0
+          ? 'Artimiausi automobilių grąžinimai iškelti į skydelio viršų – pradėkite priėmimo patikrą.'
+          : 'Rezervacijos, autoparkas, klientai ir finansai vienoje aiškioje darbo erdvėje.',
       stats: [
         { label: 'Šiandien', value: todayLabel },
-        { label: 'Reikia dėmesio', value: `${pendingCount} laukia patvirtinimo` },
+        returnsDueCount > 0
+          ? { label: 'Grąžinimai', value: `${returnsDueCount} per 24 val.` }
+          : { label: 'Reikia dėmesio', value: `${pendingCount} laukia patvirtinimo` },
       ],
     },
     calendar: {
@@ -1300,6 +1332,15 @@ const Admin = () => {
             </div>
             <div className="min-w-0 flex-1 space-y-5">
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
+              {/* Grąžinimai, kuriuos reikia priimti */}
+              <ReturnsBoard
+                reservations={reservations as any}
+                onStartInspection={(r) => {
+                  setInspectionReservation(r as unknown as InspectionReservation);
+                  setShowInspection(true);
+                }}
+              />
+
               {/* Stats Cards */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 sm:gap-4">
                 {[
@@ -1323,6 +1364,13 @@ const Admin = () => {
                     value: String(reservations.filter((r) => r.status === 'paid').length),
                     icon: CheckCircle,
                     tint: 'bg-blue-50 text-blue-600',
+                  },
+                  {
+                    label: 'Grąžinimai',
+                    sub: 'per 24 val.',
+                    value: String(returnsDueCount),
+                    icon: Clock,
+                    tint: 'bg-red-50 text-red-600',
                   },
                   {
                     label: 'Laisvi',
@@ -2152,6 +2200,13 @@ const Admin = () => {
       </main>
       
       <SystemStatusDialog open={showSystemStatus} onOpenChange={setShowSystemStatus} />
+
+      <ReturnInspectionModal
+        reservation={inspectionReservation}
+        open={showInspection}
+        onOpenChange={setShowInspection}
+        onCompleted={fetchReservations}
+      />
 
       {/* Changelog Dialog */}
       <Dialog open={showChangelog} onOpenChange={setShowChangelog}>
