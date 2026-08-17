@@ -1087,8 +1087,9 @@ const Admin = () => {
 
         <div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="admin-workspace-tabs space-y-5">
-            <div className="admin-sidebar-sticky lg:sticky lg:top-[96px] lg:max-h-[calc(100vh-112px)] lg:overflow-y-auto lg:overflow-x-hidden">
-              <TabsList className="admin-sidebar-nav flex h-auto w-full flex-row justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] md:grid md:grid-cols-6 md:overflow-visible md:place-items-stretch lg:flex lg:flex-col lg:overflow-visible">
+            <div className="admin-sidebar-sticky no-scrollbar lg:sticky lg:top-[96px] lg:max-h-[calc(100vh-112px)] lg:overflow-y-auto lg:overflow-x-hidden">
+              <TabsList className="admin-sidebar-nav no-scrollbar flex h-auto w-full flex-row justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] md:grid md:grid-cols-6 md:overflow-visible md:place-items-stretch lg:flex lg:flex-col lg:overflow-visible">
+
                 {[
                   { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
                   { value: 'calendar', icon: CalendarDays, label: 'Kalendorius' },
