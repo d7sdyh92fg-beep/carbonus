@@ -51,6 +51,9 @@ verify_jwt = false
 
 [functions.driving-distance]
 verify_jwt = false
+[functions.place-search]
+verify_jwt = false
+
 [functions.send-review-feedback]
 verify_jwt = false
 

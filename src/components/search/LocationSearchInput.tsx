@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Loader2, MapPin, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { loadGoogleMaps, hasGoogleMapsKey } from "@/lib/googleMaps";
+import { supabase } from "@/integrations/supabase/client";
 import { EMPTY_LOCATION, PlaceLocation } from "@/lib/logisticsPricing";
+
 
 interface Suggestion {
   id: string;
@@ -33,21 +34,6 @@ const FALLBACK_PLACES: PlaceLocation[] = [
   { placeName: "Rygos oro uostas", address: "Mārupes nov., Ryga", city: "Ryga", country: "Latvija", lat: 56.9236, lng: 23.9711 },
   { placeName: "Warsaw Marriott Hotel", address: "Al. Jerozolimskie 65/79, Varšuva", city: "Varšuva", country: "Lenkija", lat: 52.2288, lng: 21.0027 },
 ];
-
-const cityFromComponents = (components: any[]): string => {
-  if (!components) return "";
-  const byType = (type: string) =>
-    components.find((c: any) => (c.types || []).includes(type))?.longText ||
-    components.find((c: any) => (c.types || []).includes(type))?.long_name ||
-    "";
-  return byType("locality") || byType("postal_town") || byType("administrative_area_level_2") || "";
-};
-
-const countryFromComponents = (components: any[]): string => {
-  if (!components) return "";
-  const c = components.find((x: any) => (x.types || []).includes("country"));
-  return c?.longText || c?.long_name || "";
-};
 
 export type LocationSearchStatus = "idle" | "loading" | "success" | "error";
 
@@ -80,7 +66,6 @@ export function LocationSearchInput({
   const [status, setStatus] = useState<LocationSearchStatus>("idle");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const sessionTokenRef = useRef<any>(null);
 
   const fallbackPool = useMemo(
     () =>
@@ -132,47 +117,30 @@ export function LocationSearchInput({
         setStatus("success");
       };
 
-      if (!hasGoogleMapsKey()) {
+      try {
+        const { data, error: fnError } = await supabase.functions.invoke("place-search", {
+          body: { action: "autocomplete", input: q, nearBase: restrictToDruskininkai },
+        });
+        if (fnError) throw fnError;
+        if (cancelled) return;
+        const mapped: Suggestion[] = (data?.suggestions ?? []).map((s: any) => ({
+          id: s.placeId,
+          placeId: s.placeId,
+          primary: s.primary,
+          secondary: s.secondary,
+        }));
+        if (!mapped.length) {
+          useFallback();
+          return;
+        }
+        setSuggestions(mapped);
+        setStatus("success");
+      } catch (e) {
+        if (cancelled) return;
+        console.warn("Place autocomplete failed, using fallback list:", e);
         useFallback();
-        return;
       }
 
-      try {
-        await loadGoogleMaps();
-        const places: any = await (window as any).google.maps.importLibrary("places");
-        if (!sessionTokenRef.current) {
-          sessionTokenRef.current = new places.AutocompleteSessionToken();
-        }
-        const request: any = {
-          input: q,
-          sessionToken: sessionTokenRef.current,
-          language: "lt",
-          includedRegionCodes: ["lt", "lv", "pl", "ee"],
-        };
-        if (restrictToDruskininkai) {
-          request.locationBias = {
-            center: { lat: 54.0201, lng: 23.9723 },
-            radius: 15000,
-          };
-        }
-        const { suggestions: results } =
-          await places.AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
-        if (cancelled) return;
-        const mapped: Suggestion[] = (results || [])
-          .filter((s: any) => s.placePrediction)
-          .slice(0, 6)
-          .map((s: any) => ({
-            id: s.placePrediction.placeId,
-            placeId: s.placePrediction.placeId,
-            primary: s.placePrediction.mainText?.text || s.placePrediction.text?.text || "",
-            secondary: s.placePrediction.secondaryText?.text || "",
-          }));
-        setSuggestions(mapped);
-        setStatus(mapped.length ? "success" : "success");
-      } catch {
-        if (cancelled) return;
-        useFallback();
-      }
     }, 300);
 
     return () => {
@@ -190,29 +158,29 @@ export function LocationSearchInput({
     }
     setStatus("loading");
     try {
-      const places: any = await (window as any).google.maps.importLibrary("places");
-      const place = new places.Place({ id: s.placeId, requestedLanguage: "lt" });
-      await place.fetchFields({
-        fields: ["displayName", "formattedAddress", "location", "addressComponents"],
+      const { data, error: fnError } = await supabase.functions.invoke("place-search", {
+        body: { action: "details", placeId: s.placeId },
       });
-      const loc: PlaceLocation = {
-        placeName: place.displayName || s.primary,
-        address: place.formattedAddress || s.secondary,
-        city: cityFromComponents(place.addressComponents) || "",
-        country: countryFromComponents(place.addressComponents) || "",
-        lat: place.location?.lat?.() ?? null,
-        lng: place.location?.lng?.() ?? null,
-      };
-      onChange(loc);
+      if (fnError || !data?.place?.address) throw fnError ?? new Error("NO_PLACE");
+      const p = data.place;
+      onChange({
+        placeName: p.placeName || s.primary,
+        address: p.address || s.secondary,
+        city: p.city || "",
+        country: p.country || "",
+        lat: p.lat ?? null,
+        lng: p.lng ?? null,
+      });
       setQuery("");
       setStatus("success");
-      sessionTokenRef.current = null;
-    } catch {
+    } catch (e) {
+      console.warn("Place details failed:", e);
       onChange({ ...EMPTY_LOCATION, placeName: s.primary, address: s.secondary });
       setQuery("");
       setStatus("error");
     }
   };
+
 
   return (
     <div ref={wrapRef} className="relative">
