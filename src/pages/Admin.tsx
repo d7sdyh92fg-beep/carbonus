@@ -16,7 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText, Clock } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText, Clock, ArrowRightLeft } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -74,7 +74,7 @@ const parsePricingNotes = (notes: string | null | undefined): string => {
   }
 };
 import kiaCeedFrontEnhanced from "@/assets/kia-ceed-front-enhanced.png";
-import { InPersonBooking } from "@/components/admin/InPersonBooking";
+import { InPersonBooking, type InPersonPrefill } from "@/components/admin/InPersonBooking";
 import { ReservationReview } from "@/components/admin/ReservationReview";
 import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
@@ -258,6 +258,8 @@ const Admin = () => {
   const [showPricingOverride, setShowPricingOverride] = useState(false);
   const [pricingReservation, setPricingReservation] = useState<Reservation | null>(null);
   const [invoiceReservation, setInvoiceReservation] = useState<Reservation | null>(null);
+  const [inPersonPrefill, setInPersonPrefill] = useState<InPersonPrefill | null>(null);
+  const [pendingPhoneBlockId, setPendingPhoneBlockId] = useState<string | null>(null);
   const [inspectionReservation, setInspectionReservation] = useState<InspectionReservation | null>(null);
   const [showInspection, setShowInspection] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
@@ -523,6 +525,64 @@ const Admin = () => {
     }
   };
 
+
+  /** Telefoninę rezervaciją perkelia į pilną „Vietinė rezervacija" formą. */
+  const convertPhoneReservation = (reservation: Reservation) => {
+    const seedId = String(reservation.id).replace('phone-', '');
+    const fullName = (reservation.customers?.first_name || '').trim();
+    const [firstName, ...rest] = fullName.split(' ');
+    setPendingPhoneBlockId(seedId);
+    setInPersonPrefill({
+      key: `${seedId}-${Date.now()}`,
+      firstName: firstName || '',
+      lastName: rest.join(' '),
+      phone: reservation.customers?.phone || '',
+      carId: (reservation as any).car_id || '',
+      carName: reservation.car_name,
+      startDate: reservation.start_date,
+      endDate: reservation.end_date,
+      notes: reservation.customers?.email || '',
+    });
+    setActiveTab('in-person');
+    toast({
+      title: 'Konvertuojama telefoninė rezervacija',
+      description: 'Duomenys perkelti į vietinės rezervacijos formą.',
+    });
+  };
+
+  /** Kai iš telefoninės sukuriama tikra rezervacija – pašaliname senus blokus, kad datos nesidubliuotų. */
+  const releasePhoneBlockAfterConversion = async () => {
+    const seedId = pendingPhoneBlockId;
+    setPendingPhoneBlockId(null);
+    setInPersonPrefill(null);
+    if (!seedId) {
+      fetchReservations();
+      return;
+    }
+    try {
+      const { data: seedRow } = await supabase
+        .from('car_blocked_dates')
+        .select('*')
+        .eq('id', seedId)
+        .maybeSingle();
+
+      if (seedRow) {
+        await supabase
+          .from('car_blocked_dates')
+          .update({ deleted_at: new Date().toISOString() } as any)
+          .is('deleted_at', null)
+          .eq('car_id', (seedRow as any).car_id)
+          .eq('reservation_type', 'phone_reservation')
+          .eq('contact_name', (seedRow as any).contact_name)
+          .eq('contact_phone', (seedRow as any).contact_phone)
+          .eq('reason', (seedRow as any).reason);
+      }
+    } catch (error) {
+      console.error('Nepavyko pašalinti telefoninės rezervacijos bloko:', error);
+    } finally {
+      fetchReservations();
+    }
+  };
 
   const deleteReservation = async (id: string) => {
     const isPhone = id.startsWith('phone-');
@@ -1572,6 +1632,18 @@ const Admin = () => {
                              <TableCell>{format(new Date(reservation.created_at), 'yyyy-MM-dd HH:mm')}</TableCell>
                                <TableCell>
                                  <div className="flex gap-2 flex-wrap">
+                                   {reservation.status === 'phone_reservation' && (
+                                     <Button
+                                       variant="default"
+                                       size="sm"
+                                       className="bg-carbonus-green-dark hover:bg-carbonus-green-deep"
+                                       onClick={() => convertPhoneReservation(reservation)}
+                                       title="Sukurti pilną rezervaciją iš telefoninės"
+                                     >
+                                       <ArrowRightLeft className="mr-1 h-4 w-4" />
+                                       Konvertuoti
+                                     </Button>
+                                   )}
                                    {reservation.status !== 'phone_reservation' && (
                                      <>
                                        <Button
@@ -2137,7 +2209,7 @@ const Admin = () => {
               </TabsContent>
 
           <TabsContent value="in-person">
-            <InPersonBooking />
+            <InPersonBooking prefill={inPersonPrefill} onBookingCreated={releasePhoneBlockAfterConversion} />
           </TabsContent>
 
               <TabsContent value="recycle">

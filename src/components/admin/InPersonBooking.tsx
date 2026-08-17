@@ -211,7 +211,28 @@ const writeDraftsMap = (map: Record<string, DraftPayload>) => {
 
 
 
-export function InPersonBooking() {
+export interface InPersonPrefill {
+  /** unique key so the same phone reservation can be re-applied */
+  key: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  carId?: string;
+  carName?: string;
+  /** yyyy-MM-dd */
+  startDate?: string;
+  /** yyyy-MM-dd */
+  endDate?: string;
+  notes?: string;
+}
+
+interface InPersonBookingProps {
+  prefill?: InPersonPrefill | null;
+  onBookingCreated?: () => void;
+}
+
+export function InPersonBooking({ prefill, onBookingCreated }: InPersonBookingProps = {}) {
   const [step, setStep] = useState<'details' | 'services' | 'documents' | 'payment' | 'complete'>('details');
   const [selectedServices, setSelectedServices] = useState<AdditionalService[]>([]);
   const [customer, setCustomer] = useState<Customer>({
@@ -270,6 +291,34 @@ export function InPersonBooking() {
   const [availableDrafts, setAvailableDrafts] = useState<DraftPayload[]>([]);
   const [draftRestored, setDraftRestored] = useState(false);
   const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
+  const appliedPrefillRef = useRef<string | null>(null);
+
+  // Prefill iš telefoninės rezervacijos (konvertavimas į pilną rezervaciją)
+  useEffect(() => {
+    if (!prefill || appliedPrefillRef.current === prefill.key) return;
+    appliedPrefillRef.current = prefill.key;
+
+    setActiveTab('new');
+    setStep('details');
+    setCustomer((prev) => ({
+      ...prev,
+      firstName: prefill.firstName || prev.firstName,
+      lastName: prefill.lastName || prev.lastName,
+      email: prefill.email || prev.email,
+      phone: prefill.phone || prev.phone,
+    }));
+    setBooking((prev) => ({
+      ...prev,
+      carId: prefill.carId || prev.carId,
+      carName: prefill.carName || prev.carName,
+      startDate: prefill.startDate ? new Date(prefill.startDate + 'T12:00:00') : prev.startDate,
+      endDate: prefill.endDate ? new Date(prefill.endDate + 'T12:00:00') : prev.endDate,
+    }));
+    if (prefill.endDate) setEndMonth(new Date(prefill.endDate + 'T12:00:00'));
+    if (prefill.notes) setNotes(prefill.notes);
+    toast.info('Telefoninės rezervacijos duomenys perkelti — užpildykite likusią informaciją.');
+  }, [prefill]);
+
   const currentDraftIdRef = useRef<string | null>(null);
 
   const refreshAvailableDrafts = () => {
@@ -787,6 +836,7 @@ export function InPersonBooking() {
       toast.success('Rezervacija sėkmingai užbaigta!');
       discardDraft(currentDraftIdRef.current || undefined);
       setStep('complete');
+      onBookingCreated?.();
 
     } catch (error) {
       console.error('Error completing booking:', error);
