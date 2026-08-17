@@ -1068,65 +1068,67 @@ const Admin = () => {
 
         <div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="admin-workspace-tabs space-y-5">
-            <TabsList className="admin-sidebar-nav flex h-auto w-full flex-row justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] md:grid md:grid-cols-6 md:overflow-visible md:place-items-stretch lg:sticky lg:top-[96px] lg:flex lg:flex-col lg:overflow-visible">
-              {[
-                { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
-                { value: 'calendar', icon: CalendarDays, label: 'Kalendorius' },
-                { value: 'customers', icon: ContactRound, label: 'Klientai' },
-                { value: 'in-person', icon: Users, label: 'Nauja rezervacija' },
-                { value: 'history', icon: History, label: 'Istorija' },
-                { value: 'invoices', icon: Receipt, label: 'Sąskaitos' },
-                { value: 'promos', icon: Gift, label: 'Nuolaidos' },
-                { value: 'reviews', icon: Star, label: 'Atsiliepimai' },
-                { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
-                { value: 'email-test', icon: Mail, label: 'El. paštas' },
-                { value: 'users', icon: ShieldCheck, label: 'Naudotojai' },
-              ].filter(({ value }) => allowedTabs.includes(value)).map(({ value, icon: Icon, label }) => (
-                <TabsTrigger
-                  key={value}
-                  value={value}
-                  className="admin-sidebar-trigger h-auto min-h-11 shrink-0 justify-start gap-3 rounded-[13px] px-3 py-2.5 text-[12px] font-bold text-[#65776f] data-[state=active]:bg-[#0b5d43] data-[state=active]:text-white data-[state=active]:shadow-[0_8px_24px_rgba(8,93,66,0.18)] lg:w-full"
-                >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  <span className="whitespace-nowrap md:whitespace-normal lg:whitespace-nowrap">{label}</span>
-                </TabsTrigger>
-              ))}
-              <div className="flex shrink-0 flex-col justify-center gap-1 rounded-[13px] border border-[#dce7e1] bg-[#f7faf8] px-3 py-2 lg:hidden" aria-hidden="true">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
-                  <ShieldCheck className="h-3.5 w-3.5" />
+            <div className="admin-sidebar-sticky lg:sticky lg:top-[96px] lg:max-h-[calc(100vh-112px)] lg:overflow-y-auto lg:overflow-x-hidden">
+              <TabsList className="admin-sidebar-nav flex h-auto w-full flex-row justify-start gap-1 overflow-x-auto rounded-[22px] border border-[#dce7e1] bg-white p-2 shadow-[0_14px_42px_rgba(14,47,35,0.07)] md:grid md:grid-cols-6 md:overflow-visible md:place-items-stretch lg:flex lg:flex-col lg:overflow-visible">
+                {[
+                  { value: 'dashboard', icon: BarChart3, label: 'Suvestinė' },
+                  { value: 'calendar', icon: CalendarDays, label: 'Kalendorius' },
+                  { value: 'customers', icon: ContactRound, label: 'Klientai' },
+                  { value: 'in-person', icon: Users, label: 'Nauja rezervacija' },
+                  { value: 'history', icon: History, label: 'Istorija' },
+                  { value: 'invoices', icon: Receipt, label: 'Sąskaitos' },
+                  { value: 'promos', icon: Gift, label: 'Nuolaidos' },
+                  { value: 'reviews', icon: Star, label: 'Atsiliepimai' },
+                  { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
+                  { value: 'email-test', icon: Mail, label: 'El. paštas' },
+                  { value: 'users', icon: ShieldCheck, label: 'Naudotojai' },
+                ].filter(({ value }) => allowedTabs.includes(value)).map(({ value, icon: Icon, label }) => (
+                  <TabsTrigger
+                    key={value}
+                    value={value}
+                    className="admin-sidebar-trigger h-auto min-h-11 shrink-0 justify-start gap-3 rounded-[13px] px-3 py-2.5 text-[12px] font-bold text-[#65776f] data-[state=active]:bg-[#0b5d43] data-[state=active]:text-white data-[state=active]:shadow-[0_8px_24px_rgba(8,93,66,0.18)] lg:w-full"
+                  >
+                    <Icon className="h-4 w-4 shrink-0" />
+                    <span className="whitespace-nowrap md:whitespace-normal lg:whitespace-nowrap">{label}</span>
+                  </TabsTrigger>
+                ))}
+                <div className="flex shrink-0 flex-col justify-center gap-1 rounded-[13px] border border-[#dce7e1] bg-[#f7faf8] px-3 py-2 lg:hidden" aria-hidden="true">
+                  <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    Sistemos būsena
+                  </div>
+                  <p className="text-[11px] text-[#65776f]">Visi procesai tvarkingi.</p>
+                  <p className="text-[10px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
+                </div>
+              </TabsList>
+
+              <div className="admin-sidebar-status hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
+                <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                  <ShieldCheck className="h-4 w-4" />
                   Sistemos būsena
                 </div>
-                <p className="text-[11px] text-[#65776f]">Visi procesai tvarkingi.</p>
-                <p className="text-[10px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
+                <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
+                <p className="mt-1 text-[11px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
               </div>
-            </TabsList>
-
-            <div className="admin-sidebar-status hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
-              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
-                <ShieldCheck className="h-4 w-4" />
-                Sistemos būsena
-              </div>
-              <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
-              <p className="mt-1 text-[11px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
-            </div>
-            {isOwner && (
-              <div className="admin-sidebar-changelog hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
-                <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
-                  <ScrollText className="h-4 w-4" />
-                  Pakeitimų žurnalas
+              {isOwner && (
+                <div className="admin-sidebar-changelog hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
+                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                    <ScrollText className="h-4 w-4" />
+                    Pakeitimų žurnalas
+                  </div>
+                  <ul className="mt-3 space-y-2.5">
+                    <li className="text-[12px] leading-relaxed text-[#65776f]">
+                      <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
+                      Admino meniu juosta planšetėje – dvi eilutės be slankiklio.
+                    </li>
+                    <li className="text-[12px] leading-relaxed text-[#65776f]">
+                      <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
+                      Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.
+                    </li>
+                  </ul>
                 </div>
-                <ul className="mt-3 space-y-2.5">
-                  <li className="text-[12px] leading-relaxed text-[#65776f]">
-                    <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
-                    Admino meniu juosta planšetėje – dvi eilutės be slankiklio.
-                  </li>
-                  <li className="text-[12px] leading-relaxed text-[#65776f]">
-                    <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
-                    Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.
-                  </li>
-                </ul>
-              </div>
-            )}
+              )}
+            </div>
             <div className="min-w-0 flex-1 space-y-5">
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Stats Cards */}
