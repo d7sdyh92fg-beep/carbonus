@@ -88,11 +88,12 @@ const CHANGELOG: { date: string; items: string[] }[] = [
   {
     date: '2026-08-17',
     items: [
-      'Admino meniu juosta planšetėje pertvarkyta į dvi eilutes be slankiklio.',
+      'Admino meniu juosta planšetėje pertvarkyta į dvi eilutės be slankiklio.',
       'Sistemos būsenos kortelė iškelta po meniu, kad nekreiptų tinklelio.',
       'Paslėptas šoninės juostos slinkties juostos artefaktas.',
       'Sutvarkytas šoninės juostos sticky elgesys – meniu nebeužslenka ant sistemos būsenos kortelės.',
       'Pakeitimų žurnalas rodo visus pakeitimus nuo paskutinio publikavimo.',
+      'Hero tekstai suvienodinti ir sumažinti visose skiltyse; pašalinta perteklinė kicker etiketė telefone/planšetėje.',
     ],
   },
   {
@@ -116,6 +117,7 @@ const CHANGELOG: { date: string; items: string[] }[] = [
     ],
   },
 ];
+
 
 
 interface Reservation {
