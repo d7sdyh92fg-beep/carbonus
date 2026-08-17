@@ -81,22 +81,42 @@ import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 import { EmailTester } from "@/components/admin/EmailTester";
 
+// Pakeitimai nuo paskutinio publikavimo (naujausi viršuje)
+const LAST_PUBLISH_DATE = '2026-08-15';
+
 const CHANGELOG: { date: string; items: string[] }[] = [
-  {
-    date: '2026-08-16',
-    items: [
-      'Admino meniu juosta planšetėje – dvi eilutės be slankiklio.',
-      'Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.',
-    ],
-  },
   {
     date: '2026-08-17',
     items: [
-      'Sutvarkytas admino šoninės juostos sticky elgesys – meniu daugiau neužslenkia ant sistemos būsenos kortelės.',
-      'Pakeitimų žurnalas padarytas išplečiamu.',
+      'Admino meniu juosta planšetėje pertvarkyta į dvi eilutes be slankiklio.',
+      'Sistemos būsenos kortelė iškelta po meniu, kad nekreiptų tinklelio.',
+      'Paslėptas šoninės juostos slinkties juostos artefaktas.',
+      'Sutvarkytas šoninės juostos sticky elgesys – meniu nebeužslenka ant sistemos būsenos kortelės.',
+      'Pakeitimų žurnalas rodo visus pakeitimus nuo paskutinio publikavimo.',
+    ],
+  },
+  {
+    date: '2026-08-16',
+    items: [
+      'Visų admino skilčių žalia hero juosta suvienodinta iki 210 px, turinys centruotas.',
+      'Hero statistikų kortelės sumažintos ir suvienodintos telefone bei planšetėje.',
+      'Pridėta paieška aktyvių rezervacijų ir istorijos skiltyse.',
+      'Sukurta „Pakeitimų žurnalo“ skiltis (matoma tik info@carbonus.lt).',
+      'Pataisyta „Naudotojai“ skiltis – edge funkcijos 500 klaida dėl NULL token laukų.',
+    ],
+  },
+  {
+    date: '2026-08-15',
+    items: [
+      'Pridėti nauji naudotojai ir rolių valdymas (owner / admin / fleet_manager).',
+      'Nauja „Atsiliepimai“ skiltis su nuoroda, šablonais ir QR kodu.',
+      'Klientų „minkštas“ trynimas ir atkūrimas iš šiukšlinės.',
+      'Automobilių parko kortelės suspaustos, pridėta paieška.',
+      'Nuolaidos kodo ACIU10 aktyvavimas rezervacijoje ir panaudojimų sekimas.',
     ],
   },
 ];
+
 
 interface Reservation {
   id: string;
