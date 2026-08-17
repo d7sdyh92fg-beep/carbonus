@@ -81,6 +81,23 @@ import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 import { EmailTester } from "@/components/admin/EmailTester";
 
+const CHANGELOG: { date: string; items: string[] }[] = [
+  {
+    date: '2026-08-16',
+    items: [
+      'Admino meniu juosta planšetėje – dvi eilutės be slankiklio.',
+      'Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.',
+    ],
+  },
+  {
+    date: '2026-08-17',
+    items: [
+      'Sutvarkytas admino šoninės juostos sticky elgesys – meniu daugiau neužslenkia ant sistemos būsenos kortelės.',
+      'Pakeitimų žurnalas padarytas išplečiamu.',
+    ],
+  },
+];
+
 interface Reservation {
   id: string;
   car_name: string;
