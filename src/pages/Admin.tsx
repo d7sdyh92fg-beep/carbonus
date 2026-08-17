@@ -80,6 +80,8 @@ import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 import { EmailTester } from "@/components/admin/EmailTester";
 import SystemStatusDialog from "@/components/admin/SystemStatusDialog";
+import { ReturnsBoard, getReturnsDueSoon } from "@/components/admin/ReturnsBoard";
+import { ReturnInspectionModal, type InspectionReservation } from "@/components/admin/ReturnInspectionModal";
 
 // Pakeitimai nuo paskutinio publikavimo (naujausi viršuje)
 const LAST_PUBLISH_DATE = '2026-08-05';
@@ -228,6 +230,11 @@ interface Reservation {
   created_at: string;
   updated_at: string;
   returned_at?: string;
+  return_date?: string | null;
+  return_time?: string | null;
+  return_stage?: string | null;
+  deposit_status?: string | null;
+  language?: string | null;
   driver_license_url?: string;
   customers: {
     id: string;
@@ -251,6 +258,8 @@ const Admin = () => {
   const [showPricingOverride, setShowPricingOverride] = useState(false);
   const [pricingReservation, setPricingReservation] = useState<Reservation | null>(null);
   const [invoiceReservation, setInvoiceReservation] = useState<Reservation | null>(null);
+  const [inspectionReservation, setInspectionReservation] = useState<InspectionReservation | null>(null);
+  const [showInspection, setShowInspection] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
