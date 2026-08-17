@@ -332,7 +332,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
         </section>
       </main>
 
-      <div className="fixed inset-x-3 bottom-3 z-40 flex items-center justify-between gap-4 rounded-2xl border border-white/60 bg-white/95 px-4 py-3 shadow-[0_18px_45px_rgba(15,23,42,0.2)] backdrop-blur lg:hidden">
+      <div className="fixed left-0 right-0 bottom-0 z-50 flex items-center justify-between gap-4 rounded-t-2xl border border-white/60 bg-white/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_18px_45px_rgba(15,23,42,0.2)] backdrop-blur lg:hidden">
         <div><p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{copy.from}</p><p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p></div>
         <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">{copy.reserve}</button>
       </div>
