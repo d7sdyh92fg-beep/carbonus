@@ -1095,7 +1095,7 @@ const Admin = () => {
       );
     }
 
-    if (clickable && reservationId) {
+    if (clickable && reservationId && canManageReservations) {
 
       return (
         <Select value={status} onValueChange={(value) => handleStatusChange(reservationId, value)}>
