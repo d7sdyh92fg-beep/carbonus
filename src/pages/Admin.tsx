@@ -162,6 +162,7 @@ const Admin = () => {
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showChangelog, setShowChangelog] = useState(false);
   const allowedTabs = useMemo(
     () =>
       tabsForRole(role, [
