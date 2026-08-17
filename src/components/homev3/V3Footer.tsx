@@ -7,7 +7,7 @@ const COPY = {
   lt: {
     columns: [
       { title: "Nuoma", links: [["Visi automobiliai", "/automobiliai"], ["Laisvi automobiliai", "/laisvi-automobiliai"]] },
-      { title: "Mūsų autoparkas", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"]] },
+      { title: "Mūsų autoparkas", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"], ["Žiūrėti daugiau", "/automobiliai"]] },
       { title: "Apie Carbonus", links: [["Apie mus", "/apie-mus"], ["Kontaktai", "/kontaktai"], ["DUK", "/duk"]] },
       { title: "Informacija", links: [["Patarimai ir gidas", "/naujienos"], ["Nuomos sutartis", "/nuomos-sutartis"], ["Privatumo politika", "/privatumo-politika"]] },
     ],
@@ -21,7 +21,7 @@ const COPY = {
   en: {
     columns: [
       { title: "Rental", links: [["All cars", "/automobiliai"], ["Available cars", "/laisvi-automobiliai"]] },
-      { title: "Our fleet", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"]] },
+      { title: "Our fleet", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"], ["See more", "/automobiliai"]] },
       { title: "About Carbonus", links: [["About us", "/apie-mus"], ["Contact", "/kontaktai"], ["FAQ", "/duk"]] },
       { title: "Information", links: [["Tips & guide", "/naujienos"], ["Rental agreement", "/nuomos-sutartis"], ["Privacy policy", "/privatumo-politika"]] },
     ],
@@ -35,7 +35,7 @@ const COPY = {
   ru: {
     columns: [
       { title: "Аренда", links: [["Все автомобили", "/automobiliai"], ["Свободные автомобили", "/laisvi-automobiliai"]] },
-      { title: "Наш автопарк", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"]] },
+      { title: "Наш автопарк", links: [["Mercedes-Benz SLK", "/automobiliai/mercedes-benz-slk-nuoma"], ["Hyundai Bayon Cross", "/automobiliai/hyundai-bayon-cross-nuoma"], ["Citroën SpaceTourer", "/automobiliai/citroen-spacetourer-nuoma"], ["KIA CEED 2020", "/automobiliai/kia-ceed-hecbekas-nuoma"], ["Смотреть больше", "/automobiliai"]] },
       { title: "О Carbonus", links: [["О нас", "/apie-mus"], ["Контакты", "/kontaktai"], ["ЧаВо", "/duk"]] },
       { title: "Информация", links: [["Советы и гид", "/naujienos"], ["Договор аренды", "/nuomos-sutartis"], ["Политика конфиденциальности", "/privatumo-politika"]] },
     ],
