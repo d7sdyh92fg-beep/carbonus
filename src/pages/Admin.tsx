@@ -1106,8 +1106,6 @@ const Admin = () => {
         </section>
 
 
-          </div>
-        </section>
 
         <div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="admin-workspace-tabs space-y-5">
