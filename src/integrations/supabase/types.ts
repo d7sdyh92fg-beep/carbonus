@@ -240,6 +240,27 @@ export type Database = {
           },
         ]
       }
+      cron_auth: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          token?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          token?: string
+        }
+        Relationships: []
+      }
       customers: {
         Row: {
           address: string | null
