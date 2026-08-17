@@ -17,14 +17,28 @@ export interface SystemCheck {
 
 const SUPABASE_URL = 'https://yuvugrgoadxbmfvebsiu.supabase.co';
 
-const EDGE_FUNCTIONS = [
-  'send-booking-email',
-  'send-status-email',
-  'generate-contract-pdf',
-  'generate-invoice-pdf',
-  'create-stripe-payment',
-  'driving-distance',
-  'admin-manage-users',
+// used: ar funkcija realiai iškviečiama iš puslapio / admino
+const EDGE_FUNCTIONS: { name: string; used: boolean; note: string }[] = [
+  { name: 'create-stripe-payment', used: true, note: 'Stripe apmokėjimas' },
+  { name: 'verify-stripe-payment', used: true, note: 'Mokėjimo patvirtinimas' },
+  { name: 'send-booking-email', used: true, note: 'Rezervacijos laiškas' },
+  { name: 'send-status-email', used: true, note: 'Statuso laiškai' },
+  { name: 'generate-contract-pdf', used: true, note: 'Sutarties PDF' },
+  { name: 'generate-invoice-pdf', used: true, note: 'Sąskaitos PDF' },
+  { name: 'send-invoice-email', used: true, note: 'Sąskaitos siuntimas' },
+  { name: 'send-contact-email', used: true, note: 'Kontaktų forma' },
+  { name: 'send-review-feedback', used: true, note: 'Atsiliepimų forma' },
+  { name: 'driving-distance', used: true, note: 'Pristatymo atstumas' },
+  { name: 'admin-manage-users', used: true, note: 'Naudotojų valdymas' },
+  { name: 'manage-deposit', used: true, note: 'Užstatų valdymas' },
+  { name: 'subscribe-newsletter', used: true, note: 'Naujienlaiškis (footeris)' },
+  { name: 'send-pickup-reminder', used: false, note: 'Tik rankiniu būdu iš El. pašto skilties' },
+  { name: 'send-return-reminder', used: false, note: 'Tik rankiniu būdu iš El. pašto skilties' },
+  { name: 'send-payment-reminder', used: false, note: 'Tik rankiniu būdu iš El. pašto skilties' },
+  { name: 'send-feedback-request', used: false, note: 'Tik rankiniu būdu iš El. pašto skilties' },
+  { name: 'send-contract-confirmation', used: false, note: 'Nenaudojama – dubliuoja send-status-email' },
+  { name: 'newsletter-subscribe', used: false, note: 'Nenaudojama – dublikatas (subscribe-newsletter)' },
+  { name: 'edit-car-image', used: false, note: 'Nenaudojama – senas įrankis' },
 ];
 
 async function timed<T>(fn: () => Promise<T>): Promise<{ result?: T; error?: unknown; ms: number }> {
@@ -247,27 +261,27 @@ export async function runSystemChecks(): Promise<SystemCheck[]> {
     });
   }
 
-  // 10. Edge funkcijos
-  await Promise.all(
-    EDGE_FUNCTIONS.map(async (name) => {
-      const { result, error, ms } = await timed(async () => {
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, {
-          method: 'OPTIONS',
-          headers: { 'Access-Control-Request-Method': 'POST' },
-        });
-        return res.status;
+  // 10. Edge funkcijos (pasiekiamumo patikra be šalutinio poveikio)
+  const fnChecks = await Promise.all(
+    EDGE_FUNCTIONS.map(async ({ name, used, note }) => {
+      const { error, ms } = await timed(async () => {
+        // no-cors: patikriname tik ar endpointas atsako (jokių laiškų nesiunčiame)
+        await fetch(`${SUPABASE_URL}/functions/v1/${name}`, { method: 'GET', mode: 'no-cors' });
+        return true;
       });
-      const status = result ?? 0;
-      checks.push({
+      const reachable = !error;
+      const check: SystemCheck = {
         id: `fn-${name}`,
-        group: 'Edge funkcijos',
+        group: used ? 'Edge funkcijos (naudojamos)' : 'Edge funkcijos (nenaudojamos)',
         label: name,
-        state: error ? 'fail' : status >= 200 && status < 500 ? 'ok' : 'fail',
-        detail: error ? 'Nepasiekiama' : `HTTP ${status} · ${ms} ms`,
+        state: !reachable ? 'fail' : used ? 'ok' : 'warn',
+        detail: !reachable ? `Nepasiekiama · ${note}` : `${note} · ${ms} ms`,
         ms,
-      });
+      };
+      return check;
     }),
   );
+  checks.push(...fnChecks);
 
   return checks;
 }
