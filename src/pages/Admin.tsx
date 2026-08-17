@@ -1215,6 +1215,7 @@ const Admin = () => {
                   { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
                   { value: 'email-test', icon: Mail, label: 'El. paštas' },
                   { value: 'users', icon: ShieldCheck, label: 'Naudotojai' },
+                  { value: 'changelog', icon: ScrollText, label: 'Changelog' },
                 ].filter(({ value }) => allowedTabs.includes(value)).map(({ value, icon: Icon, label }) => (
                   <TabsTrigger
                     key={value}
