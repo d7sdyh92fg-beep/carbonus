@@ -254,7 +254,13 @@ function getEmailContent(data: StatusEmailRequest) {
 
               <p>Jūsų užstatas bus grąžintas per 3-5 darbo dienas, jei nebuvo jokių papildomų mokesčių.</p>
 
-              <p style="margin-top: 30px;">Būtume dėkingi už Jūsų atsiliepimą apie mūsų paslaugas!</p>
+              <div style="background:#dcfce7;padding:16px;border-radius:8px;border-left:4px solid #22c55e;margin-top:24px;">
+                <p style="margin:0;"><strong>⭐ Palikite atsiliepimą</strong></p>
+                <p style="margin:8px 0 12px;">Jūsų nuomonė mums labai svarbi – tai užtruks vos minutę.</p>
+                <a href="https://carbonus.lt/atsiliepimas" style="display:inline-block;background:#15803d;color:#ffffff;padding:10px 18px;border-radius:6px;text-decoration:none;">Palikti atsiliepimą</a>
+              </div>
+
+              <p style="margin-top:24px;">Klausimai: info@carbonus.lt · +370 6 98 18 781</p>
             </div>
             <div style="${footerStyles}">
               <p>Laukiame Jūsų dar kartą!</p>
@@ -473,7 +479,13 @@ function getEmailContent(data: StatusEmailRequest) {
 
               <p>Your deposit will be refunded within 3-5 business days, if there were no additional charges.</p>
 
-              <p style="margin-top: 30px;">We would appreciate your feedback about our services!</p>
+              <div style="background:#dcfce7;padding:16px;border-radius:8px;border-left:4px solid #22c55e;margin-top:24px;">
+                <p style="margin:0;"><strong>⭐ Leave a review</strong></p>
+                <p style="margin:8px 0 12px;">It only takes a minute and helps us a lot.</p>
+                <a href="https://carbonus.lt/atsiliepimas" style="display:inline-block;background:#15803d;color:#ffffff;padding:10px 18px;border-radius:6px;text-decoration:none;">Leave a review</a>
+              </div>
+
+              <p style="margin-top:24px;">Questions: info@carbonus.lt · +370 6 98 18 781</p>
             </div>
             <div style="${footerStyles}">
               <p>We hope to see you again!</p>
