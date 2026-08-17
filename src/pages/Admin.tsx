@@ -278,7 +278,7 @@ const Admin = () => {
     () =>
       tabsForRole(role, [
         'dashboard', 'calendar', 'customers', 'in-person', 'history',
-        'invoices', 'promos', 'reviews', 'recycle', 'email-test', 'users',
+        'invoices', 'promos', 'reviews', 'recycle', 'email-test', 'users', 'changelog',
       ]),
     [role]
   );
@@ -1121,6 +1121,15 @@ const Admin = () => {
         { label: 'Saugumas', value: 'Slaptažodžiai užšifruoti' },
       ],
     },
+    changelog: {
+      kicker: 'Versijos istorija',
+      title: 'Changelog',
+      subtitle: 'Peržiūrėkite visus sistemoje atliktus pakeitimus nuo paskutinio publikavimo.',
+      stats: [
+        { label: 'Publikavimas', value: LAST_PUBLISH_DATE },
+        { label: 'Įrašų', value: `${CHANGELOG.reduce((sum, e) => sum + e.items.length, 0)} pakeitimai` },
+      ],
+    },
   };
 
 
@@ -1215,6 +1224,7 @@ const Admin = () => {
                   { value: 'recycle', icon: Trash2, label: 'Šiukšlinė' },
                   { value: 'email-test', icon: Mail, label: 'El. paštas' },
                   { value: 'users', icon: ShieldCheck, label: 'Naudotojai' },
+                  { value: 'changelog', icon: ScrollText, label: 'Changelog' },
                 ].filter(({ value }) => allowedTabs.includes(value)).map(({ value, icon: Icon, label }) => (
                   <TabsTrigger
                     key={value}
@@ -2087,6 +2097,36 @@ const Admin = () => {
               <TabsContent value="email-test" className="space-y-4">
 
                 <EmailTester />
+              </TabsContent>
+
+              <TabsContent value="changelog" className="space-y-4">
+                <div className="relative rounded-[24px] border border-[#dce7e1] bg-white p-6 shadow-[0_14px_42px_rgba(14,47,35,0.07)] sm:p-8">
+                  <div className="mb-5 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">
+                    <ScrollText className="h-5 w-5" />
+                    Pakeitimų žurnalas
+                  </div>
+                  <p className="mb-6 text-[13px] text-[#65776f]">
+                    Visi pakeitimai, atlikti nuo paskutinio publikavimo ({LAST_PUBLISH_DATE}).
+                  </p>
+                  <div className="relative pl-4">
+                    <div className="absolute bottom-2 left-[7px] top-2 w-px bg-[#dce7e1]" />
+                    <ul className="space-y-6">
+                      {CHANGELOG.map((entry, i) => (
+                        <li key={i} className="relative pl-6">
+                          <span className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0b5d43] shadow-[0_0_0_2px_#0b5d43]" />
+                          <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">{entry.date}</span>
+                          <ul className="mt-2 space-y-2">
+                            {entry.items.map((item, j) => (
+                              <li key={j} className="text-[13px] leading-relaxed text-[#65776f]">
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </TabsContent>
             </div>
             </Tabs>
