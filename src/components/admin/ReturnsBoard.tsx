@@ -67,8 +67,10 @@ export const ReturnsBoard = ({ reservations, onStartInspection }: Props) => {
           const due = parseDue(r);
           const overdue = due.getTime() < now.getTime();
           const needsResolution = String(r.status) === 'needs_resolution';
+          const isToday = due.toDateString() === now.toDateString();
           const timeLabel = due.toLocaleTimeString('lt-LT', { hour: '2-digit', minute: '2-digit' });
           const name = r.customers ? `${r.customers.first_name} ${r.customers.last_name}` : '—';
+
 
           return (
             <div
@@ -94,8 +96,9 @@ export const ReturnsBoard = ({ reservations, onStartInspection }: Props) => {
                   <Badge className="border-red-300 bg-red-100 text-red-700">Vėluoja</Badge>
                 ) : (
                   <Badge className="border-carbonus-green/40 bg-carbonus-green-soft text-carbonus-green-deep">
-                    Šiandien
+                    {isToday ? 'Šiandien' : 'Rytoj'}
                   </Badge>
+
                 )}
               </div>
 
