@@ -88,11 +88,12 @@ const CHANGELOG: { date: string; items: string[] }[] = [
   {
     date: '2026-08-17',
     items: [
-      'Admino meniu juosta planšetėje pertvarkyta į dvi eilutes be slankiklio.',
+      'Admino meniu juosta planšetėje pertvarkyta į dvi eilutės be slankiklio.',
       'Sistemos būsenos kortelė iškelta po meniu, kad nekreiptų tinklelio.',
       'Paslėptas šoninės juostos slinkties juostos artefaktas.',
       'Sutvarkytas šoninės juostos sticky elgesys – meniu nebeužslenka ant sistemos būsenos kortelės.',
       'Pakeitimų žurnalas rodo visus pakeitimus nuo paskutinio publikavimo.',
+      'Hero tekstai suvienodinti ir sumažinti visose skiltyse; pašalinta perteklinė kicker etiketė telefone/planšetėje.',
     ],
   },
   {
@@ -116,6 +117,7 @@ const CHANGELOG: { date: string; items: string[] }[] = [
     ],
   },
 ];
+
 
 
 interface Reservation {
@@ -1160,14 +1162,12 @@ const Admin = () => {
                     Pakeitimų žurnalas
                   </div>
                   <ul className="mt-3 space-y-2.5">
-                    <li className="text-[12px] leading-relaxed text-[#65776f]">
-                      <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
-                      Admino meniu juosta planšetėje – dvi eilutės be slankiklio.
-                    </li>
-                    <li className="text-[12px] leading-relaxed text-[#65776f]">
-                      <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
-                      Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.
-                    </li>
+                    {CHANGELOG[0].items.slice(0, 3).map((item, i) => (
+                      <li key={i} className="text-[12px] leading-relaxed text-[#65776f]">
+                        <span className="block text-[10px] font-semibold text-[#0b5d43]">{CHANGELOG[0].date}</span>
+                        {item}
+                      </li>
+                    ))}
                   </ul>
                   <Button
                     variant="outline"
@@ -1179,6 +1179,7 @@ const Admin = () => {
                   </Button>
                 </div>
               )}
+
             </div>
             <div className="min-w-0 flex-1 space-y-5">
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
@@ -2005,7 +2006,7 @@ const Admin = () => {
       
       {/* Changelog Dialog */}
       <Dialog open={showChangelog} onOpenChange={setShowChangelog}>
-        <DialogContent className="max-w-2xl rounded-[24px] border-[#dce7e1] bg-white p-0">
+        <DialogContent className="max-w-3xl rounded-[24px] border-[#dce7e1] bg-white p-0">
           <DialogHeader className="px-6 pt-6">
             <DialogTitle className="flex items-center gap-2 text-[16px] font-bold text-[#0b5d43]">
               <ScrollText className="h-5 w-5" />
@@ -2014,9 +2015,8 @@ const Admin = () => {
             <DialogDescription className="text-[13px] text-[#65776f]">
               Visi pakeitimai, atlikti nuo paskutinio publikavimo ({LAST_PUBLISH_DATE}).
             </DialogDescription>
-
           </DialogHeader>
-          <div className="max-h-[60vh] overflow-y-auto px-6 pb-6">
+          <div className="max-h-[80vh] overflow-y-auto px-6 pb-6">
             <div className="relative pl-4">
               <div className="absolute bottom-2 left-[7px] top-2 w-px bg-[#dce7e1]" />
               <ul className="space-y-6">
@@ -2038,6 +2038,7 @@ const Admin = () => {
           </div>
         </DialogContent>
       </Dialog>
+
 
       {/* Car Management Modal */}
       {selectedCar && (
