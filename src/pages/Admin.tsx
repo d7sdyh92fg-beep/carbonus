@@ -1056,7 +1056,7 @@ const Admin = () => {
 
       <main className="mx-auto w-full max-w-[1680px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Hero banner */}
-        <section className="relative mb-6 overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0a3f30_0%,#076c45_62%,#16a566_100%)] px-6 py-7 text-white shadow-[0_22px_60px_rgba(5,91,58,0.16)] sm:px-8 sm:py-9 lg:px-10">
+        <section className="relative mb-6 min-h-[210px] overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0a3f30_0%,#076c45_62%,#16a566_100%)] px-6 py-7 text-white shadow-[0_22px_60px_rgba(5,91,58,0.16)] sm:px-8 sm:py-9 lg:h-[210px] lg:px-10">
           <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full border-[38px] border-white/[0.045]" />
           <div className="pointer-events-none absolute bottom-0 right-[24%] h-28 w-40 rounded-t-full bg-white/[0.035]" />
           <div className="relative flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
