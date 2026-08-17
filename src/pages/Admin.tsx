@@ -1162,14 +1162,12 @@ const Admin = () => {
                     Pakeitimų žurnalas
                   </div>
                   <ul className="mt-3 space-y-2.5">
-                    <li className="text-[12px] leading-relaxed text-[#65776f]">
-                      <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
-                      Admino meniu juosta planšetėje – dvi eilutės be slankiklio.
-                    </li>
-                    <li className="text-[12px] leading-relaxed text-[#65776f]">
-                      <span className="block text-[10px] font-semibold text-[#0b5d43]">2026-08-16</span>
-                      Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.
-                    </li>
+                    {CHANGELOG[0].items.slice(0, 3).map((item, i) => (
+                      <li key={i} className="text-[12px] leading-relaxed text-[#65776f]">
+                        <span className="block text-[10px] font-semibold text-[#0b5d43]">{CHANGELOG[0].date}</span>
+                        {item}
+                      </li>
+                    ))}
                   </ul>
                   <Button
                     variant="outline"
@@ -1181,6 +1179,7 @@ const Admin = () => {
                   </Button>
                 </div>
               )}
+
             </div>
             <div className="min-w-0 flex-1 space-y-5">
             <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 lg:space-y-8">
