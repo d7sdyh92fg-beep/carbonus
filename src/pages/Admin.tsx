@@ -16,7 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText, Clock, ArrowRightLeft } from 'lucide-react';
+import { CalendarIcon, Plus, Trash2, Ban, Car, Users, BarChart3, Settings, Edit, CheckCircle, XCircle, FileText, DollarSign, History, Mail, CheckSquare, Square, Receipt, Gift, Search, ExternalLink, Sparkles, CalendarDays, ContactRound, ChevronRight, Phone, CircleDollarSign, ShieldCheck, Star, ScrollText, Clock, ArrowRightLeft, ArrowUpDown } from 'lucide-react';
 import { InvoiceManager } from '@/components/admin/InvoiceManager';
 import { InvoiceList } from '@/components/admin/InvoiceList';
 import { PromoClaimsPanel } from '@/components/admin/PromoClaimsPanel';
@@ -285,6 +285,9 @@ const Admin = () => {
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeSort, setActiveSort] = useState<
+    'return_asc' | 'return_desc' | 'start_asc' | 'days_desc' | 'amount_desc' | 'amount_asc' | 'created_desc'
+  >('return_asc');
   const [showChangelog, setShowChangelog] = useState(false);
   const [showSystemStatus, setShowSystemStatus] = useState(false);
   const allowedTabs = useMemo(
@@ -990,10 +993,33 @@ const Admin = () => {
     return haystack.includes(query);
   };
 
-  const activeReservations = reservations.filter(r => 
-    ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up', 'phone_reservation'].includes(r.status)
-    && matchesReservationSearch(r, activeSearchQuery)
-  );
+  const returnTimestamp = (r: any) =>
+    new Date(`${r.return_date || r.end_date}T${(r.return_time || '18:00:00').slice(0, 8)}`).getTime();
+
+  const activeReservations = reservations
+    .filter(r =>
+      ['pending', 'paid', 'awaiting_payment', 'requested', 'picked_up', 'needs_resolution', 'phone_reservation'].includes(r.status)
+      && matchesReservationSearch(r, activeSearchQuery)
+    )
+    .sort((a: any, b: any) => {
+      switch (activeSort) {
+        case 'return_desc':
+          return returnTimestamp(b) - returnTimestamp(a);
+        case 'start_asc':
+          return new Date(a.start_date).getTime() - new Date(b.start_date).getTime();
+        case 'days_desc':
+          return (b.rental_days || 0) - (a.rental_days || 0);
+        case 'amount_desc':
+          return Number(b.total_amount || 0) - Number(a.total_amount || 0);
+        case 'amount_asc':
+          return Number(a.total_amount || 0) - Number(b.total_amount || 0);
+        case 'created_desc':
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case 'return_asc':
+        default:
+          return returnTimestamp(a) - returnTimestamp(b);
+      }
+    });
   
   const completedReservations = reservations.filter(r => 
     r.status === 'completed' && matchesReservationSearch(r, historySearchQuery)
@@ -1540,14 +1566,31 @@ const Admin = () => {
                       <CardDescription>Laukiančios, patvirtintos ir apmokėtos rezervacijos</CardDescription>
                     </div>
                   </div>
-                  <div className="relative w-full max-w-[240px]">
-                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Ieškoti rezervacijų..."
-                      value={activeSearchQuery}
-                      onChange={(e) => setActiveSearchQuery(e.target.value)}
-                      className="pl-8"
-                    />
+                  <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+                    <Select value={activeSort} onValueChange={(v) => setActiveSort(v as typeof activeSort)}>
+                      <SelectTrigger className="w-full sm:w-[230px]">
+                        <ArrowUpDown className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <SelectValue placeholder="Rikiuoti" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background z-50">
+                        <SelectItem value="return_asc">Grąžinimo data (artimiausi)</SelectItem>
+                        <SelectItem value="return_desc">Grąžinimo data (vėliausi)</SelectItem>
+                        <SelectItem value="start_asc">Paėmimo data (artimiausi)</SelectItem>
+                        <SelectItem value="days_desc">Ilgiausias laikotarpis</SelectItem>
+                        <SelectItem value="amount_desc">Didžiausia suma</SelectItem>
+                        <SelectItem value="amount_asc">Mažiausia suma</SelectItem>
+                        <SelectItem value="created_desc">Naujausios (sukūrimo)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <div className="relative w-full sm:max-w-[240px]">
+                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Ieškoti rezervacijų..."
+                        value={activeSearchQuery}
+                        onChange={(e) => setActiveSearchQuery(e.target.value)}
+                        className="pl-8"
+                      />
+                    </div>
                   </div>
                 </CardHeader>
                  
