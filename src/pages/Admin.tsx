@@ -274,6 +274,7 @@ const Admin = () => {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showChangelog, setShowChangelog] = useState(false);
+  const [showSystemStatus, setShowSystemStatus] = useState(false);
   const allowedTabs = useMemo(
     () =>
       tabsForRole(role, [
