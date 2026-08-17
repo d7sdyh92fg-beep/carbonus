@@ -438,7 +438,7 @@ export default function ReservationReview() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       pattern="^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{3,9}$"
-                      placeholder="+370 XXX XXXXX"
+                      placeholder="06XX XXXXX"
                       required
                     />
                     <p className="text-xs text-muted-foreground mt-1">

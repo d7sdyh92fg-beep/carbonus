@@ -53,7 +53,7 @@ export const translations = {
         corporateFieldsRequired: "Prašome užpildyti privalomus įmonės laukus",
         invalidCompanyCode: "Neteisingas įmonės kodo formatas (turi būti 9 skaitmenys)",
         invalidPhoneFormat: "Neteisingas telefono numerio formatas",
-        phoneFormatHelper: "Formatas: +370 XXX XXXXX arba 8 XXX XXXXX",
+        phoneFormatHelper: "Formatas: 06XX XXXXX arba +370 6XX XXXXX",
       },
 
     // Navigation
@@ -2054,7 +2054,7 @@ export const translations = {
       corporateFieldsRequired: "Please fill in required company fields",
       invalidCompanyCode: "Invalid company code format (must be 9 digits)",
       invalidPhoneFormat: "Invalid phone number format",
-      phoneFormatHelper: "Format: +370 XXX XXXXX or 8 XXX XXXXX",
+      phoneFormatHelper: "Format: 06XX XXXXX or +370 6XX XXXXX",
     },
 
     // Navigation
