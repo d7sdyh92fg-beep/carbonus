@@ -11,11 +11,16 @@ const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const CRON_SECRET = Deno.env.get("CRON_SECRET") ?? "";
 const ADMIN_EMAIL = "info@carbonus.lt";
 
-function isAuthorized(req: Request): boolean {
+async function isAuthorized(req: Request, token: string | null): Promise<boolean> {
   const cronHeader = req.headers.get("x-cron-secret") ?? "";
   if (CRON_SECRET && cronHeader === CRON_SECRET) return true;
   const auth = req.headers.get("Authorization") ?? "";
   if (SERVICE_KEY && auth === `Bearer ${SERVICE_KEY}`) return true;
+  if (token) {
+    const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
+    const { data } = await admin.from("cron_auth").select("id").eq("name", "return-watchdog").eq("token", token).maybeSingle();
+    if (data) return true;
+  }
   return false;
 }
 
@@ -56,7 +61,14 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response("ok", { headers: corsHeaders });
   }
 
-  if (!isAuthorized(req)) {
+  let payload: Record<string, unknown> = {};
+  try {
+    payload = await req.json();
+  } catch (_) {
+    payload = {};
+  }
+
+  if (!(await isAuthorized(req, (payload?.token as string) ?? null))) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
