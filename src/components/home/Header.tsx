@@ -149,14 +149,31 @@ export function Header() {
 
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className={cn("lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-full", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))]" : "bg-white/[0.06] border border-white/10 text-white")}
-          onClick={() => setMobileOpen(true)}
-          aria-label={MENU_LABEL[language] ?? MENU_LABEL.lt}
-        >
-          <Menu className="h-5 w-5" />
-        </button>
+        {/* Mobile actions */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger className={cn(
+              "inline-flex items-center justify-center gap-1 h-10 px-3 rounded-full text-sm font-medium transition-colors",
+              onLightHero
+                ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))] hover:bg-[hsl(var(--carbonus-dark))]/[0.08]"
+                : "bg-white/[0.06] border border-white/10 text-white hover:bg-white/10"
+            )}>
+              {language.toUpperCase()} <ChevronDown className="h-3.5 w-3.5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-20 p-0 shadow-none rounded-lg bg-white/[0.08] backdrop-blur-xl border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))]">
+              <DropdownMenuItem onClick={() => setLanguage("lt")} className="justify-center rounded-sm focus:text-[hsl(var(--carbonus-dark))] focus:bg-[hsl(var(--carbonus-dark))]/10">LT</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("en")} className="justify-center rounded-sm focus:text-[hsl(var(--carbonus-dark))] focus:bg-[hsl(var(--carbonus-dark))]/10">EN</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <button
+            className={cn("inline-flex items-center justify-center h-11 w-11 rounded-full", onLightHero ? "bg-[hsl(var(--carbonus-dark))]/[0.05] border border-[hsl(var(--carbonus-dark))]/10 text-[hsl(var(--carbonus-dark))]" : "bg-white/[0.06] border border-white/10 text-white")}
+            onClick={() => setMobileOpen(true)}
+            aria-label={MENU_LABEL[language] ?? MENU_LABEL.lt}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
