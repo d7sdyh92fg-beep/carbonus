@@ -24,6 +24,12 @@ const PaymentSuccess: React.FC = () => {
 
     const verifyPayment = async () => {
       try {
+        if (provider === 'cash' && reservationIdParam) {
+          setStatus('success');
+          setReservationId(reservationIdParam);
+          return;
+        }
+
         if (provider === 'stripe' && sessionId) {
           // Verify Stripe payment
           const { data, error } = await supabase.functions.invoke('verify-stripe-payment', {

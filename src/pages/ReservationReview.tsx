@@ -23,7 +23,7 @@ export default function ReservationReview() {
   const { toast } = useToast();
   const { t, language } = useTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter'>('online');
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'pay_at_counter' | 'cash'>('online');
   const [promoInput, setPromoInput] = useState('');
   const [promoChecking, setPromoChecking] = useState(false);
   const [promoError, setPromoError] = useState<string | null>(null);
@@ -258,8 +258,8 @@ export default function ReservationReview() {
         p_package_code: packageCode,
         p_delivery_fee: Math.min(200, Math.max(0, Math.round(bookingData.delivery?.fee || 0))),
         p_payment_method: paymentMethod,
-        p_payment_provider: 'stripe',
-        p_status: 'awaiting_payment',
+        p_payment_provider: paymentMethod === 'cash' ? 'cash' : 'stripe',
+        p_status: paymentMethod === 'cash' ? 'confirmed' : 'awaiting_payment',
         p_language: language,
         p_pricing_notes: pricingNotes,
         p_promo_code: appliedPromo?.code ?? null,
@@ -284,7 +284,7 @@ export default function ReservationReview() {
       const paymentAmount = paymentMethod === 'pay_at_counter' ? dailyRate : totalAmount;
 
       // Process Stripe payment
-      const stripeAmount = paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount;
+      const stripeAmount = paymentMethod === 'cash' ? 0 : (paymentMethod === 'pay_at_counter' ? paymentAmount : totalAmount);
 
       // Send notification email BEFORE redirecting to Stripe (otherwise redirect cancels it)
       try {
@@ -318,6 +318,11 @@ export default function ReservationReview() {
           description: t('commonMessages.emailWarningDescription'),
           variant: 'default',
         });
+      }
+
+      if (paymentMethod === 'cash') {
+        navigate(`/payment-success?provider=cash&reservation_id=${reservationId}`);
+        return;
       }
 
       await processStripePayment(reservationId, stripeAmount, paymentMethod === 'pay_at_counter' ? 'advance' : 'full');
@@ -565,7 +570,7 @@ export default function ReservationReview() {
                   <CreditCard className="h-5 w-5" />
                   {t('review.paymentMethod.title')}
                 </h3>
-                <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'online' | 'pay_at_counter')}>
+                <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as 'online' | 'pay_at_counter' | 'cash')}>
                   <div className="flex items-center space-x-2 mb-4">
                     <RadioGroupItem value="online" id="online" />
                     <Label htmlFor="online" className="cursor-pointer">
@@ -581,6 +586,19 @@ export default function ReservationReview() {
                       <span className="font-medium">{t('review.payAtCounter')}</span>
                       <span className="text-sm text-muted-foreground block">
                         {t('review.reservationFeeAmount').replace('{amount}', (bookingData.basePrice / bookingData.rentalDays).toFixed(2))}
+                      </span>
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2 mt-4">
+                    <RadioGroupItem value="cash" id="cash" />
+                    <Label htmlFor="cash" className="cursor-pointer">
+                      <span className="font-medium">
+                        {language === 'lt' ? 'Visa suma grynaisiais atsiimant' : 'Full amount in cash at pickup'}
+                      </span>
+                      <span className="text-sm text-muted-foreground block">
+                        {language === 'lt'
+                          ? 'Nieko nemokate internetu – visa suma sumokama atsiimant automobilį.'
+                          : 'Nothing is paid online – the full amount is paid when picking up the car.'}
                       </span>
                     </Label>
                   </div>
