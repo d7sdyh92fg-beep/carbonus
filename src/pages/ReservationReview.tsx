@@ -589,19 +589,8 @@ export default function ReservationReview() {
                       </span>
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2 mt-4">
-                    <RadioGroupItem value="cash" id="cash" />
-                    <Label htmlFor="cash" className="cursor-pointer">
-                      <span className="font-medium">
-                        {language === 'lt' ? 'Visa suma grynaisiais atsiimant' : 'Full amount in cash at pickup'}
-                      </span>
-                      <span className="text-sm text-muted-foreground block">
-                        {language === 'lt'
-                          ? 'Nieko nemokate internetu – visa suma sumokama atsiimant automobilį.'
-                          : 'Nothing is paid online – the full amount is paid when picking up the car.'}
-                      </span>
-                    </Label>
-                  </div>
+
+
                 </RadioGroup>
               </Card>
 
