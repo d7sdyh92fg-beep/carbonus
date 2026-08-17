@@ -674,6 +674,8 @@ export type Database = {
           daily_rate: number
           deleted_at: string | null
           deleted_by: string | null
+          delivery_address: string | null
+          delivery_fee: number
           deposit_amount: number
           deposit_payment_intent_id: string | null
           deposit_status: string
@@ -697,6 +699,7 @@ export type Database = {
           pricing_notes: string | null
           promo_code: string | null
           rental_days: number
+          return_address: string | null
           return_date: string | null
           return_notes: string | null
           return_reminder_sent_at: string | null
@@ -729,6 +732,8 @@ export type Database = {
           daily_rate: number
           deleted_at?: string | null
           deleted_by?: string | null
+          delivery_address?: string | null
+          delivery_fee?: number
           deposit_amount?: number
           deposit_payment_intent_id?: string | null
           deposit_status?: string
@@ -752,6 +757,7 @@ export type Database = {
           pricing_notes?: string | null
           promo_code?: string | null
           rental_days: number
+          return_address?: string | null
           return_date?: string | null
           return_notes?: string | null
           return_reminder_sent_at?: string | null
@@ -784,6 +790,8 @@ export type Database = {
           daily_rate?: number
           deleted_at?: string | null
           deleted_by?: string | null
+          delivery_address?: string | null
+          delivery_fee?: number
           deposit_amount?: number
           deposit_payment_intent_id?: string | null
           deposit_status?: string
@@ -807,6 +815,7 @@ export type Database = {
           pricing_notes?: string | null
           promo_code?: string | null
           rental_days?: number
+          return_address?: string | null
           return_date?: string | null
           return_notes?: string | null
           return_reminder_sent_at?: string | null
@@ -935,6 +944,29 @@ export type Database = {
               p_pickup_time: string
               p_pricing_notes?: string
               p_promo_code?: string
+              p_return_time: string
+              p_service_codes?: string[]
+              p_start_date: string
+              p_status?: string
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_car_id: string
+              p_customer_id: string
+              p_delivery_address?: string
+              p_delivery_fee?: number
+              p_end_date: string
+              p_insurance_code?: string
+              p_language?: string
+              p_package_code?: string
+              p_payment_method?: string
+              p_payment_provider?: string
+              p_pickup_time: string
+              p_pricing_notes?: string
+              p_promo_code?: string
+              p_return_address?: string
               p_return_time: string
               p_service_codes?: string[]
               p_start_date: string
