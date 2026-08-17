@@ -290,6 +290,7 @@ export default function ReservationReview() {
       try {
         await supabase.functions.invoke('send-booking-email', {
           body: {
+            reservationId,
             customerName: `${formData.firstName} ${formData.lastName}`,
             customerEmail: formData.email,
             customerPhone: formData.phone,

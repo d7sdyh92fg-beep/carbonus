@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -31,16 +32,141 @@ interface BookingEmailRequest {
   deliveryFee?: number;
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const escapeHtml = (v: unknown) =>
+  String(v ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const num = (v: unknown, fallback = 0) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : fallback;
+};
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const booking: BookingEmailRequest = await req.json();
-    console.log("Received booking request:", booking);
+    const payload = await req.json();
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const admin = createClient(supabaseUrl, serviceKey, {
+      auth: { persistSession: false },
+    });
+
+    // ---- Authorization: the email content must be tied to a real reservation.
+    // Staff (admin/owner/fleet_manager) may send test/manual emails with custom data.
+    let isStaff = false;
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const jwt = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+    if (jwt && jwt !== Deno.env.get("SUPABASE_ANON_KEY")) {
+      const { data: userData } = await admin.auth.getUser(jwt);
+      const uid = userData?.user?.id;
+      if (uid) {
+        const { data: roles } = await admin
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", uid);
+        isStaff = (roles ?? []).some((r: { role: string }) =>
+          ["admin", "owner", "fleet_manager"].includes(r.role)
+        );
+      }
+    }
+
+    const reservationId = typeof payload.reservationId === "string" ? payload.reservationId : "";
+    let booking: BookingEmailRequest;
+
+    if (UUID_RE.test(reservationId)) {
+      const { data: reservation, error: resErr } = await admin
+        .from("reservations")
+        .select(
+          "id, car_name, start_date, end_date, pickup_time, return_time, rental_days, total_amount, deposit_amount, delivery_address, return_address, delivery_fee, language, payment_method, customers(first_name,last_name,email,phone)"
+        )
+        .eq("id", reservationId)
+        .maybeSingle();
+
+      if (resErr || !reservation) {
+        return new Response(JSON.stringify({ error: "Reservation not found" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+
+      const c = (reservation as any).customers ?? {};
+      booking = {
+        customerName: `${c.first_name ?? ""} ${c.last_name ?? ""}`.trim(),
+        customerEmail: c.email ?? "",
+        customerPhone: c.phone ?? "",
+        carName: reservation.car_name ?? "",
+        startDate: String(reservation.start_date ?? ""),
+        endDate: String(reservation.end_date ?? ""),
+        pickupTime: reservation.pickup_time ? String(reservation.pickup_time).slice(0, 5) : undefined,
+        returnTime: reservation.return_time ? String(reservation.return_time).slice(0, 5) : undefined,
+        rentalDays: num(reservation.rental_days, 1),
+        totalAmount: num(reservation.total_amount),
+        depositAmount: num(reservation.deposit_amount, 200),
+        advancePayment: num(payload.advancePayment),
+        paymentMethod: reservation.payment_method ?? undefined,
+        language: reservation.language ?? payload.language ?? "lt",
+        packageName: typeof payload.packageName === "string" ? payload.packageName : undefined,
+        packagePrice: typeof payload.packagePrice === "string" ? payload.packagePrice : undefined,
+        deliveryAddress: reservation.delivery_address ?? undefined,
+        returnAddress: reservation.return_address ?? undefined,
+        deliveryFee: num(reservation.delivery_fee),
+      };
+
+      if (!booking.customerEmail) {
+        return new Response(JSON.stringify({ error: "Reservation has no customer email" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    } else if (isStaff) {
+      booking = payload as BookingEmailRequest;
+      if (!booking.customerEmail) {
+        return new Response(JSON.stringify({ error: "customerEmail required" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    } else {
+      return new Response(JSON.stringify({ error: "Valid reservationId required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    // Escape every free-text value once so templates cannot inject HTML.
+    const recipientEmail = String(booking.customerEmail).trim();
+    booking = {
+      ...booking,
+      customerName: escapeHtml(booking.customerName),
+      customerEmail: escapeHtml(booking.customerEmail),
+      customerPhone: escapeHtml(booking.customerPhone),
+      carName: escapeHtml(booking.carName),
+      startDate: escapeHtml(booking.startDate),
+      endDate: escapeHtml(booking.endDate),
+      pickupTime: booking.pickupTime ? escapeHtml(booking.pickupTime) : undefined,
+      returnTime: booking.returnTime ? escapeHtml(booking.returnTime) : undefined,
+      packageName: booking.packageName ? escapeHtml(booking.packageName) : undefined,
+      packagePrice: booking.packagePrice ? escapeHtml(booking.packagePrice) : undefined,
+      rentalDays: num(booking.rentalDays, 1),
+      totalAmount: num(booking.totalAmount),
+      depositAmount: num(booking.depositAmount, 200),
+      advancePayment: num(booking.advancePayment),
+      deliveryFee: num(booking.deliveryFee),
+    };
+
     const lang = booking.language || 'lt';
     const isLT = lang === 'lt';
+
     
     const logoUrl = 'https://carbonus.lt/lovable-uploads/9b59176c-0032-4a32-bf95-84482d9bcdbd.png';
     const logoStyles = 'max-width: 180px; height: auto; margin-bottom: 24px;';
@@ -184,7 +310,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Email to customer
     const customerEmailResponse = await resend.emails.send({
       from: "CARBONUS <info@carbonus.lt>",
-      to: [booking.customerEmail],
+      to: [recipientEmail],
       subject: isLT ? `Rezervacijos patvirtinimas - ${booking.carName}` : `Booking Confirmation - ${booking.carName}`,
       html: isLT ? `
         <meta charset="utf-8" />

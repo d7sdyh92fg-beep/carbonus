@@ -218,6 +218,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       try {
         await supabase.functions.invoke('send-booking-email', {
           body: {
+            reservationId: reservation.id,
             customerName: `${formData.firstName} ${formData.lastName}`,
             customerEmail: formData.email,
             customerPhone: formData.phone,
