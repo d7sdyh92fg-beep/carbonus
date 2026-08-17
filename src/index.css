@@ -158,3 +158,12 @@ img {
 .animate-hero-overlay-sweep-bottom {
   animation: hero-overlay-sweep-bottom 1.0s ease-out forwards;
 }
+
+/* Hide scrollbars for admin sidebar navigation */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
