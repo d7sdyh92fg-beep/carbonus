@@ -263,6 +263,8 @@ export default function ReservationReview() {
         p_language: language,
         p_pricing_notes: pricingNotes,
         p_promo_code: appliedPromo?.code ?? null,
+        p_delivery_address: bookingData.delivery?.pickupAddress ?? null,
+        p_return_address: bookingData.delivery?.returnAddress ?? null,
 
       } as any);
 
@@ -304,6 +306,9 @@ export default function ReservationReview() {
             language: language,
             packageName: bookingData.selectedPackage?.name || undefined,
             packagePrice: bookingData.selectedPackage?.priceDisplay || undefined,
+            deliveryAddress: bookingData.delivery?.pickupAddress || undefined,
+            returnAddress: bookingData.delivery?.returnAddress || undefined,
+            deliveryFee: bookingData.delivery?.fee || 0,
           }
         });
       } catch (emailError) {
