@@ -2151,6 +2151,8 @@ const Admin = () => {
         </div>
       </main>
       
+      <SystemStatusDialog open={showSystemStatus} onOpenChange={setShowSystemStatus} />
+
       {/* Changelog Dialog */}
       <Dialog open={showChangelog} onOpenChange={setShowChangelog}>
         <DialogContent className="max-w-3xl rounded-[24px] border-[#dce7e1] bg-white p-0">
