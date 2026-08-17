@@ -45,6 +45,16 @@ const getCarImage = (car: any) => {
   return car.image_url || '';
 };
 
+// Ar rezervacijai reikia pristatymo / paėmimo kitu adresu
+const isOfficeAddress = (addr?: string | null) =>
+  !addr || addr.toLowerCase().includes('carbonus');
+
+const hasLogistics = (reservation: any) =>
+  Number(reservation?.delivery_fee || 0) > 0 ||
+  !isOfficeAddress(reservation?.delivery_address) ||
+  !isOfficeAddress(reservation?.return_address);
+
+
 // Function to parse pricing notes from JSON to readable text
 const parsePricingNotes = (notes: string | null | undefined): string => {
   if (!notes) return '';
@@ -1634,7 +1644,28 @@ const Admin = () => {
                                  </div>
                                </div>
                              </TableCell>
-                             <TableCell className="font-medium">{reservation.car_name}</TableCell>
+                              <TableCell className="font-medium">
+                                <div className="space-y-1">
+                                  <div>{reservation.car_name}</div>
+                                  {hasLogistics(reservation) && (
+                                    <div className="space-y-0.5">
+                                      <Badge variant="secondary" className="text-[10px] bg-carbonus-green-soft text-carbonus-green-deep">
+                                        🚚 Pristatymas / paėmimas
+                                      </Badge>
+                                      {(reservation as any).delivery_address && (
+                                        <div className="text-[11px] text-muted-foreground max-w-[200px] truncate" title={(reservation as any).delivery_address}>
+                                          Nuvežti: {(reservation as any).delivery_address}
+                                        </div>
+                                      )}
+                                      {(reservation as any).return_address && (
+                                        <div className="text-[11px] text-muted-foreground max-w-[200px] truncate" title={(reservation as any).return_address}>
+                                          Paimti: {(reservation as any).return_address}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </TableCell>
                               <TableCell>
                                 <div className="text-sm space-y-1">
                                   <div className="flex items-center gap-1">

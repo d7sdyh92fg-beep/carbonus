@@ -26,6 +26,9 @@ interface BookingEmailRequest {
   language?: string;
   packageName?: string;
   packagePrice?: string;
+  deliveryAddress?: string;
+  returnAddress?: string;
+  deliveryFee?: number;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -62,6 +65,32 @@ const handler = async (req: Request): Promise<Response> => {
         <p style="margin: 5px 0 0 0;"><strong>Package price:</strong> ${booking.packagePrice} €</p>
       </div>
     ` : '';
+
+    // Delivery / collection (pristatymas ir paėmimas kitu adresu)
+    const esc = (v: unknown) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const OFFICE_HINT = "carbonus";
+    const deliveryAddr = (booking.deliveryAddress || "").trim();
+    const returnAddr = (booking.returnAddress || "").trim();
+    const deliveryFee = Number(booking.deliveryFee || 0);
+    const isOffice = (a: string) => !a || a.toLowerCase().includes(OFFICE_HINT);
+    const needsLogistics = deliveryFee > 0 || !isOffice(deliveryAddr) || !isOffice(returnAddr);
+
+    const logisticsHtml = (locale: 'lt' | 'en', forAdmin = false) => {
+      if (!needsLogistics) return '';
+      const title = locale === 'lt'
+        ? (forAdmin ? '🚚 Pristatymas / paėmimas kitu adresu' : '🚚 Pristatymas ir paėmimas')
+        : (forAdmin ? '🚚 Delivery / collection at another address' : '🚚 Delivery and collection');
+      const dLabel = locale === 'lt' ? 'Pristatyti automobilį į' : 'Deliver the car to';
+      const rLabel = locale === 'lt' ? 'Paimti automobilį iš' : 'Collect the car from';
+      const fLabel = locale === 'lt' ? 'Logistikos mokestis' : 'Logistics fee';
+      return `
+      <div style="background-color: #ecfdf5; padding: 16px; border-radius: 8px; margin: 16px 0; border-left: 4px solid #15803d;">
+        <p style="margin: 0 0 8px 0; font-weight: bold;">${title}</p>
+        <p style="margin: 4px 0;"><strong>${dLabel}:</strong> ${esc(deliveryAddr) || (locale === 'lt' ? 'Carbonus ofisas, Druskininkai' : 'Carbonus office, Druskininkai')}</p>
+        <p style="margin: 4px 0;"><strong>${rLabel}:</strong> ${esc(returnAddr) || (locale === 'lt' ? 'Carbonus ofisas, Druskininkai' : 'Carbonus office, Druskininkai')}</p>
+        ${deliveryFee > 0 ? `<p style="margin: 4px 0;"><strong>${fLabel}:</strong> €${deliveryFee.toFixed(2)}</p>` : ''}
+      </div>`;
+    };
 
     // Payment summary blocks (advance + remaining) — only when paying at counter
     const isPayAtCounter = booking.paymentMethod === 'pay_at_counter';
@@ -129,6 +158,7 @@ const handler = async (req: Request): Promise<Response> => {
           </div>
 
           ${packageHtmlAdmin}
+          ${logisticsHtml('lt', true)}
           ${paymentHtmlAdmin}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -166,6 +196,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Jūsų rezervacija sėkmingai gauta. Netrukus susisieksime su jumis dėl mokėjimo ir automobilio perdavimo detalių.</p>
 
           ${packageHtmlCustomerLT}
+          ${logisticsHtml('lt')}
           ${paymentHtmlCustomerLT}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -205,6 +236,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Your booking has been successfully received. We will contact you shortly regarding payment and car pickup details.</p>
 
           ${packageHtmlCustomerEN}
+          ${logisticsHtml('en')}
           ${paymentHtmlCustomerEN}
 
           <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
