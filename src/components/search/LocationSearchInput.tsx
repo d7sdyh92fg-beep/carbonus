@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Loader2, MapPin, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { loadGoogleMaps, hasGoogleMapsKey } from "@/lib/googleMaps";
+import { supabase } from "@/integrations/supabase/client";
 import { EMPTY_LOCATION, PlaceLocation } from "@/lib/logisticsPricing";
+
 
 interface Suggestion {
   id: string;
