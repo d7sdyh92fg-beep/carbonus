@@ -67,8 +67,10 @@ export const ReturnsBoard = ({ reservations, onStartInspection }: Props) => {
           const due = parseDue(r);
           const overdue = due.getTime() < now.getTime();
           const needsResolution = String(r.status) === 'needs_resolution';
+          const isToday = due.toDateString() === now.toDateString();
           const timeLabel = due.toLocaleTimeString('lt-LT', { hour: '2-digit', minute: '2-digit' });
           const name = r.customers ? `${r.customers.first_name} ${r.customers.last_name}` : '—';
+
 
           return (
             <div
