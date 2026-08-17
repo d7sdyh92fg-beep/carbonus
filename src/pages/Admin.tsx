@@ -1144,6 +1144,14 @@ const Admin = () => {
                       Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.
                     </li>
                   </ul>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-3 w-full rounded-xl border-[#dce7e1] bg-transparent text-[11px] font-semibold text-[#0b5d43] hover:bg-[#f0f7f3]"
+                    onClick={() => setShowChangelog(true)}
+                  >
+                    Rodyti visą žurnalą
+                  </Button>
                 </div>
               )}
             </div>
