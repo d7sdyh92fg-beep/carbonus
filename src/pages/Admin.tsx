@@ -1244,6 +1244,14 @@ const Admin = () => {
                 </div>
                 <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
                 <p className="mt-1 text-[11px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-3 w-full rounded-xl border-[#dce7e1] bg-transparent text-[11px] font-semibold text-[#0b5d43] hover:bg-[#f0f7f3]"
+                  onClick={() => setShowSystemStatus(true)}
+                >
+                  Daugiau
+                </Button>
               </div>
 
               <div className="admin-sidebar-status hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
@@ -1253,6 +1261,14 @@ const Admin = () => {
                 </div>
                 <p className="mt-2 text-[12px] text-[#65776f]">Visi procesai tvarkingi.</p>
                 <p className="mt-1 text-[11px] font-semibold text-[#0b5d43]">{ROLE_LABELS[role]}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-3 w-full rounded-xl border-[#dce7e1] bg-transparent text-[11px] font-semibold text-[#0b5d43] hover:bg-[#f0f7f3]"
+                  onClick={() => setShowSystemStatus(true)}
+                >
+                  Daugiau
+                </Button>
               </div>
               {isOwner && (
                 <div className="admin-sidebar-changelog hidden rounded-[22px] border border-[#dce7e1] bg-white p-4 shadow-[0_14px_42px_rgba(14,47,35,0.07)] lg:block">
