@@ -371,6 +371,20 @@ const Admin = () => {
     }
   }, [user, isAdmin, loading]);
 
+  // Realtime: grąžinimų būsenų atnaujinimai (cron pakelia rezervaciją į viršų)
+  useEffect(() => {
+    if (!user || !isAdmin) return;
+    const channel = supabase
+      .channel('admin-reservations-returns')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reservations' }, () => {
+        fetchReservations();
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, isAdmin]);
+
   // Redirect non-admin users to auth page with better error handling
   if (!loading && !user) {
     console.log('Admin redirect - no user:', { user: !!user, isAdmin, loading });
@@ -948,6 +962,7 @@ const Admin = () => {
       picked_up: 'Atsiimta',
       denied: 'Atmesta',
       awaiting_payment: 'Laukiama apmokėjimo',
+      needs_resolution: '⚠️ Reikia sprendimo',
       phone_reservation: '📞 Telefoninė',
     } as const;
 
@@ -960,6 +975,7 @@ const Admin = () => {
       completed: 'bg-gray-100 text-gray-800 border-gray-300',
       pending: 'bg-gray-100 text-gray-800 border-gray-300',
       awaiting_payment: 'bg-orange-100 text-orange-800 border-orange-300',
+      needs_resolution: 'bg-amber-100 text-amber-900 border-amber-400',
       phone_reservation: 'bg-blue-100 text-blue-800 border-blue-300',
     } as const;
 
@@ -968,6 +984,7 @@ const Admin = () => {
       { value: 'paid', label: 'Apmokėta' },
       { value: 'picked_up', label: 'Atsiimta' },
       { value: 'cancelled', label: 'Atšaukta' },
+      { value: 'needs_resolution', label: '⚠️ Reikia sprendimo' },
       { value: 'completed', label: 'Baigta' },
     ];
 
