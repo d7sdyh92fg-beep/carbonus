@@ -71,7 +71,7 @@ serve(async (req) => {
     const auth = await requireAdmin(req);
     if (!auth.ok) return adminAuthFailureResponse(auth, corsHeaders);
 
-    const { reservationId, prefix = 'CARW', invoiceId } = await req.json();
+    const { reservationId, prefix = 'CAR', invoiceId } = await req.json();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;

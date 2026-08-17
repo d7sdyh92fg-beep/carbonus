@@ -95,7 +95,7 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
     setIsGenerating(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
-        body: { reservationId, prefix: 'CARW' },
+        body: { reservationId, prefix: 'CAR' },
       });
 
       if (error) throw error;
