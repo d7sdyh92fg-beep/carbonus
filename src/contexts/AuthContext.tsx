@@ -13,6 +13,17 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Staff access is decided by the DB role (owner / admin / fleet_manager)
+const resolveStaffAccess = async (): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase.rpc('get_my_admin_role' as any);
+    if (error) return false;
+    return ['owner', 'admin', 'fleet_manager'].includes(String(data));
+  } catch {
+    return false;
+  }
+};
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -44,12 +55,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Simple admin check - just check email
-        const isUserAdmin = session?.user?.email === 'info@carbonus.lt';
-        console.log('Setting isAdmin to:', isUserAdmin, 'for email:', session?.user?.email);
-        setIsAdmin(isUserAdmin);
-        
-        setLoading(false);
+        if (session?.user) {
+          resolveStaffAccess().then((allowed) => {
+            if (!mounted) return;
+            setIsAdmin(allowed);
+            setLoading(false);
+          });
+        } else {
+          setIsAdmin(false);
+          setLoading(false);
+        }
       }
     );
 
@@ -64,11 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Simple admin check - just check email
-        const isUserAdmin = session?.user?.email === 'info@carbonus.lt';
-        console.log('Initial setting isAdmin to:', isUserAdmin, 'for email:', session?.user?.email);
-        setIsAdmin(isUserAdmin);
-        
+        setIsAdmin(session?.user ? await resolveStaffAccess() : false);
         setLoading(false);
       } catch (error) {
         console.error('Error initializing auth:', error);
