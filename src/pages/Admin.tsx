@@ -45,6 +45,16 @@ const getCarImage = (car: any) => {
   return car.image_url || '';
 };
 
+// Ar rezervacijai reikia pristatymo / paėmimo kitu adresu
+const isOfficeAddress = (addr?: string | null) =>
+  !addr || addr.toLowerCase().includes('carbonus');
+
+const hasLogistics = (reservation: any) =>
+  Number(reservation?.delivery_fee || 0) > 0 ||
+  !isOfficeAddress(reservation?.delivery_address) ||
+  !isOfficeAddress(reservation?.return_address);
+
+
 // Function to parse pricing notes from JSON to readable text
 const parsePricingNotes = (notes: string | null | undefined): string => {
   if (!notes) return '';
