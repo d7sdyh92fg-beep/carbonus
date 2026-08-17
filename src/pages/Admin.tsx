@@ -1729,58 +1729,64 @@ const Admin = () => {
                                        >
                                          <FileText className="h-4 w-4" />
                                        </Button>
+                                        {canManageReservations && (
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => handlePricingOverride(reservation)}
+                                          title="Nustatyti specialią kainą"
+                                        >
+                                          <DollarSign className="h-4 w-4" />
+                                        </Button>
+                                        )}
+                                        {canManageReservations && (
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
+                                          title="Sąskaita faktūra"
+                                        >
+                                          <Receipt className="h-4 w-4" />
+                                        </Button>
+                                        )}
+                                      </>
+                                    )}
+                                    {canManageReservations && reservation.status === 'requested' && (
+                                     <>
                                        <Button
-                                         variant="outline"
+                                         variant="default"
                                          size="sm"
-                                         onClick={() => handlePricingOverride(reservation)}
-                                         title="Nustatyti specialią kainą"
+                                         onClick={() => approveReservation(reservation.id)}
                                        >
-                                         <DollarSign className="h-4 w-4" />
+                                         <CheckCircle className="h-4 w-4" />
                                        </Button>
                                        <Button
-                                         variant="outline"
+                                         variant="destructive"
                                          size="sm"
-                                         onClick={() => { setInvoiceReservation(reservation); setShowInvoice(true); }}
-                                         title="Sąskaita faktūra"
+                                         onClick={() => denyReservation(reservation.id)}
                                        >
-                                         <Receipt className="h-4 w-4" />
+                                         <XCircle className="h-4 w-4" />
                                        </Button>
                                      </>
                                    )}
-                                   {reservation.status === 'requested' && (
-                                    <>
-                                      <Button
-                                        variant="default"
-                                        size="sm"
-                                        onClick={() => approveReservation(reservation.id)}
-                                      >
-                                        <CheckCircle className="h-4 w-4" />
-                                      </Button>
-                                      <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => denyReservation(reservation.id)}
-                                      >
-                                        <XCircle className="h-4 w-4" />
-                                      </Button>
-                                    </>
-                                  )}
-                                  {reservation.status === 'paid' && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => cancelReservation(reservation.id)}
-                                    >
-                                      <Ban className="h-4 w-4" />
-                                    </Button>
-                                  )}
-                                  <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() => deleteReservation(reservation.id)}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
+                                   {canManageReservations && reservation.status === 'paid' && (
+                                     <Button
+                                       variant="outline"
+                                       size="sm"
+                                       onClick={() => cancelReservation(reservation.id)}
+                                     >
+                                       <Ban className="h-4 w-4" />
+                                     </Button>
+                                   )}
+                                   {canManageReservations && (
+                                   <Button
+                                     variant="destructive"
+                                     size="sm"
+                                     onClick={() => deleteReservation(reservation.id)}
+                                   >
+                                     <Trash2 className="h-4 w-4" />
+                                   </Button>
+                                   )}
                                 </div>
                               </TableCell>
 
