@@ -82,7 +82,7 @@ import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 import { EmailTester } from "@/components/admin/EmailTester";
 
 // Pakeitimai nuo paskutinio publikavimo (naujausi viršuje)
-const LAST_PUBLISH_DATE = '2026-08-15';
+const LAST_PUBLISH_DATE = '2026-08-05';
 
 const CHANGELOG: { date: string; items: string[] }[] = [
   {
@@ -114,6 +114,96 @@ const CHANGELOG: { date: string; items: string[] }[] = [
       'Klientų „minkštas“ trynimas ir atkūrimas iš šiukšlinės.',
       'Automobilių parko kortelės suspaustos, pridėta paieška.',
       'Nuolaidos kodo ACIU10 aktyvavimas rezervacijoje ir panaudojimų sekimas.',
+    ],
+  },
+  {
+    date: '2026-08-14',
+    items: [
+      'Sukurtas /atsiliepimas puslapis su 5★ Google nuoroda ir 1–4★ vidiniu atsiliepimu.',
+      'Pridėtas ACIU10 nuolaidos kodas su sąlygomis ir modalu.',
+      'Sukurta promo_code_claims lentelė ir admin konversijų valdymas.',
+      'Nuolaidos kodo laukas integruotas į rezervacijos patvirtinimo žingsnį.',
+    ],
+  },
+  {
+    date: '2026-08-13',
+    items: [
+      'Pritaikytas V3 dizainas rezervacijos ir admino srautams.',
+      'Sukurtas naujas autoparko kalendoriaus laiko juostos ir CRM vaizdas.',
+      'Sukurtas kainų keitimo ir vizualinis admin automobilių plano įrankis.',
+      'Sukurtas admin panelės peržiūros ir rezervacijos peržiūros V3.',
+    ],
+  },
+  {
+    date: '2026-08-12',
+    items: [
+      'Sukurta logistikos kainodaros sistema (1.60 €/km, min 40 €) su Google Routes API.',
+      'Nustatyta 15 km nemokama zona aplink Druskininkų bazę.',
+      'Sukurtas /laisvi-automobiliai puslapis su laisvų automobilių paieška.',
+      'Sukurtas bookingTime.ts su 1 val. rezervacijos pirmumo apribojimu.',
+    ],
+  },
+  {
+    date: '2026-08-11',
+    items: [
+      'Perdarytas pagrindinis puslapis (V3) pagal naują juodą premium dizainą.',
+      'Pridėtas Manrope šriftas, V3Hero, V3SearchBar, V3Header ir V3Footer.',
+      'Sukurtas bendras CarCard komponentas su pilku fone.',
+      'Automobilių galerijos perkeltos į src/assets/car-galleries/.',
+    ],
+  },
+  {
+    date: '2026-08-10',
+    items: [
+      'Sukurtas „Pavedimu“ (banko pervedimas) apmokėjimo būdas.',
+      'Pridėta kliento parašo pridėjimo funkcija po rezervacijos.',
+      'Sutartis siunčiama tik kai klientas jau pridėjo parašą.',
+      'Sukurta juodraščių sistema vietinėms rezervacijoms (InPersonBooking).',
+    ],
+  },
+  {
+    date: '2026-08-09',
+    items: [
+      'Pašalinta „Druskininkai“ ženklinimo kalba ir vertimai.',
+      'Pakeista į „Vairuokite visoje Lietuvoje“ komunikaciją.',
+      'Sukurta socialinių tinklų dizaino kalba ir naujas OG logotipas.',
+      'Atliktas SEO auditas: pataisytos meta žymos, JSON-LD ir kanoninės nuorodos.',
+    ],
+  },
+  {
+    date: '2026-08-08',
+    items: [
+      'Sustiprinta rezervacijos logika su serverio puse ir pg_advisory_xact_lock.',
+      'Sustiprintas saugumas: apsaugotas driver-licenses storage ir get_booked_ranges RPC.',
+      'Perdarytas admino automobilių tinklelis pagal V3 dizainą.',
+      'Įjungtas paveikslėlių išsaugojimas CarDetail ir fleet puslapiuose.',
+    ],
+  },
+  {
+    date: '2026-08-07',
+    items: [
+      'Sukurta „Saugus trynimo režimas“ istorijos skiltyje su varnelėmis.',
+      'Atnaujintas OG logotipas visuose socialiniuose tinkluose.',
+      'Pakeistas avanso apmokėjimo skaičiavimas: 1–3 d. (50 €), 4–7 d. (40 €), 8+ d. (30 €).',
+      'Atnaujinti kontaktai ir adresas struktūrizuotuose duomenyse.',
+    ],
+  },
+  {
+    date: '2026-08-06',
+    items: [
+      'Sukurtas admin saskaitų faktūrų redagavimas: rankinis numerio ir datos keitimas.',
+      'Sąskaitų išrašymo data pagal nutylėjimą nustatyta į nuomos pradžios datą.',
+      'Sutarties šablonas suvienodintas: klientas ir adminas gauna tą pačią versiją.',
+      'Sukurtas invoice-system-architecture su CAR/CARW prefiksais.',
+    ],
+  },
+  {
+    date: '2026-08-05',
+    items: [
+      'Pradėtas darbas su Codex / Carbonus projekto pertvarkymu.',
+      'Citroën metai pakeisti į 2026.',
+      'Pataisytas kalendorius: rodomos visos rezervuotos datos, įskaitant manual blokus.',
+      'Atnaujinta duomenų bazės teisių politika car_blocked_dates lentelei.',
     ],
   },
 ];
