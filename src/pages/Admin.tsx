@@ -278,7 +278,7 @@ const Admin = () => {
     () =>
       tabsForRole(role, [
         'dashboard', 'calendar', 'customers', 'in-person', 'history',
-        'invoices', 'promos', 'reviews', 'recycle', 'email-test', 'users',
+        'invoices', 'promos', 'reviews', 'recycle', 'email-test', 'users', 'changelog',
       ]),
     [role]
   );
