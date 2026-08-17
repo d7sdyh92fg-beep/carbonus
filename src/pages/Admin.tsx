@@ -1076,34 +1076,36 @@ const Admin = () => {
 
       <main className="mx-auto w-full max-w-[1680px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Hero banner */}
-        <section className="relative mb-6 flex h-[210px] items-center overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0a3f30_0%,#076c45_62%,#16a566_100%)] px-6 py-7 text-white shadow-[0_22px_60px_rgba(5,91,58,0.16)] sm:px-8 sm:py-9 lg:px-10">
+        <section className="relative mb-6 flex min-h-[150px] items-center overflow-hidden rounded-[24px] bg-[linear-gradient(135deg,#0a3f30_0%,#076c45_62%,#16a566_100%)] px-4 py-5 text-white shadow-[0_22px_60px_rgba(5,91,58,0.16)] sm:px-6 sm:py-6 lg:h-[210px] lg:min-h-[210px] lg:rounded-[28px] lg:px-10 lg:py-9">
           <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full border-[38px] border-white/[0.045]" />
           <div className="pointer-events-none absolute bottom-0 right-[24%] h-28 w-40 rounded-t-full bg-white/[0.035]" />
-          <div className="relative flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-7">
+          <div className="relative flex w-full flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-7">
 
             <div className="min-w-0">
-              <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-200/85">
-                <Sparkles className="h-4 w-4" />
+              <p className="hidden items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-200/85 lg:flex">
+                <Sparkles className="h-3.5 w-3.5" />
                 {hero.kicker}
               </p>
-              <h1 className="mt-4 text-[32px] font-bold leading-tight tracking-tight text-white sm:text-[38px]">
+              <h1 className="text-[20px] font-bold leading-tight tracking-tight text-white sm:text-[24px] lg:mt-3 lg:text-[30px]">
                 {hero.title}
               </h1>
-              <p className="mt-2 max-w-xl text-sm text-white/75">
+              <p className="mt-1.5 line-clamp-2 max-w-xl text-[12px] leading-snug text-white/75 lg:mt-2 lg:text-[13px]">
                 {hero.subtitle}
               </p>
             </div>
             <div className="flex flex-wrap gap-2 lg:gap-3">
               {hero.stats.map((stat) => (
-                <div key={stat.label} className="w-[130px] rounded-xl border border-white/10 bg-white/10 px-2.5 py-2 backdrop-blur-sm md:w-[140px] lg:w-[156px] lg:rounded-2xl lg:px-4 lg:py-3">
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/60 lg:text-[10px]">{stat.label}</p>
-                  <p className="mt-0.5 truncate text-[11px] font-semibold text-white lg:text-sm">{stat.value}</p>
+                <div key={stat.label} className="w-[124px] rounded-xl border border-white/10 bg-white/10 px-2.5 py-1.5 backdrop-blur-sm md:w-[136px] lg:w-[152px] lg:rounded-2xl lg:px-4 lg:py-2.5">
+                  <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-white/60 lg:text-[10px]">{stat.label}</p>
+                  <p className="mt-0.5 truncate text-[10.5px] font-semibold text-white lg:text-[13px]">{stat.value}</p>
                 </div>
               ))}
             </div>
 
           </div>
         </section>
+
+
 
         <div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="admin-workspace-tabs space-y-5">
