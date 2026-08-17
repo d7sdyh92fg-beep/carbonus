@@ -581,12 +581,67 @@ export type Database = {
         }
         Relationships: []
       }
+      reservation_inspections: {
+        Row: {
+          admin_id: string | null
+          checklist: Json
+          created_at: string
+          extra_charge: number
+          fuel_level: string | null
+          id: string
+          issues: string[]
+          mileage_end: number | null
+          notes: string | null
+          photos: string[]
+          reservation_id: string
+          updated_at: string
+        }
+        Insert: {
+          admin_id?: string | null
+          checklist?: Json
+          created_at?: string
+          extra_charge?: number
+          fuel_level?: string | null
+          id?: string
+          issues?: string[]
+          mileage_end?: number | null
+          notes?: string | null
+          photos?: string[]
+          reservation_id: string
+          updated_at?: string
+        }
+        Update: {
+          admin_id?: string | null
+          checklist?: Json
+          created_at?: string
+          extra_charge?: number
+          fuel_level?: string | null
+          id?: string
+          issues?: string[]
+          mileage_end?: number | null
+          notes?: string | null
+          photos?: string[]
+          reservation_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservation_inspections_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reservations: {
         Row: {
           additional_services: Json | null
+          admin_return_alert_sent_at: string | null
           cancellation_deadline: string | null
           car_id: string
           car_name: string
+          completed_at: string | null
           condition_pickup: string | null
           condition_return: string | null
           contract_pdf_url: string | null
@@ -600,6 +655,7 @@ export type Database = {
           deleted_by: string | null
           deposit_amount: number
           deposit_payment_intent_id: string | null
+          deposit_status: string
           discount_amount: number
           driver_license_back_url: string | null
           driver_license_url: string | null
@@ -607,6 +663,7 @@ export type Database = {
           fuel_level_pickup: string | null
           fuel_level_return: string | null
           id: string
+          inspection_started_at: string | null
           language: string
           last_email_sent_status: string | null
           notes: string | null
@@ -621,6 +678,8 @@ export type Database = {
           rental_days: number
           return_date: string | null
           return_notes: string | null
+          return_reminder_sent_at: string | null
+          return_stage: string
           return_time: string | null
           returned_at: string | null
           second_driver_license_back_url: string | null
@@ -633,9 +692,11 @@ export type Database = {
         }
         Insert: {
           additional_services?: Json | null
+          admin_return_alert_sent_at?: string | null
           cancellation_deadline?: string | null
           car_id: string
           car_name: string
+          completed_at?: string | null
           condition_pickup?: string | null
           condition_return?: string | null
           contract_pdf_url?: string | null
@@ -649,6 +710,7 @@ export type Database = {
           deleted_by?: string | null
           deposit_amount?: number
           deposit_payment_intent_id?: string | null
+          deposit_status?: string
           discount_amount?: number
           driver_license_back_url?: string | null
           driver_license_url?: string | null
@@ -656,6 +718,7 @@ export type Database = {
           fuel_level_pickup?: string | null
           fuel_level_return?: string | null
           id?: string
+          inspection_started_at?: string | null
           language?: string
           last_email_sent_status?: string | null
           notes?: string | null
@@ -670,6 +733,8 @@ export type Database = {
           rental_days: number
           return_date?: string | null
           return_notes?: string | null
+          return_reminder_sent_at?: string | null
+          return_stage?: string
           return_time?: string | null
           returned_at?: string | null
           second_driver_license_back_url?: string | null
@@ -682,9 +747,11 @@ export type Database = {
         }
         Update: {
           additional_services?: Json | null
+          admin_return_alert_sent_at?: string | null
           cancellation_deadline?: string | null
           car_id?: string
           car_name?: string
+          completed_at?: string | null
           condition_pickup?: string | null
           condition_return?: string | null
           contract_pdf_url?: string | null
@@ -698,6 +765,7 @@ export type Database = {
           deleted_by?: string | null
           deposit_amount?: number
           deposit_payment_intent_id?: string | null
+          deposit_status?: string
           discount_amount?: number
           driver_license_back_url?: string | null
           driver_license_url?: string | null
@@ -705,6 +773,7 @@ export type Database = {
           fuel_level_pickup?: string | null
           fuel_level_return?: string | null
           id?: string
+          inspection_started_at?: string | null
           language?: string
           last_email_sent_status?: string | null
           notes?: string | null
@@ -719,6 +788,8 @@ export type Database = {
           rental_days?: number
           return_date?: string | null
           return_notes?: string | null
+          return_reminder_sent_at?: string | null
+          return_stage?: string
           return_time?: string | null
           returned_at?: string | null
           second_driver_license_back_url?: string | null
