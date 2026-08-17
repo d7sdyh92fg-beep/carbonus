@@ -81,6 +81,23 @@ import { RecycleBin } from "@/components/admin/RecycleBin";
 import { PricingOverrideModal } from "@/components/admin/PricingOverrideModal";
 import { EmailTester } from "@/components/admin/EmailTester";
 
+const CHANGELOG: { date: string; items: string[] }[] = [
+  {
+    date: '2026-08-16',
+    items: [
+      'Admino meniu juosta planšetėje – dvi eilutės be slankiklio.',
+      'Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.',
+    ],
+  },
+  {
+    date: '2026-08-17',
+    items: [
+      'Sutvarkytas admino šoninės juostos sticky elgesys – meniu daugiau neužslenkia ant sistemos būsenos kortelės.',
+      'Pakeitimų žurnalas padarytas išplečiamu.',
+    ],
+  },
+];
+
 interface Reservation {
   id: string;
   car_name: string;
@@ -145,6 +162,7 @@ const Admin = () => {
   const [selectedHistoryIds, setSelectedHistoryIds] = useState<Set<string>>(new Set());
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showChangelog, setShowChangelog] = useState(false);
   const allowedTabs = useMemo(
     () =>
       tabsForRole(role, [
@@ -1126,6 +1144,14 @@ const Admin = () => {
                       Sistemos būsena kortelė įjungta planšetės/mobiliajoje versijoje.
                     </li>
                   </ul>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-3 w-full rounded-xl border-[#dce7e1] bg-transparent text-[11px] font-semibold text-[#0b5d43] hover:bg-[#f0f7f3]"
+                    onClick={() => setShowChangelog(true)}
+                  >
+                    Rodyti visą žurnalą
+                  </Button>
                 </div>
               )}
             </div>
@@ -1952,6 +1978,40 @@ const Admin = () => {
         </div>
       </main>
       
+      {/* Changelog Dialog */}
+      <Dialog open={showChangelog} onOpenChange={setShowChangelog}>
+        <DialogContent className="max-w-2xl rounded-[24px] border-[#dce7e1] bg-white p-0">
+          <DialogHeader className="px-6 pt-6">
+            <DialogTitle className="flex items-center gap-2 text-[16px] font-bold text-[#0b5d43]">
+              <ScrollText className="h-5 w-5" />
+              Pakeitimų žurnalas
+            </DialogTitle>
+            <DialogDescription className="text-[13px] text-[#65776f]">
+              Visų atliktų sistemos atnaujinimų istorija.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="max-h-[60vh] overflow-y-auto px-6 pb-6">
+            <div className="relative pl-4">
+              <div className="absolute bottom-2 left-[7px] top-2 w-px bg-[#dce7e1]" />
+              <ul className="space-y-6">
+                {CHANGELOG.map((entry, i) => (
+                  <li key={i} className="relative pl-6">
+                    <span className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0b5d43] shadow-[0_0_0_2px_#0b5d43]" />
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5d43]">{entry.date}</span>
+                    <ul className="mt-2 space-y-2">
+                      {entry.items.map((item, j) => (
+                        <li key={j} className="text-[13px] leading-relaxed text-[#65776f]">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Car Management Modal */}
       {selectedCar && (
