@@ -69,7 +69,9 @@ export function Header() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 10);
-      if (currentScrollY <= 0) {
+      if (keepVisibleOnScroll) {
+        setHidden(false);
+      } else if (currentScrollY <= 0) {
         setHidden(false);
       } else if (currentScrollY > lastScrollY) {
         setHidden(true);
@@ -80,7 +82,7 @@ export function Header() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [keepVisibleOnScroll]);
 
   const onLightHero = true;
 
