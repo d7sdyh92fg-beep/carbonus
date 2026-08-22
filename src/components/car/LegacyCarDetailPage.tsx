@@ -69,10 +69,18 @@ const normalizeKey = (value: string) =>
     .replace(/š/g, "s")
     .replace(/ž/g, "z");
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedPackageChange }: LegacyCarDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
   const gallery = car.images?.length ? car.images : [car.image];
   const ltSlug = getCarSlugFromId(car.id, "lt") ?? car.id;
   const enSlug = getCarSlugFromId(car.id, "en") ?? car.id;
