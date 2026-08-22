@@ -80,7 +80,11 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
   const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
-  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
+  const [liveSelectedDates, setLiveSelectedDates] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: parseDateParam(searchParams.get("pickup")),
+    to: parseDateParam(searchParams.get("return")),
+  });
+  const bannerHasDates = !!(liveSelectedDates.from && liveSelectedDates.to);
   const gallery = car.images?.length ? car.images : [car.image];
   const ltSlug = getCarSlugFromId(car.id, "lt") ?? car.id;
   const enSlug = getCarSlugFromId(car.id, "en") ?? car.id;
@@ -310,7 +314,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
               <h2 className="mt-5 text-[30px] font-extrabold tracking-[-0.025em] sm:text-[38px]">{copy.bookingTitle}</h2>
               <p className="mt-3 text-[15px] text-muted-foreground">{copy.bookingText}</p>
             </div>
-            <BookingCalendar carId={car.id} carName={car.name} carImage={car.image} selectedPackage={selectedPackage} onClearPackage={() => onSelectedPackageChange(null)} />
+            <BookingCalendar carId={car.id} carName={car.name} carImage={car.image} selectedPackage={selectedPackage} onClearPackage={() => onSelectedPackageChange(null)} onDatesChange={setLiveSelectedDates} />
           </div>
         </section>
 
@@ -344,7 +348,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
 
       <div className="fixed left-0 right-0 bottom-0 z-50 flex items-center justify-between gap-4 rounded-t-2xl border border-white/60 bg-white/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_18px_45px_rgba(15,23,42,0.2)] backdrop-blur lg:hidden">
         <div><p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{copy.from}</p><p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p></div>
-        <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">{hasSelectedDates ? copy.reserveWithDates : copy.reserve}</button>
+        <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">{bannerHasDates ? copy.reserveWithDates : copy.reserve}</button>
       </div>
 
       <V3Footer />
