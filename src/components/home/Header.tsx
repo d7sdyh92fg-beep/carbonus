@@ -51,10 +51,12 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const { isAdmin } = useAuth();
   const { language, setLanguage } = useLanguage();
+  const isMobile = useIsMobile();
   const NAV = NAV_COPY[language] ?? NAV_COPY.lt;
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const isHome = pathname === "/";
+  const keepVisibleOnScroll = pathname === "/laisvi-automobiliai" && isMobile;
   const transparentOverlay = isHome && !scrolled && !mobileOpen;
 
   useEffect(() => {
