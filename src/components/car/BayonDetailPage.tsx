@@ -56,10 +56,18 @@ const GALLERY = [
   { src: bayonPassengerCabin, lt: "Hyundai Bayon Cross galinis salonas", en: "Hyundai Bayon Cross rear cabin", cover: true, imageClass: "" },
 ];
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageChange }: BayonDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
 
   const copy = isEnglish
     ? {
