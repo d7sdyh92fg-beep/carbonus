@@ -23,6 +23,7 @@ interface BookingCalendarProps {
   carImage?: string;
   selectedPackage?: { type: 'romantic' | 'wedding'; name: string; price: number; priceDisplay: string } | null;
   onClearPackage?: () => void;
+  onDatesChange?: (range: { from: Date | undefined; to: Date | undefined }) => void;
 }
 
 const parseDateParam = (value: string | null): Date | undefined => {
