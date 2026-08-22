@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -69,10 +69,18 @@ const normalizeKey = (value: string) =>
     .replace(/š/g, "s")
     .replace(/ž/g, "z");
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedPackageChange }: LegacyCarDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
   const gallery = car.images?.length ? car.images : [car.image];
   const ltSlug = getCarSlugFromId(car.id, "lt") ?? car.id;
   const enSlug = getCarSlugFromId(car.id, "en") ?? car.id;
@@ -89,6 +97,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
         from: "from",
         perDay: "/ day",
         reserve: "Check availability",
+        reserveWithDates: "Book now",
         transparent: "Clear price and booking confirmation before payment",
         gallery: "Vehicle gallery",
         galleryHint: "Select a photo to view it larger",
@@ -110,6 +119,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
         from: "nuo",
         perDay: "/ dieną",
         reserve: "Tikrinti užimtumą",
+        reserveWithDates: "Užsakyti",
         transparent: "Aiški kaina ir rezervacijos patvirtinimas prieš apmokėjimą",
         gallery: "Automobilio galerija",
         galleryHint: "Pasirinkite nuotrauką ir peržiūrėkite ją didesnę",
@@ -334,7 +344,7 @@ export function LegacyCarDetailPage({ car, pricing, selectedPackage, onSelectedP
 
       <div className="fixed left-0 right-0 bottom-0 z-50 flex items-center justify-between gap-4 rounded-t-2xl border border-white/60 bg-white/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_18px_45px_rgba(15,23,42,0.2)] backdrop-blur lg:hidden">
         <div><p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{copy.from}</p><p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p></div>
-        <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">{copy.reserve}</button>
+        <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">{hasSelectedDates ? copy.reserveWithDates : copy.reserve}</button>
       </div>
 
       <V3Footer />

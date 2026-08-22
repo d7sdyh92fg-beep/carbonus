@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -56,10 +56,18 @@ const GALLERY = [
   { src: bayonPassengerCabin, lt: "Hyundai Bayon Cross galinis salonas", en: "Hyundai Bayon Cross rear cabin", cover: true, imageClass: "" },
 ];
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageChange }: BayonDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
 
   const copy = isEnglish
     ? {
@@ -73,6 +81,7 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
         from: "from",
         perDay: "/ day",
         reserve: "Check availability",
+        reserveWithDates: "Book now",
         transparent: "Clear price and booking confirmation before payment",
         highlightTitle: "Ready for every city and weekend route",
         highlightItems: ["Economical 1.0 T-GDi engine", "7DCT automatic transmission", "Modern driver technology"],
@@ -103,6 +112,7 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
         from: "nuo",
         perDay: "/ dieną",
         reserve: "Tikrinti užimtumą",
+        reserveWithDates: "Užsakyti",
         transparent: "Aiški kaina ir rezervacijos patvirtinimas prieš apmokėjimą",
         highlightTitle: "Sukurtas miestui ir savaitgalio kelionėms",
         highlightItems: ["Ekonomiškas 1.0 T-GDi variklis", "7DCT automatinė pavarų dėžė", "Modernios vairuotojo technologijos"],
@@ -360,7 +370,7 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
           <p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p>
         </div>
         <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">
-          {copy.reserve}
+          {hasSelectedDates ? copy.reserveWithDates : copy.reserve}
         </button>
       </div>
 

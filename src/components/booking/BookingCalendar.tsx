@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,19 +25,31 @@ interface BookingCalendarProps {
   onClearPackage?: () => void;
 }
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage, selectedPackage, onClearPackage }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { setBookingData } = useBooking();
   const { toast } = useToast();
   const { t, language } = useTranslations();
+  const urlPickup = parseDateParam(searchParams.get("pickup"));
+  const urlReturn = parseDateParam(searchParams.get("return"));
+  const urlPickupTime = searchParams.get("pickupTime") || "10:00";
+  const urlReturnTime = searchParams.get("returnTime") || "10:00";
+  const hasUrlDates = !!(urlPickup && urlReturn);
   const [selectedRange, setSelectedRange] = useState<{
     from: Date | undefined;
     to: Date | undefined;
-  }>({ from: undefined, to: undefined });
+  }>(hasUrlDates ? { from: urlPickup, to: urlReturn } : { from: undefined, to: undefined });
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [isLoadingDates, setIsLoadingDates] = useState(true);
-  const [pickupTime, setPickupTime] = useState('10:00');
-  const [returnTime, setReturnTime] = useState('10:00');
+  const [pickupTime, setPickupTime] = useState(urlPickupTime);
+  const [returnTime, setReturnTime] = useState(urlReturnTime);
 
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());

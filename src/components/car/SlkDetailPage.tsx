@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -49,6 +49,12 @@ interface SlkDetailPageProps {
   onSelectedPackageChange: (value: SelectedPackage) => void;
 }
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 const GALLERY = [
   { src: slkFront, lt: "Mercedes-Benz SLK iš priekio", en: "Mercedes-Benz SLK front view", cover: false, imageClass: "scale-[1.08]" },
   { src: slkRear, lt: "Mercedes-Benz SLK iš galo", en: "Mercedes-Benz SLK rear view", cover: false, imageClass: "scale-[1.08]" },
@@ -57,8 +63,10 @@ const GALLERY = [
 
 export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChange }: SlkDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
 
   const copy = isEnglish
     ? {
@@ -72,6 +80,7 @@ export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChang
         from: "from",
         perDay: "/ day",
         reserve: "Check availability",
+        reserveWithDates: "Book now",
         transparent: "Clear price and booking confirmation before payment",
         highlightTitle: "Created for memorable journeys",
         highlightItems: ["Electric folding roof", "Two-seat sport cabin", "Automatic transmission"],
@@ -102,6 +111,7 @@ export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChang
         from: "nuo",
         perDay: "/ dieną",
         reserve: "Tikrinti užimtumą",
+        reserveWithDates: "Užsakyti",
         transparent: "Aiški kaina ir rezervacijos patvirtinimas prieš apmokėjimą",
         highlightTitle: "Sukurtas įsimintinoms kelionėms",
         highlightItems: ["Elektrinis sulankstomas stogas", "Dvivietis sportiškas salonas", "Automatinė pavarų dėžė"],
@@ -355,7 +365,7 @@ export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChang
           <p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p>
         </div>
         <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">
-          {copy.reserve}
+          {hasSelectedDates ? copy.reserveWithDates : copy.reserve}
         </button>
       </div>
 

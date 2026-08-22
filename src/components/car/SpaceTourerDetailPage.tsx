@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -49,6 +49,12 @@ interface SpaceTourerDetailPageProps {
   onSelectedPackageChange: (value: SelectedPackage) => void;
 }
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 const GALLERY = [
   { src: spaceFront, lt: "Citroën SpaceTourer iš priekio", en: "Citroën SpaceTourer front view", cover: false, imageClass: "scale-[1.10]" },
   { src: spaceRear, lt: "Citroën SpaceTourer iš galo", en: "Citroën SpaceTourer rear view", cover: false, imageClass: "-translate-x-[10%] scale-[1.10]" },
@@ -58,8 +64,10 @@ const GALLERY = [
 
 export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPackageChange }: SpaceTourerDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
 
   const copy = isEnglish
     ? {
@@ -73,6 +81,7 @@ export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPack
         from: "from",
         perDay: "/ day",
         reserve: "Check availability",
+        reserveWithDates: "Book now",
         transparent: "Clear price and booking confirmation before payment",
         highlightTitle: "More space for shared journeys",
         highlightItems: ["8 comfortable seats", "Flexible three-row cabin", "Automatic transmission"],
@@ -103,6 +112,7 @@ export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPack
         from: "nuo",
         perDay: "/ dieną",
         reserve: "Tikrinti užimtumą",
+        reserveWithDates: "Užsakyti",
         transparent: "Aiški kaina ir rezervacijos patvirtinimas prieš apmokėjimą",
         highlightTitle: "Daugiau erdvės bendroms kelionėms",
         highlightItems: ["8 patogios vietos", "Lankstus trijų eilių salonas", "Automatinė pavarų dėžė"],
@@ -360,7 +370,7 @@ export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPack
           <p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p>
         </div>
         <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">
-          {copy.reserve}
+          {hasSelectedDates ? copy.reserveWithDates : copy.reserve}
         </button>
       </div>
 
