@@ -67,7 +67,11 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
   const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
-  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
+  const [liveSelectedDates, setLiveSelectedDates] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: parseDateParam(searchParams.get("pickup")),
+    to: parseDateParam(searchParams.get("return")),
+  });
+  const bannerHasDates = !!(liveSelectedDates.from && liveSelectedDates.to);
 
   const copy = isEnglish
     ? {
