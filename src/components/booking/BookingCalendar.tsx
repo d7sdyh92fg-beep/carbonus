@@ -23,6 +23,7 @@ interface BookingCalendarProps {
   carImage?: string;
   selectedPackage?: { type: 'romantic' | 'wedding'; name: string; price: number; priceDisplay: string } | null;
   onClearPackage?: () => void;
+  onDatesChange?: (range: { from: Date | undefined; to: Date | undefined }) => void;
 }
 
 const parseDateParam = (value: string | null): Date | undefined => {
@@ -31,7 +32,7 @@ const parseDateParam = (value: string | null): Date | undefined => {
   return isNaN(d.getTime()) ? undefined : d;
 };
 
-const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage, selectedPackage, onClearPackage }) => {
+const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carImage, selectedPackage, onClearPackage, onDatesChange }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { setBookingData } = useBooking();
@@ -54,6 +55,11 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({ carId, carName, carIm
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const minBookingDate = today;
+
+  // Notify parent whenever the selected date range changes
+  useEffect(() => {
+    onDatesChange?.(selectedRange);
+  }, [selectedRange, onDatesChange]);
 
   // Fetch car pricing from database
   const { data: dbCarPricing } = useQuery({

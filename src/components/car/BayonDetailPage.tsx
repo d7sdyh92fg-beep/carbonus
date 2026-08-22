@@ -67,7 +67,11 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
   const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
-  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
+  const [liveSelectedDates, setLiveSelectedDates] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: parseDateParam(searchParams.get("pickup")),
+    to: parseDateParam(searchParams.get("return")),
+  });
+  const bannerHasDates = !!(liveSelectedDates.from && liveSelectedDates.to);
 
   const copy = isEnglish
     ? {
@@ -321,7 +325,7 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
               <h2 className="mt-5 text-[30px] font-extrabold tracking-[-0.025em] sm:text-[38px]">{copy.bookingTitle}</h2>
               <p className="mt-3 text-[15px] text-muted-foreground">{copy.bookingText}</p>
             </div>
-            <BookingCalendar carId="8" carName="Hyundai Bayon Cross" carImage={bayonFront} selectedPackage={selectedPackage} onClearPackage={() => onSelectedPackageChange(null)} />
+            <BookingCalendar carId="8" carName="Hyundai Bayon Cross" carImage={bayonFront} selectedPackage={selectedPackage} onClearPackage={() => onSelectedPackageChange(null)} onDatesChange={setLiveSelectedDates} />
           </div>
         </section>
 
@@ -370,7 +374,7 @@ export function BayonDetailPage({ pricing, selectedPackage, onSelectedPackageCha
           <p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p>
         </div>
         <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">
-          {hasSelectedDates ? copy.reserveWithDates : copy.reserve}
+          {bannerHasDates ? copy.reserveWithDates : copy.reserve}
         </button>
       </div>
 
