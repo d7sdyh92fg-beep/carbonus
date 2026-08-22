@@ -49,6 +49,12 @@ interface SlkDetailPageProps {
   onSelectedPackageChange: (value: SelectedPackage) => void;
 }
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 const GALLERY = [
   { src: slkFront, lt: "Mercedes-Benz SLK iš priekio", en: "Mercedes-Benz SLK front view", cover: false, imageClass: "scale-[1.08]" },
   { src: slkRear, lt: "Mercedes-Benz SLK iš galo", en: "Mercedes-Benz SLK rear view", cover: false, imageClass: "scale-[1.08]" },
@@ -57,8 +63,10 @@ const GALLERY = [
 
 export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChange }: SlkDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
 
   const copy = isEnglish
     ? {

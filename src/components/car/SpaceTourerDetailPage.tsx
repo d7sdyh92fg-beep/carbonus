@@ -49,6 +49,12 @@ interface SpaceTourerDetailPageProps {
   onSelectedPackageChange: (value: SelectedPackage) => void;
 }
 
+const parseDateParam = (value: string | null): Date | undefined => {
+  if (!value) return undefined;
+  const d = new Date(`${value}T12:00:00`);
+  return isNaN(d.getTime()) ? undefined : d;
+};
+
 const GALLERY = [
   { src: spaceFront, lt: "Citroën SpaceTourer iš priekio", en: "Citroën SpaceTourer front view", cover: false, imageClass: "scale-[1.10]" },
   { src: spaceRear, lt: "Citroën SpaceTourer iš galo", en: "Citroën SpaceTourer rear view", cover: false, imageClass: "-translate-x-[10%] scale-[1.10]" },
@@ -58,8 +64,10 @@ const GALLERY = [
 
 export function SpaceTourerDetailPage({ pricing, selectedPackage, onSelectedPackageChange }: SpaceTourerDetailPageProps) {
   const [activeImage, setActiveImage] = useState(0);
+  const [searchParams] = useSearchParams();
   const { t, language } = useTranslations();
   const isEnglish = language === "en";
+  const hasSelectedDates = !!(parseDateParam(searchParams.get("pickup")) && parseDateParam(searchParams.get("return")));
 
   const copy = isEnglish
     ? {
