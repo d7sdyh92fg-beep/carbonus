@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronRight, Phone, UserCircle, Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/hooks/use-language";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -50,10 +51,12 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const { isAdmin } = useAuth();
   const { language, setLanguage } = useLanguage();
+  const isMobile = useIsMobile();
   const NAV = NAV_COPY[language] ?? NAV_COPY.lt;
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const isHome = pathname === "/";
+  const keepVisibleOnScroll = pathname === "/laisvi-automobiliai" && isMobile;
   const transparentOverlay = isHome && !scrolled && !mobileOpen;
 
   useEffect(() => {
@@ -66,7 +69,9 @@ export function Header() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 10);
-      if (currentScrollY <= 0) {
+      if (keepVisibleOnScroll) {
+        setHidden(false);
+      } else if (currentScrollY <= 0) {
         setHidden(false);
       } else if (currentScrollY > lastScrollY) {
         setHidden(true);
@@ -77,7 +82,7 @@ export function Header() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [keepVisibleOnScroll]);
 
   const onLightHero = true;
 
