@@ -365,7 +365,7 @@ export function SlkDetailPage({ pricing, selectedPackage, onSelectedPackageChang
           <p className="text-[17px] font-extrabold text-[hsl(var(--carbonus-green-dark))]">{priceLabel}<span className="ml-1 text-[11px] font-medium text-muted-foreground">{copy.perDay}</span></p>
         </div>
         <button onClick={scrollToBooking} className="h-12 rounded-xl bg-[hsl(var(--carbonus-green-dark))] px-5 text-[13px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--carbonus-green))]">
-          {copy.reserve}
+          {hasSelectedDates ? copy.reserveWithDates : copy.reserve}
         </button>
       </div>
 
