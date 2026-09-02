@@ -253,7 +253,7 @@ const handler = async (req: Request): Promise<Response> => {
     const paymentHtmlCustomerEN = isPayAtCounter ? `
       <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4caf50;">
         <h3 style="color: #2e7d32; margin-top: 0;">Payment information</h3>
-        <p style="margin: 5px 0;"><strong>Advance paid (to confirm reservation):</strong> €${advance}</p>
+        <p style="margin: 5px 0;"><strong>Advance to confirm the reservation:</strong> €${advance}</p>
         <p style="margin: 5px 0;"><strong>Remaining to pay on pickup:</strong></p>
         <ul style="margin: 5px 0; padding-left: 20px; color: #2e7d32;">
           <li>Remaining rental: €${remainingRental}</li>
