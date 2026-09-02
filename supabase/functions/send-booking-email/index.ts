@@ -227,7 +227,7 @@ const handler = async (req: Request): Promise<Response> => {
     const paymentHtmlAdmin = isPayAtCounter ? `
       <div style="background-color: #e8f5e9; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #4caf50;">
         <p style="margin: 0;"><strong>💳 Mokėjimo būdas:</strong> Mokėti atsiimant</p>
-        <p style="margin: 5px 0 0 0;"><strong>Sumokėtas avansas (Stripe):</strong> €${advance}</p>
+        <p style="margin: 5px 0 0 0;"><strong>Avansas (laukiama apmokėjimo Stripe):</strong> €${advance}</p>
         <p style="margin: 5px 0 0 0;"><strong>Liko sumokėti atsiimant:</strong> €${remainingRental} (nuoma) + €${booking.depositAmount} (užstatas) = <strong>€${remainingTotal}</strong></p>
       </div>
     ` : `
