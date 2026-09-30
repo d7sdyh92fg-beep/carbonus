@@ -33,4 +33,4 @@ export const CARS_CATALOG: CatalogCar[] = [
 ];
 
 // Sold / hidden from public listings
-export const HIDDEN_CAR_IDS = new Set(["1", "2"]);
+export const HIDDEN_CAR_IDS = new Set(["1", "2", "3"]);

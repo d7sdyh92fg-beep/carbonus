@@ -10,7 +10,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { getCarSlugFromId } from "@/utils/carSlugs";
 import bmw3Clean from "@/assets/bmw-3-clean.png";
 import chryslerTownCountrySide from "@/assets/chrysler-town-country-side.png";
-import vwPassatSideClean from "@/assets/vw-passat-side-clean.png";
 import kiaCeedWagonSideClean from "@/assets/kia-ceed-wagon-side-clean.png";
 import kiaCeedHatchbackSideBrown from "@/assets/kia-ceed-hatchback-side-khaki.png";
 import mercedesSlkSide from "@/assets/mercedes-slk-side-clean.png";
@@ -35,7 +34,6 @@ interface Car {
 const imageMap: { [key: string]: string } = {
   bmw3Clean,
   chryslerTownCountrySide,
-  vwPassatSideClean,
   kiaCeedWagonSideClean,
   kiaCeedHatchbackSideBrown,
 };
@@ -143,19 +141,6 @@ export function Fleet() {
       features: ["Automatinė pavarų dėžė", "Modernus LED apšvietimas", "Naujas automobilis"]
     },
     {
-      id: "3",
-      name: "Volkswagen Passat",
-      price: "30 EUR",
-      image: vwPassatSideClean,
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Dyzelinas",
-      transmission: "Mechaninė",
-      rating: 4.7,
-      year: 2012,
-      features: ["Ekonomiškas", "Patogus", "Didelis bagažas"]
-    },
-    {
       id: "5",
       name: "KIA CEED",
       price: "30 EUR",
@@ -203,9 +188,7 @@ export function Fleet() {
                     className={`w-full h-48 transition-transform duration-300 object-contain object-center mix-blend-multiply ${
                       !loadedImages.has(car.id) ? "opacity-0" : "opacity-100"
                     } ${
-                      car.name === "Volkswagen Passat" 
-                        ? "scale-[0.92] group-hover:scale-[0.97]" 
-                        : car.name === "Mercedes-Benz SLK"
+                      car.name === "Mercedes-Benz SLK"
                         ? "scale-[0.92] group-hover:scale-[0.97] translate-y-4"
                         : car.id === "7"
                         ? "scale-[1.0] group-hover:scale-[1.05] translate-y-2"

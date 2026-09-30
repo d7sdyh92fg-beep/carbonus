@@ -207,7 +207,7 @@ export const translations = {
       from: "nuo",
       meta: {
         title: "Automobilių parkas | Carbonus nuoma",
-        description: "Carbonus automobilių parkas: Mercedes-Benz SLK, Citroën SpaceTourer, VW Passat, KIA CEED, Hyundai Bayon. Aiški kaina, pristatymas visoje Lietuvoje."
+        description: "Carbonus automobilių parkas: Mercedes-Benz SLK, Citroën SpaceTourer, KIA CEED ir Hyundai Bayon. Aiški kaina, pristatymas visoje Lietuvoje."
 
       }
     },
@@ -642,17 +642,6 @@ export const translations = {
         feature6: "Elektriniai slankiojantys durys",
         feature7: "Atverčiamos sėdynės",
         feature8: "Saugos sistemos"
-      },
-      "3": {
-        description: "Volkswagen Passat 2012 - patikimas ir ekonomiškas sedanas, puikiai tinkantis verslo kelionėms ir kasdieniam naudojimui. Dyzelinis variklis užtikrina mažą kuro sąnaudą.",
-        feature1: "Ekonomiškas dyzelinis variklis",
-        feature2: "Mechaninė pavarų dėžė",
-        feature3: "Kondicionierius",
-        feature4: "Elektriniai langai",
-        feature5: "Centrinis užraktas",
-        feature6: "ABS stabdžių sistema",
-        feature7: "Patogios sėdynės",
-        feature8: "Didelis bagažas"
       },
       "4": {
         description: "KIA CEED 2013 universalas - praktiškas ir erdvus automobilis, idealus kelionėms ir kasdieniam naudojimui. Tamsiai pilkos spalvos automobilis su 1.4 litro benzininiu varikliu. Puikiai tvarkytas automobilis su visais reikalingais patogumais.",
@@ -1626,9 +1615,6 @@ export const translations = {
           <h3>Mercedes-Benz C klasė</h3>
           <p><strong>Prestižas ir komfortas.</strong> Mercedes vardo pačiu pakanka, kad paliktumėte gerą įspūdį.</p>
 
-          <h3>Volkswagen Passat</h3>
-          <p><strong>Praktiškas, patikimas ir erdvus.</strong> Geras pasirinkimas tiems, kurie vertina kokybę be pernelyg didelio išgyveno.</p>
-
           <h2>Papildomos paslaugos verslo klientams</h2>
           <p><strong>Kai kurios nuomos įmonės siūlo specialias paslaugas verslo klientams:</strong></p>
           <ul>
@@ -1828,7 +1814,7 @@ export const translations = {
           <ul>
             <li><strong>Privalumai:</strong> didelė bagažinė, ekonomiškesni degalai, lengviau vairuoti nei minivanai</li>
             <li><strong>Trūkumai:</strong> paprastai 5 sėdynės</li>
-            <li><strong>Pavyzdžiai:</strong> Volkswagen Passat Variant, Škoda Octavia Combi</li>
+            <li><strong>Pavyzdžiai:</strong> Škoda Octavia Combi, Toyota Corolla Touring Sports</li>
           </ul>
 
           <h2>Vaiko kėdutės ir saugos priemonės</h2>
@@ -2208,7 +2194,7 @@ export const translations = {
       from: "from",
       meta: {
         title: "Rental fleet | Carbonus car rental",
-        description: "Carbonus fleet: Mercedes-Benz SLK, Citroën SpaceTourer, VW Passat, KIA CEED, Hyundai Bayon. Clear final price and delivery across Lithuania."
+        description: "Carbonus fleet: Mercedes-Benz SLK, Citroën SpaceTourer, KIA CEED and Hyundai Bayon. Clear final price and delivery across Lithuania."
 
       }
     },
@@ -2565,17 +2551,6 @@ export const translations = {
         feature6: "Electric sliding doors",
         feature7: "Folding seats",
         feature8: "Safety systems"
-      },
-      "3": {
-        description: "Volkswagen Passat 2012 - reliable and economical sedan, perfect for business trips and everyday use. Diesel engine ensures low fuel consumption.",
-        feature1: "Economical diesel engine",
-        feature2: "Manual transmission",
-        feature3: "Air conditioning",
-        feature4: "Electric windows",
-        feature5: "Central locking",
-        feature6: "ABS braking system",
-        feature7: "Comfortable seats",
-        feature8: "Large trunk"
       },
       "4": {
         description: "KIA CEED 2013 wagon - practical and spacious car, ideal for trips and everyday use. Dark gray car with a 1.4 liter petrol engine. Well-maintained car with all necessary amenities.",
@@ -3492,9 +3467,6 @@ export const translations = {
           <h3>Mercedes-Benz C-Class</h3>
           <p>Prestige and comfort. The Mercedes name alone is enough to make a good impression.</p>
 
-          <h3>Volkswagen Passat</h3>
-          <p>Practical, reliable, and spacious. Good choice for those who value quality without overspending.</p>
-
           <h2>Additional Services for Business Clients</h2>
           <p>Some rental companies offer special services for business clients:</p>
           <ul>
@@ -3693,7 +3665,7 @@ export const translations = {
           <ul>
             <li><strong>Advantages:</strong> large trunk, more economical fuel consumption, easier to drive than minivans</li>
             <li><strong>Disadvantages:</strong> usually 5 seats</li>
-            <li><strong>Examples:</strong> Volkswagen Passat Variant, Škoda Octavia Combi</li>
+            <li><strong>Examples:</strong> Škoda Octavia Combi, Toyota Corolla Touring Sports</li>
           </ul>
 
           <h2>Child Seats and Safety Equipment</h2>
