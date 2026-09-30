@@ -25,13 +25,6 @@ export const CAR_SLUGS: CarSlugMapping[] = [
     category: "Miniautobusas"
   },
   {
-    id: "3",
-    slug: "volkswagen-passat-nuoma",
-    slugEn: "volkswagen-passat-rental",
-    name: "Volkswagen Passat",
-    category: "Sedanas"
-  },
-  {
     id: "4",
     slug: "kia-ceed-universalas-nuoma",
     slugEn: "kia-ceed-wagon-rental",

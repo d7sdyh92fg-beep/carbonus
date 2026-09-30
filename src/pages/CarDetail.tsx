@@ -32,9 +32,6 @@ import bmwEnhanced1 from "@/assets/bmw-3-enhanced-1.png";
 import bmwEnhanced2 from "@/assets/bmw-3-enhanced-2.png";
 import chryslerEnhanced1 from "@/assets/chrysler-enhanced-1.png";
 import chryslerEnhanced2WithPlate from "@/assets/chrysler-enhanced-2.png";
-import vwPassatEnhanced1 from "@/assets/car-galleries/volkswagen-passat/01-EXTERIOR-FRONT.png";
-import vwPassatEnhanced2 from "@/assets/car-galleries/volkswagen-passat/02-EXTERIOR-REAR.png";
-import vwPassatInterior from "@/assets/car-galleries/volkswagen-passat/03-INTERIOR-CABIN.png";
 import kiaCeedWagonInterior from "@/assets/car-galleries/kia-ceed-universalas/03-INTERIOR-CABIN.png";
 import kiaCeedHatchbackInterior from "@/assets/car-galleries/kia-ceed-hecbekas/03-INTERIOR-CABIN.png";
 import mercedesSlkFront from "@/assets/mercedes-slk-front-studio.png";
@@ -194,26 +191,6 @@ const CarDetail = () => {
       doors: "5",
       trunk: "2000 L",
       engineType: "3.6L V6"
-    },
-    "3": {
-      id: "3",
-      name: "Volkswagen Passat",
-      price: "30-40 EUR",
-      image: vwPassatEnhanced1,
-      images: [
-        vwPassatEnhanced1,
-        vwPassatEnhanced2,
-        vwPassatInterior
-      ],
-      category: "Sedanas",
-      passengers: 5,
-      fuel: "Dyzelinas",
-      transmission: "Mechaninė",
-      rating: 4.7,
-      year: "2012",
-      doors: "4",
-      trunk: "565 L",
-      engineType: "2.0L TDI"
     },
     "4": {
       id: "4",
@@ -395,7 +372,7 @@ const CarDetail = () => {
     );
   }
 
-  if (["3", "4", "5"].includes(car.id)) {
+  if (["4", "5"].includes(car.id)) {
     return (
       <LegacyCarDetailPage
         car={car}

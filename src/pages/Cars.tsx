@@ -25,7 +25,6 @@ import hyundaiBayonSide from "@/assets/fleet-hyundai-bayon-white-roof-v3.png";
 import kiaCeedHatchbackSide from "@/assets/fleet-kia-ceed-hatchback-side-v2.png";
 import kiaCeedWagonSide from "@/assets/fleet-kia-ceed-wagon-side-v2.png";
 import mercedesSlkSide from "@/assets/fleet-mercedes-slk-open-top-v3.png";
-import vwPassatSide from "@/assets/fleet-volkswagen-passat-side-v2.png";
 
 type Language = "lt" | "en";
 
@@ -127,25 +126,9 @@ const CARS: CarItem[] = [
     image: kiaCeedWagonSide,
     imageClass: "scale-[0.90] group-hover:scale-[0.925]",
   },
-  {
-    id: "3",
-    name: "Volkswagen Passat",
-    englishName: "Volkswagen Passat",
-    category: "Sedanas",
-    categoryEn: "Saloon",
-    passengers: 5,
-    fuel: "Dyzelinas",
-    fuelEn: "Diesel",
-    transmission: "Mechaninė",
-    transmissionEn: "Manual",
-    year: 2012,
-    fallbackPrice: 30,
-    image: vwPassatSide,
-    imageClass: "scale-[0.90] group-hover:scale-[0.925]",
-  },
 ];
 
-const FILTERS = ["Visi", "Kabrioletas", "Krosoveris", "Vienatūris", "Hečbekas", "Universalas", "Sedanas"];
+const FILTERS = ["Visi", "Kabrioletas", "Krosoveris", "Vienatūris", "Hečbekas", "Universalas"];
 
 const FILTER_LABELS_EN: Record<string, string> = {
   Visi: "All",
@@ -154,7 +137,6 @@ const FILTER_LABELS_EN: Record<string, string> = {
   Vienatūris: "People carrier",
   Hečbekas: "Hatchback",
   Universalas: "Estate",
-  Sedanas: "Saloon",
 };
 
 const copy = {

@@ -70,7 +70,7 @@ const App = () => (
             <Route path="/cars/:slug" element={<CarDetail />} />
             
             {/* 301 Redirects: Old numeric IDs to new slugs (keep these AFTER slug routes) */}
-            {['1', '2', '3', '4', '5', '6', '7'].map(id => (
+            {['1', '2', '4', '5', '6', '7', '8'].map(id => (
               <React.Fragment key={id}>
                 <Route 
                   path={`/automobiliai/${id}`} 

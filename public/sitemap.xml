@@ -115,12 +115,6 @@
 </url>
 
 <url>
-  <loc>https://carbonus.lovable.app/automobiliai/volkswagen-passat-nuoma</loc>
-  <changefreq>weekly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
   <loc>https://carbonus.lovable.app/automobiliai/kia-ceed-universalas-nuoma</loc>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
@@ -147,12 +141,6 @@
 
 <url>
   <loc>https://carbonus.lovable.app/cars/hyundai-bayon-cross-rental</loc>
-  <changefreq>weekly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://carbonus.lovable.app/cars/volkswagen-passat-rental</loc>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
