@@ -128,6 +128,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         condition_pickup: reservation.condition_pickup || '',
         condition_return: reservation.condition_return || '',
         return_notes: reservation.return_notes || '',
+        mileage_start: reservation.mileage_start != null ? String(reservation.mileage_start) : '',
       });
       setDriverLicenseUrls({
         front: reservation.driver_license_url || '',
@@ -135,6 +136,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       });
       fetchSignature();
       fetchCars();
+      fetchMileageEnd();
     }
   }, [reservation]);
 
@@ -233,6 +235,24 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchMileageEnd = async () => {
+    if (!reservation) return;
+    try {
+      const { data, error } = await supabase
+        .from('reservation_inspections')
+        .select('mileage_end')
+        .eq('reservation_id', reservation.id)
+        .not('mileage_end', 'is', null)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      setMileageEnd(data?.mileage_end ?? null);
+    } catch (error: any) {
+      console.error('Error fetching mileage end:', error);
     }
   };
 
