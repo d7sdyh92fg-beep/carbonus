@@ -57,7 +57,7 @@ const cars = [
     id: '3', 
     name: 'Volkswagen Passat', 
     year: '2015', 
-    available: true
+    available: false
   },
   { 
     id: '4', 
