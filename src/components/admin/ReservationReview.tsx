@@ -479,6 +479,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         .update({
           fuel_level_pickup: returnInspection.fuel_level_pickup,
           condition_pickup: returnInspection.condition_pickup,
+          mileage_start: returnInspection.mileage_start ? Number(returnInspection.mileage_start) : null,
         })
         .eq('id', reservation.id);
 
@@ -967,6 +968,21 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
                 {/* Pickup Information */}
                 <div className="space-y-4 p-4 rounded-lg bg-muted/30">
                   <h4 className="font-medium text-sm">Paėmimo metu</h4>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="mileage_start">Rida (km)</Label>
+                    <Input
+                      id="mileage_start"
+                      type="number"
+                      placeholder="pvz. 128400"
+                      value={returnInspection.mileage_start}
+                      onChange={(e) =>
+                        setReturnInspection({ ...returnInspection, mileage_start: e.target.value })
+                      }
+                      disabled={!!reservation.returned_at}
+                    />
+                  </div>
+
                   
                   <div className="space-y-2">
                     <Label htmlFor="fuel_level_pickup">Kuro lygis</Label>
