@@ -317,7 +317,7 @@ const Admin = () => {
 
 
   // IDs of sold cars to hide from admin panel
-  const hiddenCarIds = ["1", "2"]; // BMW 3 series, Chrysler Town & Country
+  const hiddenCarIds = ["1", "2", "3"]; // BMW 3 series, Chrysler Town & Country, Volkswagen Passat
 
   const fetchCars = async () => {
     try {
