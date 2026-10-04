@@ -57,7 +57,7 @@ const cars = [
     id: '3', 
     name: 'Volkswagen Passat', 
     year: '2015', 
-    available: true
+    available: false
   },
   { 
     id: '4', 
@@ -1265,7 +1265,7 @@ export function InPersonBooking({ prefill, onBookingCreated }: InPersonBookingPr
                       <SelectValue placeholder="Pasirinkite automobilį" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border z-50">
-                      {cars.map((car) => (
+                      {cars.filter((car) => car.id !== '3').map((car) => (
                         <SelectItem key={car.id} value={car.id} disabled={!car.available} className="text-sm p-3 sm:p-4">
                           <div className="flex items-center justify-between w-full gap-2 sm:gap-4">
                             <div className="flex flex-col gap-1 min-w-0 flex-1">
