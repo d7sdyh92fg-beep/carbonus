@@ -2529,19 +2529,20 @@ function AdminFleetTimeline({
                   </button>
                   {dates.map(({ key }) => {
                     const reservation = reservations.find(
-                      (r) => r.car_id === car.id && r.start_date <= key && r.end_date >= key && !['completed', 'cancelled', 'denied'].includes(r.status)
+                      (r) => r.car_id === car.id && r.start_date <= key && r.end_date >= key && !['cancelled', 'denied'].includes(r.status)
                     );
                     const waiting = reservation && ['requested', 'awaiting_payment', 'pending'].includes(reservation.status);
+                    const finished = reservation && reservation.status === 'completed';
                     return (
                       <button
                         key={key}
                         type="button"
                         onClick={() => (reservation ? onOpenReservation(reservation) : onOpenCar({ id: car.id, name: car.name }))}
-                        className={`relative min-h-[62px] border-l border-[#e7eeea] p-1.5 transition hover:brightness-[0.98] ${reservation ? (waiting ? 'bg-amber-50' : 'bg-blue-50') : 'bg-white hover:bg-emerald-50/60'}`}
+                        className={`relative min-h-[62px] border-l border-[#e7eeea] p-1.5 transition hover:brightness-[0.98] ${reservation ? (finished ? 'bg-slate-50' : waiting ? 'bg-amber-50' : 'bg-blue-50') : 'bg-white hover:bg-emerald-50/60'}`}
                         title={reservation ? `${reservation.customers?.first_name || ''} ${reservation.customers?.last_name || ''}` : 'Laisva'}
                       >
                         {reservation ? (
-                          <span className={`block h-full min-h-[48px] rounded-[10px] px-2 py-2 text-left ${waiting ? 'bg-amber-100 text-amber-900' : 'bg-blue-100 text-blue-900'}`}>
+                          <span className={`block h-full min-h-[48px] rounded-[10px] px-2 py-2 text-left ${finished ? 'bg-slate-200 text-slate-700' : waiting ? 'bg-amber-100 text-amber-900' : 'bg-blue-100 text-blue-900'}`}>
                             <span className="block truncate text-[9px] font-extrabold">{reservation.customers?.first_name || 'Blokas'}</span>
                             <span className="mt-1 block truncate text-[8px] opacity-70">€{reservation.total_amount}</span>
                           </span>
