@@ -2493,6 +2493,7 @@ function AdminFleetTimeline({
               <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Laisva</span>
               <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Rezervuota</span>
               <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-amber-400" /> Laukia</span>
+              <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-slate-400" /> Baigta</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Button variant="outline" size="sm" onClick={() => setOffset((v) => v - 8)}>‹ Atgal</Button>
