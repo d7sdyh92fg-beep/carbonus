@@ -49,6 +49,7 @@ interface Reservation {
   return_notes?: string;
   returned_at?: string;
   pricing_notes?: string;
+  mileage_start?: number | null;
 }
 
 interface ContractSignature {
@@ -101,7 +102,9 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     condition_pickup: '',
     condition_return: '',
     return_notes: '',
+    mileage_start: '',
   });
+  const [mileageEnd, setMileageEnd] = useState<number | null>(null);
 
   useEffect(() => {
     if (reservation) {
