@@ -49,6 +49,7 @@ interface Reservation {
   return_notes?: string;
   returned_at?: string;
   pricing_notes?: string;
+  mileage_start?: number | null;
 }
 
 interface ContractSignature {
@@ -101,7 +102,9 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
     condition_pickup: '',
     condition_return: '',
     return_notes: '',
+    mileage_start: '',
   });
+  const [mileageEnd, setMileageEnd] = useState<number | null>(null);
 
   useEffect(() => {
     if (reservation) {
@@ -125,6 +128,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         condition_pickup: reservation.condition_pickup || '',
         condition_return: reservation.condition_return || '',
         return_notes: reservation.return_notes || '',
+        mileage_start: reservation.mileage_start != null ? String(reservation.mileage_start) : '',
       });
       setDriverLicenseUrls({
         front: reservation.driver_license_url || '',
@@ -132,6 +136,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       });
       fetchSignature();
       fetchCars();
+      fetchMileageEnd();
     }
   }, [reservation]);
 
@@ -230,6 +235,24 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchMileageEnd = async () => {
+    if (!reservation) return;
+    try {
+      const { data, error } = await supabase
+        .from('reservation_inspections')
+        .select('mileage_end')
+        .eq('reservation_id', reservation.id)
+        .not('mileage_end', 'is', null)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      setMileageEnd(data?.mileage_end ?? null);
+    } catch (error: any) {
+      console.error('Error fetching mileage end:', error);
     }
   };
 
@@ -456,6 +479,7 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
         .update({
           fuel_level_pickup: returnInspection.fuel_level_pickup,
           condition_pickup: returnInspection.condition_pickup,
+          mileage_start: returnInspection.mileage_start ? Number(returnInspection.mileage_start) : null,
         })
         .eq('id', reservation.id);
 
@@ -940,10 +964,40 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
+              {(returnInspection.mileage_start || mileageEnd != null) && (
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-lg border bg-muted/40 px-4 py-3 text-sm">
+                  {returnInspection.mileage_start && (
+                    <span>Rida atsiimant: <strong>{Number(returnInspection.mileage_start).toLocaleString('lt-LT')} km</strong></span>
+                  )}
+                  {mileageEnd != null && (
+                    <span>Rida grąžinant: <strong>{mileageEnd.toLocaleString('lt-LT')} km</strong></span>
+                  )}
+                  {returnInspection.mileage_start && mileageEnd != null && (
+                    <Badge variant="outline" className="bg-blue-50 text-blue-800 border-blue-300">
+                      Nuvažiuota: {(mileageEnd - Number(returnInspection.mileage_start)).toLocaleString('lt-LT')} km
+                    </Badge>
+                  )}
+                </div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Pickup Information */}
                 <div className="space-y-4 p-4 rounded-lg bg-muted/30">
                   <h4 className="font-medium text-sm">Paėmimo metu</h4>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="mileage_start">Rida (km)</Label>
+                    <Input
+                      id="mileage_start"
+                      type="number"
+                      placeholder="pvz. 128400"
+                      value={returnInspection.mileage_start}
+                      onChange={(e) =>
+                        setReturnInspection({ ...returnInspection, mileage_start: e.target.value })
+                      }
+                      disabled={!!reservation.returned_at}
+                    />
+                  </div>
+
                   
                   <div className="space-y-2">
                     <Label htmlFor="fuel_level_pickup">Kuro lygis</Label>

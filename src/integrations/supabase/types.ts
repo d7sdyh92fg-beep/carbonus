@@ -689,6 +689,7 @@ export type Database = {
           inspection_started_at: string | null
           language: string
           last_email_sent_status: string | null
+          mileage_start: number | null
           notes: string | null
           payment_completed_at: string | null
           payment_method: string | null
@@ -747,6 +748,7 @@ export type Database = {
           inspection_started_at?: string | null
           language?: string
           last_email_sent_status?: string | null
+          mileage_start?: number | null
           notes?: string | null
           payment_completed_at?: string | null
           payment_method?: string | null
@@ -805,6 +807,7 @@ export type Database = {
           inspection_started_at?: string | null
           language?: string
           last_email_sent_status?: string | null
+          mileage_start?: number | null
           notes?: string | null
           payment_completed_at?: string | null
           payment_method?: string | null
