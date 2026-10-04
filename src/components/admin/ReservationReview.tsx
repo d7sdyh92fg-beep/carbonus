@@ -964,6 +964,21 @@ export const ReservationReview: React.FC<ReservationReviewProps> = ({
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
+              {(returnInspection.mileage_start || mileageEnd != null) && (
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-lg border bg-muted/40 px-4 py-3 text-sm">
+                  {returnInspection.mileage_start && (
+                    <span>Rida atsiimant: <strong>{Number(returnInspection.mileage_start).toLocaleString('lt-LT')} km</strong></span>
+                  )}
+                  {mileageEnd != null && (
+                    <span>Rida grąžinant: <strong>{mileageEnd.toLocaleString('lt-LT')} km</strong></span>
+                  )}
+                  {returnInspection.mileage_start && mileageEnd != null && (
+                    <Badge variant="outline" className="bg-blue-50 text-blue-800 border-blue-300">
+                      Nuvažiuota: {(mileageEnd - Number(returnInspection.mileage_start)).toLocaleString('lt-LT')} km
+                    </Badge>
+                  )}
+                </div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Pickup Information */}
                 <div className="space-y-4 p-4 rounded-lg bg-muted/30">
