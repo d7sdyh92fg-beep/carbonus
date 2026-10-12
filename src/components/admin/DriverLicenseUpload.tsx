@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { detectDevice, getCameraConstraints, getDeviceSpecificErrorMessage } from '@/lib/deviceDetection';
 import { compressImage, convertHEICtoJPEG, shouldCompress } from '@/lib/imageProcessing';
 import { useSignedLicenseUrl } from '@/hooks/use-signed-url';
+import { DownloadLicenseButton } from './DownloadLicenseButton';
 
 interface DriverLicenseUploadProps {
   onUpload: (urls: { front?: string; back?: string }) => void;
@@ -342,6 +343,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-base font-medium">Priekis įkeltas</h4>
                 <div className="flex gap-2">
+                  <DownloadLicenseButton path={uploadedUrls?.front || frontPreview} />
                   <Button
                     size="sm"
                     variant="outline"
@@ -426,6 +428,7 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-base font-medium">Galas įkeltas</h4>
                 <div className="flex gap-2">
+                  <DownloadLicenseButton path={uploadedUrls?.back || backPreview} />
                   <Button
                     size="sm"
                     variant="outline"
@@ -484,6 +487,9 @@ export function DriverLicenseUpload({ onUpload, uploadedUrls }: DriverLicenseUpl
               Vairuotojo pažymėjimo peržiūra - {previewSide === 'front' ? 'Priekis' : 'Galas'}
             </DialogTitle>
           </DialogHeader>
+          <div className="flex justify-end">
+            <DownloadLicenseButton path={previewSide === 'front' ? (uploadedUrls?.front || frontPreview) : (uploadedUrls?.back || backPreview)} />
+          </div>
           <div className="flex justify-center">
             <img
               src={previewSide === 'front' ? frontImageUrl : backImageUrl}
