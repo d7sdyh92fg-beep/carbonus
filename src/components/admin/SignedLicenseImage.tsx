@@ -1,4 +1,5 @@
 import { useSignedLicenseUrl } from "@/hooks/use-signed-url";
+import { DownloadLicenseButton } from './DownloadLicenseButton';
 
 interface SignedLicenseImageProps {
   path?: string | null;
@@ -20,7 +21,8 @@ export function SignedLicenseImage({ path, alt, className }: SignedLicenseImageP
   }
 
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="block">
+    <div className="space-y-2">
+      <a href={url} target="_blank" rel="noopener noreferrer" className="block">
       <img
         src={url}
         alt={alt}
@@ -28,6 +30,8 @@ export function SignedLicenseImage({ path, alt, className }: SignedLicenseImageP
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
       />
-    </a>
+      </a>
+      <DownloadLicenseButton path={path} />
+    </div>
   );
 }
