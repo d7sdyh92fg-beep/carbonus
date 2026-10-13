@@ -71,7 +71,13 @@ serve(async (req) => {
     const auth = await requireAdmin(req);
     if (!auth.ok) return adminAuthFailureResponse(auth, corsHeaders);
 
-    const { reservationId, prefix = 'CAR', invoiceId } = await req.json();
+    const { reservationId, prefix = 'CAR', invoiceId, notes } = await req.json();
+    if (notes != null && (typeof notes !== 'string' || notes.length > 2000)) {
+      return new Response(JSON.stringify({ error: 'Pastabos turi būti tekstas iki 2000 simbolių.' }), {
+        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    let invoiceNotes: string | null = typeof notes === 'string' ? notes.trim() || null : null;
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -115,6 +121,7 @@ serve(async (req) => {
       issueDate = new Date(existingInvoice.issue_date);
       issueDateStr = `${issueDate.getFullYear()} ${String(issueDate.getMonth() + 1).padStart(2, '0')} ${String(issueDate.getDate()).padStart(2, '0')}`;
       items = existingInvoice.items as any[];
+      invoiceNotes = existingInvoice.notes?.trim() || null;
     } else {
       // New invoice: generate number and build items from reservation
       const { data: invoiceNum, error: numError } = await supabase
@@ -315,6 +322,36 @@ serve(async (req) => {
     y -= PAD;
     page.drawLine({ start: { x: LEFT, y }, end: { x: RIGHT, y }, thickness: 0.5, color: rgb(0, 0, 0) });
 
+    if (invoiceNotes) {
+      let notesPage = page;
+      y -= 24;
+      const ensureNotesSpace = () => {
+        if (y < 60) {
+          notesPage = pdfDoc.addPage([width, height]);
+          y = height - 60;
+        }
+      };
+      ensureNotesSpace();
+      notesPage.drawText('Pastabos:', { x: LEFT, y, font: fontBold, size: 10, color: rgb(0, 0, 0) });
+      y -= 18;
+      for (const paragraph of invoiceNotes.replace(/\r\n?/g, '\n').split('\n')) {
+        let remaining = paragraph.replace(/\t/g, '    ');
+        if (!remaining) { y -= 14; continue; }
+        while (remaining.length > 0) {
+          let length = remaining.length;
+          while (length > 1 && font.widthOfTextAtSize(remaining.slice(0, length), 9) > COL_WIDTH) length--;
+          if (length < remaining.length) {
+            const space = remaining.lastIndexOf(' ', length);
+            if (space > 0) length = space;
+          }
+          ensureNotesSpace();
+          notesPage.drawText(remaining.slice(0, length).trimEnd(), { x: LEFT, y, font, size: 9, color: rgb(0, 0, 0) });
+          remaining = remaining.slice(length).trimStart();
+          y -= 14;
+        }
+      }
+    }
+
     const pdfBytes = await pdfDoc.save();
     const pdfBase64 = encodeBase64(pdfBytes);
 
@@ -364,6 +401,7 @@ serve(async (req) => {
           total_amount: grandTotal,
           status: 'draft',
           pdf_url: fileName,
+          notes: invoiceNotes,
         })
         .select()
         .single();

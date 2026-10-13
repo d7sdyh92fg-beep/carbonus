@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -37,6 +38,7 @@ interface Invoice {
   pdf_url: string;
   sent_at: string | null;
   items: InvoiceItem[];
+  notes?: string | null;
 }
 
 export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
@@ -58,6 +60,7 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
   const [editingItems, setEditingItems] = useState<InvoiceItem[] | null>(null);
   const [editingNumber, setEditingNumber] = useState<string>('');
   const [editingIssueDate, setEditingIssueDate] = useState<string>('');
+  const [editingNotes, setEditingNotes] = useState('');
 
   useEffect(() => {
     if (isOpen && reservationId) {
@@ -65,6 +68,7 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
     }
     if (!isOpen) {
       setEditingItems(null);
+      setEditingNotes('');
     }
   }, [isOpen, reservationId]);
 
@@ -95,7 +99,7 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
     setIsGenerating(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
-        body: { reservationId, prefix: 'CAR' },
+        body: { reservationId, prefix: 'CAR', notes: editingNotes.trim() || null },
       });
 
       if (error) throw error;
@@ -115,6 +119,7 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
       setEditingItems(JSON.parse(JSON.stringify(invoice.items)));
       setEditingNumber(invoice.invoice_number);
       setEditingIssueDate(invoice.issue_date);
+      setEditingNotes(invoice.notes || '');
     }
   };
 
@@ -168,6 +173,7 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
           total_amount: newTotal,
           invoice_number: editingNumber.trim(),
           issue_date: editingIssueDate,
+          notes: editingNotes.trim() || null,
         })
         .eq('id', invoice.id);
 
@@ -315,6 +321,11 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
                   <p><strong>Automobilis:</strong> {carName}</p>
                   <p><strong>Suma:</strong> {totalAmount.toFixed(2)} €</p>
                 </div>
+                <div className="space-y-2 mb-4">
+                  <Label htmlFor="new-invoice-notes">Pastabos (neprivaloma)</Label>
+                  <Textarea id="new-invoice-notes" value={editingNotes} onChange={(e) => setEditingNotes(e.target.value)}
+                    placeholder="Pvz.: Apmokėti per 5 dienas. Sumokėtas avansas 50 EUR." maxLength={2000} rows={3} />
+                </div>
                 <Button onClick={handleGenerate} disabled={isGenerating} className="w-full">
                   {isGenerating ? (
                     <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Generuojama...</>
@@ -440,6 +451,11 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
                         </div>
                       </Card>
                     ))}
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-invoice-notes">Pastabos (neprivaloma)</Label>
+                      <Textarea id="edit-invoice-notes" value={editingNotes} onChange={(e) => setEditingNotes(e.target.value)}
+                        placeholder="Pvz.: Apmokėti per 5 dienas. Sumokėtas avansas 50 EUR." maxLength={2000} rows={3} />
+                    </div>
                     <div className="flex items-center justify-between pt-2 border-t">
                       <span className="font-semibold">Iš viso: {getEditingTotal().toFixed(2)} €</span>
                       <div className="flex gap-2">
@@ -472,6 +488,12 @@ export const InvoiceManager: React.FC<InvoiceManagerProps> = ({
                         </div>
                       ))}
                     </div>
+                    {invoice.notes?.trim() && (
+                      <div className="pt-2 text-sm">
+                        <Label className="font-semibold">Pastabos</Label>
+                        <p className="whitespace-pre-wrap break-words text-muted-foreground mt-1">{invoice.notes}</p>
+                      </div>
+                    )}
                   </div>
                 )}
 
